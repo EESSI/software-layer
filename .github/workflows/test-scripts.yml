@@ -1,0 +1,32 @@
+# documentation: https://help.github.com/en/articles/workflow-syntax-for-github-actions
+name: Tests for scripts in EESSI software layer
+on: [push, pull_request]
+jobs:
+  build:
+    runs-on: ${{matrix.os}}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest]
+        python: [2.7, 3.5, 3.6, 3.7, 3.8]
+      fail-fast: false
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: ${{matrix.python}}
+        architecture: x64
+
+    - name: install OS & Python packages
+      run: |
+        pip install archspec
+
+    - name: test scripts
+      run: |
+        python eessi_cpu_subdir.py
+        source init_eessi.sh
+        # check which $EESSI_* environment variables were defined
+        env | grep '^EESSI' | sort
+        # make sure there are no empty subpaths
+        echo "$EESSI_PATH" | grep -v '//'
