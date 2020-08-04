@@ -1,12 +1,14 @@
 #!/usr/bin/env python
-import re, sys
+import re, sys, copy, os
 
 from easybuild.tools.options import set_up_configuration
 import easybuild.main as ebmain
 from easybuild.tools.robot import resolve_dependencies
 from easybuild.tools.modules import modules_tool
 from easybuild.framework.easyconfig.tools import det_easyconfig_paths
-from easybuild.framework.easyconfig.tools import parse_easyconfigs
+from easybuild.framework.easyconfig.tools import parse_easyconfigs, skip_available
+from easybuild.tools.environment import modify_env
+
 
 def error(msg):
     """Print error message and exit."""
@@ -75,6 +77,7 @@ def unroll_robot(easyconfig):
     return easyconfiglist
 
 def main():
+    orig_env = copy.deepcopy(os.environ)
     eb_go, _ = set_up_configuration(args=sys.argv, silent=True)
 
     if len(eb_go.args) != 2:
@@ -95,7 +98,9 @@ def main():
 
     ec_paths = det_easyconfig_paths(ec_list)
     ecs, _ = parse_easyconfigs([(p, False) for p in ec_paths], validate=False)
-    ordered_ecs = resolve_dependencies(ecs, modtool, retain_all_deps=True)
+    # call skip_available, reduces the nr of ecs for resolve_deps. Good for large buildlists.
+    retained_ecs = skip_available(ecs, modtool)
+    ordered_ecs = resolve_dependencies(retained_ecs, modtool, retain_all_deps=False)
 
     print("Ordered list of resolved dependencies")
     for ec in ordered_ecs:
@@ -104,6 +109,7 @@ def main():
     # TODO: loop still fails after one iteration, because the first build removes the tmpdir after completing succesfully. I guess we need to re-initialize before calling main again or something?
     print("Start building")
     for ec in ordered_ecs:
+        modify_env(os.environ, orig_env)
         print(ec['spec'])
         # Just to see if we can call EB like this, do -D to not actually build anything for now
         ebargs=["{}".format(ec['spec'])]
