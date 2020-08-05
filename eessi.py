@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-import re, sys, copy, os
+import re, sys, copy, os, tempfile
 
 from easybuild.tools.options import set_up_configuration
 import easybuild.main as ebmain
@@ -109,10 +109,15 @@ def main():
     # TODO: loop still fails after one iteration, because the first build removes the tmpdir after completing succesfully. I guess we need to re-initialize before calling main again or something?
     print("Start building")
     for ec in ordered_ecs:
-        modify_env(os.environ, orig_env)
+        # Without this restory of environment and tempfile, each iteration of this
+        # loop would create a new tempdir in the previous tempdir. This fails, because
+        # the tempdir from the previous iteration is cleaned up at the end of ebmain.main()
+        modify_env(os.environ, orig_env, verbose=False)
+        tempfile.tempdir=None
+        # eb_go, _ = set_up_configuration(args=sys.argv, silent=True)
         print(ec['spec'])
         # Just to see if we can call EB like this, do -D to not actually build anything for now
-        ebargs=["{}".format(ec['spec'])]
+        ebargs=["{}".format(ec['spec']), '--hooks=gentoo_hooks.py', '--sourcepath="~/.local/easybuild/sources:/shared/maintainers/sources"', '--installpath=/shared/maintainers/EESSI-pilot/easybuild-test/haswell/']
         #print(ebargs)
         ebmain.main(ebargs)
     print("Building completed")
