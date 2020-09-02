@@ -31,16 +31,21 @@ BLOCKMESH_DIMENSIONS="100 40 40"
 # motorBike, 150M cells
 #BLOCKMESH_DIMENSIONS="200 80 80"
 
-# X*Y*Z should be equal to number of available cores
+# X*Y*Z should be equal to total number of available cores (across all nodes)
 X=2
 Y=1
 Z=1
-# total number of cores
-NP=2
-# cores per node
-PPN=2
 # number of nodes
 NODES=1
+# total number of cores
+NP=$(($X * $Y * $Z))
+# cores per node
+if [ $NODES -eq 1 ]; then
+    PPN=$NP
+else
+    echo "Don't know how to determine \$PPN value if \$NODES > 1" >&2
+    exit 1
+fi
 
 CASE_NAME=motorBike
 
