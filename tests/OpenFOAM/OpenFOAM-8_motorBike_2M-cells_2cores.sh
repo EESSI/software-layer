@@ -38,14 +38,9 @@ Z=1
 # number of nodes
 NODES=1
 # total number of cores
-NP=$(($X * $Y * $Z))
+NP=$((X * Y * Z))
 # cores per node
-if [ $NODES -eq 1 ]; then
-    PPN=$NP
-else
-    echo "Don't know how to determine \$PPN value if \$NODES > 1" >&2
-    exit 1
-fi
+PPN=$(((NP + NODES -1)/NODES))
 
 CASE_NAME=motorBike
 
