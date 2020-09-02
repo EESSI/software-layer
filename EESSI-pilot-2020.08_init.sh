@@ -29,7 +29,7 @@ if [ -d $EESSI_PREFIX ]; then
       # prepend location of modules for EESSI software stack to $MODULEPATH
       export EESSI_MODULEPATH=$EESSI_SOFTWARE_PATH/modules/all
       echo "Prepending $EESSI_MODULEPATH to \$MODULEPATH..."
-      module use $EESSI_PREFIX/software/$EESSI_SOFTWARE_SUBDIR/modules/all
+      module use $EESSI_MODULEPATH
 
       echo "Environment set up to use EESSI pilot software stack, have fun!"
 
