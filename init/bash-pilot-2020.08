@@ -31,6 +31,26 @@ if [ -d $EESSI_PREFIX ]; then
       echo "Prepending $EESSI_MODULEPATH to \$MODULEPATH..."
       module use $EESSI_MODULEPATH
 
+      echo
+      echo "*** Known problems in the 2020.08 pilot software stack ***"
+      echo
+      echo "1) No Lmod cache has been generated yet for the module files included"
+      echo "   in the 2020.08 pilot software stack."
+      echo "   As a result, 'module' commands may be somewhat slow."
+      echo "   (see also https://github.com/EESSI/software-layer/issues/10)"
+      echo
+      echo "2) Open MPI is not properly configured yet, so it only supports regular Ethernet networks (tcp)"
+      echo "   and shared memory (sm, vader)."
+      echo "   (see also https://github.com/EESSI/software-layer/issues/14)"
+      echo
+      echo "3) Some system tools (like vim, nano, sed) are broken after loading modules,"
+      echo "   because of the contents of the \$LD_LIBRARY_PATH environment variable."
+      echo "   To fix these problems, just run 'unset LD_LIBRARY_PATH'."
+      echo "   The software provided via modules should keep working, it doesn't actually require \$LD_LIBRARY_PATH."
+      echo "   (see also https://github.com/EESSI/software-layer/issues/13)"
+      echo
+      echo
+
       echo "Environment set up to use EESSI pilot software stack, have fun!"
 
     else
