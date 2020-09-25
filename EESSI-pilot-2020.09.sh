@@ -40,7 +40,7 @@ else
 fi
 
 echo ">> Initializing Lmod..."
-source $EPREFIX/usr/lmod/*/init/bash
+source $EPREFIX/usr/lmod/lmod/init/bash
 ml_version_out=$TMPDIR/ml.out
 ml --version &> $ml_version_out
 if [[ $? -eq 0 ]]; then
@@ -158,7 +158,17 @@ fi
 
 # required to make sure that libraries like zlib that are listed in --filter-deps can be found by pkg-config
 # FIXME: fix this in EasyBuild framework!
+#        see https://github.com/easybuilders/easybuild-framework/pull/3451
 export PKG_CONFIG_PATH=$EPREFIX/usr/lib64/pkgconfig
+
+# see https://github.com/easybuilders/easybuild-easyconfigs/pull/11385
+echo ">> Installing Qt5 with extra patch to use zlib provided by Gentoo..."
+eb --from-pr 11385 --robot
+if [[ $? -eq 0 ]]; then
+    echo_green "Done with custom Qt5!"
+else
+    error "Installation of custom Qt5 failed, grrr..."
+fi
 
 echo ">> Installing OpenBLAS, Python 3 and Qt5..."
 eb OpenBLAS-0.3.9-GCC-9.3.0.eb Python-3.8.2-GCCcore-9.3.0.eb Qt5-5.14.1-GCCcore-9.3.0.eb --robot
