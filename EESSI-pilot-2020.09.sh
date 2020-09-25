@@ -146,6 +146,20 @@ else
     error "Installation of ${PERL_EC} failed!"
 fi
 
+# side-step to fix installation of CMake with zlib included in --filter-deps
+# see https://github.com/easybuilders/easybuild-easyblocks/pull/2187
+echo ">> Installing CMake with fixed easyblock..."
+eb CMake-3.16.4-GCCcore-9.3.0.eb --include-easyblocks-from-pr 2187 --robot
+if [[ $? -eq 0 ]]; then
+    echo_green "CMake installation done, glad that worked out!"
+else
+    error "Installation of CMake failed, pfft..."
+fi
+
+# required to make sure that libraries like zlib that are listed in --filter-deps can be found by pkg-config
+# FIXME: fix this in EasyBuild framework!
+export PKG_CONFIG_PATH=$EPREFIX/usr/lib64/pkgconfig
+
 echo ">> Installing OpenBLAS, Python 3 and Qt5..."
 eb OpenBLAS-0.3.9-GCC-9.3.0.eb Python-3.8.2-GCCcore-9.3.0.eb Qt5-5.14.1-GCCcore-9.3.0.eb --robot
 if [[ $? -eq 0 ]]; then
