@@ -198,7 +198,13 @@ else
     error "Installation of LAME failed, oops..."
 fi
 
+echo ">> Installing GROMACS and OpenFOAM (twice!)..."
 eb GROMACS-2020.1-foss-2020a-Python-3.8.2.eb OpenFOAM-8-foss-2020a.eb OpenFOAM-v2006-foss-2020a.eb --robot
+if [[ $? -eq 0 ]]; then
+    echo_green "GROMACS and OpenFOAM installed, wow!"
+else
+    error "Installation of GROMACS and OpenFOAM failed, we were so close..."
+fi
 
 echo ">> Cleaning up ${TMPDIR}..."
 rm -r ${TMPDIR}
