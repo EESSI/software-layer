@@ -33,12 +33,12 @@ export EPREFIX=${EESSI_PREFIX}/compat/${ARCH}
 
 DETECTION_PARAMETERS=''
 GENERIC=0
-EB='echo eb'
+EB='eb'
 if [[ "$1" == "--generic" || "$EASYBUILD_OPTARCH" == "GENERIC" ]]; then
     echo_yellow ">> GENERIC build requested, taking appropriate measures!"
-    DETECTION_PARAMETERS="$DESTINATION_PARAMETERS --generic"
+    DETECTION_PARAMETERS="$DETECTION_PARAMETERS --generic"
     GENERIC=1
-    EB='echo eb --optarch=GENERIC'
+    EB='eb --optarch=GENERIC'
 fi
 
 
