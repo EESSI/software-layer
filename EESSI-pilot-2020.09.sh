@@ -84,7 +84,16 @@ export EASYBUILD_TRACE=1
 export EASYBUILD_RPATH=1
 export EASYBUILD_FILTER_ENV_VARS=LD_LIBRARY_PATH
 
-export EASYBUILD_FILTER_DEPS=Autoconf,Automake,Autotools,binutils,bzip2,gettext,libreadline,libtool,M4,ncurses,XZ,zlib
+
+DEPS_TO_FILTER=Autoconf,Automake,Autotools,binutils,bzip2,gettext,libreadline,libtool,M4,ncurses,XZ,zlib
+# For aarch64 we need to also filter out Yasm.
+# See https://github.com/easybuilders/easybuild-easyconfigs/issues/11190
+if [[ "$ARCH" == "aarch64" ]]; then
+    DEPS_TO_FILTER="${DEPS_TO_FILTER},Yasm"
+fi
+
+export EASYBUILD_FILTER_DEPS=$DEPS_TO_FILTER
+
 
 export EASYBUILD_MODULE_EXTENSIONS=1
 
