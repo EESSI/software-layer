@@ -180,7 +180,9 @@ fi
 
 # FIXME: customized installation of OpenMPI, that supports high speed interconnects properly...
 #        see https://github.com/EESSI/software-layer/issues/14
-eb GROMACS-2020.1-foss-2020a-Python-3.8.2.eb OpenFOAM-8-foss-2020a.eb OpenFOAM-v2006-foss-2020a.eb --missing
+eb --from-pr 11387 OpenMPI-4.0.3-GCC-9.3.0.eb --include-easyblocks-from-pr 2188 --robot
+
+eb GROMACS-2020.1-foss-2020a-Python-3.8.2.eb OpenFOAM-8-foss-2020a.eb OpenFOAM-v2006-foss-2020a.eb --robot
 
 echo ">> Cleaning up ${TMPDIR}..."
 rm -r ${TMPDIR}
