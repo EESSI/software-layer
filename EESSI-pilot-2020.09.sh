@@ -31,6 +31,17 @@ export ARCH=$(uname -m)
 export EESSI_PREFIX=${CVMFS_REPO}/${EESSI_PILOT_VERSION}
 export EPREFIX=${EESSI_PREFIX}/compat/${ARCH}
 
+DETECTION_PARAMETERS=''
+GENERIC=0
+EB='eb'
+if [[ "$1" == "--generic" || "$EASYBUILD_OPTARCH" == "GENERIC" ]]; then
+    echo_yellow ">> GENERIC build requested, taking appropriate measures!"
+    DETECTION_PARAMETERS="$DETECTION_PARAMETERS --generic"
+    GENERIC=1
+    EB='eb --optarch=GENERIC'
+fi
+
+
 # make sure that $PATH starts with $CVMFS_REPO
 # (if not, we're not running in the environment set up by 'startprefix')
 if [[ $PATH = ${CVMFS_REPO}* ]]; then
@@ -50,7 +61,7 @@ else
 fi
 
 echo ">> Determining software subdirectory to use for current build host..."
-export EESSI_SOFTWARE_SUBDIR=$(python3 $TOPDIR/eessi_software_subdir.py)
+export EESSI_SOFTWARE_SUBDIR=$(python3 $TOPDIR/eessi_software_subdir.py $DETECTION_PARAMETERS)
 if [[ -z ${EESSI_SOFTWARE_SUBDIR} ]]; then
     error "Failed to determine software subdirectory?!"
 else
@@ -116,10 +127,10 @@ fi
 
 echo ">> Loading EasyBuild module..."
 module load EasyBuild
-eb --version
+$EB --version
 if [[ $? -eq 0 ]]; then
     echo_green ">> Looking good!"
-    eb --show-config
+    $EB --show-config
 else
     error "EasyBuild not working?!"
 fi
@@ -128,7 +139,7 @@ echo_green "All set, let's start installing some software in ${EASYBUILD_INSTALL
 
 export GCC_EC="GCC-9.3.0.eb"
 echo ">> Starting slow with ${GCC_EC}..."
-eb ${GCC_EC} --robot
+$EB ${GCC_EC} --robot
 if [[ $? -eq 0 ]]; then
     echo_green "${GCC_EC} installed, yippy! Off to a good start..."
 else
@@ -139,7 +150,7 @@ fi
 # see https://github.com/easybuilders/easybuild-easyconfigs/pull/11200
 export PERL_EC="Perl-5.30.2-GCCcore-9.3.0.eb"
 echo ">> Taking a small side step to install ${PERL_EC}..."
-eb --from-pr 11368 makeinfo-6.7-GCCcore-9.3.0.eb --robot && eb --from-pr 11200 --robot
+$EB --from-pr 11368 makeinfo-6.7-GCCcore-9.3.0.eb --robot && $EB --from-pr 11200 --robot
 if [[ $? -eq 0 ]]; then
     echo_green "${PERL_EC} installed via easyconfigs PR #11200, that was just a small side step, don't worry..."
 else
@@ -149,7 +160,7 @@ fi
 # side-step to fix installation of CMake with zlib included in --filter-deps
 # see https://github.com/easybuilders/easybuild-easyblocks/pull/2187
 echo ">> Installing CMake with fixed easyblock..."
-eb CMake-3.16.4-GCCcore-9.3.0.eb --include-easyblocks-from-pr 2187 --robot
+$EB CMake-3.16.4-GCCcore-9.3.0.eb --include-easyblocks-from-pr 2187 --robot
 if [[ $? -eq 0 ]]; then
     echo_green "CMake installation done, glad that worked out!"
 else
@@ -164,7 +175,7 @@ export PKG_CONFIG_PATH=$EPREFIX/usr/lib64/pkgconfig
 # FIXME custom installation of Qt5 with patch required to build with Gentoo's zlib
 # see https://github.com/easybuilders/easybuild-easyconfigs/pull/11385
 echo ">> Installing Qt5 with extra patch to use zlib provided by Gentoo..."
-eb --from-pr 11385 --robot
+$EB --from-pr 11385 --robot
 if [[ $? -eq 0 ]]; then
     echo_green "Done with custom Qt5!"
 else
@@ -172,7 +183,13 @@ else
 fi
 
 echo ">> Installing OpenBLAS, Python 3 and Qt5..."
-eb OpenBLAS-0.3.9-GCC-9.3.0.eb Python-3.8.2-GCCcore-9.3.0.eb Qt5-5.14.1-GCCcore-9.3.0.eb --robot
+# If we're building OpenBLAS for GENERIC, we need https://github.com/easybuilders/easybuild-easyblocks/pull/1946
+if [[ $GENERIC -eq 1 ]]; then
+    echo_yellow ">> Using https://github.com/easybuilders/easybuild-easyblocks/pull/1946 to build generic OpenBLAS."
+    $EB --include-easyblocks-from-pr 1946 OpenBLAS-0.3.9-GCC-9.3.0.eb Python-3.8.2-GCCcore-9.3.0.eb Qt5-5.14.1-GCCcore-9.3.0.eb --robot
+else
+    $EB OpenBLAS-0.3.9-GCC-9.3.0.eb Python-3.8.2-GCCcore-9.3.0.eb Qt5-5.14.1-GCCcore-9.3.0.eb --robot
+fi
 if [[ $? -eq 0 ]]; then
     echo_green "Done with OpenBLAS, Python 3 and Qt5!"
 else
@@ -182,7 +199,7 @@ fi
 # FIXME: customized installation of OpenMPI, that supports high speed interconnects properly...
 #        see https://github.com/EESSI/software-layer/issues/14
 echo ">> Installing properly configured OpenMPI..."
-eb --from-pr 11387 OpenMPI-4.0.3-GCC-9.3.0.eb --include-easyblocks-from-pr 2188 --robot
+$EB --from-pr 11387 OpenMPI-4.0.3-GCC-9.3.0.eb --include-easyblocks-from-pr 2188 --robot
 if [[ $? -eq 0 ]]; then
     echo_green "OpenMPI installed, w00!"
 else
@@ -191,7 +208,7 @@ fi
 
 # FIXME custom instalation LAME with patch required to build on top of ncurses provided by Gentoo
 echo ">> Installing LAME with patch..."
-eb --from-pr 11388 LAME-3.100-GCCcore-9.3.0.eb --robot
+$EB --from-pr 11388 LAME-3.100-GCCcore-9.3.0.eb --robot
 if [[ $? -eq 0 ]]; then
     echo_green "LAME installed, yippy!"
 else
@@ -199,7 +216,7 @@ else
 fi
 
 echo ">> Installing GROMACS and OpenFOAM (twice!)..."
-eb GROMACS-2020.1-foss-2020a-Python-3.8.2.eb OpenFOAM-8-foss-2020a.eb OpenFOAM-v2006-foss-2020a.eb --robot
+$EB GROMACS-2020.1-foss-2020a-Python-3.8.2.eb OpenFOAM-8-foss-2020a.eb OpenFOAM-v2006-foss-2020a.eb --robot
 if [[ $? -eq 0 ]]; then
     echo_green "GROMACS and OpenFOAM installed, wow!"
 else
