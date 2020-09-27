@@ -240,5 +240,14 @@ else
     error "Installation of R failed, so sad..."
 fi
 
+echo ">> Installing Bioconductor 3.11 bundle..."
+$EB R-bundle-Bioconductor-3.11-foss-2020a-R-4.0.0.eb --robot
+if [[ $? -eq 0 ]]; then
+    echo_green "Bioconductor installed, enjoy!"
+else
+    error "Installation of Bioconductor failed, that's annoying..."
+fi
+
+
 echo ">> Cleaning up ${TMPDIR}..."
 rm -r ${TMPDIR}
