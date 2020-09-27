@@ -232,5 +232,13 @@ else
     error "Installation of GROMACS and OpenFOAM failed, we were so close..."
 fi
 
+echo ">> Installing R 4.0.0 (better be patient)..."
+$EB R-4.0.0-foss-2020a.eb --robot --include-easyblocks-from-pr 2189
+if [[ $? -eq 0 ]]; then
+    echo_green "R installed, wow!"
+else
+    error "Installation of R failed, so sad..."
+fi
+
 echo ">> Cleaning up ${TMPDIR}..."
 rm -r ${TMPDIR}
