@@ -19,7 +19,11 @@ jobs:
 
     - name: install Python packages
       run: |
-        pip install archspec
+        pip install archspec pytest
+
+    - name: unit tests for eessi_software_subdir_for_host.py script
+      run:
+          pytest -v init/test.py
 
     - name: test eessi_software_subdir_for_host.py script
       env:
