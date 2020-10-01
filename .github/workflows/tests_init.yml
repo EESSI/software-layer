@@ -1,0 +1,34 @@
+# documentation: https://help.github.com/en/articles/workflow-syntax-for-github-actions
+name: Tests for init scripts
+on: [push, pull_request]
+jobs:
+  build:
+    runs-on: ubuntu-18.04
+    strategy:
+      matrix:
+        python: [3.6, 3.7, 3.8]
+      fail-fast: false
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: set up Python
+      uses: actions/setup-python@v1
+      with:
+        python-version: ${{matrix.python}}
+        architecture: x64
+
+    - name: install Python packages
+      run: |
+        pip install archspec pytest
+
+    - name: unit tests for eessi_software_subdir_for_host.py script
+      run:
+          pytest -v init/test.py
+
+    - name: test eessi_software_subdir_for_host.py script
+      env:
+          EESSI_X86_64: /tmp/EESSI/software/x86_64
+      run: |
+          mkdir -p ${EESSI_X86_64}/intel/{sandybridge,haswell,skylake_avx512} ${EESSI_X86_64}/generic
+          python3 ./init/eessi_software_subdir_for_host.py /tmp/EESSI > out.txt
+          grep '^x86_64/' out.txt
