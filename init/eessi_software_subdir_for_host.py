@@ -99,7 +99,11 @@ def main():
     else:
         error('Usage: %s <prefix path>' % sys.argv[0])
 
-    print(find_best_target(eessi_prefix))
+    target = os.getenv('EESSI_SOFTWARE_SUBDIR_OVERRIDE')
+    if target is None:
+        target = find_best_target(eessi_prefix)
+
+    print(target)
 
 
 if __name__ == '__main__':
