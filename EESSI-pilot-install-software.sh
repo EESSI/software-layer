@@ -22,6 +22,13 @@ function error() {
     exit 1
 }
 
+# honor $TMPDIR if it is already defined, use /tmp otherwise
+if [ -z $TMPDIR ]; then
+    export WORKDIR=/tmp/$USER
+else
+    export WORKDIR=$TMPDIR/$USER
+fi
+
 TMPDIR=$(mktemp -d)
 
 echo ">> Setting up environment..."
@@ -69,9 +76,9 @@ else
 fi
 
 echo ">> Configuring EasyBuild..."
-export EASYBUILD_PREFIX=/tmp/${USER}/easybuild
+export EASYBUILD_PREFIX=${WORKDIR}/easybuild
 export EASYBUILD_INSTALLPATH=${EESSI_PREFIX}/software/${EESSI_SOFTWARE_SUBDIR}
-export EASYBUILD_SOURCEPATH=/tmp/$USER/easybuild/sources:${EESSI_SOURCEPATH}
+export EASYBUILD_SOURCEPATH=${WORKDIR}/easybuild/sources:${EESSI_SOURCEPATH}
 
 # just ignore OS dependencies for now, see https://github.com/easybuilders/easybuild-framework/issues/3430
 export EASYBUILD_IGNORE_OSDEPS=1
