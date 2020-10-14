@@ -6,24 +6,29 @@ import os
 import argparse
 import archspec.cpu
 
-parser = argparse.ArgumentParser(description='Determine EESSI software subdirectory to use for current build host.')
-parser.add_argument('--generic', dest='generic', action='store_true',
-        default=False, help='Use generic for CPU name.')
-args = parser.parse_args()
+software_subdir = os.getenv('EESSI_SOFTWARE_SUBDIR_OVERRIDE')
+if software_subdir is None:
 
-host_cpu = archspec.cpu.host()
-vendors = {
-    'GenuineIntel': 'intel',
-    'AuthenticAMD': 'amd',
-}
+    parser = argparse.ArgumentParser(description='Determine EESSI software subdirectory to use for current build host.')
+    parser.add_argument('--generic', dest='generic', action='store_true',
+                        default=False, help='Use generic for CPU name.')
+    args = parser.parse_args()
 
-vendor = vendors.get(host_cpu.vendor)
+    host_cpu = archspec.cpu.host()
+    vendors = {
+        'GenuineIntel': 'intel',
+        'AuthenticAMD': 'amd',
+    }
 
-if args.generic:
-    parts = (host_cpu.family.name, 'generic')
-elif vendor:
-    parts = (host_cpu.family.name, vendor, host_cpu.name)
-else:
-    parts = (host_cpu.family.name, host_cpu.name)
+    vendor = vendors.get(host_cpu.vendor)
 
-print(os.path.join(*parts))
+    if args.generic:
+        parts = (host_cpu.family.name, 'generic')
+    elif vendor:
+        parts = (host_cpu.family.name, vendor, host_cpu.name)
+    else:
+        parts = (host_cpu.family.name, host_cpu.name)
+
+    software_subdir = os.path.join(*parts)
+
+print(software_subdir)

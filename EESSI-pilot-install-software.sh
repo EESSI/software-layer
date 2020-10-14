@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-# Script to install EESSI pilot software stack (version 2020.09)
+# Script to install EESSI pilot software stack (version 2020.10)
 #
 
 TOPDIR=$(dirname $(realpath $0))
@@ -22,11 +22,18 @@ function error() {
     exit 1
 }
 
+# honor $TMPDIR if it is already defined, use /tmp otherwise
+if [ -z $TMPDIR ]; then
+    export WORKDIR=/tmp/$USER
+else
+    export WORKDIR=$TMPDIR/$USER
+fi
+
 TMPDIR=$(mktemp -d)
 
 echo ">> Setting up environment..."
 export CVMFS_REPO="/cvmfs/pilot.eessi-hpc.org"
-export EESSI_PILOT_VERSION="2020.09"
+export EESSI_PILOT_VERSION="2020.10"
 export ARCH=$(uname -m)
 export EESSI_PREFIX=${CVMFS_REPO}/${EESSI_PILOT_VERSION}
 export EPREFIX=${EESSI_PREFIX}/compat/${ARCH}
@@ -69,9 +76,9 @@ else
 fi
 
 echo ">> Configuring EasyBuild..."
-export EASYBUILD_PREFIX=/tmp/${USER}/easybuild
+export EASYBUILD_PREFIX=${WORKDIR}/easybuild
 export EASYBUILD_INSTALLPATH=${EESSI_PREFIX}/software/${EESSI_SOFTWARE_SUBDIR}
-export EASYBUILD_SOURCEPATH=/tmp/$USER/easybuild/sources:${EESSI_SOURCEPATH}
+export EASYBUILD_SOURCEPATH=${WORKDIR}/easybuild/sources:${EESSI_SOURCEPATH}
 
 # just ignore OS dependencies for now, see https://github.com/easybuilders/easybuild-framework/issues/3430
 export EASYBUILD_IGNORE_OSDEPS=1
@@ -160,7 +167,7 @@ fi
 # see https://github.com/easybuilders/easybuild-easyconfigs/pull/11200
 export PERL_EC="Perl-5.30.2-GCCcore-9.3.0.eb"
 echo ">> Taking a small side step to install ${PERL_EC}..."
-$EB --from-pr 11368 makeinfo-6.7-GCCcore-9.3.0.eb --robot && $EB --from-pr 11200 --robot
+$EB --from-pr 11368 makeinfo-6.7-GCCcore-9.3.0.eb --robot && $EB --from-pr 11454 DB-18.1.32-GCCcore-9.3.0.eb --robot && $EB --from-pr 11200 --robot
 if [[ $? -eq 0 ]]; then
     echo_green "${PERL_EC} installed via easyconfigs PR #11200, that was just a small side step, don't worry..."
 else
@@ -225,12 +232,20 @@ else
     error "Installation of LAME failed, oops..."
 fi
 
-echo ">> Installing GROMACS and OpenFOAM (twice!)..."
-$EB GROMACS-2020.1-foss-2020a-Python-3.8.2.eb OpenFOAM-8-foss-2020a.eb OpenFOAM-v2006-foss-2020a.eb --robot
+echo ">> Installing GROMACS..."
+$EB GROMACS-2020.1-foss-2020a-Python-3.8.2.eb --robot
 if [[ $? -eq 0 ]]; then
     echo_green "GROMACS and OpenFOAM installed, wow!"
 else
-    error "Installation of GROMACS and OpenFOAM failed, we were so close..."
+    error "Installation of GROMACS failed, damned..."
+fi
+
+echo ">> Installing OpenFOAM (twice!)..."
+$EB OpenFOAM-8-foss-2020a.eb OpenFOAM-v2006-foss-2020a.eb --robot --include-easyblocks-from-pr 2196
+if [[ $? -eq 0 ]]; then
+    echo_green "OpenFOAM installed, now we're talking!"
+else
+    error "Installation of OpenFOAM failed, we were so close..."
 fi
 
 echo ">> Installing R 4.0.0 (better be patient)..."
