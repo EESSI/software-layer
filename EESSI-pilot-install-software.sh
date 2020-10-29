@@ -142,11 +142,19 @@ else
     fi
 fi
 
+REQ_EB_VERSION='4.3.1'
 echo ">> Loading EasyBuild module..."
 module load EasyBuild
-$EB --version
+$EB --show-system-info > /dev/null
 if [[ $? -eq 0 ]]; then
-    echo_green ">> Looking good!"
+    echo_green ">> EasyBuild seems to be working!"
+    $EB --version | grep "${REQ_EB_VERSION}"
+    if [[ $? -eq 0 ]]; then
+        echo_green "Found EasyBuild version ${REQ_EB_VERSION}, looking good!"
+    else
+        $EB --version
+        error "Expected to find EasyBuild version ${REQ_EB_VERSION}, giving up here..."
+    fi
     $EB --show-config
 else
     error "EasyBuild not working?!"
@@ -163,73 +171,34 @@ else
     error "Installation of ${GCC_EC} failed!"
 fi
 
-# side-step to fix missing build dependency for Perl,
-# see https://github.com/easybuilders/easybuild-easyconfigs/pull/11200
-export PERL_EC="Perl-5.30.2-GCCcore-9.3.0.eb"
-echo ">> Taking a small side step to install ${PERL_EC}..."
-$EB --from-pr 11368 makeinfo-6.7-GCCcore-9.3.0.eb --robot && $EB --from-pr 11454 DB-18.1.32-GCCcore-9.3.0.eb --robot && $EB --from-pr 11200 --robot
-if [[ $? -eq 0 ]]; then
-    echo_green "${PERL_EC} installed via easyconfigs PR #11200, that was just a small side step, don't worry..."
-else
-    error "Installation of ${PERL_EC} failed!"
-fi
-
-# side-step to fix installation of CMake with zlib included in --filter-deps
-# see https://github.com/easybuilders/easybuild-easyblocks/pull/2187
-echo ">> Installing CMake with fixed easyblock..."
-$EB CMake-3.16.4-GCCcore-9.3.0.eb --include-easyblocks-from-pr 2187 --robot
-if [[ $? -eq 0 ]]; then
-    echo_green "CMake installation done, glad that worked out!"
-else
-    error "Installation of CMake failed, pfft..."
-fi
-
-# required to make sure that libraries like zlib that are listed in --filter-deps can be found by pkg-config
-# FIXME: fix this in EasyBuild framework!
-#        see https://github.com/easybuilders/easybuild-framework/pull/3451
-export PKG_CONFIG_PATH=$EPREFIX/usr/lib64/pkgconfig
-
-# FIXME custom installation of Qt5 with patch required to build with Gentoo's zlib
-# see https://github.com/easybuilders/easybuild-easyconfigs/pull/11385
-echo ">> Installing Qt5 with extra patch to use zlib provided by Gentoo..."
-$EB --from-pr 11385 --robot
-if [[ $? -eq 0 ]]; then
-    echo_green "Done with custom Qt5!"
-else
-    error "Installation of custom Qt5 failed, grrr..."
-fi
-
-echo ">> Installing OpenBLAS, Python 3 and Qt5..."
 # If we're building OpenBLAS for GENERIC, we need https://github.com/easybuilders/easybuild-easyblocks/pull/1946
+echo ">> Installing OpenBLAS..."
 if [[ $GENERIC -eq 1 ]]; then
     echo_yellow ">> Using https://github.com/easybuilders/easybuild-easyblocks/pull/1946 to build generic OpenBLAS."
-    $EB --include-easyblocks-from-pr 1946 OpenBLAS-0.3.9-GCC-9.3.0.eb Python-3.8.2-GCCcore-9.3.0.eb Qt5-5.14.1-GCCcore-9.3.0.eb --robot
+    $EB --include-easyblocks-from-pr 1946 OpenBLAS-0.3.9-GCC-9.3.0.eb --robot
 else
-    $EB OpenBLAS-0.3.9-GCC-9.3.0.eb Python-3.8.2-GCCcore-9.3.0.eb Qt5-5.14.1-GCCcore-9.3.0.eb --robot
+    $EB OpenBLAS-0.3.9-GCC-9.3.0.eb --robot
 fi
 if [[ $? -eq 0 ]]; then
-    echo_green "Done with OpenBLAS, Python 3 and Qt5!"
+    echo_green "Done with OpenBLAS!"
 else
-    error "Installation of OpenBLAS, Python 3 and Qt5 failed!"
+    error "Installation of OpenBLAS failed!"
 fi
 
-# FIXME: customized installation of OpenMPI, that supports high speed interconnects properly...
-#        see https://github.com/EESSI/software-layer/issues/14
-echo ">> Installing properly configured OpenMPI..."
-$EB --from-pr 11387 OpenMPI-4.0.3-GCC-9.3.0.eb --include-easyblocks-from-pr 2188 --robot
+echo ">> Installing OpenMPI..."
+$EB OpenMPI-4.0.3-GCC-9.3.0.eb --robot
 if [[ $? -eq 0 ]]; then
     echo_green "OpenMPI installed, w00!"
 else
     error "Installation of OpenMPI failed, that's not good..."
 fi
 
-# FIXME custom instalation LAME with patch required to build on top of ncurses provided by Gentoo
-echo ">> Installing LAME with patch..."
-$EB --from-pr 11388 LAME-3.100-GCCcore-9.3.0.eb --robot
+echo ">> Installing Python 3 and Qt5..."
+$EB Python-3.8.2-GCCcore-9.3.0.eb Qt5-5.14.1-GCCcore-9.3.0.eb --robot
 if [[ $? -eq 0 ]]; then
-    echo_green "LAME installed, yippy!"
+    echo_green "Done with Python 3 and Qt5!"
 else
-    error "Installation of LAME failed, oops..."
+    error "Installation of Python 3 and Qt5 failed!"
 fi
 
 echo ">> Installing GROMACS..."
@@ -262,6 +231,14 @@ if [[ $? -eq 0 ]]; then
     echo_green "Bioconductor installed, enjoy!"
 else
     error "Installation of Bioconductor failed, that's annoying..."
+fi
+
+echo ">> Installing TensorFlow 2.3.1..."
+$EB TensorFlow-2.3.1-foss-2020a-Python-3.8.2.eb --robot
+if [[ $? -eq 0 ]]; then
+    echo_green "TensorFlow 2.3.1 installed, w00!"
+else
+    error "Installation of TensorFlow failed, why am I not surprised..."
 fi
 
 
