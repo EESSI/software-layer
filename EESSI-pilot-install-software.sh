@@ -220,7 +220,7 @@ fi
 echo ">> Installing GROMACS..."
 $EB GROMACS-2020.1-foss-2020a-Python-3.8.2.eb --robot
 if [[ $? -eq 0 ]]; then
-    echo_green "GROMACS and OpenFOAM installed, wow!"
+    echo_green "GROMACS installed, wow!"
 else
     error "Installation of GROMACS failed, damned..."
 fi
