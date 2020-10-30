@@ -162,9 +162,11 @@ fi
 
 echo_green "All set, let's start installing some software in ${EASYBUILD_INSTALLPATH}..."
 
+# install GCC, using GCC easyblock with workaround for bug introduced in EasyBuild v4.3.1,
+# see https://github.com/easybuilders/easybuild-easyblocks/pull/2217
 export GCC_EC="GCC-9.3.0.eb"
 echo ">> Starting slow with ${GCC_EC}..."
-$EB ${GCC_EC} --robot
+$EB ${GCC_EC} --robot --include-easyblocks-from-pr 2217
 if [[ $? -eq 0 ]]; then
     echo_green "${GCC_EC} installed, yippy! Off to a good start..."
 else
