@@ -173,6 +173,20 @@ else
     error "Installation of ${GCC_EC} failed!"
 fi
 
+# install custom fontconfig that is aware of the compatibility layer's fonts directory
+# see https://github.com/EESSI/software-layer/pull/31
+export FONTCONFIG_EC="fontconfig-2.13.92-GCCcore-9.3.0.eb"
+echo ">> Installing custom fontconfig easyconfig (${FONTCONFIG_EC})..."
+cd ${TMPDIR}
+curl -OL https://raw.githubusercontent.com/EESSI/software-layer/master/easyconfigs/${FONTCONFIG_EC}
+cd - > /dev/null
+$EB ${FONTCONFIG_EC} --robot
+if [[ $? -eq 0 ]]; then
+    echo_green "Custom fontconfig installed!"
+else
+    error "Installation of fontconfig failed, what the ..."
+fi
+
 # If we're building OpenBLAS for GENERIC, we need https://github.com/easybuilders/easybuild-easyblocks/pull/1946
 echo ">> Installing OpenBLAS..."
 if [[ $GENERIC -eq 1 ]]; then
