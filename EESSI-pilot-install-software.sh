@@ -180,7 +180,7 @@ echo ">> Installing custom fontconfig easyconfig (${FONTCONFIG_EC})..."
 cd ${TMPDIR}
 curl -OL https://raw.githubusercontent.com/EESSI/software-layer/master/easyconfigs/${FONTCONFIG_EC}
 cd - > /dev/null
-$EB ${FONTCONFIG_EC} --robot
+$EB $TMPDIR/${FONTCONFIG_EC} --robot
 if [[ $? -eq 0 ]]; then
     echo_green "Custom fontconfig installed!"
 else
