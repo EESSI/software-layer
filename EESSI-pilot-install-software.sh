@@ -226,7 +226,7 @@ else
 fi
 
 echo ">> Installing OpenFOAM (twice!)..."
-$EB OpenFOAM-8-foss-2020a.eb OpenFOAM-v2006-foss-2020a.eb --robot --include-easyblocks-from-pr 2196
+$EB OpenFOAM-8-foss-2020a.eb OpenFOAM-v2006-foss-2020a.eb --robot
 if [[ $? -eq 0 ]]; then
     echo_green "OpenFOAM installed, now we're talking!"
 else
@@ -234,7 +234,7 @@ else
 fi
 
 echo ">> Installing R 4.0.0 (better be patient)..."
-$EB R-4.0.0-foss-2020a.eb --robot --include-easyblocks-from-pr 2189
+$EB --from-pr 11600 R-4.0.0-foss-2020a.eb --robot
 if [[ $? -eq 0 ]]; then
     echo_green "R installed, wow!"
 else
