@@ -160,6 +160,18 @@ else
     error "EasyBuild not working?!"
 fi
 
+# patch RPATH wrapper to also take into account $LIBRARY_PATH (required for TensorFlow)
+# see https://github.com/easybuilders/easybuild-framework/pull/3495
+echo ">> Patching rpath_args.py script in EasyBuild installation..."
+EB_SCRIPTS=$EBROOTEASYBUILD/easybuild/scripts
+RPATH_ARGS='rpath_args.py'
+cp -a ${EB_SCRIPTS}/${RPATH_ARGS} ${EB_SCRIPTS}/${RPATH_ARGS}.orig
+cd ${TMPDIR}
+curl --silent -OL https://raw.githubusercontent.com/easybuilders/easybuild-framework/develop/easybuild/scripts/${RPATH_ARGS}
+cd - > /dev/null
+cp ${TMPDIR}/${RPATH_ARGS} ${EB_SCRIPTS}/${RPATH_ARGS}
+chmod u+x ${EB_SCRIPTS}/${RPATH_ARGS}
+
 echo_green "All set, let's start installing some software in ${EASYBUILD_INSTALLPATH}..."
 
 # install GCC, using GCC easyblock with workaround for bug introduced in EasyBuild v4.3.1,
@@ -178,7 +190,7 @@ fi
 export FONTCONFIG_EC="fontconfig-2.13.92-GCCcore-9.3.0.eb"
 echo ">> Installing custom fontconfig easyconfig (${FONTCONFIG_EC})..."
 cd ${TMPDIR}
-curl -OL https://raw.githubusercontent.com/EESSI/software-layer/master/easyconfigs/${FONTCONFIG_EC}
+curl --silent -OL https://raw.githubusercontent.com/EESSI/software-layer/master/easyconfigs/${FONTCONFIG_EC}
 cd - > /dev/null
 $EB $TMPDIR/${FONTCONFIG_EC} --robot
 if [[ $? -eq 0 ]]; then
