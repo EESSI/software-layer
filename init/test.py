@@ -30,7 +30,7 @@ def test_no_targets(tmpdir, capsys):
 
     captured = capsys.readouterr()
     assert captured.out == ''
-    assert re.match('^ERROR: No targets found for .*', captured.err)
+    assert re.match('^ERROR: No compatible targets found for .*', captured.err)
 
 
 def test_broadwell_host(tmpdir, capsys, monkeypatch):
