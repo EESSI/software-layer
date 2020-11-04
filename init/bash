@@ -1,4 +1,4 @@
-export EESSI_PILOT_VERSION="2020.09"
+export EESSI_PILOT_VERSION="2020.10"
 export PS1="[EESSI pilot $EESSI_PILOT_VERSION] $ "
 
 export EESSI_PREFIX=/cvmfs/pilot.eessi-hpc.org/$EESSI_PILOT_VERSION
@@ -44,7 +44,7 @@ if [ -d $EESSI_PREFIX ]; then
           false
         fi
     else
-        echo "ERROR: no value set for \$EESSI_SOFTWARE_SUBDIR" >*&2
+        echo "ERROR: no value set for \$EESSI_SOFTWARE_SUBDIR" >&2
         false
     fi
   else
