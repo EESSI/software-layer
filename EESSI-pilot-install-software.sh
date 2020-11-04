@@ -262,7 +262,7 @@ else
 fi
 
 echo ">> Installing TensorFlow 2.3.1..."
-$EB TensorFlow-2.3.1-foss-2020a-Python-3.8.2.eb --robot --include-easyblocks-from-pr 2218
+$EB --from-pr 11614 TensorFlow-2.3.1-foss-2020a-Python-3.8.2.eb --robot --include-easyblocks-from-pr 2218
 if [[ $? -eq 0 ]]; then
     echo_green "TensorFlow 2.3.1 installed, w00!"
 else
