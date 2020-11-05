@@ -246,7 +246,7 @@ else
 fi
 
 echo ">> Installing R 4.0.0 (better be patient)..."
-$EB --from-pr 11600 R-4.0.0-foss-2020a.eb --robot
+$EB --from-pr 11616 R-4.0.0-foss-2020a.eb --robot
 if [[ $? -eq 0 ]]; then
     echo_green "R installed, wow!"
 else
