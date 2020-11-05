@@ -142,106 +142,103 @@ else
     fi
 fi
 
+REQ_EB_VERSION='4.3.1'
 echo ">> Loading EasyBuild module..."
 module load EasyBuild
-$EB --version
+$EB --show-system-info > /dev/null
 if [[ $? -eq 0 ]]; then
-    echo_green ">> Looking good!"
+    echo_green ">> EasyBuild seems to be working!"
+    $EB --version | grep "${REQ_EB_VERSION}"
+    if [[ $? -eq 0 ]]; then
+        echo_green "Found EasyBuild version ${REQ_EB_VERSION}, looking good!"
+    else
+        $EB --version
+        error "Expected to find EasyBuild version ${REQ_EB_VERSION}, giving up here..."
+    fi
     $EB --show-config
 else
     error "EasyBuild not working?!"
 fi
 
+# patch RPATH wrapper to also take into account $LIBRARY_PATH (required for TensorFlow)
+# see https://github.com/easybuilders/easybuild-framework/pull/3495
+echo ">> Patching rpath_args.py script in EasyBuild installation..."
+EB_SCRIPTS=$EBROOTEASYBUILD/easybuild/scripts
+RPATH_ARGS='rpath_args.py'
+cp -a ${EB_SCRIPTS}/${RPATH_ARGS} ${EB_SCRIPTS}/${RPATH_ARGS}.orig
+cd ${TMPDIR}
+curl --silent -OL https://raw.githubusercontent.com/easybuilders/easybuild-framework/develop/easybuild/scripts/${RPATH_ARGS}
+cd - > /dev/null
+cp ${TMPDIR}/${RPATH_ARGS} ${EB_SCRIPTS}/${RPATH_ARGS}
+chmod u+x ${EB_SCRIPTS}/${RPATH_ARGS}
+
 echo_green "All set, let's start installing some software in ${EASYBUILD_INSTALLPATH}..."
 
+# install GCC, using GCC easyblock with workaround for bug introduced in EasyBuild v4.3.1,
+# see https://github.com/easybuilders/easybuild-easyblocks/pull/2217
 export GCC_EC="GCC-9.3.0.eb"
 echo ">> Starting slow with ${GCC_EC}..."
-$EB ${GCC_EC} --robot
+$EB ${GCC_EC} --robot --include-easyblocks-from-pr 2217
 if [[ $? -eq 0 ]]; then
     echo_green "${GCC_EC} installed, yippy! Off to a good start..."
 else
     error "Installation of ${GCC_EC} failed!"
 fi
 
-# side-step to fix missing build dependency for Perl,
-# see https://github.com/easybuilders/easybuild-easyconfigs/pull/11200
-export PERL_EC="Perl-5.30.2-GCCcore-9.3.0.eb"
-echo ">> Taking a small side step to install ${PERL_EC}..."
-$EB --from-pr 11368 makeinfo-6.7-GCCcore-9.3.0.eb --robot && $EB --from-pr 11454 DB-18.1.32-GCCcore-9.3.0.eb --robot && $EB --from-pr 11200 --robot
+# install custom fontconfig that is aware of the compatibility layer's fonts directory
+# see https://github.com/EESSI/software-layer/pull/31
+export FONTCONFIG_EC="fontconfig-2.13.92-GCCcore-9.3.0.eb"
+echo ">> Installing custom fontconfig easyconfig (${FONTCONFIG_EC})..."
+cd ${TMPDIR}
+curl --silent -OL https://raw.githubusercontent.com/EESSI/software-layer/master/easyconfigs/${FONTCONFIG_EC}
+cd - > /dev/null
+$EB $TMPDIR/${FONTCONFIG_EC} --robot
 if [[ $? -eq 0 ]]; then
-    echo_green "${PERL_EC} installed via easyconfigs PR #11200, that was just a small side step, don't worry..."
+    echo_green "Custom fontconfig installed!"
 else
-    error "Installation of ${PERL_EC} failed!"
+    error "Installation of fontconfig failed, what the ..."
 fi
 
-# side-step to fix installation of CMake with zlib included in --filter-deps
-# see https://github.com/easybuilders/easybuild-easyblocks/pull/2187
-echo ">> Installing CMake with fixed easyblock..."
-$EB CMake-3.16.4-GCCcore-9.3.0.eb --include-easyblocks-from-pr 2187 --robot
-if [[ $? -eq 0 ]]; then
-    echo_green "CMake installation done, glad that worked out!"
-else
-    error "Installation of CMake failed, pfft..."
-fi
-
-# required to make sure that libraries like zlib that are listed in --filter-deps can be found by pkg-config
-# FIXME: fix this in EasyBuild framework!
-#        see https://github.com/easybuilders/easybuild-framework/pull/3451
-export PKG_CONFIG_PATH=$EPREFIX/usr/lib64/pkgconfig
-
-# FIXME custom installation of Qt5 with patch required to build with Gentoo's zlib
-# see https://github.com/easybuilders/easybuild-easyconfigs/pull/11385
-echo ">> Installing Qt5 with extra patch to use zlib provided by Gentoo..."
-$EB --from-pr 11385 --robot
-if [[ $? -eq 0 ]]; then
-    echo_green "Done with custom Qt5!"
-else
-    error "Installation of custom Qt5 failed, grrr..."
-fi
-
-echo ">> Installing OpenBLAS, Python 3 and Qt5..."
 # If we're building OpenBLAS for GENERIC, we need https://github.com/easybuilders/easybuild-easyblocks/pull/1946
+echo ">> Installing OpenBLAS..."
 if [[ $GENERIC -eq 1 ]]; then
     echo_yellow ">> Using https://github.com/easybuilders/easybuild-easyblocks/pull/1946 to build generic OpenBLAS."
-    $EB --include-easyblocks-from-pr 1946 OpenBLAS-0.3.9-GCC-9.3.0.eb Python-3.8.2-GCCcore-9.3.0.eb Qt5-5.14.1-GCCcore-9.3.0.eb --robot
+    $EB --include-easyblocks-from-pr 1946 OpenBLAS-0.3.9-GCC-9.3.0.eb --robot
 else
-    $EB OpenBLAS-0.3.9-GCC-9.3.0.eb Python-3.8.2-GCCcore-9.3.0.eb Qt5-5.14.1-GCCcore-9.3.0.eb --robot
+    $EB OpenBLAS-0.3.9-GCC-9.3.0.eb --robot
 fi
 if [[ $? -eq 0 ]]; then
-    echo_green "Done with OpenBLAS, Python 3 and Qt5!"
+    echo_green "Done with OpenBLAS!"
 else
-    error "Installation of OpenBLAS, Python 3 and Qt5 failed!"
+    error "Installation of OpenBLAS failed!"
 fi
 
-# FIXME: customized installation of OpenMPI, that supports high speed interconnects properly...
-#        see https://github.com/EESSI/software-layer/issues/14
-echo ">> Installing properly configured OpenMPI..."
-$EB --from-pr 11387 OpenMPI-4.0.3-GCC-9.3.0.eb --include-easyblocks-from-pr 2188 --robot
+echo ">> Installing OpenMPI..."
+$EB OpenMPI-4.0.3-GCC-9.3.0.eb --robot
 if [[ $? -eq 0 ]]; then
     echo_green "OpenMPI installed, w00!"
 else
     error "Installation of OpenMPI failed, that's not good..."
 fi
 
-# FIXME custom instalation LAME with patch required to build on top of ncurses provided by Gentoo
-echo ">> Installing LAME with patch..."
-$EB --from-pr 11388 LAME-3.100-GCCcore-9.3.0.eb --robot
+echo ">> Installing Python 3 and Qt5..."
+$EB Python-3.8.2-GCCcore-9.3.0.eb Qt5-5.14.1-GCCcore-9.3.0.eb --robot
 if [[ $? -eq 0 ]]; then
-    echo_green "LAME installed, yippy!"
+    echo_green "Done with Python 3 and Qt5!"
 else
-    error "Installation of LAME failed, oops..."
+    error "Installation of Python 3 and Qt5 failed!"
 fi
 
 echo ">> Installing GROMACS..."
 $EB GROMACS-2020.1-foss-2020a-Python-3.8.2.eb --robot
 if [[ $? -eq 0 ]]; then
-    echo_green "GROMACS and OpenFOAM installed, wow!"
+    echo_green "GROMACS installed, wow!"
 else
     error "Installation of GROMACS failed, damned..."
 fi
 
 echo ">> Installing OpenFOAM (twice!)..."
-$EB OpenFOAM-8-foss-2020a.eb OpenFOAM-v2006-foss-2020a.eb --robot --include-easyblocks-from-pr 2196
+$EB OpenFOAM-8-foss-2020a.eb OpenFOAM-v2006-foss-2020a.eb --robot
 if [[ $? -eq 0 ]]; then
     echo_green "OpenFOAM installed, now we're talking!"
 else
@@ -249,7 +246,7 @@ else
 fi
 
 echo ">> Installing R 4.0.0 (better be patient)..."
-$EB R-4.0.0-foss-2020a.eb --robot --include-easyblocks-from-pr 2189
+$EB --from-pr 11616 R-4.0.0-foss-2020a.eb --robot
 if [[ $? -eq 0 ]]; then
     echo_green "R installed, wow!"
 else
@@ -262,6 +259,14 @@ if [[ $? -eq 0 ]]; then
     echo_green "Bioconductor installed, enjoy!"
 else
     error "Installation of Bioconductor failed, that's annoying..."
+fi
+
+echo ">> Installing TensorFlow 2.3.1..."
+$EB --from-pr 11614 TensorFlow-2.3.1-foss-2020a-Python-3.8.2.eb --robot --include-easyblocks-from-pr 2218
+if [[ $? -eq 0 ]]; then
+    echo_green "TensorFlow 2.3.1 installed, w00!"
+else
+    error "Installation of TensorFlow failed, why am I not surprised..."
 fi
 
 
