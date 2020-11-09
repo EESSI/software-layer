@@ -59,7 +59,11 @@ def find_best_target(eessi_prefix):
         paths = glob.glob(os.path.join(eessi_software_layer_path, host_cpu_family, '*'))
 
     if not paths:
-        error('No targets found for ' + host_cpu_name)
+        if host_cpu_family == X86_64:
+            host_target = host_cpu_family + '/' + host_vendor + '/' + host_cpu_name
+        else:
+            host_target = host_cpu_family + '/' + host_cpu_name
+        error('No compatible targets found for ' + host_target)
 
     targets = [os.path.basename(p) for p in paths]
 
