@@ -31,6 +31,9 @@ fi
 
 TMPDIR=$(mktemp -d)
 
+# Prevent the script from trying to use git integration
+unset EASYBUILD_GITHUB_USER
+
 echo ">> Setting up environment..."
 export CVMFS_REPO="/cvmfs/pilot.eessi-hpc.org"
 export EESSI_PILOT_VERSION="2020.10"
