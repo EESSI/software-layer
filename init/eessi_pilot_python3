@@ -12,7 +12,7 @@ if [ -d $EESSI_PREFIX ]; then
     if [ ! -z $EESSI_SOFTWARE_SUBDIR ]; then
         EESSI_SOFTWARE_PATH=$EESSI_PREFIX/software/$EESSI_SOFTWARE_SUBDIR
         if [ -d $EESSI_SOFTWARE_PATH ]; then
-          eessi_pilot_python=$(ls ${EESSI_SOFTWARE_PATH}/software/Python/3*/bin/python | sed 1q)
+          eessi_pilot_python=$(ls ${EESSI_SOFTWARE_PATH}/software/Python/3*GCCcore*/bin/python | sed 1q)
           if [ -f "$eessi_pilot_python" ]; then
             $eessi_pilot_python "$@"
           else
