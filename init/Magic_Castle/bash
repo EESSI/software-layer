@@ -1,0 +1,20 @@
+# Let's make other scripts silent
+EESSI_SILENT=1
+
+# The following method should be safe, but might break if file is a symlink
+# (could switch to $(dirname "$(readlink -f "$BASH_SOURCE")") in that case)
+source $(dirname "$BASH_SOURCE")/../eessi_environment_variables
+
+# Don't change the default prompt
+# export PS1="[EESSI pilot $EESSI_PILOT_VERSION] $ "
+
+# Provide a clean MODULEPATH
+export MODULEPATH=$EESSI_MODULEPATH
+
+# Extensions are too many, let's not print them by default
+export LMOD_AVAIL_EXTENSIONS="no"
+
+# init Lmod
+source $EESSI_EPREFIX/usr/lmod/*/init/bash
+
+echo "Environment set up to use EESSI pilot software stack (${EESSI_PILOT_VERSION}), have fun!"
