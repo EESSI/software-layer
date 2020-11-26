@@ -27,7 +27,7 @@ jobs:
 
     - name: test eessi_software_subdir_for_host.py script
       env:
-          EESSI_X86_64: /tmp/EESSI/software/x86_64
+          EESSI_X86_64: /tmp/EESSI/software/linux/x86_64
       run: |
           mkdir -p ${EESSI_X86_64}/intel/{pentium4,sandybridge,haswell,skylake_avx512} ${EESSI_X86_64}/generic
           python3 ./init/eessi_software_subdir_for_host.py /tmp/EESSI > out.txt

@@ -1,29 +1,77 @@
 site_configuration = {
     'systems': [
         {
-            'name': 'example_system',
+            'name': 'Example_system',
             'descr': 'This is just an example system',
-            'modules_system': 'tmod4',
-	    'hostnames': ['login'],
-	    'partitions': [
-		{
-                    'name': 'normal',
+            'modules_system': 'tmod',
+	    'hostnames': ['login', 'int'],
+            'partitions': [
+                {
+                    'name': 'cpu',
                     'scheduler': 'slurm',
-	            'launcher': 'srun',
-                    'access':  ['-p normal'],
-                    'environs': ['foss'],
-                    'descr': 'normal partition'
+                    'launcher': 'srun',
+                    'access':  ['-p cpu'],
+                    'environs': ['builtin'],
+                    'processor': {
+                        'num_cpus': 24,
+                    },
+                    'descr': 'normal CPU partition'
+                },
+                {
+                    'name': 'gpu',
+                    'descr': 'GPU partition',
+                    'scheduler': 'slurm',
+                    'access':  ['-p gpu'],
+                    'environs': ['builtin'],
+                    'max_jobs': 100,
+                    'launcher': 'srun',
+                    'processor': {
+                        'num_cpus': 24,
+                    },
+                    'devices': [
+                        {
+                            'type': 'gpu',
+                            'num_devices': 2,
+                        },
+                    ],
+                },
+                {
+                    'name': 'gpu_short',
+                    'scheduler': 'slurm',
+                    'launcher': 'srun',
+                    'access':  ['-p gpu_short'],
+                    'environs': ['fosscuda', 'container'],
+                    'container_platforms': [
+                        {
+                            'type': 'Singularity',
+                            'modules': [],
+                            'variables': [['SLURM_MPI_TYPE', 'pmix']]
+                        }
+                    ],
+                    'processor': {
+                        'num_cpus': 16,
+                    },
+                    'devices': [
+                        {
+                            'type': 'gpu',
+                            'num_devices': 2,
+                        },
+                    ],
+                    'descr': 'gpu partition'
                 },
              ]
          },
-    ],
+     ],
     'environments': [
         {
-            'name': 'foss',
-	    'modules': ['foss-2020a'],
-            'cc': 'mpicc',
-            'cxx': 'mpicxx',
-            'ftn': 'mpifort',
+            'name': 'builtin',
+            'cc': 'cc',
+            'cxx': '',
+            'ftn': '',
+        },
+        {
+            'name': 'container',
+            'modules': [],
         },
      ],
      'logging': [
