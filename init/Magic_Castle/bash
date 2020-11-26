@@ -23,8 +23,11 @@ if [ -z "$__Init_Default_Modules" ]; then
 
    ## ability to predefine elsewhere the default list
    LMOD_SYSTEM_DEFAULT_MODULES=${LMOD_SYSTEM_DEFAULT_MODULES:-""}
-   export LMOD_SYSTEM_DEFAULT_MODULES
-   module --initial_load --no_redirect restore
+   if [ ! -z ${LMOD_SYSTEM_DEFAULT_MODULES+x} ]; then
+     # We have a non-empty value
+     export LMOD_SYSTEM_DEFAULT_MODULES
+     module --initial_load --no_redirect restore
+   fi
 else
    module refresh
 fi
