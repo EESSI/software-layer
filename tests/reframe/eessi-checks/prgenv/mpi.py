@@ -3,7 +3,7 @@ import reframe as rfm
 import reframe.utility.sanity as sn
 
 # Try to use an import to define all site-specific things
-# import system_properties
+import system_properties
 
 @rfm.simple_test
 class MpiHelloWorld(rfm.RegressionTest):
@@ -15,8 +15,8 @@ class MpiHelloWorld(rfm.RegressionTest):
 
         self.sourcepath = 'mpi_hello_world.c'
         self.maintainers = ['casparvl']
-        self.num_tasks_per_node = 2
-        self.num_tasks = 2
+        self.num_tasks_per_node = system_properties.ncorespernode
+        self.num_tasks = system_properties.ncorespernode
 #       self.num_tasks_per_node = system_properties.ncorespernode
 #        self.num_tasks_per_node = 16
 
