@@ -7,10 +7,10 @@ site_configuration = {
 	    'hostnames': ['login', 'int'],
 	    'partitions': [
 		{
-                    'name': 'normal',
+                    'name': 'short',
                     'scheduler': 'slurm',
 	            'launcher': 'srun',
-                    'access':  ['-p normal'],
+                    'access':  ['-p short'],
                     'environs': ['foss'],
                     'descr': 'normal partition'
                 },
@@ -20,7 +20,7 @@ site_configuration = {
     'environments': [
         {
             'name': 'foss',
-	    'modules': ['foss-2020a'],
+	    'modules': ['foss/2020a'],
             'cc': 'mpicc',
             'cxx': 'mpicxx',
             'ftn': 'mpifort',

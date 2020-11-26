@@ -15,6 +15,18 @@ class MpiHelloWorld(rfm.RegressionTest):
 
         self.sourcepath = 'mpi_hello_world.c'
         self.maintainers = ['casparvl']
-        self.num_tasks_per_node = -2
+        self.num_tasks_per_node = 2
+        self.num_tasks = 2
 #       self.num_tasks_per_node = system_properties.ncorespernode
-        self.num_tasks_per_node = 16
+#        self.num_tasks_per_node = 16
+
+        num_processes = sn.extractsingle(
+            r'Received correct messages from (?P<nprocs>\d+) processes',
+            self.stdout, 'nprocs', int)
+        self.sanity_patterns = sn.assert_eq(num_processes,
+                                            self.num_tasks_assigned-1)
+
+    @property
+    @sn.sanity_function
+    def num_tasks_assigned(self):
+        return self.job.num_tasks 
