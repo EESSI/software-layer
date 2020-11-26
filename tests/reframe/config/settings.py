@@ -4,7 +4,7 @@ site_configuration = {
             'name': 'example_system',
             'descr': 'This is just an example system',
             'modules_system': 'tmod4',
-	    'hostnames': ['login'],
+	    'hostnames': ['login', 'int'],
 	    'partitions': [
 		{
                     'name': 'normal',
@@ -16,7 +16,7 @@ site_configuration = {
                 },
              ]
          },
-    ],
+     ],
     'environments': [
         {
             'name': 'foss',
