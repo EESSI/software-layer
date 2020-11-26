@@ -2,7 +2,8 @@ import os
 import reframe as rfm
 import reframe.utility.sanity as sn
 
-# Try to use an import to define all site-specific things
+# Try to use an import to define all site-specific things.
+# This is not part of default ReFrame and requires a system_properties file to be available and to define (in this case) ncorespernode.
 import system_properties
 
 @rfm.simple_test
