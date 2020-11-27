@@ -298,7 +298,7 @@ $EB --include-easyblocks-from-pr=2255 --from-pr=11778 code-server-3.7.3.eb --rob
 if [[ $? -eq 0 ]]; then
     echo_green "code-server installed, enjoy!"
 else
-    error "Installation of RStudio-Server failed, are you on POWER?..."
+    error "Installation of code-server failed, are you on POWER?..."
 fi
 
 echo ">> Cleaning up ${TMPDIR}..."
