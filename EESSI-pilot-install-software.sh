@@ -277,6 +277,14 @@ else
     error "Installation of ReFrame failed, that's a bit strange..."
 fi
 
+echo ">> Installing OSU-Micro-Benchmarks 5.6.3..."
+$EB OSU-Micro-Benchmarks-5.6.3-gompi-2020a.eb --robot
+if [[ $? -eq 0 ]]; then
+    echo_green "OSU-Micro-Benchmarks installed, enjoy!"
+else
+    error "Installation of OSU-Micro-Benchmarks failed, my head is in a spin..."
+fi
+
 echo ">> Installing RStudio-Server 1.3.1093..."
 $EB --from-pr 11764 RStudio-Server-1.3.1093-foss-2020a-Java-11-R-4.0.0.eb --robot
 if [[ $? -eq 0 ]]; then
