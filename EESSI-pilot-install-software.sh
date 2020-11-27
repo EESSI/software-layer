@@ -293,5 +293,13 @@ else
     error "Installation of RStudio-Server failed, might be OS deps..."
 fi
 
+echo ">> Installing code-server 3.7.3..."
+$EB --include-easyblocks-from-pr=2255 --from-pr=11778 code-server-3.7.3.eb --robot
+if [[ $? -eq 0 ]]; then
+    echo_green "code-server installed, enjoy!"
+else
+    error "Installation of RStudio-Server failed, are you on POWER?..."
+fi
+
 echo ">> Cleaning up ${TMPDIR}..."
 rm -r ${TMPDIR}
