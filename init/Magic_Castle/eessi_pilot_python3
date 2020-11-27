@@ -18,4 +18,3 @@ else
   echo "ERROR: No EESSI pilot python 3 available."
   false
 fi
-
