@@ -1,1 +1,0 @@
-[2020-11-26T19:00:04] error: reframe: [31m/home/casparl/.local/easybuild/RedHatEnterpriseServer7/2020/software/ReFrame/3.2/bin/reframe: failed to load configuration: [Errno 2] No such file or directory: '/nfs/home4/casparl/EESSI/software-layer/tests/reframe/config/config/settings.py'[0m
