@@ -18,8 +18,6 @@ class MpiHelloWorld(rfm.RegressionTest):
         self.maintainers = ['casparvl']
         self.num_tasks_per_node = system_properties.ncorespernode
         self.num_tasks = system_properties.ncorespernode
-#       self.num_tasks_per_node = system_properties.ncorespernode
-#        self.num_tasks_per_node = 16
 
         num_processes = sn.extractsingle(
             r'Received correct messages from (?P<nprocs>\d+) processes',
