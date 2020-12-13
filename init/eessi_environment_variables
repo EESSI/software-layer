@@ -12,8 +12,17 @@ export EESSI_PREFIX=/cvmfs/pilot.eessi-hpc.org/$EESSI_PILOT_VERSION
 if [ -d $EESSI_PREFIX ]; then
   echo "Found EESSI pilot repo @ $EESSI_PREFIX!" >> $output
 
+  if [[ $(uname -s) == 'Linux' ]]; then
+      export EESSI_OS_TYPE='linux'
+  else
+      export EESSI_OS_TYPE='macos'
+  fi
+
+  # aarch64 (Arm 64-bit), ppc64le (POWER 64-bit), x86_64 (x86 64-bit)
+  export EESSI_CPU_FAMILY=$(uname -m)
+
   # Set EPREFIX since that is basically a standard in Gentoo Prefix
-  export EPREFIX=$EESSI_PREFIX/compat/$(uname -m)
+  export EPREFIX=$EESSI_PREFIX/compat/$EESSI_OS_TYPE/$EESSI_CPU_FAMILY
   export EESSI_EPREFIX=$EPREFIX
   if [ -d $EESSI_EPREFIX ]; then
 
