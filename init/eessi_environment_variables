@@ -1,0 +1,76 @@
+# Allow for a silent mode
+if [[ -v EESSI_SILENT ]]; then
+  # EESSI_SILENT set
+  output=/dev/null
+else
+  output=/dev/stdout
+fi
+
+export EESSI_PILOT_VERSION="2020.12"
+export EESSI_PREFIX=/cvmfs/pilot.eessi-hpc.org/$EESSI_PILOT_VERSION
+
+if [ -d $EESSI_PREFIX ]; then
+  echo "Found EESSI pilot repo @ $EESSI_PREFIX!" >> $output
+
+  if [[ $(uname -s) == 'Linux' ]]; then
+      export EESSI_OS_TYPE='linux'
+  else
+      export EESSI_OS_TYPE='macos'
+  fi
+
+  # aarch64 (Arm 64-bit), ppc64le (POWER 64-bit), x86_64 (x86 64-bit)
+  export EESSI_CPU_FAMILY=$(uname -m)
+
+  # Set EPREFIX since that is basically a standard in Gentoo Prefix
+  export EPREFIX=$EESSI_PREFIX/compat/$EESSI_OS_TYPE/$EESSI_CPU_FAMILY
+  export EESSI_EPREFIX=$EPREFIX
+  if [ -d $EESSI_EPREFIX ]; then
+
+    # determine subdirectory in software layer
+    # note: eessi_software_subdir_for_host.py will pick up value from $EESSI_SOFTWARE_SUBDIR_OVERRIDE if it's defined!
+    export EESSI_EPREFIX_PYTHON=$EESSI_EPREFIX/usr/bin/python3
+    export EESSI_SOFTWARE_SUBDIR=$($EESSI_EPREFIX_PYTHON ${EESSI_PREFIX}/init/eessi_software_subdir_for_host.py $EESSI_PREFIX)
+    if [ ! -z $EESSI_SOFTWARE_SUBDIR ]; then
+
+        echo "Using ${EESSI_SOFTWARE_SUBDIR} as software subdirectory." >> $output
+        export EESSI_SOFTWARE_PATH=$EESSI_PREFIX/software/$EESSI_SOFTWARE_SUBDIR
+        if [ -d $EESSI_SOFTWARE_PATH ]; then
+          # Allow for the use of a custom MNS
+          if [ -z ${EESSI_CUSTOM_MODULEPATH+x} ]; then
+            # EESSI_CUSTOM_MODULEPATH not set so we use our defaults
+
+            # Allow for use of alternative module tree shipped with EESSI
+            if [ -z ${EESSI_MODULE_SUBDIR+x} ]; then
+              # EESSI_MODULE_SUBDIR not set
+              EESSI_MODULE_SUBDIR="modules/all"
+            fi
+            EESSI_MODULEPATH=$EESSI_SOFTWARE_PATH/$EESSI_MODULE_SUBDIR
+          else
+            echo "Using defined environment variable \$EESSI_CUSTOM_MODULEPATH to set EESSI_MODULEPATH." >> $output
+            EESSI_MODULEPATH=$EESSI_CUSTOM_MODULEPATH
+          fi
+
+          if [ -d $EESSI_MODULEPATH ]; then
+            export EESSI_MODULEPATH=$EESSI_MODULEPATH
+            echo "Using ${EESSI_MODULEPATH} as the directory to be added to MODULEPATH." >> $output
+          else
+            echo "ERROR: EESSI module path at $EESSI_MODULEPATH not found!" >&2
+            false
+          fi
+
+        else
+          echo "ERROR: EESSI software layer at $EESSI_SOFTWARE_PATH not found!" >&2
+          false
+        fi
+    else
+        echo "ERROR: no value set for \$EESSI_SOFTWARE_SUBDIR" >&2
+        false
+    fi
+  else
+    echo "ERROR: Compatibility layer directory %s not found!" >&2
+    false
+  fi
+else
+  echo "ERROR: EESSI pilot repository at $EESSI_PREFIX not found!" >&2
+  false
+fi
