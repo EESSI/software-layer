@@ -6,7 +6,7 @@ else
   output=/dev/stdout
 fi
 
-export EESSI_PILOT_VERSION="2020.10"
+export EESSI_PILOT_VERSION="2020.12"
 export EESSI_PREFIX=/cvmfs/pilot.eessi-hpc.org/$EESSI_PILOT_VERSION
 
 if [ -d $EESSI_PREFIX ]; then
