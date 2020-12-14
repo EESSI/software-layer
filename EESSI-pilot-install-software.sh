@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-# Script to install EESSI pilot software stack (version 2020.10)
+# Script to install EESSI pilot software stack (version 2020.12)
 #
 
 TOPDIR=$(dirname $(realpath $0))
@@ -22,6 +22,18 @@ function error() {
     exit 1
 }
 
+function check_exit_code {
+    ec=$1
+    ok_msg=$2
+    fail_msg=$3
+
+    if [[ $ec -eq 0 ]]; then
+        echo_green "${ok_msg}"
+    else
+        error "${fail_msg}"
+    fi
+}
+
 # honor $TMPDIR if it is already defined, use /tmp otherwise
 if [ -z $TMPDIR ]; then
     export WORKDIR=/tmp/$USER
@@ -33,7 +45,7 @@ TMPDIR=$(mktemp -d)
 
 echo ">> Setting up environment..."
 export CVMFS_REPO="/cvmfs/pilot.eessi-hpc.org"
-export EESSI_PILOT_VERSION="2020.10"
+export EESSI_PILOT_VERSION="2020.12"
 export ARCH=$(uname -m)
 export EESSI_PREFIX=${CVMFS_REPO}/${EESSI_PILOT_VERSION}
 export EPREFIX=${EESSI_PREFIX}/compat/${ARCH}
@@ -93,7 +105,9 @@ export EASYBUILD_RPATH=1
 export EASYBUILD_FILTER_ENV_VARS=LD_LIBRARY_PATH
 
 
-DEPS_TO_FILTER=Autoconf,Automake,Autotools,binutils,bzip2,gettext,libreadline,libtool,M4,ncurses,XZ,zlib
+# note: filtering Bison may break some installations, like Qt5 (see https://github.com/EESSI/software-layer/issues/49)
+# filtering pkg-config breaks R-bundle-Bioconductor installation (see also https://github.com/easybuilders/easybuild-easyconfigs/pull/11104)
+DEPS_TO_FILTER=Autoconf,Automake,Autotools,binutils,bzip2,cURL,flex,gettext,gperf,help2man,intltool,libreadline,libtool,M4,ncurses,XZ,zlib
 # For aarch64 we need to also filter out Yasm.
 # See https://github.com/easybuilders/easybuild-easyconfigs/issues/11190
 if [[ "$ARCH" == "aarch64" ]]; then
@@ -145,7 +159,8 @@ fi
 REQ_EB_VERSION='4.3.1'
 echo ">> Loading EasyBuild module..."
 module load EasyBuild
-$EB --show-system-info > /dev/null
+eb_show_system_info_out=${TMPDIR}/eb_show_system_info.out
+$EB --show-system-info > ${eb_show_system_info_out}
 if [[ $? -eq 0 ]]; then
     echo_green ">> EasyBuild seems to be working!"
     $EB --version | grep "${REQ_EB_VERSION}"
@@ -157,6 +172,7 @@ if [[ $? -eq 0 ]]; then
     fi
     $EB --show-config
 else
+    cat ${eb_show_system_info_out}
     error "EasyBuild not working?!"
 fi
 
@@ -178,12 +194,10 @@ echo_green "All set, let's start installing some software in ${EASYBUILD_INSTALL
 # see https://github.com/easybuilders/easybuild-easyblocks/pull/2217
 export GCC_EC="GCC-9.3.0.eb"
 echo ">> Starting slow with ${GCC_EC}..."
+ok_msg="${GCC_EC} installed, yippy! Off to a good start..."
+fail_msg="Installation of ${GCC_EC} failed!"
 $EB ${GCC_EC} --robot --include-easyblocks-from-pr 2217
-if [[ $? -eq 0 ]]; then
-    echo_green "${GCC_EC} installed, yippy! Off to a good start..."
-else
-    error "Installation of ${GCC_EC} failed!"
-fi
+check_exit_code $? "${ok_msg}" "${fail_msg}"
 
 # install custom fontconfig that is aware of the compatibility layer's fonts directory
 # see https://github.com/EESSI/software-layer/pull/31
@@ -192,83 +206,92 @@ echo ">> Installing custom fontconfig easyconfig (${FONTCONFIG_EC})..."
 cd ${TMPDIR}
 curl --silent -OL https://raw.githubusercontent.com/EESSI/software-layer/master/easyconfigs/${FONTCONFIG_EC}
 cd - > /dev/null
+ok_msg="Custom fontconfig installed!"
+fail_msg="Installation of fontconfig failed, what the ..."
 $EB $TMPDIR/${FONTCONFIG_EC} --robot
-if [[ $? -eq 0 ]]; then
-    echo_green "Custom fontconfig installed!"
-else
-    error "Installation of fontconfig failed, what the ..."
-fi
+check_exit_code $? "${ok_msg}" "${fail_msg}"
+
+# install CMake with custom easyblock that patches CMake when --sysroot is used
+echo ">> Install CMake with fixed easyblock to take into account --sysroot"
+ok_msg="Custom fontconfig installed!"
+fail_msg="Installation of fontconfig failed, what the ..."
+$EB CMake-3.16.4-GCCcore-9.3.0.eb --robot --include-easyblocks-from-pr 2248
+check_exit_code $? "${ok_msg}" "${fail_msg}"
 
 # If we're building OpenBLAS for GENERIC, we need https://github.com/easybuilders/easybuild-easyblocks/pull/1946
 echo ">> Installing OpenBLAS..."
+ok_msg="Done with OpenBLAS!"
+fail_msg="Installation of OpenBLAS failed!"
 if [[ $GENERIC -eq 1 ]]; then
     echo_yellow ">> Using https://github.com/easybuilders/easybuild-easyblocks/pull/1946 to build generic OpenBLAS."
     $EB --include-easyblocks-from-pr 1946 OpenBLAS-0.3.9-GCC-9.3.0.eb --robot
 else
     $EB OpenBLAS-0.3.9-GCC-9.3.0.eb --robot
 fi
-if [[ $? -eq 0 ]]; then
-    echo_green "Done with OpenBLAS!"
-else
-    error "Installation of OpenBLAS failed!"
-fi
+check_exit_code $? "${ok_msg}" "${fail_msg}"
 
 echo ">> Installing OpenMPI..."
+ok_msg="OpenMPI installed, w00!"
+fail_msg="Installation of OpenMPI failed, that's not good..."
 $EB OpenMPI-4.0.3-GCC-9.3.0.eb --robot
-if [[ $? -eq 0 ]]; then
-    echo_green "OpenMPI installed, w00!"
-else
-    error "Installation of OpenMPI failed, that's not good..."
-fi
+check_exit_code $? "${ok_msg}" "${fail_msg}"
 
-echo ">> Installing Python 3 and Qt5..."
-$EB Python-3.8.2-GCCcore-9.3.0.eb Qt5-5.14.1-GCCcore-9.3.0.eb --robot
-if [[ $? -eq 0 ]]; then
-    echo_green "Done with Python 3 and Qt5!"
-else
-    error "Installation of Python 3 and Qt5 failed!"
-fi
+# use custom easyblock for Python which correctly patches Python 2.7 to get rid of hardcoded /usr/* paths
+echo ">> Install Python 2.7.18 and Python 3.8.2..."
+ok_msg="Python 2.7.18 and 3.8.2 installed, yaay!"
+fail_msg="Installation of Python failed, oh no..."
+$EB Python-2.7.18-GCCcore-9.3.0.eb Python-3.8.2-GCCcore-9.3.0.eb --robot --include-easyblocks-from-pr 2246
+check_exit_code $? "${ok_msg}" "${fail_msg}"
+
+echo ">> Installing Perl..."
+ok_msg="Perl installed, making progress..."
+fail_msg="Installation of Perl failed, this never happens..."
+$EB Perl-5.30.2-GCCcore-9.3.0.eb --robot --include-easyblocks-from-pr 2268
+check_exit_code $? "${ok_msg}" "${fail_msg}"
+
+echo ">> Installing Qt5..."
+ok_msg="Qt5 installed, phieuw, that was a big one!"
+fail_msg="Installation of Qt5 failed, that's frustrating..."
+$EB Qt5-5.14.1-GCCcore-9.3.0.eb --robot
+check_exit_code $? "${ok_msg}" "${fail_msg}"
 
 echo ">> Installing GROMACS..."
+ok_msg="GROMACS installed, wow!"
+fail_msg="Installation of GROMACS failed, damned..."
 $EB GROMACS-2020.1-foss-2020a-Python-3.8.2.eb --robot
-if [[ $? -eq 0 ]]; then
-    echo_green "GROMACS installed, wow!"
-else
-    error "Installation of GROMACS failed, damned..."
-fi
+check_exit_code $? "${ok_msg}" "${fail_msg}"
 
+# note: compiling OpenFOAM is memory hungry (16GB is not enough with 8 cores)!
+# 32GB is sufficient to build with 16 cores
 echo ">> Installing OpenFOAM (twice!)..."
+ok_msg="OpenFOAM installed, now we're talking!"
+fail_msg="Installation of OpenFOAM failed, we were so close..."
 $EB OpenFOAM-8-foss-2020a.eb OpenFOAM-v2006-foss-2020a.eb --robot
-if [[ $? -eq 0 ]]; then
-    echo_green "OpenFOAM installed, now we're talking!"
-else
-    error "Installation of OpenFOAM failed, we were so close..."
-fi
+check_exit_code $? "${ok_msg}" "${fail_msg}"
 
 echo ">> Installing R 4.0.0 (better be patient)..."
+ok_msg="R installed, wow!"
+fail_msg="Installation of R failed, so sad..."
 $EB --from-pr 11616 R-4.0.0-foss-2020a.eb --robot
-if [[ $? -eq 0 ]]; then
-    echo_green "R installed, wow!"
-else
-    error "Installation of R failed, so sad..."
-fi
+check_exit_code $? "${ok_msg}" "${fail_msg}"
 
 echo ">> Installing Bioconductor 3.11 bundle..."
+ok_msg="Bioconductor installed, enjoy!"
+fail_msg="Installation of Bioconductor failed, that's annoying..."
 $EB R-bundle-Bioconductor-3.11-foss-2020a-R-4.0.0.eb --robot
-if [[ $? -eq 0 ]]; then
-    echo_green "Bioconductor installed, enjoy!"
-else
-    error "Installation of Bioconductor failed, that's annoying..."
-fi
+check_exit_code $? "${ok_msg}" "${fail_msg}"
 
 echo ">> Installing TensorFlow 2.3.1..."
+ok_msg="TensorFlow 2.3.1 installed, w00!"
+fail_msg="Installation of TensorFlow failed, why am I not surprised..."
 $EB --from-pr 11614 TensorFlow-2.3.1-foss-2020a-Python-3.8.2.eb --robot --include-easyblocks-from-pr 2218
-if [[ $? -eq 0 ]]; then
-    echo_green "TensorFlow 2.3.1 installed, w00!"
-else
-    error "Installation of TensorFlow failed, why am I not surprised..."
-fi
+check_exit_code $? "${ok_msg}" "${fail_msg}"
 
+echo ">> Installing OSU-Micro-Benchmarks 5.6.3..."
+ok_msg="OSU-Micro-Benchmarks installed, yihaa!"
+fail_msg="Installation of OSU-Micro-Benchmarks, that's unexpected..."
+$EB OSU-Micro-Benchmarks-5.6.3-gompi-2020a.eb -r
+check_exit_code $? "${ok_msg}" "${fail_msg}"
 
 echo ">> Cleaning up ${TMPDIR}..."
 rm -r ${TMPDIR}
