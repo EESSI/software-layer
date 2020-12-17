@@ -11,7 +11,13 @@ site_configuration = {
                     'scheduler': 'slurm',
 	            'launcher': 'srun',
                     'access':  ['-p short'],
-                    'environs': ['foss'],
+                    'environs': ['foss', 'container'],
+                    'container_platforms': [
+                        {
+                            'type': 'Singularity',
+                            'modules': [],
+                        }
+                    ],
                     'descr': 'normal partition'
                 },
              ]
@@ -24,6 +30,10 @@ site_configuration = {
             'cc': 'mpicc',
             'cxx': 'mpicxx',
             'ftn': 'mpifort',
+        },
+        {
+            'name': 'container',
+            'modules': [],
         },
      ],
      'logging': [
