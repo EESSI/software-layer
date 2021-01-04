@@ -25,5 +25,5 @@ value, will make them produce no (non-error) output.
 The `Magic_Castle` subdirectory is home to the bash initialisation that we use for
 [Magic Castle](https://github.com/ComputeCanada/magic_castle).
 
-It also contains a wrapper a hardware optimised EESSI Python 3 installation that is used
+It also contains a wrapper for a hardware optimised EESSI Python 3 installation that is used
 by Magic Castle to properly configure JupyterHub.
