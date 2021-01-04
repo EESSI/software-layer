@@ -46,9 +46,18 @@ TMPDIR=$(mktemp -d)
 echo ">> Setting up environment..."
 export CVMFS_REPO="/cvmfs/pilot.eessi-hpc.org"
 export EESSI_PILOT_VERSION="2020.12"
-export ARCH=$(uname -m)
+
+if [[ $(uname -s) == 'Linux' ]]; then
+    export EESSI_OS_TYPE='linux'
+else
+    export EESSI_OS_TYPE='macos'
+fi
+
+# aarch64 (Arm 64-bit), ppc64le (POWER 64-bit), x86_64 (x86 64-bit)
+export EESSI_CPU_FAMILY=$(uname -m)
+
 export EESSI_PREFIX=${CVMFS_REPO}/${EESSI_PILOT_VERSION}
-export EPREFIX=${EESSI_PREFIX}/compat/${ARCH}
+export EPREFIX=${EESSI_PREFIX}/compat/${EESSI_OS_TYPE}/${EESSI_CPU_FAMILY}
 
 DETECTION_PARAMETERS=''
 GENERIC=0
@@ -110,7 +119,7 @@ export EASYBUILD_FILTER_ENV_VARS=LD_LIBRARY_PATH
 DEPS_TO_FILTER=Autoconf,Automake,Autotools,binutils,bzip2,cURL,flex,gettext,gperf,help2man,intltool,libreadline,libtool,M4,ncurses,XZ,zlib
 # For aarch64 we need to also filter out Yasm.
 # See https://github.com/easybuilders/easybuild-easyconfigs/issues/11190
-if [[ "$ARCH" == "aarch64" ]]; then
+if [[ "$EESSI_CPU_FAMILY" == "aarch64" ]]; then
     DEPS_TO_FILTER="${DEPS_TO_FILTER},Yasm"
 fi
 
@@ -156,7 +165,7 @@ else
     fi
 fi
 
-REQ_EB_VERSION='4.3.1'
+REQ_EB_VERSION='4.3.2'
 echo ">> Loading EasyBuild module..."
 module load EasyBuild
 eb_show_system_info_out=${TMPDIR}/eb_show_system_info.out
@@ -190,13 +199,12 @@ chmod u+x ${EB_SCRIPTS}/${RPATH_ARGS}
 
 echo_green "All set, let's start installing some software in ${EASYBUILD_INSTALLPATH}..."
 
-# install GCC, using GCC easyblock with workaround for bug introduced in EasyBuild v4.3.1,
-# see https://github.com/easybuilders/easybuild-easyblocks/pull/2217
+# install GCC
 export GCC_EC="GCC-9.3.0.eb"
 echo ">> Starting slow with ${GCC_EC}..."
 ok_msg="${GCC_EC} installed, yippy! Off to a good start..."
 fail_msg="Installation of ${GCC_EC} failed!"
-$EB ${GCC_EC} --robot --include-easyblocks-from-pr 2217
+$EB ${GCC_EC} --robot
 check_exit_code $? "${ok_msg}" "${fail_msg}"
 
 # install custom fontconfig that is aware of the compatibility layer's fonts directory
@@ -236,17 +244,17 @@ fail_msg="Installation of OpenMPI failed, that's not good..."
 $EB OpenMPI-4.0.3-GCC-9.3.0.eb --robot
 check_exit_code $? "${ok_msg}" "${fail_msg}"
 
-# use custom easyblock for Python which correctly patches Python 2.7 to get rid of hardcoded /usr/* paths
+# install Python
 echo ">> Install Python 2.7.18 and Python 3.8.2..."
 ok_msg="Python 2.7.18 and 3.8.2 installed, yaay!"
 fail_msg="Installation of Python failed, oh no..."
-$EB Python-2.7.18-GCCcore-9.3.0.eb Python-3.8.2-GCCcore-9.3.0.eb --robot --include-easyblocks-from-pr 2246
+$EB Python-2.7.18-GCCcore-9.3.0.eb Python-3.8.2-GCCcore-9.3.0.eb --robot
 check_exit_code $? "${ok_msg}" "${fail_msg}"
 
 echo ">> Installing Perl..."
 ok_msg="Perl installed, making progress..."
 fail_msg="Installation of Perl failed, this never happens..."
-$EB Perl-5.30.2-GCCcore-9.3.0.eb --robot --include-easyblocks-from-pr 2268
+$EB Perl-5.30.2-GCCcore-9.3.0.eb --robot
 check_exit_code $? "${ok_msg}" "${fail_msg}"
 
 echo ">> Installing Qt5..."
