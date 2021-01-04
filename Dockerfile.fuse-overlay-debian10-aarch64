@@ -29,7 +29,7 @@ RUN wget https://github.com/EESSI/filesystem-layer/releases/download/v0.2.3/cvmf
   dpkg -i cvmfs-config-eessi_0.2.3_all.deb && \
   rm -f cvmfs-config-eessi_0.2.3_all.deb
 
-# install fuse3 to Singularity's --fusemount works
+# install fuse3 so Singularity's --fusemount works
 # (can't be installed together with fuse)
 RUN apt-get remove -y fuse && apt-get install -y fuse3
 
