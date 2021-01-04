@@ -1,0 +1,22 @@
+FROM docker.io/debian:10.6
+
+RUN apt-get update -y && \
+  apt-get install -y wget lsb-release
+
+RUN wget https://ecsft.cern.ch/dist/cvmfs/cvmfs-release/cvmfs-release-latest_all.deb &&  \
+  dpkg -i cvmfs-release-latest_all.deb && \
+  rm -f cvmfs-release-latest_all.deb
+
+RUN apt-get update -y && \
+  apt-get install -y cvmfs cvmfs-config-default cvmfs-fuse3
+
+RUN wget https://github.com/EESSI/filesystem-layer/releases/download/v0.2.3/cvmfs-config-eessi_0.2.3_all.deb && \
+  dpkg -i cvmfs-config-eessi_0.2.3_all.deb && \
+  rm -f cvmfs-config-eessi_0.2.3_all.deb
+
+RUN apt-get install -y fuse-overlayfs
+
+RUN echo 'CVMFS_QUOTA_LIMIT=10000' > /etc/cvmfs/default.local && \
+  echo 'CVMFS_HTTP_PROXY="DIRECT"' >> /etc/cvmfs/default.local
+
+ENV LC_ALL=C
