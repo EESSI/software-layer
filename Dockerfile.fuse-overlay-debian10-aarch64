@@ -12,7 +12,7 @@ RUN apt-get install -y debhelper autotools-dev cmake cpio libcap-dev libssl-dev 
   uuid adduser autofs psmisc curl attr openssl libcap2 libcap2-bin lsof rsync jq usbutils sqlite3 sudo \
   fuse libfuse-dev libfuse2 libfuse3-dev
 
-# build CervVM-FS from source (no aarch64 Debian packages available)
+# build CernVM-FS from source (no aarch64 Debian packages available)
 RUN apt-get install sudo && \
   wget https://github.com/cvmfs/cvmfs/archive/cvmfs-2.7.5.tar.gz && \
   tar xfz cvmfs-2.7.5.tar.gz && \
