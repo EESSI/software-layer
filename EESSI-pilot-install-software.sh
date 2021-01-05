@@ -269,37 +269,6 @@ else
     error "Installation of TensorFlow failed, why am I not surprised..."
 fi
 
-echo ">> Installing ReFrame 3.2..."
-$EB ReFrame-3.2.eb --robot
-if [[ $? -eq 0 ]]; then
-    echo_green "ReFrame installed, enjoy!"
-else
-    error "Installation of ReFrame failed, that's a bit strange..."
-fi
-
-echo ">> Installing OSU-Micro-Benchmarks 5.6.3..."
-$EB OSU-Micro-Benchmarks-5.6.3-gompi-2020a.eb --robot
-if [[ $? -eq 0 ]]; then
-    echo_green "OSU-Micro-Benchmarks installed, enjoy!"
-else
-    error "Installation of OSU-Micro-Benchmarks failed, my head is in a spin..."
-fi
-
-echo ">> Installing RStudio-Server 1.3.1093..."
-$EB --from-pr 11764 RStudio-Server-1.3.1093-foss-2020a-Java-11-R-4.0.0.eb --robot
-if [[ $? -eq 0 ]]; then
-    echo_green "RStudio-Server installed, enjoy!"
-else
-    error "Installation of RStudio-Server failed, might be OS deps..."
-fi
-
-echo ">> Installing code-server 3.7.3..."
-$EB --include-easyblocks-from-pr=2255 --from-pr=11778 code-server-3.7.3.eb --robot
-if [[ $? -eq 0 ]]; then
-    echo_green "code-server installed, enjoy!"
-else
-    error "Installation of code-server failed, are you on POWER?..."
-fi
 
 echo ">> Cleaning up ${TMPDIR}..."
 rm -r ${TMPDIR}
