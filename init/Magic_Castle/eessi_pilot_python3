@@ -8,7 +8,8 @@
 export EESSI_SILENT=1
 
 # Gather all the EESSI environment variables
-# (we are careful with the path as this file may be symlinked)
+# (we are careful with the path as this file may be symlinked, the below will not work
+# for MacOS due to the use of `readlink`)
 source $(dirname "$(readlink -f "$BASH_SOURCE")")/../eessi_environment_variables
 
 eessi_pilot_python=$(ls ${EESSI_SOFTWARE_PATH}/software/Python/3*GCCcore*/bin/python | sed 1q)
