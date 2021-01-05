@@ -280,7 +280,7 @@ check_exit_code $? "${ok_msg}" "${fail_msg}"
 echo ">> Installing R 4.0.0 (better be patient)..."
 ok_msg="R installed, wow!"
 fail_msg="Installation of R failed, so sad..."
-$EB --from-pr 11616 R-4.0.0-foss-2020a.eb --robot
+$EB R-4.0.0-foss-2020a.eb --robot
 check_exit_code $? "${ok_msg}" "${fail_msg}"
 
 echo ">> Installing Bioconductor 3.11 bundle..."
@@ -292,7 +292,7 @@ check_exit_code $? "${ok_msg}" "${fail_msg}"
 echo ">> Installing TensorFlow 2.3.1..."
 ok_msg="TensorFlow 2.3.1 installed, w00!"
 fail_msg="Installation of TensorFlow failed, why am I not surprised..."
-$EB --from-pr 11614 TensorFlow-2.3.1-foss-2020a-Python-3.8.2.eb --robot --include-easyblocks-from-pr 2218
+$EB TensorFlow-2.3.1-foss-2020a-Python-3.8.2.eb --robot --include-easyblocks-from-pr 2218
 check_exit_code $? "${ok_msg}" "${fail_msg}"
 
 echo ">> Installing OSU-Micro-Benchmarks 5.6.3..."
