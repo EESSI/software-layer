@@ -19,3 +19,11 @@ environment variables:
 
 All scripts respect the environment variable `EESSI_SILENT` which, if defined to any
 value, will make them produce no (non-error) output.
+
+## `Magic_Castle` subdirectory
+
+The `Magic_Castle` subdirectory is home to the bash initialisation that we use for
+[Magic Castle](https://github.com/ComputeCanada/magic_castle).
+
+It also contains a wrapper for a hardware optimised EESSI Python 3 installation that is used
+by Magic Castle to properly configure JupyterHub.
