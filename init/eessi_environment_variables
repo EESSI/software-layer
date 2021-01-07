@@ -82,7 +82,7 @@ if [ -d $EESSI_PREFIX ]; then
         error "no value set for \$EESSI_SOFTWARE_SUBDIR"
     fi
   else
-    error "Compatibility layer directory %s not found!"
+    error "Compatibility layer directory $EESSI_EPREFIX not found!"
   fi
 else
   error "EESSI pilot repository at $EESSI_PREFIX not found!"
