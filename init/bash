@@ -10,24 +10,26 @@ fi
 # (could switch to $(dirname "$(readlink -f "$BASH_SOURCE")") in that case)
 source $(dirname "$BASH_SOURCE")/eessi_environment_variables
 
-export PS1="[EESSI pilot $EESSI_PILOT_VERSION] $ "
+# only continue if setting EESSI environment variables worked fine
+if [ $? -eq 0 ]; then
 
-# init Lmod
-echo "Initializing Lmod..." >> $output
-source $EESSI_EPREFIX/usr/lmod/*/init/bash
+    export PS1="[EESSI pilot $EESSI_PILOT_VERSION] $ "
 
-# prepend location of modules for EESSI software stack to $MODULEPATH
-echo "Prepending $EESSI_MODULEPATH to \$MODULEPATH..." >> $output
-module use $EESSI_MODULEPATH
+    # init Lmod
+    echo "Initializing Lmod..." >> $output
+    source $EESSI_EPREFIX/usr/lmod/*/init/bash
 
-echo >> $output
-echo "*** Known problems in the ${EESSI_PILOT_VERSION} pilot software stack ***" >> $output
-echo >> $output
-echo "1) No Lmod cache has been generated yet for the module files included" >> $output
-echo "   in the ${EESSI_PILOT_VERSION} pilot software stack." >> $output
-echo "   As a result, 'module' commands may be somewhat slow." >> $output
-echo "   (see also https://github.com/EESSI/software-layer/issues/10)" >> $output
-echo >> $output
-echo >> $output
+    # prepend location of modules for EESSI software stack to $MODULEPATH
+    echo "Prepending $EESSI_MODULEPATH to \$MODULEPATH..." >> $output
+    module use $EESSI_MODULEPATH
 
-echo "Environment set up to use EESSI pilot software stack, have fun!" >> $output
+    #echo >> $output
+    #echo "*** Known problems in the ${EESSI_PILOT_VERSION} pilot software stack ***" >> $output
+    #echo >> $output
+    #echo "1) ..." >> $output
+    #echo >> $output
+    #echo >> $output
+
+    echo "Environment set up to use EESSI pilot software stack, have fun!" >> $output
+
+fi

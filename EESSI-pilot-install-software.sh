@@ -301,5 +301,16 @@ fail_msg="Installation of OSU-Micro-Benchmarks, that's unexpected..."
 $EB OSU-Micro-Benchmarks-5.6.3-gompi-2020a.eb -r
 check_exit_code $? "${ok_msg}" "${fail_msg}"
 
+echo ">> Creating/updating Lmod cache..."
+export LMOD_RC="${EASYBUILD_INSTALLPATH}/.lmod/lmodrc.lua"
+if [ ! -f $LMOD_RC ]; then
+    python3 $TOPDIR/create_lmodrc.py ${EESSI_PILOT_VERSION} ${EESSI_SOFTWARE_SUBDIR}
+    check_exit_code $? "$LMOD_RC created" "Failed to create $LMOD_RC"
+fi
+${LMOD_DIR}/update_lmod_system_cache_files ${EASYBUILD_INSTALLPATH}/modules/all
+check_exit_code $? "Lmod cache updated" "Lmod cache update failed!"
+
+ls -lrt ${EASYBUILD_INSTALLPATH}/.lmod/cache
+
 echo ">> Cleaning up ${TMPDIR}..."
 rm -r ${TMPDIR}

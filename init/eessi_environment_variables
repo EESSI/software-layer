@@ -6,6 +6,11 @@ else
   output=/dev/stdout
 fi
 
+function error() {
+    echo -e "\e[31mERROR: $1\e[0m" >&2
+    false
+}
+
 export EESSI_PILOT_VERSION="2020.12"
 export EESSI_PREFIX=/cvmfs/pilot.eessi-hpc.org/$EESSI_PILOT_VERSION
 
@@ -54,23 +59,26 @@ if [ -d $EESSI_PREFIX ]; then
             export EESSI_MODULEPATH=$EESSI_MODULEPATH
             echo "Using ${EESSI_MODULEPATH} as the directory to be added to MODULEPATH." >> $output
           else
-            echo "ERROR: EESSI module path at $EESSI_MODULEPATH not found!" >&2
+            error "EESSI module path at $EESSI_MODULEPATH not found!"
             false
           fi
 
+          export LMOD_RC="$EESSI_SOFTWARE_PATH/.lmod/lmodrc.lua"
+          if [ -f $LMOD_RC ]; then
+            echo "Found Lmod configuration file at $LMOD_RC"
+          else
+            error "Lmod configuration file not found at $LMOD_RC"
+          fi
+
         else
-          echo "ERROR: EESSI software layer at $EESSI_SOFTWARE_PATH not found!" >&2
-          false
+          error "EESSI software layer at $EESSI_SOFTWARE_PATH not found!"
         fi
     else
-        echo "ERROR: no value set for \$EESSI_SOFTWARE_SUBDIR" >&2
-        false
+        error "no value set for \$EESSI_SOFTWARE_SUBDIR"
     fi
   else
-    echo "ERROR: Compatibility layer directory %s not found!" >&2
-    false
+    error "Compatibility layer directory %s not found!"
   fi
 else
-  echo "ERROR: EESSI pilot repository at $EESSI_PREFIX not found!" >&2
-  false
+  error "EESSI pilot repository at $EESSI_PREFIX not found!"
 fi
