@@ -8,7 +8,7 @@ class Gromacs(rfm.RunOnlyRegressionTest):
         self.valid_systems = ['*']
         self.valid_prog_environs = ['container']
 
-        self.prerun_cmds = ['mkdir -p $TMPDIR/{var-lib-cvmfs,var-run-cvmfs,home}']
+        self.prerun_cmds = ['source /home/casparl/EESSI/shared_alien_cache_minimal.sh > /dev/null']
 
         self.container_platform = 'Singularity'
         self.container_platform.image = 'docker://eessi/client-pilot:centos7-$(uname -m)-2020.10'
@@ -16,16 +16,17 @@ class Gromacs(rfm.RunOnlyRegressionTest):
             '--fusemount "container:cvmfs2 cvmfs-config.eessi-hpc.org /cvmfs/cvmfs-config.eessi-hpc.org"',
             '--fusemount "container:cvmfs2 pilot.eessi-hpc.org /cvmfs/pilot.eessi-hpc.org"'
         ]
-        self.container_platform.mount_points = [
-            ("$TMPDIR/var-run-cvmfs", "/var/run/cvmfs"),
-            ("$TMPDIR/var-lib-cvmfs", "/var/lib/cvmfs")
-        ]
+#        self.container_platform.mount_points = [
+#            ("$TMPDIR/var-run-cvmfs", "/var/run/cvmfs"),
+#            ("$TMPDIR/var-lib-cvmfs", "/var/lib/cvmfs")
+#        ]
         self.container_platform.commands = [
-            'source /cvmfs/pilot.eessi-hpc.org/2020.10/init/bash',
-#            'module load GROMACS',
-#            'gmx_mpi mdrun -s ion_channel.tpr -maxh 0.50 -resethway -noconfout -nsteps 1000'
-            'ls /cvmfs/pilot.eessi-hpc.org/2020.10/'
-         ]
+            'source /cvmfs/pilot.eessi-hpc.org/2020.12/init/bash',
+            'module load GROMACS',
+            'which gmx_mpi',
+            'gmx_mpi --version', 
+            'gmx_mpi mdrun -s ion_channel.tpr -maxh 0.50 -resethway -noconfout -nsteps 1000'
+        ]
 
 #        self.executable = 'gmx_mpi'
 #        self.executable_opts = ['mdrun', '-s ion_channel.tpr', '-maxh 0.50', '-resethway', '-noconfout', '-nsteps 1000']
