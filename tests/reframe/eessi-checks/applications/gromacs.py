@@ -24,7 +24,6 @@ class Gromacs(rfm.RunOnlyRegressionTest):
             'source /cvmfs/pilot.eessi-hpc.org/2020.12/init/bash',
             'module load GROMACS',
             'which gmx_mpi',
-            'gmx_mpi --version', 
             'gmx_mpi mdrun -s ion_channel.tpr -maxh 0.50 -resethway -noconfout -nsteps 1000'
         ]
 
@@ -32,6 +31,18 @@ class Gromacs(rfm.RunOnlyRegressionTest):
 #        self.executable_opts = ['mdrun', '-s ion_channel.tpr', '-maxh 0.50', '-resethway', '-noconfout', '-nsteps 1000']
 
 #        self.sourcepath = 'mpi_hello_world.c'
+
+        output_file = 'md.log'
+        energy = sn.extractsingle(r'\s+Coul\. recip\.\s+Potential\s+Kinetic En\.\s+Total Energy\s+Conserved En.\n'
+                                  r'(\s+\S+){3}\s+(?P<energy>\S+)(\s+\S+){1}\n',
+                                  output_file, 'energy', float, item=-1)
+        energy_reference = -1509290.0
+
+        self.sanity_patterns = sn.all([
+            sn.assert_found('Finished mdrun', output_file),
+            sn.assert_reference(energy, energy_reference, -0.001, 0.001)
+        ])
+
         self.maintainers = ['casparvl']
         self.num_tasks = 16
 #       self.num_tasks_per_node = system_properties.ncorespernode
