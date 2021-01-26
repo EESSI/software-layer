@@ -3,7 +3,7 @@ site_configuration = {
         {
             'name': 'example_system',
             'descr': 'This is just an example system',
-            'modules_system': 'tmod4',
+            'modules_system': 'tmod',
 	    'hostnames': ['login', 'int'],
 	    'partitions': [
 		{
