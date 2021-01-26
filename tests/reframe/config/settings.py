@@ -16,6 +16,7 @@ site_configuration = {
                         {
                             'type': 'Singularity',
                             'modules': [],
+                            'variables': [['SLURM_MPI_TYPE', 'pmix']]
                         }
                     ],
                     'descr': 'normal partition'
