@@ -2,6 +2,12 @@ import os
 import reframe as rfm
 import reframe.utility.sanity as sn
 
+# TODO:
+
+# - Split in GromacsBase parent class and GromacsContainer child class. Implement all generic things in Base
+# - Add GromacsNative class, that doesn't run based on the container but on native CVMFS mount. Test @generoso
+# - Make multiple scale variants of the container & native tests: single node, two nodes, and more (and tag with: single, small ,large)
+
 @rfm.simple_test
 class Gromacs(rfm.RunOnlyRegressionTest):
     def __init__(self):
