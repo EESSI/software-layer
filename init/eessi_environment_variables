@@ -70,7 +70,7 @@ if [ -d $EESSI_PREFIX ]; then
 
           export LMOD_RC="$EESSI_SOFTWARE_PATH/.lmod/lmodrc.lua"
           if [ -f $LMOD_RC ]; then
-            echo "Found Lmod configuration file at $LMOD_RC"
+            echo "Found Lmod configuration file at $LMOD_RC" >> $output
           else
             error "Lmod configuration file not found at $LMOD_RC"
           fi
