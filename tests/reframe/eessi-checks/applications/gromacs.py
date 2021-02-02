@@ -30,7 +30,7 @@ class Gromacs(rfm.RunOnlyRegressionTest):
             'source /cvmfs/pilot.eessi-hpc.org/2020.12/init/bash',
             'module load GROMACS',
             'which gmx_mpi',
-            'gmx_mpi mdrun -s ion_channel.tpr -maxh 0.50 -resethway -noconfout -nsteps 1000'
+            'gmx_mpi mdrun -s ion_channel.tpr -maxh 0.50 -resethway -noconfout -nsteps 10000'
         ]
 
 #        self.executable = 'gmx_mpi'
@@ -50,6 +50,6 @@ class Gromacs(rfm.RunOnlyRegressionTest):
         ])
 
         self.maintainers = ['casparvl']
-        self.num_tasks = 16
+        self.num_tasks = 24
 #       self.num_tasks_per_node = system_properties.ncorespernode
-        self.num_tasks_per_node = 16
+        self.num_tasks_per_node = 24
