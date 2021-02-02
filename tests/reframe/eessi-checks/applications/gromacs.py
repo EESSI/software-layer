@@ -8,13 +8,12 @@ import reframe.utility.sanity as sn
 # - Add GromacsNative class, that doesn't run based on the container but on native CVMFS mount. Test @generoso
 # - Make multiple scale variants of the container & native tests: single node, two nodes, and more (and tag with: single, small ,large)
 
-@rfm.simple_test
-class Gromacs(rfm.RunOnlyRegressionTest):
-    def __init__(self):
+class GromacsBase(rfm.RunOnlyRegressionTest):
+    def __init__(self, nsteps):
         self.valid_systems = ['*']
         self.valid_prog_environs = ['container']
 
-        self.prerun_cmds = ['source /home/casparl/EESSI/shared_alien_cache_minimal.sh > /dev/null']
+        self.prerun_cmds = ['source shared_alien_cache_minimal.sh > /dev/null']
 
         self.container_platform = 'Singularity'
         self.container_platform.image = 'docker://eessi/client-pilot:centos7-$(uname -m)-2020.10'
@@ -22,21 +21,13 @@ class Gromacs(rfm.RunOnlyRegressionTest):
             '--fusemount "container:cvmfs2 cvmfs-config.eessi-hpc.org /cvmfs/cvmfs-config.eessi-hpc.org"',
             '--fusemount "container:cvmfs2 pilot.eessi-hpc.org /cvmfs/pilot.eessi-hpc.org"'
         ]
-#        self.container_platform.mount_points = [
-#            ("$TMPDIR/var-run-cvmfs", "/var/run/cvmfs"),
-#            ("$TMPDIR/var-lib-cvmfs", "/var/lib/cvmfs")
-#        ]
+
         self.container_platform.commands = [
             'source /cvmfs/pilot.eessi-hpc.org/2020.12/init/bash',
             'module load GROMACS',
             'which gmx_mpi',
-            'gmx_mpi mdrun -s ion_channel.tpr -maxh 0.50 -resethway -noconfout -nsteps 10000'
+            'gmx_mpi mdrun -s ion_channel.tpr -maxh 0.50 -resethway -noconfout -nsteps ' + nsteps
         ]
-
-#        self.executable = 'gmx_mpi'
-#        self.executable_opts = ['mdrun', '-s ion_channel.tpr', '-maxh 0.50', '-resethway', '-noconfout', '-nsteps 1000']
-
-#        self.sourcepath = 'mpi_hello_world.c'
 
         output_file = 'md.log'
         energy = sn.extractsingle(r'\s+Coul\. recip\.\s+Potential\s+Kinetic En\.\s+Total Energy\s+Conserved En.\n'
@@ -50,6 +41,21 @@ class Gromacs(rfm.RunOnlyRegressionTest):
         ])
 
         self.maintainers = ['casparvl']
-        self.num_tasks = 24
-#       self.num_tasks_per_node = system_properties.ncorespernode
+
+
+@rfm.parameterized_test(['single'], ['small'], ['large'])
+class Gromacs(GromacsBase):
+    def __init__(self, scale):
+         
+        if scale == 'single':
+            super().__init__('10000')
+            self.num_nodes = 1
+        elif scale == 'small':
+            super().__init__('40000')
+            self.num_nodes = 4
+        elif scale == 'large':
+            super().__init__('100000')
+            self.num_nodes = 10
+
+        self.num_tasks = 24 * self.num_nodes
         self.num_tasks_per_node = 24
