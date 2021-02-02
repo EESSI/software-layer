@@ -59,3 +59,4 @@ class Gromacs(GromacsBase):
 
         self.num_tasks = 24 * self.num_nodes
         self.num_tasks_per_node = 24
+        self.tags = {scale}
