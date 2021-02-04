@@ -27,6 +27,8 @@ class GromacsBase(rfm.RunOnlyRegressionTest):
             }
         }
 
+        self.tags = ('cpu')
+
         self.maintainers = ['casparvl']
 
 class GromacsSizedTests(GromacsBase):
@@ -46,7 +48,7 @@ class GromacsSizedTests(GromacsBase):
 
         self.num_tasks_per_node = 16
         self.num_tasks = self.num_tasks_per_node * self.num_nodes
-        self.tags = {scale}
+        self.tags.add(scale)
 
 
 @rfm.parameterized_test(['single'], ['small'], ['large'])
