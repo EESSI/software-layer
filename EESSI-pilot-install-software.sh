@@ -200,6 +200,8 @@ chmod u+x ${EB_SCRIPTS}/${RPATH_ARGS}
 echo_green "All set, let's start installing some software in ${EASYBUILD_INSTALLPATH}..."
 
 # install GCC
+# we need a fix in the GCC easyblock for ppc64le in order to use the correct linker when using --sysroot, see:
+# https://github.com/easybuilders/easybuild-easyblocks/pull/2315
 export GCC_EC="GCC-9.3.0.eb"
 echo ">> Starting slow with ${GCC_EC}..."
 ok_msg="${GCC_EC} installed, yippy! Off to a good start..."
