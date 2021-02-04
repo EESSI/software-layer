@@ -286,8 +286,16 @@ check_exit_code $? "${ok_msg}" "${fail_msg}"
 echo ">> Installing OpenFOAM (twice!)..."
 ok_msg="OpenFOAM installed, now we're talking!"
 fail_msg="Installation of OpenFOAM failed, we were so close..."
-$EB OpenFOAM-8-foss-2020a.eb OpenFOAM-v2006-foss-2020a.eb --robot --include-easyblocks-from-pr 2320
+$EB --parallel=4 OpenFOAM-8-foss-2020a.eb OpenFOAM-v2006-foss-2020a.eb --robot --include-easyblocks-from-pr 2320
 check_exit_code $? "${ok_msg}" "${fail_msg}"
+
+# Download URL is broken, fixed easyconfig will be included in newer EB version
+echo ">> Installing UDUNITS 2.2.26..."
+ok_msg="UDUNITS installed, wow!"
+fail_msg="Installation of UDUNITS failed, so sad..."
+$EB UDUNITS-2.2.26-foss-2020a.eb --robot --from-pr 12020
+check_exit_code $? "${ok_msg}" "${fail_msg}"
+
 
 echo ">> Installing R 4.0.0 (better be patient)..."
 ok_msg="R installed, wow!"
@@ -301,11 +309,21 @@ fail_msg="Installation of Bioconductor failed, that's annoying..."
 $EB R-bundle-Bioconductor-3.11-foss-2020a-R-4.0.0.eb --robot
 check_exit_code $? "${ok_msg}" "${fail_msg}"
 
-echo ">> Installing TensorFlow 2.3.1..."
-ok_msg="TensorFlow 2.3.1 installed, w00!"
-fail_msg="Installation of TensorFlow failed, why am I not surprised..."
-$EB TensorFlow-2.3.1-foss-2020a-Python-3.8.2.eb --robot --include-easyblocks-from-pr 2218
+# Use the improved Bazel easyblock from PR 2285
+echo ">> Installing Bazel 3.6.0..."
+ok_msg="Bazel 3.6.0 installed, great!"
+fail_msg="Installation of Bazel failed, why am I not surprised..."
+$EB Bazel-3.6.0-GCCcore-9.3.0.eb --robot --include-easyblocks-from-pr 2285
 check_exit_code $? "${ok_msg}" "${fail_msg}"
+
+if [ ! "${EESSI_CPU_FAMILY}" = "ppc64le" ]; then
+    echo ">> Installing TensorFlow 2.3.1..."
+    ok_msg="TensorFlow 2.3.1 installed, w00!"
+    fail_msg="Installation of TensorFlow failed, why am I not surprised..."
+    #$EB TensorFlow-2.3.1-foss-2020a-Python-3.8.2.eb --parallel 2 --robot --include-easyblocks-from-pr 2218 --from-pr 11859
+    $EB TensorFlow-2.3.1-foss-2020a-Python-3.8.2.eb --parallel 2 --robot --include-easyblocks-from-pr 2218
+    check_exit_code $? "${ok_msg}" "${fail_msg}"
+fi
 
 echo ">> Installing OSU-Micro-Benchmarks 5.6.3..."
 ok_msg="OSU-Micro-Benchmarks installed, yihaa!"
