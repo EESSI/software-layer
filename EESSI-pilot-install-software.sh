@@ -287,7 +287,7 @@ check_exit_code $? "${ok_msg}" "${fail_msg}"
 echo ">> Installing OpenFOAM (twice!)..."
 ok_msg="OpenFOAM installed, now we're talking!"
 fail_msg="Installation of OpenFOAM failed, we were so close..."
-$EB --parallel=4 OpenFOAM-8-foss-2020a.eb OpenFOAM-v2006-foss-2020a.eb --robot --include-easyblocks-from-pr 2320
+$EB OpenFOAM-8-foss-2020a.eb OpenFOAM-v2006-foss-2020a.eb --robot --include-easyblocks-from-pr 2320
 check_exit_code $? "${ok_msg}" "${fail_msg}"
 
 # Download URL is broken, fixed easyconfig will be included in newer EB version
@@ -321,8 +321,8 @@ if [ ! "${EESSI_CPU_FAMILY}" = "ppc64le" ]; then
     echo ">> Installing TensorFlow 2.3.1..."
     ok_msg="TensorFlow 2.3.1 installed, w00!"
     fail_msg="Installation of TensorFlow failed, why am I not surprised..."
-    #$EB TensorFlow-2.3.1-foss-2020a-Python-3.8.2.eb --parallel 2 --robot --include-easyblocks-from-pr 2218 --from-pr 11859
-    $EB TensorFlow-2.3.1-foss-2020a-Python-3.8.2.eb --parallel 2 --robot --include-easyblocks-from-pr 2218
+    #$EB TensorFlow-2.3.1-foss-2020a-Python-3.8.2.eb --robot --include-easyblocks-from-pr 2218 --from-pr 11859
+    $EB TensorFlow-2.3.1-foss-2020a-Python-3.8.2.eb --robot --include-easyblocks-from-pr 2218
     check_exit_code $? "${ok_msg}" "${fail_msg}"
 fi
 
