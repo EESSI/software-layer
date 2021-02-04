@@ -27,7 +27,7 @@ class GromacsBase(rfm.RunOnlyRegressionTest):
             }
         }
 
-        self.tags = ('cpu')
+        self.tags = {'cpu'}
 
         self.maintainers = ['casparvl']
 
