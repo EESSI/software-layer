@@ -322,7 +322,6 @@ if [ ! "${EESSI_CPU_FAMILY}" = "ppc64le" ]; then
     echo ">> Installing TensorFlow 2.3.1..."
     ok_msg="TensorFlow 2.3.1 installed, w00!"
     fail_msg="Installation of TensorFlow failed, why am I not surprised..."
-    #$EB TensorFlow-2.3.1-foss-2020a-Python-3.8.2.eb --robot --include-easyblocks-from-pr 2218 --from-pr 11859
     $EB TensorFlow-2.3.1-foss-2020a-Python-3.8.2.eb --robot --include-easyblocks-from-pr 2218
     check_exit_code $? "${ok_msg}" "${fail_msg}"
 fi
