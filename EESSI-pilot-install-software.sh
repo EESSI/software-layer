@@ -284,6 +284,7 @@ check_exit_code $? "${ok_msg}" "${fail_msg}"
 
 # note: compiling OpenFOAM is memory hungry (16GB is not enough with 8 cores)!
 # 32GB is sufficient to build with 16 cores
+# use a custom easyblock (PR #2330) that fixes the OpenFOAM sanity checks on ppc64le
 echo ">> Installing OpenFOAM (twice!)..."
 ok_msg="OpenFOAM installed, now we're talking!"
 fail_msg="Installation of OpenFOAM failed, we were so close..."
@@ -310,7 +311,7 @@ fail_msg="Installation of Bioconductor failed, that's annoying..."
 $EB R-bundle-Bioconductor-3.11-foss-2020a-R-4.0.0.eb --robot
 check_exit_code $? "${ok_msg}" "${fail_msg}"
 
-# Use the improved Bazel easyblock from PR 2285
+# use the improved Bazel easyblock from PR 2285 to fix linking issues on ppc64le
 echo ">> Installing Bazel 3.6.0..."
 ok_msg="Bazel 3.6.0 installed, great!"
 fail_msg="Installation of Bazel failed, why am I not surprised..."
