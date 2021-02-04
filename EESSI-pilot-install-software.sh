@@ -275,8 +275,7 @@ check_exit_code $? "${ok_msg}" "${fail_msg}"
 export CGAL_EC="CGAL-4.14.3-gompi-2020a-Python-3.8.2.eb"
 echo ">> Installing custom CGAL easyconfig (${CGAL_EC})..."
 cd ${TMPDIR}
-#curl --silent -OL https://raw.githubusercontent.com/EESSI/software-layer/master/easyconfigs/${CGAL_EC}
-cp /swlayer/easyconfigs/${CGAL_EC} .
+curl --silent -OL https://raw.githubusercontent.com/EESSI/software-layer/master/easyconfigs/${CGAL_EC}
 cd - > /dev/null
 ok_msg="Custom CGAL installed!"
 fail_msg="Installation of CGAL failed, what the ..."
