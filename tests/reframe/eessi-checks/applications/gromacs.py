@@ -36,7 +36,7 @@ class GromacsSizedTests(GromacsBase):
 
         super().__init__()
 
-        if scale == 'single':
+        if scale == 'singlenode':
             self.nsteps = '10000'
             self.num_nodes = 1
         elif scale == 'small':
@@ -51,7 +51,7 @@ class GromacsSizedTests(GromacsBase):
         self.tags.add(scale)
 
 
-@rfm.parameterized_test(['single'], ['small'], ['large'])
+@rfm.parameterized_test(['singlenode'], ['small'], ['large'])
 class GromacsNative(GromacsSizedTests):
     def __init__(self, scale):
 
