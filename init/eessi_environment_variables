@@ -1,5 +1,5 @@
 # Allow for a silent mode
-if [[ -v EESSI_SILENT ]]; then
+if [[ -v EESSI_SILENT ]] || [ ! -w /dev/stdout ] ; then
   # EESSI_SILENT set
   output=/dev/null
 else
