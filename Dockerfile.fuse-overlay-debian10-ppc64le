@@ -1,4 +1,4 @@
-FROM docker.io/arm64v8/debian:10.6
+FROM docker.io/ppc64le/debian:10.6
 ARG cvmfsversion=2.8.0
 ARG cvmfsconfigversion=0.2.3
 

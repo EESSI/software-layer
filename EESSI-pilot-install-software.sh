@@ -200,11 +200,13 @@ chmod u+x ${EB_SCRIPTS}/${RPATH_ARGS}
 echo_green "All set, let's start installing some software in ${EASYBUILD_INSTALLPATH}..."
 
 # install GCC
+# we need a fix in the GCC easyblock for ppc64le in order to use the correct linker when using --sysroot, see:
+# https://github.com/easybuilders/easybuild-easyblocks/pull/2315
 export GCC_EC="GCC-9.3.0.eb"
 echo ">> Starting slow with ${GCC_EC}..."
 ok_msg="${GCC_EC} installed, yippy! Off to a good start..."
 fail_msg="Installation of ${GCC_EC} failed!"
-$EB ${GCC_EC} --robot
+$EB ${GCC_EC} --robot --include-easyblocks-from-pr 2315
 check_exit_code $? "${ok_msg}" "${fail_msg}"
 
 # install custom fontconfig that is aware of the compatibility layer's fonts directory
@@ -269,13 +271,33 @@ fail_msg="Installation of GROMACS failed, damned..."
 $EB GROMACS-2020.1-foss-2020a-Python-3.8.2.eb --robot
 check_exit_code $? "${ok_msg}" "${fail_msg}"
 
+# install custom CGAL without "'strict': True", which doesn't work on ppc64le
+export CGAL_EC="CGAL-4.14.3-gompi-2020a-Python-3.8.2.eb"
+echo ">> Installing custom CGAL easyconfig (${CGAL_EC})..."
+cd ${TMPDIR}
+curl --silent -OL https://raw.githubusercontent.com/EESSI/software-layer/master/easyconfigs/${CGAL_EC}
+cd - > /dev/null
+ok_msg="Custom CGAL installed!"
+fail_msg="Installation of CGAL failed, what the ..."
+$EB $TMPDIR/${CGAL_EC} --robot
+check_exit_code $? "${ok_msg}" "${fail_msg}"
+
 # note: compiling OpenFOAM is memory hungry (16GB is not enough with 8 cores)!
 # 32GB is sufficient to build with 16 cores
+# use a custom easyblock (PR #2320) that fixes the OpenFOAM sanity checks on ppc64le
 echo ">> Installing OpenFOAM (twice!)..."
 ok_msg="OpenFOAM installed, now we're talking!"
 fail_msg="Installation of OpenFOAM failed, we were so close..."
-$EB OpenFOAM-8-foss-2020a.eb OpenFOAM-v2006-foss-2020a.eb --robot
+$EB OpenFOAM-8-foss-2020a.eb OpenFOAM-v2006-foss-2020a.eb --robot --include-easyblocks-from-pr 2320
 check_exit_code $? "${ok_msg}" "${fail_msg}"
+
+# Download URL is broken, fixed easyconfig will be included in newer EB version
+echo ">> Installing UDUNITS 2.2.26..."
+ok_msg="UDUNITS installed, wow!"
+fail_msg="Installation of UDUNITS failed, so sad..."
+$EB UDUNITS-2.2.26-foss-2020a.eb --robot --from-pr 12020
+check_exit_code $? "${ok_msg}" "${fail_msg}"
+
 
 echo ">> Installing R 4.0.0 (better be patient)..."
 ok_msg="R installed, wow!"
@@ -289,11 +311,20 @@ fail_msg="Installation of Bioconductor failed, that's annoying..."
 $EB R-bundle-Bioconductor-3.11-foss-2020a-R-4.0.0.eb --robot
 check_exit_code $? "${ok_msg}" "${fail_msg}"
 
-echo ">> Installing TensorFlow 2.3.1..."
-ok_msg="TensorFlow 2.3.1 installed, w00!"
-fail_msg="Installation of TensorFlow failed, why am I not surprised..."
-$EB TensorFlow-2.3.1-foss-2020a-Python-3.8.2.eb --robot --include-easyblocks-from-pr 2218
+# use the improved Bazel easyblock from PR 2285 to fix linking issues on ppc64le
+echo ">> Installing Bazel 3.6.0..."
+ok_msg="Bazel 3.6.0 installed, great!"
+fail_msg="Installation of Bazel failed, why am I not surprised..."
+$EB Bazel-3.6.0-GCCcore-9.3.0.eb --robot --include-easyblocks-from-pr 2285
 check_exit_code $? "${ok_msg}" "${fail_msg}"
+
+if [ ! "${EESSI_CPU_FAMILY}" = "ppc64le" ]; then
+    echo ">> Installing TensorFlow 2.3.1..."
+    ok_msg="TensorFlow 2.3.1 installed, w00!"
+    fail_msg="Installation of TensorFlow failed, why am I not surprised..."
+    $EB TensorFlow-2.3.1-foss-2020a-Python-3.8.2.eb --robot --include-easyblocks-from-pr 2218
+    check_exit_code $? "${ok_msg}" "${fail_msg}"
+fi
 
 echo ">> Installing OSU-Micro-Benchmarks 5.6.3..."
 ok_msg="OSU-Micro-Benchmarks installed, yihaa!"
