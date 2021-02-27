@@ -1,0 +1,27 @@
+software:
+  R-bundle-Bioconductor:
+    toolchains:
+      foss-2020a:
+        versions:
+          3.11:
+            versionsuffix: -R-4.0.0
+  GROMACS:
+    toolchains:
+      foss-2020a:
+        versions:
+          2020.1:
+            versionsuffix: -Python-3.8.2
+  OpenFOAM:
+    toolchains:
+      foss-2020a:
+        versions: [8, v2006]
+  OSU-Micro-Benchmarks:
+     toolchains:
+       gompi-2020a:
+         versions: [5.6.3]
+  TensorFlow:
+    toolchains:
+      foss-2020a:
+        versions:
+          2.3.1:
+            versionsuffix: -Python-3.8.2
