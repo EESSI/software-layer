@@ -1,0 +1,45 @@
+# documentation: https://help.github.com/en/articles/workflow-syntax-for-github-actions
+name: Tests for EESSI pilot repo
+on: [push, pull_request]
+jobs:
+  pilot_repo:
+    runs-on: ubuntu-18.04
+    env:
+        EESSI_VERSION: 2020.12
+    steps:
+        - name: Check out software-layer repository
+          uses: actions/checkout@v2
+
+        - name: Mount EESSI CernVM-FS pilot repository
+          uses: cvmfs-contrib/github-action-cvmfs@main
+          with:
+              cvmfs_config_package: https://github.com/EESSI/filesystem-layer/releases/download/v0.2.3/cvmfs-config-eessi_0.2.3_all.deb
+              cvmfs_http_proxy: DIRECT
+              cvmfs_repositories: pilot.eessi-hpc.org
+
+        - name: Check access to EESSI pilot repository
+          run: |
+              ls /cvmfs/pilot.eessi-hpc.org
+              source /cvmfs/pilot.eessi-hpc.org/${EESSI_VERSION}/init/bash
+              module avail
+
+        - name: Check software install in EESSI pilot repository
+          env:
+              EB_PYTHON: python3
+          run: |
+              source /cvmfs/pilot.eessi-hpc.org/${EESSI_VERSION}/init/bash
+              module load EasyBuild
+              which -a pip3
+              python3 -m easy_install --user pip
+              python3 -m pip install setuptools wheel
+              python3 -m pip install PyYAML
+              ls -lrtd $HOME/.local/lib/python*/site-packages
+              ls -lrt $HOME/.local/lib/python*/site-packages
+              python3 -V
+              python3 -c 'import yaml'
+              which -a eb
+              eb --version
+              eb --show-system-info
+              export EASYBUILD_FILTER_DEPS='Autoconf,Automake,Autotools,binutils,bzip2,cURL,flex,gettext,gperf,help2man,intltool,libreadline,libtool,M4,ncurses,XZ,zlib'
+              eb --easystack eessi-${EESSI_VERSION}.yml --experimental --missing 2>&1 | tee eb_missing.out
+              grep "^No missing modules!" eb_missing.out
