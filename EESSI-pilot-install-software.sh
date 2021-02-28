@@ -308,10 +308,17 @@ check_exit_code $? "${ok_msg}" "${fail_msg}"
 echo ">> Creating/updating Lmod cache..."
 export LMOD_RC="${EASYBUILD_INSTALLPATH}/.lmod/lmodrc.lua"
 if [ ! -f $LMOD_RC ]; then
-    python3 $TOPDIR/create_lmodrc.py ${EESSI_PILOT_VERSION} ${EESSI_SOFTWARE_SUBDIR}
+    python3 $TOPDIR/create_lmodrc.py ${EASYBUILD_INSTALLPATH}
     check_exit_code $? "$LMOD_RC created" "Failed to create $LMOD_RC"
 fi
-${LMOD_DIR}/update_lmod_system_cache_files ${EASYBUILD_INSTALLPATH}/modules/all
+
+# we need to specify the path to the Lmod cache dir + timestamp file to ensure
+# that update_lmod_system_cache_files updates correct Lmod cache
+lmod_cache_dir=${EASYBUILD_INSTALLPATH}/.lmod/cache
+lmod_cache_timestamp_file=${EASYBUILD_INSTALLPATH}/.lmod/cache/timestamp
+modpath=${EASYBUILD_INSTALLPATH}/modules/all
+
+${LMOD_DIR}/update_lmod_system_cache_files -d ${lmod_cache_dir} -t ${lmod_cache_timestamp_file} ${modpath}
 check_exit_code $? "Lmod cache updated" "Lmod cache update failed!"
 
 ls -lrt ${EASYBUILD_INSTALLPATH}/.lmod/cache
