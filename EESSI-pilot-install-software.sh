@@ -253,6 +253,20 @@ fail_msg="Installation of Qt5 failed, that's frustrating..."
 $EB Qt5-5.14.1-GCCcore-9.3.0.eb --robot
 check_exit_code $? "${ok_msg}" "${fail_msg}"
 
+# skip test step when installing SciPy-bundle on aarch64,
+# to dance around problem with broken numpy tests;
+# cfr. https://github.com/easybuilders/easybuild-easyconfigs/issues/11959
+echo ">> Installing SciPy-bundle"
+SCIPY_EC=SciPy-bundle-2020.03-foss-2020a-Python-3.8.2.eb
+if [[ "$(uname -m)" == "aarch64" ]]; then
+  $EB $SCIPY_EC --robot --skip-test-step
+else
+  $EB $SCIPY_EC --robot
+fi
+ok_msg="SciPy-bundle installed, yihaa!"
+fail_msg="SciPy-bundle installation failed, bummer..."
+check_exit_code $? "${ok_msg}" "${fail_msg}"
+
 echo ">> Installing GROMACS..."
 ok_msg="GROMACS installed, wow!"
 fail_msg="Installation of GROMACS failed, damned..."
