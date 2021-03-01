@@ -204,8 +204,8 @@ check_exit_code $? "${ok_msg}" "${fail_msg}"
 
 # install CMake with custom easyblock that patches CMake when --sysroot is used
 echo ">> Install CMake with fixed easyblock to take into account --sysroot"
-ok_msg="Custom fontconfig installed!"
-fail_msg="Installation of fontconfig failed, what the ..."
+ok_msg="CMake installed!"
+fail_msg="Installation of CMake failed, what the ..."
 $EB CMake-3.16.4-GCCcore-9.3.0.eb --robot --include-easyblocks-from-pr 2248
 check_exit_code $? "${ok_msg}" "${fail_msg}"
 
