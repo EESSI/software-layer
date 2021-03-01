@@ -112,6 +112,11 @@ export EASYBUILD_ZIP_LOGS=bzip2
 export EASYBUILD_RPATH=1
 export EASYBUILD_FILTER_ENV_VARS=LD_LIBRARY_PATH
 
+export EASYBUILD_HOOKS=$TOPDIR/eb_hooks.py
+# make sure hooks are available, so we can produce a clear error message
+if [ ! -f $EASYBUILD_HOOKS ]; then
+    error "$EASYBUILD_HOOKS does not exist!"
+fi
 
 # note: filtering Bison may break some installations, like Qt5 (see https://github.com/EESSI/software-layer/issues/49)
 # filtering pkg-config breaks R-bundle-Bioconductor installation (see also https://github.com/easybuilders/easybuild-easyconfigs/pull/11104)
@@ -197,18 +202,6 @@ fail_msg="Installation of ${GCC_EC} failed!"
 $EB ${GCC_EC} --robot
 check_exit_code $? "${ok_msg}" "${fail_msg}"
 
-# install custom fontconfig that is aware of the compatibility layer's fonts directory
-# see https://github.com/EESSI/software-layer/pull/31
-export FONTCONFIG_EC="fontconfig-2.13.92-GCCcore-9.3.0.eb"
-echo ">> Installing custom fontconfig easyconfig (${FONTCONFIG_EC})..."
-cd ${TMPDIR}
-curl --silent -OL https://raw.githubusercontent.com/EESSI/software-layer/main/easyconfigs/${FONTCONFIG_EC}
-cd - > /dev/null
-ok_msg="Custom fontconfig installed!"
-fail_msg="Installation of fontconfig failed, what the ..."
-$EB $TMPDIR/${FONTCONFIG_EC} --robot
-check_exit_code $? "${ok_msg}" "${fail_msg}"
-
 # install CMake with custom easyblock that patches CMake when --sysroot is used
 echo ">> Install CMake with fixed easyblock to take into account --sysroot"
 ok_msg="Custom fontconfig installed!"
@@ -271,17 +264,6 @@ echo ">> Installing GROMACS..."
 ok_msg="GROMACS installed, wow!"
 fail_msg="Installation of GROMACS failed, damned..."
 $EB GROMACS-2020.1-foss-2020a-Python-3.8.2.eb --robot
-check_exit_code $? "${ok_msg}" "${fail_msg}"
-
-# install custom CGAL without "'strict': True", which doesn't work on ppc64le
-export CGAL_EC="CGAL-4.14.3-gompi-2020a-Python-3.8.2.eb"
-echo ">> Installing custom CGAL easyconfig (${CGAL_EC})..."
-cd ${TMPDIR}
-curl --silent -OL https://raw.githubusercontent.com/EESSI/software-layer/main/easyconfigs/${CGAL_EC}
-cd - > /dev/null
-ok_msg="Custom CGAL installed!"
-fail_msg="Installation of CGAL failed, what the ..."
-$EB $TMPDIR/${CGAL_EC} --robot
 check_exit_code $? "${ok_msg}" "${fail_msg}"
 
 # note: compiling OpenFOAM is memory hungry (16GB is not enough with 8 cores)!
