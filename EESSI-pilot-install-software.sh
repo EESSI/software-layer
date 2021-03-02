@@ -293,7 +293,25 @@ if [ ! "${EESSI_CPU_FAMILY}" = "ppc64le" ]; then
     fail_msg="Installation of TensorFlow failed, why am I not surprised..."
     $EB TensorFlow-2.3.1-foss-2020a-Python-3.8.2.eb --robot --include-easyblocks-from-pr 2218
     check_exit_code $? "${ok_msg}" "${fail_msg}"
+
+    echo ">> Installing code-server 3.7.3..."
+    ok_msg="code-server 3.7.3 installed, now you can use VS Code!"
+    fail_msg="Installation of code-server failed, that's going to be hard to fix..."
+    $EB code-server-3.7.3.eb --robot
+    check_exit_code $? "${ok_msg}" "${fail_msg}"
 fi
+
+echo ">> Installing ReFrame 3.4.1 ..."
+$EB ReFrame-3.4.1.eb --robot
+ok_msg="ReFrame installed, enjoy!"
+fail_msg="Installation of ReFrame failed, that's a bit strange..."
+check_exit_code $? "${ok_msg}" "${fail_msg}"
+
+echo ">> Installing RStudio-Server 1.3.1093..."
+$EB RStudio-Server-1.3.1093-foss-2020a-Java-11-R-4.0.0.eb --robot
+ok_msg="RStudio-Server installed, enjoy!"
+fail_msg="Installation of RStudio-Server failed, might be OS deps..."
+check_exit_code $? "${ok_msg}" "${fail_msg}"
 
 echo ">> Installing OSU-Micro-Benchmarks 5.6.3..."
 ok_msg="OSU-Micro-Benchmarks installed, yihaa!"
