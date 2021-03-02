@@ -23,13 +23,10 @@ def error(msg):
     sys.exit(1)
 
 
-if len(sys.argv) != 3:
-    error("Usage: %s <EESSI pilot version> <software subdirectory>" % sys.argv[0])
+if len(sys.argv) != 2:
+    error("Usage: %s <software prefix>" % sys.argv[0])
 
-eessi_version = sys.argv[1]
-software_subdir = sys.argv[2]
-
-prefix = os.path.join('/cvmfs', 'pilot.eessi-hpc.org', eessi_version, 'software', software_subdir)
+prefix = sys.argv[1]
 
 if not os.path.exists(prefix):
     error("Prefix directory %s does not exist!" % prefix)

@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-# Script to install EESSI pilot software stack (version 2020.12)
+# Script to install EESSI pilot software stack (version 2021.02)
 #
 
 TOPDIR=$(dirname $(realpath $0))
@@ -45,7 +45,7 @@ TMPDIR=$(mktemp -d)
 
 echo ">> Setting up environment..."
 export CVMFS_REPO="/cvmfs/pilot.eessi-hpc.org"
-export EESSI_PILOT_VERSION="2020.12"
+export EESSI_PILOT_VERSION="2021.02"
 
 if [[ $(uname -s) == 'Linux' ]]; then
     export EESSI_OS_TYPE='linux'
@@ -70,16 +70,15 @@ if [[ "$1" == "--generic" || "$EASYBUILD_OPTARCH" == "GENERIC" ]]; then
 fi
 
 
-# make sure that $PATH starts with $CVMFS_REPO
-# (if not, we're not running in the environment set up by 'startprefix')
-if [[ $PATH = ${CVMFS_REPO}* ]]; then
+# make sure we're in Prefix environment by which path to 'bash' command
+if [[ $(which bash) = ${EPREFIX}/bin/bash ]]; then
     echo_green ">> It looks like we're in a Gentoo Prefix environment, good!"
 else
     error "Not running in Gentoo Prefix environment, run '${EPREFIX}/startprefix' first!"
 fi
 
 echo ">> Initializing Lmod..."
-source $EPREFIX/usr/lmod/lmod/init/bash
+source $EPREFIX/usr/share/Lmod/init/bash
 ml_version_out=$TMPDIR/ml.out
 ml --version &> $ml_version_out
 if [[ $? -eq 0 ]]; then
@@ -98,7 +97,7 @@ fi
 
 echo ">> Configuring EasyBuild..."
 export EASYBUILD_PREFIX=${WORKDIR}/easybuild
-export EASYBUILD_INSTALLPATH=${EESSI_PREFIX}/software/${EESSI_SOFTWARE_SUBDIR}
+export EASYBUILD_INSTALLPATH=${EESSI_PREFIX}/software/${EESSI_OS_TYPE}/${EESSI_SOFTWARE_SUBDIR}
 export EASYBUILD_SOURCEPATH=${WORKDIR}/easybuild/sources:${EESSI_SOURCEPATH}
 
 # just ignore OS dependencies for now, see https://github.com/easybuilders/easybuild-framework/issues/3430
@@ -113,10 +112,16 @@ export EASYBUILD_ZIP_LOGS=bzip2
 export EASYBUILD_RPATH=1
 export EASYBUILD_FILTER_ENV_VARS=LD_LIBRARY_PATH
 
+export EASYBUILD_HOOKS=$TOPDIR/eb_hooks.py
+# make sure hooks are available, so we can produce a clear error message
+if [ ! -f $EASYBUILD_HOOKS ]; then
+    error "$EASYBUILD_HOOKS does not exist!"
+fi
 
 # note: filtering Bison may break some installations, like Qt5 (see https://github.com/EESSI/software-layer/issues/49)
 # filtering pkg-config breaks R-bundle-Bioconductor installation (see also https://github.com/easybuilders/easybuild-easyconfigs/pull/11104)
-DEPS_TO_FILTER=Autoconf,Automake,Autotools,binutils,bzip2,cURL,flex,gettext,gperf,help2man,intltool,libreadline,libtool,M4,ncurses,XZ,zlib
+# problems occur when filtering pkg-config with gnuplot too (picks up Lua 5.1 from $EPREFIX rather than from Lua 5.3 dependency)
+DEPS_TO_FILTER=Autoconf,Automake,Autotools,binutils,bzip2,cURL,DBus,flex,gettext,gperf,help2man,intltool,libreadline,libtool,Lua,M4,makeinfo,ncurses,util-linux,XZ,zlib
 # For aarch64 we need to also filter out Yasm.
 # See https://github.com/easybuilders/easybuild-easyconfigs/issues/11190
 if [[ "$EESSI_CPU_FAMILY" == "aarch64" ]]; then
@@ -148,24 +153,26 @@ if [[ $? -eq 0 ]]; then
 else
     echo_yellow ">> No EasyBuild module yet, installing it..."
 
-    eb_bootstrap_out=${TMPDIR}/eb_bootstrap.out
+    EB_TMPDIR=${TMPDIR}/ebtmp
+    echo ">> Temporary installation (in ${EB_TMPDIR})..."
+    pip_install_out=${TMPDIR}/pip_install.out
+    pip3 install --prefix $EB_TMPDIR easybuild &> ${pip_install_out}
 
-    workdir=${TMPDIR}/easybuild_bootstrap
-    mkdir -p ${workdir}
-    cd ${workdir}
-    curl --silent -OL https://raw.githubusercontent.com/easybuilders/easybuild-framework/develop/easybuild/scripts/bootstrap_eb.py
-    python3 bootstrap_eb.py ${EASYBUILD_INSTALLPATH} &> ${eb_bootstrap_out}
-    cd - > /dev/null
+    echo ">> Final installation in ${EASYBUILD_INSTALLPATH}..."
+    export PATH=${EB_TMPDIR}/bin:$PATH
+    export PYTHONPATH=$(ls -d ${EB_TMPDIR}/lib/python*/site-packages):$PYTHONPATH
+    eb_install_out=${TMPDIR}/eb_install.out
+    eb --install-latest-eb-release &> ${eb_install_out}
 
     module avail easybuild &> ${ml_av_easybuild_out}
     if [[ $? -eq 0 ]]; then
         echo_green ">> EasyBuild module installed!"
     else
-        error "EasyBuild module failed to install?! (output of bootstrap script in ${eb_bootstrap_out}, output of 'ml av easybuild' in ${ml_av_easybuild_out})"
+        error "EasyBuild module failed to install?! (output of 'pip install' in ${pip_install_out}, output of 'eb' in ${eb_install_out}, output of 'ml av easybuild' in ${ml_av_easybuild_out})"
     fi
 fi
 
-REQ_EB_VERSION='4.3.2'
+REQ_EB_VERSION='4.3.3'
 echo ">> Loading EasyBuild module..."
 module load EasyBuild
 eb_show_system_info_out=${TMPDIR}/eb_show_system_info.out
@@ -185,46 +192,20 @@ else
     error "EasyBuild not working?!"
 fi
 
-# patch RPATH wrapper to also take into account $LIBRARY_PATH (required for TensorFlow)
-# see https://github.com/easybuilders/easybuild-framework/pull/3495
-echo ">> Patching rpath_args.py script in EasyBuild installation..."
-EB_SCRIPTS=$EBROOTEASYBUILD/easybuild/scripts
-RPATH_ARGS='rpath_args.py'
-cp -a ${EB_SCRIPTS}/${RPATH_ARGS} ${EB_SCRIPTS}/${RPATH_ARGS}.orig
-cd ${TMPDIR}
-curl --silent -OL https://raw.githubusercontent.com/easybuilders/easybuild-framework/develop/easybuild/scripts/${RPATH_ARGS}
-cd - > /dev/null
-cp ${TMPDIR}/${RPATH_ARGS} ${EB_SCRIPTS}/${RPATH_ARGS}
-chmod u+x ${EB_SCRIPTS}/${RPATH_ARGS}
-
 echo_green "All set, let's start installing some software in ${EASYBUILD_INSTALLPATH}..."
 
-# install GCC
-# we need a fix in the GCC easyblock for ppc64le in order to use the correct linker when using --sysroot, see:
-# https://github.com/easybuilders/easybuild-easyblocks/pull/2315
+# install GCC for foss/2020a
 export GCC_EC="GCC-9.3.0.eb"
 echo ">> Starting slow with ${GCC_EC}..."
 ok_msg="${GCC_EC} installed, yippy! Off to a good start..."
 fail_msg="Installation of ${GCC_EC} failed!"
-$EB ${GCC_EC} --robot --include-easyblocks-from-pr 2315
-check_exit_code $? "${ok_msg}" "${fail_msg}"
-
-# install custom fontconfig that is aware of the compatibility layer's fonts directory
-# see https://github.com/EESSI/software-layer/pull/31
-export FONTCONFIG_EC="fontconfig-2.13.92-GCCcore-9.3.0.eb"
-echo ">> Installing custom fontconfig easyconfig (${FONTCONFIG_EC})..."
-cd ${TMPDIR}
-curl --silent -OL https://raw.githubusercontent.com/EESSI/software-layer/main/easyconfigs/${FONTCONFIG_EC}
-cd - > /dev/null
-ok_msg="Custom fontconfig installed!"
-fail_msg="Installation of fontconfig failed, what the ..."
-$EB $TMPDIR/${FONTCONFIG_EC} --robot
+$EB ${GCC_EC} --robot
 check_exit_code $? "${ok_msg}" "${fail_msg}"
 
 # install CMake with custom easyblock that patches CMake when --sysroot is used
 echo ">> Install CMake with fixed easyblock to take into account --sysroot"
-ok_msg="Custom fontconfig installed!"
-fail_msg="Installation of fontconfig failed, what the ..."
+ok_msg="CMake installed!"
+fail_msg="Installation of CMake failed, what the ..."
 $EB CMake-3.16.4-GCCcore-9.3.0.eb --robot --include-easyblocks-from-pr 2248
 check_exit_code $? "${ok_msg}" "${fail_msg}"
 
@@ -265,37 +246,32 @@ fail_msg="Installation of Qt5 failed, that's frustrating..."
 $EB Qt5-5.14.1-GCCcore-9.3.0.eb --robot
 check_exit_code $? "${ok_msg}" "${fail_msg}"
 
+# skip test step when installing SciPy-bundle on aarch64,
+# to dance around problem with broken numpy tests;
+# cfr. https://github.com/easybuilders/easybuild-easyconfigs/issues/11959
+echo ">> Installing SciPy-bundle"
+SCIPY_EC=SciPy-bundle-2020.03-foss-2020a-Python-3.8.2.eb
+if [[ "$(uname -m)" == "aarch64" ]]; then
+  $EB $SCIPY_EC --robot --skip-test-step
+else
+  $EB $SCIPY_EC --robot
+fi
+ok_msg="SciPy-bundle installed, yihaa!"
+fail_msg="SciPy-bundle installation failed, bummer..."
+check_exit_code $? "${ok_msg}" "${fail_msg}"
+
 echo ">> Installing GROMACS..."
 ok_msg="GROMACS installed, wow!"
 fail_msg="Installation of GROMACS failed, damned..."
 $EB GROMACS-2020.1-foss-2020a-Python-3.8.2.eb --robot
 check_exit_code $? "${ok_msg}" "${fail_msg}"
 
-# install custom CGAL without "'strict': True", which doesn't work on ppc64le
-export CGAL_EC="CGAL-4.14.3-gompi-2020a-Python-3.8.2.eb"
-echo ">> Installing custom CGAL easyconfig (${CGAL_EC})..."
-cd ${TMPDIR}
-curl --silent -OL https://raw.githubusercontent.com/EESSI/software-layer/main/easyconfigs/${CGAL_EC}
-cd - > /dev/null
-ok_msg="Custom CGAL installed!"
-fail_msg="Installation of CGAL failed, what the ..."
-$EB $TMPDIR/${CGAL_EC} --robot
-check_exit_code $? "${ok_msg}" "${fail_msg}"
-
 # note: compiling OpenFOAM is memory hungry (16GB is not enough with 8 cores)!
 # 32GB is sufficient to build with 16 cores
-# use a custom easyblock (PR #2320) that fixes the OpenFOAM sanity checks on ppc64le
 echo ">> Installing OpenFOAM (twice!)..."
 ok_msg="OpenFOAM installed, now we're talking!"
 fail_msg="Installation of OpenFOAM failed, we were so close..."
-$EB OpenFOAM-8-foss-2020a.eb OpenFOAM-v2006-foss-2020a.eb --robot --include-easyblocks-from-pr 2320
-check_exit_code $? "${ok_msg}" "${fail_msg}"
-
-# Download URL is broken, fixed easyconfig will be included in newer EB version
-echo ">> Installing UDUNITS 2.2.26..."
-ok_msg="UDUNITS installed, wow!"
-fail_msg="Installation of UDUNITS failed, so sad..."
-$EB UDUNITS-2.2.26-foss-2020a.eb --robot --from-pr 12020
+$EB OpenFOAM-8-foss-2020a.eb OpenFOAM-v2006-foss-2020a.eb --robot
 check_exit_code $? "${ok_msg}" "${fail_msg}"
 
 
@@ -309,13 +285,6 @@ echo ">> Installing Bioconductor 3.11 bundle..."
 ok_msg="Bioconductor installed, enjoy!"
 fail_msg="Installation of Bioconductor failed, that's annoying..."
 $EB R-bundle-Bioconductor-3.11-foss-2020a-R-4.0.0.eb --robot
-check_exit_code $? "${ok_msg}" "${fail_msg}"
-
-# use the improved Bazel easyblock from PR 2285 to fix linking issues on ppc64le
-echo ">> Installing Bazel 3.6.0..."
-ok_msg="Bazel 3.6.0 installed, great!"
-fail_msg="Installation of Bazel failed, why am I not surprised..."
-$EB Bazel-3.6.0-GCCcore-9.3.0.eb --robot --include-easyblocks-from-pr 2285
 check_exit_code $? "${ok_msg}" "${fail_msg}"
 
 if [ ! "${EESSI_CPU_FAMILY}" = "ppc64le" ]; then
@@ -335,10 +304,17 @@ check_exit_code $? "${ok_msg}" "${fail_msg}"
 echo ">> Creating/updating Lmod cache..."
 export LMOD_RC="${EASYBUILD_INSTALLPATH}/.lmod/lmodrc.lua"
 if [ ! -f $LMOD_RC ]; then
-    python3 $TOPDIR/create_lmodrc.py ${EESSI_PILOT_VERSION} ${EESSI_SOFTWARE_SUBDIR}
+    python3 $TOPDIR/create_lmodrc.py ${EASYBUILD_INSTALLPATH}
     check_exit_code $? "$LMOD_RC created" "Failed to create $LMOD_RC"
 fi
-${LMOD_DIR}/update_lmod_system_cache_files ${EASYBUILD_INSTALLPATH}/modules/all
+
+# we need to specify the path to the Lmod cache dir + timestamp file to ensure
+# that update_lmod_system_cache_files updates correct Lmod cache
+lmod_cache_dir=${EASYBUILD_INSTALLPATH}/.lmod/cache
+lmod_cache_timestamp_file=${EASYBUILD_INSTALLPATH}/.lmod/cache/timestamp
+modpath=${EASYBUILD_INSTALLPATH}/modules/all
+
+${LMOD_DIR}/update_lmod_system_cache_files -d ${lmod_cache_dir} -t ${lmod_cache_timestamp_file} ${modpath}
 check_exit_code $? "Lmod cache updated" "Lmod cache update failed!"
 
 ls -lrt ${EASYBUILD_INSTALLPATH}/.lmod/cache
