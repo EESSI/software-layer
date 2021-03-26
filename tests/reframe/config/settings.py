@@ -19,6 +19,9 @@ site_configuration = {
                             'variables': [['SLURM_MPI_TYPE', 'pmix']]
                         }
                     ],
+                    'processor': {
+                        'num_cpus': 8,
+                    },
                     'descr': 'normal partition'
                 },
              ]

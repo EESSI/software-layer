@@ -31,6 +31,9 @@ class GromacsBase(rfm.RunOnlyRegressionTest):
 
         self.maintainers = ['casparvl']
 
+
+# 3.5.0 Required for using current_partition.processor
+@rfm.required_version('>=3.5.0')
 class GromacsSizedTests(GromacsBase):
     def __init__(self, scale):
 
@@ -46,10 +49,12 @@ class GromacsSizedTests(GromacsBase):
             self.nsteps = '100000'
             self.num_nodes = 10
 
-        self.num_tasks_per_node = 16
-        self.num_tasks = self.num_tasks_per_node * self.num_nodes
         self.tags.add(scale)
 
+    @rfm.run_before('run')
+    def set_num_threads(self):
+        self.num_tasks_per_node = self.current_partition.processor.num_cpus
+        self.num_tasks = self.num_nodes * self.num_tasks_per_node
 
 @rfm.parameterized_test(['singlenode'], ['small'], ['large'])
 class GromacsNative(GromacsSizedTests):
@@ -65,7 +70,7 @@ class GromacsNative(GromacsSizedTests):
         self.executable_opts = ['mdrun', '-s ion_channel.tpr', '-maxh 0.50',
                 '-resethway', '-noconfout', '-nsteps ' + self.nsteps]
 
-@rfm.parameterized_test(['single'], ['small'], ['large'])
+@rfm.parameterized_test(['singlenode'], ['small'], ['large'])
 class GromacsContainer(GromacsSizedTests):
     def __init__(self, scale):
 
