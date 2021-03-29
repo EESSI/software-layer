@@ -89,7 +89,7 @@ def find_best_target(eessi_prefix):
     # last target is best pick for current host
     selected_uarch = str(compat_target_uarchs[-1])
 
-    if selected_uarch and selected_uarch != GENERIC:
+    if host_vendor and selected_uarch != GENERIC:
         parts = (host_cpu_family, host_vendor, selected_uarch)
     else:
         parts = (host_cpu_family, selected_uarch)

@@ -1,0 +1,21 @@
+#!/usr/bin/env bash
+
+# This script can be used to configure JupyterHub with a hardware-optimised python
+# installation from EasyBuild, and is required since EasyBuild uses a site.cfg for Python
+# extensions which the JupyterHub kernel should be aware of.
+
+# Make EESSI environment script silent
+export EESSI_SILENT=1
+
+# Gather all the EESSI environment variables
+# (we are careful with the path as this file may be symlinked, the below will not work
+# for MacOS due to the use of `readlink`)
+source $(dirname "$(readlink -f "$BASH_SOURCE")")/../eessi_environment_variables
+
+eessi_pilot_python=$(ls ${EESSI_SOFTWARE_PATH}/software/Python/3*GCCcore*/bin/python | sed 1q)
+if [ -f "$eessi_pilot_python" ]; then
+  $eessi_pilot_python "$@"
+else
+  echo "ERROR: No EESSI pilot python 3 available."
+  false
+fi
