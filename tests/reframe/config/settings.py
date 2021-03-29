@@ -3,27 +3,47 @@ site_configuration = {
         {
             'name': 'example_system',
             'descr': 'This is just an example system',
-            'modules_system': 'tmod4',
-	    'hostnames': ['login'],
+            'modules_system': 'tmod',
+	    'hostnames': ['login', 'int'],
 	    'partitions': [
 		{
-                    'name': 'normal',
+                    'name': 'short',
                     'scheduler': 'slurm',
-	            'launcher': 'srun',
-                    'access':  ['-p normal'],
-                    'environs': ['foss'],
+	            'launcher': 'mpirun',
+                    'access':  ['-p gpu_short'],
+                    'environs': ['foss', 'container'],
+                    'container_platforms': [
+                        {
+                            'type': 'Singularity',
+                            'modules': [],
+                            'variables': [['SLURM_MPI_TYPE', 'pmix']]
+                        }
+                    ],
+                    'processor': {
+                        'num_cpus': 16,
+                    },
+                    'devices': [
+                        {
+                            'type': 'gpu',
+                            'num_devices': 2,
+                        },
+                    ],
                     'descr': 'normal partition'
                 },
              ]
          },
-    ],
+     ],
     'environments': [
         {
             'name': 'foss',
-	    'modules': ['foss-2020a'],
+	    'modules': ['fosscuda/2020a'],
             'cc': 'mpicc',
             'cxx': 'mpicxx',
             'ftn': 'mpifort',
+        },
+        {
+            'name': 'container',
+            'modules': [],
         },
      ],
      'logging': [

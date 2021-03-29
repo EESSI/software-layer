@@ -150,5 +150,9 @@ with tf.device(device):
     img_sec_conf = 1.96 * np.std(img_secs)
     log('Img/sec per %s: %.1f +-%.1f' % (device, img_sec_mean, img_sec_conf))
     if args.use_horovod:
-        log('Total img/sec on %d %s(s): %.1f +-%.1f' %
-            (hvd.size(), device, hvd.size() * img_sec_mean, hvd.size() * img_sec_conf))
+        ndevices = hvd.size()
+    else:
+        ndevices = 1
+    log('Total img/sec on %d %s(s): %.1f +-%.1f' %
+        (ndevices, device, ndevices * img_sec_mean, ndevices * img_sec_conf))
+    log('Benchmark completed')
