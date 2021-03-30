@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-# Script to install EESSI pilot software stack (version 2021.02)
+# Script to install EESSI pilot software stack (version 2021.03)
 #
 
 TOPDIR=$(dirname $(realpath $0))
@@ -45,7 +45,7 @@ TMPDIR=$(mktemp -d)
 
 echo ">> Setting up environment..."
 export CVMFS_REPO="/cvmfs/pilot.eessi-hpc.org"
-export EESSI_PILOT_VERSION="2021.02"
+export EESSI_PILOT_VERSION="2021.03"
 
 if [[ $(uname -s) == 'Linux' ]]; then
     export EESSI_OS_TYPE='linux'
@@ -278,7 +278,9 @@ check_exit_code $? "${ok_msg}" "${fail_msg}"
 echo ">> Installing R 4.0.0 (better be patient)..."
 ok_msg="R installed, wow!"
 fail_msg="Installation of R failed, so sad..."
-$EB R-4.0.0-foss-2020a.eb --robot
+# define $TZ to avoid problems when installing rstan extension,
+# see https://github.com/stan-dev/rstan/issues/612
+TZ=UTC $EB R-4.0.0-foss-2020a.eb --robot
 check_exit_code $? "${ok_msg}" "${fail_msg}"
 
 echo ">> Installing Bioconductor 3.11 bundle..."
