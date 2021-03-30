@@ -22,11 +22,11 @@ class TensorFlow2Base(rfm.RunOnlyRegressionTest):
 
         self.perf_patterns = {
             'throughput': sn.extractsingle(
-                rf'Total img/sec on {self.num_tasks} {self.device.upper()}\(s\): '
+                rf'Total img\/sec on [0-9]+ {self.device.upper()}\(s\): '
                 rf'(?P<throughput>\S+) \S+',
                 self.stdout, 'throughput', float),
             f'throughput_per_{self.device}': sn.extractsingle(
-                rf'Img/sec per CPU: (?P<throughput_per_{self.device}>\S+) \S+',
+                rf'Img\/sec per {self.device.upper()}: (?P<throughput_per_{self.device}>\S+) \S+',
                 self.stdout, f'throughput_per_{self.device}', float)
         }
         self.reference = {
@@ -90,17 +90,14 @@ class HorovodTensorFlow2Base(TensorFlow2Base):
             self.num_tasks_per_node = 1
         elif self.device == 'gpu':
             # This should really be reading out something like 'self.current_partition.devices.num_devices_per_node', but that doesn't exist...
-            #print(f'self.current_partition.devices: {self.current_partition.devices}')
-            #for dev in self.current_partition.devices:
-            #    print(dev)
-            #    print(dir(dev))
-            #    print(dev.info)
             device_count = [ dev.num_devices for dev in self.current_partition.devices if dev.device_type == 'gpu' ]
-
             assert(len(device_count) == 1)
-            # print(dir(self.current_partition.devices))
             self.num_tasks_per_node = device_count[0]
             self.num_tasks = self.num_tasks_per_node * self.num_nodes
+        self.num_cpus_per_task = int(self.current_partition.processor.num_cpus / self.num_tasks_per_node)
+        self.variables = {
+            'OMP_NUM_THREADS': f'{self.num_cpus_per_task}',
+        }
 
 @rfm.simple_test
 class HorovodTensorFlow2Native(HorovodTensorFlow2Base):
@@ -123,7 +120,10 @@ class HorovodTensorFlow2Native(HorovodTensorFlow2Base):
             '--num-iters 5',
             '--num-batches-per-iter 5',
             '--num-warmup-batches 5',
+            '--use-horovod',
         ]
+        if self.device == 'cpu':
+            self.executable_opts.append('--no-cuda')
 
 
 # @rfm.parametrized_test(['cpu'], ['gpu'])
