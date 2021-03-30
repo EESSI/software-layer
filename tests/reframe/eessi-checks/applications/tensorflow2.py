@@ -40,6 +40,27 @@ class TensorFlow2Base(rfm.RunOnlyRegressionTest):
 
         self.maintainers = ['casparvl']
 
+    # Set number of tasks and threads (OMP_NUM_THREADS) based on current partition properties
+    @rfm.run_before('run')
+    def set_num_tasks(self):
+        if self.device == 'cpu':
+            # For now, keep it simple.
+            # In the future, we may want to launch 1 task per socket,
+            # and bind these tasks to their respective sockets.
+            self.num_tasks_per_node = 1
+        elif self.device == 'gpu':
+            # This should really be reading out something like 'self.current_partition.devices.num_devices_per_node', but that doesn't exist...
+            device_count = [ dev.num_devices for dev in self.current_partition.devices if dev.device_type == 'gpu' ]
+            assert(len(device_count) == 1)
+            self.num_tasks_per_node = device_count[0]
+            self.num_tasks = self.num_tasks_per_node * self.num_nodes
+        self.num_cpus_per_task = int(self.current_partition.processor.num_cpus / self.num_tasks_per_node)
+        self.variables = {
+            'OMP_NUM_THREADS': f'{self.num_cpus_per_task}',
+        }
+#        if self.current_partition.launcher == 'mpirun':
+#            self.job.launcher.options = ['-x OMP_NUM_THREADS']
+
 @rfm.simple_test
 class TensorFlow2Native(TensorFlow2Base):
     def __init__(self):
@@ -64,6 +85,8 @@ class TensorFlow2Native(TensorFlow2Base):
         if self.device == 'cpu':
             self.executable_opts.append('--no-cuda')
 
+        self.num_nodes = 1
+
         self.tags.add('singlenode')
 
 class HorovodTensorFlow2Base(TensorFlow2Base):
@@ -80,24 +103,6 @@ class HorovodTensorFlow2Base(TensorFlow2Base):
         elif self.scale == 'large':
             self.num_nodes = 10
         self.tags.add(self.scale)
-
-    @rfm.run_before('run')
-    def set_num_tasks(self):
-        if self.device == 'cpu':
-            # For now, keep it simple.
-            # In the future, we may want to launch 1 task per socket,
-            # and bind these tasks to their respective sockets.
-            self.num_tasks_per_node = 1
-        elif self.device == 'gpu':
-            # This should really be reading out something like 'self.current_partition.devices.num_devices_per_node', but that doesn't exist...
-            device_count = [ dev.num_devices for dev in self.current_partition.devices if dev.device_type == 'gpu' ]
-            assert(len(device_count) == 1)
-            self.num_tasks_per_node = device_count[0]
-            self.num_tasks = self.num_tasks_per_node * self.num_nodes
-        self.num_cpus_per_task = int(self.current_partition.processor.num_cpus / self.num_tasks_per_node)
-        self.variables = {
-            'OMP_NUM_THREADS': f'{self.num_cpus_per_task}',
-        }
 
 @rfm.simple_test
 class HorovodTensorFlow2Native(HorovodTensorFlow2Base):
@@ -130,19 +135,19 @@ class HorovodTensorFlow2Native(HorovodTensorFlow2Base):
 # class TensorFlow2Container(TensorFlow2Base):
 #     def __init__(self, device):
 #         super().__init__(device)
-# 
+#
 #         self.tags.add('container')
 #         self.valid_prog_environs = ['*']
-# 
+#
 #         self.prerun_cmds = ['source shared_alien_cache_minimal.sh > /dev/null']
-# 
+#
 #         self.container_platform = 'Singularity'
 #         self.container_platform.image = 'docker://eessi/client-pilot:centos7-$(uname -m)'
 #         self.container_platform.options = [
 #             '--fusemount "container:cvmfs2 cvmfs-config.eessi-hpc.org /cvmfs/cvmfs-config.eessi-hpc.org"',
 #             '--fusemount "container:cvmfs2 pilot.eessi-hpc.org /cvmfs/pilot.eessi-hpc.org"'
 #         ]
-# 
+#
 #         self.container_platform.commands = [
 #             'source /cvmfs/pilot.eessi-hpc.org/latest/init/bash',
 #             'module load TensorFlow',
