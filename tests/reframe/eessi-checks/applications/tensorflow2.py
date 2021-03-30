@@ -43,6 +43,7 @@ class TensorFlow2Base(rfm.RunOnlyRegressionTest):
     # Set number of tasks and threads (OMP_NUM_THREADS) based on current partition properties
     @rfm.run_before('run')
     def set_num_tasks(self):
+        # On CPU nodes, start 1 task per node. On GPU nodes, start 1 task per GPU.
         if self.device == 'cpu':
             # For now, keep it simple.
             # In the future, we may want to launch 1 task per socket,
@@ -53,13 +54,13 @@ class TensorFlow2Base(rfm.RunOnlyRegressionTest):
             device_count = [ dev.num_devices for dev in self.current_partition.devices if dev.device_type == 'gpu' ]
             assert(len(device_count) == 1)
             self.num_tasks_per_node = device_count[0]
-            self.num_tasks = self.num_tasks_per_node * self.num_nodes
+        self.num_tasks = self.num_tasks_per_node * self.num_nodes
         self.num_cpus_per_task = int(self.current_partition.processor.num_cpus / self.num_tasks_per_node)
         self.variables = {
             'OMP_NUM_THREADS': f'{self.num_cpus_per_task}',
         }
-#        if self.current_partition.launcher == 'mpirun':
-#            self.job.launcher.options = ['-x OMP_NUM_THREADS']
+        if self.current_partition.launcher == 'mpirun':
+            self.job.launcher.options = ['-x OMP_NUM_THREADS']
 
 @rfm.simple_test
 class TensorFlow2Native(TensorFlow2Base):
