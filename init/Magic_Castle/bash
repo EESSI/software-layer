@@ -29,7 +29,7 @@ if [ -z "$__Init_Default_Modules" ]; then
      module --initial_load --no_redirect restore
    fi
 else
-   module refresh
+   module reload
 fi
 
 echo "Environment set up to use EESSI pilot software stack (${EESSI_PILOT_VERSION}), have fun!"
