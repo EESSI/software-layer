@@ -16,7 +16,7 @@ export MODULEPATH=$EESSI_MODULEPATH
 export LMOD_AVAIL_EXTENSIONS=no
 
 # init Lmod
-source $EESSI_EPREFIX/usr/lmod/*/init/bash
+source $EESSI_EPREFIX/usr/share/Lmod/init/bash
 
 if [ -z "$__Init_Default_Modules" ]; then
    export __Init_Default_Modules=1;
