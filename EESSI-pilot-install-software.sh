@@ -303,10 +303,11 @@ if [ ! "${EESSI_CPU_FAMILY}" = "ppc64le" ]; then
     check_exit_code $? "${ok_msg}" "${fail_msg}"
 fi
 
-echo ">> Installing ReFrame 3.4.1 ..."
+echo ">> Installing ReFrame 3.5.1 ..."
 ok_msg="ReFrame installed, enjoy!"
 fail_msg="Installation of ReFrame failed, that's a bit strange..."
-$EB ReFrame-3.4.1.eb --robot
+# note: newer PythonPackage easyblock required to ensure auto-download of sources works
+$EB --from-pr 12511 ReFrame-3.5.1.eb --robot --include-easyblocks-from-pr 2370
 check_exit_code $? "${ok_msg}" "${fail_msg}"
 
 echo ">> Installing RStudio-Server 1.3.1093..."
@@ -338,6 +339,24 @@ ${LMOD_DIR}/update_lmod_system_cache_files -d ${lmod_cache_dir} -t ${lmod_cache_
 check_exit_code $? "Lmod cache updated" "Lmod cache update failed!"
 
 ls -lrt ${EASYBUILD_INSTALLPATH}/.lmod/cache
+
+# temporarily install PyYAML in a temporary directory, and make sure it's picked up
+# this can be removed when https://github.com/EESSI/compatibility-layer/issues/95 is fixed
+ok_msg="PyYAML installed in $TMPDIR"
+fail_msg="PyYAML failed to install in $TMPDIR, what the..."
+pip_install_pyyaml_out=$TMPDIR/pip_pyyaml.out
+pip install --prefix $TMPDIR PyYAML &> ${pip_install_pyyaml_out}
+check_exit_code $? "${ok_msg}" "${fail_msg}"
+export PYTHONPATH=$(ls -1 -d $TMPDIR/lib*/python*/site-packages):$PYTHONPATH
+echo "PYTHONPATH=$PYTHONPATH"
+
+echo ">> Checking for missing installations..."
+ok_msg="No missing installations, party time!"
+fail_msg="On no, some installations are still missing, how did that happen?!"
+eb_missing_out=$TMPDIR/eb_missing.out
+$EB --easystack eessi-2021.03.yml --experimental --missing --robot $EASYBUILD_PREFIX/ebfiles_repo | tee ${eb_missing_out}
+grep "No missing modules" ${eb_missing_out} > /dev/null
+check_exit_code $? "${ok_msg}" "${fail_msg}"
 
 echo ">> Cleaning up ${TMPDIR}..."
 rm -r ${TMPDIR}
