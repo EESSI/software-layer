@@ -304,15 +304,15 @@ if [ ! "${EESSI_CPU_FAMILY}" = "ppc64le" ]; then
 fi
 
 echo ">> Installing ReFrame 3.4.1 ..."
-$EB ReFrame-3.4.1.eb --robot
 ok_msg="ReFrame installed, enjoy!"
 fail_msg="Installation of ReFrame failed, that's a bit strange..."
+$EB ReFrame-3.4.1.eb --robot
 check_exit_code $? "${ok_msg}" "${fail_msg}"
 
 echo ">> Installing RStudio-Server 1.3.1093..."
-$EB RStudio-Server-1.3.1093-foss-2020a-Java-11-R-4.0.0.eb --robot
 ok_msg="RStudio-Server installed, enjoy!"
 fail_msg="Installation of RStudio-Server failed, might be OS deps..."
+$EB RStudio-Server-1.3.1093-foss-2020a-Java-11-R-4.0.0.eb --robot
 check_exit_code $? "${ok_msg}" "${fail_msg}"
 
 echo ">> Installing OSU-Micro-Benchmarks 5.6.3..."
