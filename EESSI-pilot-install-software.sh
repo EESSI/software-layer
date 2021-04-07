@@ -313,7 +313,7 @@ check_exit_code $? "${ok_msg}" "${fail_msg}"
 echo ">> Installing RStudio-Server 1.3.1093..."
 ok_msg="RStudio-Server installed, enjoy!"
 fail_msg="Installation of RStudio-Server failed, might be OS deps..."
-$EB RStudio-Server-1.3.1093-foss-2020a-Java-11-R-4.0.0.eb --robot
+TZ=UTC $EB --from-pr 12544 RStudio-Server-1.3.1093-foss-2020a-Java-11-R-4.0.0.eb --robot
 check_exit_code $? "${ok_msg}" "${fail_msg}"
 
 echo ">> Installing OSU-Micro-Benchmarks 5.6.3..."
