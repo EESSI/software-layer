@@ -1,7 +1,7 @@
 site_configuration = {
     'systems': [
         {
-            'name': 'example_system',
+            'name': 'Example_system',
             'descr': 'This is just an example system',
             'modules_system': 'tmod',
 	    'hostnames': ['login', 'int'],
@@ -9,9 +9,33 @@ site_configuration = {
 		{
                     'name': 'short',
                     'scheduler': 'slurm',
-	            'launcher': 'mpirun',
-                    'access':  ['-p gpu_short'],
+	            'launcher': 'srun',
+                    'access':  ['-p short'],
                     'environs': ['foss', 'container'],
+                    'container_platforms': [
+                        {
+                            'type': 'Singularity',
+                            'modules': [],
+                            'variables': [['SLURM_MPI_TYPE', 'pmix']]
+                        }
+                    ],
+                    'processor': {
+                        'num_cpus': 24,
+                    },
+                    'devices': [
+                        {
+                            'type': 'gpu',
+                            'num_devices': 2,
+                        },
+                    ],
+                    'descr': 'normal partition'
+                },
+                {
+                    'name': 'gpu_short',
+                    'scheduler': 'slurm',
+                    'launcher': 'srun',
+                    'access':  ['-p gpu_short'],
+                    'environs': ['fosscuda', 'container'],
                     'container_platforms': [
                         {
                             'type': 'Singularity',
@@ -28,7 +52,7 @@ site_configuration = {
                             'num_devices': 2,
                         },
                     ],
-                    'descr': 'normal partition'
+                    'descr': 'gpu partition'
                 },
              ]
          },
@@ -36,7 +60,14 @@ site_configuration = {
     'environments': [
         {
             'name': 'foss',
-	    'modules': ['fosscuda/2020a'],
+	    'modules': ['foss/2020a'],
+            'cc': 'mpicc',
+            'cxx': 'mpicxx',
+            'ftn': 'mpifort',
+        },
+        {
+            'name': 'fosscuda',
+            'modules': ['fosscuda/2020a'],
             'cc': 'mpicc',
             'cxx': 'mpicxx',
             'ftn': 'mpifort',
