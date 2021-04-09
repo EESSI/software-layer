@@ -172,7 +172,7 @@ else
     fi
 fi
 
-REQ_EB_VERSION='4.3.3'
+REQ_EB_VERSION='4.3.4'
 echo ">> Loading EasyBuild module..."
 module load EasyBuild
 eb_show_system_info_out=${TMPDIR}/eb_show_system_info.out
@@ -307,7 +307,7 @@ echo ">> Installing ReFrame 3.5.1 ..."
 ok_msg="ReFrame installed, enjoy!"
 fail_msg="Installation of ReFrame failed, that's a bit strange..."
 # note: newer PythonPackage easyblock required to ensure auto-download of sources works
-$EB --from-pr 12511 ReFrame-3.5.1.eb --robot --include-easyblocks-from-pr 2370
+$EB ReFrame-3.5.1.eb --robot
 check_exit_code $? "${ok_msg}" "${fail_msg}"
 
 echo ">> Installing RStudio-Server 1.3.1093..."
