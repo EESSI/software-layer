@@ -107,8 +107,16 @@ class HorovodTensorFlow2Base(TensorFlow2Base):
         elif self.device == 'gpu':
             # This should really be reading out something like 'self.current_partition.devices.num_devices_per_node', but that doesn't exist...
             device_count = [ dev.num_devices for dev in self.current_partition.devices if dev.device_type == 'gpu' ]
+            # This test doesn't know what to do if multiple GPU devices are present in a single partition, so assert:
             assert(len(device_count) == 1)
             self.num_tasks_per_node = device_count[0]
+            # On some resource schedules, you may need to request GPUs explicitely (e.g. --gpus-per-node=4).
+            # The extra_resources allows that to be put in the ReFrame settings file.
+            # See: https://reframe-hpc.readthedocs.io/en/stable/regression_test_api.html?highlight=num_gpus_per_node#reframe.core.pipeline.RegressionTest.extra_resources
+            # If the partition in the reframe settings file doesn't contain a resource with the name 'gpu', the self.extra_resources wil be ignored.
+            self.extra_resources = {
+                'gpu': {'num_gpus_per_node': device_count[0]}
+            }
         self.num_tasks = self.num_tasks_per_node * self.num_nodes
         self.num_cpus_per_task = int(self.current_partition.processor.num_cpus / self.num_tasks_per_node)
         self.variables = {
