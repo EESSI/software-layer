@@ -323,7 +323,7 @@ $EB OSU-Micro-Benchmarks-5.6.3-gompi-2020a.eb -r
 check_exit_code $? "${ok_msg}" "${fail_msg}"
 
 echo ">> Installing Spark 3.1.1..."
-ok_msg="Spark installed, start the fireworks!"
+ok_msg="Spark installed, set off the fireworks!"
 fail_msg="Installation of Spark failed, no fireworks this time..."
 $EB --from-pr 12640 Spark-3.1.1-foss-2020a-Python-3.8.2.eb -r
 check_exit_code $? "${ok_msg}" "${fail_msg}"
