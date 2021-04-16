@@ -322,6 +322,15 @@ fail_msg="Installation of OSU-Micro-Benchmarks failed, that's unexpected..."
 $EB OSU-Micro-Benchmarks-5.6.3-gompi-2020a.eb -r
 check_exit_code $? "${ok_msg}" "${fail_msg}"
 
+# Arrow 0.17.1 (dependency of Spark) needs a fix on aarch64
+# may not be necessary for newer versions:
+# https://github.com/apache/arrow/pull/7982
+echo ">> Installing Arrow 0.17.1..."
+ok_msg="Arrow installed, enjoy!"
+fail_msg="Installation of Arrow failed..."
+$EB --from-pr 12640 Arrow-0.17.1-foss-2020a-Python-3.8.2.eb -r
+check_exit_code $? "${ok_msg}" "${fail_msg}"
+
 echo ">> Installing Spark 3.1.1..."
 ok_msg="Spark installed, set off the fireworks!"
 fail_msg="Installation of Spark failed, no fireworks this time..."
