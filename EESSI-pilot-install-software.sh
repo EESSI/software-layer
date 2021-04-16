@@ -318,8 +318,20 @@ check_exit_code $? "${ok_msg}" "${fail_msg}"
 
 echo ">> Installing OSU-Micro-Benchmarks 5.6.3..."
 ok_msg="OSU-Micro-Benchmarks installed, yihaa!"
-fail_msg="Installation of OSU-Micro-Benchmarks, that's unexpected..."
+fail_msg="Installation of OSU-Micro-Benchmarks failed, that's unexpected..."
 $EB OSU-Micro-Benchmarks-5.6.3-gompi-2020a.eb -r
+check_exit_code $? "${ok_msg}" "${fail_msg}"
+
+echo ">> Installing Spark 3.1.1..."
+ok_msg="Spark installed, set off the fireworks!"
+fail_msg="Installation of Spark failed, no fireworks this time..."
+$EB --from-pr 12640 Spark-3.1.1-foss-2020a-Python-3.8.2.eb -r
+check_exit_code $? "${ok_msg}" "${fail_msg}"
+
+echo ">> Installing IPython 7.15.0..."
+ok_msg="IPython installed, launch your Jupyter Notebooks!"
+fail_msg="Installation of IPython failed, that's unexpected..."
+$EB IPython-7.15.0-foss-2020a-Python-3.8.2.eb -r
 check_exit_code $? "${ok_msg}" "${fail_msg}"
 
 echo ">> Creating/updating Lmod cache..."
