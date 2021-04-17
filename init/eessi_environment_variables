@@ -31,7 +31,7 @@ if [ -d $EESSI_PREFIX ]; then
 
   # add location of commands provided by compat layer to $PATH;
   # see https://github.com/EESSI/software-layer/issues/52
-  export PATH=$EPREFIX/usr/bin:$PATH
+  export PATH=$EPREFIX/usr/bin:$EPREFIX/bin:$PATH
 
   export EESSI_EPREFIX=$EPREFIX
   if [ -d $EESSI_EPREFIX ]; then
