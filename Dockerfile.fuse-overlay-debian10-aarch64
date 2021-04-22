@@ -1,6 +1,5 @@
 FROM docker.io/arm64v8/debian:10.6
 ARG cvmfsversion=2.8.0
-ARG cvmfsconfigversion=0.2.3
 
 RUN apt-get update -y && \
   apt-get install -y wget lsb-release
@@ -27,9 +26,9 @@ RUN apt-get install sudo && \
   cd / && \
   rm -r cvmfs*${cvmfsversion}*
 
-RUN wget https://github.com/EESSI/filesystem-layer/releases/download/v${cvmfsconfigversion}/cvmfs-config-eessi_${cvmfsconfigversion}_all.deb && \
-  dpkg -i cvmfs-config-eessi_${cvmfsconfigversion}_all.deb && \
-  rm -f cvmfs-config-eessi_${cvmfsconfigversion}_all.deb
+RUN wget https://github.com/EESSI/filesystem-layer/releases/download/latest/cvmfs-config-eessi_latest_all.deb && \
+  dpkg -i cvmfs-config-eessi_latest_all.deb && \
+  rm -f cvmfs-config-eessi_latest_all.deb
 
 # install fuse3 so Singularity's --fusemount works
 # (can't be installed together with fuse)
@@ -38,6 +37,6 @@ RUN apt-get remove -y fuse && apt-get install -y fuse3
 RUN apt-get install -y fuse-overlayfs
 
 RUN echo 'CVMFS_QUOTA_LIMIT=10000' > /etc/cvmfs/default.local && \
-  echo 'CVMFS_HTTP_PROXY="DIRECT"' >> /etc/cvmfs/default.local
+  echo 'CVMFS_CLIENT_PROFILE="single"' >> /etc/cvmfs/default.local
 
 ENV LC_ALL=C
