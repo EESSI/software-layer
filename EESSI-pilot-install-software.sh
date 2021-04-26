@@ -138,14 +138,29 @@ echo ">> Setting up \$MODULEPATH..."
 module --force purge
 # ignore current $MODULEPATH entirely
 module unuse $MODULEPATH
-module use $EASYBUILD_INSTALLPATH/modules/all
+if [[ -z "$EESSI_REBUILD_PATH" ]]; then
+    # Default behaviour is to do a full build
+    module use $EASYBUILD_INSTALLPATH/modules/all
+else
+    # If EESSI_REBUILD_PATH is set, we assume software is built and we are just rebuilding the module tree
+    export EASYBUILD_INSTALLPATH_MODULES=$EESSI_REBUILD_PATH/modules
+    [[ -z "$EESSI_REBUILD_MODULEPATH" ]] && module use $EESSI_REBUILD_PATH/modules/all || module use $EESSI_REBUILD_MODULEPATH
+    # Use preferred MNS
+    [[ -z "$EESSI_REBUILD_MNS" ]] && export EASYBUILD_MODULE_NAMING_SCHEME=EasyBuildMNS || export EASYBUILD_MODULE_NAMING_SCHEME=$EESSI_REBUILD_MNS
+    # Only rebuild modules
+    export EASYBUILD_MODULE_ONLY=1
+    # Make sure we can write our lock files
+    export EASYBUILD_LOCKS_DIR=$EESSI_REBUILD_PATH/software
+fi
+
 if [[ -z ${MODULEPATH} ]]; then
     error "Failed to set up \$MODULEPATH?!"
 else
     echo_green ">> MODULEPATH set up: ${MODULEPATH}"
 fi
 
-echo ">> Checking for EasyBuild module..."
+REQ_EB_VERSION='4.3.4'
+echo ">> Checking for EasyBuild module (required version is ${REQ_EB_VERSION})..."
 ml_av_easybuild_out=$TMPDIR/ml_av_easybuild.out
 module avail easybuild &> ${ml_av_easybuild_out}
 if [[ $? -eq 0 ]]; then
@@ -172,9 +187,9 @@ else
     fi
 fi
 
-REQ_EB_VERSION='4.3.4'
 echo ">> Loading EasyBuild module..."
 module load EasyBuild
+
 eb_show_system_info_out=${TMPDIR}/eb_show_system_info.out
 $EB --show-system-info > ${eb_show_system_info_out}
 if [[ $? -eq 0 ]]; then
