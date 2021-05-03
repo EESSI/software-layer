@@ -105,9 +105,8 @@ class HorovodTensorFlow2Base(TensorFlow2Base):
             # and bind these tasks to their respective sockets.
             self.num_tasks_per_node = 1
         elif self.device == 'gpu':
-            # This should really be reading out something like 'self.current_partition.devices.num_devices_per_node', but that doesn't exist...
             device_count = [ dev.num_devices for dev in self.current_partition.devices if dev.device_type == 'gpu' ]
-            # This test doesn't know what to do if multiple GPU devices are present in a single partition, so assert:
+            # This test doesn't know what to do if multiple DIFFERENT GPU devices are present in a single partition, so assert that we only found one in the ReFrame config:
             assert(len(device_count) == 1)
             self.num_tasks_per_node = device_count[0]
             # On some resource schedules, you may need to request GPUs explicitely (e.g. --gpus-per-node=4).
@@ -119,8 +118,13 @@ class HorovodTensorFlow2Base(TensorFlow2Base):
             }
         self.num_tasks = self.num_tasks_per_node * self.num_nodes
         self.num_cpus_per_task = int(self.current_partition.processor.num_cpus / self.num_tasks_per_node)
+        # If test runs on CPU, leave one thread idle for Horovod. See https://github.com/horovod/horovod/issues/2804
+        if self.device == 'cpu': 
+            num_threads = max(self.num_cpus_per_task-1, 1)
+        elif self.device == 'gpu':
+            num_threads = self.num_cpus_per_task
         self.variables = {
-            'OMP_NUM_THREADS': f'{self.num_cpus_per_task}',
+            'OMP_NUM_THREADS': f'{num_threads}',
         }
         if self.current_partition.launcher_type == 'mpirun':
             self.job.launcher.options = ['-x OMP_NUM_THREADS']
@@ -137,7 +141,7 @@ class HorovodTensorFlow2Native(HorovodTensorFlow2Base):
         self.tags.add('native')
         self.valid_prog_environs = ['*']
 
-        self.modules = ['Horovod', 'TensorFlow']
+        self.modules = ['Horovod']
         self.executable = 'python'
 
         self.executable_opts = [
