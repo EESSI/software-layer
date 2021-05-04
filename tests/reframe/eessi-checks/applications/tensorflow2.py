@@ -156,27 +156,3 @@ class HorovodTensorFlow2Native(HorovodTensorFlow2Base):
         if self.device == 'cpu':
             self.executable_opts.append('--no-cuda')
 
-
-# @rfm.parametrized_test(['cpu'], ['gpu'])
-# class TensorFlow2Container(TensorFlow2Base):
-#     def __init__(self, device):
-#         super().__init__(device)
-#
-#         self.tags.add('container')
-#         self.valid_prog_environs = ['*']
-#
-#         self.prerun_cmds = ['source shared_alien_cache_minimal.sh > /dev/null']
-#
-#         self.container_platform = 'Singularity'
-#         self.container_platform.image = 'docker://eessi/client-pilot:centos7-$(uname -m)'
-#         self.container_platform.options = [
-#             '--fusemount "container:cvmfs2 cvmfs-config.eessi-hpc.org /cvmfs/cvmfs-config.eessi-hpc.org"',
-#             '--fusemount "container:cvmfs2 pilot.eessi-hpc.org /cvmfs/pilot.eessi-hpc.org"'
-#         ]
-#
-#         self.container_platform.commands = [
-#             'source /cvmfs/pilot.eessi-hpc.org/latest/init/bash',
-#             'module load TensorFlow',
-#             'python {self.script} --model {self.model} --batch-size {self.batch_size} --num-iters 5 --num-batches-per-iter 5 --num-warmup-batches 5'
-#         ]
-#         self.tags.add('singlenode')
