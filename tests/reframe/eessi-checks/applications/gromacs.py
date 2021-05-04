@@ -2,10 +2,31 @@ import os
 import reframe as rfm
 import reframe.utility.sanity as sn
 
+# 3.5.0 Required for using current_partition.processor
+@rfm.required_version('>=3.5.0')
 class GromacsBase(rfm.RunOnlyRegressionTest):
+
+    scale = parameter(['singlenode', 'small', 'large'])
+
     def __init__(self):
         self.valid_systems = ['*']
 
+        # We don't have a Gromacs GPU test yet. We can later introcuce it as an additional parameter
+        self.tags = {'cpu'}
+
+        # Define number of nodes & steps
+        if self.scale == 'singlenode':
+            self.nsteps = '10000'
+            self.num_nodes = 1
+        elif self.scale == 'small':
+            self.nsteps = '40000'
+            self.num_nodes = 4
+        elif self.scale == 'large':
+            self.nsteps = '100000'
+            self.num_nodes = 10
+        self.tags.add(self.scale)
+
+        # Sanity
         output_file = 'md.log'
         energy = sn.extractsingle(r'\s+Coul\. recip\.\s+Potential\s+Kinetic En\.\s+Total Energy\s+Conserved En.\n'
                                   r'(\s+\S+){3}\s+(?P<energy>\S+)(\s+\S+){1}\n',
@@ -17,6 +38,7 @@ class GromacsBase(rfm.RunOnlyRegressionTest):
             sn.assert_reference(energy, energy_reference, -0.001, 0.001)
         ])
 
+        # Performance
         self.perf_patterns = {
             'perf': sn.extractsingle(r'Performance:\s+(?P<perf>\S+)',
                                      output_file, 'perf', float)
@@ -27,40 +49,19 @@ class GromacsBase(rfm.RunOnlyRegressionTest):
             }
         }
 
-        self.tags = {'cpu'}
-
         self.maintainers = ['casparvl']
 
-
-# 3.5.0 Required for using current_partition.processor
-@rfm.required_version('>=3.5.0')
-class GromacsSizedTests(GromacsBase):
-    def __init__(self, scale):
-
-        super().__init__()
-
-        if scale == 'singlenode':
-            self.nsteps = '10000'
-            self.num_nodes = 1
-        elif scale == 'small':
-            self.nsteps = '40000'
-            self.num_nodes = 4
-        elif scale == 'large':
-            self.nsteps = '100000'
-            self.num_nodes = 10
-
-        self.tags.add(scale)
-
+    # Customize number of tasks and number of tasks per node right before the run, based on current_partition info
     @rfm.run_before('run')
     def set_num_threads(self):
         self.num_tasks_per_node = self.current_partition.processor.num_cpus
         self.num_tasks = self.num_nodes * self.num_tasks_per_node
 
-@rfm.parameterized_test(['singlenode'], ['small'], ['large'])
-class GromacsNative(GromacsSizedTests):
-    def __init__(self, scale):
+@rfm.simple_test
+class GromacsNative(GromacsBase):
+    def __init__(self):
 
-        super().__init__(scale)
+        super().__init__()
 
         self.tags.add('native')
         self.valid_prog_environs = ['*']
@@ -70,11 +71,11 @@ class GromacsNative(GromacsSizedTests):
         self.executable_opts = ['mdrun', '-s ion_channel.tpr', '-maxh 0.50',
                 '-resethway', '-noconfout', '-nsteps ' + self.nsteps]
 
-@rfm.parameterized_test(['singlenode'], ['small'], ['large'])
-class GromacsContainer(GromacsSizedTests):
-    def __init__(self, scale):
+@rfm.simple_test
+class GromacsContainer(GromacsBase):
+    def __init__(self):
 
-        super().__init__(scale)
+        super().__init__()
 
         self.tags.add('container')
         self.valid_prog_environs = ['container']
