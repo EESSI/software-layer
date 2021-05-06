@@ -62,7 +62,7 @@ export EPREFIX=${EESSI_PREFIX}/compat/${EESSI_OS_TYPE}/${EESSI_CPU_FAMILY}
 DETECTION_PARAMETERS=''
 GENERIC=0
 EB='eb'
-EB_MODULE_NAME='EasyBuild'
+if [ -z "$EB_MODULE_NAME" ] && [ "${EB_MODULE_NAME+xxx}" = "xxx" ]; then EB_MODULE_NAME='EasyBuild'; fi
 REQ_EB_VERSION='4.3.4'
 
 if [[ "$1" == "--generic" || "$EASYBUILD_OPTARCH" == "GENERIC" ]]; then
