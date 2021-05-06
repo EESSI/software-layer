@@ -62,6 +62,7 @@ export EPREFIX=${EESSI_PREFIX}/compat/${EESSI_OS_TYPE}/${EESSI_CPU_FAMILY}
 DETECTION_PARAMETERS=''
 GENERIC=0
 EB='eb'
+EASYBUILD='EasyBuild'
 if [[ "$1" == "--generic" || "$EASYBUILD_OPTARCH" == "GENERIC" ]]; then
     echo_yellow ">> GENERIC build requested, taking appropriate measures!"
     DETECTION_PARAMETERS="$DETECTION_PARAMETERS --generic"
@@ -160,13 +161,13 @@ else
 fi
 
 REQ_EB_VERSION='4.3.4'
-echo ">> Checking for EasyBuild module (required version is ${REQ_EB_VERSION})..."
+echo ">> Checking for ${EASYBUILD} module (required version is ${REQ_EB_VERSION})..."
 ml_av_easybuild_out=$TMPDIR/ml_av_easybuild.out
-module avail easybuild &> ${ml_av_easybuild_out}
+module avail ${EASYBUILD}/${REQ_EB_VERSION} &> ${ml_av_easybuild_out}
 if [[ $? -eq 0 ]]; then
-    echo_green ">> EasyBuild module found!"
+    echo_green ">> ${EASYBUILD}/${REQ_EB_VERSION} module found!"
 else
-    echo_yellow ">> No EasyBuild module yet, installing it..."
+    echo_yellow ">> No ${EASYBUILD}/${REQ_EB_VERSION} module yet, installing it..."
 
     EB_TMPDIR=${TMPDIR}/ebtmp
     echo ">> Temporary installation (in ${EB_TMPDIR})..."
@@ -177,18 +178,25 @@ else
     export PATH=${EB_TMPDIR}/bin:$PATH
     export PYTHONPATH=$(ls -d ${EB_TMPDIR}/lib/python*/site-packages):$PYTHONPATH
     eb_install_out=${TMPDIR}/eb_install.out
-    eb --install-latest-eb-release &> ${eb_install_out}
-
-    module avail easybuild &> ${ml_av_easybuild_out}
+    # Check whether we have an easyconfig for our required version (from last line of output)
+    eb --search EasyBuild-${REQ_EB_VERSION}.eb |& tail -1 | grep ${REQ_EB_VERSION} > /dev/null
     if [[ $? -eq 0 ]]; then
-        echo_green ">> EasyBuild module installed!"
+        eb EasyBuild-${REQ_EB_VERSION}.eb &> ${eb_install_out}
     else
-        error "EasyBuild module failed to install?! (output of 'pip install' in ${pip_install_out}, output of 'eb' in ${eb_install_out}, output of 'ml av easybuild' in ${ml_av_easybuild_out})"
+        # If we don't have an easyconfig in the repo then it can only be the latest release
+        eb --install-latest-eb-release &> ${eb_install_out}
+    fi
+
+    module avail ${EASYBUILD}/${REQ_EB_VERSION} &> ${ml_av_easybuild_out}
+    if [[ $? -eq 0 ]]; then
+        echo_green ">> ${EASYBUILD} module installed!"
+    else
+        error "${EASYBUILD} module failed to install?! (output of 'pip install' in ${pip_install_out}, output of 'eb' in ${eb_install_out}, output of 'ml av easybuild' in ${ml_av_easybuild_out})"
     fi
 fi
 
-echo ">> Loading EasyBuild module..."
-module load EasyBuild
+echo ">> Loading ${EASYBUILD} module..."
+module load ${EASYBUILD}/${REQ_EB_VERSION}
 
 eb_show_system_info_out=${TMPDIR}/eb_show_system_info.out
 $EB --show-system-info > ${eb_show_system_info_out}
