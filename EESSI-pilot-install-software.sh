@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 #
 # Script to install EESSI pilot software stack (version 2021.03)
 #
@@ -70,8 +70,8 @@ if [[ "$1" == "--generic" || "$EASYBUILD_OPTARCH" == "GENERIC" ]]; then
     EB='eb --optarch=GENERIC'
 fi
 
-# make sure we're in Prefix environment by which path to 'bash' command
-if [[ $(which bash) = ${EPREFIX}/bin/bash ]]; then
+# make sure we're in Prefix environment by checking which 'bash' our $SHELL is using
+if [[ ${SHELL} = ${EPREFIX}/bin/bash ]]; then
     echo_green ">> It looks like we're in a Gentoo Prefix environment, good!"
 else
     error "Not running in Gentoo Prefix environment, run '${EPREFIX}/startprefix' first!"
