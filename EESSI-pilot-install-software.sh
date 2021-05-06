@@ -62,7 +62,9 @@ export EPREFIX=${EESSI_PREFIX}/compat/${EESSI_OS_TYPE}/${EESSI_CPU_FAMILY}
 DETECTION_PARAMETERS=''
 GENERIC=0
 EB='eb'
-EASYBUILD='EasyBuild'
+EB_MODULE_NAME='EasyBuild'
+REQ_EB_VERSION='4.3.4'
+
 if [[ "$1" == "--generic" || "$EASYBUILD_OPTARCH" == "GENERIC" ]]; then
     echo_yellow ">> GENERIC build requested, taking appropriate measures!"
     DETECTION_PARAMETERS="$DETECTION_PARAMETERS --generic"
@@ -158,14 +160,13 @@ else
     echo_green ">> MODULEPATH set up: ${MODULEPATH}"
 fi
 
-REQ_EB_VERSION='4.3.4'
-echo ">> Checking for ${EASYBUILD} module (required version is ${REQ_EB_VERSION})..."
+echo ">> Checking for ${EB_MODULE_NAME} module (required version is ${REQ_EB_VERSION})..."
 ml_show_easybuild_out=$TMPDIR/ml_show_easybuild.out
-module show ${EASYBUILD}/${REQ_EB_VERSION} &> ${ml_show_easybuild_out}
+module show ${EB_MODULE_NAME}/${REQ_EB_VERSION} &> ${ml_show_easybuild_out}
 if [[ $? -eq 0 ]]; then
-    echo_green ">> ${EASYBUILD}/${REQ_EB_VERSION} module found!"
+    echo_green ">> ${EB_MODULE_NAME}/${REQ_EB_VERSION} module found!"
 else
-    echo_yellow ">> No ${EASYBUILD}/${REQ_EB_VERSION} module yet, installing it..."
+    echo_yellow ">> No ${EB_MODULE_NAME}/${REQ_EB_VERSION} module yet, installing it..."
 
     EB_TMPDIR=${TMPDIR}/ebtmp
     echo ">> Temporary installation (in ${EB_TMPDIR})..."
@@ -185,16 +186,16 @@ else
         eb --install-latest-eb-release &> ${eb_install_out}
     fi
 
-    module show ${EASYBUILD}/${REQ_EB_VERSION} &> ${ml_show_easybuild_out}
+    module show ${EB_MODULE_NAME}/${REQ_EB_VERSION} &> ${ml_show_easybuild_out}
     if [[ $? -eq 0 ]]; then
-        echo_green ">> ${EASYBUILD} module installed!"
+        echo_green ">> ${EB_MODULE_NAME} module installed!"
     else
-        error "${EASYBUILD} module failed to install?! (output of 'pip install' in ${pip_install_out}, output of 'eb' in ${eb_install_out}, output of 'module show ${EASYBUILD}/${REQ_EB_VERSION}' in ${ml_show_easybuild_out})"
+        error "${EB_MODULE_NAME} module failed to install?! (output of 'pip install' in ${pip_install_out}, output of 'eb' in ${eb_install_out}, output of 'module show ${EB_MODULE_NAME}/${REQ_EB_VERSION}' in ${ml_show_easybuild_out})"
     fi
 fi
 
-echo ">> Loading ${EASYBUILD} module..."
-module load ${EASYBUILD}/${REQ_EB_VERSION}
+echo ">> Loading ${EB_MODULE_NAME} module..."
+module load ${EB_MODULE_NAME}/${REQ_EB_VERSION}
 
 eb_show_system_info_out=${TMPDIR}/eb_show_system_info.out
 $EB --show-system-info > ${eb_show_system_info_out}
