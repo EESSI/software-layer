@@ -70,7 +70,6 @@ if [[ "$1" == "--generic" || "$EASYBUILD_OPTARCH" == "GENERIC" ]]; then
     EB='eb --optarch=GENERIC'
 fi
 
-
 # make sure we're in Prefix environment by which path to 'bash' command
 if [[ $(which bash) = ${EPREFIX}/bin/bash ]]; then
     echo_green ">> It looks like we're in a Gentoo Prefix environment, good!"
@@ -131,7 +130,6 @@ fi
 
 export EASYBUILD_FILTER_DEPS=$DEPS_TO_FILTER
 
-
 export EASYBUILD_MODULE_EXTENSIONS=1
 
 echo ">> Setting up \$MODULEPATH..."
@@ -162,8 +160,8 @@ fi
 
 REQ_EB_VERSION='4.3.4'
 echo ">> Checking for ${EASYBUILD} module (required version is ${REQ_EB_VERSION})..."
-ml_av_easybuild_out=$TMPDIR/ml_av_easybuild.out
-module avail ${EASYBUILD}/${REQ_EB_VERSION} &> ${ml_av_easybuild_out}
+ml_show_easybuild_out=$TMPDIR/ml_show_easybuild.out
+module show ${EASYBUILD}/${REQ_EB_VERSION} &> ${ml_show_easybuild_out}
 if [[ $? -eq 0 ]]; then
     echo_green ">> ${EASYBUILD}/${REQ_EB_VERSION} module found!"
 else
@@ -187,11 +185,11 @@ else
         eb --install-latest-eb-release &> ${eb_install_out}
     fi
 
-    module avail ${EASYBUILD}/${REQ_EB_VERSION} &> ${ml_av_easybuild_out}
+    module show ${EASYBUILD}/${REQ_EB_VERSION} &> ${ml_show_easybuild_out}
     if [[ $? -eq 0 ]]; then
         echo_green ">> ${EASYBUILD} module installed!"
     else
-        error "${EASYBUILD} module failed to install?! (output of 'pip install' in ${pip_install_out}, output of 'eb' in ${eb_install_out}, output of 'ml av easybuild' in ${ml_av_easybuild_out})"
+        error "${EASYBUILD} module failed to install?! (output of 'pip install' in ${pip_install_out}, output of 'eb' in ${eb_install_out}, output of 'module show ${EASYBUILD}/${REQ_EB_VERSION}' in ${ml_show_easybuild_out})"
     fi
 fi
 
