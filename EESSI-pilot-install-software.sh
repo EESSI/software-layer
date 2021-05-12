@@ -293,7 +293,10 @@ check_exit_code $? "${ok_msg}" "${fail_msg}"
 echo ">> Installing OpenFOAM (twice!)..."
 ok_msg="OpenFOAM installed, now we're talking!"
 fail_msg="Installation of OpenFOAM failed, we were so close..."
+# May not have enough cores for the sanity check (6 required)
+export OMPI_MCA_rmaps_base_oversubscribe=1
 $EB OpenFOAM-8-foss-2020a.eb OpenFOAM-v2006-foss-2020a.eb --robot
+unset OMPI_MCA_rmaps_base_oversubscribe
 check_exit_code $? "${ok_msg}" "${fail_msg}"
 
 
