@@ -11,6 +11,8 @@ software:
         versions:
           2020.1:
             versionsuffix: -Python-3.8.2
+          2020.4:
+            versionsuffix: -Python-3.8.2
   OpenFOAM:
     toolchains:
       foss-2020a:

@@ -263,7 +263,7 @@ check_exit_code $? "${ok_msg}" "${fail_msg}"
 echo ">> Installing GROMACS..."
 ok_msg="GROMACS installed, wow!"
 fail_msg="Installation of GROMACS failed, damned..."
-$EB GROMACS-2020.1-foss-2020a-Python-3.8.2.eb --robot
+$EB GROMACS-2020.1-foss-2020a-Python-3.8.2.eb GROMACS-2020.4-foss-2020a-Python-3.8.2.eb --robot
 check_exit_code $? "${ok_msg}" "${fail_msg}"
 
 # note: compiling OpenFOAM is memory hungry (16GB is not enough with 8 cores)!
