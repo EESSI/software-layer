@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-# Script to install EESSI pilot software stack (version 2021.02)
+# Script to install EESSI pilot software stack (version 2021.03)
 #
 
 TOPDIR=$(dirname $(realpath $0))
@@ -45,7 +45,7 @@ TMPDIR=$(mktemp -d)
 
 echo ">> Setting up environment..."
 export CVMFS_REPO="/cvmfs/pilot.eessi-hpc.org"
-export EESSI_PILOT_VERSION="2021.02"
+export EESSI_PILOT_VERSION="2021.03"
 
 if [[ $(uname -s) == 'Linux' ]]; then
     export EESSI_OS_TYPE='linux'
@@ -172,7 +172,7 @@ else
     fi
 fi
 
-REQ_EB_VERSION='4.3.3'
+REQ_EB_VERSION='4.3.4'
 echo ">> Loading EasyBuild module..."
 module load EasyBuild
 eb_show_system_info_out=${TMPDIR}/eb_show_system_info.out
@@ -278,7 +278,9 @@ check_exit_code $? "${ok_msg}" "${fail_msg}"
 echo ">> Installing R 4.0.0 (better be patient)..."
 ok_msg="R installed, wow!"
 fail_msg="Installation of R failed, so sad..."
-$EB R-4.0.0-foss-2020a.eb --robot
+# define $TZ to avoid problems when installing rstan extension,
+# see https://github.com/stan-dev/rstan/issues/612
+TZ=UTC $EB R-4.0.0-foss-2020a.eb --robot
 check_exit_code $? "${ok_msg}" "${fail_msg}"
 
 echo ">> Installing Bioconductor 3.11 bundle..."
@@ -307,22 +309,44 @@ if [ ! "${EESSI_CPU_FAMILY}" = "ppc64le" ]; then
     check_exit_code $? "${ok_msg}" "${fail_msg}"
 fi
 
-echo ">> Installing ReFrame 3.4.1 ..."
-$EB ReFrame-3.4.1.eb --robot
+echo ">> Installing ReFrame 3.5.1 ..."
 ok_msg="ReFrame installed, enjoy!"
 fail_msg="Installation of ReFrame failed, that's a bit strange..."
+# note: newer PythonPackage easyblock required to ensure auto-download of sources works
+$EB ReFrame-3.5.1.eb --robot
 check_exit_code $? "${ok_msg}" "${fail_msg}"
 
 echo ">> Installing RStudio-Server 1.3.1093..."
-$EB RStudio-Server-1.3.1093-foss-2020a-Java-11-R-4.0.0.eb --robot
 ok_msg="RStudio-Server installed, enjoy!"
 fail_msg="Installation of RStudio-Server failed, might be OS deps..."
+$EB --from-pr 12544 RStudio-Server-1.3.1093-foss-2020a-Java-11-R-4.0.0.eb --robot
 check_exit_code $? "${ok_msg}" "${fail_msg}"
 
 echo ">> Installing OSU-Micro-Benchmarks 5.6.3..."
 ok_msg="OSU-Micro-Benchmarks installed, yihaa!"
-fail_msg="Installation of OSU-Micro-Benchmarks, that's unexpected..."
+fail_msg="Installation of OSU-Micro-Benchmarks failed, that's unexpected..."
 $EB OSU-Micro-Benchmarks-5.6.3-gompi-2020a.eb -r
+check_exit_code $? "${ok_msg}" "${fail_msg}"
+
+# Arrow 0.17.1 (dependency of Spark) needs a fix on aarch64
+# may not be necessary for newer versions:
+# https://github.com/apache/arrow/pull/7982
+echo ">> Installing Arrow 0.17.1..."
+ok_msg="Arrow installed, enjoy!"
+fail_msg="Installation of Arrow failed..."
+$EB --from-pr 12640 Arrow-0.17.1-foss-2020a-Python-3.8.2.eb -r
+check_exit_code $? "${ok_msg}" "${fail_msg}"
+
+echo ">> Installing Spark 3.1.1..."
+ok_msg="Spark installed, set off the fireworks!"
+fail_msg="Installation of Spark failed, no fireworks this time..."
+$EB --from-pr 12640 Spark-3.1.1-foss-2020a-Python-3.8.2.eb -r
+check_exit_code $? "${ok_msg}" "${fail_msg}"
+
+echo ">> Installing IPython 7.15.0..."
+ok_msg="IPython installed, launch your Jupyter Notebooks!"
+fail_msg="Installation of IPython failed, that's unexpected..."
+$EB IPython-7.15.0-foss-2020a-Python-3.8.2.eb -r
 check_exit_code $? "${ok_msg}" "${fail_msg}"
 
 echo ">> Creating/updating Lmod cache..."
@@ -342,6 +366,24 @@ ${LMOD_DIR}/update_lmod_system_cache_files -d ${lmod_cache_dir} -t ${lmod_cache_
 check_exit_code $? "Lmod cache updated" "Lmod cache update failed!"
 
 ls -lrt ${EASYBUILD_INSTALLPATH}/.lmod/cache
+
+# temporarily install PyYAML in a temporary directory, and make sure it's picked up
+# this can be removed when https://github.com/EESSI/compatibility-layer/issues/95 is fixed
+ok_msg="PyYAML installed in $TMPDIR"
+fail_msg="PyYAML failed to install in $TMPDIR, what the..."
+pip_install_pyyaml_out=$TMPDIR/pip_pyyaml.out
+pip install --prefix $TMPDIR PyYAML &> ${pip_install_pyyaml_out}
+check_exit_code $? "${ok_msg}" "${fail_msg}"
+export PYTHONPATH=$(ls -1 -d $TMPDIR/lib*/python*/site-packages):$PYTHONPATH
+echo "PYTHONPATH=$PYTHONPATH"
+
+echo ">> Checking for missing installations..."
+ok_msg="No missing installations, party time!"
+fail_msg="On no, some installations are still missing, how did that happen?!"
+eb_missing_out=$TMPDIR/eb_missing.out
+$EB --easystack eessi-2021.03.yml --experimental --missing --robot $EASYBUILD_PREFIX/ebfiles_repo | tee ${eb_missing_out}
+grep "No missing modules" ${eb_missing_out} > /dev/null
+check_exit_code $? "${ok_msg}" "${fail_msg}"
 
 echo ">> Cleaning up ${TMPDIR}..."
 rm -r ${TMPDIR}

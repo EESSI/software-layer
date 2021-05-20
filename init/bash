@@ -17,7 +17,7 @@ if [ $? -eq 0 ]; then
 
     # init Lmod
     echo "Initializing Lmod..." >> $output
-    source $EESSI_EPREFIX/usr/lmod/*/init/bash
+    source $EESSI_EPREFIX/usr/share/Lmod/init/bash
 
     # prepend location of modules for EESSI software stack to $MODULEPATH
     echo "Prepending $EESSI_MODULEPATH to \$MODULEPATH..." >> $output

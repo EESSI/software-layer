@@ -8,7 +8,7 @@ from eessi_software_subdir_for_host import find_best_target
 
 def prep_tmpdir(tmpdir, subdirs):
     for subdir in subdirs:
-        os.makedirs(os.path.join(tmpdir, 'software', subdir), exist_ok=True)
+        os.makedirs(os.path.join(tmpdir, 'software', 'linux', subdir), exist_ok=True)
 
 
 def test_prefix_does_not_exist(capsys, tmpdir):
@@ -19,7 +19,7 @@ def test_prefix_does_not_exist(capsys, tmpdir):
 
     captured = capsys.readouterr()
     assert captured.out == ''
-    assert re.match('^ERROR: Specified prefix ".*/software" does not exist!$', captured.err)
+    assert re.match('^ERROR: Specified prefix ".*/software/linux" does not exist!$', captured.err)
 
 
 def test_no_targets(tmpdir, capsys):
@@ -75,7 +75,7 @@ def test_broadwell_host(tmpdir, capsys, monkeypatch):
     assert find_best_target(tmpdir) == 'x86_64/intel/haswell'
 
     expected = ['cascadelake', 'haswell', 'ivybridge', 'nehalem', 'no_such_intel_cpu', 'sandybridge', 'skylake']
-    assert sorted(os.listdir(os.path.join(tmpdir, 'software', 'x86_64', 'intel'))) == expected
+    assert sorted(os.listdir(os.path.join(tmpdir, 'software', 'linux', 'x86_64', 'intel'))) == expected
 
     # exact match, no better target than this
     prep_tmpdir(tmpdir, ['x86_64/intel/broadwell'])
