@@ -277,6 +277,7 @@ check_exit_code $? "${ok_msg}" "${fail_msg}"
 echo ">> Installing QuantumESPRESSO..."
 ok_msg="QuantumESPRESSO installed, let's go quantum!"
 fail_msg="Installing QuantumESPRESSO failed, did somebody observe it?!"
+$EB --fetch --from-pr 12700 ELPA-2019.11.001-foss-2020a.eb
 # see https://github.com/easybuilders/easybuild-easyconfigs/pull/12911
 $EB --from-pr 12911 QuantumESPRESSO-6.6-foss-2020a.eb --robot
 check_exit_code $? "${ok_msg}" "${fail_msg}"
