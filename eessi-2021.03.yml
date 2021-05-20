@@ -19,6 +19,10 @@ software:
      toolchains:
        gompi-2020a:
          versions: [5.6.3]
+  QuantumESPRESSO:
+     toolchains:
+       foss-2020a:
+         versions: ['6.6']
   TensorFlow:
     toolchains:
       foss-2020a:
