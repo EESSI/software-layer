@@ -282,7 +282,7 @@ $EB --fetch --from-pr 12700 ELPA-2019.11.001-foss-2020a.eb
 
 # see https://github.com/easybuilders/easybuild-easyconfigs/pull/12912
 ok_msg="libxc installed, one down..."
-fail_msg="Installing libxc failed, ugh..."
+fail_msg="Installation of libxc failed, ugh..."
 $EB --from-pr 12912 libxc-4.3.4-GCC-9.3.0.eb --robot
 check_exit_code $? "${ok_msg}" "${fail_msg}"
 
