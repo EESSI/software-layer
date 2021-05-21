@@ -287,7 +287,7 @@ $EB --from-pr 12912 libxc-4.3.4-GCC-9.3.0.eb --robot
 check_exit_code $? "${ok_msg}" "${fail_msg}"
 
 ok_msg="QuantumESPRESSO installed, let's go quantum!"
-fail_msg="Installing QuantumESPRESSO failed, did somebody observe it?!"
+fail_msg="Installation of QuantumESPRESSO failed, did somebody observe it?!"
 # see https://github.com/easybuilders/easybuild-easyconfigs/pull/12911
 $EB --from-pr 12911 QuantumESPRESSO-6.6-foss-2020a.eb --robot
 check_exit_code $? "${ok_msg}" "${fail_msg}"
