@@ -313,6 +313,12 @@ if [ ! "${EESSI_CPU_FAMILY}" = "ppc64le" ]; then
     $EB TensorFlow-2.3.1-foss-2020a-Python-3.8.2.eb --robot --include-easyblocks-from-pr 2218
     check_exit_code $? "${ok_msg}" "${fail_msg}"
 
+    echo ">> Installing Horovod 0.21.3..."
+    ok_msg="Horovod installed! Go do some parallel training!"
+    fail_msg="Horovod installation failed. There comes the headache..."
+    $EB Horovod-0.21.3-foss-2020a-TensorFlow-2.3.1-Python-3.8.2.eb --robot --from-pr 12543
+    check_exit_code $? "${ok_msg}" "${fail_msg}"
+
     echo ">> Installing code-server 3.7.3..."
     ok_msg="code-server 3.7.3 installed, now you can use VS Code!"
     fail_msg="Installation of code-server failed, that's going to be hard to fix..."
