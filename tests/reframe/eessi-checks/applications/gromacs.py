@@ -16,11 +16,10 @@ class Gromacs_EESSI(Gromacs):
     scale = parameter(['singlenode', 'small', 'large'])
     module_info = parameter(find_modules('GROMACS', environ_mapping={r'.*': 'builtin'}))
 
-    valid_systems = ['*']
-
     @rfm.run_after('init')
     def apply_module_info(self):
         self.s, self.e, self.m = self.module_info
+        self.valid_systems = [self.s]
         self.modules = [self.m]
         self.valid_prog_environs = [self.e]
 
@@ -59,7 +58,7 @@ class Gromacs_EESSI(Gromacs):
     # (though these would run fine, one is usually not interested in them)
     @rfm.run_after('setup')
     def skip_cpu_tests_on_gpu_nodes(self):
-        skip = ((len(self.gpu_list) > 1) and not self.requires_cuda)
+        skip = ((len(self.gpu_list) >= 1) and not self.requires_cuda)
         if skip:
             print("GPU is present on this partition, skipping CPU-based test")
             self.skip_if(True)
