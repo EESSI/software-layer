@@ -8,9 +8,10 @@ from testlib.applications.gromacs import Gromacs
 @rfm.simple_test
 class Gromacs_EESSI(Gromacs):
     '''EESSI Gromacs check.
-    This test supports CPU and GPU based GROMACS modules.
-    For GPU based modules, it assumes 'cuda' is in the module name (case insensitive).
-    The test then only runs on ReFrame partitions that have a 'gpu' device specified in the ReFrame config file.
+    This test will run GROMACS using all modules with 'GROMACS' in the module environment it can find.
+    On GPU nodes, it will only run tests if module names also contain 'cuda'.
+    On CPU nodes, it will only run tests if a module name does NOT contain 'cuda'.
+    Whether a nodes is CPU/GPU is determined based on if a device named 'gpu' is specified in the ReFrame settings file for a certain partition. 
     '''
 
     scale = parameter(['singlenode', 'small', 'large'])
