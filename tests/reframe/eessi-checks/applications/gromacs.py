@@ -1,21 +1,17 @@
+import re
 import reframe as rfm
 from reframe.utility import find_modules
 
 from testlib.applications.gromacs import Gromacs
 
-# TODO: we use the programming environment as a surrogate for selecting the partitions
-# that have e.g. GPU support (since they have fosscuda as valid programming env).
-# We'd like to set valid_prog_environs to builtin and use another selection mechanism
-# such as by specifying which resources are required from the current_partition
-#find_modules_partial = functools.partial(find_modules, environ_mapping={
-#    r'.*-foss-.*': 'foss',
-#    r'.*-fosscuda-.*': 'fosscuda',
-#})
-
 @rfm.required_version('>=3.5.0')
 @rfm.simple_test
 class Gromacs_EESSI(Gromacs):
-    '''EESSI Gromacs check'''
+    '''EESSI Gromacs check.
+    This test supports CPU and GPU based GROMACS modules.
+    For GPU based modules, it assumes 'cuda' is in the module name (case insensitive).
+    The test then only runs on ReFrame partitions that have a 'gpu' device specified in the ReFrame config file.
+    '''
 
     scale = parameter(['singlenode', 'small', 'large'])
     module_info = parameter(find_modules('GROMACS', environ_mapping={r'.*': 'builtin'}))
@@ -24,9 +20,9 @@ class Gromacs_EESSI(Gromacs):
 
     @rfm.run_after('init')
     def apply_module_info(self):
-        s, e, m = self.module_info
-        self.modules = [m]
-        self.valid_prog_environs = [e]
+        self.s, self.e, self.m = self.module_info
+        self.modules = [self.m]
+        self.valid_prog_environs = [self.e]
 
     @rfm.run_after('init')
     def set_test_scale(self):
@@ -41,14 +37,36 @@ class Gromacs_EESSI(Gromacs):
             self.num_nodes = 10
         self.tags.add(self.scale)
 
-    @rfm.run_after('setup')
-    def set_num_tasks(self):
-        self.num_tasks_per_node = self.current_partition.processor.num_cpus
-        self.num_tasks = self.num_nodes * self.num_tasks_per_node
+    @rfm.run_after('init')
+    def requires_gpu(self):
+        self.requires_cuda = False
+        if re.search("(?i)cuda", self.m) is not None:
+            self.requires_cuda = True
 
     @rfm.run_after('setup')
+    def check_gpu_presence(self):
+        self.gpu_list = [ dev.num_devices for dev in self.current_partition.devices if dev.device_type == 'gpu' ]
+
+    # Skip test if the module name suggests a GPU to be required, but no GPU is present in the current partition
+    @rfm.run_after('setup')
     def skip_if_no_gpu(self):
-        device_count = [ dev.num_devices for dev in self.current_partition.devices if dev.device_type == 'gpu' ]
-        loaded_modules = self.current_system.modules_system.loaded_modules()
-        print(f"loaded_modules: {loaded_modules}")
-        self.skip_if(device_count == 0)
+        skip = (self.requires_cuda and (len(self.gpu_list) == 0))
+        if skip:
+            print("Test requires CUDA, but no GPU is present in this partition. Skipping test...")
+            self.skip_if(True)
+    # TODO: should we also skip tests if test does NOT require CUDA but len(self.gpu_list)>0?
+
+    @rfm.run_after('setup')
+    def set_num_tasks(self):
+        if self.requires_cuda:
+            # Test doesn't know what to do if multiple DIFFERENT GPU devices are present in a single ReFrame (virtual) partition
+            assert(len(self.gpu_list) == 1)
+            self.num_tasks_per_node = self.gpu_list[0]
+            self.num_cpus_per_task = int(self.current_partition.processor.num_cpus / self.num_tasks_per_node)
+        else:
+            self.num_tasks_per_node = self.current_partition.processor.num_cpus
+            self.num_cpus_per_task = 1
+        self.num_tasks = self.num_nodes * self.num_tasks_per_node
+        self.variables = {
+            'OMP_NUM_THREADS': f'{self.num_cpus_per_task}',
+        }
