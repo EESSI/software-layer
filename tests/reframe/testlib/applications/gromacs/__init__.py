@@ -7,13 +7,14 @@ import reframe.utility.sanity as sn
 class Gromacs(rfm.RunOnlyRegressionTest, pin_prefix=True):
     '''Gromacs benchmark based on Prace Benchmark Suite GROMACS case A.
 
-    Derived tests must specify the variables ``num_tasks``, ``num_tasks_per_node``, ``nsteps`` and ``modules``.
+    Derived tests must specify the variables ``num_tasks``, ``num_tasks_per_node``, ``num_cpus_per_task``, ``nsteps`` and ``modules``.
     Note that a sufficiently large ``nsteps`` needs to be defined in order for GROMACS to pass the load balancing phase.
     As a rough estimate: 10000 steps would generally be ok for 24 tasks, a 100000 steps for 240 tasks, etc.
     '''
 
     num_tasks = required
     num_tasks_per_node = required
+    num_cpus_per_task = required
     nsteps = required
     modules = required
 
@@ -34,6 +35,12 @@ class Gromacs(rfm.RunOnlyRegressionTest, pin_prefix=True):
         '''Set the executable opts, with correct nsteps'''
         self.executable_opts = ['mdrun', '-s ion_channel.tpr', '-maxh 0.50',
                 '-resethway', '-noconfout', '-nsteps %s ' % self.nsteps]
+
+    @rfm.run_before('run')
+    def set_omp_num_threads(self):
+        self.variables = {
+            'OMP_NUM_THREADS': f'{self.num_cpus_per_task}',
+    }
 
     @rfm.run_before('performance')
     def set_perf_patterns(self):

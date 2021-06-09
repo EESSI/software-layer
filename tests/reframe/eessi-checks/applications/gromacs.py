@@ -47,14 +47,22 @@ class Gromacs_EESSI(Gromacs):
     def check_gpu_presence(self):
         self.gpu_list = [ dev.num_devices for dev in self.current_partition.devices if dev.device_type == 'gpu' ]
 
-    # Skip test if the module name suggests a GPU to be required, but no GPU is present in the current partition
+    # Skip testing GPU-based modules on CPU-based nodes
     @rfm.run_after('setup')
-    def skip_if_no_gpu(self):
+    def skip_gpu_test_on_cpu_nodes(self):
         skip = (self.requires_cuda and (len(self.gpu_list) == 0))
         if skip:
             print("Test requires CUDA, but no GPU is present in this partition. Skipping test...")
             self.skip_if(True)
-    # TODO: should we also skip tests if test does NOT require CUDA but len(self.gpu_list)>0?
+
+    # Skip testing CPU-based modules on GPU-based nodes
+    # (though these would run fine, one is usually not interested in them)
+    @rfm.run_after('setup')
+    def skip_cpu_tests_on_gpu_nodes(self):
+        skip = ((len(self.gpu_list) > 1) and not self.requires_cuda)
+        if skip:
+            print("GPU is present on this partition, skipping CPU-based test")
+            self.skip_if(True)
 
     @rfm.run_after('setup')
     def set_num_tasks(self):
@@ -67,6 +75,3 @@ class Gromacs_EESSI(Gromacs):
             self.num_tasks_per_node = self.current_partition.processor.num_cpus
             self.num_cpus_per_task = 1
         self.num_tasks = self.num_nodes * self.num_tasks_per_node
-        self.variables = {
-            'OMP_NUM_THREADS': f'{self.num_cpus_per_task}',
-        }
