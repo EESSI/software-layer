@@ -11,7 +11,8 @@ class Gromacs_EESSI(Gromacs):
     This test will run GROMACS using all modules with 'GROMACS' in the module environment it can find.
     On GPU nodes, it will only run tests if module names also contain 'cuda'.
     On CPU nodes, it will only run tests if a module name does NOT contain 'cuda'.
-    Whether a nodes is CPU/GPU is determined based on if a device named 'gpu' is specified in the ReFrame settings file for a certain partition. 
+    Whether a nodes is CPU/GPU is determined based on if a device named 'gpu' is specified in the ReFrame settings file for the current partition.
+    Number of tasks, tasks per node and cpus per task are set based on the number of GPUs and number of CPUs specified in the ReFrame config file for the current partition. 
     '''
 
     scale = parameter(['singlenode', 'small', 'large'])
