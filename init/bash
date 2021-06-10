@@ -1,57 +1,35 @@
-export EESSI_PILOT_VERSION="2020.10"
-export PS1="[EESSI pilot $EESSI_PILOT_VERSION] $ "
-
-export EESSI_PREFIX=/cvmfs/pilot.eessi-hpc.org/$EESSI_PILOT_VERSION
-if [ -d $EESSI_PREFIX ]; then
-  echo "Found EESSI pilot repo @ $EESSI_PREFIX!"
-
-  export EPREFIX=$EESSI_PREFIX/compat/$(uname -m)
-  if [ -d $EPREFIX ]; then
-
-    # determine subdirectory in software layer
-    # note: eessi_software_subdir_for_host.py will pick up value from $EESSI_SOFTWARE_SUBDIR_OVERRIDE if it's defined!
-    EESSI_PYTHON=$EPREFIX/usr/bin/python3
-    export EESSI_SOFTWARE_SUBDIR=$($EESSI_PYTHON ${EESSI_PREFIX}/init/eessi_software_subdir_for_host.py $EESSI_PREFIX)
-    if [ ! -z $EESSI_SOFTWARE_SUBDIR ]; then
-
-        echo "Using ${EESSI_SOFTWARE_SUBDIR} as software subdirectory."
-        export EESSI_SOFTWARE_PATH=$EESSI_PREFIX/software/$EESSI_SOFTWARE_SUBDIR
-        if [ -d $EESSI_SOFTWARE_PATH ]; then
-
-          # init Lmod
-          echo "Initializing Lmod..."
-          source $EPREFIX/usr/lmod/*/init/bash
-
-          # prepend location of modules for EESSI software stack to $MODULEPATH
-          export EESSI_MODULEPATH=$EESSI_SOFTWARE_PATH/modules/all
-          echo "Prepending $EESSI_MODULEPATH to \$MODULEPATH..."
-          module use $EESSI_MODULEPATH
-
-          echo
-          echo "*** Known problems in the ${EESSI_PILOT_VERSION} pilot software stack ***"
-          echo
-          echo "1) No Lmod cache has been generated yet for the module files included"
-          echo "   in the ${EESSI_PILOT_VERSION} pilot software stack."
-          echo "   As a result, 'module' commands may be somewhat slow."
-          echo "   (see also https://github.com/EESSI/software-layer/issues/10)"
-          echo
-          echo
-
-          echo "Environment set up to use EESSI pilot software stack, have fun!"
-
-        else
-          echo "ERROR: EESSI software layer at $EESSI_SOFTWARE_PATH not found!" >&2
-          false
-        fi
-    else
-        echo "ERROR: no value set for \$EESSI_SOFTWARE_SUBDIR" >&2
-        false
-    fi
-  else
-    echo "ERROR: Compatibility layer directory %s not found!" >&2
-    false
-  fi
+# Allow for a silent mode
+if [[ -v EESSI_SILENT ]]; then
+  # EESSI_SILENT set
+  output=/dev/null
 else
-  echo "ERROR: EESSI pilot repository at $EESSI_PREFIX not found!" >&2
-  false
+  output=/dev/stdout
+fi
+
+# The following method should be safe, but might break if file is a symlink
+# (could switch to $(dirname "$(readlink -f "$BASH_SOURCE")") in that case)
+source $(dirname "$BASH_SOURCE")/eessi_environment_variables
+
+# only continue if setting EESSI environment variables worked fine
+if [ $? -eq 0 ]; then
+
+    export PS1="[EESSI pilot $EESSI_PILOT_VERSION] $ "
+
+    # init Lmod
+    echo "Initializing Lmod..." >> $output
+    source $EESSI_EPREFIX/usr/share/Lmod/init/bash
+
+    # prepend location of modules for EESSI software stack to $MODULEPATH
+    echo "Prepending $EESSI_MODULEPATH to \$MODULEPATH..." >> $output
+    module use $EESSI_MODULEPATH
+
+    #echo >> $output
+    #echo "*** Known problems in the ${EESSI_PILOT_VERSION} pilot software stack ***" >> $output
+    #echo >> $output
+    #echo "1) ..." >> $output
+    #echo >> $output
+    #echo >> $output
+
+    echo "Environment set up to use EESSI pilot software stack, have fun!" >> $output
+
 fi
