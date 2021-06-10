@@ -5,39 +5,45 @@ site_configuration = {
             'descr': 'This is just an example system',
             'modules_system': 'tmod',
 	    'hostnames': ['login', 'int'],
-	    'partitions': [
-		{
-                    'name': 'short',
+            'partitions': [
+                {
+                    'name': 'cpu',
                     'scheduler': 'slurm',
-	            'launcher': 'srun',
-                    'access':  ['-p short'],
-                    'environs': ['foss', 'container'],
-                    'container_platforms': [
-                        {
-                            'type': 'Singularity',
-                            'modules': [],
-                            'variables': [['SLURM_MPI_TYPE', 'pmix']]
-                        }
-                    ],
+                    'launcher': 'srun',
+                    'access':  ['-p cpu'],
+                    'environs': ['builtin'],
                     'processor': {
-                        'num_cpus': 8,
+                        'num_cpus': 24,
                     },
-                    'descr': 'normal partition'
+                    'descr': 'normal CPU partition'
+                },
+                {
+                    'name': 'gpu',
+                    'descr': 'GPU partition',
+                    'scheduler': 'slurm',
+                    'access':  ['-p gpu'],
+                    'environs': ['builtin'],
+                    'max_jobs': 100,
+                    'launcher': 'srun',
+                    'processor': {
+                        'num_cpus': 16,
+                    },
+                    'devices': [
+                        {
+                            'type': 'gpu',
+                            'num_devices': 2,
+                        },
+                    ],
                 },
              ]
          },
      ],
     'environments': [
         {
-            'name': 'foss',
-	    'modules': ['foss/2020a'],
-            'cc': 'mpicc',
-            'cxx': 'mpicxx',
-            'ftn': 'mpifort',
-        },
-        {
-            'name': 'container',
-            'modules': [],
+            'name': 'builtin',
+            'cc': 'cc',
+            'cxx': '',
+            'ftn': '',
         },
      ],
      'logging': [
