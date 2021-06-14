@@ -2,8 +2,8 @@ import os
 import reframe as rfm
 import reframe.utility.sanity as sn
 
-# 3.5.0 Required for using current_partition.processor
-#@rfm.required_version('>=3.5.0')
+# Cannot currently set required version on a library test
+#@rfm.required_version('>=3.6.2')
 class Gromacs(rfm.RunOnlyRegressionTest, pin_prefix=True):
     '''Gromacs benchmark based on Prace Benchmark Suite GROMACS case A.
 
