@@ -15,8 +15,10 @@ def get_num_gpus(test: rfm.RegressionTest) -> int:
     # we don't know for which to return the device count...
     if(len(gpu_list) != 1):
         raise ValueError(f"Multiple different devices exist with the name " 
-                          "'{gpu_dev_name}' for partition '{self.current_partition.name}'. "
-                          "Cannot determine number of GPUs available for the test.")
+                         f"'{gpu_dev_name}' for partition '{test.current_partition.name}'. "
+                         f"Cannot determine number of GPUs available for the test. "
+                         f"Please check the definition of partition '{test.current_partition.name}' "
+                         f"in your ReFrame config file.")
 
     return gpu_list[0]
 
