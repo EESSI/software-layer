@@ -15,8 +15,7 @@ class Gromacs(rfm.RunOnlyRegressionTest, pin_prefix=True):
     num_tasks = required
     num_tasks_per_node = required
     num_cpus_per_task = required
-    nsteps = required
-    modules = required
+    nsteps = variable(int)
 
     descr = 'GROMACS Prace Benchmark Suite case A'
     use_multithreading = False
@@ -30,19 +29,19 @@ class Gromacs(rfm.RunOnlyRegressionTest, pin_prefix=True):
     }
     maintainers = ['casparvl']
 
-    @rfm.run_before('run')
+    @run_before('run')
     def set_executable_opts(self):
         '''Set the executable opts, with correct nsteps'''
         self.executable_opts = ['mdrun', '-s ion_channel.tpr', '-maxh 0.50',
                 '-resethway', '-noconfout', '-nsteps %s ' % self.nsteps]
 
-    @rfm.run_before('run')
+    @run_before('run')
     def set_omp_num_threads(self):
         self.variables = {
             'OMP_NUM_THREADS': f'{self.num_cpus_per_task}',
     }
 
-    @rfm.run_before('performance')
+    @run_before('performance')
     def set_perf_patterns(self):
         '''Set the perf patterns to report'''
         self.perf_patterns = {
@@ -56,7 +55,7 @@ class Gromacs(rfm.RunOnlyRegressionTest, pin_prefix=True):
                                   r'(\s+\S+){3}\s+(?P<energy>\S+)(\s+\S+){1}\n',
                                   self.output_file, 'energy', float, item=-1)
 
-    @rfm.run_before('sanity')
+    @run_before('sanity')
     def set_sanity_patterns(self):
         self.sanity_patterns = sn.all([
             sn.assert_found('Finished mdrun', self.output_file,
