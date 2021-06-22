@@ -2,20 +2,79 @@
 # see https://docs.easybuild.io/en/latest/Hooks.html
 import os
 
+from easybuild.toolchains.mpi.openmpi import TC_CONSTANT_OPENMPI
 from easybuild.tools.build_log import EasyBuildError, print_msg
+from easybuild.tools.config import build_option, update_build_option
 from easybuild.tools.systemtools import POWER, get_cpu_architecture
+
+
+def get_eessi_envvar(eessi_envvar):
+    """Get an EESSI environment variable from the environment"""
+
+    eessi_envvar_value = os.getenv(eessi_envvar)
+    if eessi_envvar_value is None:
+        raise EasyBuildError("$%s is not defined!", eessi_envvar)
+
+    return eessi_envvar_value
+
+
+def get_rpath_override_dir(software_name):
+    # determine path to installations in software layer via $EESSI_SOFTWARE_PATH
+    eessi_software_subdir = get_eessi_envvar('EESSI_SOFTWARE_PATH')
+    eessi_pilot_version = get_eessi_envvar('EESSI_PILOT_VERSION')
+
+    # construct the rpath override directory
+    rpath_injection_dir = os.path.join(
+        # Make sure we are looking inside the `host_injections` directory
+        eessi_software_subdir.replace(eessi_pilot_version, os.path.join('host_injections', eessi_pilot_version), 1),
+        # Add the subdirectory for the specific software
+        'rpath_overrides',
+        software_name
+    )
+
+    return rpath_injection_dir
 
 
 def parse_hook(ec, *args, **kwargs):
     """Main parse hook: trigger custom functions based on software name."""
 
     # determine path to Prefix installation in compat layer via $EPREFIX
-    eprefix = os.getenv('EPREFIX')
-    if eprefix is None:
-        raise EasyBuildError("$EPREFIX is not defined!")
+    eprefix = get_eessi_envvar('EPREFIX')
 
     if ec.name in PARSE_HOOKS:
         PARSE_HOOKS[ec.name](ec, eprefix)
+
+
+def pre_ready_hook(self, *args, **kwargs):
+    """Main pre-ready hook: trigger custom functions."""
+
+    # Check if we have OpenMPI as an explicit or implicit dependency
+    openmpi_dep = TC_CONSTANT_OPENMPI.lower() in [dep['name'].lower() for dep in self.cfg.dependencies()]
+    openmpi_in_toolchain = TC_CONSTANT_OPENMPI == self.toolchain.mpi_family()
+    requires_openmpi = openmpi_dep or openmpi_in_toolchain
+
+    # Inject an RPATH override for OpenMPI (if needed)
+    if requires_openmpi:
+        openmpi_rpath_override_dir = get_rpath_override_dir(TC_CONSTANT_OPENMPI)
+
+        # update the relevant option (but keep the original value so we can reset it later)
+        self.rpath_override_dirs = build_option('rpath_override_dirs')
+        if self.rpath_override_dirs:
+            rpath_override_dirs = ':'.join([self.rpath_override_dirs, openmpi_rpath_override_dir])
+        else:
+            rpath_override_dirs = openmpi_rpath_override_dir
+        update_build_option('rpath_override_dirs', rpath_override_dirs)
+        print_msg("Updated rpath_override_dirs (to allow overriding %s): %s", TC_CONSTANT_OPENMPI, rpath_override_dirs)
+
+
+def post_ready_hook(self, *args, **kwargs):
+    """Main post-ready hook: trigger custom functions."""
+
+    if hasattr(self, 'rpath_override_dirs'):
+        # Reset the value of 'rpath_override_dirs' now that we are finished with it
+        update_build_option('rpath_override_dirs', self.rpath_override_dirs)
+        print_msg("Resetting rpath_override_dirs to original value: %s", self.rpath_override_dirs)
+        delattr(self, 'rpath_override_dirs')
 
 
 def cgal_toolchainopts_precise(ec, eprefix):
