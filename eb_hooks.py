@@ -55,9 +55,13 @@ def pre_prepare_hook(self, *args, **kwargs):
         mpi_rpath_override_dir = get_rpath_override_dir(mpi_family)
 
         # update the relevant option (but keep the original value so we can reset it later)
-        self.rpath_override_dirs = build_option('rpath_override_dirs')
-        if self.rpath_override_dirs:
-            rpath_override_dirs = ':'.join([self.rpath_override_dirs, mpi_rpath_override_dir])
+        if hasattr(self, EESSI_RPATH_OVERRIDE_ATTR):
+            raise EasyBuildError("'self' already has attribute %s! Can't use pre_prepare hook.",
+                                 EESSI_RPATH_OVERRIDE_ATTR)
+
+        setattr(self, EESSI_RPATH_OVERRIDE_ATTR, build_option('rpath_override_dirs'))
+        if self[EESSI_RPATH_OVERRIDE_ATTR]:
+            rpath_override_dirs = ':'.join([self[EESSI_RPATH_OVERRIDE_ATTR], mpi_rpath_override_dir])
         else:
             rpath_override_dirs = mpi_rpath_override_dir
         update_build_option('rpath_override_dirs', rpath_override_dirs)
@@ -68,11 +72,11 @@ def pre_prepare_hook(self, *args, **kwargs):
 def post_prepare_hook(self, *args, **kwargs):
     """Main post-ready hook: trigger custom functions."""
 
-    if hasattr(self, 'rpath_override_dirs'):
+    if hasattr(self, EESSI_RPATH_OVERRIDE_ATTR):
         # Reset the value of 'rpath_override_dirs' now that we are finished with it
-        update_build_option('rpath_override_dirs', self.rpath_override_dirs)
-        print_msg("Resetting rpath_override_dirs to original value: %s", self.rpath_override_dirs)
-        delattr(self, 'rpath_override_dirs')
+        update_build_option('rpath_override_dirs', getattr(self, EESSI_RPATH_OVERRIDE_ATTR))
+        print_msg("Resetting rpath_override_dirs to original value: %s", getattr(self, EESSI_RPATH_OVERRIDE_ATTR))
+        delattr(self, EESSI_RPATH_OVERRIDE_ATTR)
 
 
 def cgal_toolchainopts_precise(ec, eprefix):
@@ -114,3 +118,5 @@ PARSE_HOOKS = {
     'fontconfig': fontconfig_add_fonts,
     'UCX': ucx_eprefix,
 }
+
+EESSI_RPATH_OVERRIDE_ATTR = 'orig_rpath_override_dirs'
