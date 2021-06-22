@@ -45,7 +45,7 @@ def parse_hook(ec, *args, **kwargs):
 
 
 def pre_prepare_hook(self, *args, **kwargs):
-    """Main pre-ready hook: trigger custom functions."""
+    """Main pre-prepare hook: trigger custom functions."""
 
     # Check if we have an MPI family in the toolchain (returns None if there is not)
     mpi_family = self.toolchain.mpi_family()
@@ -70,7 +70,7 @@ def pre_prepare_hook(self, *args, **kwargs):
 
 
 def post_prepare_hook(self, *args, **kwargs):
-    """Main post-ready hook: trigger custom functions."""
+    """Main post-prepare hook: trigger custom functions."""
 
     if hasattr(self, EESSI_RPATH_OVERRIDE_ATTR):
         # Reset the value of 'rpath_override_dirs' now that we are finished with it
