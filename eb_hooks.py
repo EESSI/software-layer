@@ -2,7 +2,6 @@
 # see https://docs.easybuild.io/en/latest/Hooks.html
 import os
 
-from easybuild.toolchains.mpi.openmpi import TC_CONSTANT_OPENMPI
 from easybuild.tools.build_log import EasyBuildError, print_msg
 from easybuild.tools.config import build_option, update_build_option
 from easybuild.tools.systemtools import POWER, get_cpu_architecture
@@ -62,7 +61,8 @@ def pre_ready_hook(self, *args, **kwargs):
         else:
             rpath_override_dirs = mpi_rpath_override_dir
         update_build_option('rpath_override_dirs', rpath_override_dirs)
-        print_msg("Updated rpath_override_dirs (to allow overriding %s): %s", TC_CONSTANT_OPENMPI, rpath_override_dirs)
+        print_msg("Updated rpath_override_dirs (to allow overriding MPI family %s): %s",
+                  mpi_family, rpath_override_dirs)
 
 
 def post_ready_hook(self, *args, **kwargs):
