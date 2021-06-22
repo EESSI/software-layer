@@ -60,8 +60,8 @@ def pre_prepare_hook(self, *args, **kwargs):
                                  EESSI_RPATH_OVERRIDE_ATTR)
 
         setattr(self, EESSI_RPATH_OVERRIDE_ATTR, build_option('rpath_override_dirs'))
-        if self[EESSI_RPATH_OVERRIDE_ATTR]:
-            rpath_override_dirs = ':'.join([self[EESSI_RPATH_OVERRIDE_ATTR], mpi_rpath_override_dir])
+        if getattr(self, EESSI_RPATH_OVERRIDE_ATTR):
+            rpath_override_dirs = ':'.join([getattr(self, EESSI_RPATH_OVERRIDE_ATTR), mpi_rpath_override_dir])
         else:
             rpath_override_dirs = mpi_rpath_override_dir
         update_build_option('rpath_override_dirs', rpath_override_dirs)
