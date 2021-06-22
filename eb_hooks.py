@@ -48,21 +48,19 @@ def parse_hook(ec, *args, **kwargs):
 def pre_ready_hook(self, *args, **kwargs):
     """Main pre-ready hook: trigger custom functions."""
 
-    # Check if we have OpenMPI as an explicit or implicit dependency
-    openmpi_dep = TC_CONSTANT_OPENMPI.lower() in [dep['name'].lower() for dep in self.cfg.dependencies()]
-    openmpi_in_toolchain = TC_CONSTANT_OPENMPI == self.toolchain.mpi_family()
-    requires_openmpi = openmpi_dep or openmpi_in_toolchain
+    # Check if we have an MPI family in the toolchain (returns None if there is not)
+    mpi_family = self.toolchain.mpi_family()
 
-    # Inject an RPATH override for OpenMPI (if needed)
-    if requires_openmpi:
-        openmpi_rpath_override_dir = get_rpath_override_dir(TC_CONSTANT_OPENMPI)
+    # Inject an RPATH override for MPI (if needed)
+    if mpi_family:
+        mpi_rpath_override_dir = get_rpath_override_dir(mpi_family)
 
         # update the relevant option (but keep the original value so we can reset it later)
         self.rpath_override_dirs = build_option('rpath_override_dirs')
         if self.rpath_override_dirs:
-            rpath_override_dirs = ':'.join([self.rpath_override_dirs, openmpi_rpath_override_dir])
+            rpath_override_dirs = ':'.join([self.rpath_override_dirs, mpi_rpath_override_dir])
         else:
-            rpath_override_dirs = openmpi_rpath_override_dir
+            rpath_override_dirs = mpi_rpath_override_dir
         update_build_option('rpath_override_dirs', rpath_override_dirs)
         print_msg("Updated rpath_override_dirs (to allow overriding %s): %s", TC_CONSTANT_OPENMPI, rpath_override_dirs)
 
