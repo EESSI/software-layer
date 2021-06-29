@@ -2,12 +2,13 @@
 
 set -e
 
-if [ $# -ne 2 ]; then
-    echo "ERROR: Usage: $0 <pilot version (example: 2021.03)> <CPU arch subdir (example: x86_64/amd/zen2)" >&2
+if [ $# -ne 3 ]; then
+    echo "ERROR: Usage: $0 <pilot version (example: 2021.03)> <CPU arch subdir (example: x86_64/amd/zen2)> <path to tarball>" >&2
     exit 1
 fi
 pilot_version=$1
 cpu_arch_subdir=$2
+target_tgz=$3
 
 tmpdir=`mktemp -d`
 echo ">> tmpdir: $tmpdir"
@@ -44,8 +45,6 @@ find software/${os}/${cpu_arch_subdir}/modules -type l >> ${files_list}
 ls -d software/${os}/${cpu_arch_subdir}/software/*/* >> ${files_list}
 
 topdir=${cvmfs_repo}/${pilot_version}
-timestamp=`date +%s`
-target_tgz="$HOME/eessi-${pilot_version}-software-${os}-`echo ${cpu_arch_subdir} | tr '/' '-'`-${timestamp}.tar.gz"
 
 echo ">> Creating tarball ${target_tgz} from ${topdir}..."
 tar cfvz ${target_tgz} -C ${topdir} --files-from=${files_list}
