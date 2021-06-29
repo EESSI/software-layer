@@ -11,6 +11,8 @@ shift
 
 tmpdir=$(mktemp -d)
 cp -a $script ${tmpdir}
+tmpscript="$tmpdir/$(basename $script)"
+chmod u+x $tmpscript
 
 export EESSI_TMPDIR=/tmp/$USER/EESSI
 mkdir -p $EESSI_TMPDIR
@@ -23,6 +25,6 @@ export EESSI_PILOT_READONLY="container:cvmfs2 pilot.eessi-hpc.org /cvmfs_ro/pilo
 export EESSI_PILOT_WRITABLE_OVERLAY="container:fuse-overlayfs -o lowerdir=/cvmfs_ro/pilot.eessi-hpc.org -o upperdir=$EESSI_TMPDIR/overlay-upper -o workdir=$EESSI_TMPDIR/overlay-work /cvmfs/pilot.eessi-hpc.org"
 
 echo "singularity exec --fusemount "$EESSI_PILOT_READONLY" --fusemount "$EESSI_PILOT_WRITABLE_OVERLAY" docker://ghcr.io/eessi/build-node:debian10 $tmpdir/$(basename $script) $@"
-singularity exec --fusemount "$EESSI_PILOT_READONLY" --fusemount "$EESSI_PILOT_WRITABLE_OVERLAY" docker://ghcr.io/eessi/build-node:debian10 $tmpdir/$(basename $script) $@
+singularity exec --fusemount "$EESSI_PILOT_READONLY" --fusemount "$EESSI_PILOT_WRITABLE_OVERLAY" docker://ghcr.io/eessi/build-node:debian10 $tmpscript $@
 
 rm -r $tmpdir
