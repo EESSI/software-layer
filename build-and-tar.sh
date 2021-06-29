@@ -2,7 +2,7 @@
 
 set -e
 
-if [ $# -ne 3 ]; then
+if [ $# -ne 2 ]; then
     echo "ERROR: Usage: $0 <pilot version (example: 2021.03)> <CPU arch subdir (example: x86_64/amd/zen2)>" >&2
     exit 1
 fi
