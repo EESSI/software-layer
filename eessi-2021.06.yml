@@ -46,7 +46,7 @@ software:
   ReFrame:
     toolchains:
       SYSTEM:
-        versions: 3.5.1
+        versions: 3.6.2
   code-server:
     toolchains:
       SYSTEM:
