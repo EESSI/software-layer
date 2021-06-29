@@ -40,8 +40,8 @@ echo "software/${os}/${cpu_arch_subdir}/.lmod/cache" > ${files_list}
 find software/${os}/${cpu_arch_subdir}/modules -type f >> ${files_list}
 # module symlinks
 find software/${os}/${cpu_arch_subdir}/modules -type l >> ${files_list}
-# installation directories, exclude EasyBuild (*.pyc files)
-ls -d software/${os}/${cpu_arch_subdir}/software/*/* | grep -v '/software/EasyBuild/' >> ${files_list}
+# installation directories
+ls -d software/${os}/${cpu_arch_subdir}/software/*/* >> ${files_list}
 
 topdir=${cvmfs_repo}/${pilot_version}
 timestamp=`date +%s`
