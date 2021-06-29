@@ -59,6 +59,9 @@ export EESSI_CPU_FAMILY=$(uname -m)
 export EESSI_PREFIX=${CVMFS_REPO}/${EESSI_PILOT_VERSION}
 export EPREFIX=${EESSI_PREFIX}/compat/${EESSI_OS_TYPE}/${EESSI_CPU_FAMILY}
 
+# avoid that pyc files for EasyBuild are stored in EasyBuild installation directory
+export PYTHONPYCACHEPREFIX=$TMPDIR/pycache
+
 DETECTION_PARAMETERS=''
 GENERIC=0
 EB='eb'
