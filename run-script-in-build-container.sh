@@ -2,11 +2,13 @@
 
 set -e
 
-if [ $# -ne 1 ]; then
-    echo "ERROR: Usage: $0 <script to run in container>" >&2
+if [ $# -lt 2 ]; then
+    echo "ERROR: Usage: $0 <path to bash in compat layer> <script to run in container>" >&2
     exit 1
 fi
-script=$1
+bash=$1
+script=$2
+shift
 shift
 
 tmpdir=$(mktemp -d)
@@ -24,7 +26,7 @@ export SINGULARITY_HOME="$EESSI_TMPDIR/home:/home/$USER"
 export EESSI_PILOT_READONLY="container:cvmfs2 pilot.eessi-hpc.org /cvmfs_ro/pilot.eessi-hpc.org"
 export EESSI_PILOT_WRITABLE_OVERLAY="container:fuse-overlayfs -o lowerdir=/cvmfs_ro/pilot.eessi-hpc.org -o upperdir=$EESSI_TMPDIR/overlay-upper -o workdir=$EESSI_TMPDIR/overlay-work /cvmfs/pilot.eessi-hpc.org"
 
-echo "singularity exec --fusemount "$EESSI_PILOT_READONLY" --fusemount "$EESSI_PILOT_WRITABLE_OVERLAY" docker://ghcr.io/eessi/build-node:debian10 $tmpdir/$(basename $script) $@"
-singularity exec --fusemount "$EESSI_PILOT_READONLY" --fusemount "$EESSI_PILOT_WRITABLE_OVERLAY" docker://ghcr.io/eessi/build-node:debian10 $tmpscript $@
+echo "singularity exec --fusemount "$EESSI_PILOT_READONLY" --fusemount "$EESSI_PILOT_WRITABLE_OVERLAY" docker://ghcr.io/eessi/build-node:debian10 $bash -l $tmpscript $@"
+singularity exec --fusemount "$EESSI_PILOT_READONLY" --fusemount "$EESSI_PILOT_WRITABLE_OVERLAY" docker://ghcr.io/eessi/build-node:debian10 $bash -l $tmpscript $@
 
 rm -r $tmpdir
