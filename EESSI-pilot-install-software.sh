@@ -44,20 +44,6 @@ fi
 TMPDIR=$(mktemp -d)
 
 echo ">> Setting up environment..."
-export CVMFS_REPO="/cvmfs/pilot.eessi-hpc.org"
-export EESSI_PILOT_VERSION="2021.03"
-
-if [[ $(uname -s) == 'Linux' ]]; then
-    export EESSI_OS_TYPE='linux'
-else
-    export EESSI_OS_TYPE='macos'
-fi
-
-# aarch64 (Arm 64-bit), ppc64le (POWER 64-bit), x86_64 (x86 64-bit)
-export EESSI_CPU_FAMILY=$(uname -m)
-
-export EESSI_PREFIX=${CVMFS_REPO}/${EESSI_PILOT_VERSION}
-export EPREFIX=${EESSI_PREFIX}/compat/${EESSI_OS_TYPE}/${EESSI_CPU_FAMILY}
 
 DETECTION_PARAMETERS=''
 GENERIC=0
@@ -69,9 +55,24 @@ if [[ "$1" == "--generic" || "$EASYBUILD_OPTARCH" == "GENERIC" ]]; then
     EB='eb --optarch=GENERIC'
 fi
 
+echo ">> Determining software subdirectory to use for current build host..."
+export EESSI_SOFTWARE_SUBDIR_OVERRIDE=$(python3 $TOPDIR/eessi_software_subdir.py $DETECTION_PARAMETERS)
 
-# make sure we're in Prefix environment by which path to 'bash' command
-if [[ $(which bash) = ${EPREFIX}/bin/bash ]]; then
+# Set all the EESSI environment variables (respecting EESSI_SOFTWARE_SUBDIR_OVERRIDE)
+# EESSI_SILENT - be quiet
+# EESSI_BASIC_ENV - give a basic set of envvars
+EESSI_SILENT=1 EESSI_BASIC_ENV=1 source $TOPDIR/init/eessi_environment_variables
+
+if [[ -z ${EESSI_SOFTWARE_SUBDIR} ]]; then
+    error "Failed to determine software subdirectory?!"
+elif [[ "${EESSI_SOFTWARE_SUBDIR}" != "${EESSI_SOFTWARE_SUBDIR_OVERRIDE}" ]]; then
+    error "Values for EESSI_SOFTWARE_SUBDIR_OVERRIDE (${EESSI_SOFTWARE_SUBDIR_OVERRIDE}) and EESSI_SOFTWARE_SUBDIR (${EESSI_SOFTWARE_SUBDIR}) differ!"
+else
+    echo_green ">> Using ${EESSI_SOFTWARE_SUBDIR} as software subdirectory!"
+fi
+
+# make sure we're in Prefix environment by checking $SHELL
+if [[ ${SHELL} = ${EPREFIX}/bin/bash ]]; then
     echo_green ">> It looks like we're in a Gentoo Prefix environment, good!"
 else
     error "Not running in Gentoo Prefix environment, run '${EPREFIX}/startprefix' first!"
@@ -85,14 +86,6 @@ if [[ $? -eq 0 ]]; then
     echo_green ">> Found Lmod ${LMOD_VERSION}"
 else
     error "Failed to initialize Lmod?! (see output in ${ml_version_out}"
-fi
-
-echo ">> Determining software subdirectory to use for current build host..."
-export EESSI_SOFTWARE_SUBDIR=$(python3 $TOPDIR/eessi_software_subdir.py $DETECTION_PARAMETERS)
-if [[ -z ${EESSI_SOFTWARE_SUBDIR} ]]; then
-    error "Failed to determine software subdirectory?!"
-else
-    echo_green ">> Using ${EESSI_SOFTWARE_SUBDIR} as software subdirectory!"
 fi
 
 echo ">> Configuring EasyBuild..."
@@ -129,7 +122,6 @@ if [[ "$EESSI_CPU_FAMILY" == "aarch64" ]]; then
 fi
 
 export EASYBUILD_FILTER_DEPS=$DEPS_TO_FILTER
-
 
 export EASYBUILD_MODULE_EXTENSIONS=1
 
