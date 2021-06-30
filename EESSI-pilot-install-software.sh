@@ -100,6 +100,9 @@ export EASYBUILD_PREFIX=${WORKDIR}/easybuild
 export EASYBUILD_INSTALLPATH=${EESSI_PREFIX}/software/${EESSI_OS_TYPE}/${EESSI_SOFTWARE_SUBDIR}
 export EASYBUILD_SOURCEPATH=${WORKDIR}/easybuild/sources:${EESSI_SOURCEPATH}
 
+# used by hooks, see https://github.com/EESSI/software-layer/pull/116
+export EESSI_SOFTWARE_PATH=$EASYBUILD_INSTALLPATH
+
 # just ignore OS dependencies for now, see https://github.com/easybuilders/easybuild-framework/issues/3430
 export EASYBUILD_IGNORE_OSDEPS=1
 
