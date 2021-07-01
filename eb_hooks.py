@@ -28,7 +28,11 @@ def get_rpath_override_dir(software_name):
         eessi_software_path.replace(eessi_pilot_version, os.path.join('host_injections', eessi_pilot_version), 1),
         # Add the subdirectory for the specific software
         'rpath_overrides',
-        software_name
+        software_name,
+        # We can't know the version, but this allows the use of a symlink to facilitate version upgrades without removing files
+        'system',
+        # Look in a lib subdirectory
+        'lib'
     )
 
     return rpath_injection_dir
