@@ -17,13 +17,13 @@ def get_eessi_envvar(eessi_envvar):
     return eessi_envvar_value
 
 
-def get_rpath_override_dir(software_name):
+def get_rpath_override_dirs(software_name):
     # determine path to installations in software layer via $EESSI_SOFTWARE_PATH
     eessi_software_path = get_eessi_envvar('EESSI_SOFTWARE_PATH')
     eessi_pilot_version = get_eessi_envvar('EESSI_PILOT_VERSION')
 
-    # construct the rpath override directory
-    rpath_injection_dir = os.path.join(
+    # construct the rpath override directory stub
+    rpath_injection_stub = os.path.join(
         # Make sure we are looking inside the `host_injections` directory
         eessi_software_path.replace(eessi_pilot_version, os.path.join('host_injections', eessi_pilot_version), 1),
         # Add the subdirectory for the specific software
@@ -31,11 +31,12 @@ def get_rpath_override_dir(software_name):
         software_name,
         # We can't know the version, but this allows the use of a symlink to facilitate version upgrades without removing files
         'system',
-        # Look in a lib subdirectory
-        'lib'
     )
 
-    return rpath_injection_dir
+    # Allow for libraries in lib or lib64
+    rpath_injection_dirs = [os.path.join(rpath_injection_stub, 'lib'), os.path.join(rpath_injection_stub, 'lib64')]
+
+    return rpath_injection_dirs
 
 
 def parse_hook(ec, *args, **kwargs):
@@ -56,7 +57,8 @@ def pre_prepare_hook(self, *args, **kwargs):
 
     # Inject an RPATH override for MPI (if needed)
     if mpi_family:
-        mpi_rpath_override_dir = get_rpath_override_dir(mpi_family)
+        # Get list of override directories
+        mpi_rpath_override_dirs = get_rpath_override_dirs(mpi_family)
 
         # update the relevant option (but keep the original value so we can reset it later)
         if hasattr(self, EESSI_RPATH_OVERRIDE_ATTR):
@@ -65,9 +67,11 @@ def pre_prepare_hook(self, *args, **kwargs):
 
         setattr(self, EESSI_RPATH_OVERRIDE_ATTR, build_option('rpath_override_dirs'))
         if getattr(self, EESSI_RPATH_OVERRIDE_ATTR):
-            rpath_override_dirs = ':'.join([getattr(self, EESSI_RPATH_OVERRIDE_ATTR), mpi_rpath_override_dir])
+            # self.EESSI_RPATH_OVERRIDE_ATTR is (already) a colon separated string, let's make it a list
+            orig_rpath_override_dirs = [getattr(self, EESSI_RPATH_OVERRIDE_ATTR)]
+            rpath_override_dirs = ':'.join(orig_rpath_override_dirs + mpi_rpath_override_dirs)
         else:
-            rpath_override_dirs = mpi_rpath_override_dir
+            rpath_override_dirs = ':'.join(mpi_rpath_override_dirs)
         update_build_option('rpath_override_dirs', rpath_override_dirs)
         print_msg("Updated rpath_override_dirs (to allow overriding MPI family %s): %s",
                   mpi_family, rpath_override_dirs)
