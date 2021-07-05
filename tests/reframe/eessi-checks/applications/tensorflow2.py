@@ -9,7 +9,46 @@ import eessi_utils.utils as utils
 @rfm.required_version('>=3.6.2')
 @rfm.simple_test
 class TensorFlow2_EESSI(TensorFlow2):
-    '''EESSI TensorFlow 2 check.
+    '''EESSI TensorFlow 2 check, for pure TensorFlow. This test does not support running on multiple nodes'''
+
+    modules = required # Make sure that our apply_module_info hook sets a value
+    module_info = parameter(find_modules('TensorFlow', environ_mapping={r'.*': 'builtin'}))
+    tags = {'singlenode'}
+
+    @run_after('init')
+    def apply_module_info(self):
+        hooks.apply_module_info(test = self, module_info = self.module_info)
+
+    @run_after('setup')
+    def set_device(self):
+        if utils.is_gpu_present(self):
+            self.device = 'gpu'
+        else:
+            self.device = 'cpu'
+
+    # Skip testing GPU-based modules on CPU-based nodes
+    @run_after('setup')
+    def skip_gpu_test_on_cpu_nodes(self):
+        hooks.skip_gpu_test_on_cpu_nodes(self)
+
+    # Skip testing CPU-based modules on GPU-based nodes
+    # (though these would run fine, one is usually not interested in them)
+    @run_after('setup')
+    def skip_cpu_test_on_gpu_nodes(self):
+       hooks.skip_cpu_test_on_gpu_nodes(self)
+
+    # This test uses only OpenMP for parallelism, so simply run on all cores
+    @run_after('setup')
+    def set_num_tasks(self):
+        self.num_tasks = 1
+        self.num_tasks_per_node = 1
+        self.num_cpus_per_task = self.current_partition.processor.num_cpus
+        self.omp_num_threads = self.num_cpus_per_task
+
+@rfm.required_version('>=3.6.2')
+@rfm.simple_test
+class TensorFlow2_Horovod_EESSI(TensorFlow2):
+    '''EESSI TensorFlow 2 check, with multiprocessing support through Horovod.
     This test will run TensorFlow2 using all modules with 'TensorFlow' in the module environment it can find.
     On GPU nodes, it will only run tests if the module names also contain 'cuda'.
     On CPU nodes, it will only run tests if a module name does NOT contain 'cuda'.
@@ -27,10 +66,7 @@ class TensorFlow2_EESSI(TensorFlow2):
 
     @run_after('init')
     def apply_module_info(self):
-        self.s, self.e, self.m = self.module_info
-        self.valid_systems = [self.s]
-        self.modules = [self.m]
-        self.valid_prog_environs = [self.e]
+        hooks.apply_module_info(test = self, module_info = self.module_info)
 
     @run_after('init')
     def set_test_scale(self):

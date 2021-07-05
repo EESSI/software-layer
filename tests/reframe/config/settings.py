@@ -35,30 +35,6 @@ site_configuration = {
                         },
                     ],
                 },
-                {
-                    'name': 'gpu_short',
-                    'scheduler': 'slurm',
-                    'launcher': 'srun',
-                    'access':  ['-p gpu_short'],
-                    'environs': ['fosscuda', 'container'],
-                    'container_platforms': [
-                        {
-                            'type': 'Singularity',
-                            'modules': [],
-                            'variables': [['SLURM_MPI_TYPE', 'pmix']]
-                        }
-                    ],
-                    'processor': {
-                        'num_cpus': 16,
-                    },
-                    'devices': [
-                        {
-                            'type': 'gpu',
-                            'num_devices': 2,
-                        },
-                    ],
-                    'descr': 'gpu partition'
-                },
              ]
          },
      ],

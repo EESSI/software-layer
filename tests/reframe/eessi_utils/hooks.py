@@ -1,5 +1,14 @@
 import reframe as rfm
 import eessi_utils.utils as utils
+from typing import Tuple
+
+def apply_module_info(test: rfm.RegressionTest, module_info: Tuple[str, str, str]):
+    '''Apply module info that was obtained with a find_modules.
+    To work with this hook, module_info should store the return of parameter(find_modules(...))'''
+    sys, env, mod = module_info
+    test.valid_systems = [sys]
+    test.modules = [mod]
+    test.valid_prog_environs = [env]
 
 def skip_cpu_test_on_gpu_nodes(test: rfm.RegressionTest):
     '''Skip test if GPUs are present, but no CUDA is required'''
