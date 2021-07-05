@@ -1,158 +1,69 @@
-# This TensorFlow2 test is intended for single node, single GPU only
-# For multigpu and multinode tests, we use Horovod
-
 import os
 import reframe as rfm
-import reframe.utility.sanity as sn
+from reframe.utility import find_modules
 
-class TensorFlow2Base(rfm.RunOnlyRegressionTest):
+from testlib.applications.tensorflow2 import TensorFlow2
+import eessi_utils.hooks as hooks
+import eessi_utils.utils as utils
 
-    device = parameter(['cpu', 'gpu'])
-
-    def __init__(self):
-        self.valid_systems = ['*']
-
-        self.script = 'tensorflow2_synthetic_benchmark.py'
-        self.model = 'ResNet50'
-        self.batch_size = 32
-
-        self.sanity_patterns = sn.all([
-            sn.assert_found('Benchmark completed', self.stdout),
-        ])
-
-        self.perf_patterns = {
-            'throughput': sn.extractsingle(
-                rf'Total img\/sec on [0-9]+ {self.device.upper()}\(s\): '
-                rf'(?P<throughput>\S+) \S+',
-                self.stdout, 'throughput', float),
-            f'throughput_per_{self.device}': sn.extractsingle(
-                rf'Img\/sec per {self.device.upper()}: (?P<throughput_per_{self.device}>\S+) \S+',
-                self.stdout, f'throughput_per_{self.device}', float)
-        }
-        self.reference = {
-            '*': {
-                'throughput': (None, None, None, 'img/sec'),
-                f'throughput_per_{self.device}': (None, None, None, 'img/sec')
-            }
-        }
-
-        self.tags = {f'{self.device}'}
-
-        self.maintainers = ['casparvl']
-
-
+@rfm.required_version('>=3.6.2')
 @rfm.simple_test
-class TensorFlow2Native(TensorFlow2Base):
-    def __init__(self):
-        super().__init__()
+class TensorFlow2_EESSI(TensorFlow2):
+    '''EESSI TensorFlow 2 check.
+    This test will run TensorFlow2 using all modules with 'TensorFlow' in the module environment it can find.
+    On GPU nodes, it will only run tests if the module names also contain 'cuda'.
+    On CPU nodes, it will only run tests if a module name does NOT contain 'cuda'.
+    Whether a node is CPU/GPU is determined based on if a device named 'gpu' is specified in the ReFrame settings file for the current partition.
+    Number of tasks, tasks per node and cpus per task are set based on the number of GPUs and number of CPUs specified in the ReFrame config file for the current partition.
+    When using multiple CPU nodes, the number of OMP_NUM_THREADS is set to the core count minus 1, to leave one dedicated thread for Horovod.
+    '''
 
-        self.descr = 'TensorFlow 2.X single gpu test. Based on the Horovod tensorflow2_synthetic_benchmark.py example.'
+    modules = required # Make sure that our apply_module_info hook sets a value
+    scale = parameter([
+        ('singlenode', 1),
+        ('small', 4),
+        ('large', 10)])
+    module_info = parameter(find_modules('Horovod', environ_mapping={r'.*': 'builtin'}))
 
-        self.tags.add('native')
-        self.valid_prog_environs = ['*']
+    @run_after('init')
+    def apply_module_info(self):
+        self.s, self.e, self.m = self.module_info
+        self.valid_systems = [self.s]
+        self.modules = [self.m]
+        self.valid_prog_environs = [self.e]
 
-        self.modules = ['TensorFlow']
-        self.executable = 'python'
+    @run_after('init')
+    def set_test_scale(self):
+        scale_variant, self.num_nodes = self.scale
+        self.tags.add(scale_variant)
 
-        self.executable_opts = [
-            f'{self.script}',
-            f'--model {self.model}',
-            f'--batch-size {self.batch_size}',
-            '--num-iters 5',
-            '--num-batches-per-iter 5',
-            '--num-warmup-batches 5',
-        ]
-        if self.device == 'cpu':
-            self.executable_opts.append('--no-cuda')
+    @run_after('setup')
+    def set_device(self):
+        if utils.is_gpu_present(self):
+            self.device = 'gpu'
+        else:
+            self.device = 'cpu'
 
-        self.num_nodes = 1
-        self.num_tasks_per_node = 1
+    # Skip testing GPU-based modules on CPU-based nodes
+    @run_after('setup')
+    def skip_gpu_test_on_cpu_nodes(self):
+        hooks.skip_gpu_test_on_cpu_nodes(self)
 
-        self.tags.add('singlenode')
+    # Skip testing CPU-based modules on GPU-based nodes
+    # (though these would run fine, one is usually not interested in them)
+    @run_after('setup')
+    def skip_cpu_test_on_gpu_nodes(self):
+       hooks.skip_cpu_test_on_gpu_nodes(self)
 
-    # Set OMP_NUM_THREADS based on current partition properties
-    @rfm.run_before('run')
-    def set_num_threads(self):
-        self.num_cpus_per_task = int(self.current_partition.processor.num_cpus / self.num_tasks_per_node)
-        self.variables = {
-            'OMP_NUM_THREADS': f'{self.num_cpus_per_task}',
-        }
-        if self.current_partition.launcher_type == 'mpirun':
-            self.job.launcher.options = ['-x OMP_NUM_THREADS']
-
-class HorovodTensorFlow2Base(TensorFlow2Base):
-
-    scale = parameter(['singlenode', 'small', 'large'])
-
-    def __init__(self):
-        super().__init__()
-
-        if self.scale == 'singlenode':
-            self.num_nodes = 1
-        elif self.scale == 'small':
-            self.num_nodes = 4
-        elif self.scale == 'large':
-            self.num_nodes = 10
-        self.tags.add(self.scale)
-
-    # Set number of tasks and threads (OMP_NUM_THREADS) based on current partition properties
-    @rfm.run_before('run')
+    # Assign num_tasks, num_tasks_per_node and num_cpus_per_task automatically based on current partition's num_cpus and gpus
+    @run_after('setup')
     def set_num_tasks(self):
-        # On CPU nodes, start 1 task per node. On GPU nodes, start 1 task per GPU.
-        if self.device == 'cpu':
-            # For now, keep it simple.
-            # In the future, we may want to launch 1 task per socket,
-            # and bind these tasks to their respective sockets.
-            self.num_tasks_per_node = 1
-        elif self.device == 'gpu':
-            device_count = [ dev.num_devices for dev in self.current_partition.devices if dev.device_type == 'gpu' ]
-            # This test doesn't know what to do if multiple DIFFERENT GPU devices are present in a single partition, so assert that we only found one in the ReFrame config:
-            assert(len(device_count) == 1)
-            self.num_tasks_per_node = device_count[0]
-            # On some resource schedules, you may need to request GPUs explicitely (e.g. --gpus-per-node=4).
-            # The extra_resources allows that to be put in the ReFrame settings file.
-            # See: https://reframe-hpc.readthedocs.io/en/stable/regression_test_api.html?highlight=num_gpus_per_node#reframe.core.pipeline.RegressionTest.extra_resources
-            # If the partition in the reframe settings file doesn't contain a resource with the name 'gpu', the self.extra_resources wil be ignored.
-            self.extra_resources = {
-                'gpu': {'num_gpus_per_node': device_count[0]}
-            }
-        self.num_tasks = self.num_tasks_per_node * self.num_nodes
-        self.num_cpus_per_task = int(self.current_partition.processor.num_cpus / self.num_tasks_per_node)
-        # If test runs on CPU, leave one thread idle for Horovod. See https://github.com/horovod/horovod/issues/2804
-        if self.device == 'cpu': 
-            num_threads = max(self.num_cpus_per_task-1, 1)
-        elif self.device == 'gpu':
-            num_threads = self.num_cpus_per_task
-        self.variables = {
-            'OMP_NUM_THREADS': f'{num_threads}',
-        }
-        if self.current_partition.launcher_type == 'mpirun':
-            self.job.launcher.options = ['-x OMP_NUM_THREADS']
+        hooks.auto_assign_num_tasks_hybrid(test = self, num_nodes = self.num_nodes)
 
-
-@rfm.simple_test
-class HorovodTensorFlow2Native(HorovodTensorFlow2Base):
-
-    def __init__(self):
-        super().__init__()
-
-        self.descr = 'TensorFlow 2.X with Horovod multi-node and multi-GPU test. Based on the Horovod tensorflow2_synthetic_benchmark.py example.'
-
-        self.tags.add('native')
-        self.valid_prog_environs = ['*']
-
-        self.modules = ['Horovod']
-        self.executable = 'python'
-
-        self.executable_opts = [
-            f'{self.script}',
-            f'--model {self.model}',
-            f'--batch-size {self.batch_size}',
-            '--num-iters 5',
-            '--num-batches-per-iter 5',
-            '--num-warmup-batches 5',
-            '--use-horovod',
-        ]
-        if self.device == 'cpu':
-            self.executable_opts.append('--no-cuda')
-
+    @run_after('setup')
+    def set_omp_num_threads(self):
+        # For CPU runs on more than 4 cores, leave one thread idle for Horovod
+        if self.device == 'cpu' and self.num_cpus_per_task > 4:
+            self.omp_num_threads = self.num_cpus_per_task - 1
+        else:
+            self.omp_num_threads = self.num_cpus_per_task
