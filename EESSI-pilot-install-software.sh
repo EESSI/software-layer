@@ -175,7 +175,7 @@ else
     fi
 fi
 
-REQ_EB_VERSION='4.4.0'
+REQ_EB_VERSION='4.4.1'
 echo ">> Loading EasyBuild module..."
 module load EasyBuild
 eb_show_system_info_out=${TMPDIR}/eb_show_system_info.out
@@ -202,9 +202,7 @@ export GCC_EC="GCC-9.3.0.eb"
 echo ">> Starting slow with ${GCC_EC}..."
 ok_msg="${GCC_EC} installed, yippy! Off to a good start..."
 fail_msg="Installation of ${GCC_EC} failed!"
-# use GCC easyblock with minor fix w.r.t. system compiler not supporting LTO,
-# see https://github.com/easybuilders/easybuild-easyblocks/pull/2498
-$EB ${GCC_EC} --robot --include-easyblocks-from-pr 2498
+$EB ${GCC_EC} --robot
 check_exit_code $? "${ok_msg}" "${fail_msg}"
 
 # install CMake with custom easyblock that patches CMake when --sysroot is used
