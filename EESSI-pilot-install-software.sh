@@ -197,6 +197,18 @@ fi
 
 echo_green "All set, let's start installing some software in ${EASYBUILD_INSTALLPATH}..."
 
+# download source tarball for DB (dependency for Perl) using fixed source URL,
+# see https://github.com/easybuilders/easybuild-easyconfigs/pull/13813
+$EB --fetch --from-pr 13813 DB-18.1.32-GCCcore-9.3.0.eb
+
+# install Java with fixed custom easyblock that uses patchelf to ensure right glibc is picked up,
+# see https://github.com/EESSI/software-layer/issues/123
+# and https://github.com/easybuilders/easybuild-easyblocks/pull/2557
+ok_msg="Java installed, off to a good (?) start!"
+fail_msg="Failed to install Java, woopsie..."
+$EB Java-11.eb --robot --include-easyblocks-from-pr 2557
+check_exit_code $? "${ok_msg}" "${fail_msg}"
+
 # install GCC for foss/2020a
 export GCC_EC="GCC-9.3.0.eb"
 echo ">> Starting slow with ${GCC_EC}..."
