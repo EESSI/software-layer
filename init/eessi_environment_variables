@@ -11,7 +11,7 @@ function error() {
     false
 }
 
-export EESSI_PILOT_VERSION="2021.03"
+export EESSI_PILOT_VERSION="2021.06"
 export EESSI_PREFIX=/cvmfs/pilot.eessi-hpc.org/$EESSI_PILOT_VERSION
 
 if [ -d $EESSI_PREFIX ]; then
@@ -41,7 +41,7 @@ if [ -d $EESSI_PREFIX ]; then
         echo "Using ${EESSI_SOFTWARE_SUBDIR} as software subdirectory." >> $output
         export EESSI_SOFTWARE_PATH=$EESSI_PREFIX/software/$EESSI_OS_TYPE/$EESSI_SOFTWARE_SUBDIR
         if [ ! -z $EESSI_BASIC_ENV ]; then
-          :
+          echo "Only setting up basic environment, so we're done" >> $output
         elif [ -d $EESSI_SOFTWARE_PATH ]; then
           # Allow for the use of a custom MNS
           if [ -z ${EESSI_CUSTOM_MODULEPATH+x} ]; then
