@@ -6,6 +6,8 @@ from easybuild.tools.build_log import EasyBuildError, print_msg
 from easybuild.tools.config import build_option, update_build_option
 from easybuild.tools.systemtools import POWER, get_cpu_architecture
 
+EESSI_RPATH_OVERRIDE_ATTR = 'orig_rpath_override_dirs'
+
 
 def get_eessi_envvar(eessi_envvar):
     """Get an EESSI environment variable from the environment"""
@@ -29,12 +31,13 @@ def get_rpath_override_dirs(software_name):
         # Add the subdirectory for the specific software
         'rpath_overrides',
         software_name,
-        # We can't know the version, but this allows the use of a symlink to facilitate version upgrades without removing files
+        # We can't know the version, but this allows the use of a symlink
+        # to facilitate version upgrades without removing files
         'system',
     )
 
     # Allow for libraries in lib or lib64
-    rpath_injection_dirs = [os.path.join(rpath_injection_stub, 'lib'), os.path.join(rpath_injection_stub, 'lib64')]
+    rpath_injection_dirs = [os.path.join(rpath_injection_stub, x) for x in ('lib', 'lib64')]
 
     return rpath_injection_dirs
 
@@ -126,5 +129,3 @@ PARSE_HOOKS = {
     'fontconfig': fontconfig_add_fonts,
     'UCX': ucx_eprefix,
 }
-
-EESSI_RPATH_OVERRIDE_ATTR = 'orig_rpath_override_dirs'
