@@ -47,6 +47,12 @@ echo ">> Setting up environment..."
 
 source $TOPDIR/init/minimal_eessi_env
 
+if [ -d $EESSI_CVMFS_REPO ]; then
+    echo_green "$EESSI_CVMFS_REPO available, OK!"
+else
+    fatal_error "$EESSI_CVMFS_REPO is not available!"
+fi
+
 # make sure we're in Prefix environment by checking $SHELL
 if [[ ${SHELL} = ${EPREFIX}/bin/bash ]]; then
     echo_green ">> It looks like we're in a Gentoo Prefix environment, good!"
