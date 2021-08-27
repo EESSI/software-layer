@@ -330,8 +330,10 @@ fi
 echo ">> Installing ReFrame 3.6.2 ..."
 ok_msg="ReFrame installed, enjoy!"
 fail_msg="Installation of ReFrame failed, that's a bit strange..."
-# note: newer PythonPackage easyblock required to ensure auto-download of sources works
-$EB ReFrame-3.6.2.eb --robot
+# use ReFrame easyconfig from https://github.com/easybuilders/easybuild-easyconfigs/pull/13844 to avoid
+# problems caused by also having ReFrame installed in compat layer;
+# see also https://github.com/EESSI/software-layer/issues/127
+$EB ReFrame-3.6.2.eb --robot --from-pr 13844
 check_exit_code $? "${ok_msg}" "${fail_msg}"
 
 echo ">> Installing RStudio-Server 1.3.1093..."
@@ -349,6 +351,7 @@ check_exit_code $? "${ok_msg}" "${fail_msg}"
 echo ">> Installing Spark 3.1.1..."
 ok_msg="Spark installed, set off the fireworks!"
 fail_msg="Installation of Spark failed, no fireworks this time..."
+$EB Spark-3.1.1-foss-2020a-Python-3.8.2.eb --fetch --from-pr 13842
 $EB Spark-3.1.1-foss-2020a-Python-3.8.2.eb -r
 check_exit_code $? "${ok_msg}" "${fail_msg}"
 
