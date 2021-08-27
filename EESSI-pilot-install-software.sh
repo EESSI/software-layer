@@ -45,6 +45,15 @@ TMPDIR=$(mktemp -d)
 
 echo ">> Setting up environment..."
 
+source $TOPDIR/init/minimal_eessi_env
+
+# make sure we're in Prefix environment by checking $SHELL
+if [[ ${SHELL} = ${EPREFIX}/bin/bash ]]; then
+    echo_green ">> It looks like we're in a Gentoo Prefix environment, good!"
+else
+    fatal_error "Not running in Gentoo Prefix environment, run '${EPREFIX}/startprefix' first!"
+fi
+
 # avoid that pyc files for EasyBuild are stored in EasyBuild installation directory
 export PYTHONPYCACHEPREFIX=$TMPDIR/pycache
 
@@ -72,13 +81,6 @@ elif [[ "${EESSI_SOFTWARE_SUBDIR}" != "${EESSI_SOFTWARE_SUBDIR_OVERRIDE}" ]]; th
     fatal_error "Values for EESSI_SOFTWARE_SUBDIR_OVERRIDE (${EESSI_SOFTWARE_SUBDIR_OVERRIDE}) and EESSI_SOFTWARE_SUBDIR (${EESSI_SOFTWARE_SUBDIR}) differ!"
 else
     echo_green ">> Using ${EESSI_SOFTWARE_SUBDIR} as software subdirectory!"
-fi
-
-# make sure we're in Prefix environment by checking $SHELL
-if [[ ${SHELL} = ${EPREFIX}/bin/bash ]]; then
-    echo_green ">> It looks like we're in a Gentoo Prefix environment, good!"
-else
-    fatal_error "Not running in Gentoo Prefix environment, run '${EPREFIX}/startprefix' first!"
 fi
 
 echo ">> Initializing Lmod..."
