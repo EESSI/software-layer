@@ -17,7 +17,7 @@ function echo_yellow() {
     echo -e "\e[33m$1\e[0m"
 }
 
-function error() {
+function fatal_error() {
     echo_red "ERROR: $1" >&2
     exit 1
 }
@@ -30,7 +30,7 @@ function check_exit_code {
     if [[ $ec -eq 0 ]]; then
         echo_green "${ok_msg}"
     else
-        error "${fail_msg}"
+        fatal_error "${fail_msg}"
     fi
 }
 
@@ -67,9 +67,9 @@ export EESSI_SOFTWARE_SUBDIR_OVERRIDE=$(python3 $TOPDIR/eessi_software_subdir.py
 EESSI_SILENT=1 EESSI_BASIC_ENV=1 source $TOPDIR/init/eessi_environment_variables
 
 if [[ -z ${EESSI_SOFTWARE_SUBDIR} ]]; then
-    error "Failed to determine software subdirectory?!"
+    fatal_error "Failed to determine software subdirectory?!"
 elif [[ "${EESSI_SOFTWARE_SUBDIR}" != "${EESSI_SOFTWARE_SUBDIR_OVERRIDE}" ]]; then
-    error "Values for EESSI_SOFTWARE_SUBDIR_OVERRIDE (${EESSI_SOFTWARE_SUBDIR_OVERRIDE}) and EESSI_SOFTWARE_SUBDIR (${EESSI_SOFTWARE_SUBDIR}) differ!"
+    fatal_error "Values for EESSI_SOFTWARE_SUBDIR_OVERRIDE (${EESSI_SOFTWARE_SUBDIR_OVERRIDE}) and EESSI_SOFTWARE_SUBDIR (${EESSI_SOFTWARE_SUBDIR}) differ!"
 else
     echo_green ">> Using ${EESSI_SOFTWARE_SUBDIR} as software subdirectory!"
 fi
@@ -78,7 +78,7 @@ fi
 if [[ ${SHELL} = ${EPREFIX}/bin/bash ]]; then
     echo_green ">> It looks like we're in a Gentoo Prefix environment, good!"
 else
-    error "Not running in Gentoo Prefix environment, run '${EPREFIX}/startprefix' first!"
+    fatal_error "Not running in Gentoo Prefix environment, run '${EPREFIX}/startprefix' first!"
 fi
 
 echo ">> Initializing Lmod..."
@@ -88,7 +88,7 @@ ml --version &> $ml_version_out
 if [[ $? -eq 0 ]]; then
     echo_green ">> Found Lmod ${LMOD_VERSION}"
 else
-    error "Failed to initialize Lmod?! (see output in ${ml_version_out}"
+    fatal_error "Failed to initialize Lmod?! (see output in ${ml_version_out}"
 fi
 
 echo ">> Configuring EasyBuild..."
@@ -111,7 +111,7 @@ export EASYBUILD_FILTER_ENV_VARS=LD_LIBRARY_PATH
 export EASYBUILD_HOOKS=$TOPDIR/eb_hooks.py
 # make sure hooks are available, so we can produce a clear error message
 if [ ! -f $EASYBUILD_HOOKS ]; then
-    error "$EASYBUILD_HOOKS does not exist!"
+    fatal_error "$EASYBUILD_HOOKS does not exist!"
 fi
 
 # note: filtering Bison may break some installations, like Qt5 (see https://github.com/EESSI/software-layer/issues/49)
@@ -135,7 +135,7 @@ module --force purge
 module unuse $MODULEPATH
 module use $EASYBUILD_INSTALLPATH/modules/all
 if [[ -z ${MODULEPATH} ]]; then
-    error "Failed to set up \$MODULEPATH?!"
+    fatal_error "Failed to set up \$MODULEPATH?!"
 else
     echo_green ">> MODULEPATH set up: ${MODULEPATH}"
 fi
@@ -163,7 +163,7 @@ else
     if [[ $? -eq 0 ]]; then
         echo_green ">> EasyBuild module installed!"
     else
-        error "EasyBuild module failed to install?! (output of 'pip install' in ${pip_install_out}, output of 'eb' in ${eb_install_out}, output of 'ml av easybuild' in ${ml_av_easybuild_out})"
+        fatal_error "EasyBuild module failed to install?! (output of 'pip install' in ${pip_install_out}, output of 'eb' in ${eb_install_out}, output of 'ml av easybuild' in ${ml_av_easybuild_out})"
     fi
 fi
 
@@ -179,12 +179,12 @@ if [[ $? -eq 0 ]]; then
         echo_green "Found EasyBuild version ${REQ_EB_VERSION}, looking good!"
     else
         $EB --version
-        error "Expected to find EasyBuild version ${REQ_EB_VERSION}, giving up here..."
+        fatal_error "Expected to find EasyBuild version ${REQ_EB_VERSION}, giving up here..."
     fi
     $EB --show-config
 else
     cat ${eb_show_system_info_out}
-    error "EasyBuild not working?!"
+    fatal_error "EasyBuild not working?!"
 fi
 
 echo_green "All set, let's start installing some software in ${EASYBUILD_INSTALLPATH}..."
