@@ -1,3 +1,7 @@
+# this script is *sourced*, not executed, so can't rely on $0 to determine path to self
+# $BASH_SOURCE points to correct path, see also http://mywiki.wooledge.org/BashFAQ/028
+EESSI_INIT_DIR_PATH=$(dirname $(realpath $BASH_SOURCE))
+
 # Allow for a silent mode
 if [[ -v EESSI_SILENT ]]; then
   # EESSI_SILENT set
@@ -11,27 +15,11 @@ function error() {
     false
 }
 
-export EESSI_PILOT_VERSION="2021.03"
-export EESSI_PREFIX=/cvmfs/pilot.eessi-hpc.org/$EESSI_PILOT_VERSION
+# set up minimal environment: $EESSI_PREFIX, $EESSI_PILOT_VERSION, $EESSI_OS_TYPE, $EESSI_CPU_FAMILY, $EPREFIX
+source $EESSI_INIT_DIR_PATH/minimal_eessi_env
 
 if [ -d $EESSI_PREFIX ]; then
   echo "Found EESSI pilot repo @ $EESSI_PREFIX!" >> $output
-
-  if [[ $(uname -s) == 'Linux' ]]; then
-      export EESSI_OS_TYPE='linux'
-  else
-      export EESSI_OS_TYPE='macos'
-  fi
-
-  # aarch64 (Arm 64-bit), ppc64le (POWER 64-bit), x86_64 (x86 64-bit)
-  export EESSI_CPU_FAMILY=$(uname -m)
-
-  # Set EPREFIX since that is basically a standard in Gentoo Prefix
-  export EPREFIX=$EESSI_PREFIX/compat/$EESSI_OS_TYPE/$EESSI_CPU_FAMILY
-
-  # add location of commands provided by compat layer to $PATH;
-  # see https://github.com/EESSI/software-layer/issues/52
-  export PATH=$EPREFIX/usr/bin:$EPREFIX/bin:$PATH
 
   export EESSI_EPREFIX=$EPREFIX
   if [ -d $EESSI_EPREFIX ]; then
@@ -39,12 +27,14 @@ if [ -d $EESSI_PREFIX ]; then
     # determine subdirectory in software layer
     # note: eessi_software_subdir_for_host.py will pick up value from $EESSI_SOFTWARE_SUBDIR_OVERRIDE if it's defined!
     export EESSI_EPREFIX_PYTHON=$EESSI_EPREFIX/usr/bin/python3
-    export EESSI_SOFTWARE_SUBDIR=$($EESSI_EPREFIX_PYTHON ${EESSI_PREFIX}/init/eessi_software_subdir_for_host.py $EESSI_PREFIX)
+    export EESSI_SOFTWARE_SUBDIR=$($EESSI_EPREFIX_PYTHON ${EESSI_INIT_DIR_PATH}/eessi_software_subdir_for_host.py $EESSI_PREFIX)
     if [ ! -z $EESSI_SOFTWARE_SUBDIR ]; then
 
         echo "Using ${EESSI_SOFTWARE_SUBDIR} as software subdirectory." >> $output
         export EESSI_SOFTWARE_PATH=$EESSI_PREFIX/software/$EESSI_OS_TYPE/$EESSI_SOFTWARE_SUBDIR
-        if [ -d $EESSI_SOFTWARE_PATH ]; then
+        if [ ! -z $EESSI_BASIC_ENV ]; then
+          echo "Only setting up basic environment, so we're done" >> $output
+        elif [ -d $EESSI_SOFTWARE_PATH ]; then
           # Allow for the use of a custom MNS
           if [ -z ${EESSI_CUSTOM_MODULEPATH+x} ]; then
             # EESSI_CUSTOM_MODULEPATH not set so we use our defaults

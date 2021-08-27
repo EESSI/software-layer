@@ -17,7 +17,7 @@ function echo_yellow() {
     echo -e "\e[33m$1\e[0m"
 }
 
-function error() {
+function fatal_error() {
     echo_red "ERROR: $1" >&2
     exit 1
 }
@@ -30,7 +30,7 @@ function check_exit_code {
     if [[ $ec -eq 0 ]]; then
         echo_green "${ok_msg}"
     else
-        error "${fail_msg}"
+        fatal_error "${fail_msg}"
     fi
 }
 
@@ -44,20 +44,21 @@ fi
 TMPDIR=$(mktemp -d)
 
 echo ">> Setting up environment..."
-export CVMFS_REPO="/cvmfs/pilot.eessi-hpc.org"
-export EESSI_PILOT_VERSION="2021.06"
 
-if [[ $(uname -s) == 'Linux' ]]; then
-    export EESSI_OS_TYPE='linux'
+source $TOPDIR/init/minimal_eessi_env
+
+if [ -d $EESSI_CVMFS_REPO ]; then
+    echo_green "$EESSI_CVMFS_REPO available, OK!"
 else
-    export EESSI_OS_TYPE='macos'
+    fatal_error "$EESSI_CVMFS_REPO is not available!"
 fi
 
-# aarch64 (Arm 64-bit), ppc64le (POWER 64-bit), x86_64 (x86 64-bit)
-export EESSI_CPU_FAMILY=$(uname -m)
-
-export EESSI_PREFIX=${CVMFS_REPO}/${EESSI_PILOT_VERSION}
-export EPREFIX=${EESSI_PREFIX}/compat/${EESSI_OS_TYPE}/${EESSI_CPU_FAMILY}
+# make sure we're in Prefix environment by checking $SHELL
+if [[ ${SHELL} = ${EPREFIX}/bin/bash ]]; then
+    echo_green ">> It looks like we're in a Gentoo Prefix environment, good!"
+else
+    fatal_error "Not running in Gentoo Prefix environment, run '${EPREFIX}/startprefix' first!"
+fi
 
 # avoid that pyc files for EasyBuild are stored in EasyBuild installation directory
 export PYTHONPYCACHEPREFIX=$TMPDIR/pycache
@@ -72,12 +73,20 @@ if [[ "$1" == "--generic" || "$EASYBUILD_OPTARCH" == "GENERIC" ]]; then
     EB='eb --optarch=GENERIC'
 fi
 
+echo ">> Determining software subdirectory to use for current build host..."
+export EESSI_SOFTWARE_SUBDIR_OVERRIDE=$(python3 $TOPDIR/eessi_software_subdir.py $DETECTION_PARAMETERS)
 
-# make sure we're in Prefix environment by which path to 'bash' command
-if [[ $(which bash) = ${EPREFIX}/bin/bash ]]; then
-    echo_green ">> It looks like we're in a Gentoo Prefix environment, good!"
+# Set all the EESSI environment variables (respecting $EESSI_SOFTWARE_SUBDIR_OVERRIDE)
+# $EESSI_SILENT - don't print any messages
+# $EESSI_BASIC_ENV - give a basic set of environment variables
+EESSI_SILENT=1 EESSI_BASIC_ENV=1 source $TOPDIR/init/eessi_environment_variables
+
+if [[ -z ${EESSI_SOFTWARE_SUBDIR} ]]; then
+    fatal_error "Failed to determine software subdirectory?!"
+elif [[ "${EESSI_SOFTWARE_SUBDIR}" != "${EESSI_SOFTWARE_SUBDIR_OVERRIDE}" ]]; then
+    fatal_error "Values for EESSI_SOFTWARE_SUBDIR_OVERRIDE (${EESSI_SOFTWARE_SUBDIR_OVERRIDE}) and EESSI_SOFTWARE_SUBDIR (${EESSI_SOFTWARE_SUBDIR}) differ!"
 else
-    error "Not running in Gentoo Prefix environment, run '${EPREFIX}/startprefix' first!"
+    echo_green ">> Using ${EESSI_SOFTWARE_SUBDIR} as software subdirectory!"
 fi
 
 echo ">> Initializing Lmod..."
@@ -87,54 +96,11 @@ ml --version &> $ml_version_out
 if [[ $? -eq 0 ]]; then
     echo_green ">> Found Lmod ${LMOD_VERSION}"
 else
-    error "Failed to initialize Lmod?! (see output in ${ml_version_out}"
-fi
-
-echo ">> Determining software subdirectory to use for current build host..."
-export EESSI_SOFTWARE_SUBDIR=$(python3 $TOPDIR/eessi_software_subdir.py $DETECTION_PARAMETERS)
-if [[ -z ${EESSI_SOFTWARE_SUBDIR} ]]; then
-    error "Failed to determine software subdirectory?!"
-else
-    echo_green ">> Using ${EESSI_SOFTWARE_SUBDIR} as software subdirectory!"
+    fatal_error "Failed to initialize Lmod?! (see output in ${ml_version_out}"
 fi
 
 echo ">> Configuring EasyBuild..."
-export EASYBUILD_PREFIX=${WORKDIR}/easybuild
-export EASYBUILD_INSTALLPATH=${EESSI_PREFIX}/software/${EESSI_OS_TYPE}/${EESSI_SOFTWARE_SUBDIR}
-export EASYBUILD_SOURCEPATH=${WORKDIR}/easybuild/sources:${EESSI_SOURCEPATH}
-
-# just ignore OS dependencies for now, see https://github.com/easybuilders/easybuild-framework/issues/3430
-export EASYBUILD_IGNORE_OSDEPS=1
-
-export EASYBUILD_SYSROOT=${EPREFIX}
-
-export EASYBUILD_DEBUG=1
-export EASYBUILD_TRACE=1
-export EASYBUILD_ZIP_LOGS=bzip2
-
-export EASYBUILD_RPATH=1
-export EASYBUILD_FILTER_ENV_VARS=LD_LIBRARY_PATH
-
-export EASYBUILD_HOOKS=$TOPDIR/eb_hooks.py
-# make sure hooks are available, so we can produce a clear error message
-if [ ! -f $EASYBUILD_HOOKS ]; then
-    error "$EASYBUILD_HOOKS does not exist!"
-fi
-
-# note: filtering Bison may break some installations, like Qt5 (see https://github.com/EESSI/software-layer/issues/49)
-# filtering pkg-config breaks R-bundle-Bioconductor installation (see also https://github.com/easybuilders/easybuild-easyconfigs/pull/11104)
-# problems occur when filtering pkg-config with gnuplot too (picks up Lua 5.1 from $EPREFIX rather than from Lua 5.3 dependency)
-DEPS_TO_FILTER=Autoconf,Automake,Autotools,binutils,bzip2,cURL,DBus,flex,gettext,gperf,help2man,intltool,libreadline,libtool,Lua,M4,makeinfo,ncurses,util-linux,XZ,zlib
-# For aarch64 we need to also filter out Yasm.
-# See https://github.com/easybuilders/easybuild-easyconfigs/issues/11190
-if [[ "$EESSI_CPU_FAMILY" == "aarch64" ]]; then
-    DEPS_TO_FILTER="${DEPS_TO_FILTER},Yasm"
-fi
-
-export EASYBUILD_FILTER_DEPS=$DEPS_TO_FILTER
-
-
-export EASYBUILD_MODULE_EXTENSIONS=1
+source configure_easybuild
 
 echo ">> Setting up \$MODULEPATH..."
 # make sure no modules are loaded
@@ -143,7 +109,7 @@ module --force purge
 module unuse $MODULEPATH
 module use $EASYBUILD_INSTALLPATH/modules/all
 if [[ -z ${MODULEPATH} ]]; then
-    error "Failed to set up \$MODULEPATH?!"
+    fatal_error "Failed to set up \$MODULEPATH?!"
 else
     echo_green ">> MODULEPATH set up: ${MODULEPATH}"
 fi
@@ -171,7 +137,7 @@ else
     if [[ $? -eq 0 ]]; then
         echo_green ">> EasyBuild module installed!"
     else
-        error "EasyBuild module failed to install?! (output of 'pip install' in ${pip_install_out}, output of 'eb' in ${eb_install_out}, output of 'ml av easybuild' in ${ml_av_easybuild_out})"
+        fatal_error "EasyBuild module failed to install?! (output of 'pip install' in ${pip_install_out}, output of 'eb' in ${eb_install_out}, output of 'ml av easybuild' in ${ml_av_easybuild_out})"
     fi
 fi
 
@@ -187,12 +153,12 @@ if [[ $? -eq 0 ]]; then
         echo_green "Found EasyBuild version ${REQ_EB_VERSION}, looking good!"
     else
         $EB --version
-        error "Expected to find EasyBuild version ${REQ_EB_VERSION}, giving up here..."
+        fatal_error "Expected to find EasyBuild version ${REQ_EB_VERSION}, giving up here..."
     fi
     $EB --show-config
 else
     cat ${eb_show_system_info_out}
-    error "EasyBuild not working?!"
+    fatal_error "EasyBuild not working?!"
 fi
 
 echo_green "All set, let's start installing some software in ${EASYBUILD_INSTALLPATH}..."
