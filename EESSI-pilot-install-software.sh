@@ -345,16 +345,6 @@ check_exit_code $? "Lmod cache updated" "Lmod cache update failed!"
 
 ls -lrt ${EASYBUILD_INSTALLPATH}/.lmod/cache
 
-# temporarily install PyYAML in a temporary directory, and make sure it's picked up
-# this can be removed when https://github.com/EESSI/compatibility-layer/issues/95 is fixed
-ok_msg="PyYAML installed in $TMPDIR"
-fail_msg="PyYAML failed to install in $TMPDIR, what the..."
-pip_install_pyyaml_out=$TMPDIR/pip_pyyaml.out
-pip install --prefix $TMPDIR PyYAML &> ${pip_install_pyyaml_out}
-check_exit_code $? "${ok_msg}" "${fail_msg}"
-export PYTHONPATH=$(ls -1 -d $TMPDIR/lib*/python*/site-packages):$PYTHONPATH
-echo "PYTHONPATH=$PYTHONPATH"
-
 echo ">> Checking for missing installations..."
 ok_msg="No missing installations, party time!"
 fail_msg="On no, some installations are still missing, how did that happen?!"
