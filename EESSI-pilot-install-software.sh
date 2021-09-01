@@ -255,11 +255,13 @@ fail_msg="Installation of OpenFOAM failed, we were so close..."
 $EB OpenFOAM-8-foss-2020a.eb OpenFOAM-v2006-foss-2020a.eb --robot
 check_exit_code $? "${ok_msg}" "${fail_msg}"
 
-echo ">> Installing QuantumESPRESSO..."
-ok_msg="QuantumESPRESSO installed, let's go quantum!"
-fail_msg="Installation of QuantumESPRESSO failed, did somebody observe it?!"
-$EB QuantumESPRESSO-6.6-foss-2020a.eb --robot
-check_exit_code $? "${ok_msg}" "${fail_msg}"
+if [ ! "${EESSI_CPU_FAMILY}" = "ppc64le" ]; then
+    echo ">> Installing QuantumESPRESSO..."
+    ok_msg="QuantumESPRESSO installed, let's go quantum!"
+    fail_msg="Installation of QuantumESPRESSO failed, did somebody observe it?!"
+    $EB QuantumESPRESSO-6.6-foss-2020a.eb --robot
+    check_exit_code $? "${ok_msg}" "${fail_msg}"
+fi
 
 echo ">> Installing R 4.0.0 (better be patient)..."
 ok_msg="R installed, wow!"
