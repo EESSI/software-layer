@@ -1,8 +1,13 @@
 #!/bin/bash
 
-# create temporary directories
-export EESSI_TMPDIR=/tmp/$USER/EESSI
+if [ $# -ne 1 ]; then
+    echo "Usage: $0 <path for temporary directories>" >&2
+    exit 1
+fi
+export EESSI_TMPDIR=$1
 echo "Using $EESSI_TMPDIR as parent for temporary directories..."
+
+# create temporary directories
 mkdir -p $EESSI_TMPDIR/{home,overlay-upper,overlay-work}
 mkdir -p $EESSI_TMPDIR/{var-lib-cvmfs,var-run-cvmfs}
 # configure Singularity
