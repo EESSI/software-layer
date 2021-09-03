@@ -275,18 +275,19 @@ fail_msg="Installation of Bioconductor failed, that's annoying..."
 $EB R-bundle-Bioconductor-3.11-foss-2020a-R-4.0.0.eb --robot
 check_exit_code $? "${ok_msg}" "${fail_msg}"
 
-if [ ! "${EESSI_CPU_FAMILY}" = "ppc64le" ]; then
-    echo ">> Installing TensorFlow 2.3.1..."
-    ok_msg="TensorFlow 2.3.1 installed, w00!"
-    fail_msg="Installation of TensorFlow failed, why am I not surprised..."
-    $EB TensorFlow-2.3.1-foss-2020a-Python-3.8.2.eb --robot --include-easyblocks-from-pr 2218
-    check_exit_code $? "${ok_msg}" "${fail_msg}"
+echo ">> Installing TensorFlow 2.3.1..."
+ok_msg="TensorFlow 2.3.1 installed, w00!"
+fail_msg="Installation of TensorFlow failed, why am I not surprised..."
+$EB TensorFlow-2.3.1-foss-2020a-Python-3.8.2.eb --robot --include-easyblocks-from-pr 2218
+check_exit_code $? "${ok_msg}" "${fail_msg}"
 
-    echo ">> Installing Horovod 0.21.3..."
-    ok_msg="Horovod installed! Go do some parallel training!"
-    fail_msg="Horovod installation failed. There comes the headache..."
-    $EB Horovod-0.21.3-foss-2020a-TensorFlow-2.3.1-Python-3.8.2.eb --robot
-    check_exit_code $? "${ok_msg}" "${fail_msg}"
+echo ">> Installing Horovod 0.21.3..."
+ok_msg="Horovod installed! Go do some parallel training!"
+fail_msg="Horovod installation failed. There comes the headache..."
+$EB Horovod-0.21.3-foss-2020a-TensorFlow-2.3.1-Python-3.8.2.eb --robot
+check_exit_code $? "${ok_msg}" "${fail_msg}"
+
+if [ ! "${EESSI_CPU_FAMILY}" = "ppc64le" ]; then
 
     echo ">> Installing code-server 3.7.3..."
     ok_msg="code-server 3.7.3 installed, now you can use VS Code!"
