@@ -114,9 +114,11 @@ else
     echo_green ">> MODULEPATH set up: ${MODULEPATH}"
 fi
 
+REQ_EB_VERSION='4.4.1'
+
 echo ">> Checking for EasyBuild module..."
 ml_av_easybuild_out=$TMPDIR/ml_av_easybuild.out
-module avail easybuild &> ${ml_av_easybuild_out}
+module avail 2>&1 | grep -i easybuild/${REQ_EB_VERSION} &> ${ml_av_easybuild_out}
 if [[ $? -eq 0 ]]; then
     echo_green ">> EasyBuild module found!"
 else
@@ -133,17 +135,21 @@ else
     eb_install_out=${TMPDIR}/eb_install.out
     eb --install-latest-eb-release &> ${eb_install_out}
 
-    module avail easybuild &> ${ml_av_easybuild_out}
+    eb --search EasyBuild-${REQ_EB_VERSION}.eb | grep EasyBuild-${REQ_EB_VERSION}.eb > /dev/null
+    if [[ $? -eq 0 ]]; then
+        eb EasyBuild-${REQ_EB_VERSION}.eb >> ${eb_install_out} 2>&1
+    fi
+
+    module avail easybuild/${REQ_EB_VERSION} &> ${ml_av_easybuild_out}
     if [[ $? -eq 0 ]]; then
         echo_green ">> EasyBuild module installed!"
     else
-        fatal_error "EasyBuild module failed to install?! (output of 'pip install' in ${pip_install_out}, output of 'eb' in ${eb_install_out}, output of 'ml av easybuild' in ${ml_av_easybuild_out})"
+        fatal_error "EasyBuild/${REQ_EB_VERSION} module failed to install?! (output of 'pip install' in ${pip_install_out}, output of 'eb' in ${eb_install_out}, output of 'ml av easybuild' in ${ml_av_easybuild_out})"
     fi
 fi
 
-REQ_EB_VERSION='4.4.1'
 echo ">> Loading EasyBuild module..."
-module load EasyBuild
+module load EasyBuild/$REQ_EB_VERSION
 eb_show_system_info_out=${TMPDIR}/eb_show_system_info.out
 $EB --show-system-info > ${eb_show_system_info_out}
 if [[ $? -eq 0 ]]; then
