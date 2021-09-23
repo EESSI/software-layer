@@ -35,15 +35,21 @@ echo ">> Collecting list of files/directories to include in tarball via ${PWD}..
 
 files_list=${tmpdir}/files.list.txt
 
-# include Lmod cache and configuration file (lmodrc.lua),
-# skip whiteout files and backup copies of Lmod cache (spiderT.old.*)
-find software/${os}/${cpu_arch_subdir}/.lmod -type f | egrep -v '/\.wh\.|spiderT.old' > ${files_list}
-# module files
-find software/${os}/${cpu_arch_subdir}/modules -type f >> ${files_list}
-# module symlinks
-find software/${os}/${cpu_arch_subdir}/modules -type l >> ${files_list}
-# installation directories
-ls -d software/${os}/${cpu_arch_subdir}/software/*/* >> ${files_list}
+if [ -d software/${os}/${cpu_arch_subdir}/.lmod ]; then
+    # include Lmod cache and configuration file (lmodrc.lua),
+    # skip whiteout files and backup copies of Lmod cache (spiderT.old.*)
+    find software/${os}/${cpu_arch_subdir}/.lmod -type f | egrep -v '/\.wh\.|spiderT.old' > ${files_list}
+fi
+if [ -d software/${os}/${cpu_arch_subdir}/modules ]; then
+    # module files
+    find software/${os}/${cpu_arch_subdir}/modules -type f >> ${files_list}
+    # module symlinks
+    find software/${os}/${cpu_arch_subdir}/modules -type l >> ${files_list}
+fi
+if [ -d software/${os}/${cpu_arch_subdir}/software ]; then
+    # installation directories
+    ls -d software/${os}/${cpu_arch_subdir}/software/*/* >> ${files_list}
+fi
 
 topdir=${cvmfs_repo}/${pilot_version}
 
