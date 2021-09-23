@@ -37,7 +37,7 @@ lmodrc_txt = TEMPLATE_LMOD_RC % {
     'prefix': prefix,
 }
 try:
-    os.makedirs(os.path.dirname(lmodrc_path))
+    os.makedirs(os.path.dirname(lmodrc_path), exist_ok=True)
     with open(lmodrc_path, 'w') as fp:
         fp.write(lmodrc_txt)
 
