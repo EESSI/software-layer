@@ -35,8 +35,9 @@ echo ">> Collecting list of files/directories to include in tarball via ${PWD}..
 
 files_list=${tmpdir}/files.list.txt
 
-# always include Lmod cache directory
-echo "software/${os}/${cpu_arch_subdir}/.lmod/cache" > ${files_list}
+# include Lmod cache and configuration file (lmodrc.lua),
+# skip whiteout files and backup copies of Lmod cache (spiderT.old.*)
+find software/${os}/${cpu_arch_subdir}/.lmod -type f | egrep -v '/\.wh\.|spiderT.old' > ${files_list}
 # module files
 find software/${os}/${cpu_arch_subdir}/modules -type f >> ${files_list}
 # module symlinks
