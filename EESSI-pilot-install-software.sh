@@ -148,24 +148,22 @@ else
     export PATH=${EB_TMPDIR}/bin:$PATH
     export PYTHONPATH=$(ls -d ${EB_TMPDIR}/lib/python*/site-packages):$PYTHONPATH
     eb_install_out=${TMPDIR}/eb_install.out
-    # Check whether we have an easyconfig for our required version (from last line of output)
-    eb --search EasyBuild-${REQ_EB_VERSION}.eb |& tail -1 | grep ${REQ_EB_VERSION} > /dev/null
+    eb --install-latest-eb-release &> ${eb_install_out}
+
+    eb --search EasyBuild-${REQ_EB_VERSION}.eb | grep EasyBuild-${REQ_EB_VERSION}.eb > /dev/null
     if [[ $? -eq 0 ]]; then
-        eb EasyBuild-${REQ_EB_VERSION}.eb &> ${eb_install_out}
-    else
-        # If we don't have an easyconfig in the repo then it can only be the latest release
-        eb --install-latest-eb-release &> ${eb_install_out}
+        eb EasyBuild-${REQ_EB_VERSION}.eb >> ${eb_install_out} 2>&1
     fi
 
     module show ${EB_MODULE_NAME}/${REQ_EB_VERSION} &> ${ml_show_easybuild_out}
     if [[ $? -eq 0 ]]; then
-        echo_green ">> ${EB_MODULE_NAME} module installed!"
+        echo_green ">> ${EB_MODULE_NAME}/${REQ_EB_VERSION} module installed!"
     else
-        fatal_error "${EB_MODULE_NAME} module failed to install?! (output of 'pip install' in ${pip_install_out}, output of 'eb' in ${eb_install_out}, output of 'module show ${EB_MODULE_NAME}/${REQ_EB_VERSION}' in ${ml_show_easybuild_out})"
+        fatal_error "${EB_MODULE_NAME}/${REQ_EB_VERSION} module failed to install?! (output of 'pip install' in ${pip_install_out}, output of 'eb' in ${eb_install_out}, output of 'module show ${EB_MODULE_NAME}/${REQ_EB_VERSION}' in ${ml_show_easybuild_out})"
     fi
 fi
 
-echo ">> Loading ${EB_MODULE_NAME} module..."
+echo ">> Loading ${EB_MODULE_NAME}/${REQ_EB_VERSION} module..."
 module load ${EB_MODULE_NAME}/${REQ_EB_VERSION}
 
 eb_show_system_info_out=${TMPDIR}/eb_show_system_info.out
