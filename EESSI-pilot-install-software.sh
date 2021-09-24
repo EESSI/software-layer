@@ -185,10 +185,11 @@ fi
 
 echo_green "All set, let's start installing some software in ${EASYBUILD_INSTALLPATH}..."
 
-# download source tarball for DB (dependency for Perl) using fixed source URL,
-# see https://github.com/easybuilders/easybuild-easyconfigs/pull/13813
-$EB --fetch --from-pr 13813 DB-18.1.32-GCCcore-9.3.0.eb
-
+if [[ -z "$EESSI_REBUILD_PATH" ]]; then
+    # download source tarball for DB (dependency for Perl) using fixed source URL,
+    # see https://github.com/easybuilders/easybuild-easyconfigs/pull/13813
+    $EB --fetch --from-pr 13813 DB-18.1.32-GCCcore-9.3.0.eb
+fi
 # install Java with fixed custom easyblock that uses patchelf to ensure right glibc is picked up,
 # see https://github.com/EESSI/software-layer/issues/123
 # and https://github.com/easybuilders/easybuild-easyblocks/pull/2557
