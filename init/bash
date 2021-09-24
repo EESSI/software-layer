@@ -15,6 +15,10 @@ if [ $? -eq 0 ]; then
 
     export PS1="[EESSI pilot $EESSI_PILOT_VERSION] $ "
 
+    # add location of commands provided by compat layer to $PATH;
+    # see https://github.com/EESSI/software-layer/issues/52
+    export PATH=$EPREFIX/usr/bin:$EPREFIX/bin:$PATH
+
     # init Lmod
     echo "Initializing Lmod..." >> $output
     source $EESSI_EPREFIX/usr/share/Lmod/init/bash

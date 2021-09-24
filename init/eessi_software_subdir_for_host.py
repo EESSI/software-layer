@@ -49,7 +49,7 @@ def find_best_target(eessi_prefix):
         'Linux': 'linux',
     }[os_type]
 
-    eessi_software_layer_path = os.path.join(eessi_prefix, 'software', 'linux')
+    eessi_software_layer_path = os.path.join(eessi_prefix, 'software', eessi_os_type)
     if not os.path.exists(eessi_software_layer_path):
         error('Specified prefix "%s" does not exist!' % eessi_software_layer_path)
 
