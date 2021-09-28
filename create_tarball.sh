@@ -2,13 +2,14 @@
 
 set -e
 
-if [ $# -ne 3 ]; then
-    echo "ERROR: Usage: $0 <pilot version (example: 2021.03)> <CPU arch subdir (example: x86_64/amd/zen2)> <path to tarball>" >&2
+if [ $# -ne 4 ]; then
+    echo "ERROR: Usage: $0 <EESSI tmp dir (example: /tmp/$USER/EESSI)> <pilot version (example: 2021.03)> <CPU arch subdir (example: x86_64/amd/zen2)> <path to tarball>" >&2
     exit 1
 fi
-pilot_version=$1
-cpu_arch_subdir=$2
-target_tgz=$3
+eessi_tmpdir=$1
+pilot_version=$2
+cpu_arch_subdir=$3
+target_tgz=$4
 
 tmpdir=`mktemp -d`
 echo ">> tmpdir: $tmpdir"
@@ -22,7 +23,7 @@ if [ ! -d ${software_dir} ]; then
     exit 2
 fi
 
-overlay_upper_dir="/tmp/$USER/EESSI/overlay-upper"
+overlay_upper_dir="${eessi_tmpdir}/overlay-upper"
 
 software_dir_overlay="${overlay_upper_dir}/${pilot_version}/software/${os}/${cpu_arch_subdir}"
 if [ ! -d ${software_dir_overlay} ]; then
