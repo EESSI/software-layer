@@ -5,6 +5,21 @@ if [ $# -ne 1 ]; then
     exit 1
 fi
 export EESSI_TMPDIR=$1
+
+# make sure that specified location has support for extended attributes,
+# since that's required by CernVM-FS
+command -v attr &> /dev/null
+if [ $? -eq 0 ]; then
+    testfile=$(mktemp -p $EESSI_TMPDIR)
+    attr -s test -V test $testfile > /dev/null
+    if [ $? -ne 0 ]; then
+        echo "ERROR: $EESSI_TMPDIR does not support extended attributes!" >&2
+       exit 2
+    else
+        rm $testfile
+    fi
+fi
+
 echo "Using $EESSI_TMPDIR as parent for temporary directories..."
 
 # create temporary directories
