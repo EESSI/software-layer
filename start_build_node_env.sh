@@ -18,6 +18,8 @@ if [ $? -eq 0 ]; then
     else
         rm $testfile
     fi
+else
+    echo "WARNING: 'attr' command not available, so can't check support for extended attributes..." >&2
 fi
 
 echo "Using $EESSI_TMPDIR as parent for temporary directories..."
