@@ -35,6 +35,8 @@ def det_host_triple():
     """
     host_cpu = archspec.cpu.host()
     host_vendor = VENDOR_MAP.get(host_cpu.vendor)
+    if host_vendor is None:
+        warning("No match for host CPU vendor '%s' in vendor map!" % host_cpu.vendor)
     host_cpu_family = host_cpu.family.name
     host_cpu_name = host_cpu.name
 

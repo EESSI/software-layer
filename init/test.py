@@ -3,7 +3,7 @@ import pytest
 import re
 
 import eessi_software_subdir_for_host
-from eessi_software_subdir_for_host import find_best_target
+from eessi_software_subdir_for_host import det_host_triple, find_best_target
 
 
 def prep_tmpdir(tmpdir, subdirs):
@@ -31,6 +31,15 @@ def test_no_targets(tmpdir, capsys):
     captured = capsys.readouterr()
     assert captured.out == ''
     assert re.match('^ERROR: No compatible targets found for .*', captured.err)
+
+
+def test_det_host_triple(tmpdir):
+    """Test det_host_triple function."""
+    host_cpu_family, host_vendor, host_cpu_name = det_host_triple()
+
+    assert isinstance(host_cpu_family, str)
+    assert isinstance(host_vendor, str)
+    assert isinstance(host_cpu_name, str)
 
 
 def test_broadwell_host(tmpdir, capsys, monkeypatch):
