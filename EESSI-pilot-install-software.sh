@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 #
 # Script to install EESSI pilot software stack (version 2021.06)
 #
@@ -66,6 +66,9 @@ export PYTHONPYCACHEPREFIX=$TMPDIR/pycache
 DETECTION_PARAMETERS=''
 GENERIC=0
 EB='eb'
+if [ -z "$EB_MODULE_NAME" ]; then EB_MODULE_NAME='EasyBuild'; fi
+REQ_EB_VERSION='4.4.1'
+
 if [[ "$1" == "--generic" || "$EASYBUILD_OPTARCH" == "GENERIC" ]]; then
     echo_yellow ">> GENERIC build requested, taking appropriate measures!"
     DETECTION_PARAMETERS="$DETECTION_PARAMETERS --generic"
@@ -107,22 +110,34 @@ echo ">> Setting up \$MODULEPATH..."
 module --force purge
 # ignore current $MODULEPATH entirely
 module unuse $MODULEPATH
-module use $EASYBUILD_INSTALLPATH/modules/all
+if [[ -z "$EESSI_REBUILD_PATH" ]]; then
+    # Default behaviour is to do a full build
+    module use $EASYBUILD_INSTALLPATH/modules/all
+else
+    # If EESSI_REBUILD_PATH is set, we assume software is built and we are just rebuilding the module tree
+    export EASYBUILD_INSTALLPATH_MODULES=$EESSI_REBUILD_PATH/modules
+    [[ -z "$EESSI_REBUILD_MODULEPATH" ]] && module use $EESSI_REBUILD_PATH/modules/all || module use $EESSI_REBUILD_MODULEPATH
+    # Use preferred MNS
+    [[ -z "$EESSI_REBUILD_MNS" ]] && export EASYBUILD_MODULE_NAMING_SCHEME=EasyBuildMNS || export EASYBUILD_MODULE_NAMING_SCHEME=$EESSI_REBUILD_MNS
+    # Only rebuild modules
+    export EASYBUILD_MODULE_ONLY=1
+    # Make sure we can write our lock files
+    export EASYBUILD_LOCKS_DIR=$EESSI_REBUILD_PATH/software
+fi
+
 if [[ -z ${MODULEPATH} ]]; then
     fatal_error "Failed to set up \$MODULEPATH?!"
 else
     echo_green ">> MODULEPATH set up: ${MODULEPATH}"
 fi
 
-REQ_EB_VERSION='4.4.1'
-
-echo ">> Checking for EasyBuild module..."
-ml_av_easybuild_out=$TMPDIR/ml_av_easybuild.out
-module avail 2>&1 | grep -i easybuild/${REQ_EB_VERSION} &> ${ml_av_easybuild_out}
+echo ">> Checking for ${EB_MODULE_NAME} module (required version is ${REQ_EB_VERSION})..."
+ml_show_easybuild_out=$TMPDIR/ml_show_easybuild.out
+module show ${EB_MODULE_NAME}/${REQ_EB_VERSION} &> ${ml_show_easybuild_out}
 if [[ $? -eq 0 ]]; then
-    echo_green ">> EasyBuild module found!"
+    echo_green ">> ${EB_MODULE_NAME}/${REQ_EB_VERSION} module found!"
 else
-    echo_yellow ">> No EasyBuild module yet, installing it..."
+    echo_yellow ">> No ${EB_MODULE_NAME}/${REQ_EB_VERSION} module yet, installing it..."
 
     EB_TMPDIR=${TMPDIR}/ebtmp
     echo ">> Temporary installation (in ${EB_TMPDIR})..."
@@ -140,16 +155,17 @@ else
         eb EasyBuild-${REQ_EB_VERSION}.eb >> ${eb_install_out} 2>&1
     fi
 
-    module avail easybuild/${REQ_EB_VERSION} &> ${ml_av_easybuild_out}
+    module show ${EB_MODULE_NAME}/${REQ_EB_VERSION} &> ${ml_show_easybuild_out}
     if [[ $? -eq 0 ]]; then
-        echo_green ">> EasyBuild module installed!"
+        echo_green ">> ${EB_MODULE_NAME}/${REQ_EB_VERSION} module installed!"
     else
-        fatal_error "EasyBuild/${REQ_EB_VERSION} module failed to install?! (output of 'pip install' in ${pip_install_out}, output of 'eb' in ${eb_install_out}, output of 'ml av easybuild' in ${ml_av_easybuild_out})"
+        fatal_error "${EB_MODULE_NAME}/${REQ_EB_VERSION} module failed to install?! (output of 'pip install' in ${pip_install_out}, output of 'eb' in ${eb_install_out}, output of 'module show ${EB_MODULE_NAME}/${REQ_EB_VERSION}' in ${ml_show_easybuild_out})"
     fi
 fi
 
-echo ">> Loading EasyBuild module..."
-module load EasyBuild/$REQ_EB_VERSION
+echo ">> Loading ${EB_MODULE_NAME}/${REQ_EB_VERSION} module..."
+module load ${EB_MODULE_NAME}/${REQ_EB_VERSION}
+
 eb_show_system_info_out=${TMPDIR}/eb_show_system_info.out
 $EB --show-system-info > ${eb_show_system_info_out}
 if [[ $? -eq 0 ]]; then
@@ -169,10 +185,11 @@ fi
 
 echo_green "All set, let's start installing some software in ${EASYBUILD_INSTALLPATH}..."
 
-# download source tarball for DB (dependency for Perl) using fixed source URL,
-# see https://github.com/easybuilders/easybuild-easyconfigs/pull/13813
-$EB --fetch --from-pr 13813 DB-18.1.32-GCCcore-9.3.0.eb
-
+if [[ -z "$EESSI_REBUILD_PATH" ]]; then
+    # download source tarball for DB (dependency for Perl) using fixed source URL,
+    # see https://github.com/easybuilders/easybuild-easyconfigs/pull/13813
+    $EB --fetch --from-pr 13813 DB-18.1.32-GCCcore-9.3.0.eb
+fi
 # install Java with fixed custom easyblock that uses patchelf to ensure right glibc is picked up,
 # see https://github.com/EESSI/software-layer/issues/123
 # and https://github.com/easybuilders/easybuild-easyblocks/pull/2557
@@ -258,7 +275,10 @@ check_exit_code $? "${ok_msg}" "${fail_msg}"
 echo ">> Installing OpenFOAM (twice!)..."
 ok_msg="OpenFOAM installed, now we're talking!"
 fail_msg="Installation of OpenFOAM failed, we were so close..."
+# May not have enough cores for the sanity check (6 required)
+export OMPI_MCA_rmaps_base_oversubscribe=1
 $EB OpenFOAM-8-foss-2020a.eb OpenFOAM-v2006-foss-2020a.eb --robot
+unset OMPI_MCA_rmaps_base_oversubscribe
 check_exit_code $? "${ok_msg}" "${fail_msg}"
 
 if [ ! "${EESSI_CPU_FAMILY}" = "ppc64le" ]; then
