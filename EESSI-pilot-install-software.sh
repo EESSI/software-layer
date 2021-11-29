@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-# Script to install EESSI pilot software stack (version 2021.06)
+# Script to install EESSI pilot software stack (version 2021.12)
 #
 
 TOPDIR=$(dirname $(realpath $0))
@@ -114,7 +114,7 @@ else
     echo_green ">> MODULEPATH set up: ${MODULEPATH}"
 fi
 
-REQ_EB_VERSION='4.4.1'
+REQ_EB_VERSION='4.5.0'
 
 echo ">> Checking for EasyBuild module..."
 ml_av_easybuild_out=$TMPDIR/ml_av_easybuild.out
@@ -169,10 +169,6 @@ fi
 
 echo_green "All set, let's start installing some software in ${EASYBUILD_INSTALLPATH}..."
 
-# download source tarball for DB (dependency for Perl) using fixed source URL,
-# see https://github.com/easybuilders/easybuild-easyconfigs/pull/13813
-$EB --fetch --from-pr 13813 DB-18.1.32-GCCcore-9.3.0.eb
-
 # install Java with fixed custom easyblock that uses patchelf to ensure right glibc is picked up,
 # see https://github.com/EESSI/software-layer/issues/123
 # and https://github.com/easybuilders/easybuild-easyblocks/pull/2557
@@ -186,7 +182,9 @@ export GCC_EC="GCC-9.3.0.eb"
 echo ">> Starting slow with ${GCC_EC}..."
 ok_msg="${GCC_EC} installed, yippy! Off to a good start..."
 fail_msg="Installation of ${GCC_EC} failed!"
-$EB ${GCC_EC} --robot
+# pull in easyconfig from https://github.com/easybuilders/easybuild-easyconfigs/pull/14453,
+# which includes patch to fix build of GCC 9.3 when recent kernel headers are in place
+$EB ${GCC_EC} --robot --from-pr 14453 GCCcore-9.3.0.eb
 check_exit_code $? "${ok_msg}" "${fail_msg}"
 
 # install CMake with custom easyblock that patches CMake when --sysroot is used
@@ -272,7 +270,7 @@ fi
 echo ">> Installing R 4.0.0 (better be patient)..."
 ok_msg="R installed, wow!"
 fail_msg="Installation of R failed, so sad..."
-$EB R-4.0.0-foss-2020a.eb --robot
+$EB R-4.0.0-foss-2020a.eb --robot --parallel-extensions-install --experimental
 check_exit_code $? "${ok_msg}" "${fail_msg}"
 
 echo ">> Installing Bioconductor 3.11 bundle..."
@@ -302,15 +300,6 @@ if [ ! "${EESSI_CPU_FAMILY}" = "ppc64le" ]; then
     check_exit_code $? "${ok_msg}" "${fail_msg}"
 fi
 
-echo ">> Installing ReFrame 3.6.2 ..."
-ok_msg="ReFrame installed, enjoy!"
-fail_msg="Installation of ReFrame failed, that's a bit strange..."
-# use ReFrame easyconfig from https://github.com/easybuilders/easybuild-easyconfigs/pull/13844 to avoid
-# problems caused by also having ReFrame installed in compat layer;
-# see also https://github.com/EESSI/software-layer/issues/127
-$EB ReFrame-3.6.2.eb --robot --from-pr 13844
-check_exit_code $? "${ok_msg}" "${fail_msg}"
-
 echo ">> Installing RStudio-Server 1.3.1093..."
 ok_msg="RStudio-Server installed, enjoy!"
 fail_msg="Installation of RStudio-Server failed, might be OS deps..."
@@ -326,7 +315,6 @@ check_exit_code $? "${ok_msg}" "${fail_msg}"
 echo ">> Installing Spark 3.1.1..."
 ok_msg="Spark installed, set off the fireworks!"
 fail_msg="Installation of Spark failed, no fireworks this time..."
-$EB Spark-3.1.1-foss-2020a-Python-3.8.2.eb --fetch --from-pr 13842
 $EB Spark-3.1.1-foss-2020a-Python-3.8.2.eb -r
 check_exit_code $? "${ok_msg}" "${fail_msg}"
 

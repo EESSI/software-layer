@@ -1,8 +1,8 @@
 # define minimal EESSI environment, without relying on external scripts
 
 export EESSI_CVMFS_REPO="/cvmfs/pilot.eessi-hpc.org"
-export EESSI_PILOT_VERSION="2021.06"
-export EESSI_PREFIX=$EESSI_CVMFS_REPO/$EESSI_PILOT_VERSION
+export EESSI_PILOT_VERSION="2021.12"
+export EESSI_PREFIX=$EESSI_CVMFS_REPO/versions/$EESSI_PILOT_VERSION
 
 if [[ $(uname -s) == 'Linux' ]]; then
     export EESSI_OS_TYPE='linux'
