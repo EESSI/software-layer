@@ -4,6 +4,7 @@
 #
 import glob
 import os
+import platform
 import sys
 import archspec.cpu
 
@@ -42,7 +43,13 @@ def det_host_triple():
 
 def find_best_target(eessi_prefix):
 
-    eessi_software_layer_path = os.path.join(eessi_prefix, 'software')
+    os_type = platform.system()
+    eessi_os_type = {
+        'Darwin': 'macos',
+        'Linux': 'linux',
+    }[os_type]
+
+    eessi_software_layer_path = os.path.join(eessi_prefix, 'software', eessi_os_type)
     if not os.path.exists(eessi_software_layer_path):
         error('Specified prefix "%s" does not exist!' % eessi_software_layer_path)
 

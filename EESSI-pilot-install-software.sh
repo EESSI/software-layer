@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-# Script to install EESSI pilot software stack (version 2021.02)
+# Script to install EESSI pilot software stack (version 2021.06)
 #
 
 TOPDIR=$(dirname $(realpath $0))
@@ -17,7 +17,7 @@ function echo_yellow() {
     echo -e "\e[33m$1\e[0m"
 }
 
-function error() {
+function fatal_error() {
     echo_red "ERROR: $1" >&2
     exit 1
 }
@@ -30,7 +30,7 @@ function check_exit_code {
     if [[ $ec -eq 0 ]]; then
         echo_green "${ok_msg}"
     else
-        error "${fail_msg}"
+        fatal_error "${fail_msg}"
     fi
 }
 
@@ -44,20 +44,24 @@ fi
 TMPDIR=$(mktemp -d)
 
 echo ">> Setting up environment..."
-export CVMFS_REPO="/cvmfs/pilot.eessi-hpc.org"
-export EESSI_PILOT_VERSION="2021.02"
 
-if [[ $(uname -s) == 'Linux' ]]; then
-    export EESSI_OS_TYPE='linux'
+source $TOPDIR/init/minimal_eessi_env
+
+if [ -d $EESSI_CVMFS_REPO ]; then
+    echo_green "$EESSI_CVMFS_REPO available, OK!"
 else
-    export EESSI_OS_TYPE='macos'
+    fatal_error "$EESSI_CVMFS_REPO is not available!"
 fi
 
-# aarch64 (Arm 64-bit), ppc64le (POWER 64-bit), x86_64 (x86 64-bit)
-export EESSI_CPU_FAMILY=$(uname -m)
+# make sure we're in Prefix environment by checking $SHELL
+if [[ ${SHELL} = ${EPREFIX}/bin/bash ]]; then
+    echo_green ">> It looks like we're in a Gentoo Prefix environment, good!"
+else
+    fatal_error "Not running in Gentoo Prefix environment, run '${EPREFIX}/startprefix' first!"
+fi
 
-export EESSI_PREFIX=${CVMFS_REPO}/${EESSI_PILOT_VERSION}
-export EPREFIX=${EESSI_PREFIX}/compat/${EESSI_OS_TYPE}/${EESSI_CPU_FAMILY}
+# avoid that pyc files for EasyBuild are stored in EasyBuild installation directory
+export PYTHONPYCACHEPREFIX=$TMPDIR/pycache
 
 DETECTION_PARAMETERS=''
 GENERIC=0
@@ -69,12 +73,20 @@ if [[ "$1" == "--generic" || "$EASYBUILD_OPTARCH" == "GENERIC" ]]; then
     EB='eb --optarch=GENERIC'
 fi
 
+echo ">> Determining software subdirectory to use for current build host..."
+export EESSI_SOFTWARE_SUBDIR_OVERRIDE=$(python3 $TOPDIR/eessi_software_subdir.py $DETECTION_PARAMETERS)
 
-# make sure we're in Prefix environment by which path to 'bash' command
-if [[ $(which bash) = ${EPREFIX}/bin/bash ]]; then
-    echo_green ">> It looks like we're in a Gentoo Prefix environment, good!"
+# Set all the EESSI environment variables (respecting $EESSI_SOFTWARE_SUBDIR_OVERRIDE)
+# $EESSI_SILENT - don't print any messages
+# $EESSI_BASIC_ENV - give a basic set of environment variables
+EESSI_SILENT=1 EESSI_BASIC_ENV=1 source $TOPDIR/init/eessi_environment_variables
+
+if [[ -z ${EESSI_SOFTWARE_SUBDIR} ]]; then
+    fatal_error "Failed to determine software subdirectory?!"
+elif [[ "${EESSI_SOFTWARE_SUBDIR}" != "${EESSI_SOFTWARE_SUBDIR_OVERRIDE}" ]]; then
+    fatal_error "Values for EESSI_SOFTWARE_SUBDIR_OVERRIDE (${EESSI_SOFTWARE_SUBDIR_OVERRIDE}) and EESSI_SOFTWARE_SUBDIR (${EESSI_SOFTWARE_SUBDIR}) differ!"
 else
-    error "Not running in Gentoo Prefix environment, run '${EPREFIX}/startprefix' first!"
+    echo_green ">> Using ${EESSI_SOFTWARE_SUBDIR} as software subdirectory!"
 fi
 
 echo ">> Initializing Lmod..."
@@ -84,54 +96,11 @@ ml --version &> $ml_version_out
 if [[ $? -eq 0 ]]; then
     echo_green ">> Found Lmod ${LMOD_VERSION}"
 else
-    error "Failed to initialize Lmod?! (see output in ${ml_version_out}"
-fi
-
-echo ">> Determining software subdirectory to use for current build host..."
-export EESSI_SOFTWARE_SUBDIR=$(python3 $TOPDIR/eessi_software_subdir.py $DETECTION_PARAMETERS)
-if [[ -z ${EESSI_SOFTWARE_SUBDIR} ]]; then
-    error "Failed to determine software subdirectory?!"
-else
-    echo_green ">> Using ${EESSI_SOFTWARE_SUBDIR} as software subdirectory!"
+    fatal_error "Failed to initialize Lmod?! (see output in ${ml_version_out}"
 fi
 
 echo ">> Configuring EasyBuild..."
-export EASYBUILD_PREFIX=${WORKDIR}/easybuild
-export EASYBUILD_INSTALLPATH=${EESSI_PREFIX}/software/${EESSI_OS_TYPE}/${EESSI_SOFTWARE_SUBDIR}
-export EASYBUILD_SOURCEPATH=${WORKDIR}/easybuild/sources:${EESSI_SOURCEPATH}
-
-# just ignore OS dependencies for now, see https://github.com/easybuilders/easybuild-framework/issues/3430
-export EASYBUILD_IGNORE_OSDEPS=1
-
-export EASYBUILD_SYSROOT=${EPREFIX}
-
-export EASYBUILD_DEBUG=1
-export EASYBUILD_TRACE=1
-export EASYBUILD_ZIP_LOGS=bzip2
-
-export EASYBUILD_RPATH=1
-export EASYBUILD_FILTER_ENV_VARS=LD_LIBRARY_PATH
-
-export EASYBUILD_HOOKS=$TOPDIR/eb_hooks.py
-# make sure hooks are available, so we can produce a clear error message
-if [ ! -f $EASYBUILD_HOOKS ]; then
-    error "$EASYBUILD_HOOKS does not exist!"
-fi
-
-# note: filtering Bison may break some installations, like Qt5 (see https://github.com/EESSI/software-layer/issues/49)
-# filtering pkg-config breaks R-bundle-Bioconductor installation (see also https://github.com/easybuilders/easybuild-easyconfigs/pull/11104)
-# problems occur when filtering pkg-config with gnuplot too (picks up Lua 5.1 from $EPREFIX rather than from Lua 5.3 dependency)
-DEPS_TO_FILTER=Autoconf,Automake,Autotools,binutils,bzip2,cURL,DBus,flex,gettext,gperf,help2man,intltool,libreadline,libtool,Lua,M4,makeinfo,ncurses,util-linux,XZ,zlib
-# For aarch64 we need to also filter out Yasm.
-# See https://github.com/easybuilders/easybuild-easyconfigs/issues/11190
-if [[ "$EESSI_CPU_FAMILY" == "aarch64" ]]; then
-    DEPS_TO_FILTER="${DEPS_TO_FILTER},Yasm"
-fi
-
-export EASYBUILD_FILTER_DEPS=$DEPS_TO_FILTER
-
-
-export EASYBUILD_MODULE_EXTENSIONS=1
+source configure_easybuild
 
 echo ">> Setting up \$MODULEPATH..."
 # make sure no modules are loaded
@@ -140,14 +109,16 @@ module --force purge
 module unuse $MODULEPATH
 module use $EASYBUILD_INSTALLPATH/modules/all
 if [[ -z ${MODULEPATH} ]]; then
-    error "Failed to set up \$MODULEPATH?!"
+    fatal_error "Failed to set up \$MODULEPATH?!"
 else
     echo_green ">> MODULEPATH set up: ${MODULEPATH}"
 fi
 
+REQ_EB_VERSION='4.4.1'
+
 echo ">> Checking for EasyBuild module..."
 ml_av_easybuild_out=$TMPDIR/ml_av_easybuild.out
-module avail easybuild &> ${ml_av_easybuild_out}
+module avail 2>&1 | grep -i easybuild/${REQ_EB_VERSION} &> ${ml_av_easybuild_out}
 if [[ $? -eq 0 ]]; then
     echo_green ">> EasyBuild module found!"
 else
@@ -164,17 +135,21 @@ else
     eb_install_out=${TMPDIR}/eb_install.out
     eb --install-latest-eb-release &> ${eb_install_out}
 
-    module avail easybuild &> ${ml_av_easybuild_out}
+    eb --search EasyBuild-${REQ_EB_VERSION}.eb | grep EasyBuild-${REQ_EB_VERSION}.eb > /dev/null
+    if [[ $? -eq 0 ]]; then
+        eb EasyBuild-${REQ_EB_VERSION}.eb >> ${eb_install_out} 2>&1
+    fi
+
+    module avail easybuild/${REQ_EB_VERSION} &> ${ml_av_easybuild_out}
     if [[ $? -eq 0 ]]; then
         echo_green ">> EasyBuild module installed!"
     else
-        error "EasyBuild module failed to install?! (output of 'pip install' in ${pip_install_out}, output of 'eb' in ${eb_install_out}, output of 'ml av easybuild' in ${ml_av_easybuild_out})"
+        fatal_error "EasyBuild/${REQ_EB_VERSION} module failed to install?! (output of 'pip install' in ${pip_install_out}, output of 'eb' in ${eb_install_out}, output of 'ml av easybuild' in ${ml_av_easybuild_out})"
     fi
 fi
 
-REQ_EB_VERSION='4.3.3'
 echo ">> Loading EasyBuild module..."
-module load EasyBuild
+module load EasyBuild/$REQ_EB_VERSION
 eb_show_system_info_out=${TMPDIR}/eb_show_system_info.out
 $EB --show-system-info > ${eb_show_system_info_out}
 if [[ $? -eq 0 ]]; then
@@ -184,15 +159,27 @@ if [[ $? -eq 0 ]]; then
         echo_green "Found EasyBuild version ${REQ_EB_VERSION}, looking good!"
     else
         $EB --version
-        error "Expected to find EasyBuild version ${REQ_EB_VERSION}, giving up here..."
+        fatal_error "Expected to find EasyBuild version ${REQ_EB_VERSION}, giving up here..."
     fi
     $EB --show-config
 else
     cat ${eb_show_system_info_out}
-    error "EasyBuild not working?!"
+    fatal_error "EasyBuild not working?!"
 fi
 
 echo_green "All set, let's start installing some software in ${EASYBUILD_INSTALLPATH}..."
+
+# download source tarball for DB (dependency for Perl) using fixed source URL,
+# see https://github.com/easybuilders/easybuild-easyconfigs/pull/13813
+$EB --fetch --from-pr 13813 DB-18.1.32-GCCcore-9.3.0.eb
+
+# install Java with fixed custom easyblock that uses patchelf to ensure right glibc is picked up,
+# see https://github.com/EESSI/software-layer/issues/123
+# and https://github.com/easybuilders/easybuild-easyblocks/pull/2557
+ok_msg="Java installed, off to a good (?) start!"
+fail_msg="Failed to install Java, woopsie..."
+$EB Java-11.eb --robot --include-easyblocks-from-pr 2557
+check_exit_code $? "${ok_msg}" "${fail_msg}"
 
 # install GCC for foss/2020a
 export GCC_EC="GCC-9.3.0.eb"
@@ -250,20 +237,20 @@ check_exit_code $? "${ok_msg}" "${fail_msg}"
 # to dance around problem with broken numpy tests;
 # cfr. https://github.com/easybuilders/easybuild-easyconfigs/issues/11959
 echo ">> Installing SciPy-bundle"
+ok_msg="SciPy-bundle installed, yihaa!"
+fail_msg="SciPy-bundle installation failed, bummer..."
 SCIPY_EC=SciPy-bundle-2020.03-foss-2020a-Python-3.8.2.eb
 if [[ "$(uname -m)" == "aarch64" ]]; then
   $EB $SCIPY_EC --robot --skip-test-step
 else
   $EB $SCIPY_EC --robot
 fi
-ok_msg="SciPy-bundle installed, yihaa!"
-fail_msg="SciPy-bundle installation failed, bummer..."
 check_exit_code $? "${ok_msg}" "${fail_msg}"
 
 echo ">> Installing GROMACS..."
 ok_msg="GROMACS installed, wow!"
 fail_msg="Installation of GROMACS failed, damned..."
-$EB GROMACS-2020.1-foss-2020a-Python-3.8.2.eb --robot
+$EB GROMACS-2020.1-foss-2020a-Python-3.8.2.eb GROMACS-2020.4-foss-2020a-Python-3.8.2.eb --robot
 check_exit_code $? "${ok_msg}" "${fail_msg}"
 
 # note: compiling OpenFOAM is memory hungry (16GB is not enough with 8 cores)!
@@ -274,6 +261,13 @@ fail_msg="Installation of OpenFOAM failed, we were so close..."
 $EB OpenFOAM-8-foss-2020a.eb OpenFOAM-v2006-foss-2020a.eb --robot
 check_exit_code $? "${ok_msg}" "${fail_msg}"
 
+if [ ! "${EESSI_CPU_FAMILY}" = "ppc64le" ]; then
+    echo ">> Installing QuantumESPRESSO..."
+    ok_msg="QuantumESPRESSO installed, let's go quantum!"
+    fail_msg="Installation of QuantumESPRESSO failed, did somebody observe it?!"
+    $EB QuantumESPRESSO-6.6-foss-2020a.eb --robot
+    check_exit_code $? "${ok_msg}" "${fail_msg}"
+fi
 
 echo ">> Installing R 4.0.0 (better be patient)..."
 ok_msg="R installed, wow!"
@@ -287,12 +281,19 @@ fail_msg="Installation of Bioconductor failed, that's annoying..."
 $EB R-bundle-Bioconductor-3.11-foss-2020a-R-4.0.0.eb --robot
 check_exit_code $? "${ok_msg}" "${fail_msg}"
 
+echo ">> Installing TensorFlow 2.3.1..."
+ok_msg="TensorFlow 2.3.1 installed, w00!"
+fail_msg="Installation of TensorFlow failed, why am I not surprised..."
+$EB TensorFlow-2.3.1-foss-2020a-Python-3.8.2.eb --robot --include-easyblocks-from-pr 2218
+check_exit_code $? "${ok_msg}" "${fail_msg}"
+
+echo ">> Installing Horovod 0.21.3..."
+ok_msg="Horovod installed! Go do some parallel training!"
+fail_msg="Horovod installation failed. There comes the headache..."
+$EB Horovod-0.21.3-foss-2020a-TensorFlow-2.3.1-Python-3.8.2.eb --robot
+check_exit_code $? "${ok_msg}" "${fail_msg}"
+
 if [ ! "${EESSI_CPU_FAMILY}" = "ppc64le" ]; then
-    echo ">> Installing TensorFlow 2.3.1..."
-    ok_msg="TensorFlow 2.3.1 installed, w00!"
-    fail_msg="Installation of TensorFlow failed, why am I not surprised..."
-    $EB TensorFlow-2.3.1-foss-2020a-Python-3.8.2.eb --robot --include-easyblocks-from-pr 2218
-    check_exit_code $? "${ok_msg}" "${fail_msg}"
 
     echo ">> Installing code-server 3.7.3..."
     ok_msg="code-server 3.7.3 installed, now you can use VS Code!"
@@ -301,22 +302,38 @@ if [ ! "${EESSI_CPU_FAMILY}" = "ppc64le" ]; then
     check_exit_code $? "${ok_msg}" "${fail_msg}"
 fi
 
-echo ">> Installing ReFrame 3.4.1 ..."
-$EB ReFrame-3.4.1.eb --robot
+echo ">> Installing ReFrame 3.6.2 ..."
 ok_msg="ReFrame installed, enjoy!"
 fail_msg="Installation of ReFrame failed, that's a bit strange..."
+# use ReFrame easyconfig from https://github.com/easybuilders/easybuild-easyconfigs/pull/13844 to avoid
+# problems caused by also having ReFrame installed in compat layer;
+# see also https://github.com/EESSI/software-layer/issues/127
+$EB ReFrame-3.6.2.eb --robot --from-pr 13844
 check_exit_code $? "${ok_msg}" "${fail_msg}"
 
 echo ">> Installing RStudio-Server 1.3.1093..."
-$EB RStudio-Server-1.3.1093-foss-2020a-Java-11-R-4.0.0.eb --robot
 ok_msg="RStudio-Server installed, enjoy!"
 fail_msg="Installation of RStudio-Server failed, might be OS deps..."
+$EB RStudio-Server-1.3.1093-foss-2020a-Java-11-R-4.0.0.eb --robot
 check_exit_code $? "${ok_msg}" "${fail_msg}"
 
 echo ">> Installing OSU-Micro-Benchmarks 5.6.3..."
 ok_msg="OSU-Micro-Benchmarks installed, yihaa!"
-fail_msg="Installation of OSU-Micro-Benchmarks, that's unexpected..."
+fail_msg="Installation of OSU-Micro-Benchmarks failed, that's unexpected..."
 $EB OSU-Micro-Benchmarks-5.6.3-gompi-2020a.eb -r
+check_exit_code $? "${ok_msg}" "${fail_msg}"
+
+echo ">> Installing Spark 3.1.1..."
+ok_msg="Spark installed, set off the fireworks!"
+fail_msg="Installation of Spark failed, no fireworks this time..."
+$EB Spark-3.1.1-foss-2020a-Python-3.8.2.eb --fetch --from-pr 13842
+$EB Spark-3.1.1-foss-2020a-Python-3.8.2.eb -r
+check_exit_code $? "${ok_msg}" "${fail_msg}"
+
+echo ">> Installing IPython 7.15.0..."
+ok_msg="IPython installed, launch your Jupyter Notebooks!"
+fail_msg="Installation of IPython failed, that's unexpected..."
+$EB IPython-7.15.0-foss-2020a-Python-3.8.2.eb -r
 check_exit_code $? "${ok_msg}" "${fail_msg}"
 
 echo ">> Creating/updating Lmod cache..."
@@ -336,6 +353,14 @@ ${LMOD_DIR}/update_lmod_system_cache_files -d ${lmod_cache_dir} -t ${lmod_cache_
 check_exit_code $? "Lmod cache updated" "Lmod cache update failed!"
 
 ls -lrt ${EASYBUILD_INSTALLPATH}/.lmod/cache
+
+echo ">> Checking for missing installations..."
+ok_msg="No missing installations, party time!"
+fail_msg="On no, some installations are still missing, how did that happen?!"
+eb_missing_out=$TMPDIR/eb_missing.out
+$EB --easystack eessi-${EESSI_PILOT_VERSION}.yml --experimental --missing --robot $EASYBUILD_PREFIX/ebfiles_repo | tee ${eb_missing_out}
+grep "No missing modules" ${eb_missing_out} > /dev/null
+check_exit_code $? "${ok_msg}" "${fail_msg}"
 
 echo ">> Cleaning up ${TMPDIR}..."
 rm -r ${TMPDIR}
