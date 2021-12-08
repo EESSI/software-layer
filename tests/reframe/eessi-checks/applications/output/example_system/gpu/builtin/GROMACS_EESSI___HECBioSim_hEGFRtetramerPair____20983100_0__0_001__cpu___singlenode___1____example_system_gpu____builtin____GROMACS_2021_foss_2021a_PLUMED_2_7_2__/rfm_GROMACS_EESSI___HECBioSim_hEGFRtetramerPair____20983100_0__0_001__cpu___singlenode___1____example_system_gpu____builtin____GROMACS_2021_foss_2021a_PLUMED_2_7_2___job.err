@@ -1,0 +1,490 @@
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0100   181  100   181    0     0    830      0 --:--:-- --:--:-- --:--:--   830
+  0     0    0     0    0     0      0      0 --:--:--  0:00:02 --:--:--     0  0     0    0     0    0     0      0      0 --:--:--  0:00:04 --:--:--     0  0 73.4M    0  121k    0     0  24540      0  0:52:19  0:00:05  0:52:14 47114100 73.4M  100 73.4M    0     0  13.7M      0  0:00:05  0:00:05 --:--:-- 25.1M
+         :-) GROMACS - gmx mdrun, 2021-EasyBuild-4.5.0-PLUMED-2.7.2 (-:
+
+                            GROMACS is written by:
+     Andrey Alekseenko              Emile Apol              Rossen Apostolov     
+         Paul Bauer           Herman J.C. Berendsen           Par Bjelkmar       
+       Christian Blau           Viacheslav Bolnykh             Kevin Boyd        
+     Aldert van Buuren           Rudi van Drunen             Anton Feenstra      
+    Gilles Gouaillardet             Alan Gray               Gerrit Groenhof      
+       Anca Hamuraru            Vincent Hindriksen          M. Eric Irrgang      
+      Aleksei Iupinov           Christoph Junghans             Joe Jordan        
+    Dimitrios Karkoulis            Peter Kasson                Jiri Kraus        
+      Carsten Kutzner              Per Larsson              Justin A. Lemkul     
+       Viveca Lindahl            Magnus Lundborg             Erik Marklund       
+        Pascal Merz             Pieter Meulenhoff            Teemu Murtola       
+        Szilard Pall               Sander Pronk              Roland Schulz       
+       Michael Shirts            Alexey Shvetsov             Alfons Sijbers      
+       Peter Tieleman              Jon Vincent              Teemu Virolainen     
+     Christian Wennberg            Maarten Wolf              Artem Zhmurov       
+                           and the project leaders:
+        Mark Abraham, Berk Hess, Erik Lindahl, and David van der Spoel
+
+Copyright (c) 1991-2000, University of Groningen, The Netherlands.
+Copyright (c) 2001-2019, The GROMACS development team at
+Uppsala University, Stockholm University and
+the Royal Institute of Technology, Sweden.
+check out http://www.gromacs.org for more information.
+
+GROMACS is free software; you can redistribute it and/or modify it
+under the terms of the GNU Lesser General Public License
+as published by the Free Software Foundation; either version 2.1
+of the License, or (at your option) any later version.
+
+GROMACS:      gmx mdrun, version 2021-EasyBuild-4.5.0-PLUMED-2.7.2
+Executable:   /sw/arch/Centos8/EB_production/2021/software/GROMACS/2021-foss-2021a-PLUMED-2.7.2/bin/gmx_mpi
+Data prefix:  /sw/arch/Centos8/EB_production/2021/software/GROMACS/2021-foss-2021a-PLUMED-2.7.2
+Working dir:  /gpfs/home4/casparl/EESSI/software-layer/tests/reframe/eessi-checks/applications/stage/example_system/gpu/builtin/GROMACS_EESSI___HECBioSim_hEGFRtetramerPair____20983100_0__0_001__cpu___singlenode___1____example_system_gpu____builtin____GROMACS_2021_foss_2021a_PLUMED_2_7_2__
+Command line:
+  gmx_mpi mdrun -nb cpu -s benchmark.tpr
+
+Reading file benchmark.tpr, VERSION 5.1.4 (single precision)
+Note: file tpx version 103, software tpx version 122
+Changing nstlist from 10 to 100, rlist from 1.2 to 1.322
+
+Using 72 MPI processes
+
+Non-default thread affinity set, disabling internal thread affinity
+
+Using 1 OpenMP thread per MPI process
+
+starting mdrun 'Her1-Her1'
+10000 steps,     20.0 ps.
+srun: Job step aborted: Waiting up to 32 seconds for job step to finish.
+slurmstepd: error: *** JOB 223853 ON gcn24 CANCELLED AT 2021-12-02T18:12:53 DUE TO TIME LIMIT ***
+slurmstepd: error: *** STEP 223853.0 ON gcn24 CANCELLED AT 2021-12-02T18:12:53 DUE TO TIME LIMIT ***
+
+
+Received the TERM signal, stopping within 100 steps
+
+
+
+Received the TERM signal, stopping within 100 steps
+
+
+
+Received the TERM signal, stopping within 100 steps
+
+
+
+Received the TERM signal, stopping within 100 steps
+
+
+
+Received the TERM signal, stopping within 100 steps
+
+
+
+Received the TERM signal, stopping within 100 steps
+
+
+
+Received the TERM signal, stopping within 100 steps
+
+
+
+Received the TERM signal, stopping within 100 steps
+
+
+
+Received the TERM signal, stopping within 100 steps
+
+
+
+Received the TERM signal, stopping within 100 steps
+
+
+
+Received the TERM signal, stopping within 100 steps
+
+
+
+Received the TERM signal, stopping within 100 steps
+
+
+
+Received the TERM signal, stopping within 100 steps
+
+
+
+Received the TERM signal, stopping within 100 steps
+
+
+
+Received the TERM signal, stopping within 100 steps
+
+
+
+Received the TERM signal, stopping within 100 steps
+
+
+
+Received the TERM signal, stopping within 100 steps
+
+
+
+Received the TERM signal, stopping within 100 steps
+
+
+
+Received the TERM signal, stopping within 100 steps
+
+
+
+Received the TERM signal, stopping within 100 steps
+
+
+
+Received the TERM signal, stopping within 100 steps
+
+
+
+Received the TERM signal, stopping within 100 steps
+
+
+
+Received the TERM signal, stopping within 100 steps
+
+
+
+Received the TERM signal, stopping within 100 steps
+
+
+
+Received the TERM signal, stopping within 100 steps
+
+
+
+Received the TERM signal, stopping within 100 steps
+
+
+
+Received the TERM signal, stopping within 100 steps
+
+
+
+Received the TERM signal, stopping within 100 steps
+
+
+
+Received the TERM signal, stopping within 100 steps
+
+
+
+Received the TERM signal, stopping within 100 steps
+
+
+
+Received the TERM signal, stopping within 100 steps
+
+
+
+Received the TERM signal, stopping within 100 steps
+
+
+
+Received the TERM signal, stopping within 100 steps
+
+
+
+Received the TERM signal, stopping within 100 steps
+
+
+
+Received the TERM signal, stopping within 100 steps
+
+
+
+Received the TERM signal, stopping within 100 steps
+
+
+
+Received the TERM signal, stopping within 100 steps
+
+
+
+Received the TERM signal, stopping within 100 steps
+
+
+
+Received the TERM signal, stopping within 100 steps
+
+
+
+Received the TERM signal, stopping within 100 steps
+
+
+
+Received the TERM signal, stopping within 100 steps
+
+
+
+Received the TERM signal, stopping within 100 steps
+
+
+
+Received the TERM signal, stopping within 100 steps
+
+
+
+Received the TERM signal, stopping within 100 steps
+
+
+
+Received the TERM signal, stopping within 100 steps
+
+
+
+Received the TERM signal, stopping within 100 steps
+
+
+
+Received the TERM signal, stopping within 100 steps
+
+
+
+Received the TERM signal, stopping within 100 steps
+
+
+
+Received the TERM signal, stopping within 100 steps
+
+
+
+Received the TERM signal, stopping within 100 steps
+
+
+
+Received the TERM signal, stopping within 100 steps
+
+
+
+Received the TERM signal, stopping within 100 steps
+
+
+
+Received the TERM signal, stopping within 100 steps
+
+
+
+Received the TERM signal, stopping within 100 steps
+
+
+
+Received the second INT/TERM signal, stopping within 11 steps
+
+
+
+Received the second INT/TERM signal, stopping within 11 steps
+
+
+
+Received the second INT/TERM signal, stopping within 11 steps
+
+
+
+Received the second INT/TERM signal, stopping within 11 steps
+
+
+
+Received the second INT/TERM signal, stopping within 11 steps
+
+
+
+Received the second INT/TERM signal, stopping within 11 steps
+
+
+
+Received the second INT/TERM signal, stopping within 11 steps
+
+
+
+Received the second INT/TERM signal, stopping within 11 steps
+
+
+
+Received the second INT/TERM signal, stopping within 11 steps
+
+
+
+Received the second INT/TERM signal, stopping within 11 steps
+
+
+
+Received the second INT/TERM signal, stopping within 11 steps
+
+
+
+Received the second INT/TERM signal, stopping within 11 steps
+
+
+
+Received the second INT/TERM signal, stopping within 11 steps
+
+
+
+Received the second INT/TERM signal, stopping within 11 steps
+
+
+
+Received the second INT/TERM signal, stopping within 11 steps
+
+
+
+Received the second INT/TERM signal, stopping within 11 steps
+
+
+
+Received the second INT/TERM signal, stopping within 11 steps
+
+
+
+Received the second INT/TERM signal, stopping within 11 steps
+
+
+
+Received the second INT/TERM signal, stopping within 11 steps
+
+
+
+Received the second INT/TERM signal, stopping within 11 steps
+
+
+
+Received the second INT/TERM signal, stopping within 11 steps
+
+
+
+Received the second INT/TERM signal, stopping within 11 steps
+
+
+
+Received the second INT/TERM signal, stopping within 11 steps
+
+
+
+Received the second INT/TERM signal, stopping within 11 steps
+
+
+
+Received the second INT/TERM signal, stopping within 11 steps
+
+
+
+Received the second INT/TERM signal, stopping within 11 steps
+
+
+
+Received the second INT/TERM signal, stopping within 11 steps
+
+
+
+Received the second INT/TERM signal, stopping within 11 steps
+
+
+
+Received the second INT/TERM signal, stopping within 11 steps
+
+
+
+Received the second INT/TERM signal, stopping within 11 steps
+
+
+
+Received the second INT/TERM signal, stopping within 11 steps
+
+
+
+Received the second INT/TERM signal, stopping within 11 steps
+
+
+
+Received the second INT/TERM signal, stopping within 11 steps
+
+
+
+Received the second INT/TERM signal, stopping within 11 steps
+
+
+
+Received the second INT/TERM signal, stopping within 11 steps
+
+
+
+Received the second INT/TERM signal, stopping within 11 steps
+
+
+
+Received the second INT/TERM signal, stopping within 11 steps
+
+
+
+Received the second INT/TERM signal, stopping within 11 steps
+
+
+
+Received the second INT/TERM signal, stopping within 11 steps
+
+
+
+Received the second INT/TERM signal, stopping within 11 steps
+
+
+
+Received the second INT/TERM signal, stopping within 11 steps
+
+
+
+Received the second INT/TERM signal, stopping within 11 steps
+
+
+
+Received the second INT/TERM signal, stopping within 11 steps
+
+
+
+Received the second INT/TERM signal, stopping within 11 steps
+
+
+
+Received the second INT/TERM signal, stopping within 11 steps
+
+
+
+Received the second INT/TERM signal, stopping within 11 steps
+
+
+
+Received the second INT/TERM signal, stopping within 11 steps
+
+
+
+Received the second INT/TERM signal, stopping within 11 steps
+
+
+
+Received the second INT/TERM signal, stopping within 11 steps
+
+
+
+Received the second INT/TERM signal, stopping within 11 steps
+
+
+
+Received the second INT/TERM signal, stopping within 11 steps
+
+
+
+Received the second INT/TERM signal, stopping within 11 steps
+
+
+
+Received the second INT/TERM signal, stopping within 11 steps
+
+
+
+Received the second INT/TERM signal, stopping within 11 steps
+

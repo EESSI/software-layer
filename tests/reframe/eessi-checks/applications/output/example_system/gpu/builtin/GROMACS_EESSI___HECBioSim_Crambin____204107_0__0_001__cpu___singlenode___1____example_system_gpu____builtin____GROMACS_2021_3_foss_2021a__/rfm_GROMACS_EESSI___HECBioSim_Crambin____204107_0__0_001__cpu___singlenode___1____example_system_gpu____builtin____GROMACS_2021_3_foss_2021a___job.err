@@ -1,0 +1,85 @@
+slurmstepd: error: Unable to create TMPDIR [/scratch-local/casparl.223910]: No such file or directory
+slurmstepd: error: Setting TMPDIR to /tmp
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0100   171  100   171    0     0    558      0 --:--:-- --:--:-- --:--:--   557
+100  673k  100  673k    0     0  1193k      0 --:--:-- --:--:-- --:--:-- 1193k
+slurmstepd: error: Unable to create TMPDIR [/scratch-local/casparl.223910]: No such file or directory
+slurmstepd: error: Setting TMPDIR to /tmp
+                  :-) GROMACS - gmx mdrun, 2021.3-MODIFIED (-:
+
+                            GROMACS is written by:
+     Andrey Alekseenko              Emile Apol              Rossen Apostolov     
+         Paul Bauer           Herman J.C. Berendsen           Par Bjelkmar       
+       Christian Blau           Viacheslav Bolnykh             Kevin Boyd        
+     Aldert van Buuren           Rudi van Drunen             Anton Feenstra      
+    Gilles Gouaillardet             Alan Gray               Gerrit Groenhof      
+       Anca Hamuraru            Vincent Hindriksen          M. Eric Irrgang      
+      Aleksei Iupinov           Christoph Junghans             Joe Jordan        
+    Dimitrios Karkoulis            Peter Kasson                Jiri Kraus        
+      Carsten Kutzner              Per Larsson              Justin A. Lemkul     
+       Viveca Lindahl            Magnus Lundborg             Erik Marklund       
+        Pascal Merz             Pieter Meulenhoff            Teemu Murtola       
+        Szilard Pall               Sander Pronk              Roland Schulz       
+       Michael Shirts            Alexey Shvetsov             Alfons Sijbers      
+       Peter Tieleman              Jon Vincent              Teemu Virolainen     
+     Christian Wennberg            Maarten Wolf              Artem Zhmurov       
+                           and the project leaders:
+        Mark Abraham, Berk Hess, Erik Lindahl, and David van der Spoel
+
+Copyright (c) 1991-2000, University of Groningen, The Netherlands.
+Copyright (c) 2001-2019, The GROMACS development team at
+Uppsala University, Stockholm University and
+the Royal Institute of Technology, Sweden.
+check out http://www.gromacs.org for more information.
+
+GROMACS is free software; you can redistribute it and/or modify it
+under the terms of the GNU Lesser General Public License
+as published by the Free Software Foundation; either version 2.1
+of the License, or (at your option) any later version.
+
+GROMACS:      gmx mdrun, version 2021.3-MODIFIED
+Executable:   /sw/arch/Centos8/EB_production/2021/software/GROMACS/2021.3-foss-2021a/bin/gmx_mpi
+Data prefix:  /sw/arch/Centos8/EB_production/2021/software/GROMACS/2021.3-foss-2021a
+Working dir:  /gpfs/home4/casparl/EESSI/software-layer/tests/reframe/eessi-checks/applications/stage/example_system/gpu/builtin/GROMACS_EESSI___HECBioSim_Crambin____204107_0__0_001__cpu___singlenode___1____example_system_gpu____builtin____GROMACS_2021_3_foss_2021a__
+Command line:
+  gmx_mpi mdrun -nb cpu -s benchmark.tpr
+
+Reading file benchmark.tpr, VERSION 5.1.4 (single precision)
+Note: file tpx version 103, software tpx version 122
+Changing nstlist from 10 to 80, rlist from 1.2 to 1.321
+
+Using 72 MPI processes
+
+Non-default thread affinity set, disabling internal thread affinity
+
+Using 1 OpenMP thread per MPI process
+
+starting mdrun 'Great Red Owns Many ACres of Sand'
+50000 steps,    100.0 ps.
+
+Writing final coordinates.
+
+
+Dynamic load balancing report:
+ DLB was off during the run due to low measured imbalance.
+ Average load imbalance: 9.6%.
+ The balanceable part of the MD step is 76%, load imbalance is computed from this.
+ Part of the total run time spent waiting due to load imbalance: 7.2%.
+ Average PME mesh/force load: 0.825
+ Part of the total run time spent waiting due to PP/PME imbalance: 3.6 %
+
+NOTE: 7.2 % of the available CPU time was lost due to load imbalance
+      in the domain decomposition.
+      Dynamic load balancing was automatically disabled, but it might be beneficial to manually tuning it on (option -dlb on.)
+      You can also consider manually changing the decomposition (option -dd);
+      e.g. by using fewer domains along the box dimension in which there is
+      considerable inhomogeneity in the simulated system.
+
+               Core t (s)   Wall t (s)        (%)
+       Time:     1895.440       26.326     7199.8
+                 (ns/day)    (hour/ns)
+Performance:      328.195        0.073
+
+GROMACS reminds you: "It Wouldn't Hurt to Wipe Once In a While" (Beavis and Butthead)
+

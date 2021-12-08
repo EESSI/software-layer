@@ -1,0 +1,14 @@
+
+JOB STATISTICS
+==============
+Job ID: 223878
+Cluster: snellius
+User/Group: casparl/casparl
+State: COMPLETED (exit code 0)
+Nodes: 1
+Cores per node: 128
+CPU Utilized: 02:31:03
+CPU Efficiency: 54.890f 04:35:12 core-walltime
+Job Wall-clock time: 00:02:09
+Memory Utilized: 10.36 GB (estimated maximum)
+Memory Efficiency: 4.420f 234.38 GB (1.83 GB/core)
