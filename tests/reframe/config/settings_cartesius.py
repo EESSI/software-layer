@@ -3,36 +3,49 @@ site_configuration = {
         {
             'name': 'example_system',
             'descr': 'This is just an example system',
-            'modules_system': 'lmod',
+            'modules_system': 'tmod4',
 	    'hostnames': ['login', 'int', 'tcn', 'gcn'],
-            'partitions': [
-                {
-                    'name': 'cpu',
+	    'partitions': [
+		{
+                    'name': 'short',
                     'scheduler': 'slurm',
-                    'launcher': 'srun',
-                    'access':  ['-p thin'],
-                    'environs': ['builtin'],
-                    'max_jobs': 10,
+	            'launcher': 'srun',
+                    'access':  ['-p short --constraint=haswell'],
+                    'environs': ['builtin', 'foss', 'container'],
+                    'container_platforms': [
+                        {
+                            'type': 'Singularity',
+                            'modules': [],
+                            'variables': [['SLURM_MPI_TYPE', 'pmix']]
+                        }
+                    ],
                     'processor': {
-                        'num_cpus': 128,
+                        'num_cpus': 24,
+                        'num_sockets': 2,
+                        'num_cpus_per_socket': 12,
                     },
-                    'descr': 'normal CPU partition'
+                    'descr': 'normal partition'
                 },
                 {
                     'name': 'gpu',
-                    'descr': 'GPU partition',
+                    'descr': 'GPU nodes (K40) ',
                     'scheduler': 'slurm',
-                    'access':  ['-p gpu --gpus-per-node 4 --exclusive'],
-                    'environs': ['builtin'],
-                    'max_jobs': 10,
+                    'access':  ['-p gpu'],
+                    'environs': ['builtin', 'fosscuda'],
+                    'max_jobs': 100,
                     'launcher': 'srun',
                     'processor': {
-                        'num_cpus': 72,
+                        'num_cpus': 16,
+                        'num_sockets': 2,
+                        'num_cpus_per_socket': 8,
+                        'arch': 'ivybridge',
                     },
                     'devices': [
                         {
+                            # on Cartesius it is not allowed to select the number of gpus with gres
+                            # the nodes are always allocated exclusively
                             'type': 'gpu',
-                            'num_devices': 4,
+                            'num_devices': 2,
                         },
                     ],
                 },
@@ -41,7 +54,26 @@ site_configuration = {
      ],
     'environments': [
         {
+            'name': 'foss',
+	    'modules': ['foss/2020a'],
+            'cc': 'mpicc',
+            'cxx': 'mpicxx',
+            'ftn': 'mpifort',
+        },
+        {
+            'name': 'fosscuda',
+            'modules': ['fosscuda/2020a'],
+            'cc': 'mpicc',
+            'cxx': 'mpicxx',
+            'ftn': 'mpifort',
+        },
+        {
+            'name': 'container',
+            'modules': [],
+        },
+        {
             'name': 'builtin',
+            'modules': ['2020'],
             'cc': 'cc',
             'cxx': '',
             'ftn': '',
