@@ -11,7 +11,6 @@ site_configuration = {
                     'scheduler': 'slurm',
                     'launcher': 'mpirun',
                     'access':  ['-p cpubase_bycore_b1 --exclusive --mem=94515M'],
-#                    'access':  ['-p cpubase_bycore_b1 --exclusive --mem=100000M'],
                     'environs': ['builtin'],
                     'max_jobs': 4,
                     'processor': {
@@ -83,6 +82,11 @@ site_configuration = {
                     'append': True
                 }
             ]
+        }
+    ],
+    'general': [
+        {
+            'remote_detect': True,
         }
     ],
 }
