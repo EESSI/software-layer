@@ -15,6 +15,8 @@ def skip_gpu_test_on_cpu_nodes(test: rfm.RegressionTest):
 
 def auto_assign_num_tasks_MPI(test: rfm.RegressionTest, num_nodes: int) -> rfm.RegressionTest:
     '''Automatically sets num_tasks, tasks_per_node and cpus_per_task based on the current partitions num_cpus, number of GPUs and test.num_nodes. For GPU tests, one task per GPU is set, and num_cpus_per_task is based on the ratio of CPU cores/GPUs. For CPU tests, one task per CPU is set, and num_cpus_per_task is set to 1. Total task count is determined based on the number of nodes to be used in the test. Behaviour of this function is (usually) sensible for pure MPI tests.'''
+    if test.current_partition.processor.num_cpus is None:
+        raise AttributeError("This test requires the number of CPUs to be known for the partition it runs on. Check that processor information is either autodetected (https://reframe-hpc.readthedocs.io/en/stable/configure.html#proc-autodetection), or manually set in the ReFrame configuration file (see https://reframe-hpc.readthedocs.io/en/stable/config_reference.html?highlight=processor%20info#processor-info).")
     if utils.is_cuda_required(test):
         test.num_tasks_per_node = utils.get_num_gpus(test)
         test.num_cpus_per_task = int(test.current_partition.processor.num_cpus / test.num_tasks_per_node)
