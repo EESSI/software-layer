@@ -222,7 +222,9 @@ check_exit_code $? "${ok_msg}" "${fail_msg}"
 echo ">> Installing Perl..."
 ok_msg="Perl installed, making progress..."
 fail_msg="Installation of Perl failed, this never happens..."
-$EB Perl-5.30.2-GCCcore-9.3.0.eb --robot
+# use enhanced Perl easyblock from https://github.com/easybuilders/easybuild-easyblocks/pull/2640
+# to avoid trouble when using long installation prefix (for example with EESSI pilot 2021.12 on skylake_avx512...)
+$EB Perl-5.30.2-GCCcore-9.3.0.eb --robot --include-easyblocks-from-pr 2640
 check_exit_code $? "${ok_msg}" "${fail_msg}"
 
 echo ">> Installing Qt5..."
