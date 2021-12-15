@@ -8,13 +8,14 @@ from reframe.utility import find_modules
 
 from hpctestlib.sciapps.gromacs.benchmarks import gromacs_check
 import eessi_utils.hooks as hooks
+import eessi_utils.utils as utils
 
 @rfm.simple_test
 class GROMACS_EESSI(gromacs_check):
 
     scale = parameter([
         ('singlenode', 1),
-        ('n_small', 4),
+        ('n_small', 2),
         ('n_medium', 8),
         ('n_large', 16)])
     module_info = parameter(find_modules('GROMACS', environ_mapping={r'.*': 'builtin'}))
@@ -46,8 +47,8 @@ class GROMACS_EESSI(gromacs_check):
     @run_after('setup')
     def skip_nb_impl_gpu_on_cpu_nodes(self):
         self.skip_if(
-            self.nb_impl == 'gpu') and (utils.is_gpu_present(self),
-            "Skipping nb_impl=gpu variant on non-GPU nodes"
+            (self.nb_impl == 'gpu' and not utils.is_gpu_present(self)),
+            "Skipping test variant with non-bonded interactions on GPUs, as this partition (%s) does not have GPU nodes" % self.current_partition.name
         )
 
     # Skip testing GPU-based modules on CPU-based nodes
@@ -58,5 +59,4 @@ class GROMACS_EESSI(gromacs_check):
     # Assign num_tasks, num_tasks_per_node and num_cpus_per_task automatically based on current partition's num_cpus and gpus
     @run_after('setup')
     def set_num_tasks(self):
-        hooks.auto_assign_num_tasks_MPI(test = self, num_nodes = self.num_nodes) 
-
+        hooks.auto_assign_num_tasks_MPI(test = self, num_nodes = self.num_nodes)
