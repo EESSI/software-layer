@@ -326,6 +326,24 @@ fail_msg="Installation of IPython failed, that's unexpected..."
 $EB IPython-7.15.0-foss-2020a-Python-3.8.2.eb -r
 check_exit_code $? "${ok_msg}" "${fail_msg}"
 
+echo ">> Installing EasyBuild 4.5.1..."
+ok_msg="EasyBuild v4.5.1 installed"
+fail_msg="EasyBuild v4.5.1 failed to install"
+$EB --from-pr 14545
+check_exit_code $? "${ok_msg}" "${fail_msg}"
+
+LMOD_IGNORE_CACHE=1 module swap EasyBuild/4.5.1
+check_exit_code $? "Swapped to EasyBuild/4.5.1" "Couldn't swap to EasyBuild/4.5.1"
+
+echo ">> Installing SciPy-bundle with foss/2021a..."
+ok_msg="SciPy-bundle with foss/2021a installed, welcome to the modern age"
+fail_msg="Installation of SciPy-bundle with foss/2021a failed, back to the stone age..."
+$EB SciPy-bundle-2021.05-foss-2021a.eb -M
+$EB CMake-3.20.1-GCCcore-10.3.0.eb --robot --include-easyblocks-from-pr 2248
+$EB --from-pr 14584 Rust-1.52.1-GCCcore-10.3.0.eb --robot
+$EB SciPy-bundle-2021.05-foss-2021a.eb -r --buildpath /dev/shm/$USER/easybuild_build
+check_exit_code $? "${ok_msg}" "${fail_msg}"
+
 echo ">> Creating/updating Lmod cache..."
 export LMOD_RC="${EASYBUILD_INSTALLPATH}/.lmod/lmodrc.lua"
 if [ ! -f $LMOD_RC ]; then
