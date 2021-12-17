@@ -53,6 +53,9 @@ parser.add_argument('--no-cuda', action='store_true', default=False,
                     help='disables CUDA training')
 parser.add_argument('--use-horovod', action='store_true', default=False)
 
+parser.add_argument('--inter-op-threads', type=int, default=None)
+parser.add_argument('--intra-op-threads', type=int, default=None)
+
 args = parser.parse_args()
 args.cuda = not args.no_cuda
 
@@ -71,12 +74,14 @@ if args.cuda:
 else:
     os.environ["CUDA_VISIBLE_DEVICES"] = "-1"
 
-if args.cuda:
-    tf.config.threading.set_inter_op_parallelism_threads(1)
-else:
-    tf.config.threading.set_inter_op_parallelism_threads(1)
+# Set number of inter and intra-op threads for TensorFlow to use
+if args.inter_op_threads is not None:
+    tf.config.threading.set_inter_op_parallelism_threads(args.inter_op_threads)
+if args.intra_op_threads is not None:
+    tf.config.threading.set_intra_op_parallelism_threads(args.intra_op_threads)
 
-tf.config.threading.set_intra_op_parallelism_threads(int(os.environ['OMP_NUM_THREADS']))
+log("Running with inter-op-threads: %s" % tf.config.threading.get_inter_op_parallelism_threads())
+log("Running with intra-op-threads: %s" % tf.config.threading.get_intra_op_parallelism_threads())
 
 if args.mixed_prec:
     log('Running with mixed_float16 as global policy for the precision')

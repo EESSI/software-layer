@@ -9,7 +9,7 @@ class TensorFlow2(rfm.RunOnlyRegressionTest, pin_prefix=True):
     num_cpus_per_task = required
 
     # Can be 'gpu' or 'cpu'
-    device = variable(str)
+    device = parameter(['gpu', 'cpu'])
     batch_size = variable(int, value = 32) # Smaller batch sizes may be used if running out of memory
 
     # For multinode runs, Horovod is used. Horovod may perform better on CPU if one thread is left idle
@@ -42,20 +42,14 @@ class TensorFlow2(rfm.RunOnlyRegressionTest, pin_prefix=True):
             '--num-iters 2',
             '--num-batches-per-iter 2',
             '--num-warmup-batches 1',
+            '--inter-op-threads 1',
+            '--intra-op-threads %s' % self.omp_num_threads
         ]
         if self.device == 'cpu':
             self.executable_opts.append('--no-cuda')
         # Use horovod for parallelism
         if self.num_tasks > 1:
             self.executable_opts.append('--use-horovod')
-
-    @run_before('run')
-    def set_omp_num_threads_env(self):
-        self.variables = {
-            'OMP_NUM_THREADS': f'{self.omp_num_threads}',
-        }
-        if self.current_partition.launcher_type == 'mpirun':
-            self.job.launcher.options = ['-x OMP_NUM_THREADS']
 
     @sn.sanity_function
     def get_throughput(self):

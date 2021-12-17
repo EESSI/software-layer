@@ -40,6 +40,22 @@ def auto_assign_num_tasks_hybrid(test: rfm.RegressionTest, num_nodes: int) -> rf
         test.num_tasks_per_node = utils.get_num_gpus(test)
         test.num_cpus_per_task = int(test.current_partition.processor.num_cpus / test.num_tasks_per_node)
     else:
+        # For AMD ZEN2 nodes, hybrid programs might run faster when launching task per numa domain instaed of per socket.
+        # Not sure if numa domain detection is supported (yet) in ReFrame... If so, we can improve this segment (and change the --bind-to socket to --bind-to numa)
         test.num_tasks_per_node = test.current_partition.processor.num_sockets
         test.num_cpus_per_task = test.current_partition.processor.num_cpus_per_socket
     test.num_tasks = num_nodes * test.num_tasks_per_node
+
+    # Bind to none if running hybrid with only a single task per node
+    if test.current_partition.launcher_type.registered_name == 'mpirun':
+        if test.num_tasks_per_node == 1:
+            test.job.launcher.options.append(' --bind-to none')
+        else:
+            test.job.launcher.options.append(' --bind-to socket')
+
+def bind_to_none(test:rfm.RegressionTest) -> rfm.RegressionTest:
+    '''Set --bind-to none in case the launcher is mpirun'''
+    if test.current_partition.launcher_type.registered_name == 'mpirun':
+        if test.num_tasks_per_node > 1:
+            print("Warning: test is running with more than one task per node, but you are binding to 'none'. This is probably a mistake in the test implementation.")
+        test.job.launcher.options.append(' --bind-to none')

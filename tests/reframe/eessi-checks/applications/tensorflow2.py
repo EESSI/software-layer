@@ -13,29 +13,25 @@ class TensorFlow2_EESSI(TensorFlow2):
 
     modules = required # Make sure that our apply_module_info hook sets a value
     module_info = parameter(find_modules('TensorFlow', environ_mapping={r'.*': 'builtin'}))
-    tags = {'singlenode'}
+    # This test is singlenode and should be run in CI
+    tags = {'singlenode', 'CI'}
 
     @run_after('init')
     def apply_module_info(self):
         hooks.apply_module_info(test = self, module_info = self.module_info)
-
-    @run_after('setup')
-    def set_device(self):
-        if utils.is_gpu_present(self):
-            self.device = 'gpu'
-        else:
-            self.device = 'cpu'
 
     # Skip testing GPU-based modules on CPU-based nodes
     @run_after('setup')
     def skip_gpu_test_on_cpu_nodes(self):
         hooks.skip_gpu_test_on_cpu_nodes(self)
 
-    # Skip testing CPU-based modules on GPU-based nodes
-    # (though these would run fine, one is usually not interested in them)
+    # Skip testing with device == gpu on CPU based nodes
     @run_after('setup')
-    def skip_cpu_test_on_gpu_nodes(self):
-       hooks.skip_cpu_test_on_gpu_nodes(self)
+    def skip_device_gpu_on_cpu_nodes(self):
+        self.skip_if(
+            (self.device == 'gpu' and not utils.is_gpu_present(self)),
+            "Skipping test variant where tf.device is GPU, since this partition contains non-GPU nodes"
+        )
 
     # This test uses only OpenMP for parallelism, so simply run on all cores
     @run_after('setup')
@@ -44,6 +40,10 @@ class TensorFlow2_EESSI(TensorFlow2):
         self.num_tasks_per_node = 1
         self.num_cpus_per_task = self.current_partition.processor.num_cpus
         self.omp_num_threads = self.num_cpus_per_task
+
+    @run_before('run')
+    def bind_to_none(self):
+        hooks.bind_to_none(self)
 
 @rfm.required_version('>=3.6.2')
 @rfm.simple_test
@@ -60,8 +60,10 @@ class TensorFlow2_Horovod_EESSI(TensorFlow2):
     modules = required # Make sure that our apply_module_info hook sets a value
     scale = parameter([
         ('singlenode', 1),
-        ('small', 4),
-        ('large', 10)])
+        ('n_small', 2),
+        ('n_medium', 8),
+        ('n_large', 16)
+    ])
     module_info = parameter(find_modules('Horovod', environ_mapping={r'.*': 'builtin'}))
 
     @run_after('init')
@@ -73,17 +75,18 @@ class TensorFlow2_Horovod_EESSI(TensorFlow2):
         scale_variant, self.num_nodes = self.scale
         self.tags.add(scale_variant)
 
-    @run_after('setup')
-    def set_device(self):
-        if utils.is_gpu_present(self):
-            self.device = 'gpu'
-        else:
-            self.device = 'cpu'
-
     # Skip testing GPU-based modules on CPU-based nodes
     @run_after('setup')
     def skip_gpu_test_on_cpu_nodes(self):
         hooks.skip_gpu_test_on_cpu_nodes(self)
+
+    # Skip testing with device == gpu on CPU based nodes
+    @run_after('setup')
+    def skip_device_gpu_on_cpu_nodes(self):
+        self.skip_if(
+            (self.device == 'gpu' and not utils.is_gpu_present(self)),
+            "Skipping test variant where tf.device is GPU, since this partition contains non-GPU nodes"
+        )
 
     # Skip testing CPU-based modules on GPU-based nodes
     # (though these would run fine, one is usually not interested in them)
@@ -103,3 +106,5 @@ class TensorFlow2_Horovod_EESSI(TensorFlow2):
             self.omp_num_threads = self.num_cpus_per_task - 1
         else:
             self.omp_num_threads = self.num_cpus_per_task
+        print("Set omp_num_threads to: %s" % self.omp_num_threads)
+
