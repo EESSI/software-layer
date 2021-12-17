@@ -7,6 +7,7 @@ import os
 import platform
 import sys
 import archspec.cpu
+from archspec.cpu.detect import compatible_microarchitectures, raw_info_dictionary
 
 VENDOR_MAP = {
     'GenuineIntel': 'intel',
@@ -33,7 +34,26 @@ def det_host_triple():
     Determine host triple: (<cpu_family>, <cpu_vendor>, <cpu_name>).
     <cpu_vendor> may be None if there's no match in VENDOR_MAP.
     """
-    host_cpu = archspec.cpu.host()
+    # we can't directly use archspec.cpu.host(), because we may get back a virtual microarchitecture like x86_64_v3...
+    def sorting_fn(item):
+        """Helper function to sort compatible microarchitectures."""
+        return len(item.ancestors), len(item.features)
+
+    raw_cpu_info = raw_info_dictionary()
+    compat_targets = compatible_microarchitectures(raw_cpu_info)
+
+    # filter out generic targets
+    non_generic_compat_targets = [t for t in compat_targets if t.vendor != "generic"]
+
+    # Filter the candidates to be descendant of the best generic candidate
+    best_generic = max([t for t in compat_targets if t.vendor == "generic"], key=sorting_fn)
+    best_compat_targets = [t for t in non_generic_compat_targets if t > best_generic]
+
+    if best_compat_targets:
+        host_cpu = max(best_compat_targets, key=sorting_fn)
+    else:
+        host_cpu = max(non_generic_compat_targets, key=sorting_fn)
+
     host_vendor = VENDOR_MAP.get(host_cpu.vendor)
     host_cpu_family = host_cpu.family.name
     host_cpu_name = host_cpu.name
