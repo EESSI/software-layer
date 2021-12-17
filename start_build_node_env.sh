@@ -6,6 +6,9 @@ if [ $# -ne 1 ]; then
 fi
 export EESSI_TMPDIR=$1
 
+# make sure specified temporary directory exists
+mkdir -p $EESSI_TMPDIR
+
 # make sure that specified location has support for extended attributes,
 # since that's required by CernVM-FS
 command -v attr &> /dev/null
