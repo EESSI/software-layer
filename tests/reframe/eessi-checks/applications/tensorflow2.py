@@ -88,12 +88,6 @@ class TensorFlow2_Horovod_EESSI(TensorFlow2):
             "Skipping test variant where tf.device is GPU, since this partition contains non-GPU nodes"
         )
 
-    # Skip testing CPU-based modules on GPU-based nodes
-    # (though these would run fine, one is usually not interested in them)
-    @run_after('setup')
-    def skip_cpu_test_on_gpu_nodes(self):
-       hooks.skip_cpu_test_on_gpu_nodes(self)
-
     # Assign num_tasks, num_tasks_per_node and num_cpus_per_task automatically based on current partition's num_cpus and gpus
     @run_after('setup')
     def set_num_tasks(self):
