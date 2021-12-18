@@ -32,14 +32,15 @@ then
 fi
 
 tartmp=$(mktemp -t -d init.XXXXX)
+mkdir "${tartmp}/${version}"
 tarname="eessi-${version}-init-$(date +%s).tar.gz"
-curl -Ls ${SOFTWARE_LAYER_TARBALL_URL} | tar xzf - -C ${tartmp} --strip-components=1 --wildcards */init/
-source ${tartmp}/init/minimal_eessi_env
+curl -Ls ${SOFTWARE_LAYER_TARBALL_URL} | tar xzf - -C "${tartmp}/${version}" --strip-components=1 --wildcards */init/
+source "${tartmp}/${version}/init/minimal_eessi_env"
 if [ "${EESSI_PILOT_VERSION}" != "${version}" ]
 then
   error "Specified version ${version} does not match version ${EESSI_PILOT_VERSION} in the init files!"
 fi
-tar czf ${tarname} -C ${tartmp} init
-rm -rf ${tartmp}
+tar czf "${tarname}" -C "${tartmp}" "${version}"
+rm -rf "${tartmp}"
 
 echo_green "Done! Created tarball ${tarname}."
