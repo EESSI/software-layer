@@ -1,2 +1,0 @@
-
-ncorespernode=16
