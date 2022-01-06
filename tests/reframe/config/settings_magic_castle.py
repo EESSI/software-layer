@@ -1,8 +1,9 @@
+# This is an example configuration file
 site_configuration = {
     'systems': [
         {
-            'name': 'example_system',
-            'descr': 'This is just an example system',
+            'name': 'Magic Castle',
+            'descr': 'The Magic Castle instance as it was used in the EESSI hackathon in dec 2021, on AWS',
             'modules_system': 'lmod',
 	    'hostnames': ['login', 'node'],
             'partitions': [
@@ -10,6 +11,8 @@ site_configuration = {
                     'name': 'cpu',
                     'scheduler': 'slurm',
                     'launcher': 'mpirun',
+                    # By default, the Magic Castle cluster only allocates a small amount of memory
+                    # Thus we request the full memory explicitely
                     'access':  ['-p cpubase_bycore_b1 --exclusive --mem=94515M'],
                     'environs': ['builtin'],
                     'max_jobs': 4,
@@ -18,24 +21,6 @@ site_configuration = {
                     },
                     'descr': 'normal CPU partition'
                 },
-#                 {
-#                     'name': 'gpu',
-#                     'descr': 'GPU partition',
-#                     'scheduler': 'slurm',
-#                     'access':  ['-p gpu --gpus-per-node 4 --exclusive'],
-#                     'environs': ['builtin'],
-#                     'max_jobs': 10,
-#                     'launcher': 'srun',
-#                     'processor': {
-#                         'num_cpus': 72,
-#                     },
-#                     'devices': [
-#                         {
-#                             'type': 'gpu',
-#                             'num_devices': 4,
-#                         },
-#                     ],
-#                 },
              ]
          },
      ],
