@@ -1,19 +1,19 @@
 # documentation: https://help.github.com/en/articles/workflow-syntax-for-github-actions
 name: Tests for scripts
-on: [push, pull_request]
-#  push:
-#    paths:
-#      - build_container.sh
-#      - install_software_layer.sh
-#      - run_in_compat_layer_env.sh
-#
-#  pull_request:
-#    branches:
-#      - main
-#    paths:
-#      - build_container.sh
-#      - install_software_layer.sh
-#      - run_in_compat_layer_env.sh
+on:
+  push:
+    paths:
+      - build_container.sh
+      - install_software_layer.sh
+      - run_in_compat_layer_env.sh
+
+  pull_request:
+    branches:
+      - main
+    paths:
+      - build_container.sh
+      - install_software_layer.sh
+      - run_in_compat_layer_env.sh
 jobs:
   build:
     runs-on: ubuntu-20.04
