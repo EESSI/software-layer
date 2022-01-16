@@ -326,6 +326,12 @@ fail_msg="Installation of IPython failed, that's unexpected..."
 $EB IPython-7.15.0-foss-2020a-Python-3.8.2.eb -r
 check_exit_code $? "${ok_msg}" "${fail_msg}"
 
+echo ">> Installing WRF 3.9.1.1..."
+ok_msg="WRF installed, it's getting hot in here!"
+fail_msg="Installation of WRF failed, that's unexpected..."
+OMPI_MCA_pml=ucx UCX_TLS=tcp $EB WRF-3.9.1.1-foss-2020a-dmpar.eb -r --include-easyblocks-from-pr 2648
+check_exit_code $? "${ok_msg}" "${fail_msg}"
+
 echo ">> Creating/updating Lmod cache..."
 export LMOD_RC="${EASYBUILD_INSTALLPATH}/.lmod/lmodrc.lua"
 if [ ! -f $LMOD_RC ]; then
