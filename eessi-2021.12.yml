@@ -51,3 +51,9 @@ software:
         versions:
           '2.3.1':
             versionsuffix: -Python-3.8.2
+  WRF:
+     toolchains:
+       foss-2020a:
+         versions: 
+           '3.9.1.1': 
+             versionsuffix: -dmpar

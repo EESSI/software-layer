@@ -4,7 +4,7 @@ import os
 
 from easybuild.tools.build_log import EasyBuildError, print_msg
 from easybuild.tools.config import build_option, update_build_option
-from easybuild.tools.systemtools import POWER, X86_64, get_cpu_architecture, get_cpu_features
+from easybuild.tools.systemtools import AARCH64, POWER, X86_64, get_cpu_architecture, get_cpu_features
 from easybuild.tools.toolchain.compiler import OPTARCH_GENERIC
 
 EESSI_RPATH_OVERRIDE_ATTR = 'orig_rpath_override_dirs'
@@ -122,6 +122,22 @@ def fontconfig_add_fonts(ec, eprefix):
         raise EasyBuildError("fontconfig-specific hook triggered for non-fontconfig easyconfig?!")
 
 
+def ucx_eprefix(ec, eprefix):
+    """Make UCX aware of compatibility layer via additional configuration options."""
+    if ec.name == 'UCX':
+        ec.update('configopts', '--with-sysroot=%s' % eprefix)
+        ec.update('configopts', '--with-rdmacm=%s' % os.path.join(eprefix, 'usr'))
+        print_msg("Using custom configure options for %s: %s", ec.name, ec['configopts'])
+    else:
+        raise EasyBuildError("UCX-specific hook triggered for non-UCX easyconfig?!")
+
+
+def pre_configure_hook(self, *args, **kwargs):
+    """Main pre-configure hook: trigger custom functions based on software name."""
+    if self.name in PRE_CONFIGURE_HOOKS:
+        PRE_CONFIGURE_HOOKS[self.name](self, *args, **kwargs)
+
+
 def libfabric_disable_psm3_x86_64_generic(self, *args, **kwargs):
     """Add --disable-psm3 to libfabric configure options when building with --optarch=GENERIC on x86_64."""
     if self.name == 'libfabric':
@@ -135,15 +151,19 @@ def libfabric_disable_psm3_x86_64_generic(self, *args, **kwargs):
         raise EasyBuildError("libfabric-specific hook triggered for non-libfabric easyconfig?!")
 
 
-def ucx_eprefix(ec, eprefix):
-    """Make UCX aware of compatibility layer via additional configuration options."""
-    if ec.name == 'UCX':
-        ec.update('configopts', '--with-sysroot=%s' % eprefix)
-        ec.update('configopts', '--with-rdmacm=%s' % os.path.join(eprefix, 'usr'))
-        print_msg("Using custom configure options for %s: %s", ec.name, ec['configopts'])
+def wrf_preconfigure(self, *args, **kwargs):
+    """
+    Pre-configure hook for WRF:
+    - patch arch/configure_new.defaults so building WRF with foss toolchain works on aarch64
+    """
+    if self.name == 'WRF':
+        if get_cpu_architecture() == AARCH64:
+            pattern = "Linux x86_64 ppc64le, gfortran"
+            repl = "Linux x86_64 aarch64 ppc64le, gfortran"
+            self.cfg.update('preconfigopts', "sed -i 's/%s/%s/g' arch/configure_new.defaults && " % (pattern, repl))
+            print_msg("Using custom preconfigopts for %s: %s", self.name, self.cfg['preconfigopts'])
     else:
-        raise EasyBuildError("UCX-specific hook triggered for non-UCX easyconfig?!")
-
+        raise EasyBuildError("WRF-specific hook triggered for non-WRF easyconfig?!")
 
 PARSE_HOOKS = {
     'CGAL': cgal_toolchainopts_precise,
@@ -153,4 +173,5 @@ PARSE_HOOKS = {
 
 PRE_CONFIGURE_HOOKS = {
     'libfabric': libfabric_disable_psm3_x86_64_generic,
+    'WRF': wrf_preconfigure,
 }
