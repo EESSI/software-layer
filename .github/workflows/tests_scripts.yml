@@ -6,6 +6,8 @@ on:
       - build_container.sh
       - install_software_layer.sh
       - run_in_compat_layer_env.sh
+      - utils.sh
+      - update_lmod_cache.sh
 
   pull_request:
     branches:
@@ -14,6 +16,8 @@ on:
       - build_container.sh
       - install_software_layer.sh
       - run_in_compat_layer_env.sh
+      - utils.sh
+      - update_lmod_cache.sh
 jobs:
   build:
     runs-on: ubuntu-20.04
