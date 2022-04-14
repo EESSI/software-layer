@@ -7,7 +7,7 @@ from easybuild.tools.config import build_option, update_build_option
 from easybuild.tools.systemtools import AARCH64, POWER, get_cpu_architecture
 
 EESSI_RPATH_OVERRIDE_ATTR = 'orig_rpath_override_dirs'
-
+CUDA_ENABLED_TOOLCHAINS = ["pmvmklc", "gmvmklc", "gmvapich2c", "pmvapich2c"]
 
 def get_eessi_envvar(eessi_envvar):
     """Get an EESSI environment variable from the environment"""
@@ -41,12 +41,31 @@ def get_rpath_override_dirs(software_name):
 
     return rpath_injection_dirs
 
+def inject_gpu_property(ec):
+    ec_dict = ec.asdict()
+    # Check if CUDA is in the dependencies, if so add the GPU Lmod tag
+    if (
+        "CUDA" in [dep[0] for dep in iter(ec_dict["dependencies"])]
+        or ec_dict["toolchain"]["name"] in CUDA_ENABLED_TOOLCHAINS
+    ):
+        key = "modluafooter"
+        value = 'add_property("arch","gpu")'
+        if key in ec_dict:
+            if not value in ec_dict[key]:
+                ec[key] = "\n".join([ec_dict[key], value])
+        else:
+            ec[key] = value
+        ec.log.info("[parse hook] Injecting gpu as Lmod arch property")
+
+    return ec
 
 def parse_hook(ec, *args, **kwargs):
     """Main parse hook: trigger custom functions based on software name."""
 
     # determine path to Prefix installation in compat layer via $EPREFIX
     eprefix = get_eessi_envvar('EPREFIX')
+
+    ec = inject_gpu_property(ec)
 
     if ec.name in PARSE_HOOKS:
         PARSE_HOOKS[ec.name](ec, eprefix)

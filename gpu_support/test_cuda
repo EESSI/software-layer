@@ -1,0 +1,39 @@
+#!/bin/bash
+
+# Test CUDA
+module use /cvmfs/pilot.eessi-hpc.org/host_injections/nvidia/modules/all/
+module load CUDA
+tmp_dir=$(mktemp -d)
+cp -r $EBROOTCUDA/samples $tmp_dir
+current_dir=$PWD
+cd $tmp_dir/samples/1_Utilities/deviceQuery
+make HOST_COMPILER=$(which g++) -j
+./deviceQuery
+
+if [ $? -eq 0 ] 
+then
+  # Set the color variable
+  green='\033[0;32m'
+  # Clear the color after that
+  clear='\033[0m'
+  echo -e ${green}
+  echo "Congratulations, your GPU is working with EESSI!"
+  echo "  - To build CUDA enabled modules use /cvmfs/pilot.eessi-hpc.org/host_injections/nvidia/ as your EasyBuild prefix"
+  echo "  - To use these modules:"
+  echo "      module use /cvmfs/pilot.eessi-hpc.org/host_injections/nvidia/modules/all/"
+  echo -e ${clear}
+else 
+  echo "Uff, your GPU doesn't seem to be working with EESSI :(" >&2 
+fi
+
+# Clean up
+cd $current_dir
+rm -r $tmp_dir
+
+# Test building something with CUDA and running
+# TODO: Use samples from installation directory, `device_query` is a good option
+
+# Test a CUDA-enabled module from EESSI
+# TODO: GROMACS?
+# TODO: Include a GDR copy test?
+###############################################################################################

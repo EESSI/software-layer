@@ -108,6 +108,9 @@ module --force purge
 # ignore current $MODULEPATH entirely
 module unuse $MODULEPATH
 module use $EASYBUILD_INSTALLPATH/modules/all
+if [ -d /cvmfs/pilot.eessi-hpc.org/host_injections/nvidia/modules/all ]; then
+  module use /cvmfs/pilot.eessi-hpc.org/host_injections/nvidia/modules/all
+fi
 if [[ -z ${MODULEPATH} ]]; then
     fatal_error "Failed to set up \$MODULEPATH?!"
 else
