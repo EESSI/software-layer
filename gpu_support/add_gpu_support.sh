@@ -164,7 +164,7 @@ if [ -d /cvmfs/pilot.eessi-hpc.org/host_injections/nvidia/modules/all ]; then
 fi
 # only install CUDA if specified version is not found
 install_cuda_version="11.3.1"
-module avail 2>&1 | grep -i CUDA/${install_cuda_version} &> ${ml_av_easybuild_out}
+module avail 2>&1 | grep -i CUDA/${install_cuda_version} &> /dev/null
 if [[ $? -eq 0 ]]; then
     echo_green ">> CUDA module found!"
 else
