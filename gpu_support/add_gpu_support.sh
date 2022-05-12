@@ -16,8 +16,9 @@ else
 fi
 
 # set up basic environment variables, EasyBuild and Lmod
-# TODO: copied necessary parts from EESSI-pilot-install-software.sh, trim further down?
-source setup.sh
+EESSI_SILENT=1 source /cvmfs/pilot.eessi-hpc.org/versions/2021.12/init/bash
+
+current_dir=$(dirname $(realpath $0))
 
 # Get arch type from EESSI environment
 eessi_cpu_family="${EESSI_CPU_FAMILY:-x86_64}"
@@ -177,7 +178,9 @@ else
     exit 1
   fi
   # install cuda in host_injections
+  module load EasyBuild
   eb --installpath=/cvmfs/pilot.eessi-hpc.org/host_injections/nvidia/ CUDA-${install_cuda_version}.eb
 fi
 
+cd $current_dir
 source test_cuda
