@@ -111,8 +111,9 @@ if [ "$driver_cuda_version" -gt "$eessi_cuda_version" ]; then  echo "You need to
 
 # If not, grab the latest compat library RPM or deb
 # download and unpack in temporary directory, easier cleanup after installation
-mkdir -p tmp
-cd tmp
+host_injections_dir=$(dirname $(realpath $0))
+tmpdir=$(mktemp -d)
+cd $tmpdir
 compat_file=${latest_cuda_compat_url##*/}
 wget ${latest_cuda_compat_url}
 
@@ -130,10 +131,10 @@ else
   echo "File extension of cuda compat lib not supported, exiting now..." >&2
   exit 1
 fi
-cd ..
+cd $host_injections_dir
 # TODO: This would prevent error messages if folder already exists, but could be problematic if only some files are missing in destination dir
-mv -n tmp/usr/local/cuda-* .
-rm -r tmp
+mv -n ${tmpdir}/usr/local/cuda-* .
+rm -r ${tmpdir}
 
 # Add a symlink that points to the latest version
 latest_cuda_dir=$(find . -maxdepth 1 -type d | grep -i cuda | sort | tail -n1)
