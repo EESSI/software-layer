@@ -1,8 +1,18 @@
 #!/bin/bash
 
 # Test CUDA
-module use /cvmfs/pilot.eessi-hpc.org/host_injections/nvidia/modules/all/
+if [ -d /cvmfs/pilot.eessi-hpc.org/host_injections/nvidia/modules/all ]; then
+  module use /cvmfs/pilot.eessi-hpc.org/host_injections/nvidia/modules/all/
+else
+  echo "Cannot test CUDA, modules path does not exist, exiting now..."
+  exit 1
+fi
 module load CUDA
+ret=$?
+if [ $ret -ne 0 ]; then
+  echo "Could not load CUDA even though modules path exists..."
+  exit 1
+fi
 tmp_dir=$(mktemp -d)
 cp -r $EBROOTCUDA/samples $tmp_dir
 current_dir=$PWD
