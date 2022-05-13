@@ -168,7 +168,7 @@ fi
 install_cuda_version="11.3.1"
 module avail 2>&1 | grep -i CUDA/${install_cuda_version} &> /dev/null
 if [[ $? -eq 0 ]]; then
-    echo_green ">> CUDA module found!"
+    echo "CUDA module found! No need to install CUDA again, proceeding with tests"
 else
   # - as an installation location just use $EESSI_SOFTWARE_PATH but replacing `versions` with `host_injections`
   #   (CUDA is a binary installation so no need to worry too much about this)
