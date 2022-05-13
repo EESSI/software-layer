@@ -84,7 +84,7 @@ fi
 # if not find the latest version of the compatibility libraries and install them
 
 # get URL to latest CUDA compat libs, exit if URL is invalid
-latest_cuda_compat_url="$(./get_latest_cuda_compatlibs.sh ${os} ${ver} ${eessi_cpu_family})"
+latest_cuda_compat_url="$($(dirname "$BASH_SOURCE")/get_latest_cuda_compatlibs.sh ${os} ${ver} ${eessi_cpu_family})"
 ret=$?
 if [ $ret -ne 0 ]; then
   echo $latest_cuda_compat_url
@@ -180,7 +180,12 @@ else
   # install cuda in host_injections
   module load EasyBuild
   eb --installpath=/cvmfs/pilot.eessi-hpc.org/host_injections/nvidia/ CUDA-${install_cuda_version}.eb
+  ret=$?
+  if [ $ret -ne 0 ]; then
+    echo "CUDA installation failed, please check EasyBuild logs..."
+    exit 1
+  fi
 fi
 
 cd $current_dir
-source test_cuda
+source $(dirname "$BASH_SOURCE")/test_cuda
