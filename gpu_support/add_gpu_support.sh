@@ -92,9 +92,10 @@ if [ $ret -ne 0 ]; then
 fi
 
 # Create a general space for our NVIDIA compat drivers
+host_injections_dir="/cvmfs/pilot.eessi-hpc.org/host_injections/nvidia"
 if [ -w /cvmfs/pilot.eessi-hpc.org/host_injections ]; then
-  mkdir -p /cvmfs/pilot.eessi-hpc.org/host_injections/nvidia
-  cd /cvmfs/pilot.eessi-hpc.org/host_injections/nvidia
+  mkdir -p ${host_injections_dir}
+  cd ${host_injections_dir}
 else
   echo "Cannot write to eessi host_injections space, exiting now..." >&2
   exit 1
@@ -103,7 +104,7 @@ fi
 # Check if we have any version installed by checking for the existence of /cvmfs/pilot.eessi-hpc.org/host_injections/nvidia/latest
 
 driver_cuda_version=$(nvidia-smi  -q --display=COMPUTE | grep CUDA | awk 'NF>1{print $NF}' | sed s/\\.//)
-eessi_cuda_version=$(LD_LIBRARY_PATH=/cvmfs/pilot.eessi-hpc.org/host_injections/nvidia/latest/compat/:$LD_LIBRARY_PATH nvidia-smi  -q --display=COMPUTE | grep CUDA | awk 'NF>1{print $NF}' | sed s/\\.//)
+eessi_cuda_version=$(LD_LIBRARY_PATH=${host_injections_dir}/latest/compat/:$LD_LIBRARY_PATH nvidia-smi  -q --display=COMPUTE | grep CUDA | awk 'NF>1{print $NF}' | sed s/\\.//)
 if [ "$driver_cuda_version" -gt "$eessi_cuda_version" ]; then  echo "You need to update your CUDA compatability libraries"; fi
 
 # Check if our target CUDA is satisfied by what is installed already
@@ -111,7 +112,6 @@ if [ "$driver_cuda_version" -gt "$eessi_cuda_version" ]; then  echo "You need to
 
 # If not, grab the latest compat library RPM or deb
 # download and unpack in temporary directory, easier cleanup after installation
-host_injections_dir=$(dirname $(realpath $0))
 tmpdir=$(mktemp -d)
 cd $tmpdir
 compat_file=${latest_cuda_compat_url##*/}
@@ -138,7 +138,6 @@ rm -r ${tmpdir}
 
 # Add a symlink that points to the latest version
 latest_cuda_dir=$(find . -maxdepth 1 -type d | grep -i cuda | sort | tail -n1)
-echo $latest_cuda_dir
 ln -sf ${latest_cuda_dir} latest
 
 if [ ! -e latest ] ; then
@@ -147,10 +146,15 @@ if [ ! -e latest ] ; then
 fi
 
 # Create the space to host the libraries
-mkdir -p /cvmfs/pilot.eessi-hpc.org/host_injections/${EESSI_PILOT_VERSION}/compat/${os_family}/${eessi_cpu_family}
+host_injection_libs_dir=/cvmfs/pilot.eessi-hpc.org/host_injections/${EESSI_PILOT_VERSION}/compat/${os_family}/${eessi_cpu_family}
+mkdir -p ${host_injection_libs_dir}
 # Symlink in the path to the latest libraries
-if [ ! -d "/cvmfs/pilot.eessi-hpc.org/host_injections/${EESSI_PILOT_VERSION}/compat/${os_family}/${eessi_cpu_family}/lib" ]; then
-  ln -s /cvmfs/pilot.eessi-hpc.org/host_injections/nvidia/latest/compat /cvmfs/pilot.eessi-hpc.org/host_injections/${EESSI_PILOT_VERSION}/compat/${os_family}/${eessi_cpu_family}/lib
+if [ ! -d "${host_injection_libs_dir}/lib" ]; then
+  ln -s ${host_injections_dir}/latest/compat ${host_injection_libs_dir}/lib
+elif [ ! "${host_injection_libs_dir}/lib" -ef "${host_injections_dir}/latest/compat" ]; then
+  echo "CUDA compat libs symlink exists but points to the wrong location, please fix this..."
+  echo "${host_injection_libs_dir}/lib should point to ${host_injections_dir}/latest/compat"
+  exit 1
 fi
 
 # return to initial dir
@@ -161,8 +165,8 @@ cd $current_dir
 # Install CUDA
 # TODO: Can we do a trimmed install?
 # if modules dir exists, load it for usage within Lmod
-if [ -d /cvmfs/pilot.eessi-hpc.org/host_injections/nvidia/modules/all ]; then
-  module use /cvmfs/pilot.eessi-hpc.org/host_injections/nvidia/modules/all
+if [ -d ${host_injections_dir}/modules/all ]; then
+  module use ${host_injections_dir}/modules/all
 fi
 # only install CUDA if specified version is not found
 install_cuda_version="11.3.1"
@@ -173,14 +177,14 @@ else
   # - as an installation location just use $EESSI_SOFTWARE_PATH but replacing `versions` with `host_injections`
   #   (CUDA is a binary installation so no need to worry too much about this)
   # TODO: The install is pretty fat, you need lots of space for download/unpack/install (~3*5GB), need to do a space check before we proceed
-  avail_space=$(df --output=avail /cvmfs/pilot.eessi-hpc.org/host_injections/nvidia/ | tail -n 1 | awk '{print $1}')
+  avail_space=$(df --output=avail ${host_injections_dir}/ | tail -n 1 | awk '{print $1}')
   if (( ${avail_space} < 16000000 )); then
     echo "Need more disk space to install CUDA, exiting now..."
     exit 1
   fi
   # install cuda in host_injections
   module load EasyBuild
-  eb --installpath=/cvmfs/pilot.eessi-hpc.org/host_injections/nvidia/ CUDA-${install_cuda_version}.eb
+  eb --installpath=${host_injections_dir}/ CUDA-${install_cuda_version}.eb
   ret=$?
   if [ $ret -ne 0 ]; then
     echo "CUDA installation failed, please check EasyBuild logs..."
