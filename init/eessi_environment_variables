@@ -32,6 +32,9 @@ if [ -d $EESSI_PREFIX ]; then
 
         echo "Using ${EESSI_SOFTWARE_SUBDIR} as software subdirectory." >> $output
         export EESSI_SOFTWARE_PATH=$EESSI_PREFIX/software/$EESSI_OS_TYPE/$EESSI_SOFTWARE_SUBDIR
+        if [ -d "${EESSI_SOFTWARE_PATH/versions/host_injections}" ]; then
+          eessi_gpu_software_path="${EESSI_SOFTWARE_PATH/versions/host_injections}/modules/all"
+        fi
         if [ ! -z $EESSI_BASIC_ENV ]; then
           echo "Only setting up basic environment, so we're done" >> $output
         elif [ -d $EESSI_SOFTWARE_PATH ]; then
@@ -51,7 +54,7 @@ if [ -d $EESSI_PREFIX ]; then
           fi
 
           if [ -d $EESSI_MODULEPATH ]; then
-            export EESSI_MODULEPATH=$EESSI_MODULEPATH
+            export EESSI_MODULEPATH="$EESSI_MODULEPATH $eessi_gpu_software_path"
             echo "Using ${EESSI_MODULEPATH} as the directory to be added to MODULEPATH." >> $output
           else
             error "EESSI module path at $EESSI_MODULEPATH not found!"
