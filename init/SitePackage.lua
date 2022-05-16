@@ -17,8 +17,9 @@ end
 local function visible_hook(modT)
 	local frameStk  = require("FrameStk"):singleton()
 	local mt        = frameStk:mt()
-	local cudaDir = exists('/cvmfs/pilot.eessi-hpc.org/host_injections/nvidia/modules/')
-	if not cudaDir then
+	local cudaDir = string.gsub(os.getenv('EESSI_SOFTWARE_PATH') or "", 'versions', 'host_injections')
+	local cudaDirExists = exists(cudaDir)
+	if not cudaDirExists then
 		local haveGpu = mt:haveProperty(modT.sn,"arch","gpu")
 		if haveGpu then
 			modT.isVisible = false

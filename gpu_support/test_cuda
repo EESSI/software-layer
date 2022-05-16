@@ -1,8 +1,9 @@
 #!/bin/bash
 
 # Test CUDA
-if [ -d /cvmfs/pilot.eessi-hpc.org/host_injections/nvidia/modules/all ]; then
-  module use /cvmfs/pilot.eessi-hpc.org/host_injections/nvidia/modules/all/
+cuda_install_dir="${EESSI_SOFTWARE_PATH/versions/host_injections}"
+if [ -d ${cuda_install_dir}/modules/all ]; then
+  module use ${cuda_install_dir}/modules/all/
 else
   echo "Cannot test CUDA, modules path does not exist, exiting now..."
   exit 1
