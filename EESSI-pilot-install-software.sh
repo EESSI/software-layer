@@ -108,8 +108,9 @@ module --force purge
 # ignore current $MODULEPATH entirely
 module unuse $MODULEPATH
 module use $EASYBUILD_INSTALLPATH/modules/all
-if [ -d /cvmfs/pilot.eessi-hpc.org/host_injections/nvidia/modules/all ]; then
-  module use /cvmfs/pilot.eessi-hpc.org/host_injections/nvidia/modules/all
+if [ ! -z "${EESSI_SITE_MODULEPATH}" ]; then
+  echo_green "Add ${EESSI_SITE_MODULEPATH} to \$MODULEPATH for GPU support!"
+  module use ${EESSI_SITE_MODULEPATH}
 fi
 if [[ -z ${MODULEPATH} ]]; then
     fatal_error "Failed to set up \$MODULEPATH?!"
