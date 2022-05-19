@@ -183,8 +183,8 @@ else
     exit 1
   else
     echo "Successfully loaded CUDA, you are good to go! :)"
-    echo "  - To build CUDA enabled modules use /cvmfs/pilot.eessi-hpc.org/host_injections/nvidia/ as your EasyBuild prefix"
+    echo "  - To build CUDA enabled modules use ${EESSI_SOFTWARE_PATH/versions/host_injections} as your EasyBuild prefix"
     echo "  - To use these modules:"
-    echo "      module use /cvmfs/pilot.eessi-hpc.org/host_injections/nvidia/modules/all/"
+    echo "      module use ${EESSI_SOFTWARE_PATH/versions/host_injections}/modules/all/"
   fi
 fi

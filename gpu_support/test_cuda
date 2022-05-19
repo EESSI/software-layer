@@ -29,9 +29,9 @@ then
   clear='\033[0m'
   echo -e ${green}
   echo "Congratulations, your GPU is working with EESSI!"
-  echo "  - To build CUDA enabled modules use /cvmfs/pilot.eessi-hpc.org/host_injections/nvidia/ as your EasyBuild prefix"
+  echo "  - To build CUDA enabled modules use ${EESSI_SOFTWARE_PATH/versions/host_injections} as your EasyBuild prefix"
   echo "  - To use these modules:"
-  echo "      module use /cvmfs/pilot.eessi-hpc.org/host_injections/nvidia/modules/all/"
+  echo "      module use ${EESSI_SOFTWARE_PATH/versions/host_injections}/modules/all/"
   echo -e ${clear}
 else 
   echo "Uff, your GPU doesn't seem to be working with EESSI :(" >&2 
