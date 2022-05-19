@@ -1,3 +1,5 @@
+#!/bin/bash
+
 # Drop into the prefix shell or pipe this script into a Prefix shell with
 #   $EPREFIX/startprefix <<< /path/to/this_script.sh
 

@@ -1,3 +1,5 @@
+#!/bin/bash
+
 cat << EOF
 This is not implemented yet :(
 
