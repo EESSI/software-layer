@@ -6,6 +6,7 @@
 # If you want to install CUDA support on login nodes (typically without GPUs),
 # set this variable to true. This will skip all GPU-dependent checks
 install_wo_gpu=false
+[ "$INSTALL_WO_GPU" = true ] && install_wo_gpu=true
 
 # verify existence of nvidia-smi or this is a waste of time
 # Check if nvidia-smi exists and can be executed without error
@@ -19,6 +20,8 @@ if [[ "${install_wo_gpu}" != "true" ]]; then
     echo "nvidia-smi found, continue setup."
   else
     echo "nvidia-smi not found, exiting now..." >&2
+    echo "If you do not have a GPU on this device but wish to force the installation,"
+    echo "please set the environment variable INSTALL_WO_GPU=true"
     exit 1
   fi
 else
