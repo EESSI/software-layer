@@ -3,18 +3,27 @@
 # Drop into the prefix shell or pipe this script into a Prefix shell with
 #   $EPREFIX/startprefix <<< /path/to/this_script.sh
 
+# If you want to install CUDA support on login nodes (typically without GPUs),
+# set this variable to true. This will skip all GPU-dependent checks
+install_wo_gpu=false
+
 # verify existence of nvidia-smi or this is a waste of time
 # Check if nvidia-smi exists and can be executed without error
-if command -v nvidia-smi > /dev/null 2>&1; then
-  nvidia-smi > /dev/null 2>&1
-  if [ $? -ne 0 ]; then
-    echo "nvidia-smi was found but returned error code, exiting now..." >&2
+if [[ "${install_wo_gpu}" != "true" ]]; then
+  if command -v nvidia-smi > /dev/null 2>&1; then
+    nvidia-smi > /dev/null 2>&1
+    if [ $? -ne 0 ]; then
+      echo "nvidia-smi was found but returned error code, exiting now..." >&2
+      exit 1
+    fi
+    echo "nvidia-smi found, continue setup."
+  else
+    echo "nvidia-smi not found, exiting now..." >&2
     exit 1
   fi
-  echo "nvidia-smi found, continue setup."
 else
-  echo "nvidia-smi not found, exiting now..." >&2
-  exit 1
+  echo "You requested to install CUDA without GPUs present."
+  echo "This means that all GPU-dependent tests/checks will be skipped!"
 fi
 
 # set up basic environment variables, EasyBuild and Lmod
@@ -72,13 +81,15 @@ ver=${ver%.*}
 #  https://docs.nvidia.com/datacenter/tesla/drivers/#cuda-drivers]
 # )
 # only check first number in case of multiple GPUs
-driver_version=$(nvidia-smi --query-gpu=driver_version --format=csv,noheader | tail -n1)
-driver_version="${driver_version%%.*}"
-# Now check driver_version for compatability
-# Check driver is at least LTS driver R450, see https://docs.nvidia.com/datacenter/tesla/drivers/#cuda-drivers
-if (( $driver_version < 450 )); then
-  echo "Your NVIDIA driver version is too old, please update first.."
-  exit 1
+if [[ "${install_wo_gpu}" != "true" ]]; then
+  driver_version=$(nvidia-smi --query-gpu=driver_version --format=csv,noheader | tail -n1)
+  driver_version="${driver_version%%.*}"
+  # Now check driver_version for compatability
+  # Check driver is at least LTS driver R450, see https://docs.nvidia.com/datacenter/tesla/drivers/#cuda-drivers
+  if (( $driver_version < 450 )); then
+    echo "Your NVIDIA driver version is too old, please update first.."
+    exit 1
+  fi
 fi
 
 
@@ -151,4 +162,26 @@ else
 fi
 
 cd $current_dir
-source $(dirname "$BASH_SOURCE")/test_cuda
+if [[ "${install_wo_gpu}" != "true" ]]; then
+  source $(dirname "$BASH_SOURCE")/test_cuda
+else
+  echo "Requested to install CUDA without GPUs present, so we skip final tests."
+  echo "Instead we test if module load CUDA works as expected..."
+  if [ -d ${cuda_install_dir}/modules/all ]; then
+    module use ${cuda_install_dir}/modules/all/
+  else
+    echo "Cannot load CUDA, modules path does not exist, exiting now..."
+    exit 1
+  fi
+  module load CUDA
+  ret=$?
+  if [ $ret -ne 0 ]; then
+    echo "Could not load CUDA even though modules path exists..."
+    exit 1
+  else
+    echo "Successfully loaded CUDA, you are good to go! :)"
+    echo "  - To build CUDA enabled modules use /cvmfs/pilot.eessi-hpc.org/host_injections/nvidia/ as your EasyBuild prefix"
+    echo "  - To use these modules:"
+    echo "      module use /cvmfs/pilot.eessi-hpc.org/host_injections/nvidia/modules/all/"
+  fi
+fi
