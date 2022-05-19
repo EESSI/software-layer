@@ -7,7 +7,7 @@ from easybuild.tools.config import build_option, update_build_option
 from easybuild.tools.systemtools import AARCH64, POWER, get_cpu_architecture
 
 EESSI_RPATH_OVERRIDE_ATTR = 'orig_rpath_override_dirs'
-CUDA_ENABLED_TOOLCHAINS = ["pmvmklc", "gmvmklc", "gmvapich2c", "pmvapich2c"]
+CUDA_ENABLED_TOOLCHAINS = ["fosscuda", "gcccuda", "gimpic", "giolfc", "gmklc", "golfc", "gomklc", "gompic", "goolfc", "iccifortcuda", "iimklc", "iimpic", "intelcuda", "iomklc", "iompic", "nvompic", "nvpsmpic"]
 
 def get_eessi_envvar(eessi_envvar):
     """Get an EESSI environment variable from the environment"""
