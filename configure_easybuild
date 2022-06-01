@@ -15,7 +15,7 @@ export EASYBUILD_RPATH=1
 export EASYBUILD_FILTER_ENV_VARS=LD_LIBRARY_PATH
 
 # try to find eb_hooks.py in directory where this file (configure_easybuild) resides?
-TOPDIR=$(dirname $(realpath $0))
+TOPDIR=$(dirname $(realpath $BASH_SOURCE))
 export EASYBUILD_HOOKS=$(realpath ${TOPDIR}/eb_hooks.py)
 #export EASYBUILD_HOOKS=$(realpath eb_hooks.py)
 # make sure hooks are available, so we can produce a clear error message
