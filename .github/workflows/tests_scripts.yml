@@ -29,8 +29,9 @@ jobs:
       run: |
         sudo apt-get install alien
         alien --version
-        curl -OL https://dl.fedoraproject.org/pub/epel/8/Everything/x86_64/Packages/s/singularity-3.8.5-2.el8.x86_64.rpm
-        sudo alien -d singularity-3.8.5-2.el8.x86_64.rpm
+        singularity_rpm=$(curl --silent -L https://dl.fedoraproject.org/pub/epel/8/Everything/x86_64/Packages/s/ | grep singularity | sed 's/.*\(singularity[0-9._a-z-]*.rpm\).*/\1/g')
+        curl -OL https://dl.fedoraproject.org/pub/epel/8/Everything/x86_64/Packages/s/$singularity_rpm
+        sudo alien -d $singularity_rpm
         sudo apt install ./singularity*.deb
         singularity --version
 

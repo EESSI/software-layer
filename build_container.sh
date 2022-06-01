@@ -10,7 +10,7 @@ SHELL_OR_RUN=$1
 EESSI_TMPDIR=$2
 shift 2
 
-if [ "$SHELL_OR_RUN" == "run" ] && [ -z "$@" ]; then
+if [ "$SHELL_OR_RUN" == "run" ] && [ $# -eq 0 ]; then
     echo "ERROR: No command specified to run?!" >&2
     exit 1
 fi
