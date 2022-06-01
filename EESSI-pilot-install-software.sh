@@ -5,7 +5,7 @@
 
 TOPDIR=$(dirname $(realpath $0))
 
-source utils.sh
+source $TOPDIR/utils.sh
 
 # honor $TMPDIR if it is already defined, use /tmp otherwise
 if [ -z $TMPDIR ]; then
@@ -312,7 +312,7 @@ if [ ! -f $LMOD_RC ]; then
     check_exit_code $? "$LMOD_RC created" "Failed to create $LMOD_RC"
 fi
 
-./update_lmod_cache.sh ${EPREFIX} ${EASYBUILD_INSTALLPATH}
+$TOPDIR/update_lmod_cache.sh ${EPREFIX} ${EASYBUILD_INSTALLPATH}
 
 echo ">> Checking for missing installations..."
 ok_msg="No missing installations, party time!"
