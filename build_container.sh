@@ -41,7 +41,15 @@ mkdir -p $EESSI_TMPDIR/{home,overlay-upper,overlay-work}
 mkdir -p $EESSI_TMPDIR/{var-lib-cvmfs,var-run-cvmfs}
 # configure Singularity
 export SINGULARITY_CACHEDIR=$EESSI_TMPDIR/singularity_cache
-export SINGULARITY_BIND="$EESSI_TMPDIR/var-run-cvmfs:/var/run/cvmfs,$EESSI_TMPDIR/var-lib-cvmfs:/var/lib/cvmfs,$EESSI_TMPDIR"
+
+# take into account that $SINGULARITY_BIND may be defined already, to bind additional paths into the build container
+BIND_PATHS="$EESSI_TMPDIR/var-run-cvmfs:/var/run/cvmfs,$EESSI_TMPDIR/var-lib-cvmfs:/var/lib/cvmfs,$EESSI_TMPDIR"
+if [ -z $SINGULARITY_BIND ]; then
+    export SINGULARITY_BIND="$BIND_PATHS"
+else
+    export SINGULARITY_BIND="$SINGULARITY_BIND,$BIND_PATHS"
+fi
+
 export SINGULARITY_HOME="$EESSI_TMPDIR/home:/home/$USER"
 
 # set environment variables for fuse mounts in Singularity container
