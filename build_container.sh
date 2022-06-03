@@ -50,7 +50,10 @@ else
     export SINGULARITY_BIND="$SINGULARITY_BIND,$BIND_PATHS"
 fi
 
-export SINGULARITY_HOME="$EESSI_TMPDIR/home:/home/$USER"
+# allow that SINGULARITY_HOME is defined before script is run
+if [ -z $SINGULARITY_HOME ]; then
+    export SINGULARITY_HOME="$EESSI_TMPDIR/home:/home/$USER"
+fi
 
 # set environment variables for fuse mounts in Singularity container
 export EESSI_PILOT_READONLY="container:cvmfs2 pilot.eessi-hpc.org /cvmfs_ro/pilot.eessi-hpc.org"
