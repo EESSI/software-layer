@@ -137,15 +137,15 @@ do
     fi
 
     if [[ "${install_wo_gpu}" != "true" ]]; then
-      source $(dirname "$BASH_SOURCE")/test_cuda.sh
+      bash $(dirname "$BASH_SOURCE")/test_cuda.sh
       if [ $? -eq 0 ]
       then
-      exit 0
+        exit 0
       else
-      echo
-      echo "It looks like your driver is not recent enough to work with that release of CUDA, consider updating!"
-      echo "I'll try an older release to see if that will work..."
-      echo
+        echo
+        echo "It looks like your driver is not recent enough to work with that release of CUDA, consider updating!"
+        echo "I'll try an older release to see if that will work..."
+        echo
       fi
     else
       echo "Requested to install CUDA without GPUs present, so we skip final tests."

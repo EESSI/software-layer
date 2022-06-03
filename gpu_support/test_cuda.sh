@@ -42,7 +42,7 @@ else
   # Clean up
   cd $current_dir
   rm -r $tmp_dir
-  false
+  exit 1
 fi
 
 # Test building something with CUDA and running
