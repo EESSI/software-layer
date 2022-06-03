@@ -3,15 +3,17 @@
 libs_url=$1
 
 current_dir=$(dirname $(realpath $0))
+host_injections_dir="/cvmfs/pilot.eessi-hpc.org/host_injections/nvidia"
+host_injection_linker_dir=${EESSI_EPREFIX/versions/host_injections}
 
 # Create a general space for our NVIDIA compat drivers
 if [ -w /cvmfs/pilot.eessi-hpc.org/host_injections ]; then
   mkdir -p ${host_injections_dir}
-  cd ${host_injections_dir}
 else
   echo "Cannot write to eessi host_injections space, exiting now..." >&2
   exit 1
 fi
+cd ${host_injections_dir}
 
 # Check if we have any version installed by checking for the existence of /cvmfs/pilot.eessi-hpc.org/host_injections/nvidia/latest
 
@@ -30,6 +32,7 @@ tmpdir=$(mktemp -d)
 cd $tmpdir
 compat_file=${libs_url##*/}
 wget ${libs_url}
+echo $compat_file
 
 # Unpack it
 # (the requirements here are OS dependent, can we get around that?)
@@ -46,13 +49,13 @@ else
   exit 1
 fi
 cd $host_injections_dir
+cuda_dir=$(basename ${tmpdir}/usr/local/cuda-*)
 # TODO: This would prevent error messages if folder already exists, but could be problematic if only some files are missing in destination dir
 mv -n ${tmpdir}/usr/local/cuda-* .
 rm -r ${tmpdir}
 
-# Add a symlink that points to the latest version
-latest_cuda_dir=$(find . -maxdepth 1 -type d | grep -i cuda | sort | tail -n1)
-ln -sf ${latest_cuda_dir} latest
+# Add a symlink that points the latest version to the version we just installed
+ln -sfn ${cuda_dir} latest
 
 if [ ! -e latest ] ; then
   echo "Symlink to latest cuda compat lib version is broken, exiting now..."
@@ -60,16 +63,19 @@ if [ ! -e latest ] ; then
 fi
 
 # Create the space to host the libraries
-host_injection_libs_dir=/cvmfs/pilot.eessi-hpc.org/host_injections/${EESSI_PILOT_VERSION}/compat/${os_family}/${eessi_cpu_family}
-mkdir -p ${host_injection_libs_dir}
+mkdir -p ${host_injection_linker_dir}
 # Symlink in the path to the latest libraries
-if [ ! -d "${host_injection_libs_dir}/lib" ]; then
-  ln -s ${host_injections_dir}/latest/compat ${host_injection_libs_dir}/lib
-elif [ ! "${host_injection_libs_dir}/lib" -ef "${host_injections_dir}/latest/compat" ]; then
+if [ ! -d "${host_injection_linker_dir}/lib" ]; then
+  ln -s ${host_injections_dir}/latest/compat ${host_injection_linker_dir}/lib
+elif [ ! "${host_injection_linker_dir}/lib" -ef "${host_injections_dir}/latest/compat" ]; then
   echo "CUDA compat libs symlink exists but points to the wrong location, please fix this..."
-  echo "${host_injection_libs_dir}/lib should point to ${host_injections_dir}/latest/compat"
+  echo "${host_injection_linker_dir}/lib should point to ${host_injections_dir}/latest/compat"
   exit 1
 fi
 
 # return to initial dir
 cd $current_dir
+
+echo
+echo CUDA driver compatability drivers installed for CUDA version:
+echo ${cuda_dir/cuda-/}
