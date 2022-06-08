@@ -33,13 +33,17 @@ then
   echo "  - To use these modules:"
   echo "      module use ${EESSI_SOFTWARE_PATH/versions/host_injections}/modules/all/"
   echo -e ${clear}
-else 
-  echo "Uff, your GPU doesn't seem to be working with EESSI :(" >&2 
-fi
 
-# Clean up
-cd $current_dir
-rm -r $tmp_dir
+  # Clean up
+  cd $current_dir
+  rm -r $tmp_dir
+else 
+  echo "Uff, your GPU doesn't seem to be working with EESSI :(" >&2
+  # Clean up
+  cd $current_dir
+  rm -r $tmp_dir
+  exit 1
+fi
 
 # Test building something with CUDA and running
 # TODO: Use samples from installation directory, `device_query` is a good option
