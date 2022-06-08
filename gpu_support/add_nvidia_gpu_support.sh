@@ -31,7 +31,7 @@ else
   echo "This means that all GPU-dependent tests/checks will be skipped!"
 fi
 
-EESSI_SILENT=1 source /cvmfs/pilot.eessi-hpc.org/versions/2021.12/init/bash
+EESSI_SILENT=1 source /cvmfs/pilot.eessi-hpc.org/latest/init/bash
 
 ##############################################################################################
 # Check that the CUDA driver version is adequate
