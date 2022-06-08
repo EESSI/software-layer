@@ -51,6 +51,7 @@ fi
 cd $host_injections_dir
 cuda_dir=$(basename ${tmpdir}/usr/local/cuda-*)
 # TODO: This would prevent error messages if folder already exists, but could be problematic if only some files are missing in destination dir
+rm -rf ${cuda_dir}
 mv -n ${tmpdir}/usr/local/cuda-* .
 rm -r ${tmpdir}
 

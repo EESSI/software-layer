@@ -106,6 +106,10 @@ do
     cuda_compat_urls=$(echo $cuda_compat_urls | cut -d " " -f2-)
     latest_driver_version="${latest_cuda_compat_url%-*}"
     latest_driver_version="${latest_driver_version##*-}"
+    # URLs differ for different OSes; check if we already have a number, if not remove string part that is not needed
+    if [[ ! $latest_driver_version =~ ^[0-9]+$ ]]; then
+      latest_driver_version="${latest_driver_version##*_}"
+    fi
 
     install_compat_libs=false
     host_injections_dir="/cvmfs/pilot.eessi-hpc.org/host_injections/nvidia"
