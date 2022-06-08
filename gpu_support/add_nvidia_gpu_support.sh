@@ -3,7 +3,7 @@
 # Drop into the prefix shell or pipe this script into a Prefix shell with
 #   $EPREFIX/startprefix <<< /path/to/this_script.sh
 
-install_cuda_version="11.3.1"
+install_cuda_version="${INSTALL_CUDA_VERSION:=11.3.1}"
 
 # If you want to install CUDA support on login nodes (typically without GPUs),
 # set this variable to true. This will skip all GPU-dependent checks
