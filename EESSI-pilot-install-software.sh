@@ -142,6 +142,11 @@ fi
 
 echo_green "All set, let's start installing some software in ${EASYBUILD_INSTALLPATH}..."
 
+# install bzip2 and then stop the script
+# THIS IS ONLY DONE TO TEST SOMETHING
+$EB bzip2-1.0.8.eb --robot
+exit $?
+
 # install Java with fixed custom easyblock that uses patchelf to ensure right glibc is picked up,
 # see https://github.com/EESSI/software-layer/issues/123
 # and https://github.com/easybuilders/easybuild-easyblocks/pull/2557
