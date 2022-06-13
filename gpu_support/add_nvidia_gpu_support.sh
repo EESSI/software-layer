@@ -137,7 +137,7 @@ do
     fi
 
     if [ "${install_compat_libs}" == true ]; then
-      source $(dirname "$BASH_SOURCE")/install_cuda_compatlibs.sh $latest_cuda_compat_url
+      bash $(dirname "$BASH_SOURCE")/install_cuda_compatlibs.sh $latest_cuda_compat_url
     fi
 
     if [[ "${install_wo_gpu}" != "true" ]]; then
