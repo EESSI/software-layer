@@ -170,6 +170,9 @@ do
         echo "  - To build CUDA enabled modules use ${EESSI_SOFTWARE_PATH/versions/host_injections} as your EasyBuild prefix"
         echo "  - To use these modules:"
         echo "      module use ${EESSI_SOFTWARE_PATH/versions/host_injections}/modules/all/"
+        echo "  - Please keep in mind that we just installed the latest CUDA compat libs."
+        echo "    Since we have no GPU to test with, we cannot guarantee that it will work with the installed CUDA drivers on your GPU node(s)."
+	exit 0
       fi
       break
     fi
