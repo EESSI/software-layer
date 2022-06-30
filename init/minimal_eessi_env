@@ -1,7 +1,7 @@
 # define minimal EESSI environment, without relying on external scripts
 
 export EESSI_CVMFS_REPO="/cvmfs/pilot.nessi.uiocloud.no"
-export EESSI_PILOT_VERSION="2021.12"
+export EESSI_PILOT_VERSION="${EESSI_PILOT_VERSION_OVERRIDE:=2021.12}"
 export EESSI_PREFIX=$EESSI_CVMFS_REPO/versions/$EESSI_PILOT_VERSION
 
 if [[ $(uname -s) == 'Linux' ]]; then

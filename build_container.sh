@@ -41,12 +41,19 @@ mkdir -p $EESSI_TMPDIR/{home,overlay-upper,overlay-work}
 mkdir -p $EESSI_TMPDIR/{var-lib-cvmfs,var-run-cvmfs}
 # configure Singularity
 export SINGULARITY_CACHEDIR=$EESSI_TMPDIR/singularity_cache
-export SINGULARITY_BIND="$EESSI_TMPDIR/var-run-cvmfs:/var/run/cvmfs,$EESSI_TMPDIR/var-lib-cvmfs:/var/lib/cvmfs,$EESSI_TMPDIR"
-export SINGULARITY_HOME="$EESSI_TMPDIR/home:/home/$USER"
 
+# take into account that $SINGULARITY_BIND may be defined already, to bind additional paths into the build container
 BIND_PATHS="$EESSI_TMPDIR/var-run-cvmfs:/var/run/cvmfs,$EESSI_TMPDIR/var-lib-cvmfs:/var/lib/cvmfs,$EESSI_TMPDIR,nessi.uiocloud.no:/etc/cvmfs/keys/nessi.uiocloud.no,nessi.uiocloud.no.conf:/etc/cvmfs/domain.d/nessi.uiocloud.no.conf,default.local:/etc/cvmfs/default.local"
+if [ -z $SINGULARITY_BIND ]; then
+    export SINGULARITY_BIND="$BIND_PATHS"
+else
+    export SINGULARITY_BIND="$SINGULARITY_BIND,$BIND_PATHS"
+fi
 
-export EESSI_PILOT_WRITABLE_OVERLAY="container:fuse-overlayfs -o lowerdir=/cvmfs_ro/hpc.rug.nl -o upperdir=$EESSI_TMPDIR/overlay-upper -o workdir=$EESSI_TMPDIR/overlay-work /cvmfs/hpc.rug.nl"
+# allow that SINGULARITY_HOME is defined before script is run
+if [ -z $SINGULARITY_HOME ]; then
+    export SINGULARITY_HOME="$EESSI_TMPDIR/home:/home/$USER"
+fi
 
 # set environment variables for fuse mounts in Singularity container
 export EESSI_PILOT_READONLY="container:cvmfs2 pilot.nessi.uiocloud.no /cvmfs_ro/pilot.nessi.uiocloud.no"
