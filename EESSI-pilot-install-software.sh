@@ -5,34 +5,7 @@
 
 TOPDIR=$(dirname $(realpath $0))
 
-function echo_green() {
-    echo -e "\e[32m$1\e[0m"
-}
-
-function echo_red() {
-    echo -e "\e[31m$1\e[0m"
-}
-
-function echo_yellow() {
-    echo -e "\e[33m$1\e[0m"
-}
-
-function fatal_error() {
-    echo_red "ERROR: $1" >&2
-    exit 1
-}
-
-function check_exit_code {
-    ec=$1
-    ok_msg=$2
-    fail_msg=$3
-
-    if [[ $ec -eq 0 ]]; then
-        echo_green "${ok_msg}"
-    else
-        fatal_error "${fail_msg}"
-    fi
-}
+source $TOPDIR/utils.sh
 
 # honor $TMPDIR if it is already defined, use /tmp otherwise
 if [ -z $TMPDIR ]; then
@@ -343,16 +316,7 @@ if [ ! -f $LMOD_RC ]; then
     check_exit_code $? "$LMOD_RC created" "Failed to create $LMOD_RC"
 fi
 
-# we need to specify the path to the Lmod cache dir + timestamp file to ensure
-# that update_lmod_system_cache_files updates correct Lmod cache
-lmod_cache_dir=${EASYBUILD_INSTALLPATH}/.lmod/cache
-lmod_cache_timestamp_file=${EASYBUILD_INSTALLPATH}/.lmod/cache/timestamp
-modpath=${EASYBUILD_INSTALLPATH}/modules/all
-
-${LMOD_DIR}/update_lmod_system_cache_files -d ${lmod_cache_dir} -t ${lmod_cache_timestamp_file} ${modpath}
-check_exit_code $? "Lmod cache updated" "Lmod cache update failed!"
-
-ls -lrt ${EASYBUILD_INSTALLPATH}/.lmod/cache
+$TOPDIR/update_lmod_cache.sh ${EPREFIX} ${EASYBUILD_INSTALLPATH}
 
 echo ">> Checking for missing installations..."
 ok_msg="No missing installations, party time!"
