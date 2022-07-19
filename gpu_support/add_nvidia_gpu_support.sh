@@ -17,6 +17,8 @@ if [[ "${install_wo_gpu}" != "true" ]]; then
     nvidia-smi > /dev/null 2>&1
     if [ $? -ne 0 ]; then
       echo "nvidia-smi was found but returned error code, exiting now..." >&2
+      echo "If you do not have a GPU on this device but wish to force the installation,"
+      echo "please set the environment variable INSTALL_WO_GPU=true"
       exit 1
     fi
     echo "nvidia-smi found, continue setup."
