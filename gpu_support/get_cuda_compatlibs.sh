@@ -22,9 +22,16 @@ if [ -f /etc/os-release ]; then
   ver=$VERSION_ID
   if [[ "$os" == *"Rocky"* ]]; then
     os="rhel"
+    # Convert OS version to major versions, e.g. rhel8.5 -> rhel8
+    ver=${ver%.*}
   fi
   if [[ "$os" == *"Debian"* ]]; then
     os="debian"
+  fi
+  if [[ "$os" == *"Ubuntu"* ]]; then
+    os="ubuntu"
+    # Convert OS version
+    ver=${ver/./}
   fi
 elif type lsb_release >/dev/null 2>&1; then
   # linuxbase.org
@@ -44,9 +51,6 @@ else
   os=$(uname -s)
   ver=$(uname -r)
 fi
-# Convert OS version to major versions, e.g. rhel8.5 -> rhel8
-# TODO: needs testing for e.g. Ubuntu 20.04
-ver=${ver%.*}
 
 # build URL for CUDA libraries
 cuda_url="https://developer.download.nvidia.com/compute/cuda/repos/"${os}${ver}"/"${eessi_cpu_family}"/"
