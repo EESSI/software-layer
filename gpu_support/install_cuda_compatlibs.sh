@@ -35,12 +35,20 @@ wget ${libs_url}
 echo $compat_file
 
 # Unpack it
-# (the requirements here are OS dependent, can we get around that?)
-# (for rpms looks like we can use https://gitweb.gentoo.org/repo/proj/prefix.git/tree/eclass/rpm.eclass?id=d7fc8cf65c536224bace1d22c0cd85a526490a1e)
-# (deb files can be unpacked with ar and tar)
+# rpm files are the default for all OSes
+# Keep support for deb files in case it is needed in the future
 file_extension=${compat_file##*.}
 if [[ ${file_extension} == "rpm" ]]; then
-  rpm2cpio ${compat_file} | cpio -idmv
+  # Load p7zip to extract files from rpm file
+  module load p7zip
+  # Extract .cpio
+  7z x ${compat_file}
+  # Extract lib*
+  7z x ${compat_file/rpm/cpio}
+  # Restore symlinks
+  cd usr/local/cuda-*/compat
+  ls *.so *.so.? | xargs -i -I % sh -c '{ echo -n ln -sf" "; cat %; echo " "%; }'| xargs -i sh -c "{}"
+  cd -
 elif [[ ${file_extension} == "deb" ]]; then
   ar x ${compat_file}
   tar xf data.tar.*

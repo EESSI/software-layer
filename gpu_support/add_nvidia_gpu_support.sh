@@ -4,6 +4,7 @@
 #   $EPREFIX/startprefix <<< /path/to/this_script.sh
 
 install_cuda_version="${INSTALL_CUDA_VERSION:=11.3.1}"
+install_p7zip_version="${INSTALL_P7ZIP_VERSION:=17.04-GCCcore-10.3.0}"
 
 # If you want to install CUDA support on login nodes (typically without GPUs),
 # set this variable to true. This will skip all GPU-dependent checks
@@ -67,7 +68,7 @@ fi
 # only install CUDA if specified version is not found
 module avail 2>&1 | grep -i CUDA/${install_cuda_version} &> /dev/null
 if [[ $? -eq 0 ]]; then
-    echo "CUDA module found! No need to install CUDA again, proceeding with tests"
+  echo "CUDA module found! No need to install CUDA again, proceeding with tests"
 else
   # - as an installation location just use $EESSI_SOFTWARE_PATH but replacing `versions` with `host_injections`
   #   (CUDA is a binary installation so no need to worry too much about this)
@@ -85,6 +86,24 @@ else
     echo "CUDA installation failed, please check EasyBuild logs..."
     exit 1
   fi
+fi
+
+# install p7zip, this will be used to install the CUDA compat libraries from rpm
+# the rpm and deb files contain the same libraries, so we just stick to the rpm version
+module avail 2>&1 | grep -i p7zip &> /dev/null
+if [[ $? -eq 0 ]]; then
+  echo "p7zip module found! No need to install p7zip again, proceeding with installation of compat libraries"
+else
+  # install p7zip in host_injections
+  module load EasyBuild
+  eb --robot --installpath=${cuda_install_dir}/ p7zip-${install_p7zip_version}.eb
+  ret=$?
+  if [ $ret -ne 0 ]; then
+    echo "p7zip installation failed, please check EasyBuild logs..."
+    exit 1
+  fi
+  # make p7zip known to the environment
+  module use ${cuda_install_dir}/modules/all
 fi
 
 # Check if the CUDA compat libraries are installed and compatible with the target CUDA version
