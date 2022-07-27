@@ -45,11 +45,11 @@ EESSI_SILENT=1 source /cvmfs/pilot.eessi-hpc.org/latest/init/bash
 # )
 # only check first number in case of multiple GPUs
 if [[ "${install_wo_gpu}" != "true" ]]; then
-  driver_version=$(nvidia-smi --query-gpu=driver_version --format=csv,noheader | tail -n1)
-  driver_version="${driver_version%%.*}"
+  driver_major_version=$(nvidia-smi --query-gpu=driver_version --format=csv,noheader | tail -n1)
+  driver_major_version="${driver_major_version%%.*}"
   # Now check driver_version for compatability
   # Check driver is at least LTS driver R450, see https://docs.nvidia.com/datacenter/tesla/drivers/#cuda-drivers
-  if (( $driver_version < 450 )); then
+  if (( $driver_major_version < 450 )); then
     echo "Your NVIDIA driver version is too old, please update first.."
     exit 1
   fi
