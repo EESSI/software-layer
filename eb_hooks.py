@@ -122,6 +122,24 @@ def cgal_toolchainopts_precise(ec, eprefix):
         raise EasyBuildError("CGAL-specific hook triggered for non-CGAL easyconfig?!")
 
 
+def pre_fetch_hook(self, *args, **kwargs):
+    """Modify install path for CUDA software."""
+    if self.name == 'CUDA':
+        self.installdir = self.installdir.replace('versions', 'host_injections')
+
+
+def pre_module_hook(self, *args, **kwargs):
+    """Modify install path for CUDA software."""
+    if self.name == 'CUDA':
+        self.installdir = self.installdir.replace('versions', 'host_injections')
+
+
+def pre_sanitycheck_hook(self, *args, **kwargs):
+    """Modify install path for CUDA software."""
+    if self.name == 'CUDA':
+        self.installdir = self.installdir.replace('versions', 'host_injections')
+
+
 def fontconfig_add_fonts(ec, eprefix):
     """Inject --with-add-fonts configure option for fontconfig."""
     if ec.name == 'fontconfig':

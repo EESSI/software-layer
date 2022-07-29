@@ -62,12 +62,8 @@ fi
 # if modules dir exists, load it for usage within Lmod
 cuda_install_dir="${EESSI_SOFTWARE_PATH/versions/host_injections}"
 mkdir -p ${cuda_install_dir}
-if [ -d ${cuda_install_dir}/modules/all ]; then
-  module use ${cuda_install_dir}/modules/all
-fi
 # only install CUDA if specified version is not found
-module avail 2>&1 | grep -i CUDA/${install_cuda_version} &> /dev/null
-if [[ $? -eq 0 ]]; then
+if [ -d ${cuda_install_dir}/software/CUDA/${install_cuda_version} ]; then
   echo "CUDA module found! No need to install CUDA again, proceeding with tests"
 else
   # - as an installation location just use $EESSI_SOFTWARE_PATH but replacing `versions` with `host_injections`
@@ -80,12 +76,15 @@ else
   fi
   # install cuda in host_injections
   module load EasyBuild
-  eb --installpath=${cuda_install_dir}/ CUDA-${install_cuda_version}.eb
+  # we need the --rebuild option, since the module file is shipped with EESSI
+  tmpdir=$(mktemp -d)
+  eb --rebuild --installpath-modules=${tmpdir} --installpath=${cuda_install_dir}/ CUDA-${install_cuda_version}.eb
   ret=$?
   if [ $ret -ne 0 ]; then
     echo "CUDA installation failed, please check EasyBuild logs..."
     exit 1
   fi
+  rm -rf ${tmpdir}
 fi
 
 # install p7zip, this will be used to install the CUDA compat libraries from rpm
