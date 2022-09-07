@@ -29,9 +29,13 @@ end
 
 local function cuda_load_hook(t)
 	local frameStk  = require("FrameStk"):singleton()
+	-- needed to check if we are trying to load the CUDA module
 	local simpleName = string.match(t.modFullName, "(.-)/")
 	if string.match(simpleName, 'CUDA') ~= nil then
+		-- get the full host_injections path
 		local cudaDir = string.gsub(os.getenv('EESSI_SOFTWARE_PATH') or "", 'versions', 'host_injections')
+		-- build final path where the CUDA software should be installed
+		cudaDir = cudaDir .. "/software/" .. t.modFullName
 		local cudaDirExists = exists(cudaDir)
 		if not cudaDirExists then
 			io.stderr:write("You requested to load ",simpleName,"\n")
