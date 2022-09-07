@@ -87,8 +87,11 @@ else
   rm -rf ${tmpdir}
 fi
 
-# install p7zip, this will be used to install the CUDA compat libraries from rpm
-# the rpm and deb files contain the same libraries, so we just stick to the rpm version
+# Install p7zip, this will be used to install the CUDA compat libraries from rpm.
+# The rpm and deb files contain the same libraries, so we just stick to the rpm version.
+# If p7zip is missing from the software layer (for whatever reason), we need to install it.
+# This has to happen in host_injections, so we check first if it is already installed there.
+module use ${cuda_install_dir}/modules/all/
 module avail 2>&1 | grep -i p7zip &> /dev/null
 if [[ $? -eq 0 ]]; then
   echo "p7zip module found! No need to install p7zip again, proceeding with installation of compat libraries"
@@ -101,8 +104,6 @@ else
     echo "p7zip installation failed, please check EasyBuild logs..."
     exit 1
   fi
-  # make p7zip known to the environment
-  module use ${cuda_install_dir}/modules/all
 fi
 
 # Check if the CUDA compat libraries are installed and compatible with the target CUDA version
