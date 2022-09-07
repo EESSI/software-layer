@@ -31,10 +31,6 @@ if [ $? -eq 0 ]; then
     # prepend location of modules for EESSI software stack to $MODULEPATH
     echo "Prepending $EESSI_MODULEPATH to \$MODULEPATH..." >> $output
     module use $EESSI_MODULEPATH
-    if [[ ! -z "${EESSI_SITE_MODULEPATH}" ]]; then
-      echo "Add ${EESSI_SITE_MODULEPATH} to \$MODULEPATH for GPU support..."
-      module use ${EESSI_SITE_MODULEPATH}
-    fi
 
     #echo >> $output
     #echo "*** Known problems in the ${EESSI_PILOT_VERSION} pilot software stack ***" >> $output
