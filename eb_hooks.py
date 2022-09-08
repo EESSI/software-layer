@@ -4,7 +4,7 @@ import os
 
 from easybuild.tools.build_log import EasyBuildError, print_msg
 from easybuild.tools.config import build_option, update_build_option
-from easybuild.tools.systemtools import POWER, get_cpu_architecture
+from easybuild.tools.systemtools import AARCH64, POWER, get_cpu_architecture
 
 EESSI_RPATH_OVERRIDE_ATTR = 'orig_rpath_override_dirs'
 
@@ -124,8 +124,32 @@ def ucx_eprefix(ec, eprefix):
         raise EasyBuildError("UCX-specific hook triggered for non-UCX easyconfig?!")
 
 
+def pre_configure_hook(self, *args, **kwargs):
+    """Main pre-configure hook: trigger custom functions based on software name."""
+    if self.name in PRE_CONFIGURE_HOOKS:
+        PRE_CONFIGURE_HOOKS[self.name](self, *args, **kwargs)
+
+
+def wrf_preconfigure(self, *args, **kwargs):
+    """
+    Pre-configure hook for WRF:
+    - patch arch/configure_new.defaults so building WRF with foss toolchain works on aarch64
+    """
+    if self.name == 'WRF':
+        if get_cpu_architecture() == AARCH64:
+            pattern = "Linux x86_64 ppc64le, gfortran"
+            repl = "Linux x86_64 aarch64 ppc64le, gfortran"
+            self.cfg.update('preconfigopts', "sed -i 's/%s/%s/g' arch/configure_new.defaults && " % (pattern, repl))
+            print_msg("Using custom preconfigopts for %s: %s", self.name, self.cfg['preconfigopts'])
+    else:
+        raise EasyBuildError("WRF-specific hook triggered for non-WRF easyconfig?!")
+
 PARSE_HOOKS = {
     'CGAL': cgal_toolchainopts_precise,
     'fontconfig': fontconfig_add_fonts,
     'UCX': ucx_eprefix,
+}
+
+PRE_CONFIGURE_HOOKS = {
+    'WRF': wrf_preconfigure,
 }

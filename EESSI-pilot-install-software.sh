@@ -1,38 +1,11 @@
 #!/bin/bash
 #
-# Script to install EESSI pilot software stack (version 2021.06)
+# Script to install EESSI pilot software stack (version 2021.12)
 #
 
 TOPDIR=$(dirname $(realpath $0))
 
-function echo_green() {
-    echo -e "\e[32m$1\e[0m"
-}
-
-function echo_red() {
-    echo -e "\e[31m$1\e[0m"
-}
-
-function echo_yellow() {
-    echo -e "\e[33m$1\e[0m"
-}
-
-function fatal_error() {
-    echo_red "ERROR: $1" >&2
-    exit 1
-}
-
-function check_exit_code {
-    ec=$1
-    ok_msg=$2
-    fail_msg=$3
-
-    if [[ $ec -eq 0 ]]; then
-        echo_green "${ok_msg}"
-    else
-        fatal_error "${fail_msg}"
-    fi
-}
+source $TOPDIR/utils.sh
 
 # honor $TMPDIR if it is already defined, use /tmp otherwise
 if [ -z $TMPDIR ]; then
@@ -114,7 +87,7 @@ else
     echo_green ">> MODULEPATH set up: ${MODULEPATH}"
 fi
 
-REQ_EB_VERSION='4.4.1'
+REQ_EB_VERSION='4.5.0'
 
 echo ">> Checking for EasyBuild module..."
 ml_av_easybuild_out=$TMPDIR/ml_av_easybuild.out
@@ -169,10 +142,6 @@ fi
 
 echo_green "All set, let's start installing some software in ${EASYBUILD_INSTALLPATH}..."
 
-# download source tarball for DB (dependency for Perl) using fixed source URL,
-# see https://github.com/easybuilders/easybuild-easyconfigs/pull/13813
-$EB --fetch --from-pr 13813 DB-18.1.32-GCCcore-9.3.0.eb
-
 # install Java with fixed custom easyblock that uses patchelf to ensure right glibc is picked up,
 # see https://github.com/EESSI/software-layer/issues/123
 # and https://github.com/easybuilders/easybuild-easyblocks/pull/2557
@@ -186,7 +155,9 @@ export GCC_EC="GCC-9.3.0.eb"
 echo ">> Starting slow with ${GCC_EC}..."
 ok_msg="${GCC_EC} installed, yippy! Off to a good start..."
 fail_msg="Installation of ${GCC_EC} failed!"
-$EB ${GCC_EC} --robot
+# pull in easyconfig from https://github.com/easybuilders/easybuild-easyconfigs/pull/14453,
+# which includes patch to fix build of GCC 9.3 when recent kernel headers are in place
+$EB ${GCC_EC} --robot --from-pr 14453 GCCcore-9.3.0.eb
 check_exit_code $? "${ok_msg}" "${fail_msg}"
 
 # install CMake with custom easyblock that patches CMake when --sysroot is used
@@ -224,7 +195,9 @@ check_exit_code $? "${ok_msg}" "${fail_msg}"
 echo ">> Installing Perl..."
 ok_msg="Perl installed, making progress..."
 fail_msg="Installation of Perl failed, this never happens..."
-$EB Perl-5.30.2-GCCcore-9.3.0.eb --robot
+# use enhanced Perl easyblock from https://github.com/easybuilders/easybuild-easyblocks/pull/2640
+# to avoid trouble when using long installation prefix (for example with EESSI pilot 2021.12 on skylake_avx512...)
+$EB Perl-5.30.2-GCCcore-9.3.0.eb --robot --include-easyblocks-from-pr 2640
 check_exit_code $? "${ok_msg}" "${fail_msg}"
 
 echo ">> Installing Qt5..."
@@ -272,7 +245,7 @@ fi
 echo ">> Installing R 4.0.0 (better be patient)..."
 ok_msg="R installed, wow!"
 fail_msg="Installation of R failed, so sad..."
-$EB R-4.0.0-foss-2020a.eb --robot
+$EB R-4.0.0-foss-2020a.eb --robot --parallel-extensions-install --experimental
 check_exit_code $? "${ok_msg}" "${fail_msg}"
 
 echo ">> Installing Bioconductor 3.11 bundle..."
@@ -302,15 +275,6 @@ if [ ! "${EESSI_CPU_FAMILY}" = "ppc64le" ]; then
     check_exit_code $? "${ok_msg}" "${fail_msg}"
 fi
 
-echo ">> Installing ReFrame 3.6.2 ..."
-ok_msg="ReFrame installed, enjoy!"
-fail_msg="Installation of ReFrame failed, that's a bit strange..."
-# use ReFrame easyconfig from https://github.com/easybuilders/easybuild-easyconfigs/pull/13844 to avoid
-# problems caused by also having ReFrame installed in compat layer;
-# see also https://github.com/EESSI/software-layer/issues/127
-$EB ReFrame-3.6.2.eb --robot --from-pr 13844
-check_exit_code $? "${ok_msg}" "${fail_msg}"
-
 echo ">> Installing RStudio-Server 1.3.1093..."
 ok_msg="RStudio-Server installed, enjoy!"
 fail_msg="Installation of RStudio-Server failed, might be OS deps..."
@@ -326,7 +290,6 @@ check_exit_code $? "${ok_msg}" "${fail_msg}"
 echo ">> Installing Spark 3.1.1..."
 ok_msg="Spark installed, set off the fireworks!"
 fail_msg="Installation of Spark failed, no fireworks this time..."
-$EB Spark-3.1.1-foss-2020a-Python-3.8.2.eb --fetch --from-pr 13842
 $EB Spark-3.1.1-foss-2020a-Python-3.8.2.eb -r
 check_exit_code $? "${ok_msg}" "${fail_msg}"
 
@@ -336,6 +299,12 @@ fail_msg="Installation of IPython failed, that's unexpected..."
 $EB IPython-7.15.0-foss-2020a-Python-3.8.2.eb -r
 check_exit_code $? "${ok_msg}" "${fail_msg}"
 
+echo ">> Installing WRF 3.9.1.1..."
+ok_msg="WRF installed, it's getting hot in here!"
+fail_msg="Installation of WRF failed, that's unexpected..."
+OMPI_MCA_pml=ucx UCX_TLS=tcp $EB WRF-3.9.1.1-foss-2020a-dmpar.eb -r --include-easyblocks-from-pr 2648
+check_exit_code $? "${ok_msg}" "${fail_msg}"
+
 echo ">> Creating/updating Lmod cache..."
 export LMOD_RC="${EASYBUILD_INSTALLPATH}/.lmod/lmodrc.lua"
 if [ ! -f $LMOD_RC ]; then
@@ -343,16 +312,7 @@ if [ ! -f $LMOD_RC ]; then
     check_exit_code $? "$LMOD_RC created" "Failed to create $LMOD_RC"
 fi
 
-# we need to specify the path to the Lmod cache dir + timestamp file to ensure
-# that update_lmod_system_cache_files updates correct Lmod cache
-lmod_cache_dir=${EASYBUILD_INSTALLPATH}/.lmod/cache
-lmod_cache_timestamp_file=${EASYBUILD_INSTALLPATH}/.lmod/cache/timestamp
-modpath=${EASYBUILD_INSTALLPATH}/modules/all
-
-${LMOD_DIR}/update_lmod_system_cache_files -d ${lmod_cache_dir} -t ${lmod_cache_timestamp_file} ${modpath}
-check_exit_code $? "Lmod cache updated" "Lmod cache update failed!"
-
-ls -lrt ${EASYBUILD_INSTALLPATH}/.lmod/cache
+$TOPDIR/update_lmod_cache.sh ${EPREFIX} ${EASYBUILD_INSTALLPATH}
 
 echo ">> Checking for missing installations..."
 ok_msg="No missing installations, party time!"

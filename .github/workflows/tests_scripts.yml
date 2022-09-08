@@ -1,0 +1,46 @@
+# documentation: https://help.github.com/en/articles/workflow-syntax-for-github-actions
+name: Tests for scripts
+on:
+  push:
+    paths:
+      - build_container.sh
+      - install_software_layer.sh
+      - run_in_compat_layer_env.sh
+      - utils.sh
+      - update_lmod_cache.sh
+
+  pull_request:
+    branches:
+      - main
+    paths:
+      - build_container.sh
+      - install_software_layer.sh
+      - run_in_compat_layer_env.sh
+      - utils.sh
+      - update_lmod_cache.sh
+jobs:
+  build:
+    runs-on: ubuntu-20.04
+    steps:
+    - uses: actions/checkout@v2
+
+    # see https://github.com/apptainer/singularity/issues/5390#issuecomment-899111181
+    - name: install Singularity
+      run: |
+        sudo apt-get install alien
+        alien --version
+        singularity_rpm=$(curl --silent -L https://dl.fedoraproject.org/pub/epel/8/Everything/x86_64/Packages/s/ | grep singularity | sed 's/.*\(singularity[0-9._a-z-]*.rpm\).*/\1/g')
+        curl -OL https://dl.fedoraproject.org/pub/epel/8/Everything/x86_64/Packages/s/$singularity_rpm
+        sudo alien -d $singularity_rpm
+        sudo apt install ./singularity*.deb
+        singularity --version
+
+    - name: test install_software_layer.sh script
+      run: |
+          # scripts need to be copied to /tmp,
+          # since install_software_layer.sh must be accessible from within build container
+          cp -a * /tmp/
+          cd /tmp
+          # force using x86_64/generic, to avoid triggering an installation from scratch
+          sed -i "s@./EESSI-pilot-install-software.sh@\"export EESSI_SOFTWARE_SUBDIR_OVERRIDE='x86_64/generic'; ./EESSI-pilot-install-software.sh\"@g" install_software_layer.sh
+          ./build_container.sh run /tmp/$USER/EESSI /tmp/install_software_layer.sh
