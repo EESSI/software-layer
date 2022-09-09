@@ -26,7 +26,7 @@ if [ $? -eq 0 ]; then
     attr -s test -V test $testfile > /dev/null
     if [ $? -ne 0 ]; then
         echo "ERROR: $EESSI_TMPDIR does not support extended attributes!" >&2
-       exit 2
+        #exit 2
     else
         rm $testfile
     fi
