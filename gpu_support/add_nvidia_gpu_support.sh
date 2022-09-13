@@ -64,7 +64,7 @@ cuda_install_dir="${EESSI_SOFTWARE_PATH/versions/host_injections}"
 mkdir -p ${cuda_install_dir}
 # only install CUDA if specified version is not found
 if [ -d ${cuda_install_dir}/software/CUDA/${install_cuda_version} ]; then
-  echo "CUDA module found! No need to install CUDA again, proceeding with tests"
+  echo "CUDA software found! No need to install CUDA again, proceeding with tests"
 else
   # - as an installation location just use $EESSI_SOFTWARE_PATH but replacing `versions` with `host_injections`
   #   (CUDA is a binary installation so no need to worry too much about this)
