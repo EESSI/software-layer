@@ -20,6 +20,12 @@ tmp_dir=$(mktemp -d)
 cp -r $EBROOTCUDA/samples $tmp_dir
 current_dir=$PWD
 cd $tmp_dir/samples/1_Utilities/deviceQuery
+module load GCCcore
+ret=$?
+if [ $ret -ne 0 ]; then
+  echo "Could not load GCC, but it should have been shipped with EESSI?! Exiting..."
+  exit 1
+fi
 make HOST_COMPILER=$(which g++) -j
 ./deviceQuery
 
