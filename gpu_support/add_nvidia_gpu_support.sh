@@ -76,9 +76,12 @@ else
   fi
   # install cuda in host_injections
   module load EasyBuild
-  # we need the --rebuild option, since the module file is shipped with EESSI
-  tmpdir=$(mktemp -d)
-  eb --rebuild --installpath-modules=${tmpdir} --installpath=${cuda_install_dir}/ CUDA-${install_cuda_version}.eb
+  # we need the --rebuild option and a random dir for the module if the module file is shipped with EESSI
+  if [ -f ${EESSI_SOFTWARE_PATH}/modules/all/CUDA/${install_cuda_version}.lua ]; then
+    tmpdir=$(mktemp -d)
+    extra_args="--rebuild --installpath-modules=${tmpdir}"
+  fi
+  eb ${extra_args} --installpath=${cuda_install_dir}/ CUDA-${install_cuda_version}.eb
   ret=$?
   if [ $ret -ne 0 ]; then
     echo "CUDA installation failed, please check EasyBuild logs..."
