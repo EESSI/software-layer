@@ -167,7 +167,7 @@ do
     fi
 
     if [[ "${install_wo_gpu}" != "true" ]]; then
-      bash $(dirname "$BASH_SOURCE")/test_cuda.sh
+      bash $(dirname "$BASH_SOURCE")/test_cuda.sh "${install_cuda_version}"
       if [ $? -eq 0 ]
       then
         exit 0

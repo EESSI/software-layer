@@ -1,5 +1,7 @@
 #!/bin/bash
 
+install_cuda_version=$1
+
 # Test CUDA
 cuda_install_dir="${EESSI_SOFTWARE_PATH/versions/host_injections}"
 if [ -d ${cuda_install_dir}/modules/all ]; then
@@ -8,7 +10,7 @@ else
   echo "Cannot test CUDA, modules path does not exist, exiting now..."
   exit 1
 fi
-module load CUDA
+module load CUDA/${install_cuda_version}
 ret=$?
 if [ $ret -ne 0 ]; then
   echo "Could not load CUDA even though modules path exists..."
