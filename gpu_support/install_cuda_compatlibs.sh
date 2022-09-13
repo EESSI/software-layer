@@ -39,6 +39,10 @@ echo $compat_file
 # Keep support for deb files in case it is needed in the future
 file_extension=${compat_file##*.}
 if [[ ${file_extension} == "rpm" ]]; then
+  # p7zip is installed under host_injections for now, make that known to the environment
+  if [ -d ${cuda_install_dir}/modules/all ]; then
+    module use ${cuda_install_dir}/modules/all/
+  fi
   # Load p7zip to extract files from rpm file
   module load p7zip
   # Extract .cpio
