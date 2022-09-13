@@ -102,6 +102,12 @@ if [[ $? -eq 0 ]]; then
   echo "p7zip module found! No need to install p7zip again, proceeding with installation of compat libraries"
 else
   # install p7zip in host_injections
+  export EASYBUILD_IGNORE_OSDEPS=1
+  export EASYBUILD_SYSROOT=${EPREFIX}
+  export EASYBUILD_RPATH=1
+  export EASYBUILD_FILTER_ENV_VARS=LD_LIBRARY_PATH
+  export EASYBUILD_FILTER_DEPS=Autoconf,Automake,Autotools,binutils,bzip2,cURL,DBus,flex,gettext,gperf,help2man,intltool,libreadline,libtool,Lua,M4,makeinfo,ncurses,util-linux,XZ,zlib
+  export EASYBUILD_MODULE_EXTENSIONS=1
   module load EasyBuild
   eb --robot --installpath=${cuda_install_dir}/ p7zip-${install_p7zip_version}.eb
   ret=$?
