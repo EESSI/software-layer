@@ -91,7 +91,9 @@ fi
 # The rpm and deb files contain the same libraries, so we just stick to the rpm version.
 # If p7zip is missing from the software layer (for whatever reason), we need to install it.
 # This has to happen in host_injections, so we check first if it is already installed there.
-module use ${cuda_install_dir}/modules/all/
+if [ -d ${cuda_install_dir}/modules/all ]; then
+  module use ${cuda_install_dir}/modules/all/
+fi
 module avail 2>&1 | grep -i p7zip &> /dev/null
 if [[ $? -eq 0 ]]; then
   echo "p7zip module found! No need to install p7zip again, proceeding with installation of compat libraries"
