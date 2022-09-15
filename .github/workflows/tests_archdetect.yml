@@ -1,0 +1,25 @@
+# documentation: https://help.github.com/en/articles/workflow-syntax-for-github-actions
+name: Tests for eessi_archdetect.sh
+on: [push, pull_request]
+jobs:
+  build:
+    runs-on: ubuntu-20.04
+    strategy:
+      matrix:
+        proc_cpuinfo:
+          - x86_64/intel/haswell
+          - x86_64/amd/zen2
+      fail-fast: false
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: test eessi_archdetect.sh
+      run: |
+          export EESSI_PROC_CPUINFO=./tests/archdetect/${{matrix.proc_cpuinfo}}
+          CPU_ARCH=$(./init/eessi_archdetect.sh cpupath)
+          if [[ $CPU_ARCH == "${{matrix.python}}" ]]; then
+              echo "Test for ${{matrix.proc_cpuinfo}} PASSED: $CPU_ARCH" >&2
+          else
+              echo "Test for ${{matrix.proc_cpuinfo}} FAILED: $CPU_ARCH" >&2
+              exit 1
+          fi
