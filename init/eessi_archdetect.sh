@@ -45,11 +45,15 @@ cpupath () {
     [[ $CPU_FLAGS =~ .*avx512_vbmi2* ]] && HAS_AVX512_VBMI2=true
     [[ $CPU_FLAGS =~ .*avx512_vnni* ]] && HAS_AVX512_VNNI=true
     [[ $CPU_FLAGS =~ .*avx512fp16* ]] && HAS_AVX512FP16=true
+    [[ $CPU_FLAGS =~ .*vaes* ]] && HAS_VAES=true
 
     [[ ${CPU_VENDOR} == "intel" ]] && [[ ${HAS_AVX2} ]] && [[ ${HAS_FMA} ]] && CPU_TYPE=haswell 
     [[ ${CPU_VENDOR} == "intel" ]] && [[ ${HAS_AVX512F} ]] && CPU_TYPE=skylake_avx512
     # [[ ${HAS_AVX512IFMA} ]] && [[ ${HAS_AVX512_VBMI2} ]] && CPU_TYPE=icelake_avx512
     # [[ ${HAS_AVX512_VNNI} ]] && [[ ${HAS_AVX512VL} ]] && [[ ${HAS_AVX512FP16} ]] && CPU_TYPE=sapphire_rapids_avx512
+
+    [[ ${CPU_VENDOR} == "amd" ]] && [[ ${HAS_AVX2} ]] && [[ ${HAS_FMA} ]] && CPU_TYPE=zen2
+    [[ ${CPU_VENDOR} == "amd" ]] && [[ ${HAS_AVX2} ]] && [[ ${HAS_FMA} ]] && [[ ${HAS_VAES} ]] && CPU_TYPE=zen3
 
     [[ ${CPU_VENDOR} ]] && [[ $CPU_TYPE ]] && CPU_PATH="${MACHINE_TYPE}/${CPU_VENDOR}/${CPU_TYPE}"
 
