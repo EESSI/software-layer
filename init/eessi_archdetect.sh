@@ -57,8 +57,8 @@ cpupath () {
       # [[ ${HAS_AVX512IFMA} ]] && [[ ${HAS_AVX512_VBMI2} ]] && CPU_TYPE=icelake_avx512
       # [[ ${HAS_AVX512_VNNI} ]] && [[ ${HAS_AVX512VL} ]] && [[ ${HAS_AVX512FP16} ]] && CPU_TYPE=sapphire_rapids_avx512
     elif [ ${EESSI_CPU_VENDOR} == "amd" ]; then
-      [[ ${EESSI_HAS_AVX2} ]] && [[ ${EESSI_HAS_FMA} ]] && CPU_TYPE=zen2
-      [[ ${EESSI_HAS_AVX2} ]] && [[ ${EESSI_HAS_FMA} ]] && [[ ${EESSI_HAS_VAES} ]] && CPU_TYPE=zen3
+      [[ ${EESSI_HAS_AVX2} ]] && [[ ${EESSI_HAS_FMA} ]] && EESSI_CPU_TYPE=zen2
+      [[ ${EESSI_HAS_AVX2} ]] && [[ ${EESSI_HAS_FMA} ]] && [[ ${EESSI_HAS_VAES} ]] && EESSI_CPU_TYPE=zen3
     fi
 
     [[ ${EESSI_CPU_VENDOR} ]] && [[ $EESSI_CPU_TYPE ]] && CPU_PATH="${MACHINE_TYPE}/${EESSI_CPU_VENDOR}/${EESSI_CPU_TYPE}"
