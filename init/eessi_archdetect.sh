@@ -16,6 +16,9 @@ cpupath () {
   # let the kernel tell base machine type
   MACHINE_TYPE=${EESSI_MACHINE_TYPE:-$(uname -m)}
   PROC_CPUINFO=${EESSI_PROC_CPUINFO:-/proc/cpuinfo}
+  
+  # clean up any existing pointers to cpu features
+  unset $(env | grep EESSI_HAS | cut -f1 -d=)
 
   # fallback path
   CPU_PATH="${MACHINE_TYPE}/generic"
