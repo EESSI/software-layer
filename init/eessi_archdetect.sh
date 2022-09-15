@@ -27,7 +27,7 @@ cpupath () {
 
   if [ ${MACHINE_TYPE} == "ppc64le" ]; then
     CPU_FLAGS=$(grep -m 1 -i ^cpu ${PROC_CPUINFO})
-    [[ $CPU_FLAGS =~ " POWER9( |$)" ]] && HAS_POWER9=true
+    [[ $CPU_FLAGS =~ " POWER9 " ]] && HAS_POWER9=true
 
     [[ ${HAS_POWER9} ]] && CPU_PATH=${MACHINE_TYPE}/power9le
     echo ${CPU_PATH}
@@ -38,18 +38,18 @@ cpupath () {
     # check for vendor info, if available, for x86_64
     CPUINFO_VENDOR_FLAG=$(grep -m 1 -i ^vendor ${PROC_CPUINFO})
     [[ $CPUINFO_VENDOR_FLAG =~ "GenuineIntel" ]] && CPU_VENDOR=intel
-    [[ $CPUINFO_VENDOR_FLAG =~ ".*AuthenticAMD*" ]] && CPU_VENDOR=amd
+    [[ $CPUINFO_VENDOR_FLAG =~ "AuthenticAMD" ]] && CPU_VENDOR=amd
 
-    CPU_FLAGS=$(grep -m 1 -i ^flags ${PROC_CPUINFO})
-    [[ $CPU_FLAGS =~ " avx2( |$)" ]] && HAS_AVX2=true
-    [[ $CPU_FLAGS =~ " fma( |$)" ]] && HAS_FMA=true
-    [[ $CPU_FLAGS =~ " avx512f( |$)" ]] && HAS_AVX512F=true
-    [[ $CPU_FLAGS =~ " avx512vl( |$)" ]] && HAS_AVX512VL=true
-    [[ $CPU_FLAGS =~ " avx512ifma( |$)" ]] && HAS_AVX512IFMA=true
-    [[ $CPU_FLAGS =~ " avx512_vbmi2( |$)" ]] && HAS_AVX512_VBMI2=true
-    [[ $CPU_FLAGS =~ " avx512_vnni( |$)" ]] && HAS_AVX512_VNNI=true
-    [[ $CPU_FLAGS =~ " avx512fp16( |$)" ]] && HAS_AVX512FP16=true
-    [[ $CPU_FLAGS =~ " vaes( |$)" ]] && HAS_VAES=true
+    CPU_FLAGS=$(grep -m 1 -i ^flags ${PROC_CPUINFO} | sed 's/$/ /g')
+    [[ $CPU_FLAGS =~ " avx2 " ]] && HAS_AVX2=true
+    [[ $CPU_FLAGS =~ " fma " ]] && HAS_FMA=true
+    [[ $CPU_FLAGS =~ " avx512f " ]] && HAS_AVX512F=true
+    [[ $CPU_FLAGS =~ " avx512vl " ]] && HAS_AVX512VL=true
+    [[ $CPU_FLAGS =~ " avx512ifma " ]] && HAS_AVX512IFMA=true
+    [[ $CPU_FLAGS =~ " avx512_vbmi2 " ]] && HAS_AVX512_VBMI2=true
+    [[ $CPU_FLAGS =~ " avx512_vnni " ]] && HAS_AVX512_VNNI=true
+    [[ $CPU_FLAGS =~ " avx512fp16 " ]] && HAS_AVX512FP16=true
+    [[ $CPU_FLAGS =~ " vaes " ]] && HAS_VAES=true
 
     if [ ${CPU_VENDOR} == "intel" ]; then
       [[ ${HAS_AVX2} ]] && [[ ${HAS_FMA} ]] && CPU_TYPE=haswell 
