@@ -33,11 +33,11 @@ cpupath () {
   if [ ${MACHINE_TYPE} == "x86_64" ]; then
     # check for vendor info, if available, for x86_64
     PROC_CPUINFO=${EESSI_PROC_CPUINFO:-/proc/cpuinfo}
-    CPUINFO_VENDOR_FLAG=$(grep -m 1 ^vendor_id ${PROC_CPUINFO})
+    CPUINFO_VENDOR_FLAG=$(grep -m 1 -i ^vendor ${PROC_CPUINFO})
     [[ $CPUINFO_VENDOR_FLAG =~ .*GenuineIntel* ]] && CPU_VENDOR=intel
-    [[ $CPU_VENDOR_FLAG =~ .*AuthenticAMD* ]] && CPU_VENDOR=amd
+    [[ $CPUINFO_VENDOR_FLAG =~ .*AuthenticAMD* ]] && CPU_VENDOR=amd
 
-    CPU_FLAGS=$(grep -m 1 ^flags ${PROC_CPUINFO})
+    CPU_FLAGS=$(grep -m 1 -i ^flags ${PROC_CPUINFO})
     [[ $CPU_FLAGS =~ .*avx2* ]] && HAS_AVX2=true
     [[ $CPU_FLAGS =~ .*fma* ]] && HAS_FMA=true
     [[ $CPU_FLAGS =~ .*avx512f* ]] && HAS_AVX512F=true
