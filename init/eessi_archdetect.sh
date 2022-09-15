@@ -14,7 +14,7 @@ ARGUMENT=${1:-none}
 
 cpupath () {
   # let the kernel tell base machine type
-  MACHINE_TYPE=$(uname -m)
+  MACHINE_TYPE=${EESSI_MACHINE_TYPE:-$(uname -m)}
 
   # fallback path
   CPU_PATH="${MACHINE_TYPE}/generic"
@@ -32,11 +32,12 @@ cpupath () {
 
   if [ ${MACHINE_TYPE} == "x86_64" ]; then
     # check for vendor info, if available, for x86_64
-    CPUINFO_VENDOR_FLAG=$(grep -m 1 ^vendor_id /proc/cpuinfo)
+    PROC_CPUINFO=${EESSI_PROC_CPUINFO:-/proc/cpuinfo}
+    CPUINFO_VENDOR_FLAG=$(grep -m 1 ^vendor_id ${PROC_CPUINFO})
     [[ $CPUINFO_VENDOR_FLAG =~ .*GenuineIntel* ]] && CPU_VENDOR=intel
     [[ $CPU_VENDOR_FLAG =~ .*AuthenticAMD* ]] && CPU_VENDOR=amd
 
-    CPU_FLAGS=$(grep -m 1 ^flags /proc/cpuinfo)
+    CPU_FLAGS=$(grep -m 1 ^flags ${PROC_CPUINFO})
     [[ $CPU_FLAGS =~ .*avx2* ]] && HAS_AVX2=true
     [[ $CPU_FLAGS =~ .*fma* ]] && HAS_FMA=true
     [[ $CPU_FLAGS =~ .*avx512f* ]] && HAS_AVX512F=true
@@ -47,13 +48,15 @@ cpupath () {
     [[ $CPU_FLAGS =~ .*avx512fp16* ]] && HAS_AVX512FP16=true
     [[ $CPU_FLAGS =~ .*vaes* ]] && HAS_VAES=true
 
-    [[ ${CPU_VENDOR} == "intel" ]] && [[ ${HAS_AVX2} ]] && [[ ${HAS_FMA} ]] && CPU_TYPE=haswell 
-    [[ ${CPU_VENDOR} == "intel" ]] && [[ ${HAS_AVX512F} ]] && CPU_TYPE=skylake_avx512
-    # [[ ${HAS_AVX512IFMA} ]] && [[ ${HAS_AVX512_VBMI2} ]] && CPU_TYPE=icelake_avx512
-    # [[ ${HAS_AVX512_VNNI} ]] && [[ ${HAS_AVX512VL} ]] && [[ ${HAS_AVX512FP16} ]] && CPU_TYPE=sapphire_rapids_avx512
-
-    [[ ${CPU_VENDOR} == "amd" ]] && [[ ${HAS_AVX2} ]] && [[ ${HAS_FMA} ]] && CPU_TYPE=zen2
-    [[ ${CPU_VENDOR} == "amd" ]] && [[ ${HAS_AVX2} ]] && [[ ${HAS_FMA} ]] && [[ ${HAS_VAES} ]] && CPU_TYPE=zen3
+    if [ ${CPU_VENDOR} == "intel" ]; then
+      [[ ${HAS_AVX2} ]] && [[ ${HAS_FMA} ]] && CPU_TYPE=haswell 
+      [[ ${HAS_AVX512F} ]] && CPU_TYPE=skylake_avx512
+      # [[ ${HAS_AVX512IFMA} ]] && [[ ${HAS_AVX512_VBMI2} ]] && CPU_TYPE=icelake_avx512
+      # [[ ${HAS_AVX512_VNNI} ]] && [[ ${HAS_AVX512VL} ]] && [[ ${HAS_AVX512FP16} ]] && CPU_TYPE=sapphire_rapids_avx512
+    elif [ ${CPU_VENDOR} == "amd" ]; then
+      [[ ${HAS_AVX2} ]] && [[ ${HAS_FMA} ]] && CPU_TYPE=zen2
+      [[ ${HAS_AVX2} ]] && [[ ${HAS_FMA} ]] && [[ ${HAS_VAES} ]] && CPU_TYPE=zen3
+    fi
 
     [[ ${CPU_VENDOR} ]] && [[ $CPU_TYPE ]] && CPU_PATH="${MACHINE_TYPE}/${CPU_VENDOR}/${CPU_TYPE}"
 
