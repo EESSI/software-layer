@@ -8,7 +8,9 @@ jobs:
       matrix:
         proc_cpuinfo:
           - x86_64/intel/haswell
+          - x86_64/intel/skylake_avx512
           - x86_64/amd/zen2
+          - x86_64/amd/zen3
       fail-fast: false
     steps:
     - uses: actions/checkout@v2
