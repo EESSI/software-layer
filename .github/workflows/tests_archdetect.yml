@@ -6,18 +6,29 @@ jobs:
     runs-on: ubuntu-20.04
     strategy:
       matrix:
+        machine_type: 
+          - x86_64
+          - ppc64le
         proc_cpuinfo:
           - x86_64/intel/haswell
           - x86_64/intel/skylake_avx512
           - x86_64/amd/zen2
           - x86_64/amd/zen3
           - ppc64le/power9le
+        exclude:
+          - machine_type: x86_64
+            proc_cpuinfo: ppc64le/power9le
+          - machine_type: ppc64le
+        include: 
+          - machine_type: ppc64le 
+            proc_cpuinfo: ppc64le/power9le
       fail-fast: false
     steps:
     - uses: actions/checkout@v2
 
     - name: test eessi_archdetect.sh
       run: |
+          export EESSI_MACHINE_TYPE=${{matrix.machine_type}}
           export EESSI_PROC_CPUINFO=./tests/archdetect/${{matrix.proc_cpuinfo}}
           CPU_ARCH=$(./init/eessi_archdetect.sh cpupath)
           if [[ $CPU_ARCH == "${{matrix.proc_cpuinfo}}" ]]; then
