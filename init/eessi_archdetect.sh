@@ -25,8 +25,12 @@ cpupath () {
   fi
 
   if [ ${MACHINE_TYPE} == "ppc64le" ]; then
-    echo ${CPU_PATH} "not sure what to do next..."
-    echo "please mail output of lscpu to me..."
+    PROC_CPUINFO=${EESSI_PROC_CPUINFO:-/proc/cpuinfo}
+    CPU_FLAGS=$(grep -m 1 -i ^cpu ${PROC_CPUINFO})
+    [[ $CPU_FLAGS =~ .*POWER9* ]] && HAS_POWER9=true
+
+    [[ ${HAS_POWER9} ]] && CPU_PATH=${MACHINE_TYPE}/power9le
+    echo ${CPU_PATH}
     exit
   fi
 

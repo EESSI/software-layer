@@ -1,0 +1,4 @@
+processor	: 0
+cpu		: POWER9 (architected), altivec supported
+clock		: 2200.000000MHz
+revision	: 2.2 (pvr 004e 1202)
