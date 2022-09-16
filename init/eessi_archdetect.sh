@@ -35,7 +35,7 @@ cpupath () {
       [[ $CPU_FLAGS =~ " asimd " ]] && EESSI_HAS_ASIMD=true
       [[ $CPU_FLAGS =~ " svei8mm " ]] && EESSI_HAS_SVEI8MM=true
 
-      [[ ${EESSI_HAS_ASIMD} ]] && EESSI_CPU_TYPE=neoverse-n1
+      [[ ${EESSI_HAS_ASIMD} ]] && EESSI_CPU_TYPE=neoverse-n1 #Ampere Altra
       [[ ${EESSI_HAS_SVEI8MM} ]] && EESSI_CPU_TYPE=neoverse-v1
       [[ $EESSI_CPU_TYPE ]] && CPU_PATH="${MACHINE_TYPE}/${EESSI_CPU_VENDOR}/${EESSI_CPU_TYPE}"
     else
@@ -43,8 +43,8 @@ cpupath () {
       [[ $CPU_FLAGS =~ " asimd " ]] && EESSI_HAS_ASIMD=true
       [[ $CPU_FLAGS =~ " svei8mm " ]] && EESSI_HAS_SVEI8MM=true
 
-      [[ ${EESSI_HAS_ASIMD} ]] && EESSI_CPU_TYPE=graviton2
-      [[ ${EESSI_HAS_SVEI8MM} ]] && EESSI_CPU_TYPE=graviton3
+      [[ ${EESSI_HAS_ASIMD} ]] && EESSI_CPU_TYPE=graviton2 #AWS Graviton2
+      [[ ${EESSI_HAS_SVEI8MM} ]] && EESSI_CPU_TYPE=graviton3 #AWS Graviton3
       [[ $EESSI_CPU_TYPE ]] && CPU_PATH="${MACHINE_TYPE}/${EESSI_CPU_TYPE}"
     fi
 
@@ -56,7 +56,7 @@ cpupath () {
     CPU_FLAGS=$(grep -m 1 -i ^cpu ${PROC_CPUINFO})
     [[ $CPU_FLAGS =~ " POWER9 " ]] && EESSI_HAS_POWER9=true
 
-    [[ ${EESSI_HAS_POWER9} ]] && EESSI_CPU_TYPE=power9le
+    [[ ${EESSI_HAS_POWER9} ]] && EESSI_CPU_TYPE=power9le #Power9
 
     [[ $EESSI_CPU_TYPE ]] && CPU_PATH="${MACHINE_TYPE}/${EESSI_CPU_TYPE}"
     echo ${CPU_PATH}
@@ -81,13 +81,13 @@ cpupath () {
     [[ $CPU_FLAGS =~ " vaes " ]] && EESSI_HAS_VAES=true
 
     if [ ${EESSI_CPU_VENDOR} == "intel" ]; then
-      [[ ${EESSI_HAS_AVX2} ]] && [[ ${EESSI_HAS_FMA} ]] && EESSI_CPU_TYPE=haswell 
-      [[ ${EESSI_HAS_AVX512F} ]] && EESSI_CPU_TYPE=skylake_avx512
+      [[ ${EESSI_HAS_AVX2} ]] && [[ ${EESSI_HAS_FMA} ]] && EESSI_CPU_TYPE=haswell #Haswell, Broadwell
+      [[ ${EESSI_HAS_AVX512F} ]] && EESSI_CPU_TYPE=skylake_avx512 #Skylake, Cascade Lake
       # [[ ${HAS_AVX512IFMA} ]] && [[ ${HAS_AVX512_VBMI2} ]] && CPU_TYPE=icelake_avx512
       # [[ ${HAS_AVX512_VNNI} ]] && [[ ${HAS_AVX512VL} ]] && [[ ${HAS_AVX512FP16} ]] && CPU_TYPE=sapphire_rapids_avx512
     elif [ ${EESSI_CPU_VENDOR} == "amd" ]; then
-      [[ ${EESSI_HAS_AVX2} ]] && [[ ${EESSI_HAS_FMA} ]] && EESSI_CPU_TYPE=zen2
-      [[ ${EESSI_HAS_AVX2} ]] && [[ ${EESSI_HAS_FMA} ]] && [[ ${EESSI_HAS_VAES} ]] && EESSI_CPU_TYPE=zen3
+      [[ ${EESSI_HAS_AVX2} ]] && [[ ${EESSI_HAS_FMA} ]] && EESSI_CPU_TYPE=zen2 #Rome
+      [[ ${EESSI_HAS_AVX2} ]] && [[ ${EESSI_HAS_FMA} ]] && [[ ${EESSI_HAS_VAES} ]] && EESSI_CPU_TYPE=zen3 #Milan, Milan-X
     fi
 
     [[ ${EESSI_CPU_VENDOR} ]] && [[ $EESSI_CPU_TYPE ]] && CPU_PATH="${MACHINE_TYPE}/${EESSI_CPU_VENDOR}/${EESSI_CPU_TYPE}"
