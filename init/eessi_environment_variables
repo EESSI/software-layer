@@ -28,11 +28,12 @@ if [ -d $EESSI_PREFIX ]; then
     if [ -z $EESSI_USE_ARCHDETECT ]; then
       # if archdetect is enabled, use internal code
       export EESSI_SOFTWARE_SUBDIR=$(${EESSI_INIT_DIR_PATH}/eessi_archdetect.sh cpupath)
-      echo "archdetect says ${EESSI_SOFTWARE_SUBDIR}"
+      echo "archdetect says ${EESSI_SOFTWARE_SUBDIR}" >> $output
     else
       # note: eessi_software_subdir_for_host.py will pick up value from $EESSI_SOFTWARE_SUBDIR_OVERRIDE if it's defined!
       export EESSI_EPREFIX_PYTHON=$EESSI_EPREFIX/usr/bin/python3
       export EESSI_SOFTWARE_SUBDIR=$($EESSI_EPREFIX_PYTHON ${EESSI_INIT_DIR_PATH}/eessi_software_subdir_for_host.py $EESSI_PREFIX)
+      echo "archspec says ${EESSI_SOFTWARE_SUBDIR}" >> $output
     fi
     if [ ! -z $EESSI_SOFTWARE_SUBDIR ]; then
 
