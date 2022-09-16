@@ -14,6 +14,7 @@ jobs:
           - ppc64le/power9le
           - aarch64/graviton2
           - aarch64/graviton3
+          - aarch64/arm/neoverse-n1
       fail-fast: false
     steps:
     - uses: actions/checkout@v2
