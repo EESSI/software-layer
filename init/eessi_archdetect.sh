@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 # current pathways implemented in EESSI 2021.12 pilot version
 # x86_64/generic
