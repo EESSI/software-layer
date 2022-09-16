@@ -1,12 +1,14 @@
 #!/bin/bash
 
-# current pathways implemented in EESSI
+# current pathways implemented in EESSI 2021.12 pilot version
 # x86_64/generic
 # x86_64/intel/haswell
 # x86_64/intel/skylake_avx512
 # x86_64/amd/zen2
 # x86_64/amd/zen3
 # aarch64/generic
+# aarch64/graviton2
+# aarch64/graviton3
 # ppc64le/generic
 # ppc64le/power9le
 
@@ -24,6 +26,14 @@ cpupath () {
   CPU_PATH="${MACHINE_TYPE}/generic"
 
   if [ ${MACHINE_TYPE} == "aarch64" ]; then
+    CPU_FLAGS=$(grep -m 1 -i ^flags ${PROC_CPUINFO} | sed 's/$/ /g')
+    [[ $CPU_FLAGS =~ " asimd " ]] && EESSI_HAS_ASIMD=true
+    [[ $CPU_FLAGS =~ " svei8mm " ]] && EESSI_HAS_SVEI8MM=true
+
+    [[ ${EESSI_HAS_ASIMD} ]] && EESSI_CPU_TYPE=graviton2
+    [[ ${EESSI_HAS_SVEI8MM} ]] && EESSI_CPU_TYPE=graviton3
+
+    [[ $EESSI_CPU_TYPE ]] && CPU_PATH="${MACHINE_TYPE}/${EESSI_CPU_TYPE}"
     echo ${CPU_PATH}
     exit
   fi
@@ -32,7 +42,9 @@ cpupath () {
     CPU_FLAGS=$(grep -m 1 -i ^cpu ${PROC_CPUINFO})
     [[ $CPU_FLAGS =~ " POWER9 " ]] && EESSI_HAS_POWER9=true
 
-    [[ ${EESSI_HAS_POWER9} ]] && CPU_PATH=${MACHINE_TYPE}/power9le
+    [[ ${EESSI_HAS_POWER9} ]] && EESSI_CPU_TYPE=power9le
+
+    [[ $EESSI_CPU_TYPE ]] && CPU_PATH="${MACHINE_TYPE}/${EESSI_CPU_TYPE}"
     echo ${CPU_PATH}
     exit
   fi
