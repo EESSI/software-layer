@@ -32,21 +32,16 @@ cpupath () {
 
     if [ ${EESSI_CPU_VENDOR} == "arm" ]; then
       CPU_FLAGS=$(grep -m 1 -i ^flags ${PROC_CPUINFO} | sed 's/$/ /g')
-      [[ $CPU_FLAGS =~ " asimd " ]] && EESSI_HAS_ASIMD=true
-      [[ $CPU_FLAGS =~ " svei8mm " ]] && EESSI_HAS_SVEI8MM=true
-
-      [[ ${EESSI_HAS_ASIMD} ]] && EESSI_CPU_TYPE=neoverse-n1 #Ampere Altra
-      [[ ${EESSI_HAS_SVEI8MM} ]] && EESSI_CPU_TYPE=neoverse-v1
-      [[ $EESSI_CPU_TYPE ]] && CPU_PATH="${MACHINE_TYPE}/${EESSI_CPU_VENDOR}/${EESSI_CPU_TYPE}"
     else
       CPU_FLAGS=$(grep -m 1 -i ^features ${PROC_CPUINFO} | sed 's/$/ /g')
-      [[ $CPU_FLAGS =~ " asimd " ]] && EESSI_HAS_ASIMD=true
-      [[ $CPU_FLAGS =~ " svei8mm " ]] && EESSI_HAS_SVEI8MM=true
-
-      [[ ${EESSI_HAS_ASIMD} ]] && EESSI_CPU_TYPE=graviton2 #AWS Graviton2
-      [[ ${EESSI_HAS_SVEI8MM} ]] && EESSI_CPU_TYPE=graviton3 #AWS Graviton3
-      [[ $EESSI_CPU_TYPE ]] && CPU_PATH="${MACHINE_TYPE}/${EESSI_CPU_TYPE}"
     fi
+
+    [[ $CPU_FLAGS =~ " asimd " ]] && EESSI_HAS_ASIMD=true
+    [[ $CPU_FLAGS =~ " svei8mm " ]] && EESSI_HAS_SVEI8MM=true
+
+    [[ ${EESSI_HAS_ASIMD} ]] && EESSI_CPU_TYPE=neoverse-n1 #Ampere Altra
+    [[ ${EESSI_HAS_SVEI8MM} ]] && EESSI_CPU_TYPE=neoverse-v1
+    [[ $EESSI_CPU_TYPE ]] && CPU_PATH="${MACHINE_TYPE}/${EESSI_CPU_VENDOR}/${EESSI_CPU_TYPE}"
 
     echo ${CPU_PATH}
     exit
