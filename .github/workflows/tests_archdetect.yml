@@ -12,6 +12,8 @@ jobs:
           - x86_64/amd/zen2
           - x86_64/amd/zen3
           - ppc64le/power9le
+          - aarch64/graviton2
+          - aarch64/graviton3
       fail-fast: false
     steps:
     - uses: actions/checkout@v2
