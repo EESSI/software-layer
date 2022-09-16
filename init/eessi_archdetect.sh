@@ -26,7 +26,7 @@ cpupath () {
   CPU_PATH="${MACHINE_TYPE}/generic"
 
   if [ ${MACHINE_TYPE} == "aarch64" ]; then
-    CPU_FLAGS=$(grep -m 1 -i ^flags ${PROC_CPUINFO} | sed 's/$/ /g')
+    CPU_FLAGS=$(grep -m 1 -i ^features ${PROC_CPUINFO} | sed 's/$/ /g')
     [[ $CPU_FLAGS =~ " asimd " ]] && EESSI_HAS_ASIMD=true
     [[ $CPU_FLAGS =~ " svei8mm " ]] && EESSI_HAS_SVEI8MM=true
 
