@@ -14,6 +14,10 @@ arch_arm+=('("aarch64/arm/neoverse-n1"      ""   "asimd")') # AWS Graviton2
 arch_arm+=('("aarch64/arm/neoverse-v1"      "ARM"   "asimd svei8mm")') 
 arch_arm+=('("aarch64/arm/neoverse-v1"      ""   "asimd svei8mm")') # AWS Graviton3
 
+# Power CPU architecture specifications
+arch_power=()
+arch_power+=('("ppc64le/power9le"      ""   "POWER9")') # IBM Power9
+
 # CPU specification of host system
 get_cpuinfo(){
     cpuinfo_pattern="^${1}\s*:"
@@ -26,6 +30,7 @@ MACHINE_TYPE=${EESSI_MACHINE_TYPE:-$(uname -m)}
 echo cpu architecture seems to be $MACHINE_TYPE >&2 
 [ "${MACHINE_TYPE}" == "x86_64" ] && CPU_ARCH_SPEC=("${arch_x86[@]}")
 [ "${MACHINE_TYPE}" == "aarch64" ] && CPU_ARCH_SPEC=("${arch_arm[@]}")
+[ "${MACHINE_TYPE}" == "ppc64le" ] && CPU_ARCH_SPEC=("${arch_power[@]}")
 [[ -z $CPU_ARCH_SPEC ]] && echo "ERROR: Unsupported CPU architecture $MACHINE_TYPE" && exit
 
 #CPU_VENDOR_TAG="vendor_id"
@@ -35,9 +40,10 @@ CPU_VENDOR=$(echo ${CPU_VENDOR#*:} | xargs echo -n)
 echo "== CPU vendor of host system: $CPU_VENDOR" >&2
 
 CPU_FLAG_TAG='flags'
-# cpuinfo of some ARM systems print features instead of flags
+# cpuinfo systems print different line identifiers, eg features, instead of flags
 [ "${CPU_VENDOR}" == "ARM" ] && CPU_FLAG_TAG='flags'
 [ "${MACHINE_TYPE}" == "aarch64" ] && [ "${CPU_VENDOR}x" == "x" ] && CPU_FLAG_TAG='features'
+[ "${MACHINE_TYPE}" == "ppc64le" ] && CPU_FLAG_TAG='cpu'
 
 CPU_FLAGS=$(get_cpuinfo "$CPU_FLAG_TAG")
 echo "== CPU flags of host system: $CPU_FLAGS" >&2
