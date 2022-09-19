@@ -24,7 +24,8 @@ jobs:
           export EESSI_MACHINE_TYPE=${{matrix.proc_cpuinfo}}
           export EESSI_MACHINE_TYPE=${EESSI_MACHINE_TYPE%%/*}
           export EESSI_PROC_CPUINFO=./tests/archdetect/${{matrix.proc_cpuinfo}}
-          CPU_ARCH=$(./init/eessi_archdetect.sh cpupath)
+          #CPU_ARCH=$(./init/eessi_archdetect.sh cpupath)
+          CPU_ARCH=$(./init/arch_detect.sh cpupath)
           if [[ $CPU_ARCH == "${{matrix.proc_cpuinfo}}" ]]; then
               echo "Test for ${{matrix.proc_cpuinfo}} PASSED: $CPU_ARCH" >&2
           else
