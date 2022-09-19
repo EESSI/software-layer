@@ -23,7 +23,7 @@ get_cpuinfo(){
 
 #MACHINE_TYPE=$(uname -m)
 MACHINE_TYPE=${EESSI_MACHINE_TYPE:-$(uname -m)}
-echo cpu architecture seems to be $MACHINE_TYPE 
+echo cpu architecture seems to be $MACHINE_TYPE >&2 
 [ "${MACHINE_TYPE}" == "x86_64" ] && CPU_ARCH_SPEC=("${arch_x86[@]}")
 [ "${MACHINE_TYPE}" == "aarch64" ] && CPU_ARCH_SPEC=("${arch_arm[@]}")
 [[ -z $CPU_ARCH_SPEC ]] && echo "ERROR: Unsupported CPU architecture $MACHINE_TYPE" && exit
