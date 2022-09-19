@@ -25,32 +25,6 @@ get_cpuinfo(){
     grep -i "$cpuinfo_pattern" ${EESSI_PROC_CPUINFO:-/proc/cpuinfo} | tail -n 1 | sed "s/$cpuinfo_pattern//"
 }
 
-#MACHINE_TYPE=$(uname -m)
-MACHINE_TYPE=${EESSI_MACHINE_TYPE:-$(uname -m)}
-echo cpu architecture seems to be $MACHINE_TYPE >&2 
-[ "${MACHINE_TYPE}" == "x86_64" ] && CPU_ARCH_SPEC=("${arch_x86[@]}")
-[ "${MACHINE_TYPE}" == "aarch64" ] && CPU_ARCH_SPEC=("${arch_arm[@]}")
-[ "${MACHINE_TYPE}" == "ppc64le" ] && CPU_ARCH_SPEC=("${arch_power[@]}")
-[[ -z $CPU_ARCH_SPEC ]] && echo "ERROR: Unsupported CPU architecture $MACHINE_TYPE" && exit
-
-#CPU_VENDOR_TAG="vendor_id"
-CPU_VENDOR_TAG="vendor[ _]id"
-CPU_VENDOR=$(get_cpuinfo "$CPU_VENDOR_TAG")
-CPU_VENDOR=$(echo ${CPU_VENDOR#*:} | xargs echo -n)
-echo "== CPU vendor of host system: $CPU_VENDOR" >&2
-
-CPU_FLAG_TAG='flags'
-# cpuinfo systems print different line identifiers, eg features, instead of flags
-[ "${CPU_VENDOR}" == "ARM" ] && CPU_FLAG_TAG='flags'
-[ "${MACHINE_TYPE}" == "aarch64" ] && [ "${CPU_VENDOR}x" == "x" ] && CPU_FLAG_TAG='features'
-[ "${MACHINE_TYPE}" == "ppc64le" ] && CPU_FLAG_TAG='cpu'
-
-CPU_FLAGS=$(get_cpuinfo "$CPU_FLAG_TAG")
-echo "== CPU flags of host system: $CPU_FLAGS" >&2
-
-# Default to generic CPU
-BEST_MATCH="generic"
-
 # Find best match
 check_flags(){
     for flag in "$@"; do
@@ -59,13 +33,51 @@ check_flags(){
     return 0
 }
 
-for arch in "${CPU_ARCH_SPEC[@]}"; do
+ARGUMENT=${1:-none}
+
+cpupath () {
+  #MACHINE_TYPE=$(uname -m)
+  MACHINE_TYPE=${EESSI_MACHINE_TYPE:-$(uname -m)}
+  echo cpu architecture seems to be $MACHINE_TYPE >&2 
+  [ "${MACHINE_TYPE}" == "x86_64" ] && CPU_ARCH_SPEC=("${arch_x86[@]}")
+  [ "${MACHINE_TYPE}" == "aarch64" ] && CPU_ARCH_SPEC=("${arch_arm[@]}")
+  [ "${MACHINE_TYPE}" == "ppc64le" ] && CPU_ARCH_SPEC=("${arch_power[@]}")
+  [[ -z $CPU_ARCH_SPEC ]] && echo "ERROR: Unsupported CPU architecture $MACHINE_TYPE" && exit
+
+  #CPU_VENDOR_TAG="vendor_id"
+  CPU_VENDOR_TAG="vendor[ _]id"
+  CPU_VENDOR=$(get_cpuinfo "$CPU_VENDOR_TAG")
+  CPU_VENDOR=$(echo ${CPU_VENDOR#*:} | xargs echo -n)
+  echo "== CPU vendor of host system: $CPU_VENDOR" >&2
+
+  CPU_FLAG_TAG='flags'
+  # cpuinfo systems print different line identifiers, eg features, instead of flags
+  [ "${CPU_VENDOR}" == "ARM" ] && CPU_FLAG_TAG='flags'
+  [ "${MACHINE_TYPE}" == "aarch64" ] && [ "${CPU_VENDOR}x" == "x" ] && CPU_FLAG_TAG='features'
+  [ "${MACHINE_TYPE}" == "ppc64le" ] && CPU_FLAG_TAG='cpu'
+
+  CPU_FLAGS=$(get_cpuinfo "$CPU_FLAG_TAG")
+  echo "== CPU flags of host system: $CPU_FLAGS" >&2
+
+  # Default to generic CPU
+  BEST_MATCH="generic"
+
+  for arch in "${CPU_ARCH_SPEC[@]}"; do
     eval "arch_spec=$arch"
     if [ "${CPU_VENDOR}x" == "${arch_spec[1]}x" ]; then
         check_flags ${arch_spec[2]} && BEST_MATCH=${arch_spec[0]}
         echo "== got a match with $BEST_MATCH" >&2
     fi
-done
+  done
 
-echo "Best match is $BEST_MATCH" >&2
-echo "$BEST_MATCH"
+  echo "Best match is $BEST_MATCH" >&2
+  echo "$BEST_MATCH"
+}
+
+if [ ${ARGUMENT} == "none" ]; then
+    echo usage: $0 cpupath
+    exit
+elif [ ${ARGUMENT} == "cpupath" ]; then
+    echo $(cpupath)
+    exit
+fi
