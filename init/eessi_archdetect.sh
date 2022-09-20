@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 # x86_64 CPU architecture specifications
 arch_x86=()
