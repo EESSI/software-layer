@@ -7,8 +7,8 @@ jobs:
     strategy:
       matrix:
         proc_cpuinfo:
-          - x86_64/intel/haswell
-          - x86_64/intel/skylake_avx512
+          - x86_64/intel/haswell/archspec-linux-E5-2680-v3
+          - x86_64/intel/skylake_avx512/archspec-linux-6132
           - x86_64/amd/zen2/Azure-CentOS7-7V12
           - x86_64/amd/zen3/Azure-CentOS7-7V73X
           - ppc64le/power9le
