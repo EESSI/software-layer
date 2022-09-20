@@ -9,7 +9,7 @@ jobs:
         proc_cpuinfo:
           - x86_64/intel/haswell
           - x86_64/intel/skylake_avx512
-          - x86_64/amd/zen2
+          - x86_64/amd/zen2/Azure-CentOS7-7V12
           - x86_64/amd/zen3
           - ppc64le/power9le
             # - aarch64/graviton2
@@ -23,10 +23,10 @@ jobs:
       run: |
           export EESSI_MACHINE_TYPE=${{matrix.proc_cpuinfo}}
           export EESSI_MACHINE_TYPE=${EESSI_MACHINE_TYPE%%/*}
-          export EESSI_PROC_CPUINFO=./tests/archdetect/${{matrix.proc_cpuinfo}}
+          export EESSI_PROC_CPUINFO=./tests/archdetect/${{matrix.proc_cpuinfo}}.cpuinfo
           #CPU_ARCH=$(./init/eessi_archdetect.sh cpupath)
           CPU_ARCH=$(./init/arch_detect.sh cpupath)
-          if [[ $CPU_ARCH == "${{matrix.proc_cpuinfo}}" ]]; then
+          if [[ $CPU_ARCH == "$( cat ${{matrix.proc_cpuinfo}}.output )" ]]; then
               echo "Test for ${{matrix.proc_cpuinfo}} PASSED: $CPU_ARCH" >&2
           else
               echo "Test for ${{matrix.proc_cpuinfo}} FAILED: $CPU_ARCH" >&2
