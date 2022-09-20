@@ -26,7 +26,7 @@ jobs:
           export EESSI_PROC_CPUINFO=./tests/archdetect/${{matrix.proc_cpuinfo}}.cpuinfo
           #CPU_ARCH=$(./init/eessi_archdetect.sh cpupath)
           CPU_ARCH=$(./init/arch_detect.sh cpupath)
-          if [[ $CPU_ARCH == "$( cat ${{matrix.proc_cpuinfo}}.output )" ]]; then
+          if [[ $CPU_ARCH == "$( cat ./tests/archdetect/${{matrix.proc_cpuinfo}}.output )" ]]; then
               echo "Test for ${{matrix.proc_cpuinfo}} PASSED: $CPU_ARCH" >&2
           else
               echo "Test for ${{matrix.proc_cpuinfo}} FAILED: $CPU_ARCH" >&2
