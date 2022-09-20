@@ -1,107 +1,83 @@
-#!/usr/bin/env bash
+#!/bin/bash
 
-# current pathways implemented in EESSI 2021.12 pilot version
-# x86_64/generic
-# x86_64/intel/haswell
-# x86_64/intel/skylake_avx512
-# x86_64/amd/zen2
-# x86_64/amd/zen3
-# aarch64/generic
-# aarch64/graviton2
-# aarch64/graviton3
-# ppc64le/generic
-# ppc64le/power9le
+# x86_64 CPU architecture specifications
+arch_x86=()
+arch_x86+=('("x86_64/intel/haswell"  "GenuineIntel"  "avx2 fma")') # Intel Haswell, Broadwell
+arch_x86+=('("x86_64/intel/skylake_avx512"  "GenuineIntel"  "avx2 fma avx512f")') # Intel Skylake, Cascade Lake
+arch_x86+=('("x86_64/amd/zen2"     "AuthenticAMD"  "avx2 fma")') # AMD Rome
+arch_x86+=('("x86_64/amd/zen3"     "AuthenticAMD"  "avx2 fma vaes")') # AMD Milan, Milan-X
+
+# ARM CPU architecture specifications
+arch_arm=()
+arch_arm+=('("aarch64/arm/neoverse-n1"      "ARM"   "asimd")') # Ampere Altra
+arch_arm+=('("aarch64/arm/neoverse-n1"      ""   "asimd")') # AWS Graviton2
+arch_arm+=('("aarch64/arm/neoverse-v1"      "ARM"   "asimd svei8mm")') 
+arch_arm+=('("aarch64/arm/neoverse-v1"      ""   "asimd svei8mm")') # AWS Graviton3
+
+# Power CPU architecture specifications
+arch_power=()
+arch_power+=('("ppc64le/power9le"      ""   "POWER9")') # IBM Power9
+
+# CPU specification of host system
+get_cpuinfo(){
+    cpuinfo_pattern="^${1}\s*:"
+    #grep -i "$cpuinfo_pattern" /proc/cpuinfo | tail -n 1 | sed "s/$cpuinfo_pattern//"
+    grep -i "$cpuinfo_pattern" ${EESSI_PROC_CPUINFO:-/proc/cpuinfo} | tail -n 1 | sed "s/$cpuinfo_pattern//"
+}
+
+# Find best match
+check_flags(){
+    for flag in "$@"; do
+        [[ " ${CPU_FLAGS[*]} " == *" $flag "* ]] || return 1
+    done
+    return 0
+}
 
 ARGUMENT=${1:-none}
 
 cpupath () {
-  # let the kernel tell base machine type
+  #MACHINE_TYPE=$(uname -m)
   MACHINE_TYPE=${EESSI_MACHINE_TYPE:-$(uname -m)}
-  PROC_CPUINFO=${EESSI_PROC_CPUINFO:-/proc/cpuinfo}
-  
-  # clean up any existing pointers to cpu features
-  unset $(env | grep EESSI_HAS | cut -f1 -d=)
-  unset EESSI_CPU_VENDOR
+  echo cpu architecture seems to be $MACHINE_TYPE >&2 
+  [ "${MACHINE_TYPE}" == "x86_64" ] && CPU_ARCH_SPEC=("${arch_x86[@]}")
+  [ "${MACHINE_TYPE}" == "aarch64" ] && CPU_ARCH_SPEC=("${arch_arm[@]}")
+  [ "${MACHINE_TYPE}" == "ppc64le" ] && CPU_ARCH_SPEC=("${arch_power[@]}")
+  [[ -z $CPU_ARCH_SPEC ]] && echo "ERROR: Unsupported CPU architecture $MACHINE_TYPE" && exit
 
-  # fallback path
-  CPU_PATH="${MACHINE_TYPE}/generic"
+  #CPU_VENDOR_TAG="vendor_id"
+  CPU_VENDOR_TAG="vendor[ _]id"
+  CPU_VENDOR=$(get_cpuinfo "$CPU_VENDOR_TAG")
+  CPU_VENDOR=$(echo ${CPU_VENDOR#*:} | xargs echo -n)
+  echo "== CPU vendor of host system: $CPU_VENDOR" >&2
 
-  if [ ${MACHINE_TYPE} == "aarch64" ]; then
-    CPUINFO_VENDOR_FLAG=$(grep -m 1 -i ^vendor ${PROC_CPUINFO})
-    [[ $CPUINFO_VENDOR_FLAG =~ "ARM" ]] && EESSI_CPU_VENDOR=arm
+  CPU_FLAG_TAG='flags'
+  # cpuinfo systems print different line identifiers, eg features, instead of flags
+  [ "${CPU_VENDOR}" == "ARM" ] && CPU_FLAG_TAG='flags'
+  [ "${MACHINE_TYPE}" == "aarch64" ] && [ "${CPU_VENDOR}x" == "x" ] && CPU_FLAG_TAG='features'
+  [ "${MACHINE_TYPE}" == "ppc64le" ] && CPU_FLAG_TAG='cpu'
 
-    if [ ${EESSI_CPU_VENDOR} == "arm" ]; then
-      CPU_FLAGS=$(grep -m 1 -i ^flags ${PROC_CPUINFO} | sed 's/$/ /g')
-    else
-      CPU_FLAGS=$(grep -m 1 -i ^features ${PROC_CPUINFO} | sed 's/$/ /g')
+  CPU_FLAGS=$(get_cpuinfo "$CPU_FLAG_TAG")
+  echo "== CPU flags of host system: $CPU_FLAGS" >&2
+
+  # Default to generic CPU
+  BEST_MATCH="generic"
+
+  for arch in "${CPU_ARCH_SPEC[@]}"; do
+    eval "arch_spec=$arch"
+    if [ "${CPU_VENDOR}x" == "${arch_spec[1]}x" ]; then
+        check_flags ${arch_spec[2]} && BEST_MATCH=${arch_spec[0]}
+        echo "== got a match with $BEST_MATCH" >&2
     fi
+  done
 
-    [[ $CPU_FLAGS =~ " asimd " ]] && EESSI_HAS_ASIMD=true
-    [[ $CPU_FLAGS =~ " svei8mm " ]] && EESSI_HAS_SVEI8MM=true
-    
-    # we will not return graviton2 as a result here, since then we get get graviton2 as a result while we're actually on a thunderx2, for example. 
-    # We should break here with archspec, and symlink aarch64/arm/neoverse-n1 to aarch64/graviton2 in EESSI pilot 2021.12, 
-    # and then the reverse in the next EESSI pilot (so it still works with archspec).
-    [[ ${EESSI_HAS_ASIMD} ]] && EESSI_CPU_TYPE=neoverse-n1 # Ampere Altra, AWS graviton2
-    [[ ${EESSI_HAS_SVEI8MM} ]] && EESSI_CPU_TYPE=neoverse-v1 # AWS graviton3
-    [[ $EESSI_CPU_TYPE ]] && CPU_PATH="${MACHINE_TYPE}/${EESSI_CPU_VENDOR}/${EESSI_CPU_TYPE}"
-
-    echo ${CPU_PATH}
-    exit
-  fi
-
-  if [ ${MACHINE_TYPE} == "ppc64le" ]; then
-    CPU_FLAGS=$(grep -m 1 -i ^cpu ${PROC_CPUINFO})
-    [[ $CPU_FLAGS =~ " POWER9 " ]] && EESSI_HAS_POWER9=true
-
-    [[ ${EESSI_HAS_POWER9} ]] && EESSI_CPU_TYPE=power9le # IBM Power9
-
-    [[ $EESSI_CPU_TYPE ]] && CPU_PATH="${MACHINE_TYPE}/${EESSI_CPU_TYPE}"
-    echo ${CPU_PATH}
-    exit
-  fi
-
-  if [ ${MACHINE_TYPE} == "x86_64" ]; then
-    # check for vendor info, if available, for x86_64
-    CPUINFO_VENDOR_FLAG=$(grep -m 1 -i ^vendor ${PROC_CPUINFO})
-    [[ $CPUINFO_VENDOR_FLAG =~ "GenuineIntel" ]] && EESSI_CPU_VENDOR=intel
-    [[ $CPUINFO_VENDOR_FLAG =~ "AuthenticAMD" ]] && EESSI_CPU_VENDOR=amd
-
-    CPU_FLAGS=$(grep -m 1 -i ^flags ${PROC_CPUINFO} | sed 's/$/ /g')
-    [[ $CPU_FLAGS =~ " avx2 " ]] && EESSI_HAS_AVX2=true
-    [[ $CPU_FLAGS =~ " fma " ]] && EESSI_HAS_FMA=true
-    [[ $CPU_FLAGS =~ " avx512f " ]] && EESSI_HAS_AVX512F=true
-    [[ $CPU_FLAGS =~ " avx512vl " ]] && EESSI_HAS_AVX512VL=true
-    [[ $CPU_FLAGS =~ " avx512ifma " ]] && EESSI_HAS_AVX512IFMA=true
-    [[ $CPU_FLAGS =~ " avx512_vbmi2 " ]] && EESSI_HAS_AVX512_VBMI2=true
-    [[ $CPU_FLAGS =~ " avx512_vnni " ]] && EESSI_HAS_AVX512_VNNI=true
-    [[ $CPU_FLAGS =~ " avx512fp16 " ]] && EESSI_HAS_AVX512FP16=true
-    [[ $CPU_FLAGS =~ " vaes " ]] && EESSI_HAS_VAES=true
-
-    if [ ${EESSI_CPU_VENDOR} == "intel" ]; then
-      [[ ${EESSI_HAS_AVX2} ]] && [[ ${EESSI_HAS_FMA} ]] && EESSI_CPU_TYPE=haswell # Intel Haswell, Broadwell
-      [[ ${EESSI_HAS_AVX512F} ]] && EESSI_CPU_TYPE=skylake_avx512 # Intel Skylake, Cascade Lake
-      # [[ ${HAS_AVX512IFMA} ]] && [[ ${HAS_AVX512_VBMI2} ]] && CPU_TYPE=icelake_avx512
-      # [[ ${HAS_AVX512_VNNI} ]] && [[ ${HAS_AVX512VL} ]] && [[ ${HAS_AVX512FP16} ]] && CPU_TYPE=sapphire_rapids_avx512
-    elif [ ${EESSI_CPU_VENDOR} == "amd" ]; then
-      [[ ${EESSI_HAS_AVX2} ]] && [[ ${EESSI_HAS_FMA} ]] && EESSI_CPU_TYPE=zen2 # AMD Rome
-      [[ ${EESSI_HAS_AVX2} ]] && [[ ${EESSI_HAS_FMA} ]] && [[ ${EESSI_HAS_VAES} ]] && EESSI_CPU_TYPE=zen3 # AMD Milan, Milan-X
-    fi
-
-    [[ ${EESSI_CPU_VENDOR} ]] && [[ $EESSI_CPU_TYPE ]] && CPU_PATH="${MACHINE_TYPE}/${EESSI_CPU_VENDOR}/${EESSI_CPU_TYPE}"
-
-    echo ${CPU_PATH}
-    exit
-  fi
-
-  echo "should not see this...something weird going on..."
-  echo "please mail output of lscpu to me..."
+  echo "Best match is $BEST_MATCH" >&2
+  echo "$BEST_MATCH"
 }
 
 if [ ${ARGUMENT} == "none" ]; then
-  echo usage: $0 cpupath
-  exit
+    echo usage: $0 cpupath
+    exit
 elif [ ${ARGUMENT} == "cpupath" ]; then
-  echo $(cpupath)
-  exit
+    echo $(cpupath)
+    exit
 fi
