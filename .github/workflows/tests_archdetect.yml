@@ -10,7 +10,7 @@ jobs:
           - x86_64/intel/haswell
           - x86_64/intel/skylake_avx512
           - x86_64/amd/zen2/Azure-CentOS7-7V12
-          - x86_64/amd/zen3
+          - x86_64/amd/zen3/Azure-CentOS7-7V73X
           - ppc64le/power9le
             # - aarch64/graviton2
             # - aarch64/graviton3
