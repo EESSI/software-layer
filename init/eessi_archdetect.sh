@@ -1,22 +1,22 @@
 #!/usr/bin/env bash
 
-# x86_64 CPU architecture specifications
-arch_x86=()
-arch_x86+=('("x86_64/intel/haswell"  "GenuineIntel"  "avx2 fma")') # Intel Haswell, Broadwell
-arch_x86+=('("x86_64/intel/skylake_avx512"  "GenuineIntel"  "avx2 fma avx512f")') # Intel Skylake, Cascade Lake
-arch_x86+=('("x86_64/amd/zen2"     "AuthenticAMD"  "avx2 fma")') # AMD Rome
-arch_x86+=('("x86_64/amd/zen3"     "AuthenticAMD"  "avx2 fma vaes")') # AMD Milan, Milan-X
+# Supported CPU specifications
+update_arch_specs(){
+    # Add contents of given spec file into an array
+    # 1: array with CPU arch specs
+    # 2: spec file with the additional specs
 
-# ARM CPU architecture specifications
-arch_arm=()
-arch_arm+=('("aarch64/arm/neoverse-n1"      "ARM"   "asimd")') # Ampere Altra
-arch_arm+=('("aarch64/arm/neoverse-n1"      ""   "asimd")') # AWS Graviton2
-arch_arm+=('("aarch64/arm/neoverse-v1"      "ARM"   "asimd svei8mm")') 
-arch_arm+=('("aarch64/arm/neoverse-v1"      ""   "asimd svei8mm")') # AWS Graviton3
+    [ -z "$1" ] && echo "[ERROR] update_arch_specs: missing array in argument list" >&2 && exit 1
+    local -n arch_specs=$1
 
-# Power CPU architecture specifications
-arch_power=()
-arch_power+=('("ppc64le/power9le"      ""   "POWER9")') # IBM Power9
+    [ ! -f "$2" ] && echo "[ERROR] update_arch_specs: spec file not found: $spec_file" >&2 && exit 1
+    spec_file="$2"
+    while read spec_line; do
+       # format spec line as an array and append it to array with all CPU arch specs
+       arch_specs+=("(${spec_line})")
+    # remove comments from spec file
+    done < <(sed -E 's/(^|[\s\t])#.*$//g;/^\s*$/d' "$spec_file")
+}
 
 # CPU specification of host system
 get_cpuinfo(){
@@ -35,14 +35,22 @@ check_flags(){
 
 ARGUMENT=${1:-none}
 
-cpupath () {
-  #MACHINE_TYPE=$(uname -m)
-  MACHINE_TYPE=${EESSI_MACHINE_TYPE:-$(uname -m)}
-  echo cpu architecture seems to be $MACHINE_TYPE >&2 
-  [ "${MACHINE_TYPE}" == "x86_64" ] && CPU_ARCH_SPEC=("${arch_x86[@]}")
-  [ "${MACHINE_TYPE}" == "aarch64" ] && CPU_ARCH_SPEC=("${arch_arm[@]}")
-  [ "${MACHINE_TYPE}" == "ppc64le" ] && CPU_ARCH_SPEC=("${arch_power[@]}")
-  [[ -z $CPU_ARCH_SPEC ]] && echo "ERROR: Unsupported CPU architecture $MACHINE_TYPE" && exit
+cpupath(){
+  # Return the best matching CPU architecture from a list of supported specifications for the host CPU
+  local CPU_ARCH_SPEC=()
+
+  # Identify the host CPU architecture
+  local MACHINE_TYPE=${EESSI_MACHINE_TYPE:-$(uname -m)}
+  echo "[INFO] cpupath: Host CPU architecture identified as $MACHINE_TYPE"
+
+  # Populate list of supported specs for this architecture
+  case $MACHINE_TYPE in
+      "x86_64") spec_file="eessi_arch_x86.spec";;
+      "aarch64") spec_file="eessi_arch_arm.spec";;
+      "ppc64le") spec_file="eessi_arch_ppc.spec";;
+      *) echo "[ERROR] cpupath: Unsupported CPU architecture $MACHINE_TYPE" >&2 && exit 1
+  esac
+  update_arch_specs CPU_ARCH_SPEC "arch_specs/${spec_file}"
 
   #CPU_VENDOR_TAG="vendor_id"
   CPU_VENDOR_TAG="vendor[ _]id"
@@ -78,6 +86,6 @@ if [ ${ARGUMENT} == "none" ]; then
     echo usage: $0 cpupath
     exit
 elif [ ${ARGUMENT} == "cpupath" ]; then
-    echo $(cpupath)
+    cpupath
     exit
 fi
