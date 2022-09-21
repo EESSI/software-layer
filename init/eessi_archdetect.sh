@@ -41,7 +41,7 @@ cpupath(){
 
   # Identify the host CPU architecture
   local MACHINE_TYPE=${EESSI_MACHINE_TYPE:-$(uname -m)}
-  echo "[INFO] cpupath: Host CPU architecture identified as $MACHINE_TYPE"
+  echo "[INFO] cpupath: Host CPU architecture identified as $MACHINE_TYPE" >&2
 
   # Populate list of supported specs for this architecture
   case $MACHINE_TYPE in
