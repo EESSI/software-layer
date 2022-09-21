@@ -9,8 +9,8 @@ update_arch_specs(){
     [ -z "$1" ] && echo "[ERROR] update_arch_specs: missing array in argument list" >&2 && exit 1
     local -n arch_specs=$1
 
-    [ ! -f "$2" ] && echo "[ERROR] update_arch_specs: spec file not found: $spec_file" >&2 && exit 1
-    spec_file="$2"
+    [ ! -f "$2" ] && echo "[ERROR] update_arch_specs: spec file not found: $2" >&2 && exit 1
+    local spec_file="$2"
     while read spec_line; do
        # format spec line as an array and append it to array with all CPU arch specs
        arch_specs+=("(${spec_line})")
@@ -45,12 +45,14 @@ cpupath(){
 
   # Populate list of supported specs for this architecture
   case $MACHINE_TYPE in
-      "x86_64") spec_file="eessi_arch_x86.spec";;
-      "aarch64") spec_file="eessi_arch_arm.spec";;
-      "ppc64le") spec_file="eessi_arch_ppc.spec";;
+      "x86_64") local spec_file="eessi_arch_x86.spec";;
+      "aarch64") local spec_file="eessi_arch_arm.spec";;
+      "ppc64le") local spec_file="eessi_arch_ppc.spec";;
       *) echo "[ERROR] cpupath: Unsupported CPU architecture $MACHINE_TYPE" >&2 && exit 1
   esac
-  update_arch_specs CPU_ARCH_SPEC "arch_specs/${spec_file}"
+  # spec files are located in a subfolder with this script
+  local base_dir=$(dirname $(realpath $0))
+  update_arch_specs CPU_ARCH_SPEC "$base_dir/arch_specs/${spec_file}"
 
   #CPU_VENDOR_TAG="vendor_id"
   CPU_VENDOR_TAG="vendor[ _]id"
