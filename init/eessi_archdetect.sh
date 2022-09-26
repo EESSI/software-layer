@@ -1,9 +1,32 @@
 #!/usr/bin/env bash
 
+# Logging
+LOG_LEVEL="INFO"
+
+timestamp () {
+    date "+%Y-%m-%d %H:%M:%S"
+}
+
+log () {
+    # Simple logger function
+    declare -A levels=([DEBUG]=0 [INFO]=1 [WARN]=2 [ERROR]=3)
+    msg_type="${1:-INFO}"
+    msg_body="${2:-'null'}"
+
+    [ ${levels[$msg_type]} ] || log "ERROR" "Unknown log level $msg_type"
+
+    # ignore messages below log level
+    [ ${levels[$msg_type]} -lt ${levels[$LOG_LEVEL]} ] && return 0
+    # print log message to standard error
+    echo "$(timestamp) [$msg_type] $msg_body" >&2
+    # exit after any error message
+    [ $msg_type == "ERROR" ] && exit 1
+}
+
 # Supported CPU specifications
 update_arch_specs(){
     # Add contents of given spec file into an array
-    # 1: array with CPU arch specs
+    # 1: name of array with CPU arch specs
     # 2: spec file with the additional specs
 
     [ -z "$1" ] && echo "[ERROR] update_arch_specs: missing array in argument list" >&2 && exit 1
@@ -20,74 +43,99 @@ update_arch_specs(){
 
 # CPU specification of host system
 get_cpuinfo(){
-    cpuinfo_pattern="^${1}\s*:"
-    #grep -i "$cpuinfo_pattern" /proc/cpuinfo | tail -n 1 | sed "s/$cpuinfo_pattern//"
-    grep -i "$cpuinfo_pattern" ${EESSI_PROC_CPUINFO:-/proc/cpuinfo} | tail -n 1 | sed "s/$cpuinfo_pattern//"
+    # Return the value from cpuinfo for the matching key
+    # 1: string with key pattern
+
+    [ -z "$1" ] && log "ERROR" "get_cpuinfo: missing key pattern in argument list"
+    cpuinfo_pattern="^${1}\s*:\s*"
+
+    # case insensitive match of key pattern and delete key pattern from result
+    grep -i "$cpuinfo_pattern" ${EESSI_PROC_CPUINFO:-/proc/cpuinfo} | tail -n 1 | sed "s/$cpuinfo_pattern//i"
 }
 
-# Find best match
-check_flags(){
-    for flag in "$@"; do
-        [[ " ${CPU_FLAGS[*]} " == *" $flag "* ]] || return 1
+check_allinfirst(){
+    # Return true if all given arguments after the first are found in the first one
+    # 1: reference string of space separated values
+    # 2,3..: each additional argument is a single value to be found in the reference string
+
+    [ -z "$1" ] && log "ERROR" "check_allinfirst: missing argument with reference string"
+    reference="$1"
+    shift
+
+    for candidate in "$@"; do
+        [[ " $reference " == *" $candidate "* ]] || return 1
     done
     return 0
 }
 
-ARGUMENT=${1:-none}
-
 cpupath(){
-  # Return the best matching CPU architecture from a list of supported specifications for the host CPU
-  local CPU_ARCH_SPEC=()
-
-  # Identify the host CPU architecture
-  local MACHINE_TYPE=${EESSI_MACHINE_TYPE:-$(uname -m)}
-  echo "[INFO] cpupath: Host CPU architecture identified as $MACHINE_TYPE" >&2
-
-  # Populate list of supported specs for this architecture
-  case $MACHINE_TYPE in
-      "x86_64") local spec_file="eessi_arch_x86.spec";;
-      "aarch64") local spec_file="eessi_arch_arm.spec";;
-      "ppc64le") local spec_file="eessi_arch_ppc.spec";;
-      *) echo "[ERROR] cpupath: Unsupported CPU architecture $MACHINE_TYPE" >&2 && exit 1
-  esac
-  # spec files are located in a subfolder with this script
-  local base_dir=$(dirname $(realpath $0))
-  update_arch_specs CPU_ARCH_SPEC "$base_dir/arch_specs/${spec_file}"
-
-  #CPU_VENDOR_TAG="vendor_id"
-  CPU_VENDOR_TAG="vendor[ _]id"
-  CPU_VENDOR=$(get_cpuinfo "$CPU_VENDOR_TAG")
-  CPU_VENDOR=$(echo ${CPU_VENDOR#*:} | xargs echo -n)
-  echo "== CPU vendor of host system: $CPU_VENDOR" >&2
-
-  CPU_FLAG_TAG='flags'
-  # cpuinfo systems print different line identifiers, eg features, instead of flags
-  [ "${CPU_VENDOR}" == "ARM" ] && CPU_FLAG_TAG='flags'
-  [ "${MACHINE_TYPE}" == "aarch64" ] && [ "${CPU_VENDOR}x" == "x" ] && CPU_FLAG_TAG='features'
-  [ "${MACHINE_TYPE}" == "ppc64le" ] && CPU_FLAG_TAG='cpu'
-
-  CPU_FLAGS=$(get_cpuinfo "$CPU_FLAG_TAG")
-  echo "== CPU flags of host system: $CPU_FLAGS" >&2
-
-  # Default to generic CPU
-  BEST_MATCH="generic"
-
-  for arch in "${CPU_ARCH_SPEC[@]}"; do
-    eval "arch_spec=$arch"
-    if [ "${CPU_VENDOR}x" == "${arch_spec[1]}x" ]; then
-        check_flags ${arch_spec[2]} && BEST_MATCH=${arch_spec[0]}
-        echo "== got a match with $BEST_MATCH" >&2
-    fi
-  done
-
-  echo "Best match is $BEST_MATCH" >&2
-  echo "$BEST_MATCH"
+    # Identify the best matching CPU architecture from a list of supported specifications for the host CPU
+    # Return the path to the installation files in EESSI of the best matching architecture
+    local cpu_arch_spec=()
+  
+    # Identify the host CPU architecture
+    local machine_type=${EESSI_MACHINE_TYPE:-$(uname -m)}
+    log "DEBUG" "cpupath: Host CPU architecture identified as '$machine_type'"
+  
+    # Populate list of supported specs for this architecture
+    case $machine_type in
+        "x86_64") local spec_file="eessi_arch_x86.spec";;
+        "aarch64") local spec_file="eessi_arch_arm.spec";;
+        "ppc64le") local spec_file="eessi_arch_ppc.spec";;
+        *) log "ERROR" "cpupath: Unsupported CPU architecture $machine_type"
+    esac
+    # spec files are located in a subfolder with this script
+    local base_dir=$(dirname $(realpath $0))
+    update_arch_specs cpu_arch_spec "$base_dir/arch_specs/${spec_file}"
+  
+    # Identify the host CPU vendor
+    local cpu_vendor_tag="vendor[ _]id"
+    local cpu_vendor=$(get_cpuinfo "$cpu_vendor_tag")
+    log "DEBUG" "cpupath: CPU vendor of host system: '$cpu_vendor'"
+  
+    # Identify the host CPU flags or features
+    local cpu_flag_tag='flags'
+    # cpuinfo systems print different line identifiers, eg features, instead of flags
+    [ "${cpu_vendor}" == "ARM" ] && cpu_flag_tag='flags'
+    [ "${machine_type}" == "aarch64" ] && [ "${cpu_vendor}x" == "x" ] && cpu_flag_tag='features'
+    [ "${machine_type}" == "ppc64le" ] && cpu_flag_tag='cpu'
+  
+    local cpu_flags=$(get_cpuinfo "$cpu_flag_tag")
+    log "DEBUG" "cpupath: CPU flags of host system: '$cpu_flags'"
+  
+    # Default to generic CPU
+    local best_arch_match="generic"
+  
+    # Iterate over the supported CPU specifications to find the best match for host CPU
+    # Order of the specifications matters, the last one to match will be selected
+    for arch in "${cpu_arch_spec[@]}"; do
+        eval "arch_spec=$arch"
+        if [ "${cpu_vendor}x" == "${arch_spec[1]}x" ]; then
+            # each flag in this CPU specification must be found in the list of flags of the host
+            check_allinfirst "${cpu_flags[*]}" ${arch_spec[2]} && best_arch_match=${arch_spec[0]} && \
+                log "DEBUG" "cpupath: host CPU best match updated to $best_arch_match"
+        fi
+    done
+  
+    log "INFO" "cpupath: best match for host CPU: $best_arch_match"
+    echo "$best_arch_match"
 }
 
-if [ ${ARGUMENT} == "none" ]; then
-    echo usage: $0 cpupath
-    exit
-elif [ ${ARGUMENT} == "cpupath" ]; then
-    cpupath
-    exit
-fi
+# Parse command line arguments
+USAGE="Usage: eessi_archdetect.sh [-h][-d] <action>"
+
+while getopts 'hd' OPTION; do
+    case "$OPTION" in
+        h) echo "$USAGE"; exit 0;;
+        d) LOG_LEVEL="DEBUG";;
+        ?) echo "$USAGE"; exit 1;;
+    esac
+done
+shift "$(($OPTIND -1))"
+
+ARGUMENT=${1:-none}
+
+case "$ARGUMENT" in
+    "cpupath") cpupath; exit;;
+    *) echo "$USAGE"; log "ERROR" "Missing <action> argument";;
+esac
