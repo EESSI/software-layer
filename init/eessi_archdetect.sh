@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+VERSION="1.0.0"
 
 # Logging
 LOG_LEVEL="INFO"
@@ -124,10 +125,11 @@ cpupath(){
 # Parse command line arguments
 USAGE="Usage: eessi_archdetect.sh [-h][-d] <action>"
 
-while getopts 'hd' OPTION; do
+while getopts 'hdv' OPTION; do
     case "$OPTION" in
         h) echo "$USAGE"; exit 0;;
         d) LOG_LEVEL="DEBUG";;
+        v) echo "eessi_archdetect.sh v$VERSION"; exit 0;;
         ?) echo "$USAGE"; exit 1;;
     esac
 done
