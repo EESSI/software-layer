@@ -1,6 +1,7 @@
 #!/bin/bash
 
 libs_url=$1
+cuda_install_dir=$2
 
 current_dir=$(dirname $(realpath $0))
 host_injections_dir="/cvmfs/pilot.eessi-hpc.org/host_injections/nvidia"
@@ -15,19 +16,16 @@ else
 fi
 cd ${host_injections_dir}
 
-# Check if we have any version installed by checking for the existence of /cvmfs/pilot.eessi-hpc.org/host_injections/nvidia/latest
-
+# Check if our target CUDA is satisfied by what is installed already
+# TODO: Find required CUDA version and see if we need an update
 driver_cuda_version=$(nvidia-smi  -q --display=COMPUTE | grep CUDA | awk 'NF>1{print $NF}' | sed s/\\.//)
 eessi_cuda_version=$(LD_LIBRARY_PATH=${host_injections_dir}/latest/compat/:$LD_LIBRARY_PATH nvidia-smi  -q --display=COMPUTE | grep CUDA | awk 'NF>1{print $NF}' | sed s/\\.//)
 if [[ $driver_cuda_version =~ ^[0-9]+$ ]]; then
   if [ "$driver_cuda_version" -gt "$eessi_cuda_version" ]; then  echo "You need to update your CUDA compatability libraries"; fi
 fi
 
-# Check if our target CUDA is satisfied by what is installed already
-# TODO: Find required CUDA version and see if we need an update
-
 # If not, grab the latest compat library RPM or deb
-# download and unpack in temporary directory, easier cleanup after installation
+# Download and unpack in temporary directory, easier cleanup after installation
 tmpdir=$(mktemp -d)
 cd $tmpdir
 compat_file=${libs_url##*/}

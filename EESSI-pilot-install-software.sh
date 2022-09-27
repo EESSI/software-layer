@@ -160,6 +160,12 @@ fail_msg="Installation of ${GCC_EC} failed!"
 $EB ${GCC_EC} --robot --from-pr 14453 GCCcore-9.3.0.eb
 check_exit_code $? "${ok_msg}" "${fail_msg}"
 
+# install CUDA
+ok_msg="CUDA installed, off to a good (?) start!"
+fail_msg="Failed to install CUDA, woopsie..."
+$EB CUDA-11.3.1.eb --robot
+check_exit_code $? "${ok_msg}" "${fail_msg}"
+
 # install CMake with custom easyblock that patches CMake when --sysroot is used
 echo ">> Install CMake with fixed easyblock to take into account --sysroot"
 ok_msg="CMake installed!"

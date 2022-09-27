@@ -1,7 +1,5 @@
 #!/bin/bash
 
-current_dir=$(dirname $(realpath $0))
-
 # Get arch type from EESSI environment
 if [[ -z "${EESSI_CPU_FAMILY}" ]]; then
   # set up basic environment variables, EasyBuild and Lmod

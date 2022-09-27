@@ -122,22 +122,53 @@ def cgal_toolchainopts_precise(ec, eprefix):
         raise EasyBuildError("CGAL-specific hook triggered for non-CGAL easyconfig?!")
 
 
-def pre_fetch_hook(self, *args, **kwargs):
-    """Modify install path for CUDA software."""
+def post_package_hook(self, *args, **kwargs):
+    """Delete CUDA files we are not allowed to ship and replace them with a symlink to a possible installation under host_injections."""
     if self.name == 'CUDA':
-        self.installdir = self.installdir.replace('versions', 'host_injections')
-
-
-def pre_module_hook(self, *args, **kwargs):
-    """Modify install path for CUDA software."""
-    if self.name == 'CUDA':
-        self.installdir = self.installdir.replace('versions', 'host_injections')
-
-
-def pre_sanitycheck_hook(self, *args, **kwargs):
-    """Modify install path for CUDA software."""
-    if self.name == 'CUDA':
-        self.installdir = self.installdir.replace('versions', 'host_injections')
+        # install compat libraries and run test
+        # if the test works, move it to EESSI_SOFTWARE_PATH so we can ship the compiled test
+        os.system("export SAVE_COMPILED_TEST=true && ./gpu_support/add_nvidia_gpu_support.sh")
+        print_msg("Replacing CUDA stuff we cannot ship with symlinks...")
+        # read CUDA EULA
+        eula_path = os.path.join(self.installdir, 'EULA.txt')
+        tmp_buffer = []
+        with open(eula_path) as infile:
+            copy = False
+            for line in infile:
+                if line.strip() == '2.6. Attachment A':
+                    copy = True
+                    continue
+                elif line.strip() == '2.7. Attachment B':
+                    copy = False
+                    continue
+                elif copy:
+                    tmp_buffer.append(line)
+        # create whitelist without file extensions, not really needed and they only complicate things
+        whitelist = []
+        file_extensions = ['.so', '.a', '.h', '.bc']
+        for tmp in tmp_buffer:
+            for word in tmp.split():
+                if any(ext in word for ext in file_extensions):
+                    whitelist.append(word.split('.')[0])
+        # add compiled test to whitelist so we can ship it with EESSI
+        whitelist.append('deviceQuery')
+        whitelist = list(set(whitelist))
+        # iterate over all files in the CUDA path
+        for root, dirs, files in os.walk(self.installdir):
+            for filename in files:
+                # we only really care about real files, i.e. not symlinks
+                if not os.path.islink(os.path.join(root, filename)):
+                    # check if the current file is part of the whitelist
+                    basename = filename.split('.')[0]
+                    if basename not in whitelist:
+                        # if it is not in the whitelist, delete the file and create a symlink to host_injections
+                        source = os.path.join(root, filename)
+                        target = source.replace('versions', 'host_injections')
+                        os.remove(source)
+                        # have to create subdirs if they don't exit, otherwise the symlink creation fails
+                        if not os.path.isdir(os.path.dirname(target)):
+                            os.makedirs(os.path.dirname(target))
+                        os.symlink(target, source)
 
 
 def fontconfig_add_fonts(ec, eprefix):

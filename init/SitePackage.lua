@@ -42,6 +42,24 @@ local function cuda_load_hook(t)
 			io.stderr:write("While the module file exists, the actual software is not shipped with EESSI.\n")
 			io.stderr:write("In order to be able to use the CUDA module, please follow the instructions in the\n")
 			io.stderr:write("gpu_support folder. Adding the CUDA software can be as easy as a simple:\n")
+			io.stderr:write("export INSTALL_CUDA=true && ./add_nvidia_gpu_support.sh\n")
+			frameStk:__clear()
+		end
+	end
+end
+
+local function cuda_enabled_load_hook(t)
+	local frameStk  = require("FrameStk"):singleton()
+	local mt        = frameStk:mt()
+	local compatDir = "/cvmfs/pilot.eessi-hpc.org/host_injections/nvidia/latest/compat/"
+	local compatDirExists = exists(compatDir)
+	if not compatDirExists then
+		local haveGpu = mt:haveProperty(modT.sn,"arch","gpu")
+		if haveGpu then
+			io.stderr:write("You requested to load ",simpleName,"\n")
+			io.stderr:write("While the module file exists, the actual software is not shipped with EESSI.\n")
+			io.stderr:write("In order to be able to use the CUDA module, please follow the instructions in the\n")
+			io.stderr:write("gpu_support folder. Adding the CUDA software can be as easy as a simple:\n")
 			io.stderr:write("./add_nvidia_gpu_support.sh\n")
 			frameStk:__clear()
 		end
@@ -49,4 +67,5 @@ local function cuda_load_hook(t)
 end
 
 hook.register("load", cuda_load_hook)
+hook.register("load", cuda_enabled_load_hook)
 hook.register("isVisibleHook", visible_hook)

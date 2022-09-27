@@ -3,6 +3,7 @@
 # Drop into the prefix shell or pipe this script into a Prefix shell with
 #   $EPREFIX/startprefix <<< /path/to/this_script.sh
 
+install_cuda="${INSTALL_CUDA:=false}"
 install_cuda_version="${INSTALL_CUDA_VERSION:=11.3.1}"
 install_p7zip_version="${INSTALL_P7ZIP_VERSION:=17.04-GCCcore-10.3.0}"
 
@@ -56,160 +57,16 @@ if [[ "${install_wo_gpu}" != "true" ]]; then
 fi
 
 ###############################################################################################
-###############################################################################################
 # Install CUDA
-# TODO: Can we do a trimmed install?
-# if modules dir exists, load it for usage within Lmod
 cuda_install_dir="${EESSI_SOFTWARE_PATH/versions/host_injections}"
 mkdir -p ${cuda_install_dir}
-# only install CUDA if specified version is not found
-if [ -d ${cuda_install_dir}/software/CUDA/${install_cuda_version} ]; then
-  echo "CUDA software found! No need to install CUDA again, proceeding with tests"
-else
-  # - as an installation location just use $EESSI_SOFTWARE_PATH but replacing `versions` with `host_injections`
-  #   (CUDA is a binary installation so no need to worry too much about this)
-  # TODO: The install is pretty fat, you need lots of space for download/unpack/install (~3*5GB), need to do a space check before we proceed
-  avail_space=$(df --output=avail ${cuda_install_dir}/ | tail -n 1 | awk '{print $1}')
-  if (( ${avail_space} < 16000000 )); then
-    echo "Need more disk space to install CUDA, exiting now..."
-    exit 1
-  fi
-  # install cuda in host_injections
-  module load EasyBuild
-  # we need the --rebuild option and a random dir for the module if the module file is shipped with EESSI
-  if [ -f ${EESSI_SOFTWARE_PATH}/modules/all/CUDA/${install_cuda_version}.lua ]; then
-    tmpdir=$(mktemp -d)
-    extra_args="--rebuild --installpath-modules=${tmpdir}"
-  fi
-  eb ${extra_args} --installpath=${cuda_install_dir}/ CUDA-${install_cuda_version}.eb
-  ret=$?
-  if [ $ret -ne 0 ]; then
-    echo "CUDA installation failed, please check EasyBuild logs..."
-    exit 1
-  fi
-  rm -rf ${tmpdir}
+if [ "${install_cuda}" != false ]; then
+  bash $(dirname "$BASH_SOURCE")/cuda_utils/install_cuda.sh ${install_cuda_version} ${cuda_install_dir}
 fi
-
-# Install p7zip, this will be used to install the CUDA compat libraries from rpm.
-# The rpm and deb files contain the same libraries, so we just stick to the rpm version.
-# If p7zip is missing from the software layer (for whatever reason), we need to install it.
-# This has to happen in host_injections, so we check first if it is already installed there.
-if [ -d ${cuda_install_dir}/modules/all ]; then
-  module use ${cuda_install_dir}/modules/all/
-fi
-module avail 2>&1 | grep -i p7zip &> /dev/null
-if [[ $? -eq 0 ]]; then
-  echo "p7zip module found! No need to install p7zip again, proceeding with installation of compat libraries"
-else
-  # install p7zip in host_injections
-  export EASYBUILD_IGNORE_OSDEPS=1
-  export EASYBUILD_SYSROOT=${EPREFIX}
-  export EASYBUILD_RPATH=1
-  export EASYBUILD_FILTER_ENV_VARS=LD_LIBRARY_PATH
-  export EASYBUILD_FILTER_DEPS=Autoconf,Automake,Autotools,binutils,bzip2,cURL,DBus,flex,gettext,gperf,help2man,intltool,libreadline,libtool,Lua,M4,makeinfo,ncurses,util-linux,XZ,zlib
-  export EASYBUILD_MODULE_EXTENSIONS=1
-  module load EasyBuild
-  eb --robot --installpath=${cuda_install_dir}/ p7zip-${install_p7zip_version}.eb
-  ret=$?
-  if [ $ret -ne 0 ]; then
-    echo "p7zip installation failed, please check EasyBuild logs..."
-    exit 1
-  fi
-fi
-
-# Check if the CUDA compat libraries are installed and compatible with the target CUDA version
-# if not find the latest version of the compatibility libraries and install them
-
-# get URL to latest CUDA compat libs, exit if URL is invalid
-cuda_compat_urls="$($(dirname "$BASH_SOURCE")/get_cuda_compatlibs.sh)"
-ret=$?
-if [ $ret -ne 0 ]; then
-  echo $cuda_compat_urls
-  exit 1
-fi
-
-# loop over the compat library versions until we get one that works for us
-keep_driver_check=1
-# Do a maximum of five attempts
-for value in {1..5}
-do
-    latest_cuda_compat_url=$(echo $cuda_compat_urls | cut -d " " -f1)
-    # Chomp that value out of the list
-    cuda_compat_urls=$(echo $cuda_compat_urls | cut -d " " -f2-)
-    latest_driver_version="${latest_cuda_compat_url%-*}"
-    latest_driver_version="${latest_driver_version##*-}"
-    # URLs differ for different OSes; check if we already have a number, if not remove string part that is not needed
-    if [[ ! $latest_driver_version =~ ^[0-9]+$ ]]; then
-      latest_driver_version="${latest_driver_version##*_}"
-    fi
-
-    install_compat_libs=false
-    host_injections_dir="/cvmfs/pilot.eessi-hpc.org/host_injections/nvidia"
-    # libcuda.so points to actual cuda compat lib with driver version in its name
-    # if this file exists, cuda compat libs are installed and we can compare the version
-    if [ -e $host_injections_dir/latest/compat/libcuda.so ]; then
-      eessi_driver_version=$( realpath $host_injections_dir/latest/compat/libcuda.so)
-      eessi_driver_version="${eessi_driver_version##*so.}"
-    else
-      eessi_driver_version=0
-    fi
-
-    if [ $keep_driver_check -eq 1 ]
-    then
-      # only keep the driver check for the latest version
-      keep_driver_check=0
-    else
-      eessi_driver_version=0
-    fi
-
-    if [ ${latest_driver_version//./} -gt ${eessi_driver_version//./} ]; then
-      install_compat_libs=true
-    else
-      echo "CUDA compat libs are up-to-date, skip installation."
-    fi
-
-    if [ "${install_compat_libs}" == true ]; then
-      bash $(dirname "$BASH_SOURCE")/install_cuda_compatlibs.sh $latest_cuda_compat_url
-    fi
-
-    if [[ "${install_wo_gpu}" != "true" ]]; then
-      bash $(dirname "$BASH_SOURCE")/test_cuda.sh "${install_cuda_version}"
-      if [ $? -eq 0 ]
-      then
-        exit 0
-      else
-        echo
-        echo "It looks like your driver is not recent enough to work with that release of CUDA, consider updating!"
-        echo "I'll try an older release to see if that will work..."
-        echo
-      fi
-    else
-      echo "Requested to install CUDA without GPUs present, so we skip final tests."
-      echo "Instead we test if module load CUDA works as expected..."
-      if [ -d ${cuda_install_dir}/modules/all ]; then
-        module use ${cuda_install_dir}/modules/all/
-      else
-        echo "Cannot load CUDA, modules path does not exist, exiting now..."
-        exit 1
-      fi
-      module load CUDA
-      ret=$?
-      if [ $ret -ne 0 ]; then
-        echo "Could not load CUDA even though modules path exists..."
-        exit 1
-      else
-        echo "Successfully loaded CUDA, you are good to go! :)"
-        echo "  - To build CUDA enabled modules use ${EESSI_SOFTWARE_PATH/versions/host_injections} as your EasyBuild prefix"
-        echo "  - To use these modules:"
-        echo "      module use ${EESSI_SOFTWARE_PATH/versions/host_injections}/modules/all/"
-        echo "  - Please keep in mind that we just installed the latest CUDA compat libs."
-        echo "    Since we have no GPU to test with, we cannot guarantee that it will work with the installed CUDA drivers on your GPU node(s)."
-	exit 0
-      fi
-      break
-    fi
-done
-
-echo "Tried to install 5 different generations of compat libraries and none worked,"
-echo "this usually means your driver is very out of date!"
-exit 1
+###############################################################################################
+# Prepare installation of CUDA compat libraries, i.e. install p7zip if it is missing
+$(dirname "$BASH_SOURCE")/cuda_utils/prepare_cuda_compatlibs.sh ${install_p7zip_version} ${cuda_install_dir}
+###############################################################################################
+# Try installing five different versions of CUDA compat libraries until the test works.
+# Otherwise, give up
+bash $(dirname "$BASH_SOURCE")/cuda_utils/install_cuda_compatlibs_loop.sh ${cuda_install_dir} ${install_cuda_version}
