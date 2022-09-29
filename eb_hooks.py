@@ -48,15 +48,21 @@ def inject_gpu_property(ec):
         "CUDA" in [dep[0] for dep in iter(ec_dict["dependencies"])]
         or ec_dict["toolchain"]["name"] in CUDA_ENABLED_TOOLCHAINS
     ):
+        ec.log.info("[parse hook] Injecting gpu as Lmod arch property and envvar with CUDA version")
         key = "modluafooter"
         value = 'add_property("arch","gpu")'
+        cuda_version = 0
+        for dep in iter(ec_dict["dependencies"]):
+            if "CUDA" in dep[0]:
+                cuda_version = dep[1]
+                ec_dict["dependencies"].remove(dep)
+                ec_dict["builddependencies"].append(dep) if dep not in ec_dict["builddependencies"] else ec_dict["builddependencies"]
+        value = "\n".join([value, 'setenv("EESSICUDAVERSION","%s")' % (cuda_version)])
         if key in ec_dict:
             if not value in ec_dict[key]:
                 ec[key] = "\n".join([ec_dict[key], value])
         else:
             ec[key] = value
-        ec.log.info("[parse hook] Injecting gpu as Lmod arch property")
-
     return ec
 
 def parse_hook(ec, *args, **kwargs):

@@ -70,3 +70,6 @@ $(dirname "$BASH_SOURCE")/cuda_utils/prepare_cuda_compatlibs.sh ${install_p7zip_
 # Try installing five different versions of CUDA compat libraries until the test works.
 # Otherwise, give up
 bash $(dirname "$BASH_SOURCE")/cuda_utils/install_cuda_compatlibs_loop.sh ${cuda_install_dir} ${install_cuda_version}
+
+cuda_version_file="/cvmfs/pilot.eessi-hpc.org/host_injections/nvidia/latest/version.txt"
+echo ${install_cuda_version} > ${cuda_version_file}

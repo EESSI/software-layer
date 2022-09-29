@@ -1,5 +1,14 @@
 require("strict")
 local hook = require("Hook")
+local open = io.open
+
+local function read_file(path)
+	local file = open(path, "rb") -- r read mode and b binary mode
+	if not file then return nil end
+	local content = file:read "*a" -- *a or *all reads the whole file
+	file:close()
+	return content
+end
 
 -- from https://stackoverflow.com/a/40195356
 --- Check if a file or directory exists in this path
@@ -51,17 +60,39 @@ end
 local function cuda_enabled_load_hook(t)
 	local frameStk  = require("FrameStk"):singleton()
 	local mt        = frameStk:mt()
-	local compatDir = "/cvmfs/pilot.eessi-hpc.org/host_injections/nvidia/latest/compat/"
-	local compatDirExists = exists(compatDir)
-	if not compatDirExists then
-		local simpleName = string.match(t.modFullName, "(.-)/")
-		local haveGpu = mt:haveProperty(simpleName,"arch","gpu")
-		if haveGpu then
+	local simpleName = string.match(t.modFullName, "(.-)/")
+	local haveGpu = mt:haveProperty(simpleName,"arch","gpu")
+	if haveGpu then
+		local compatDir = "/cvmfs/pilot.eessi-hpc.org/host_injections/nvidia/latest/compat/"
+		local compatDirExists = exists(compatDir)
+		if not compatDirExists then
 			io.stderr:write("You requested to load ",simpleName,"\n")
 			io.stderr:write("While the module file exists, the actual software is not shipped with EESSI.\n")
 			io.stderr:write("In order to be able to use the CUDA module, please follow the instructions in the\n")
 			io.stderr:write("gpu_support folder. Adding the CUDA software can be as easy as a simple:\n")
 			io.stderr:write("./add_nvidia_gpu_support.sh\n")
+			frameStk:__clear()
+		end
+		local cudaVersion = read_file("/cvmfs/pilot.eessi-hpc.org/host_injections/nvidia/latest/version.txt")
+		local cudaVersion_req = os.getenv("EESSICUDAVERSION")
+		local major, minor, patch = string.match(cudaVersion, "(%d+)%.(%d+)%.(%d+)")
+		local major_req, minor_req, patch_req = string.match(cudaVersion, "(%d+)%.(%d+)%.(%d+)")
+		local compat_libs_need_update = false
+		if major < major_req then
+			compat_libs_need_update = true
+		elseif major == major_req then
+			if minor < minor_req then
+				compat_libs_need_update = true
+			elseif minor == minor_req then
+				if patch < patch_req then
+					compat_libs_need_update = true
+				end
+			end
+		end
+		if compat_libs_need_update == true then
+			io.stderr:write("You requested to load CUDA version ",cudaVersion)
+			io.stderr:write("but the module you want to load requires CUDA version ",cudaVersion_req,".\n")
+			io.stderr:write("Please update your CUDA compatibility libraries in order to use ",simpleName,".\n")
 			frameStk:__clear()
 		end
 	end
