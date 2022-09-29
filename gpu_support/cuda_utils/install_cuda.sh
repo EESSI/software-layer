@@ -1,13 +1,14 @@
 #!/bin/bash
 
 install_cuda_version=$1
+cuda_install_dir=$2
 
 # TODO: Can we do a trimmed install?
 # Only install CUDA if specified version is not found.
 # This is only relevant for users, the shipped CUDA installation will
 # always be in versions instead of host_injections and have symlinks pointing
 # to host_injections for everything we're not allowed to ship
-if [ -d ${cuda_install_dir}/software/CUDA/${install_cuda_version} ]; then
+if [ -f ${cuda_install_dir}/software/CUDA/${install_cuda_version}/EULA.txt ]; then
   echo "CUDA software found! No need to install CUDA again, proceeding with tests"
 else
   # - as an installation location just use $EESSI_SOFTWARE_PATH but replacing `versions` with `host_injections`

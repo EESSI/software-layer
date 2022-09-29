@@ -54,7 +54,8 @@ local function cuda_enabled_load_hook(t)
 	local compatDir = "/cvmfs/pilot.eessi-hpc.org/host_injections/nvidia/latest/compat/"
 	local compatDirExists = exists(compatDir)
 	if not compatDirExists then
-		local haveGpu = mt:haveProperty(modT.sn,"arch","gpu")
+		local simpleName = string.match(t.modFullName, "(.-)/")
+		local haveGpu = mt:haveProperty(simpleName,"arch","gpu")
 		if haveGpu then
 			io.stderr:write("You requested to load ",simpleName,"\n")
 			io.stderr:write("While the module file exists, the actual software is not shipped with EESSI.\n")
