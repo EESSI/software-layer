@@ -29,7 +29,7 @@ if [ "${save_compiled_test}" != false ]; then
     cp -r $EBROOTCUDA/samples $tmp_dir
     cd $tmp_dir/samples/1_Utilities/deviceQuery
   else
-    git clone https://github.com/NVIDIA/cuda-samples.git ${tmp_dir}
+    git clone https://github.com/NVIDIA/cuda-samples.git ${tmp_dir} -q
     cd $tmp_dir/Samples/1_Utilities/deviceQuery
   fi
   module load GCCcore
@@ -64,14 +64,14 @@ then
   # Clean up
   cd $current_dir
   if [ "${save_compiled_test}" != false ]; then
-    rm -r $tmp_dir
+    rm -rf $tmp_dir
   fi
 else 
   echo "Uff, your GPU doesn't seem to be working with EESSI :(" >&2
   # Clean up
   cd $current_dir
   if [ "${save_compiled_test}" != false ]; then
-    rm -r $tmp_dir
+    rm -rf $tmp_dir
   fi
   exit 1
 fi

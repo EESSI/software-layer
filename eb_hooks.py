@@ -131,9 +131,11 @@ def cgal_toolchainopts_precise(ec, eprefix):
 def post_package_hook(self, *args, **kwargs):
     """Delete CUDA files we are not allowed to ship and replace them with a symlink to a possible installation under host_injections."""
     if self.name == 'CUDA':
+        cuda_version = self.installdir.split('/')[-1]
+        print_msg("Attempt to get compat libs for CUDA version: %s" % (cuda_version))
         # install compat libraries and run test
         # if the test works, move it to EESSI_SOFTWARE_PATH so we can ship the compiled test
-        os.system("export SAVE_COMPILED_TEST=true && ./gpu_support/add_nvidia_gpu_support.sh")
+        os.system("export INSTALL_CUDA_VERSION=%s && export SAVE_COMPILED_TEST=true && ./gpu_support/add_nvidia_gpu_support.sh" % (cuda_version))
         print_msg("Replacing CUDA stuff we cannot ship with symlinks...")
         # read CUDA EULA
         eula_path = os.path.join(self.installdir, 'EULA.txt')
