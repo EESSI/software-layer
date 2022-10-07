@@ -1,7 +1,52 @@
 #!/bin/bash
 #
 # Script to install EESSI pilot software stack (version 2021.12)
-#
+
+# see example parsing of command line arguments at
+#   https://wiki.bash-hackers.org/scripting/posparams#using_a_while_loop
+#   https://stackoverflow.com/questions/192249/how-do-i-parse-command-line-arguments-in-bash
+
+display_help() {
+  echo "usage: $0 [OPTIONS]"
+  echo "  -g | --generic         -  instructs script to build for generic architecture target"
+  echo "  -h | --help            -  display this usage information"
+  echo "  -x | --http-proxy URL  -  provides URL for the environment variable http_proxy"
+  echo "  -y | --https-proxy URL -  provides URL for the environment variable https_proxy"
+}
+
+POSITIONAL_ARGS=()
+
+while [[ $# -gt 0 ]]; do
+  case $1 in
+    -g|--generic)
+      EASYBUILD_OPTARCH="GENERIC"
+      shift
+      ;;
+    -h|--help)
+      display_help  # Call your function
+      # no shifting needed here, we're done.
+      exit 0
+      ;;
+    -x|--http-proxy)
+      export http_proxy="$2"
+      shift 2
+      ;;
+    -y|--https-proxy)
+      export https_proxy="$2"
+      shift 2
+      ;;
+    -*|--*)
+      echo "Error: Unknown option: $1" >&2
+      exit 1
+      ;;
+    *)  # No more options
+      POSITIONAL_ARGS+=("$1") # save positional arg
+      shift
+      ;;
+  esac
+done
+
+set -- "${POSITIONAL_ARGS[@]}"
 
 TOPDIR=$(dirname $(realpath $0))
 
@@ -39,7 +84,7 @@ export PYTHONPYCACHEPREFIX=$TMPDIR/pycache
 DETECTION_PARAMETERS=''
 GENERIC=0
 EB='eb'
-if [[ "$1" == "--generic" || "$EASYBUILD_OPTARCH" == "GENERIC" ]]; then
+if [[ "$EASYBUILD_OPTARCH" == "GENERIC" ]]; then
     echo_yellow ">> GENERIC build requested, taking appropriate measures!"
     DETECTION_PARAMETERS="$DETECTION_PARAMETERS --generic"
     GENERIC=1
@@ -304,6 +349,8 @@ ok_msg="WRF installed, it's getting hot in here!"
 fail_msg="Installation of WRF failed, that's unexpected..."
 OMPI_MCA_pml=ucx UCX_TLS=tcp $EB WRF-3.9.1.1-foss-2020a-dmpar.eb -r --include-easyblocks-from-pr 2648
 check_exit_code $? "${ok_msg}" "${fail_msg}"
+
+### add packages here
 
 echo ">> Creating/updating Lmod cache..."
 export LMOD_RC="${EASYBUILD_INSTALLPATH}/.lmod/lmodrc.lua"
