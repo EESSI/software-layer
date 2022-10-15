@@ -151,11 +151,17 @@ else
     export PATH=${EB_TMPDIR}/bin:$PATH
     export PYTHONPATH=$(ls -d ${EB_TMPDIR}/lib/python*/site-packages):$PYTHONPATH
     eb_install_out=${TMPDIR}/eb_install.out
+    ok_msg="Latest EasyBuild release installed, let's go!"
+    fail_msg="Installing latest EasyBuild release failed, that's not good... (output: ${eb_install_out})"
     eb --install-latest-eb-release &> ${eb_install_out}
+    check_exit_code $? "${ok_msg}" "${fail_msg}"
 
     eb --search EasyBuild-${REQ_EB_VERSION}.eb | grep EasyBuild-${REQ_EB_VERSION}.eb > /dev/null
     if [[ $? -eq 0 ]]; then
+        ok_msg="EasyBuild v${REQ_EB_VERSION} installed, alright!"
+        fail_msg="Installing EasyBuild v${REQ_EB_VERSION}, yikes! (output: ${eb_install_out})"
         eb EasyBuild-${REQ_EB_VERSION}.eb >> ${eb_install_out} 2>&1
+        check_exit_code $? "${ok_msg}" "${fail_msg}"
     fi
 
     module avail easybuild/${REQ_EB_VERSION} &> ${ml_av_easybuild_out}
