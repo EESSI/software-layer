@@ -1,9 +1,26 @@
 # How to add GPU support
 The collection of scripts in this directory enables you to add GPU support to your setup.
 Note that currently this means that CUDA support can be added for Nvidia GPUs. AMD GPUs are not yet supported (feel free to contribute that though!).
-To enable the usage of CUDA in your setup, simply run the following script:
+To enable the usage of the CUDA runtime in your setup, simply run the following script:
 ```
 ./add_nvidia_gpu_support.sh
+```
+This script will install the compatibility libraries (and only those by default!) you need to use the shipped runtime environment of CUDA.
+
+If you plan on using the full CUDA suite, i.e. if you want to load the CUDA module, you will have to modify the script execution as follows:
+```
+export INSTALL_CUDA=true && ./add_nvidia_gpu_support.sh
+```
+This will again install the needed compatibility libraries as well as the whole CUDA suite.
+
+If you need a different CUDA version than what is shipped with EESSI, you can also specify that particular version for the script:
+```
+export INSTALL_CUDA_VERSION=xx.y.z && export INSTALL_CUDA=true && ./add_nvidia_gpu_support.sh
+```
+Please note, however, that versions for which the runtime is not shipped with EESSI are not installed in the default modules path.
+Thus, you will have to add the following to your modules path to get access to your custom CUDA version:
+```
+module use ${EESSI_SOFTWARE_PATH/versions/host_injections}/modules/all/
 ```
 ## Prerequisites and tips
 * You need write permissions to `/cvmfs/pilot.eessi-hpc.org/host_injections` (which by default is a symlink to `/opt/eessi` but can be configured in your CVMFS config file to point somewhere else). If you would like to make a system-wide installation you should change this in your configuration to point somewhere on a shared filesystem.

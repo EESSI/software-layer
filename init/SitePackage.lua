@@ -36,11 +36,14 @@ local function visible_hook(modT)
 	end
 end
 
-local function cuda_load_hook(t)
+local function cuda_enabled_load_hook(t)
 	local frameStk  = require("FrameStk"):singleton()
-	-- needed to check if we are trying to load the CUDA module
+	local mt        = frameStk:mt()
 	local simpleName = string.match(t.modFullName, "(.-)/")
-	if string.match(simpleName, 'CUDA') ~= nil then
+	local eprefix = os.getenv('EESSI_PREFIX') .. "/init/gpu_support"
+	-- if we try to load CUDA itself, check if the software exists in host_injections
+	-- otherwise, refuse to load CUDA and print error message
+	if simpleName == 'CUDA' then
 		-- get the full host_injections path
 		local cudaDir = string.gsub(os.getenv('EESSI_SOFTWARE_PATH') or "", 'versions', 'host_injections')
 		-- build final path where the CUDA software should be installed
@@ -55,21 +58,17 @@ local function cuda_load_hook(t)
 			frameStk:__clear()
 		end
 	end
-end
-
-local function cuda_enabled_load_hook(t)
-	local frameStk  = require("FrameStk"):singleton()
-	local mt        = frameStk:mt()
-	local simpleName = string.match(t.modFullName, "(.-)/")
+	-- when loading CUDA enabled modules check if the neccessary matching compatibility libraries are installed
+	-- otherwise, refuse to load the requested module and print error message
 	local haveGpu = mt:haveProperty(simpleName,"arch","gpu")
 	if haveGpu then
 		local compatDir = "/cvmfs/pilot.eessi-hpc.org/host_injections/nvidia/latest/compat/"
 		local compatDirExists = exists(compatDir)
 		if not compatDirExists then
 			io.stderr:write("You requested to load ",simpleName,"\n")
-			io.stderr:write("While the module file exists, the actual software is not shipped with EESSI.\n")
-			io.stderr:write("In order to be able to use the CUDA module, please follow the instructions in the\n")
-			io.stderr:write("gpu_support folder. Adding the CUDA software can be as easy as a simple:\n")
+			io.stderr:write("which relies on the CUDA runtime environment and its compatibility libraries.\n")
+			io.stderr:write("In order to be able to use the module, please follow the instructions in the\n")
+			io.stderr:write("gpu_support folder. Installing the needed compatibility libraries can be as easy as ~~a simple~~:\n")
 			io.stderr:write("./add_nvidia_gpu_support.sh\n")
 			frameStk:__clear()
 		end
@@ -98,6 +97,5 @@ local function cuda_enabled_load_hook(t)
 	end
 end
 
-hook.register("load", cuda_load_hook)
 hook.register("load", cuda_enabled_load_hook)
 hook.register("isVisibleHook", visible_hook)
