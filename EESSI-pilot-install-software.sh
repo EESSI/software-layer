@@ -344,7 +344,9 @@ check_exit_code $? "Swapped to EasyBuild/4.5.1" "Couldn't swap to EasyBuild/4.5.
 echo ">> Installing SciPy-bundle with foss/2021a..."
 ok_msg="SciPy-bundle with foss/2021a installed, welcome to the modern age"
 fail_msg="Installation of SciPy-bundle with foss/2021a failed, back to the stone age..."
-$EB SciPy-bundle-2021.05-foss-2021a.eb -M
+# use GCCcore easyconfig from https://github.com/easybuilders/easybuild-easyconfigs/pull/14454
+# which includes patch to fix installation with recent Linux kernel headers
+$EB --from-pr 14454 GCCcore-10.3.0.eb --robot
 # use enhanced Perl easyblock from https://github.com/easybuilders/easybuild-easyblocks/pull/2640
 # to avoid trouble when using long installation prefix (for example with EESSI pilot 2021.12 on skylake_avx512...)
 $EB Perl-5.32.1-GCCcore-10.3.0.eb --robot --include-easyblocks-from-pr 2640
@@ -354,6 +356,10 @@ $EB CMake-3.20.1-GCCcore-10.3.0.eb --robot --include-easyblocks-from-pr 2248
 # use Rust easyconfig from https://github.com/easybuilders/easybuild-easyconfigs/pull/14584
 # that includes patch to fix bootstrap problem when using alternate sysroot
 $EB --from-pr 14584 Rust-1.52.1-GCCcore-10.3.0.eb --robot
+# use OpenBLAS easyconfig from https://github.com/easybuilders/easybuild-easyconfigs/pull/15885
+# which includes a patch to fix installation on POWER
+$EB --from-pr 15885 OpenBLAS-0.3.15-GCC-10.3.0.eb --robot
+
 $EB SciPy-bundle-2021.05-foss-2021a.eb -r --buildpath /dev/shm/$USER/easybuild_build
 check_exit_code $? "${ok_msg}" "${fail_msg}"
 
