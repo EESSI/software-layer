@@ -53,3 +53,7 @@ software:
          versions: 
            '3.9.1.1': 
              versionsuffix: -dmpar
+  Nextflow:
+    toolchains:
+      SYSTEM:
+        versions: '22.10.1'
