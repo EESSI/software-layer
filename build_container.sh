@@ -18,22 +18,6 @@ fi
 # make sure specified temporary directory exists
 mkdir -p $EESSI_TMPDIR
 
-# make sure that specified location has support for extended attributes,
-# since that's required by CernVM-FS
-command -v attr &> /dev/null
-if [ $? -eq 0 ]; then
-    testfile=$(mktemp -p $EESSI_TMPDIR)
-    attr -s test -V test $testfile > /dev/null
-    if [ $? -ne 0 ]; then
-        echo "ERROR: $EESSI_TMPDIR does not support extended attributes!" >&2
-       exit 2
-    else
-        rm $testfile
-    fi
-else
-    echo "WARNING: 'attr' command not available, so can't check support for extended attributes..." >&2
-fi
-
 echo "Using $EESSI_TMPDIR as parent for temporary directories..."
 
 # create temporary directories
@@ -41,8 +25,19 @@ mkdir -p $EESSI_TMPDIR/{home,overlay-upper,overlay-work}
 mkdir -p $EESSI_TMPDIR/{var-lib-cvmfs,var-run-cvmfs}
 # configure Singularity
 export SINGULARITY_CACHEDIR=$EESSI_TMPDIR/singularity_cache
-export SINGULARITY_BIND="$EESSI_TMPDIR/var-run-cvmfs:/var/run/cvmfs,$EESSI_TMPDIR/var-lib-cvmfs:/var/lib/cvmfs,$EESSI_TMPDIR"
-export SINGULARITY_HOME="$EESSI_TMPDIR/home:/home/$USER"
+
+# take into account that $SINGULARITY_BIND may be defined already, to bind additional paths into the build container
+BIND_PATHS="$EESSI_TMPDIR/var-run-cvmfs:/var/run/cvmfs,$EESSI_TMPDIR/var-lib-cvmfs:/var/lib/cvmfs,$EESSI_TMPDIR"
+if [ -z $SINGULARITY_BIND ]; then
+    export SINGULARITY_BIND="$BIND_PATHS"
+else
+    export SINGULARITY_BIND="$SINGULARITY_BIND,$BIND_PATHS"
+fi
+
+# allow that SINGULARITY_HOME is defined before script is run
+if [ -z $SINGULARITY_HOME ]; then
+    export SINGULARITY_HOME="$EESSI_TMPDIR/home:/home/$USER"
+fi
 
 # set environment variables for fuse mounts in Singularity container
 export EESSI_PILOT_READONLY="container:cvmfs2 pilot.eessi-hpc.org /cvmfs_ro/pilot.eessi-hpc.org"
