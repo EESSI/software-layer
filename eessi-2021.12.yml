@@ -23,6 +23,8 @@ software:
     toolchains:
       foss-2020a:
         versions: ['8', 'v2006']
+      foss-2021a:
+        versions: '9'
   OSU-Micro-Benchmarks:
      toolchains:
        gompi-2020a:

@@ -356,6 +356,12 @@ fail_msg="Installation of WRF failed, that's unexpected..."
 OMPI_MCA_pml=ucx UCX_TLS=tcp $EB WRF-3.9.1.1-foss-2020a-dmpar.eb -r --include-easyblocks-from-pr 2648
 check_exit_code $? "${ok_msg}" "${fail_msg}"
 
+echo ">> Installing OpenFOAM 9..."
+ok_msg="Yet another variant of OpenFOAM is installed!"
+fail_msg="Installation of OpenFOAM failed, yikes..."
+$EB OpenFOAM-9-foss-2021a.eb -r
+check_exit_code $? "${ok_msg}" "${fail_msg}"
+
 ### add packages here
 
 echo ">> Creating/updating Lmod cache..."
