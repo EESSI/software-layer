@@ -359,7 +359,7 @@ check_exit_code $? "${ok_msg}" "${fail_msg}"
 echo ">> Installing EasyBuild 4.5.1..."
 ok_msg="EasyBuild v4.5.1 installed"
 fail_msg="EasyBuild v4.5.1 failed to install"
-$EB --from-pr 14545
+$EB --from-pr 14545 --include-easyblocks-from-pr 2805
 check_exit_code $? "${ok_msg}" "${fail_msg}"
 
 LMOD_IGNORE_CACHE=1 module swap EasyBuild/4.5.1
