@@ -359,7 +359,7 @@ check_exit_code $? "${ok_msg}" "${fail_msg}"
 echo ">> Installing OpenFOAM 9..."
 ok_msg="Yet another variant of OpenFOAM is installed!"
 fail_msg="Installation of OpenFOAM failed, yikes..."
-$EB OpenFOAM-9-foss-2021a.eb -r
+$EB --from-pr 14821 X11-20210518-GCCcore-10.3.0.eb -r && $EB OpenFOAM-9-foss-2021a.eb -r
 check_exit_code $? "${ok_msg}" "${fail_msg}"
 
 ### add packages here
