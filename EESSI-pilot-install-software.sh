@@ -356,6 +356,12 @@ fail_msg="Installation of WRF failed, that's unexpected..."
 OMPI_MCA_pml=ucx UCX_TLS=tcp $EB WRF-3.9.1.1-foss-2020a-dmpar.eb -r --include-easyblocks-from-pr 2648
 check_exit_code $? "${ok_msg}" "${fail_msg}"
 
+echo ">> Installing Nextflow 22.10.1..."
+ok_msg="Nextflow installed, the work must flow..."
+fail_msg="Installation of Nextflow failed, that's unexpected..."
+$EB -r --from-pr 16531 Nextflow-22.10.1.eb
+check_exit_code $? "${ok_msg}" "${fail_msg}"
+
 ### add packages here
 
 echo ">> Creating/updating Lmod cache..."
