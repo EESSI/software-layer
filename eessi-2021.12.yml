@@ -53,3 +53,9 @@ software:
          versions: 
            '3.9.1.1': 
              versionsuffix: -dmpar
+  snakemake:
+     toolchains:
+       foss-2020a:
+         versions: 
+           '17.8.1': 
+            versionsuffix: -Python-3.8.2
