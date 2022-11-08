@@ -17,6 +17,10 @@ software:
         versions:
           '0.21.3':
             versionsuffix: -TensorFlow-2.3.1-Python-3.8.2
+  Nextflow:
+    toolchains:
+      SYSTEM:
+        versions: '22.10.1'
   OpenFOAM:
     toolchains:
       foss-2020a:
@@ -57,7 +61,3 @@ software:
          versions: 
            '3.9.1.1': 
              versionsuffix: -dmpar
-  Nextflow:
-    toolchains:
-      SYSTEM:
-        versions: '22.10.1'
