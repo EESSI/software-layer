@@ -66,6 +66,10 @@ check_allinfirst(){
 }
 
 cpupath(){
+    # If EESSI_SOFTWARE_SUBDIR_OVERRIDE is set, use it
+    log "DEBUG" "cpupath: Override variable set as '$EESI_SOFTWARE_SUBDIR_OVERRIDE' "
+    [ $EESI_SOFTWARE_SUBDIR_OVERRIDE ] && echo ${EESI_SOFTWARE_SUBDIR_OVERRIDE} && exit
+
     # Identify the best matching CPU architecture from a list of supported specifications for the host CPU
     # Return the path to the installation files in EESSI of the best matching architecture
     local cpu_arch_spec=()
