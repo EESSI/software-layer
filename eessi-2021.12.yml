@@ -27,6 +27,8 @@ software:
      toolchains:
        gompi-2020a:
          versions: ['5.6.3']
+       gompi-2021a:
+         versions: ['5.7.1']
   QuantumESPRESSO:
      toolchains:
        foss-2020a:
