@@ -27,17 +27,13 @@ log () {
 # Supported CPU specifications
 update_arch_specs(){
     # Add contents of given spec file into an array
-    # 1: name of array with CPU arch specs
-    # 2: spec file with the additional specs
+    # 1: spec file with the additional specs
 
-    [ -z "$1" ] && echo "[ERROR] update_arch_specs: missing array in argument list" >&2 && exit 1
-    local -n arch_specs=$1
-
-    [ ! -f "$2" ] && echo "[ERROR] update_arch_specs: spec file not found: $2" >&2 && exit 1
-    local spec_file="$2"
+    [ ! -f "$1" ] && echo "[ERROR] update_arch_specs: spec file not found: $1" >&2 && exit 1
+    local spec_file="$1"
     while read spec_line; do
        # format spec line as an array and append it to array with all CPU arch specs
-       arch_specs+=("(${spec_line})")
+       cpu_arch_spec+=("(${spec_line})")
     # remove comments from spec file
     done < <(sed -E 's/(^|[\s\t])#.*$//g;/^\s*$/d' "$spec_file")
 }
@@ -87,7 +83,7 @@ cpupath(){
     esac
     # spec files are located in a subfolder with this script
     local base_dir=$(dirname $(realpath $0))
-    update_arch_specs cpu_arch_spec "$base_dir/arch_specs/${spec_file}"
+    update_arch_specs "$base_dir/arch_specs/${spec_file}"
   
     # Identify the host CPU vendor
     local cpu_vendor_tag="vendor[ _]id"
