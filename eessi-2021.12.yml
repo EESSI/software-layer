@@ -57,7 +57,9 @@ software:
     toolchains:
       SYSTEM:
         versions: '22.10.1'
-  Nextflow-mag-pipeline:
+  Nextflow-pipeline:
     toolchains:
       foss-2021a:
-        versions: '2.2.1'
+        versions:
+          '20221110'
+            versionsuffix: -mag
