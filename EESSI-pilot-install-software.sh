@@ -362,6 +362,12 @@ fail_msg="Installation of Nextflow failed, that's unexpected..."
 $EB -r --from-pr 16531 Nextflow-22.10.1.eb
 check_exit_code $? "${ok_msg}" "${fail_msg}"
 
+echo ">> Installing requirements for the https://nf-co.re/mag v2.2.1 pipeline..."
+ok_msg="The full Nextflow pipeline is installed, the work must flow..."
+fail_msg="Installation of the Nextflow pipeline failed, that's unexpected..."
+$EB --robot --from-pr 16577,16590,16589,16592,16591,16576 && $EB --robot AdapterRemoval-2.3.2-GCC-10.3.0.eb BCFtools-1.12-GCC-10.3.0.eb Bowtie2-2.4.4-GCC-10.3.0.eb BUSCO-5.4.2-foss-2021a.eb fastp-0.23.2-GCC-10.3.0.eb FastQC-0.11.9-Java-11.eb GTDB-Tk-2.0.0-foss-2021a.eb Kraken2-2.1.2-gompi-2021a.eb KronaTools-2.8-GCC-10.3.0.eb MultiQC-1.11-foss-2021a.eb prodigal-2.6.3-GCCcore-10.3.0.eb prokka-1.14.5-gompi-2021a.eb QUAST-5.0.2-foss-2021a.eb SPAdes-3.15.3-GCC-10.3.0.eb
+check_exit_code $? "${ok_msg}" "${fail_msg}"
+
 ### add packages here
 
 echo ">> Creating/updating Lmod cache..."
