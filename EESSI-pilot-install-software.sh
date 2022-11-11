@@ -365,7 +365,7 @@ check_exit_code $? "${ok_msg}" "${fail_msg}"
 echo ">> Installing requirements for the Nextflow mag 20221110 pipeline..."
 ok_msg="The full Nextflow pipeline is installed, the work must flow..."
 fail_msg="Installation of the Nextflow pipeline failed, that's unexpected..."
-$EB --robot --from-pr 16576,16577,16589,16590,16591,16592,16612,16613
+$EB --robot --from-pr 16576,16577,16589,16590,16591,16592,16612,16613,16615,16617
 check_exit_code $? "${ok_msg}" "${fail_msg}"
 
 ### add packages here
