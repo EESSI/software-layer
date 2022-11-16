@@ -1,5 +1,4 @@
-datasets:
-  WRF:
-    versions: 
-      "3.9.1.1":
-         - conus12km_v3911
+WRF:
+  versions: 
+    "3.9.1.1":
+       - conus12km_v3911
