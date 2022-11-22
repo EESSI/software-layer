@@ -67,7 +67,7 @@ for APPLICATION in ${SOFTWARE}; do
 
 	    # generating filelist
             pushd ${TMP_DIR}/${EESSI_ROOT}
-            find ${APPLICATION}/${VERSION:1:-1}/${DATASET} >> ${TMP_DIR}/dataset_filelist.txt
+            find ${APPLICATION}/${VERSION:1:-1}/${DATASET} -type f >> ${TMP_DIR}/dataset_filelist.txt
 	    popd
 
         done #DATASET
