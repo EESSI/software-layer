@@ -18,6 +18,8 @@ on:
       - run_in_compat_layer_env.sh
       - utils.sh
       - update_lmod_cache.sh
+permissions:
+  contents: read # to fetch code (actions/checkout)
 jobs:
   build:
     runs-on: ubuntu-20.04
