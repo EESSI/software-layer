@@ -1,18 +1,20 @@
 # documentation: https://help.github.com/en/articles/workflow-syntax-for-github-actions
 name: Tests
 on: [push, pull_request]
+permissions:
+  contents: read # to fetch code (actions/checkout)
 jobs:
   build:
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-20.04
     strategy:
       matrix:
         python: [3.6, 3.7, 3.8, 3.9, '3.10']
       fail-fast: false
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
 
     - name: set up Python
-      uses: actions/setup-python@v1
+      uses: actions/setup-python@v4
       with:
         python-version: ${{matrix.python}}
         architecture: x64
