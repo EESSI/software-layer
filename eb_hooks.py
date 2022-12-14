@@ -1,6 +1,7 @@
 # Hooks to customize how EasyBuild installs software in EESSI
 # see https://docs.easybuild.io/en/latest/Hooks.html
 import os
+import re
 
 from easybuild.tools.build_log import EasyBuildError, print_msg
 from easybuild.tools.config import build_option, update_build_option
@@ -130,6 +131,20 @@ def pre_configure_hook(self, *args, **kwargs):
         PRE_CONFIGURE_HOOKS[self.name](self, *args, **kwargs)
 
 
+def metabat_preconfigure(self, *args, **kwargs):
+    """
+    Pre-configure hook for MetaBAT:
+    - take into account that zlib is a filtered dependency,
+      and that there's no libz.a in the EESSI compat layer
+    """
+    if self.name == 'MetaBAT':
+        configopts = self.cfg['configopts']
+        regex = re.compile(r"\$EBROOTZLIB/lib/libz.a")
+        self.cfg['configopts'] = regex.sub('$EPREFIX/usr/lib64/libz.so', configopts)
+    else:
+        raise EasyBuildError("MetaBAT-specific hook triggered for non-MetaBAT easyconfig?!")
+
+
 def wrf_preconfigure(self, *args, **kwargs):
     """
     Pre-configure hook for WRF:
@@ -144,6 +159,7 @@ def wrf_preconfigure(self, *args, **kwargs):
     else:
         raise EasyBuildError("WRF-specific hook triggered for non-WRF easyconfig?!")
 
+
 PARSE_HOOKS = {
     'CGAL': cgal_toolchainopts_precise,
     'fontconfig': fontconfig_add_fonts,
@@ -151,5 +167,6 @@ PARSE_HOOKS = {
 }
 
 PRE_CONFIGURE_HOOKS = {
+    'MetaBAT': metabat_preconfigure,
     'WRF': wrf_preconfigure,
 }
