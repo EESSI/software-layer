@@ -356,6 +356,12 @@ fail_msg="Installation of WRF failed, that's unexpected..."
 OMPI_MCA_pml=ucx UCX_TLS=tcp $EB WRF-3.9.1.1-foss-2020a-dmpar.eb -r --include-easyblocks-from-pr 2648
 check_exit_code $? "${ok_msg}" "${fail_msg}"
 
+echo ">> Installing R 4.1.0 (better be patient)..."
+ok_msg="R installed, wow!"
+fail_msg="Installation of R failed, so sad..."
+$EB --from-pr 16386 R-4.1.0-foss-2021a.eb --robot --parallel-extensions-install --experimental
+check_exit_code $? "${ok_msg}" "${fail_msg}"
+
 echo ">> Installing Nextflow 22.10.1..."
 ok_msg="Nextflow installed, the work must flow..."
 fail_msg="Installation of Nextflow failed, that's unexpected..."
