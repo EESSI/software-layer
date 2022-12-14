@@ -163,7 +163,7 @@ def metabat_preconfigure(self, *args, **kwargs):
         regex = re.compile(r"\$EBROOTZLIB/lib/libz.a")
         self.cfg['configopts'] = regex.sub('$EPREFIX/usr/lib64/libz.so', configopts)
     else:
-        raise EasyBuildError("MetaBAT-specific hook triggered for non-MetaBAT easyconfig?!"
+        raise EasyBuildError("MetaBAT-specific hook triggered for non-MetaBAT easyconfig?!")
 
 
 def wrf_preconfigure(self, *args, **kwargs):
