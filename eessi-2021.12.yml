@@ -53,6 +53,10 @@ software:
          versions: 
            '3.9.1.1': 
              versionsuffix: -dmpar
+  R:
+    toolchains:
+      foss-2021a:
+        versions: '4.1.0'
   Nextflow:
     toolchains:
       SYSTEM:
