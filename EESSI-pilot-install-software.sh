@@ -362,12 +362,6 @@ fail_msg="Installation of Nextflow failed, that's unexpected..."
 $EB -r --from-pr 16531 Nextflow-22.10.1.eb
 check_exit_code $? "${ok_msg}" "${fail_msg}"
 
-echo ">> Installing R 4.1.0 (better be patient)..."
-ok_msg="R installed, wow!"
-fail_msg="Installation of R failed, so sad..."
-$EB --from-pr 16386 R-4.1.0-foss-2021a.eb --robot --parallel-extensions-install --experimental
-check_exit_code $? "${ok_msg}" "${fail_msg}"
-
 echo ">> Installing requirements for the Nextflow mag 20221110 pipeline..."
 ok_msg="The full Nextflow pipeline is installed, the work must flow..."
 fail_msg="Installation of the Nextflow pipeline failed, that's unexpected..."
