@@ -362,6 +362,38 @@ fail_msg="Installation of Nextflow failed, that's unexpected..."
 $EB -r --from-pr 16531 Nextflow-22.10.1.eb
 check_exit_code $? "${ok_msg}" "${fail_msg}"
 
+
+echo ">> Installing EasyBuild 4.5.1..."
+ok_msg="EasyBuild v4.5.1 installed"
+fail_msg="EasyBuild v4.5.1 failed to install"
+$EB --from-pr 14545 --include-easyblocks-from-pr 2805
+check_exit_code $? "${ok_msg}" "${fail_msg}"
+
+LMOD_IGNORE_CACHE=1 module swap EasyBuild/4.5.1
+check_exit_code $? "Swapped to EasyBuild/4.5.1" "Couldn't swap to EasyBuild/4.5.1"
+
+echo ">> Installing SciPy-bundle with foss/2021a..."
+ok_msg="SciPy-bundle with foss/2021a installed, welcome to the modern age"
+fail_msg="Installation of SciPy-bundle with foss/2021a failed, back to the stone age..."
+# use GCCcore easyconfig from https://github.com/easybuilders/easybuild-easyconfigs/pull/14454
+# which includes patch to fix installation with recent Linux kernel headers
+$EB --from-pr 14454 GCCcore-10.3.0.eb --robot
+# use enhanced Perl easyblock from https://github.com/easybuilders/easybuild-easyblocks/pull/2640
+# to avoid trouble when using long installation prefix (for example with EESSI pilot 2021.12 on skylake_avx512...)
+$EB Perl-5.32.1-GCCcore-10.3.0.eb --robot --include-easyblocks-from-pr 2640
+# use enhanced CMake easyblock to patch CMake's UnixPaths.cmake script if --sysroot is set
+# from https://github.com/easybuilders/easybuild-easyblocks/pull/2248
+$EB CMake-3.20.1-GCCcore-10.3.0.eb --robot --include-easyblocks-from-pr 2248
+# use Rust easyconfig from https://github.com/easybuilders/easybuild-easyconfigs/pull/14584
+# that includes patch to fix bootstrap problem when using alternate sysroot
+$EB --from-pr 14584 Rust-1.52.1-GCCcore-10.3.0.eb --robot
+# use OpenBLAS easyconfig from https://github.com/easybuilders/easybuild-easyconfigs/pull/15885
+# which includes a patch to fix installation on POWER
+$EB --from-pr 15885 OpenBLAS-0.3.15-GCC-10.3.0.eb --robot
+
+$EB SciPy-bundle-2021.05-foss-2021a.eb -r --buildpath /dev/shm/$USER/easybuild_build
+check_exit_code $? "${ok_msg}" "${fail_msg}"
+
 ### add packages here
 
 echo ">> Creating/updating Lmod cache..."

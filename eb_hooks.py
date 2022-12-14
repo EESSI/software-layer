@@ -5,7 +5,8 @@ import re
 
 from easybuild.tools.build_log import EasyBuildError, print_msg
 from easybuild.tools.config import build_option, update_build_option
-from easybuild.tools.systemtools import AARCH64, POWER, get_cpu_architecture
+from easybuild.tools.systemtools import AARCH64, POWER, X86_64, get_cpu_architecture, get_cpu_features
+from easybuild.tools.toolchain.compiler import OPTARCH_GENERIC
 
 EESSI_RPATH_OVERRIDE_ATTR = 'orig_rpath_override_dirs'
 
@@ -51,6 +52,13 @@ def parse_hook(ec, *args, **kwargs):
 
     if ec.name in PARSE_HOOKS:
         PARSE_HOOKS[ec.name](ec, eprefix)
+
+
+def pre_configure_hook(self, *args, **kwargs):
+    """Main pre-configure hook: trigger custom functions based on software name."""
+
+    if self.name in PRE_CONFIGURE_HOOKS:
+        PRE_CONFIGURE_HOOKS[self.name](self, *args, **kwargs)
 
 
 def pre_prepare_hook(self, *args, **kwargs):
@@ -120,7 +128,7 @@ def ucx_eprefix(ec, eprefix):
     if ec.name == 'UCX':
         ec.update('configopts', '--with-sysroot=%s' % eprefix)
         ec.update('configopts', '--with-rdmacm=%s' % os.path.join(eprefix, 'usr'))
-        print_msg("Using custom configure option for %s: %s", ec.name, ec['configopts'])
+        print_msg("Using custom configure options for %s: %s", ec.name, ec['configopts'])
     else:
         raise EasyBuildError("UCX-specific hook triggered for non-UCX easyconfig?!")
 
@@ -129,6 +137,19 @@ def pre_configure_hook(self, *args, **kwargs):
     """Main pre-configure hook: trigger custom functions based on software name."""
     if self.name in PRE_CONFIGURE_HOOKS:
         PRE_CONFIGURE_HOOKS[self.name](self, *args, **kwargs)
+
+
+def libfabric_disable_psm3_x86_64_generic(self, *args, **kwargs):
+    """Add --disable-psm3 to libfabric configure options when building with --optarch=GENERIC on x86_64."""
+    if self.name == 'libfabric':
+        if get_cpu_architecture() == X86_64:
+            generic = build_option('optarch') == OPTARCH_GENERIC
+            no_avx = 'avx' not in get_cpu_features()
+            if generic or no_avx:
+                self.cfg.update('configopts', '--disable-psm3')
+                print_msg("Using custom configure options for %s: %s", self.name, self.cfg['configopts'])
+    else:
+        raise EasyBuildError("libfabric-specific hook triggered for non-libfabric easyconfig?!")
 
 
 def metabat_preconfigure(self, *args, **kwargs):
@@ -167,6 +188,7 @@ PARSE_HOOKS = {
 }
 
 PRE_CONFIGURE_HOOKS = {
+    'libfabric': libfabric_disable_psm3_x86_64_generic,
     'MetaBAT': metabat_preconfigure,
     'WRF': wrf_preconfigure,
 }
