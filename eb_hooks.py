@@ -138,12 +138,9 @@ def metabat_preconfigure(self, *args, **kwargs):
       and that there's no libz.a in the EESSI compat layer
     """
     if self.name == 'MetaBAT':
-        print("from metadata_preconfigure hook: %s" % self.cfg['configopts'])
         configopts = self.cfg['configopts']
         regex = re.compile(r"\$EBROOTZLIB/lib/libz.a")
-        print(regex.search(configopts))
         self.cfg['configopts'] = regex.sub('$EPREFIX/usr/lib64/libz.so', configopts)
-        print(self.cfg['configopts'])
     else:
         raise EasyBuildError("MetaBAT-specific hook triggered for non-MetaBAT easyconfig?!")
 
