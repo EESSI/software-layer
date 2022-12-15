@@ -224,10 +224,11 @@ ok_msg="Done with OpenBLAS!"
 fail_msg="Installation of OpenBLAS failed!"
 if [[ $GENERIC -eq 1 ]]; then
     echo_yellow ">> Using https://github.com/easybuilders/easybuild-easyblocks/pull/1946 to build generic OpenBLAS."
-    $EB --include-easyblocks-from-pr 1946 OpenBLAS-0.3.9-GCC-9.3.0.eb --robot
+    openblas_include_easyblocks_from_pr="--include-easyblocks-from-pr 1946"
 else
-    $EB OpenBLAS-0.3.9-GCC-9.3.0.eb --robot
+    openblas_include_easyblocks_from_pr=''
 fi
+$EB $openblas_include_easyblocks_from_pr OpenBLAS-0.3.9-GCC-9.3.0.eb --robot
 check_exit_code $? "${ok_msg}" "${fail_msg}"
 
 echo ">> Installing OpenMPI..."
@@ -389,9 +390,19 @@ $EB CMake-3.20.1-GCCcore-10.3.0.eb --robot --include-easyblocks-from-pr 2248
 $EB --from-pr 14584 Rust-1.52.1-GCCcore-10.3.0.eb --robot
 # use OpenBLAS easyconfig from https://github.com/easybuilders/easybuild-easyconfigs/pull/15885
 # which includes a patch to fix installation on POWER
-$EB --from-pr 15885 OpenBLAS-0.3.15-GCC-10.3.0.eb --robot
+$EB $openblas_include_easyblocks_from_pr --from-pr 15885 OpenBLAS-0.3.15-GCC-10.3.0.eb --robot
+# ignore failing FlexiBLAS tests when building on POWER;
+# some tests are failing due to a segmentation fault due to "invalid memory reference",
+# see also https://github.com/easybuilders/easybuild-easyconfigs/pull/12476;
+# using -fstack-protector-strong -fstack-clash-protection should fix that,
+# but it doesn't for some reason when building for ppc64le/generic...
+if [ "${EESSI_SOFTWARE_SUBDIR}" = "ppc64le/generic" ]; then
+    $EB FlexiBLAS-3.0.4-GCC-10.3.0.eb --ignore-test-failure
+else
+    $EB FlexiBLAS-3.0.4-GCC-10.3.0.eb
+fi
 
-$EB SciPy-bundle-2021.05-foss-2021a.eb -r --buildpath /dev/shm/$USER/easybuild_build
+$EB SciPy-bundle-2021.05-foss-2021a.eb --robot
 check_exit_code $? "${ok_msg}" "${fail_msg}"
 
 ### add packages here
