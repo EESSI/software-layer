@@ -443,4 +443,3 @@ check_exit_code $? "${ok_msg}" "${fail_msg}"
 
 echo ">> Cleaning up ${TMPDIR}..."
 rm -r ${TMPDIR}
-echo nothing
