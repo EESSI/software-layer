@@ -35,7 +35,7 @@ jobs:
         curl -OL https://dl.fedoraproject.org/pub/epel/8/Everything/x86_64/Packages/s/$singularity_rpm
         sudo alien -d $singularity_rpm
         sudo apt install ./singularity*.deb
-        sudo apt install mksquashfs
+        sudo apt install squashfs-tools
         singularity --version
 
     - name: test install_software_layer.sh script
