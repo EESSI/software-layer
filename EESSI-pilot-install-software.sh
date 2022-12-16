@@ -394,6 +394,34 @@ $EB --from-pr 15885 OpenBLAS-0.3.15-GCC-10.3.0.eb --robot
 $EB SciPy-bundle-2021.05-foss-2021a.eb -r --buildpath /dev/shm/$USER/easybuild_build
 check_exit_code $? "${ok_msg}" "${fail_msg}"
 
+# CUDA support
+
+# install p7zip (to be able to unpack RPMs)
+p7zip_ec="p7zip-17.04-GCCcore-10.3.0.eb"
+echo ">> Installing $p7zip_ec..."
+ok_msg="$p7zip_ec installed, off to a good (?) start!"
+fail_msg="Failed to install $p7zip_ec, woopsie..."
+$EB $p7zip_ec --robot
+check_exit_code $? "${ok_msg}" "${fail_msg}"
+
+# install CUDA (uses eb_hooks.py to only install runtime)
+cuda_ec="CUDA-11.3.1.eb"
+echo ">> Installing $cuda_ec..."
+ok_msg="$cuda_ec installed, off to a good (?) start!"
+fail_msg="Failed to install $cuda_ec, woopsie..."
+$EB $cuda_ec --robot
+check_exit_code $? "${ok_msg}" "${fail_msg}"
+
+# install CUDA samples (requires EESSI support for CUDA)
+# TODO Run EESSI NVIDIA GPU support script here
+# (which unbreaks the symlinks from the runtime installation)
+cuda_samples_ec="CUDA-Samples-11.3-GCC-10.3.0-CUDA-11.3.1.eb"
+echo ">> Installing $cuda_samples_ec..."
+ok_msg="$cuda_ec installed, off to a good (?) start!"
+fail_msg="Failed to install $cuda_samples_ec, woopsie..."
+$EB $cuda_samples_ec --robot --from-pr=16914
+check_exit_code $? "${ok_msg}" "${fail_msg}"
+
 ### add packages here
 
 echo ">> Creating/updating Lmod cache..."
