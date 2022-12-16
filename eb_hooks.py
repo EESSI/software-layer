@@ -252,7 +252,7 @@ def cuda_postpackage(self, *args, **kwargs):
                     target = source.replace("versions", "host_injections")
                     os.remove(source)
                     # Using os.symlink requires the existence of the target directory, so we use os.system
-                    os.system("ln %s %s" % (target, source))
+                    os.system("ln -s %s %s" % (target, source))
 
 
 def inject_gpu_property(ec):
