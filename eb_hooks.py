@@ -30,22 +30,6 @@ CUDA_ENABLED_TOOLCHAINS = [
     "nvpsmpic",
 ]
 
-PARSE_HOOKS = {
-    "CGAL": cgal_toolchainopts_precise,
-    "fontconfig": fontconfig_add_fonts,
-    "UCX": ucx_eprefix,
-}
-
-PRE_CONFIGURE_HOOKS = {
-    "libfabric": libfabric_disable_psm3_x86_64_generic,
-    "MetaBAT": metabat_preconfigure,
-    "WRF": wrf_preconfigure,
-}
-
-POST_PACKAGE_HOOKS = {
-    "CUDA": cuda_postpackage,
-}
-
 
 def parse_hook(ec, *args, **kwargs):
     """Main parse hook: trigger custom functions based on software name."""
@@ -230,7 +214,7 @@ def wrf_preconfigure(self, *args, **kwargs):
         raise EasyBuildError("WRF-specific hook triggered for non-WRF easyconfig?!")
 
 
-def cuda_post_package(self, *args, **kwargs):
+def cuda_postpackage(self, *args, **kwargs):
     """Delete CUDA files we are not allowed to ship and replace them with a symlink to a possible installation under host_injections."""
     print_msg("Replacing CUDA stuff we cannot ship with symlinks...")
     # read CUDA EULA
@@ -297,3 +281,19 @@ def inject_gpu_property(ec):
         else:
             ec[key] = value
     return ec
+
+PARSE_HOOKS = {
+    "CGAL": cgal_toolchainopts_precise,
+    "fontconfig": fontconfig_add_fonts,
+    "UCX": ucx_eprefix,
+}
+
+PRE_CONFIGURE_HOOKS = {
+    "libfabric": libfabric_disable_psm3_x86_64_generic,
+    "MetaBAT": metabat_preconfigure,
+    "WRF": wrf_preconfigure,
+}
+
+POST_PACKAGE_HOOKS = {
+    "CUDA": cuda_postpackage,
+}
