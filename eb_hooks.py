@@ -232,7 +232,7 @@ def cuda_postpackage(self, *args, **kwargs):
             elif copy:
                 tmp_buffer.append(line)
     # create whitelist without file extensions, they're not really needed and they only complicate things
-    whitelist = []
+    whitelist = ['eula']
     file_extensions = [".so", ".a", ".h", ".bc"]
     for tmp in tmp_buffer:
         for word in tmp.split():
@@ -252,7 +252,9 @@ def cuda_postpackage(self, *args, **kwargs):
                     target = source.replace("versions", "host_injections")
                     os.remove(source)
                     # Using os.symlink requires the existence of the target directory, so we use os.system
-                    os.system("ln -s %s %s" % (target, source))
+                    system_command="ln -s %s %s" % (target, source)
+                    if os.system(system_command) != 0:
+                        raise EasyBuildError("Failed to create symbolic link: %s" % system_command)
 
 
 def inject_gpu_property(ec):
