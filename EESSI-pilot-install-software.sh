@@ -413,11 +413,10 @@ $EB $cuda_ec --robot
 check_exit_code $? "${ok_msg}" "${fail_msg}"
 
 # Add the host_injections CUDA so we can actually build CUDA apps
+# (which unbreaks the symlinks from the runtime installation)
 ./install_cuda_host_injections.sh 11.3.1
 
 # install CUDA samples (requires EESSI support for CUDA)
-# TODO Run EESSI NVIDIA GPU support script here
-# (which unbreaks the symlinks from the runtime installation)
 cuda_samples_ec="CUDA-Samples-11.3-GCC-10.3.0-CUDA-11.3.1.eb"
 echo ">> Installing $cuda_samples_ec..."
 ok_msg="$cuda_ec installed, off to a good (?) start!"
