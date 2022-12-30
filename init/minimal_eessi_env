@@ -1,7 +1,13 @@
 # define minimal EESSI environment, without relying on external scripts
+#
+# this script is *sourced*, not executed, so can't rely on $0 to determine path to self
+# $BASH_SOURCE points to correct path, see also http://mywiki.wooledge.org/BashFAQ/028
+EESSI_INIT_DIR_PATH=$(dirname $(realpath $BASH_SOURCE))
 
-export EESSI_CVMFS_REPO="/cvmfs/pilot.eessi-hpc.org"
-export EESSI_PILOT_VERSION="${EESSI_PILOT_VERSION_OVERRIDE:=2021.12}"
+# set up defaults: EESSI_CVMFS_REPO, EESSI_PILOT_VERSION
+#   script takes *_OVERRIDEs into account
+source ${EESSI_INIT_DIR_PATH}/eessi_defaults
+
 export EESSI_PREFIX=$EESSI_CVMFS_REPO/versions/$EESSI_PILOT_VERSION
 
 if [[ $(uname -s) == 'Linux' ]]; then

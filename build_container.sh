@@ -1,5 +1,7 @@
 #!/bin/bash
 
+base_dir=$(dirname $(realpath $0))
+
 BUILD_CONTAINER="docker://ghcr.io/eessi/build-node:debian10"
 
 if [ $# -lt 2 ]; then
@@ -39,9 +41,13 @@ if [ -z $SINGULARITY_HOME ]; then
     export SINGULARITY_HOME="$EESSI_TMPDIR/home:/home/$USER"
 fi
 
+source ${base_dir}/init/eessi_defaults
+# strip "/cvmfs/" from default setting
+repo_name=${EESSI_CVMFS_REPO/\/cvmfs\//}
+
 # set environment variables for fuse mounts in Singularity container
-export EESSI_PILOT_READONLY="container:cvmfs2 pilot.eessi-hpc.org /cvmfs_ro/pilot.eessi-hpc.org"
-export EESSI_PILOT_WRITABLE_OVERLAY="container:fuse-overlayfs -o lowerdir=/cvmfs_ro/pilot.eessi-hpc.org -o upperdir=$EESSI_TMPDIR/overlay-upper -o workdir=$EESSI_TMPDIR/overlay-work /cvmfs/pilot.eessi-hpc.org"
+export EESSI_PILOT_READONLY="container:cvmfs2 ${repo_name} /cvmfs_ro/${repo_name}"
+export EESSI_PILOT_WRITABLE_OVERLAY="container:fuse-overlayfs -o lowerdir=/cvmfs_ro/${repo_name} -o upperdir=$EESSI_TMPDIR/overlay-upper -o workdir=$EESSI_TMPDIR/overlay-work ${EESSI_CVMFS_REPO}"
 
 if [ "$SHELL_OR_RUN" == "shell" ]; then
     # start shell in Singularity container, with EESSI repository mounted with writable overlay

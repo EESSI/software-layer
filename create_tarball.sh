@@ -2,6 +2,8 @@
 
 set -e
 
+base_dir=$(dirname $(realpath $0))
+
 if [ $# -ne 4 ]; then
     echo "ERROR: Usage: $0 <EESSI tmp dir (example: /tmp/$USER/EESSI)> <pilot version (example: 2021.03)> <CPU arch subdir (example: x86_64/amd/zen2)> <path to tarball>" >&2
     exit 1
@@ -15,7 +17,8 @@ tmpdir=`mktemp -d`
 echo ">> tmpdir: $tmpdir"
 
 os="linux"
-cvmfs_repo="/cvmfs/pilot.eessi-hpc.org"
+source ${base_dir}/init/eessi_defaults
+cvmfs_repo=${EESSI_CVMFS_REPO}
 
 software_dir="${cvmfs_repo}/versions/${pilot_version}/software/${os}/${cpu_arch_subdir}"
 if [ ! -d ${software_dir} ]; then
