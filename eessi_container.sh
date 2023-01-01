@@ -116,6 +116,7 @@ while [[ $# -gt 0 ]]; do
       ;;
     -d|--dry-run)
       DRY_RUN=1
+      shift 1
       ;;
     -h|--help)
       display_help
@@ -123,6 +124,7 @@ while [[ $# -gt 0 ]]; do
       ;;
     -i|--info)
       INFO=1
+      shift 1
       ;;
     -l|--local-disk)
       LOCAL_DISK="$2"
