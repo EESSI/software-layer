@@ -274,31 +274,30 @@ BIND_PATHS="${BIND_PATHS},${EESSI_TMPDIR}:/tmp"
 # strip "/cvmfs/" from default setting
 repo_name=${EESSI_CVMFS_REPO/\/cvmfs\//}
 
+declare -a EESSI_FUSE_MOUNTS=()
 if [[ "${ACCESS}" == "ro" ]]; then
   export EESSI_PILOT_READONLY="container:cvmfs2 ${repo_name} ${EESSI_CVMFS_REPO}"
-  export EESSI_FUSE_MOUNTS="--fusemount ${EESSI_PILOT_READONLY}"
+  EESSI_FUSE_MOUNTS+=("--fusemount" "${EESSI_PILOT_READONLY}")
 fi
 
 if [[ "${ACCESS}" == "rw" ]]; then
   EESSI_CVMFS_OVERLAY_UPPER=${EESSI_LOCAL_DISK}/overlay-upper
   EESSI_CVMFS_OVERLAY_WORK=${EESSI_LOCAL_DISK}/overlay-work
-  mkdir -p ${EESSI_CMVFS_OVERLAY_UPPER}
-  mkdir -p ${EESSI_CMVFS_OVERLAY_WORK}
+  mkdir -p ${EESSI_CVMFS_OVERLAY_UPPER}
+  mkdir -p ${EESSI_CVMFS_OVERLAY_WORK}
   [[ ${INFO} -eq 1 ]] && echo "EESSI_CVMFS_OVERLAY_UPPER=${EESSI_CVMFS_OVERLAY_UPPER}"
   [[ ${INFO} -eq 1 ]] && echo "EESSI_CVMFS_OVERLAY_WORK=${EESSI_CVMFS_OVERLAY_WORK}"
 
   # set environment variables for fuse mounts in Singularity container
-  export EESSI_PILOT_READONLY="container:cvmfs2 ${repo_name} /cvmfs_ro/${repo_name}"
+  EESSI_PILOT_READONLY="container:cvmfs2 ${repo_name} /cvmfs_ro/${repo_name}"
+  EESSI_FUSE_MOUNTS+=("--fusemount" "${EESSI_PILOT_READONLY}")
+
   EESSI_PILOT_WRITABLE_OVERLAY="container:fuse-overlayfs"
   EESSI_PILOT_WRITABLE_OVERLAY+=" -o lowerdir=/cvmfs_ro/${repo_name}"
   EESSI_PILOT_WRITABLE_OVERLAY+=" -o upperdir=${EESSI_CVMFS_OVERLAY_UPPER}"
   EESSI_PILOT_WRITABLE_OVERLAY+=" -o workdir=${EESSI_CVMFS_OVERLAY_WORK}"
   EESSI_PILOT_WRITABLE_OVERLAY+=" ${EESSI_CVMFS_REPO}"
-  export EESSI_PILOT_WRITABLE_OVERLAY
-
-  EESSI_FUSE_MOUNTS="--fusemount ${EESSI_PILOT_READONLY}"
-  EESSI_FUSE_MOUNTS+=" --fusemount ${EESSI_PILOT_WRITABLE_OVERLAY}"
-  export EESSI_FUSE_MOUNTS
+  EESSI_FUSE_MOUNTS+=("--fusemount" "${EESSI_PILOT_WRITABLE_OVERLAY}")
 fi
 
 
@@ -307,5 +306,5 @@ fi
 
 # 6. run container
 echo "Launching container with command (next line):"
-echo "singularity ${MODE} ${EESSI_FUSE_MOUNTS} ${CONTAINER} ${RUN_SCRIPT_AND_ARGS}"
-singularity ${MODE} ${EESSI_FUSE_MOUNTS} ${CONTAINER} ${RUN_SCRIPT_AND_ARGS}
+echo "singularity ${MODE} ${EESSI_FUSE_MOUNTS[@]} ${CONTAINER} ${RUN_SCRIPT_AND_ARGS}"
+singularity ${MODE} "${EESSI_FUSE_MOUNTS[@]}" ${CONTAINER} ${RUN_SCRIPT_AND_ARGS}
