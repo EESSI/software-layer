@@ -241,31 +241,34 @@ echo "Using ${EESSI_LOCAL_DISK} as parent for temporary directories..."
 #      |-singularity_cache
 #      |-${CVMFS_VAR_LIB}
 #      |-${CVMFS_VAR_RUN}
+#      |-overlay-upper
+#      |-overlay-work
+#      |-home
 
 source ${base_dir}/init/eessi_defaults
 
+# tmp dir for EESSI
+EESSI_TMPDIR=${EESSI_LOCAL_DISK}
+mkdir -p ${EESSI_TMPDIR}
+[[ ${INFO} -eq 1 ]] && echo "EESSI_TMPDIR=${EESSI_TMPDIR}"
+
 # configure Singularity
-export SINGULARITY_CACHEDIR=${EESSI_LOCAL_DISK}/singularity_cache
+export SINGULARITY_CACHEDIR=${EESSI_TMPDIR}/singularity_cache
 mkdir -p ${SINGULARITY_CACHEDIR}
 [[ ${INFO} -eq 1 ]] && echo "SINGULARITY_CACHEDIR=${SINGULARITY_CACHEDIR}"
 
 # set env vars and create directories for CernVM-FS
-EESSI_CVMFS_VAR_LIB=${EESSI_LOCAL_DISK}/${CVMFS_VAR_LIB}
-EESSI_CVMFS_VAR_RUN=${EESSI_LOCAL_DISK}/${CVMFS_VAR_RUN}
+EESSI_CVMFS_VAR_LIB=${EESSI_TMPDIR}/${CVMFS_VAR_LIB}
+EESSI_CVMFS_VAR_RUN=${EESSI_TMPDIR}/${CVMFS_VAR_RUN}
 mkdir -p ${EESSI_CVMFS_VAR_LIB}
 mkdir -p ${EESSI_CVMFS_VAR_RUN}
 [[ ${INFO} -eq 1 ]] && echo "EESSI_CVMFS_VAR_LIB=${EESSI_CVMFS_VAR_LIB}"
 [[ ${INFO} -eq 1 ]] && echo "EESSI_CVMFS_VAR_RUN=${EESSI_CVMFS_VAR_RUN}"
 
-# tmp dir for EESSI
-EESSI_TMPDIR=${EESSI_LOCAL_DISK}/tmp
-mkdir -p ${EESSI_TMPDIR}
-[[ ${INFO} -eq 1 ]] && echo "EESSI_TMPDIR=${EESSI_TMPDIR}"
-
 # allow that SINGULARITY_HOME is defined before script is run
 if [[ -z ${SINGULARITY_HOME} ]]; then
-  export SINGULARITY_HOME="${EESSI_LOCAL_DISK}/home:/home/${USER}"
-  mkdir -p ${EESSI_LOCAL_DISK}/home
+  export SINGULARITY_HOME="${EESSI_TMPDIR}/home:/home/${USER}"
+  mkdir -p ${EESSI_TMPDIR}/home
   [[ ${INFO} -eq 1 ]] && echo "SINGULARITY_HOME=${SINGULARITY_HOME}"
 fi
 
@@ -287,10 +290,10 @@ if [[ "${ACCESS}" == "ro" ]]; then
 fi
 
 if [[ "${ACCESS}" == "rw" ]]; then
-  EESSI_CVMFS_OVERLAY_UPPER=${EESSI_LOCAL_DISK}/overlay-upper
-  EESSI_CVMFS_OVERLAY_WORK=${EESSI_LOCAL_DISK}/overlay-work
-  mkdir -p ${EESSI_CVMFS_OVERLAY_UPPER}
-  mkdir -p ${EESSI_CVMFS_OVERLAY_WORK}
+  EESSI_CVMFS_OVERLAY_UPPER=/tmp/overlay-upper
+  EESSI_CVMFS_OVERLAY_WORK=/tmp/overlay-work
+  mkdir -p ${EESSI_TMPDIR}/overlay-upper
+  mkdir -p ${EESSI_TMPDIR}/overlay-work
   [[ ${INFO} -eq 1 ]] && echo "EESSI_CVMFS_OVERLAY_UPPER=${EESSI_CVMFS_OVERLAY_UPPER}"
   [[ ${INFO} -eq 1 ]] && echo "EESSI_CVMFS_OVERLAY_WORK=${EESSI_CVMFS_OVERLAY_WORK}"
 
@@ -300,8 +303,8 @@ if [[ "${ACCESS}" == "rw" ]]; then
 
   EESSI_PILOT_WRITABLE_OVERLAY="container:fuse-overlayfs"
   EESSI_PILOT_WRITABLE_OVERLAY+=" -o lowerdir=/cvmfs_ro/${repo_name}"
-  EESSI_PILOT_WRITABLE_OVERLAY+=" -o upperdir=${EESSI_CVMFS_OVERLAY_UPPER}"
-  EESSI_PILOT_WRITABLE_OVERLAY+=" -o workdir=${EESSI_CVMFS_OVERLAY_WORK}"
+  EESSI_PILOT_WRITABLE_OVERLAY+=" -o upperdir=/tmp/overlay-upper"
+  EESSI_PILOT_WRITABLE_OVERLAY+=" -o workdir=/tmp/overlay-work"
   EESSI_PILOT_WRITABLE_OVERLAY+=" ${EESSI_CVMFS_REPO}"
   EESSI_FUSE_MOUNTS+=("--fusemount" "${EESSI_PILOT_WRITABLE_OVERLAY}")
 fi
