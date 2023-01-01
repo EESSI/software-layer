@@ -270,8 +270,9 @@ if [[ -z ${SINGULARITY_HOME} ]]; then
 fi
 
 # define paths to add to SINGULARITY_BIND (added later when all BIND mounts are defined)
-BIND_PATHS="${EESSI_CVMFS_VAR_LIB}:/var/lib/cvfms,${EESSI_CVMFS_VAR_RUN}:/var/run/cvmfs"
+BIND_PATHS="${EESSI_CVMFS_VAR_LIB}:/var/lib/cvmfs,${EESSI_CVMFS_VAR_RUN}:/var/run/cvmfs"
 BIND_PATHS="${BIND_PATHS},${EESSI_TMPDIR}:/tmp"
+[[ ${INFO} -eq 1 ]] && echo "BIND_PATHS=${BIND_PATHS}"
 
 
 # 4. set up vars and dirs specific to a scenario
@@ -310,6 +311,14 @@ fi
 
 
 # 6. run container
+# final settings
+if [[ -z ${SINGULARITY_BIND} ]]; then
+    export SINGULARITY_BIND="${BIND_PATHS}"
+else
+    export SINGULARITY_BIND="${SINGULARITY_BIND},${BIND_PATHS}"
+fi
+[[ ${INFO} -eq 1 ]] && echo "SINGULARITY_BIND=${SINGULARITY_BIND}"
+
 echo "Launching container with command (next line):"
 echo "singularity ${MODE} ${EESSI_FUSE_MOUNTS[@]} ${CONTAINER} ${RUN_SCRIPT_AND_ARGS}"
 singularity ${MODE} "${EESSI_FUSE_MOUNTS[@]}" ${CONTAINER} ${RUN_SCRIPT_AND_ARGS}
