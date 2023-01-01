@@ -162,7 +162,7 @@ set -- "${POSITIONAL_ARGS[@]}"
 
 # 1. check if argument values are valid
 # (arg -a|--access) check if ACCESS is supported
-if [[ ${ACCESS} != "ro" -a ${ACCESS} != "rw" ]]; then
+if [[ "${ACCESS}" != "ro" && "${ACCESS}" != "rw" ]]; then
   fatal_error "unknown access method '${ACCESS}'" "${ACCESS_UNKNOWN_EXITCODE}"
 fi
 
@@ -174,7 +174,7 @@ fi
 # LOCAL_DISK_ERROR_EXITCODE
 
 # (arg -m|--mode) check if MODE is known
-if [[ ${MODE} != "shell" -a ${MODE} != "run" ]]; then
+if [[ "${MODE}" != "shell" && "${MODE}" != "run" ]]; then
   fatal_error "unknown execution mode '${MODE}'" "${MODE_UNKNOWN_EXITCODE}"
 fi
 
