@@ -210,17 +210,20 @@ fi
 #   c. /tmp
 # note, we ensure that (a) takes precedence by setting TMPDIR to LOCAL_DISK
 #     if LOCAL_DISK is not empty
-# note, (b) & (c) are automatically ensured by using mktemp -d to create
-#     a temporary directory
+# note, (b) & (c) are automatically ensured by using 'mktemp -d --tmpdir' to
+#     create a temporary directory
 # note, if previous run is used the name of the temporary directory
 #     should be identical to previous run, ie, then we don't create a new
 #     temporary directory
 if [[ ! -z ${LOCAL_DISK} ]]; then
   TMPDIR=${LOCAL_DISK}
+  # mktemp fails if TMPDIR does not exist, so let's create it
+  mkdir -p ${TMPDIR}
 fi
 if [[ ! -z ${TMPDIR} ]]; then
   # TODO check if TMPDIR already exists
-  EESSI_LOCAL_DISK=${TMPDIR}
+  # mktemp fails if TMPDIR does not exist, so let's create it
+  mkdir -p ${TMPDIR}
 fi
 if [[ -z ${TMPDIR} ]]; then
   # mktemp falls back to using /tmp if TMPDIR is empty
@@ -228,7 +231,7 @@ if [[ -z ${TMPDIR} ]]; then
   #      features for ro-access and rw-access)
   echo "skipping sanity checks for /tmp"
 fi
-EESSI_LOCAL_DISK=$(mktemp -d eessi.XXXXXXXXXX)
+EESSI_LOCAL_DISK=$(mktemp -d --tmpdir eessi.XXXXXXXXXX)
 echo "Using ${EESSI_LOCAL_DISK} as parent for temporary directories..."
 
 
