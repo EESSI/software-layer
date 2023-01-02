@@ -16,37 +16,29 @@
 # -. initial settings & exit codes
 # 0. parse args
 # 1. check if argument values are valid
-# 2. set up local disk/tmp
+# 2. set up host storage/tmp
 # 3. set up common vars and directories
 # 4. set up vars specific to a scenario
-# 5. initialize local disk/tmp from previous run if provided
+# 5. initialize host storage/tmp from previous run if provided
 # 6. run container
 
 # -. initial settings & exit codes
 base_dir=$(dirname $(realpath $0))
 
-# functions
-function echo_red() {
-    echo -e "\e[31m$1\e[0m"
-}
-
-function fatal_error() {
-    echo_red "ERROR: ${1}" >&2
-    exit ${2}
-}
+source ${base_dir}/utils.sh
 
 # exit codes: bitwise shift codes to allow for combination of exit codes
-ANY_ERROR_EXITCODE=1
+# ANY_ERROR_EXITCODE is sourced from ${base_dir}/utils.sh
 CMDLINE_ARG_UNKNOWN_EXITCODE=$((${ANY_ERROR_EXITCODE} << 1))
 ACCESS_UNKNOWN_EXITCODE=$((${ANY_ERROR_EXITCODE} << 2))
 CONTAINER_ERROR_EXITCODE=$((${ANY_ERROR_EXITCODE} << 3))
-LOCAL_DISK_ERROR_EXITCODE=$((${ANY_ERROR_EXITCODE} << 4))
+HOST_STORAGE_ERROR_EXITCODE=$((${ANY_ERROR_EXITCODE} << 4))
 MODE_UNKNOWN_EXITCODE=$((${ANY_ERROR_EXITCODE} << 5))
 PREVIOUS_RUN_ERROR_EXITCODE=$((${ANY_ERROR_EXITCODE} << 6))
 REPOSITORY_UNKNOWN_EXITCODE=$((${ANY_ERROR_EXITCODE} << 7))
-HTTP_PROXY_ERROR_EXITCODE=$((${ANY_ERROR_EXITCODE} << 8))
-HTTPS_PROXY_ERROR_EXITCODE=$((${ANY_ERROR_EXITCODE} << 9))
-RUN_SCRIPT_MISSING_EXITCODE=$((${ANY_ERROR_EXITCODE} << 10))
+HTTP_PROXY_ERROR_EXITCODE=$((${ANY_ERROR_EXITCODE} << 9))
+HTTPS_PROXY_ERROR_EXITCODE=$((${ANY_ERROR_EXITCODE} << 10))
+RUN_SCRIPT_MISSING_EXITCODE=$((${ANY_ERROR_EXITCODE} << 11))
 
 # CernVM-FS settings
 CVMFS_VAR_LIB="var-lib-cvmfs"
@@ -68,7 +60,7 @@ display_help() {
   echo "                              print information about setup [default: false]"
   echo "  -h | --help              -  display this usage information [default: false]"
   echo "  -i | --info              -  display configured repositories [default: false]"
-  echo "  -l | --local-disk DIR    -  directory space on local machine (used for"
+  echo "  -l | --host-storage DIR  -  directory space on host machine (used for"
   echo "                              temporary data) [default: 1. TMPDIR, 2. /tmp]"
   echo "  -m | --mode {shell,run}  -  shell (launch interactive shell)"
   echo "                              run (run a script) [default: shell]"
@@ -94,7 +86,7 @@ ACCESS="ro"
 CONTAINER="docker://ghcr.io/eessi/build-node:debian10"
 DRY_RUN=0
 INFO=0
-LOCAL_DISK=
+HOST_STORAGE=
 MODE="shell"
 PREVIOUS_RUN=
 REPOSITORY="EESSI-pilot"
@@ -126,8 +118,8 @@ while [[ $# -gt 0 ]]; do
       INFO=1
       shift 1
       ;;
-    -l|--local-disk)
-      LOCAL_DISK="$2"
+    -l|--host-storage)
+      HOST_STORAGE="$2"
       #EESSI_TMPDIR="$2"
       shift 2
       ;;
@@ -171,9 +163,9 @@ fi
 # TODO (arg -c|--container) check container (is it a file or URL & access those)
 # CONTAINER_ERROR_EXITCODE
 
-# TODO (arg -l|--local-disk) check if it exists, if user has write permission,
+# TODO (arg -l|--host-storage) check if it exists, if user has write permission,
 #      if it contains no data, etc.
-# LOCAL_DISK_ERROR_EXITCODE
+# HOST_STORAGE_ERROR_EXITCODE
 
 # (arg -m|--mode) check if MODE is known
 if [[ "${MODE}" != "shell" && "${MODE}" != "run" ]]; then
@@ -203,20 +195,20 @@ if [[ "${MODE}" == "run" ]]; then
 fi
 
 
-# 2. set up local disk/tmp
+# 2. set up host storage/tmp
 # as location for temporary data use in the following order
-#   a. command line argument -l|--local_disk
+#   a. command line argument -l|--host-storage
 #   b. env var TMPDIR
 #   c. /tmp
-# note, we ensure that (a) takes precedence by setting TMPDIR to LOCAL_DISK
-#     if LOCAL_DISK is not empty
+# note, we ensure that (a) takes precedence by setting TMPDIR to HOST_STORAGE
+#     if HOST_STORAGE is not empty
 # note, (b) & (c) are automatically ensured by using 'mktemp -d --tmpdir' to
 #     create a temporary directory
 # note, if previous run is used the name of the temporary directory
 #     should be identical to previous run, ie, then we don't create a new
 #     temporary directory
-if [[ ! -z ${LOCAL_DISK} ]]; then
-  TMPDIR=${LOCAL_DISK}
+if [[ ! -z ${HOST_STORAGE} ]]; then
+  export TMPDIR=${HOST_STORAGE}
   # mktemp fails if TMPDIR does not exist, so let's create it
   mkdir -p ${TMPDIR}
 fi
@@ -231,13 +223,13 @@ if [[ -z ${TMPDIR} ]]; then
   #      features for ro-access and rw-access)
   echo "skipping sanity checks for /tmp"
 fi
-EESSI_LOCAL_DISK=$(mktemp -d --tmpdir eessi.XXXXXXXXXX)
-echo "Using ${EESSI_LOCAL_DISK} as parent for temporary directories..."
+EESSI_HOST_STORAGE=$(mktemp -d --tmpdir eessi.XXXXXXXXXX)
+echo "Using ${EESSI_HOST_STORAGE} as parent for temporary directories..."
 
 
 # 3. set up common vars and directories
 #    directory structure should be:
-#      ${EESSI_LOCAL_DISK}
+#      ${EESSI_HOST_STORAGE}
 #      |-singularity_cache
 #      |-${CVMFS_VAR_LIB}
 #      |-${CVMFS_VAR_RUN}
@@ -248,7 +240,7 @@ echo "Using ${EESSI_LOCAL_DISK} as parent for temporary directories..."
 source ${base_dir}/init/eessi_defaults
 
 # tmp dir for EESSI
-EESSI_TMPDIR=${EESSI_LOCAL_DISK}
+EESSI_TMPDIR=${EESSI_HOST_STORAGE}
 mkdir -p ${EESSI_TMPDIR}
 [[ ${INFO} -eq 1 ]] && echo "EESSI_TMPDIR=${EESSI_TMPDIR}"
 
@@ -310,7 +302,7 @@ if [[ "${ACCESS}" == "rw" ]]; then
 fi
 
 
-# 5. initialize local disk/tmp from previous run if provided
+# 5. initialize host storage/tmp from previous run if provided
 
 
 # 6. run container
