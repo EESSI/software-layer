@@ -60,19 +60,19 @@ function cfg_load {
 }
 
 function cfg_print {
-    for i in "${!cfg_repos[@]}"
-    do
+  for index in "${!cfg_repos[@]}"
+  do
     # split the associative key in to section and key
-       echo -n "section  : $(echo $i | cut -f1 -d ' ');"
-       echo -n "key  : $(echo $i | cut -f2 -d ' ');"
-       echo  "value: ${cfg_repos[$i]}"
-    done
+    echo -n "section  : $(echo $index | cut -f1 -d ' ');"
+    echo -n "key  : $(echo $index | cut -f2 -d ' ');"
+    echo  "value: ${cfg_repos[$index]}"
+  done
 }
 
 function cfg_get_value {
-    section=$1
-    key=$2
-    echo "${cfg_repos[$section $key]}"
+  section=$1
+  key=$2
+  echo "${cfg_repos[$section $key]}"
 }
 
 function cfg_trim_spaces {
@@ -116,7 +116,7 @@ function cfg_get_all_sections {
   do
     sections="${sections} ${sec_key}"
   done
-  echo "${sections}"
+  echo "${sections}" | cfg_trim_spaces
 }
 
 function cfg_init_file_map {
@@ -129,7 +129,7 @@ function cfg_init_file_map {
 
   # expects a string containing the config_map from the cfg file
   # trim leading and trailing curly brackets
-  cm_trimmed=$(cfg_trim_curly_brackets $1)
+  cm_trimmed=$(cfg_trim_curly_brackets "$1")
 
   # split into elements along ','
   declare -a cm_mappings
@@ -146,3 +146,11 @@ function cfg_init_file_map {
     cfg_file_map[${tr_key}]=${tr_value}
   done
 }
+
+function cfg_print_map {
+  for index in "${!cfg_file_map[@]}"
+  do
+    echo "${index} --> ${cfg_file_map[${index}]}"
+  done
+}
+

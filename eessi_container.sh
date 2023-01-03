@@ -322,8 +322,8 @@ else
   config_map=$(cfg_get_value ${REPOSITORY} "config_map")
 
   # convert config_map into associative array cfg_file_map
-  cfg_init_file_map
-  declare -p cfg_file_map
+  cfg_init_file_map "${config_map}"
+  cfg_print_map
 
   # TODO use information to set up dir ${EESSI_TMPDIR}/cfg and
   #      define BIND mounts
