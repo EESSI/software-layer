@@ -133,7 +133,7 @@ function cfg_init_file_map {
 
   # split into elements along ','
   declare -a cm_mappings
-#  IFS=',' read -r -a cm_mappings <<< "${cm_trimmed}"
+  IFS=',' read -r -a cm_mappings <<< "${cm_trimmed}"
 
   for index in "${!cm_mappings[@]}"
   do
