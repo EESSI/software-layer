@@ -26,6 +26,7 @@
 base_dir=$(dirname $(realpath $0))
 
 source ${base_dir}/utils.sh
+source ${base_dir}/cfg_files.sh
 
 # exit codes: bitwise shift codes to allow for combination of exit codes
 # ANY_ERROR_EXITCODE is sourced from ${base_dir}/utils.sh
@@ -43,6 +44,9 @@ RUN_SCRIPT_MISSING_EXITCODE=$((${ANY_ERROR_EXITCODE} << 11))
 # CernVM-FS settings
 CVMFS_VAR_LIB="var-lib-cvmfs"
 CVMFS_VAR_RUN="var-run-cvmfs"
+
+# repository cfg file
+REPO_CFG_FILE=repos.cfg
 
 
 # 0. parse args
@@ -129,6 +133,10 @@ while [[ $# -gt 0 ]]; do
       ;;
     -p|--previous-run)
       PREVIOUS_RUN="$2"
+      shift 2
+      ;;
+    -r|--repository)
+      REPOSITORY="$2"
       shift 2
       ;;
     -x|--http-proxy)
@@ -236,6 +244,7 @@ echo "Using ${EESSI_HOST_STORAGE} as parent for temporary directories..."
 #      |-overlay-upper
 #      |-overlay-work
 #      |-home
+#      |-cfg
 
 source ${base_dir}/init/eessi_defaults
 
@@ -269,11 +278,60 @@ BIND_PATHS="${EESSI_CVMFS_VAR_LIB}:/var/lib/cvmfs,${EESSI_CVMFS_VAR_RUN}:/var/ru
 BIND_PATHS="${BIND_PATHS},${EESSI_TMPDIR}:/tmp"
 [[ ${INFO} -eq 1 ]] && echo "BIND_PATHS=${BIND_PATHS}"
 
+# set up repository config (always create cfg dir and populate it with info when
+# arg -r|--repository is used)
+mkdir -p ${EESSI_TMPDIR}/cfg
+if [[ "${REPOSITORY}" == "EESSI-pilot" ]]; then
+  # strip "/cvmfs/" from default setting
+  repo_name=${EESSI_CVMFS_REPO/\/cvmfs\//}
+else
+  # TODO implement more flexible specification of repo cfgs
+  #      REPOSITORY => repo-id OR repo-cfg-file (with a single section) OR
+  #                    repo-cfg-file:repo-id (repo-id defined in repo-cfg-file)
+  #
+  # for now, assuming repo-id is defined in config file pointed to
+  #   REPO_CFG_FILE, which is to be copied into the working directory
+  #   (could also become part of the software layer to define multiple
+  #    standard EESSI repositories)
+  cfg_load ${REPO_CFG_FILE}
+
+  # cfg file should include: repo_name, repo_version, config_bundle,
+  #   map { local_filepath -> container_filepath }
+  #
+  # repo_name_domain is the domain part of the repo_name, e.g.,
+  #   eessi-hpc.org for pilot.eessi-hpc.org
+  #
+  # where config bundle includes the files (-> target location in container)
+  # - default.local -> /etc/cvmfs/default.local
+  #   contains CVMFS settings, e.g., CVMFS_HTTP_PROXY, CVMFS_QUOTA_LIMIT, ...
+  # - ${repo_name_domain}.conf -> /etc/cvmfs/domain.d/${repo_name_domain}.conf
+  #   contains CVMFS settings, e.g., CVMFS_SERVER_URL (Stratum 1s),
+  #   CVMFS_KEYS_DIR, CVMFS_USE_GEOAPI, ...
+  # - ${repo_name_domain}/ -> /etc/cvmfs/keys/${repo_name_domain}
+  #   a directory that contains the public key to access the repository, key
+  #   itself then doesn't need to be BIND mounted
+  # - ${repo_name_domain}/${repo_name}.pub
+  #   (-> /etc/cvmfs/keys/${repo_name_domain}/${repo_name}.pub
+  #   the public key to access the repository, key itself is BIND mounted
+  #   via directory ${repo_name_domain}
+  repo_name=$(cfg_get_value ${REPOSITORY} "repo_name")
+  # derive domain part from repo_name (everything after first '.')
+  repo_name_domain=${repo_name#*.}
+  repo_version=$(cfg_get_value ${REPOSITORY} "repo_version")
+  config_bundle=$(cfg_get_value ${REPOSITORY} "config_bundle")
+  config_map=$(cfg_get_value ${REPOSITORY} "config_map")
+
+  # convert config_map into associative array cfg_file_map
+  cfg_init_file_map
+  declare -p cfg_file_map
+
+  # TODO use information to set up dir ${EESSI_TMPDIR}/cfg and
+  #      define BIND mounts
+  exit -1
+fi
+
 
 # 4. set up vars and dirs specific to a scenario
-
-# strip "/cvmfs/" from default setting
-repo_name=${EESSI_CVMFS_REPO/\/cvmfs\//}
 
 declare -a EESSI_FUSE_MOUNTS=()
 if [[ "${ACCESS}" == "ro" ]]; then
