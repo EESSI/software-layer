@@ -36,7 +36,7 @@ CONTAINER_ERROR_EXITCODE=$((${ANY_ERROR_EXITCODE} << 3))
 HOST_STORAGE_ERROR_EXITCODE=$((${ANY_ERROR_EXITCODE} << 4))
 MODE_UNKNOWN_EXITCODE=$((${ANY_ERROR_EXITCODE} << 5))
 PREVIOUS_RUN_ERROR_EXITCODE=$((${ANY_ERROR_EXITCODE} << 6))
-REPOSITORY_UNKNOWN_EXITCODE=$((${ANY_ERROR_EXITCODE} << 7))
+REPOSITORY_ERROR_EXITCODE=$((${ANY_ERROR_EXITCODE} << 7))
 HTTP_PROXY_ERROR_EXITCODE=$((${ANY_ERROR_EXITCODE} << 9))
 HTTPS_PROXY_ERROR_EXITCODE=$((${ANY_ERROR_EXITCODE} << 10))
 RUN_SCRIPT_MISSING_EXITCODE=$((${ANY_ERROR_EXITCODE} << 11))
@@ -185,7 +185,7 @@ fi
 # PREVIOUS_RUN_ERROR_EXITCODE
 
 # TODO (arg -r|--repository) check if repository is known
-# REPOSITORY_UNKNOWN_EXITCODE
+# REPOSITORY_ERROR_EXITCODE
 
 # TODO (arg -x|--http-proxy) check if http proxy is accessible
 # HTTP_PROXY_ERROR_EXITCODE
@@ -246,8 +246,6 @@ echo "Using ${EESSI_HOST_STORAGE} as parent for temporary directories..."
 #      |-home
 #      |-cfg
 
-source ${base_dir}/init/eessi_defaults
-
 # tmp dir for EESSI
 EESSI_TMPDIR=${EESSI_HOST_STORAGE}
 mkdir -p ${EESSI_TMPDIR}
@@ -282,6 +280,9 @@ BIND_PATHS="${BIND_PATHS},${EESSI_TMPDIR}:/tmp"
 # arg -r|--repository is used)
 mkdir -p ${EESSI_TMPDIR}/cfg
 if [[ "${REPOSITORY}" == "EESSI-pilot" ]]; then
+  # need to source defaults as late as possible (see other sourcing below)
+  source ${base_dir}/init/eessi_defaults
+
   # strip "/cvmfs/" from default setting
   repo_name=${EESSI_CVMFS_REPO/\/cvmfs\//}
 else
@@ -325,9 +326,22 @@ else
   cfg_init_file_map "${config_map}"
   cfg_print_map
 
-  # TODO use information to set up dir ${EESSI_TMPDIR}/cfg and
-  #      define BIND mounts
-  exit -1
+  # TODO use information to set up dir ${EESSI_TMPDIR}/cfg,
+  #      define BIND mounts and override repo name and version
+  # check if config_bundle exists, if so, unpack it into ${EESSI_TMPDIR}/cfg
+  if [[ ! -r ${config_bundle} ]]; then
+    fatal_error "config bundle '${config_bundle}' is not readable" ${REPOSITORY_ERROR_EXITCODE}
+  fi
+  tar xf ${config_bundle} -C ${EESSI_TMPDIR}/cfg
+  for src in "${!cfg_file_map[@]}"
+  do
+    target=${cfg_file_map[${src}]}
+    BIND_PATHS="${BIND_PATHS},${src}:${target}"
+  done
+  export EESSI_PILOT_VERSION_OVERRIDE=${repo_version}
+  export EESSI_CVMFS_REPO_OVERRIDE=${repo_name}
+  # need to source defaults as late as possible (after *_OVERRIDEs)
+  source ${base_dir}/init/eessi_defaults
 fi
 
 
