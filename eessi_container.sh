@@ -339,7 +339,7 @@ else
     BIND_PATHS="${BIND_PATHS},${EESSI_TMPDIR}/cfg/${src}:${target}"
   done
   export EESSI_PILOT_VERSION_OVERRIDE=${repo_version}
-  export EESSI_CVMFS_REPO_OVERRIDE=${repo_name}
+  export EESSI_CVMFS_REPO_OVERRIDE="/cvmfs/${repo_name}"
   # need to source defaults as late as possible (after *_OVERRIDEs)
   source ${base_dir}/init/eessi_defaults
 fi
@@ -349,8 +349,10 @@ fi
 
 declare -a EESSI_FUSE_MOUNTS=()
 if [[ "${ACCESS}" == "ro" ]]; then
-  export EESSI_PILOT_READONLY="container:cvmfs2 ${repo_name} ${EESSI_CVMFS_REPO}"
+  export EESSI_PILOT_READONLY="container:cvmfs2 ${repo_name} /cvmfs/${repo_name}"
+
   EESSI_FUSE_MOUNTS+=("--fusemount" "${EESSI_PILOT_READONLY}")
+  export EESSI_FUSE_MOUNTS
 fi
 
 if [[ "${ACCESS}" == "rw" ]]; then
@@ -362,7 +364,8 @@ if [[ "${ACCESS}" == "rw" ]]; then
   [[ ${INFO} -eq 1 ]] && echo "EESSI_CVMFS_OVERLAY_WORK=${EESSI_CVMFS_OVERLAY_WORK}"
 
   # set environment variables for fuse mounts in Singularity container
-  EESSI_PILOT_READONLY="container:cvmfs2 ${repo_name} /cvmfs_ro/${repo_name}"
+  export EESSI_PILOT_READONLY="container:cvmfs2 ${repo_name} /cvmfs_ro/${repo_name}"
+
   EESSI_FUSE_MOUNTS+=("--fusemount" "${EESSI_PILOT_READONLY}")
 
   EESSI_PILOT_WRITABLE_OVERLAY="container:fuse-overlayfs"
@@ -370,7 +373,10 @@ if [[ "${ACCESS}" == "rw" ]]; then
   EESSI_PILOT_WRITABLE_OVERLAY+=" -o upperdir=/tmp/overlay-upper"
   EESSI_PILOT_WRITABLE_OVERLAY+=" -o workdir=/tmp/overlay-work"
   EESSI_PILOT_WRITABLE_OVERLAY+=" ${EESSI_CVMFS_REPO}"
+  export EESSI_PILOT_WRITABLE_OVERLAY
+
   EESSI_FUSE_MOUNTS+=("--fusemount" "${EESSI_PILOT_WRITABLE_OVERLAY}")
+  export EESSI_FUSE_MOUNTS
 fi
 
 
