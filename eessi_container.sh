@@ -336,7 +336,7 @@ else
   for src in "${!cfg_file_map[@]}"
   do
     target=${cfg_file_map[${src}]}
-    BIND_PATHS="${BIND_PATHS},${src}:${target}"
+    BIND_PATHS="${BIND_PATHS},${EESSI_TMPDIR}/cfg/${src}:${target}"
   done
   export EESSI_PILOT_VERSION_OVERRIDE=${repo_version}
   export EESSI_CVMFS_REPO_OVERRIDE=${repo_name}
