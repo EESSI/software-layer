@@ -61,14 +61,20 @@ display_help() {
   echo "  -a | --access {ro,rw}    -  ro (read-only), rw (read & write) [default: ro]"
   echo "  -c | --container IMAGE   -  image file or URL defining the container to use"
   echo "                           [default: docker://ghcr.io/eessi/build-node:debian10]"
-  echo "  -d | --dry-run           -  run script except for executing the container,"
-  echo "                              print information about setup [default: false]"
   echo "  -h | --help              -  display this usage information [default: false]"
-  echo "  -i | --info              -  display configured repositories [default: false]"
   echo "  -l | --host-storage DIR  -  directory space on host machine (used for"
   echo "                              temporary data) [default: 1. TMPDIR, 2. /tmp]"
   echo "  -m | --mode {shell,run}  -  shell (launch interactive shell)"
   echo "                              run (run a script) [default: shell]"
+  echo "  -r | --repository CFG    -  configuration file or identifier defining the"
+  echo "                              repository to use [default: EESSI-pilot]"
+  echo
+  echo " If value for --mode is 'run', the SCRIPT provided is executed."
+  echo
+  echo " FEATURES/OPTIONS to be implemented:"
+  echo "  -d | --dry-run           -  run script except for executing the container,"
+  echo "                              print information about setup [default: false]"
+  echo "  -i | --info              -  display configured repositories [default: false]"
   echo "  -p | --previous-run PRUN -  init local disk with data from previous run"
   echo "                              format is PATH[:TAR/ZIP] where PATH is pointing"
   echo "                              to the previously used local disk, and TAR/ZIP"
@@ -76,14 +82,10 @@ display_help() {
   echo "                              doesn't exist currently; if PATH exists and"
   echo "                              a TAR/ZIP is provided an error is reported"
   echo "                              [default: not set]"
-  echo "  -r | --repository CFG    -  configuration file or identifier defining the"
-  echo "                              repository to use [default: EESSI-pilot]"
   echo "  -x | --http-proxy URL    -  provides URL for the env variable http_proxy"
   echo "                              [default: not set]"
   echo "  -y | --https-proxy URL   -  provides URL for the env variable https_proxy"
   echo "                              [default: not set]"
-  echo
-  echo " If value for --mode is 'run', the SCRIPT provided is executed."
 }
 
 # set defaults for command line arguments
