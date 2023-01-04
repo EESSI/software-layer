@@ -45,8 +45,9 @@ RUN_SCRIPT_MISSING_EXITCODE=$((${ANY_ERROR_EXITCODE} << 11))
 CVMFS_VAR_LIB="var-lib-cvmfs"
 CVMFS_VAR_RUN="var-run-cvmfs"
 
-# repository cfg file
-REPO_CFG_FILE=repos.cfg
+# repository cfg file, default name (default location: $PWD)
+#   can be overwritten by setting env var EESSI_REPOS_CFG_FILE_OVERRIDE
+export EESSI_REPOS_CFG_FILE="${EESSI_REPOS_CFG_FILE_OVERRIDE:=repos.cfg}"
 
 
 # 0. parse args
@@ -291,10 +292,10 @@ else
   #                    repo-cfg-file:repo-id (repo-id defined in repo-cfg-file)
   #
   # for now, assuming repo-id is defined in config file pointed to
-  #   REPO_CFG_FILE, which is to be copied into the working directory
+  #   EESSI_REPOS_CFG_FILE, which is to be copied into the working directory
   #   (could also become part of the software layer to define multiple
   #    standard EESSI repositories)
-  cfg_load ${REPO_CFG_FILE}
+  cfg_load ${EESSI_REPOS_CFG_FILE}
 
   # cfg file should include: repo_name, repo_version, config_bundle,
   #   map { local_filepath -> container_filepath }
