@@ -70,10 +70,10 @@ display_help() {
   echo "                          repository to use [default: EESSI-pilot]"
   echo "  -u | --resume DIR/TGZ - resume a previous run from a directory or tarball,"
   echo "                          where DIR points to a previously used tmp directory"
-  echo "                          (check for output 'Using DIR as tmp' of previous run)"
-  echo "                          and TGZ is the path to a tarball which is unpacked"
-  echo "                          the tmp dir stored on the local storage space (see"
-  echo "                          option --storage above) [default: not set]"
+  echo "                          (check for output 'Using DIR as tmp ...' of a previous"
+  echo "                          run) and TGZ is the path to a tarball which is"
+  echo "                          unpacked the tmp dir stored on the local storage space"
+  echo "                          (see option --storage above) [default: not set]"
   echo
   echo " If value for --mode is 'run', the SCRIPT provided is executed."
   echo
@@ -242,7 +242,7 @@ else
     echo "skipping sanity checks for /tmp"
   fi
   EESSI_HOST_STORAGE=$(mktemp -d --tmpdir eessi.XXXXXXXXXX)
-  echo "Using ${EESSI_HOST_STORAGE} as parent for temporary directories..."
+  echo "Using ${EESSI_HOST_STORAGE} as tmp storage (add '--resume ${EESSI_HOST_STORAGE}' to resume where this session ended)."
 fi
 
 # if ${RESUME} is a file (assume a tgz), unpack it into ${EESSI_HOST_STORAGE}
