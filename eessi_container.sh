@@ -35,7 +35,7 @@ ACCESS_UNKNOWN_EXITCODE=$((${ANY_ERROR_EXITCODE} << 2))
 CONTAINER_ERROR_EXITCODE=$((${ANY_ERROR_EXITCODE} << 3))
 HOST_STORAGE_ERROR_EXITCODE=$((${ANY_ERROR_EXITCODE} << 4))
 MODE_UNKNOWN_EXITCODE=$((${ANY_ERROR_EXITCODE} << 5))
-PREVIOUS_RUN_ERROR_EXITCODE=$((${ANY_ERROR_EXITCODE} << 6))
+RESUME_ERROR_EXITCODE=$((${ANY_ERROR_EXITCODE} << 6))
 REPOSITORY_ERROR_EXITCODE=$((${ANY_ERROR_EXITCODE} << 7))
 HTTP_PROXY_ERROR_EXITCODE=$((${ANY_ERROR_EXITCODE} << 9))
 HTTPS_PROXY_ERROR_EXITCODE=$((${ANY_ERROR_EXITCODE} << 10))
@@ -58,16 +58,22 @@ export EESSI_REPOS_CFG_FILE="${EESSI_REPOS_CFG_FILE_OVERRIDE:=repos.cfg}"
 display_help() {
   echo "usage: $0 [OPTIONS] [SCRIPT]"
   echo " OPTIONS:"
-  echo "  -a | --access {ro,rw}    -  ro (read-only), rw (read & write) [default: ro]"
-  echo "  -c | --container IMAGE   -  image file or URL defining the container to use"
-  echo "                           [default: docker://ghcr.io/eessi/build-node:debian10]"
-  echo "  -h | --help              -  display this usage information [default: false]"
-  echo "  -l | --host-storage DIR  -  directory space on host machine (used for"
-  echo "                              temporary data) [default: 1. TMPDIR, 2. /tmp]"
-  echo "  -m | --mode {shell,run}  -  shell (launch interactive shell)"
-  echo "                              run (run a script) [default: shell]"
-  echo "  -r | --repository CFG    -  configuration file or identifier defining the"
-  echo "                              repository to use [default: EESSI-pilot]"
+  echo "  -a | --access {ro,rw} - ro (read-only), rw (read & write) [default: ro]"
+  echo "  -c | --container IMG  - image file or URL defining the container to use"
+  echo "                          [default: docker://ghcr.io/eessi/build-node:debian10]"
+  echo "  -h | --help           - display this usage information [default: false]"
+  echo "  -g | --storage DIR    - directory space on host machine (used for"
+  echo "                          temporary data) [default: 1. TMPDIR, 2. /tmp]"
+  echo "  -m | --mode MODE      - with MODE==shell (launch interactive shell) or"
+  echo "                          MODE==run (run a script) [default: shell]"
+  echo "  -r | --repository CFG - configuration file or identifier defining the"
+  echo "                          repository to use [default: EESSI-pilot]"
+  echo "  -u | --resume DIR/TGZ - resume a previous run from a directory or tarball,"
+  echo "                          where DIR points to a previously used tmp directory"
+  echo "                          (check for output 'Using DIR as tmp' of previous run)"
+  echo "                          and TGZ is the path to a tarball which is unpacked"
+  echo "                          the tmp dir stored on the local storage space (see"
+  echo "                          option --storage above) [default: not set]"
   echo
   echo " If value for --mode is 'run', the SCRIPT provided is executed."
   echo
@@ -75,13 +81,6 @@ display_help() {
   echo "  -d | --dry-run           -  run script except for executing the container,"
   echo "                              print information about setup [default: false]"
   echo "  -i | --info              -  display configured repositories [default: false]"
-  echo "  -p | --previous-run PRUN -  init local disk with data from previous run"
-  echo "                              format is PATH[:TAR/ZIP] where PATH is pointing"
-  echo "                              to the previously used local disk, and TAR/ZIP"
-  echo "                              is used to initialize the local disk if PATH"
-  echo "                              doesn't exist currently; if PATH exists and"
-  echo "                              a TAR/ZIP is provided an error is reported"
-  echo "                              [default: not set]"
   echo "  -x | --http-proxy URL    -  provides URL for the env variable http_proxy"
   echo "                              [default: not set]"
   echo "  -y | --https-proxy URL   -  provides URL for the env variable https_proxy"
@@ -93,10 +92,10 @@ ACCESS="ro"
 CONTAINER="docker://ghcr.io/eessi/build-node:debian10"
 DRY_RUN=0
 INFO=0
-HOST_STORAGE=
+STORAGE=
 MODE="shell"
-PREVIOUS_RUN=
 REPOSITORY="EESSI-pilot"
+RESUME=
 HTTP_PROXY=
 HTTPS_PROXY=
 RUN_SCRIPT_AND_ARGS=
@@ -117,6 +116,10 @@ while [[ $# -gt 0 ]]; do
       DRY_RUN=1
       shift 1
       ;;
+    -g|--storage)
+      STORAGE="$2"
+      shift 2
+      ;;
     -h|--help)
       display_help
       exit 0
@@ -125,21 +128,16 @@ while [[ $# -gt 0 ]]; do
       INFO=1
       shift 1
       ;;
-    -l|--host-storage)
-      HOST_STORAGE="$2"
-      #EESSI_TMPDIR="$2"
-      shift 2
-      ;;
     -m|--mode)
       MODE="$2"
       shift 2
       ;;
-    -p|--previous-run)
-      PREVIOUS_RUN="$2"
-      shift 2
-      ;;
     -r|--repository)
       REPOSITORY="$2"
+      shift 2
+      ;;
+    -u|--resume)
+      RESUME="$2"
       shift 2
       ;;
     -x|--http-proxy)
@@ -174,7 +172,7 @@ fi
 # TODO (arg -c|--container) check container (is it a file or URL & access those)
 # CONTAINER_ERROR_EXITCODE
 
-# TODO (arg -l|--host-storage) check if it exists, if user has write permission,
+# TODO (arg -g|--storage) check if it exists, if user has write permission,
 #      if it contains no data, etc.
 # HOST_STORAGE_ERROR_EXITCODE
 
@@ -183,12 +181,12 @@ if [[ "${MODE}" != "shell" && "${MODE}" != "run" ]]; then
   fatal_error "unknown execution mode '${MODE}'" "${MODE_UNKNOWN_EXITCODE}"
 fi
 
-# TODO (arg -p|--previous-run) check if it exists, if user has read permission,
-#      if it contains data from a previous run
-# PREVIOUS_RUN_ERROR_EXITCODE
-
 # TODO (arg -r|--repository) check if repository is known
 # REPOSITORY_ERROR_EXITCODE
+
+# TODO (arg -u|--resume) check if it exists, if user has read permission,
+#      if it contains data from a previous run
+# RESUME_ERROR_EXITCODE
 
 # TODO (arg -x|--http-proxy) check if http proxy is accessible
 # HTTP_PROXY_ERROR_EXITCODE
@@ -206,37 +204,52 @@ if [[ "${MODE}" == "run" ]]; then
 fi
 
 
-# 2. set up host storage/tmp
-# as location for temporary data use in the following order
-#   a. command line argument -l|--host-storage
-#   b. env var TMPDIR
-#   c. /tmp
-# note, we ensure that (a) takes precedence by setting TMPDIR to HOST_STORAGE
-#     if HOST_STORAGE is not empty
-# note, (b) & (c) are automatically ensured by using 'mktemp -d --tmpdir' to
-#     create a temporary directory
-# note, if previous run is used the name of the temporary directory
-#     should be identical to previous run, ie, then we don't create a new
-#     temporary directory
-if [[ ! -z ${HOST_STORAGE} ]]; then
-  export TMPDIR=${HOST_STORAGE}
-  # mktemp fails if TMPDIR does not exist, so let's create it
-  mkdir -p ${TMPDIR}
-fi
-if [[ ! -z ${TMPDIR} ]]; then
-  # TODO check if TMPDIR already exists
-  # mktemp fails if TMPDIR does not exist, so let's create it
-  mkdir -p ${TMPDIR}
-fi
-if [[ -z ${TMPDIR} ]]; then
-  # mktemp falls back to using /tmp if TMPDIR is empty
-  # TODO check if /tmp is writable, large enough and usable (different
-  #      features for ro-access and rw-access)
-  echo "skipping sanity checks for /tmp"
-fi
-EESSI_HOST_STORAGE=$(mktemp -d --tmpdir eessi.XXXXXXXXXX)
-echo "Using ${EESSI_HOST_STORAGE} as parent for temporary directories..."
+# 2. set up host storage/tmp if necessary
+# if session to be resumed from a previous one (--resume ARG) and ARG is a directory
+#   just reuse ARG, define environment variables accordingly and skip creating a new
+#   tmp storage
+if [[ ! -z ${RESUME} && -d ${RESUME} ]]; then
+  # resume from directory ${RESUME}
+  #   skip creating a new tmp directory, just set environment variables
+  echo "Resuming from previous run using temporary storage at ${RESUME}"
+  EESSI_HOST_STORAGE=${RESUME}
+else
+  # we need a tmp location (and possibly init it with ${RESUME} if it was not
+  #   a directory
 
+  # as location for temporary data use in the following order
+  #   a. command line argument -l|--host-storage
+  #   b. env var TMPDIR
+  #   c. /tmp
+  # note, we ensure that (a) takes precedence by setting TMPDIR to STORAGE
+  #     if STORAGE is not empty
+  # note, (b) & (c) are automatically ensured by using 'mktemp -d --tmpdir' to
+  #     create a temporary directory
+  if [[ ! -z ${STORAGE} ]]; then
+    export TMPDIR=${STORAGE}
+    # mktemp fails if TMPDIR does not exist, so let's create it
+    mkdir -p ${TMPDIR}
+  fi
+  if [[ ! -z ${TMPDIR} ]]; then
+    # TODO check if TMPDIR already exists
+    # mktemp fails if TMPDIR does not exist, so let's create it
+    mkdir -p ${TMPDIR}
+  fi
+  if [[ -z ${TMPDIR} ]]; then
+    # mktemp falls back to using /tmp if TMPDIR is empty
+    # TODO check if /tmp is writable, large enough and usable (different
+    #      features for ro-access and rw-access)
+    echo "skipping sanity checks for /tmp"
+  fi
+  EESSI_HOST_STORAGE=$(mktemp -d --tmpdir eessi.XXXXXXXXXX)
+  echo "Using ${EESSI_HOST_STORAGE} as parent for temporary directories..."
+fi
+
+# if ${RESUME} is a file (assume a tgz), unpack it into ${EESSI_HOST_STORAGE}
+if [[ ! -z ${RESUME} && -f ${RESUME} ]]; then
+  tar xf ${RESUME} -C ${EESSI_HOST_STORAGE}
+  echo "Resuming from previous run using temporary storage ${RESUME} unpacked into ${EESSI_HOST_STORAGE}"
+fi
 
 # 3. set up common vars and directories
 #    directory structure should be:
@@ -335,7 +348,12 @@ else
   if [[ ! -r ${config_bundle} ]]; then
     fatal_error "config bundle '${config_bundle}' is not readable" ${REPOSITORY_ERROR_EXITCODE}
   fi
-  tar xf ${config_bundle} -C ${EESSI_TMPDIR}/cfg
+
+  # only unpack config_bundle if we're not resuming from a previous run
+  if [[ -z ${RESUME} ]]; then
+    tar xf ${config_bundle} -C ${EESSI_TMPDIR}/cfg
+  fi
+
   for src in "${!cfg_file_map[@]}"
   do
     target=${cfg_file_map[${src}]}
