@@ -38,8 +38,8 @@ MODE_UNKNOWN_EXITCODE=$((${ANY_ERROR_EXITCODE} << 5))
 REPOSITORY_ERROR_EXITCODE=$((${ANY_ERROR_EXITCODE} << 6))
 RESUME_ERROR_EXITCODE=$((${ANY_ERROR_EXITCODE} << 7))
 SAVE_ERROR_EXITCODE=$((${ANY_ERROR_EXITCODE} << 8))
-HTTP_PROXY_ERROR_EXITCODE=$((${ANY_ERROR_EXITCODE} << 9))
-HTTPS_PROXY_ERROR_EXITCODE=$((${ANY_ERROR_EXITCODE} << 10))
+#HTTP_PROXY_ERROR_EXITCODE=$((${ANY_ERROR_EXITCODE} << 9))
+#HTTPS_PROXY_ERROR_EXITCODE=$((${ANY_ERROR_EXITCODE} << 10))
 RUN_SCRIPT_MISSING_EXITCODE=$((${ANY_ERROR_EXITCODE} << 11))
 
 # CernVM-FS settings
@@ -87,10 +87,10 @@ display_help() {
   echo "  -d | --dry-run           -  run script except for executing the container,"
   echo "                              print information about setup [default: false]"
   echo "  -i | --info              -  display configured repositories [default: false]"
-  echo "  -x | --http-proxy URL    -  provides URL for the env variable http_proxy"
-  echo "                              [default: not set]"
-  echo "  -y | --https-proxy URL   -  provides URL for the env variable https_proxy"
-  echo "                              [default: not set]"
+  #echo "  -x | --http-proxy URL    -  provides URL for the env variable http_proxy"
+  #echo "                              [default: not set]"
+  #echo "  -y | --https-proxy URL   -  provides URL for the env variable https_proxy"
+  #echo "                              [default: not set]"
 }
 
 # set defaults for command line arguments
@@ -103,8 +103,8 @@ MODE="shell"
 REPOSITORY="EESSI-pilot"
 RESUME=
 SAVE=
-HTTP_PROXY=
-HTTPS_PROXY=
+#HTTP_PROXY=
+#HTTPS_PROXY=
 RUN_SCRIPT_AND_ARGS=
 
 POSITIONAL_ARGS=()
@@ -151,16 +151,16 @@ while [[ $# -gt 0 ]]; do
       RESUME="$2"
       shift 2
       ;;
-    -x|--http-proxy)
-      HTTP_PROXY="$2"
-      export http_proxy=${HTTP_PROXY}
-      shift 2
-      ;;
-    -y|--https-proxy)
-      HTTPS_PROXY="$2"
-      export https_proxy=${HTTPS_PROXY}
-      shift 2
-      ;;
+#    -x|--http-proxy)
+#      HTTP_PROXY="$2"
+#      export http_proxy=${HTTP_PROXY}
+#      shift 2
+#      ;;
+#    -y|--https-proxy)
+#      HTTPS_PROXY="$2"
+#      export https_proxy=${HTTPS_PROXY}
+#      shift 2
+#      ;;
     -*|--*)
       fatal_error "Unknown option: $1" "${CMDLINE_ARG_UNKNOWN_EXITCODE}"
       ;;
@@ -255,7 +255,7 @@ else
     # mktemp falls back to using /tmp if TMPDIR is empty
     # TODO check if /tmp is writable, large enough and usable (different
     #      features for ro-access and rw-access)
-    echo "skipping sanity checks for /tmp"
+    [[ ${INFO} -eq 1 ]] && echo "skipping sanity checks for /tmp"
   fi
   EESSI_HOST_STORAGE=$(mktemp -d --tmpdir eessi.XXXXXXXXXX)
   echo "Using ${EESSI_HOST_STORAGE} as tmp storage (add '--resume ${EESSI_HOST_STORAGE}' to resume where this session ended)."
@@ -356,7 +356,7 @@ else
 
   # convert config_map into associative array cfg_file_map
   cfg_init_file_map "${config_map}"
-  cfg_print_map
+  [[ ${INFO} -eq 1 ]] && cfg_print_map
 
   # TODO use information to set up dir ${EESSI_TMPDIR}/cfg,
   #      define BIND mounts and override repo name and version
@@ -431,7 +431,9 @@ fi
 
 echo "Launching container with command (next line):"
 echo "singularity ${MODE} ${EESSI_FUSE_MOUNTS[@]} ${CONTAINER} ${RUN_SCRIPT_AND_ARGS}"
-singularity ${MODE} "${EESSI_FUSE_MOUNTS[@]}" ${CONTAINER} ${RUN_SCRIPT_AND_ARGS}
+# TODO for now we run singularity with '-q' (quiet), later adjust this to the log level
+#      provided to the script
+singularity -q ${MODE} "${EESSI_FUSE_MOUNTS[@]}" ${CONTAINER} ${RUN_SCRIPT_AND_ARGS}
 
 # 7. save tmp if requested (arg -s|--save)
 if [[ ! -z ${SAVE} ]]; then
