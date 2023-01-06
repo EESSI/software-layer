@@ -78,8 +78,8 @@ display_help() {
   echo "  -s | --save DIR/TGZ   - save contents of tmp directory to a tarball in"
   echo "                          directory DIR or provided with the fixed full path TGZ"
   echo "                          when a directory is provided, the format of the"
-  echo "                          tarball's name will be"
-  echo "                          {REPO_ID}-{OS}-{ARCH}-{TIMESTAMP}.tgz [default: not set]"
+  echo "                          tarball's name will be {REPO_ID}-{TIMESTAMP}.tgz"
+  echo "                          [default: not set]"
   echo
   echo " If value for --mode is 'run', the SCRIPT provided is executed."
   echo
@@ -435,23 +435,21 @@ singularity ${MODE} "${EESSI_FUSE_MOUNTS[@]}" ${CONTAINER} ${RUN_SCRIPT_AND_ARGS
 
 # 7. save tmp if requested (arg -s|--save)
 if [[ ! -z ${SAVE} ]]; then
+  # Note, for now we don't try to be smart and record in any way the OS and
+  #   ARCH which might have been used internally, eg, when software packages
+  #   were built ... we rather keep the script here "stupid" and leave the handling
+  #   of these aspects to where the script is used
   if [[ -d ${SAVE} ]]; then
-    # TODO to be implemented; best way a bit unclear
     # assume SAVE is name of a directory to which tarball shall be written to
-    #   name format: {REPO_ID}-{OS}-{ARCH}-{TIMESTAMP}.tgz
-    # use container to determine OS and ARCH (same approach as in eessi-bot-build.slurm)
-    #RUN_CMD="python3 /mnt/os_arch_detect/eessi_software_subdir.py ${GENERIC_OPT}"
-    # only need READONLY part for CVMFS
-    #singularity run -B ... ${CONTAINER} ${RUN_CMD} 2>&1)
-    os=foo
-    arch=bar
+    #   name format: {REPO_ID}-{TIMESTAMP}.tgz
     ts=$(date +%s)
-    TGZ=${REPOSITORY}-${os}-${arch}-${ts}.tgz
+    TGZ=${SAVE}/${REPOSITORY}-${ts}.tgz
   else
     # assume SAVE is the full path to a tarball's name
-    tar cf ${SAVE} -C ${EESSI_TMPDIR} .
-    echo "Save contents of '${EESSI_TMPDIR}' to '${SAVE}' (to resume, add '--resume ${SAVE}')"
+    TGZ=${SAVE}
   fi
+  tar cf ${TGZ} -C ${EESSI_TMPDIR} .
+  echo "Saved contents of '${EESSI_TMPDIR}' to '${TGZ}' (to resume, add '--resume ${TGZ}')"
 fi
 
 # TODO clean up tmp by default? only retain if another option provided (--retain-tmp)
