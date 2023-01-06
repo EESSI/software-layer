@@ -35,8 +35,9 @@ ACCESS_UNKNOWN_EXITCODE=$((${ANY_ERROR_EXITCODE} << 2))
 CONTAINER_ERROR_EXITCODE=$((${ANY_ERROR_EXITCODE} << 3))
 HOST_STORAGE_ERROR_EXITCODE=$((${ANY_ERROR_EXITCODE} << 4))
 MODE_UNKNOWN_EXITCODE=$((${ANY_ERROR_EXITCODE} << 5))
-RESUME_ERROR_EXITCODE=$((${ANY_ERROR_EXITCODE} << 6))
-REPOSITORY_ERROR_EXITCODE=$((${ANY_ERROR_EXITCODE} << 7))
+REPOSITORY_ERROR_EXITCODE=$((${ANY_ERROR_EXITCODE} << 6))
+RESUME_ERROR_EXITCODE=$((${ANY_ERROR_EXITCODE} << 7))
+SAVE_ERROR_EXITCODE=$((${ANY_ERROR_EXITCODE} << 8))
 HTTP_PROXY_ERROR_EXITCODE=$((${ANY_ERROR_EXITCODE} << 9))
 HTTPS_PROXY_ERROR_EXITCODE=$((${ANY_ERROR_EXITCODE} << 10))
 RUN_SCRIPT_MISSING_EXITCODE=$((${ANY_ERROR_EXITCODE} << 11))
@@ -74,6 +75,11 @@ display_help() {
   echo "                          run) and TGZ is the path to a tarball which is"
   echo "                          unpacked the tmp dir stored on the local storage space"
   echo "                          (see option --storage above) [default: not set]"
+  echo "  -s | --save DIR/TGZ   - save contents of tmp directory to a tarball in"
+  echo "                          directory DIR or provided with the fixed full path TGZ"
+  echo "                          when a directory is provided, the format of the"
+  echo "                          tarball's name will be"
+  echo "                          {REPO_ID}-{OS}-{ARCH}-{TIMESTAMP}.tgz [default: not set]"
   echo
   echo " If value for --mode is 'run', the SCRIPT provided is executed."
   echo
@@ -96,6 +102,7 @@ STORAGE=
 MODE="shell"
 REPOSITORY="EESSI-pilot"
 RESUME=
+SAVE=
 HTTP_PROXY=
 HTTPS_PROXY=
 RUN_SCRIPT_AND_ARGS=
@@ -134,6 +141,10 @@ while [[ $# -gt 0 ]]; do
       ;;
     -r|--repository)
       REPOSITORY="$2"
+      shift 2
+      ;;
+    -s|--save)
+      SAVE="$2"
       shift 2
       ;;
     -u|--resume)
@@ -187,6 +198,11 @@ fi
 # TODO (arg -u|--resume) check if it exists, if user has read permission,
 #      if it contains data from a previous run
 # RESUME_ERROR_EXITCODE
+
+# TODO (arg -s|--save) check if DIR exists, if user has write permission,
+#   if TGZ already exists, if user has write permission to directory to which
+#   TGZ should be written
+# SAVE_ERROR_EXITCODE
 
 # TODO (arg -x|--http-proxy) check if http proxy is accessible
 # HTTP_PROXY_ERROR_EXITCODE
@@ -416,3 +432,26 @@ fi
 echo "Launching container with command (next line):"
 echo "singularity ${MODE} ${EESSI_FUSE_MOUNTS[@]} ${CONTAINER} ${RUN_SCRIPT_AND_ARGS}"
 singularity ${MODE} "${EESSI_FUSE_MOUNTS[@]}" ${CONTAINER} ${RUN_SCRIPT_AND_ARGS}
+
+# 7. save tmp if requested (arg -s|--save)
+if [[ ! -z ${SAVE} ]]; then
+  if [[ -d ${SAVE} ]]; then
+    # TODO to be implemented; best way a bit unclear
+    # assume SAVE is name of a directory to which tarball shall be written to
+    #   name format: {REPO_ID}-{OS}-{ARCH}-{TIMESTAMP}.tgz
+    # use container to determine OS and ARCH (same approach as in eessi-bot-build.slurm)
+    #RUN_CMD="python3 /mnt/os_arch_detect/eessi_software_subdir.py ${GENERIC_OPT}"
+    # only need READONLY part for CVMFS
+    #singularity run -B ... ${CONTAINER} ${RUN_CMD} 2>&1)
+    os=foo
+    arch=bar
+    ts=$(date +%s)
+    TGZ=${REPOSITORY}-${os}-${arch}-${ts}.tgz
+  else
+    # assume SAVE is the full path to a tarball's name
+    tar cf ${SAVE} -C ${EESSI_TMPDIR} .
+    echo "Save contents of '${EESSI_TMPDIR}' to '${SAVE}' (to resume, add '--resume ${SAVE}')"
+  fi
+fi
+
+# TODO clean up tmp by default? only retain if another option provided (--retain-tmp)
