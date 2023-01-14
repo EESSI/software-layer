@@ -43,6 +43,13 @@ fi
 export EESSI_PILOT_READONLY="container:cvmfs2 pilot.eessi-hpc.org /cvmfs_ro/pilot.eessi-hpc.org"
 export EESSI_PILOT_WRITABLE_OVERLAY="container:fuse-overlayfs -o lowerdir=/cvmfs_ro/pilot.eessi-hpc.org -o upperdir=$EESSI_TMPDIR/overlay-upper -o workdir=$EESSI_TMPDIR/overlay-work /cvmfs/pilot.eessi-hpc.org"
 
+# pass $EESSI_SOFTWARE_SUBDIR_OVERRIDE into build container (if set)
+if [ ! -z ${EESSI_SOFTWARE_SUBDIR_OVERRIDE} ]; then
+    export SINGULARITYENV_EESSI_SOFTWARE_SUBDIR_OVERRIDE=${EESSI_SOFTWARE_SUBDIR_OVERRIDE}
+    # also specify via $APPTAINERENV_* (future proof, cfr. https://apptainer.org/docs/user/latest/singularity_compatibility.html#singularity-environment-variable-compatibility)
+    export APPTAINERENV_EESSI_SOFTWARE_SUBDIR_OVERRIDE=${EESSI_SOFTWARE_SUBDIR_OVERRIDE}
+fi
+
 if [ "$SHELL_OR_RUN" == "shell" ]; then
     # start shell in Singularity container, with EESSI repository mounted with writable overlay
     echo "Starting Singularity build container..."
