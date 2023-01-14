@@ -1,0 +1,43 @@
+# documentation: https://help.github.com/en/articles/workflow-syntax-for-github-actions
+name: Tests relying on having EESSI pilot repo mounted
+on: [push, pull_request, workflow_dispatch]
+permissions:
+  contents: read # to fetch code (actions/checkout)
+jobs:
+  eessi_pilot_repo:
+    runs-on: ubuntu-20.04
+    strategy:
+      fail-fast: false
+      matrix:
+        EESSI_VERSION:
+        - 2021.12
+        EESSI_SOFTWARE_SUBDIR:
+        - aarch64/generic
+        - aarch64/graviton2
+        - aarch64/graviton3
+        - x86_64/amd/zen2
+        - x86_64/amd/zen3
+        - x86_64/intel/haswell
+        - x86_64/intel/skylake_avx512
+        - x86_64/generic
+    steps:
+        - name: Check out software-layer repository
+          uses: actions/checkout@93ea575cb5d8a053eaa0ac8fa3b40d7e05a33cc8 # v3.1.0
+
+        - name: Mount EESSI CernVM-FS pilot repository
+          uses: cvmfs-contrib/github-action-cvmfs@d4641d0d591c9a5c3be23835ced2fb648b44c04b # v3.1
+          with:
+              cvmfs_config_package: https://github.com/EESSI/filesystem-layer/releases/download/latest/cvmfs-config-eessi_latest_all.deb
+              cvmfs_http_proxy: DIRECT
+              cvmfs_repositories: pilot.eessi-hpc.org
+
+        - name: Test check_missing_installations.sh script
+          run: |
+              source /cvmfs/pilot.eessi-hpc.org/versions/${{matrix.EESSI_VERSION}}/init/bash
+              module load EasyBuild
+              eb --version
+              export EESSI_PREFIX=/cvmfs/pilot.eessi-hpc.org/versions/${{matrix.EESSI_VERSION}}
+              export EESSI_OS_TYPE=linux
+              export EESSI_SOFTWARE_SUBDIR=${{matrix.EESSI_SOFTWARE_SUBDIR}}
+              env | grep ^EESSI | sort
+              ./check_missing_installations.sh

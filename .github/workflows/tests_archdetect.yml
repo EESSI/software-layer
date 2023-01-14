@@ -1,0 +1,36 @@
+# documentation: https://help.github.com/en/articles/workflow-syntax-for-github-actions
+name: Tests for eessi_archdetect.sh
+on: [push, pull_request]
+permissions:
+  contents: read # to fetch code (actions/checkout)
+jobs:
+  build:
+    runs-on: ubuntu-20.04
+    strategy:
+      matrix:
+        proc_cpuinfo:
+          - x86_64/intel/haswell/archspec-linux-E5-2680-v3
+          - x86_64/intel/skylake_avx512/archspec-linux-6132
+          - x86_64/amd/zen2/Azure-CentOS7-7V12
+          - x86_64/amd/zen3/Azure-CentOS7-7V73X
+          - ppc64le/power9le/unknown-power9le
+          - aarch64/arm/neoverse-n1/Azure-Ubuntu20-Altra
+          - aarch64/arm/neoverse-n1/AWS-awslinux-graviton2
+          - aarch64/arm/neoverse-v1/AWS-awslinux-graviton3
+      fail-fast: false
+    steps:
+    - name: checkout
+      uses: actions/checkout@93ea575cb5d8a053eaa0ac8fa3b40d7e05a33cc8 # v3.1.0
+
+    - name: test eessi_archdetect.sh
+      run: |
+          export EESSI_MACHINE_TYPE=${{matrix.proc_cpuinfo}}
+          export EESSI_MACHINE_TYPE=${EESSI_MACHINE_TYPE%%/*}
+          export EESSI_PROC_CPUINFO=./tests/archdetect/${{matrix.proc_cpuinfo}}.cpuinfo
+          CPU_ARCH=$(./init/eessi_archdetect.sh cpupath)
+          if [[ $CPU_ARCH == "$( cat ./tests/archdetect/${{matrix.proc_cpuinfo}}.output )" ]]; then
+              echo "Test for ${{matrix.proc_cpuinfo}} PASSED: $CPU_ARCH" >&2
+          else
+              echo "Test for ${{matrix.proc_cpuinfo}} FAILED: $CPU_ARCH" >&2
+              exit 1
+          fi
