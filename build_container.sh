@@ -1,6 +1,6 @@
 #!/bin/bash
 
-BUILD_CONTAINER="docker://ghcr.io/eessi/build-node:debian10"
+BUILD_CONTAINER="docker://ghcr.io/eessi/build-node:debian11"
 
 if [ $# -lt 2 ]; then
     echo "Usage: $0 <shell|run> <path for temporary directories>" >&2
