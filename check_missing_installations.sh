@@ -1,10 +1,21 @@
 #!/bin/bash
 #
 # Script to check for missing installations in EESSI pilot software stack (version 2021.12)
+#
+# author: Kenneth Hoste (@boegel)
+#
+# license: GPLv2
+#
 
 TOPDIR=$(dirname $(realpath $0))
 
-TMPDIR=$(mktemp -d)
+if [ -z ${EESSI_PILOT_VERSION} ]; then
+    echo "ERROR: \${EESSI_PILOT_VERSION} must be set to run $0!" >&2
+    exit 1
+fi
+
+# reuse existing $TMPDIR if set, create a new tmpdir if $TMPDIR is unset
+TMPDIR=${TMPDIR:-$(mktemp -d)}
 
 source $TOPDIR/utils.sh
 
