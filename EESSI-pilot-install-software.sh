@@ -92,7 +92,12 @@ if [[ "$EASYBUILD_OPTARCH" == "GENERIC" ]]; then
 fi
 
 echo ">> Determining software subdirectory to use for current build host..."
-export EESSI_SOFTWARE_SUBDIR_OVERRIDE=$(python3 $TOPDIR/eessi_software_subdir.py $DETECTION_PARAMETERS)
+if [ -z $EESSI_SOFTWARE_SUBDIR_OVERRIDE ]; then
+  export EESSI_SOFTWARE_SUBDIR_OVERRIDE=$(python3 $TOPDIR/eessi_software_subdir.py $DETECTION_PARAMETERS)
+  echo ">> Determined \$EESSI_SOFTWARE_SUBDIR_OVERRIDE via 'eessi_software_subdir.py $DETECTION_PARAMETERS' script"
+else
+  echo ">> Picking up pre-defined \$EESSI_SOFTWARE_SUBDIR_OVERRIDE: ${EESSI_SOFTWARE_SUBDIR_OVERRIDE}"
+fi
 
 # Set all the EESSI environment variables (respecting $EESSI_SOFTWARE_SUBDIR_OVERRIDE)
 # $EESSI_SILENT - don't print any messages
@@ -118,7 +123,7 @@ else
 fi
 
 echo ">> Configuring EasyBuild..."
-source configure_easybuild
+source $TOPDIR/configure_easybuild
 
 echo ">> Setting up \$MODULEPATH..."
 # make sure no modules are loaded
@@ -363,6 +368,11 @@ fail_msg="Installation of Nextflow failed, that's unexpected..."
 $EB -r --from-pr 16531 Nextflow-22.10.1.eb
 check_exit_code $? "${ok_msg}" "${fail_msg}"
 
+echo ">> Installing OSU-Micro-Benchmarks/5.7.1-gompi-2021a..."
+ok_msg="OSU-Micro-Benchmarks installed, yihaa!"
+fail_msg="Installation of OSU-Micro-Benchmarks failed, that's unexpected..."
+$EB OSU-Micro-Benchmarks-5.7.1-gompi-2021a.eb -r
+check_exit_code $? "${ok_msg}" "${fail_msg}"
 
 echo ">> Installing EasyBuild 4.5.1..."
 ok_msg="EasyBuild v4.5.1 installed"
@@ -416,13 +426,7 @@ fi
 
 $TOPDIR/update_lmod_cache.sh ${EPREFIX} ${EASYBUILD_INSTALLPATH}
 
-echo ">> Checking for missing installations..."
-ok_msg="No missing installations, party time!"
-fail_msg="On no, some installations are still missing, how did that happen?!"
-eb_missing_out=$TMPDIR/eb_missing.out
-$EB --easystack eessi-${EESSI_PILOT_VERSION}.yml --experimental --missing --robot $EASYBUILD_PREFIX/ebfiles_repo | tee ${eb_missing_out}
-grep "No missing modules" ${eb_missing_out} > /dev/null
-check_exit_code $? "${ok_msg}" "${fail_msg}"
+$TOPDIR/check_missing_installations.sh
 
 echo ">> Cleaning up ${TMPDIR}..."
 rm -r ${TMPDIR}
