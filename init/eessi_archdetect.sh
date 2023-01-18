@@ -83,7 +83,7 @@ cpupath(){
     local cpu_vendor=$(get_cpuinfo "$cpu_vendor_tag")
     log "DEBUG" "cpupath: CPU vendor of host system: '$cpu_vendor'"
   
-    # Identify the host CPU part 
+    # Identify the host CPU part
     local cpu_part_tag="cpu[ _]part"
     local cpu_part=$(get_cpuinfo "$cpu_part_tag")
     log "DEBUG" "cpupath: CPU part of host system: '$cpu_part'"
@@ -92,6 +92,7 @@ cpupath(){
     case $machine_type in
         "x86_64") local spec_file="eessi_arch_x86.spec";;
         "aarch64") 
+                # look for ARM core identification through cpu part when available, otherwise fall back to features  
 		local spec_file="eessi_arch_arm.spec"
     		[ ! "${cpu_part}x" == "x" ] && local spec_file="eessi_arch_arm_part.spec" 
 		;;
