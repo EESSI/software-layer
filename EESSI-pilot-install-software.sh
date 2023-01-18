@@ -92,7 +92,12 @@ if [[ "$EASYBUILD_OPTARCH" == "GENERIC" ]]; then
 fi
 
 echo ">> Determining software subdirectory to use for current build host..."
-export EESSI_SOFTWARE_SUBDIR_OVERRIDE=$(python3 $TOPDIR/eessi_software_subdir.py $DETECTION_PARAMETERS)
+if [ -z $EESSI_SOFTWARE_SUBDIR_OVERRIDE ]; then
+  export EESSI_SOFTWARE_SUBDIR_OVERRIDE=$(python3 $TOPDIR/eessi_software_subdir.py $DETECTION_PARAMETERS)
+  echo ">> Determined \$EESSI_SOFTWARE_SUBDIR_OVERRIDE via 'eessi_software_subdir.py $DETECTION_PARAMETERS' script"
+else
+  echo ">> Picking up pre-defined \$EESSI_SOFTWARE_SUBDIR_OVERRIDE: ${EESSI_SOFTWARE_SUBDIR_OVERRIDE}"
+fi
 
 # Set all the EESSI environment variables (respecting $EESSI_SOFTWARE_SUBDIR_OVERRIDE)
 # $EESSI_SILENT - don't print any messages
@@ -118,7 +123,7 @@ else
 fi
 
 echo ">> Configuring EasyBuild..."
-source configure_easybuild
+source $TOPDIR/configure_easybuild
 
 echo ">> Setting up \$MODULEPATH..."
 # make sure no modules are loaded
@@ -224,10 +229,11 @@ ok_msg="Done with OpenBLAS!"
 fail_msg="Installation of OpenBLAS failed!"
 if [[ $GENERIC -eq 1 ]]; then
     echo_yellow ">> Using https://github.com/easybuilders/easybuild-easyblocks/pull/1946 to build generic OpenBLAS."
-    $EB --include-easyblocks-from-pr 1946 OpenBLAS-0.3.9-GCC-9.3.0.eb --robot
+    openblas_include_easyblocks_from_pr="--include-easyblocks-from-pr 1946"
 else
-    $EB OpenBLAS-0.3.9-GCC-9.3.0.eb --robot
+    openblas_include_easyblocks_from_pr=''
 fi
+$EB $openblas_include_easyblocks_from_pr OpenBLAS-0.3.9-GCC-9.3.0.eb --robot
 check_exit_code $? "${ok_msg}" "${fail_msg}"
 
 echo ">> Installing OpenMPI..."
@@ -362,6 +368,53 @@ fail_msg="Installation of Nextflow failed, that's unexpected..."
 $EB -r --from-pr 16531 Nextflow-22.10.1.eb
 check_exit_code $? "${ok_msg}" "${fail_msg}"
 
+echo ">> Installing OSU-Micro-Benchmarks/5.7.1-gompi-2021a..."
+ok_msg="OSU-Micro-Benchmarks installed, yihaa!"
+fail_msg="Installation of OSU-Micro-Benchmarks failed, that's unexpected..."
+$EB OSU-Micro-Benchmarks-5.7.1-gompi-2021a.eb -r
+check_exit_code $? "${ok_msg}" "${fail_msg}"
+
+echo ">> Installing EasyBuild 4.5.1..."
+ok_msg="EasyBuild v4.5.1 installed"
+fail_msg="EasyBuild v4.5.1 failed to install"
+$EB --from-pr 14545 --include-easyblocks-from-pr 2805
+check_exit_code $? "${ok_msg}" "${fail_msg}"
+
+LMOD_IGNORE_CACHE=1 module swap EasyBuild/4.5.1
+check_exit_code $? "Swapped to EasyBuild/4.5.1" "Couldn't swap to EasyBuild/4.5.1"
+
+echo ">> Installing SciPy-bundle with foss/2021a..."
+ok_msg="SciPy-bundle with foss/2021a installed, welcome to the modern age"
+fail_msg="Installation of SciPy-bundle with foss/2021a failed, back to the stone age..."
+# use GCCcore easyconfig from https://github.com/easybuilders/easybuild-easyconfigs/pull/14454
+# which includes patch to fix installation with recent Linux kernel headers
+$EB --from-pr 14454 GCCcore-10.3.0.eb --robot
+# use enhanced Perl easyblock from https://github.com/easybuilders/easybuild-easyblocks/pull/2640
+# to avoid trouble when using long installation prefix (for example with EESSI pilot 2021.12 on skylake_avx512...)
+$EB Perl-5.32.1-GCCcore-10.3.0.eb --robot --include-easyblocks-from-pr 2640
+# use enhanced CMake easyblock to patch CMake's UnixPaths.cmake script if --sysroot is set
+# from https://github.com/easybuilders/easybuild-easyblocks/pull/2248
+$EB CMake-3.20.1-GCCcore-10.3.0.eb --robot --include-easyblocks-from-pr 2248
+# use Rust easyconfig from https://github.com/easybuilders/easybuild-easyconfigs/pull/14584
+# that includes patch to fix bootstrap problem when using alternate sysroot
+$EB --from-pr 14584 Rust-1.52.1-GCCcore-10.3.0.eb --robot
+# use OpenBLAS easyconfig from https://github.com/easybuilders/easybuild-easyconfigs/pull/15885
+# which includes a patch to fix installation on POWER
+$EB $openblas_include_easyblocks_from_pr --from-pr 15885 OpenBLAS-0.3.15-GCC-10.3.0.eb --robot
+# ignore failing FlexiBLAS tests when building on POWER;
+# some tests are failing due to a segmentation fault due to "invalid memory reference",
+# see also https://github.com/easybuilders/easybuild-easyconfigs/pull/12476;
+# using -fstack-protector-strong -fstack-clash-protection should fix that,
+# but it doesn't for some reason when building for ppc64le/generic...
+if [ "${EESSI_SOFTWARE_SUBDIR}" = "ppc64le/generic" ]; then
+    $EB FlexiBLAS-3.0.4-GCC-10.3.0.eb --ignore-test-failure
+else
+    $EB FlexiBLAS-3.0.4-GCC-10.3.0.eb
+fi
+
+$EB SciPy-bundle-2021.05-foss-2021a.eb --robot
+check_exit_code $? "${ok_msg}" "${fail_msg}"
+
 ### add packages here
 
 echo ">> Creating/updating Lmod cache..."
@@ -373,13 +426,7 @@ fi
 
 $TOPDIR/update_lmod_cache.sh ${EPREFIX} ${EASYBUILD_INSTALLPATH}
 
-echo ">> Checking for missing installations..."
-ok_msg="No missing installations, party time!"
-fail_msg="On no, some installations are still missing, how did that happen?!"
-eb_missing_out=$TMPDIR/eb_missing.out
-$EB --easystack eessi-${EESSI_PILOT_VERSION}.yml --experimental --missing --robot $EASYBUILD_PREFIX/ebfiles_repo | tee ${eb_missing_out}
-grep "No missing modules" ${eb_missing_out} > /dev/null
-check_exit_code $? "${ok_msg}" "${fail_msg}"
+$TOPDIR/check_missing_installations.sh
 
 echo ">> Cleaning up ${TMPDIR}..."
 rm -r ${TMPDIR}
