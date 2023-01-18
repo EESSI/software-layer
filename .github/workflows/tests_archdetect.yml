@@ -15,6 +15,7 @@ jobs:
           - aarch64/arm/neoverse-n1/Azure-Ubuntu20-Altra
           - aarch64/arm/neoverse-n1/AWS-awslinux-graviton2
           - aarch64/arm/neoverse-v1/AWS-awslinux-graviton3
+          - aarch64/arm/cortex-a72/debian-rpi4
       fail-fast: false
     steps:
     - uses: actions/checkout@v2

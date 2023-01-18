@@ -78,27 +78,37 @@ cpupath(){
     local machine_type=${EESSI_MACHINE_TYPE:-$(uname -m)}
     log "DEBUG" "cpupath: Host CPU architecture identified as '$machine_type'"
   
-    # Populate list of supported specs for this architecture
-    case $machine_type in
-        "x86_64") local spec_file="eessi_arch_x86.spec";;
-        "aarch64") local spec_file="eessi_arch_arm.spec";;
-        "ppc64le") local spec_file="eessi_arch_ppc.spec";;
-        *) log "ERROR" "cpupath: Unsupported CPU architecture $machine_type"
-    esac
-    # spec files are located in a subfolder with this script
-    local base_dir=$(dirname $(realpath $0))
-    update_arch_specs cpu_arch_spec "$base_dir/arch_specs/${spec_file}"
-  
     # Identify the host CPU vendor
     local cpu_vendor_tag="vendor[ _]id"
     local cpu_vendor=$(get_cpuinfo "$cpu_vendor_tag")
     log "DEBUG" "cpupath: CPU vendor of host system: '$cpu_vendor'"
+  
+    # Identify the host CPU part 
+    local cpu_part_tag="cpu[ _]part"
+    local cpu_part=$(get_cpuinfo "$cpu_part_tag")
+    log "DEBUG" "cpupath: CPU part of host system: '$cpu_part'"
+  
+    # Populate list of supported specs for this architecture
+    case $machine_type in
+        "x86_64") local spec_file="eessi_arch_x86.spec";;
+        "aarch64") 
+		local spec_file="eessi_arch_arm.spec"
+    		[ ! "${cpu_part}x" == "x" ] && local spec_file="eessi_arch_arm_part.spec" 
+		;;
+        "ppc64le") local spec_file="eessi_arch_ppc.spec";;
+        *) log "ERROR" "cpupath: Unsupported CPU architecture $machine_type"
+    esac
+
+    # spec files are located in a subfolder with this script
+    local base_dir=$(dirname $(realpath $0))
+    update_arch_specs cpu_arch_spec "$base_dir/arch_specs/${spec_file}"
   
     # Identify the host CPU flags or features
     local cpu_flag_tag='flags'
     # cpuinfo systems print different line identifiers, eg features, instead of flags
     [ "${cpu_vendor}" == "ARM" ] && cpu_flag_tag='flags'
     [ "${machine_type}" == "aarch64" ] && [ "${cpu_vendor}x" == "x" ] && cpu_flag_tag='features'
+    [ "${machine_type}" == "aarch64" ] && [ ! "${cpu_part}x" == "x" ] && cpu_flag_tag='cpu part'
     [ "${machine_type}" == "ppc64le" ] && cpu_flag_tag='cpu'
   
     local cpu_flags=$(get_cpuinfo "$cpu_flag_tag")
