@@ -37,6 +37,10 @@ software:
      toolchains:
        foss-2020a:
          versions: ['6.6']
+  R:
+    toolchains:
+      foss-2021a:
+        versions: '4.1.0'
   R-bundle-Bioconductor:
     toolchains:
       foss-2020a:
