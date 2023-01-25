@@ -8,6 +8,7 @@ on:
       - run_in_compat_layer_env.sh
       - scripts/utils.sh
       - update_lmod_cache.sh
+      - create_directory_tarballs.sh
 
   pull_request:
     branches:
@@ -18,6 +19,7 @@ on:
       - run_in_compat_layer_env.sh
       - scripts/utils.sh
       - update_lmod_cache.sh
+      - create_directory_tarballs.sh
 permissions:
   contents: read # to fetch code (actions/checkout)
 jobs:
