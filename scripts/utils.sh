@@ -63,3 +63,12 @@ function get_path_for_tool {
         fi
     fi
 }
+
+function get_ipv4_address {
+    hname=$1
+    hipv4=$(grep ${hname} /etc/hosts | grep -v '^[[:space:]]*#' | cut -d ' ' -f 1)
+    # TODO try other methods if the one above does not work --> tool that verifies
+    #      what method can be used?
+    echo "${hipv4}"
+    return 0
+}
