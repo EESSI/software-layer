@@ -42,30 +42,37 @@ if [[ ! -r "${JOB_CFG_FILE}" ]]; then
 fi
 echo "obtaining configuration settings from '${JOB_CFG_FILE}'"
 
-LOCAL_TMP=$(${YQ} '.site_config.local_tmp // ""' < ${JOB_CFG_FILE})
+# if http_proxy is in cfg/job.cfg use it, if not use env var $http_proxy
+HTTP_PROXY=$(${YQ} '.site_config.http_proxy // "${http_proxy}"' ${JOB_CFG_FILE})
+echo "HTTP_PROXY='${HTTP_PROXY}'"
+
+LOCAL_TMP=$(${YQ} '.site_config.local_tmp // ""' ${JOB_CFG_FILE})
 echo "LOCAL_TMP='${LOCAL_TMP}'"
-echo -n "setting \$storage by replacing any var in '${LOCAL_TMP}' -> "
+# TODO should local_tmp be mandatory? --> then we check here and exit if it is not provided
+
+echo -n "setting \$STORAGE by replacing any var in '${LOCAL_TMP}' -> "
 # replace any env variable in ${LOCAL_TMP} with its
 #   current value (e.g., a value that is local to the job)
-storage=$(envsubst <<< ${LOCAL_TMP})
-echo "'${storage}'"
+STORAGE=$(envsubst <<< ${LOCAL_TMP})
+echo "'${STORAGE}'"
 
-
-# singularity/apptainer settings: load_modules, HOME, TMPDIR, BIND 
-LOAD_MODULES=$(${YQ} '.site_config.load_modules // ""' < ${JOB_CFG_FILE})
+# obtain list of modules to be loaded
+LOAD_MODULES=$(${YQ} '.site_config.load_modules // ""' ${JOB_CFG_FILE})
 echo "LOAD_MODULES='${LOAD_MODULES}'"
 
+# singularity/apptainer settings: CONTAINER, HOME, TMPDIR, BIND
+CONTAINER=$(${YQ} '.site_config.container // ""' ${JOB_CFG_FILE})
 export SINGULARITY_HOME="$(pwd):/eessi_bot_job"
 export SINGULARITY_TMPDIR="$(pwd)/singularity_tmpdir"
 mkdir -p ${SINGULARITY_TMPDIR}
 
-if [[ ${storage} != /tmp* ]] ;
+if [[ ${STORAGE} != /tmp* ]] ;
 then
-    export SINGULARITY_BIND="${storage}:/tmp"
+    export SINGULARITY_BIND="${STORAGE}:/tmp"
 fi
 echo "SINGULARITY_BIND='${SINGULARITY_BIND}'"
 
-# load modules LOAD_MODULES is not empty
+# load modules if LOAD_MODULES is not empty
 if [[ ! -z ${LOAD_MODULES} ]]; then
     for mod in $(echo ${LOAD_MODULES} | tr ',' '\n')
     do
@@ -76,3 +83,45 @@ else
     echo "bot/build.sh: no modules to be loaded"
 fi
 
+# determine repository to be used from entry .repository in cfg/job.cfg
+REPOSITORY=$(${YQ} '.repository.repo_id // ""' ${JOB_CFG_FILE})
+EESSI_REPOS_CFG_FILE_OVERRIDE=$(${YQ} '.repository.repos_cfg_file // "cfg/repos.cfg"' ${JOB_CFG_FILE})
+
+# determine architecture to be used from entry .architecture in cfg/job.cfg
+# default: leave empty to let downstream script(s) determine subdir to be used
+EESSI_SOFTWARE_SUBDIR_OVERRIDE=$(${YQ} '.architecture.software_subdir // ""' ${JOB_CFG_FILE})
+
+source init/minimal_eessi_env
+
+# TODO
+#   - CODED add handling of EESSI_SOFTWARE_SUBDIR_OVERRIDE to eessi_container.sh
+#   - add handling of http(s)_proxy to eessi_container.sh, in there needs the
+#     CVMFS_HTTP_PROXY added to /etc/cvmfs/default.local (this needs a robust
+#     way to determine the IP address of a proxy)
+#   - bot needs to make repos.cfg and cfg_bundle available to job (likely, by copying
+#     files into './cfg/.' and defining '.repository.repos_cfg_file' in './cfg/job.cfg')
+
+# prepare options and directories for calling eessi_container.sh
+mkdir -p previous_tmp
+run_outerr=$(mktemp eessi_container.outerr.XXXXXXXXXX)
+CONTAINER_OPT=
+if [[ ! -z ${CONTAINER} ]]; then
+    CONTAINER_OPT="--container ${CONTAINER}"
+fi
+HTTP_PROXY_OPT=
+if [[ ! -z ${HTTP_PROXY} ]]; then
+    HTTP_PROXY_OPT="--container ${HTTP_PROXY}"
+fi
+REPOSITORY_OPT=
+if [[ ! -z ${REPOSITORY} ]]; then
+    REPOSITORY_OPT="--repository ${REPOSITORY}"
+fi
+./eessi_container.sh --access rw \
+                     ${CONTAINER_OPT} \
+                     ${HTTP_PROXY_OPT} \
+                     --info \
+                     --mode run \
+                     ${REPOSITORY_OPT} \
+                     --save $(pwd)/previous_tmp \
+                     --storage ${STORAGE} \
+                     ./install_software_layer.sh TODO installopts TODO commonopts TODO remainingopts "$@" 2>&1 | tee -a $(run_outerr)
