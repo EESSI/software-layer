@@ -92,7 +92,12 @@ if [[ "$EASYBUILD_OPTARCH" == "GENERIC" ]]; then
 fi
 
 echo ">> Determining software subdirectory to use for current build host..."
-export EESSI_SOFTWARE_SUBDIR_OVERRIDE=$(python3 $TOPDIR/eessi_software_subdir.py $DETECTION_PARAMETERS)
+if [ -z $EESSI_SOFTWARE_SUBDIR_OVERRIDE ]; then
+  export EESSI_SOFTWARE_SUBDIR_OVERRIDE=$(python3 $TOPDIR/eessi_software_subdir.py $DETECTION_PARAMETERS)
+  echo ">> Determined \$EESSI_SOFTWARE_SUBDIR_OVERRIDE via 'eessi_software_subdir.py $DETECTION_PARAMETERS' script"
+else
+  echo ">> Picking up pre-defined \$EESSI_SOFTWARE_SUBDIR_OVERRIDE: ${EESSI_SOFTWARE_SUBDIR_OVERRIDE}"
+fi
 
 # Set all the EESSI environment variables (respecting $EESSI_SOFTWARE_SUBDIR_OVERRIDE)
 # $EESSI_SILENT - don't print any messages
@@ -118,7 +123,7 @@ else
 fi
 
 echo ">> Configuring EasyBuild..."
-source configure_easybuild
+source $TOPDIR/configure_easybuild
 
 echo ">> Setting up \$MODULEPATH..."
 # make sure no modules are loaded
@@ -147,6 +152,10 @@ else
     pip_install_out=${TMPDIR}/pip_install.out
     pip3 install --prefix $EB_TMPDIR easybuild &> ${pip_install_out}
 
+    # keep track of original $PATH and $PYTHONPATH values, so we can restore them
+    ORIG_PATH=$PATH
+    ORIG_PYTHONPATH=$PYTHONPATH
+
     echo ">> Final installation in ${EASYBUILD_INSTALLPATH}..."
     export PATH=${EB_TMPDIR}/bin:$PATH
     export PYTHONPATH=$(ls -d ${EB_TMPDIR}/lib/python*/site-packages):$PYTHONPATH
@@ -155,6 +164,10 @@ else
     fail_msg="Installing latest EasyBuild release failed, that's not good... (output: ${eb_install_out})"
     eb --install-latest-eb-release &> ${eb_install_out}
     check_exit_code $? "${ok_msg}" "${fail_msg}"
+
+    # restore origin $PATH and $PYTHONPATH values
+    export PATH=${ORIG_PATH}
+    export PYTHONPATH=${ORIG_PYTHONPATH}
 
     eb --search EasyBuild-${REQ_EB_VERSION}.eb | grep EasyBuild-${REQ_EB_VERSION}.eb > /dev/null
     if [[ $? -eq 0 ]]; then
@@ -357,12 +370,23 @@ fail_msg="Installation of WRF failed, that's unexpected..."
 OMPI_MCA_pml=ucx UCX_TLS=tcp $EB WRF-3.9.1.1-foss-2020a-dmpar.eb -r --include-easyblocks-from-pr 2648
 check_exit_code $? "${ok_msg}" "${fail_msg}"
 
+echo ">> Installing R 4.1.0 (better be patient)..."
+ok_msg="R installed, wow!"
+fail_msg="Installation of R failed, so sad..."
+$EB --from-pr 14821 X11-20210518-GCCcore-10.3.0.eb -r && $EB --from-pr 16011 R-4.1.0-foss-2021a.eb --robot --parallel-extensions-install --experimental
+check_exit_code $? "${ok_msg}" "${fail_msg}"
+
 echo ">> Installing Nextflow 22.10.1..."
 ok_msg="Nextflow installed, the work must flow..."
 fail_msg="Installation of Nextflow failed, that's unexpected..."
 $EB -r --from-pr 16531 Nextflow-22.10.1.eb
 check_exit_code $? "${ok_msg}" "${fail_msg}"
 
+echo ">> Installing OSU-Micro-Benchmarks/5.7.1-gompi-2021a..."
+ok_msg="OSU-Micro-Benchmarks installed, yihaa!"
+fail_msg="Installation of OSU-Micro-Benchmarks failed, that's unexpected..."
+$EB OSU-Micro-Benchmarks-5.7.1-gompi-2021a.eb -r
+check_exit_code $? "${ok_msg}" "${fail_msg}"
 
 echo ">> Installing EasyBuild 4.5.1..."
 ok_msg="EasyBuild v4.5.1 installed"
@@ -416,13 +440,7 @@ fi
 
 $TOPDIR/update_lmod_cache.sh ${EPREFIX} ${EASYBUILD_INSTALLPATH}
 
-echo ">> Checking for missing installations..."
-ok_msg="No missing installations, party time!"
-fail_msg="On no, some installations are still missing, how did that happen?!"
-eb_missing_out=$TMPDIR/eb_missing.out
-$EB --easystack eessi-${EESSI_PILOT_VERSION}.yml --experimental --missing --robot $EASYBUILD_PREFIX/ebfiles_repo | tee ${eb_missing_out}
-grep "No missing modules" ${eb_missing_out} > /dev/null
-check_exit_code $? "${ok_msg}" "${fail_msg}"
+$TOPDIR/check_missing_installations.sh
 
 echo ">> Cleaning up ${TMPDIR}..."
 rm -r ${TMPDIR}
