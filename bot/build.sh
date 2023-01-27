@@ -95,7 +95,8 @@ source init/minimal_eessi_env
 
 # TODO
 #   - CODED add handling of EESSI_SOFTWARE_SUBDIR_OVERRIDE to eessi_container.sh
-#   - add handling of http(s)_proxy to eessi_container.sh, in there needs the
+#     TODO ensure that the bot makes use of that.
+#   - CODED add handling of http(s)_proxy to eessi_container.sh, in there needs the
 #     CVMFS_HTTP_PROXY added to /etc/cvmfs/default.local (this needs a robust
 #     way to determine the IP address of a proxy)
 #   - bot needs to make repos.cfg and cfg_bundle available to job (likely, by copying

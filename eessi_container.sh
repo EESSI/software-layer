@@ -19,8 +19,8 @@
 # 2. set up host storage/tmp
 # 3. set up common vars and directories
 # 4. set up vars specific to a scenario
-# 5. initialize host storage/tmp from previous run if provided
-# 6. run container
+# 5. run container
+# 6. save tmp (if requested)
 
 # -. initial settings & exit codes
 base_dir=$(dirname $(realpath $0))
@@ -276,7 +276,7 @@ fi
 #      |-overlay-upper
 #      |-overlay-work
 #      |-home
-#      |-cfg
+#      |-repos_cfg
 
 # tmp dir for EESSI
 EESSI_TMPDIR=${EESSI_HOST_STORAGE}
@@ -358,9 +358,9 @@ else
   cfg_init_file_map "${config_map}"
   [[ ${INFO} -eq 1 ]] && cfg_print_map
 
-  # TODO use information to set up dir ${EESSI_TMPDIR}/cfg,
-  #      define BIND mounts and override repo name and version
-  # check if config_bundle exists, if so, unpack it into ${EESSI_TMPDIR}/cfg
+  # use information to set up dir ${EESSI_TMPDIR}/repos_cfg,
+  #     define BIND mounts and override repo name and version
+  # check if config_bundle exists, if so, unpack it into ${EESSI_TMPDIR}/repos_cfg
   if [[ ! -r ${config_bundle} ]]; then
     fatal_error "config bundle '${config_bundle}' is not readable" ${REPOSITORY_ERROR_EXITCODE}
   fi
@@ -381,6 +381,26 @@ else
   source ${base_dir}/init/eessi_defaults
 fi
 
+# if http_proxy is not empty, we assume that the machine accesses internet
+# via a proxy. then we need to add CVMFS_HTTP_PROXY to
+# ${EESSI_TMPDIR}/repos_cfg/default.local on host (and possibly add a BIND
+# MOUNT if it was not yet in BIND_PATHS)
+if [[ ! -z ${http_proxy} ]]; then
+    # TODO tolerate other formats for proxy URLs, for now assume format is
+    # http://SOME_HOSTNAME:SOME_PORT
+    PROXY_HOST_AND_PORT=${http_proxy#http:\/\//} # strip http://
+    PROXY_PORT=${PROXY_HOST_AND_PORT#.*:/} # remove hostname: to get port
+    HTTP_PROXY_HOSTNAME=${PROXY_HOST_AND_PORT%:${PROX_PORT}/}
+    HTTP_PROXY_IPV4=$(get_ipv4_address ${HTTP_PROXY_HOSTNAME}) 
+    echo "CVMFS_HTTP_PROXY=\"${http_proxy}|" \
+         "http://${HTTP_PROXY_IPV4}:${PROXY_PORT}\"" \
+       >> ${EESSI_TMPDIR}/repos_cfg/default.local
+    cat ${EESSI_TMPDIR}/repos_cfg/default.local
+    # if default.local is not BIND mounted into container, add it to BIND_PATHS
+    if [[ ${BIND_PATHS} !~ "${EESSI_TMPDIR}/repos_cfg/default.local:/etc/cvmfs/default.local" ]]; then
+        export BIND_PATHS="${BIND_PATHS},${EESSI_TMPDIR}/repos_cfg/default.local:/etc/cvmfs/default.local"
+    fi
+fi
 
 # 4. set up vars and dirs specific to a scenario
 
@@ -417,10 +437,7 @@ if [[ "${ACCESS}" == "rw" ]]; then
 fi
 
 
-# 5. initialize host storage/tmp from previous run if provided
-
-
-# 6. run container
+# 5. run container
 # final settings
 if [[ -z ${SINGULARITY_BIND} ]]; then
     export SINGULARITY_BIND="${BIND_PATHS}"
@@ -442,7 +459,7 @@ echo "singularity ${MODE} ${EESSI_FUSE_MOUNTS[@]} ${CONTAINER} ${RUN_SCRIPT_AND_
 #      provided to the script
 singularity -q ${MODE} "${EESSI_FUSE_MOUNTS[@]}" ${CONTAINER} ${RUN_SCRIPT_AND_ARGS}
 
-# 7. save tmp if requested (arg -s|--save)
+# 6. save tmp if requested (arg -s|--save)
 if [[ ! -z ${SAVE} ]]; then
   # Note, for now we don't try to be smart and record in any way the OS and
   #   ARCH which might have been used internally, eg, when software packages
