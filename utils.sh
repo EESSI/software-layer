@@ -64,6 +64,30 @@ function get_path_for_tool {
     fi
 }
 
+function get_host_from_url {
+    url=$1
+    re="(http|https)://([^/:]+)"
+    if [[ $url =~ $re ]]; then
+        echo ${BASH_REMATCH[2]}
+        return 0
+    else
+        echo ""
+        return 1
+    fi 
+}
+
+function get_port_from_url {
+    url=$1
+    re="(http|https)://[^:]+:([0-9]+)"
+    if [[ $url =~ $re ]]; then
+        echo ${BASH_REMATCH[2]}
+        return 0
+    else
+        echo ""
+        return 1
+    fi 
+}
+
 function get_ipv4_address {
     hname=$1
     hipv4=$(grep ${hname} /etc/hosts | grep -v '^[[:space:]]*#' | cut -d ' ' -f 1)
