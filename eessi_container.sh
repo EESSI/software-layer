@@ -66,6 +66,7 @@ display_help() {
   echo "  -i | --info            - display configuration information [default: false]"
   echo "  -g | --storage DIR     - directory space on host machine (used for"
   echo "                           temporary data) [default: 1. TMPDIR, 2. /tmp]"
+  echo "  -l | --list-repos      - list available repository identifiers [default: false]"
   echo "  -m | --mode MODE       - with MODE==shell (launch interactive shell) or"
   echo "                           MODE==run (run a script) [default: shell]"
   echo "  -r | --repository CFG  - configuration file or identifier defining the"
@@ -99,13 +100,13 @@ CONTAINER="docker://ghcr.io/eessi/build-node:debian11"
 DRY_RUN=0
 INFO=0
 STORAGE=
+LIST_REPOS=0
 MODE="shell"
 REPOSITORY="EESSI-pilot"
 RESUME=
 SAVE=
 HTTP_PROXY=${http_proxy:-}
 HTTPS_PROXY=${https_proxy:-}
-RUN_SCRIPT_AND_ARGS=
 
 POSITIONAL_ARGS=()
 
@@ -133,6 +134,10 @@ while [[ $# -gt 0 ]]; do
       ;;
     -i|--info)
       INFO=1
+      shift 1
+      ;;
+    -l|--list-repos)
+      LIST_REPOS=1
       shift 1
       ;;
     -m|--mode)
@@ -173,6 +178,17 @@ done
 
 set -- "${POSITIONAL_ARGS[@]}"
 
+if [[ ${LIST_REPOS} -eq 1 ]]; then
+    echo "Repositories defined in the config file '${EESSI_REPOS_CFG_FILE}':"
+    echo "    EESSI-pilot [default]"
+    cfg_load ${EESSI_REPOS_CFG_FILE}
+    sections=$(cfg_sections)
+    while IFS= read -r repo_id
+    do
+        echo "    ${repo_id}"
+    done <<< "${sections}"
+    exit 0
+fi
 
 # 1. check if argument values are valid
 # (arg -a|--access) check if ACCESS is supported
@@ -214,8 +230,6 @@ fi
 if [[ "${MODE}" == "run" ]]; then
   if [[ $# -eq 0 ]]; then
     fatal_error "no command specified to run?!" "${RUN_SCRIPT_MISSING_EXITCODE}"
-  else
-    RUN_SCRIPT_AND_ARGS=$@
   fi
 fi
 
@@ -387,17 +401,20 @@ fi
 # MOUNT if it was not yet in BIND_PATHS)
 if [[ ! -z ${http_proxy} ]]; then
     # TODO tolerate other formats for proxy URLs, for now assume format is
-    # http://SOME_HOSTNAME:SOME_PORT
-    PROXY_HOST_AND_PORT=${http_proxy#http:\/\//} # strip http://
-    PROXY_PORT=${PROXY_HOST_AND_PORT#.*:/} # remove hostname: to get port
-    HTTP_PROXY_HOSTNAME=${PROXY_HOST_AND_PORT%:${PROX_PORT}/}
-    HTTP_PROXY_IPV4=$(get_ipv4_address ${HTTP_PROXY_HOSTNAME}) 
-    echo "CVMFS_HTTP_PROXY=\"${http_proxy}|" \
-         "http://${HTTP_PROXY_IPV4}:${PROXY_PORT}\"" \
+    # http://SOME_HOSTNAME:SOME_PORT/
+    [[ ${INFO} -eq 1 ]] && echo "http_proxy='${http_proxy}'"
+    PROXY_HOST=$(get_host_from_url ${http_proxy})
+    [[ ${INFO} -eq 1 ]] && echo "PROXY_HOST='${PROXY_HOST}'"
+    PROXY_PORT=$(get_port_from_url ${http_proxy})
+    [[ ${INFO} -eq 1 ]] && echo "PROXY_PORT='${PROXY_PORT}'"
+    HTTP_PROXY_IPV4=$(get_ipv4_address ${PROXY_HOST}) 
+    [[ ${INFO} -eq 1 ]] && echo "HTTP_PROXY_IPV4='${HTTP_PROXY_IPV4}'"
+    echo "CVMFS_HTTP_PROXY=\"${http_proxy}|http://${HTTP_PROXY_IPV4}:${PROXY_PORT}\"" \
        >> ${EESSI_TMPDIR}/repos_cfg/default.local
     cat ${EESSI_TMPDIR}/repos_cfg/default.local
+
     # if default.local is not BIND mounted into container, add it to BIND_PATHS
-    if [[ ${BIND_PATHS} !~ "${EESSI_TMPDIR}/repos_cfg/default.local:/etc/cvmfs/default.local" ]]; then
+    if [[ ! ${BIND_PATHS} =~ "${EESSI_TMPDIR}/repos_cfg/default.local:/etc/cvmfs/default.local" ]]; then
         export BIND_PATHS="${BIND_PATHS},${EESSI_TMPDIR}/repos_cfg/default.local:/etc/cvmfs/default.local"
     fi
 fi
@@ -454,10 +471,10 @@ if [ ! -z ${EESSI_SOFTWARE_SUBDIR_OVERRIDE} ]; then
 fi
 
 echo "Launching container with command (next line):"
-echo "singularity ${MODE} ${EESSI_FUSE_MOUNTS[@]} ${CONTAINER} ${RUN_SCRIPT_AND_ARGS}"
+echo "singularity ${MODE} ${EESSI_FUSE_MOUNTS[@]} ${CONTAINER} $@"
 # TODO for now we run singularity with '-q' (quiet), later adjust this to the log level
 #      provided to the script
-singularity -q ${MODE} "${EESSI_FUSE_MOUNTS[@]}" ${CONTAINER} ${RUN_SCRIPT_AND_ARGS}
+singularity -q ${MODE} "${EESSI_FUSE_MOUNTS[@]}" ${CONTAINER} "$@"
 
 # 6. save tmp if requested (arg -s|--save)
 if [[ ! -z ${SAVE} ]]; then
