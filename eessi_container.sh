@@ -413,7 +413,7 @@ if [[ ! -z ${http_proxy} ]]; then
     [[ ${VERBOSE} -eq 1 ]] && echo "PROXY_HOST='${PROXY_HOST}'"
     PROXY_PORT=$(get_port_from_url ${http_proxy})
     [[ ${VERBOSE} -eq 1 ]] && echo "PROXY_PORT='${PROXY_PORT}'"
-    HTTP_PROXY_IPV4=$(get_ipv4_address ${PROXY_HOST}) 
+    HTTP_PROXY_IPV4=$(get_ipv4_address ${PROXY_HOST})
     [[ ${VERBOSE} -eq 1 ]] && echo "HTTP_PROXY_IPV4='${HTTP_PROXY_IPV4}'"
     echo "CVMFS_HTTP_PROXY=\"${http_proxy}|http://${HTTP_PROXY_IPV4}:${PROXY_PORT}\"" \
        >> ${EESSI_TMPDIR}/repos_cfg/default.local
