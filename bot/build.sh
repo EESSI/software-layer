@@ -48,11 +48,13 @@ fi
 echo "obtaining configuration settings from '${JOB_CFG_FILE}'"
 
 # if http_proxy is in cfg/job.cfg use it, if not use env var $http_proxy
-HTTP_PROXY=$(${YQ} '.site_config.http_proxy // "${http_proxy}"' ${JOB_CFG_FILE})
+HTTP_PROXY=$(${YQ} '.site_config.http_proxy // ""' ${JOB_CFG_FILE})
+HTTP_PROXY=${HTTP_PROXY:-${http_proxy}}
 echo "HTTP_PROXY='${HTTP_PROXY}'"
 
 # if https_proxy is in cfg/job.cfg use it, if not use env var $https_proxy
-HTTPS_PROXY=$(${YQ} '.site_config.https_proxy // "${https_proxy}"' ${JOB_CFG_FILE})
+HTTPS_PROXY=$(${YQ} '.site_config.https_proxy // ""' ${JOB_CFG_FILE})
+HTTPS_PROXY=${HTTPS_PROXY:-${https_proxy}}
 echo "HTTPS_PROXY='${HTTPS_PROXY}'"
 
 LOCAL_TMP=$(${YQ} '.site_config.local_tmp // ""' ${JOB_CFG_FILE})
