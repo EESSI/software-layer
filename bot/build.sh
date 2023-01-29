@@ -133,13 +133,15 @@ if [[ ! -z ${REPOSITORY} ]]; then
 fi
 # set EESSI_REPOS_CFG_DIR_OVERRIDE to ./cfg
 export EESSI_REPOS_CFG_DIR_OVERRIDE=$(pwd)/cfg
-./eessi_container.sh --access rw \
-                     ${CONTAINER_OPT} \
-                     ${HTTP_PROXY_OPT} \
-                     ${HTTPS_PROXY_OPT} \
-                     --info \
-                     --mode run \
-                     ${REPOSITORY_OPT} \
-                     --save $(pwd)/previous_tmp \
-                     --storage ${STORAGE} \
-                     ./install_software_layer.sh "$@" 2>&1 | tee -a ${run_outerr}
+echo "./eessi_container.sh --access rw"
+echo "                     ${CONTAINER_OPT}"
+echo "                     ${HTTP_PROXY_OPT}"
+echo "                     ${HTTPS_PROXY_OPT}"
+echo "                     --info"
+echo "                     --mode run"
+echo "                     ${REPOSITORY_OPT}"
+echo "                     --save $(pwd)/previous_tmp"
+echo "                     --storage ${STORAGE}"
+echo "                     ./install_software_layer.sh \"$@\" 2>&1 | tee -a ${run_outerr}"
+
+exit 0
