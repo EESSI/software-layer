@@ -397,7 +397,7 @@ if [[ ! -z ${http_proxy} ]]; then
        >> ${EESSI_TMPDIR}/repos_cfg/default.local
     cat ${EESSI_TMPDIR}/repos_cfg/default.local
     # if default.local is not BIND mounted into container, add it to BIND_PATHS
-    if [[ ${BIND_PATHS} !~ "${EESSI_TMPDIR}/repos_cfg/default.local:/etc/cvmfs/default.local" ]]; then
+    if [[ ! ${BIND_PATHS} =~ "${EESSI_TMPDIR}/repos_cfg/default.local:/etc/cvmfs/default.local" ]]; then
         export BIND_PATHS="${BIND_PATHS},${EESSI_TMPDIR}/repos_cfg/default.local:/etc/cvmfs/default.local"
     fi
 fi
