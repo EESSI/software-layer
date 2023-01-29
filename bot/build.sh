@@ -20,6 +20,11 @@
 #  - the tool 'yq' for working with json files is available via the PATH or
 #    the environment variable BOT_YQ (see https://github.com/mikefarah/yq)
 
+echo "###################################################################"
+env
+echo "###################################################################"
+echo
+
 # defaults
 export JOB_CFG_FILE="${JOB_CFG_FILE_OVERRIDE:=./cfg/job.cfg}"
 
