@@ -73,7 +73,7 @@ function get_host_from_url {
     else
         echo ""
         return 1
-    fi 
+    fi
 }
 
 function get_port_from_url {
@@ -85,7 +85,7 @@ function get_port_from_url {
     else
         echo ""
         return 1
-    fi 
+    fi
 }
 
 function get_ipv4_address {
