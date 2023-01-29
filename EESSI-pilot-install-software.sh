@@ -152,6 +152,10 @@ else
     pip_install_out=${TMPDIR}/pip_install.out
     pip3 install --prefix $EB_TMPDIR easybuild &> ${pip_install_out}
 
+    # keep track of original $PATH and $PYTHONPATH values, so we can restore them
+    ORIG_PATH=$PATH
+    ORIG_PYTHONPATH=$PYTHONPATH
+
     echo ">> Final installation in ${EASYBUILD_INSTALLPATH}..."
     export PATH=${EB_TMPDIR}/bin:$PATH
     export PYTHONPATH=$(ls -d ${EB_TMPDIR}/lib/python*/site-packages):$PYTHONPATH
@@ -160,6 +164,10 @@ else
     fail_msg="Installing latest EasyBuild release failed, that's not good... (output: ${eb_install_out})"
     eb --install-latest-eb-release &> ${eb_install_out}
     check_exit_code $? "${ok_msg}" "${fail_msg}"
+
+    # restore origin $PATH and $PYTHONPATH values
+    export PATH=${ORIG_PATH}
+    export PYTHONPATH=${ORIG_PYTHONPATH}
 
     eb --search EasyBuild-${REQ_EB_VERSION}.eb | grep EasyBuild-${REQ_EB_VERSION}.eb > /dev/null
     if [[ $? -eq 0 ]]; then
@@ -360,6 +368,12 @@ echo ">> Installing WRF 3.9.1.1..."
 ok_msg="WRF installed, it's getting hot in here!"
 fail_msg="Installation of WRF failed, that's unexpected..."
 OMPI_MCA_pml=ucx UCX_TLS=tcp $EB WRF-3.9.1.1-foss-2020a-dmpar.eb -r --include-easyblocks-from-pr 2648
+check_exit_code $? "${ok_msg}" "${fail_msg}"
+
+echo ">> Installing R 4.1.0 (better be patient)..."
+ok_msg="R installed, wow!"
+fail_msg="Installation of R failed, so sad..."
+$EB --from-pr 14821 X11-20210518-GCCcore-10.3.0.eb -r && $EB --from-pr 16011 R-4.1.0-foss-2021a.eb --robot --parallel-extensions-install --experimental
 check_exit_code $? "${ok_msg}" "${fail_msg}"
 
 echo ">> Installing Nextflow 22.10.1..."
