@@ -165,4 +165,3 @@ function cfg_print_map {
     echo "${index} --> ${cfg_file_map[${index}]}"
   done
 }
-
