@@ -1,0 +1,13 @@
+# define default values for some EESSI_* environment variables
+#
+# This file is part of the EESSI software layer,
+# see https://github.com/EESSI/software-layer
+#
+# author: Thomas Roeblitz (@trz42)
+#
+# license: GPLv2
+#
+
+export EESSI_CVMFS_REPO="${EESSI_CVMFS_REPO_OVERRIDE:=/cvmfs/pilot.eessi-hpc.org}"
+export EESSI_PILOT_VERSION="${EESSI_PILOT_VERSION_OVERRIDE:=2021.12}"
+

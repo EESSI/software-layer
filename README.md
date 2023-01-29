@@ -19,6 +19,22 @@ Environment set up to use EESSI pilot software stack, have fun!
 [EESSI pilot 2021.12] $
 ```
 
+### Accessing EESSI via a container
+
+You need Singularity version 3.7 or newer. Then, simply run
+
+```
+$ ./eessi_container.sh
+```
+Once you get presented the prompt `Singularity>` run the above `source` command.
+
+If you want to build a package for the software repository, simply add the arguments `--access rw`, e.g., full command would be
+
+```
+$ ./eessi_container.sh --access rw
+```
+Note, not all features/arguments listed via `./eessi_container.sh --help` are implemented.
+
 # License
 
 The software in this repository is distributed under the terms of the
