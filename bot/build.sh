@@ -89,7 +89,7 @@ fi
 
 # determine repository to be used from entry .repository in cfg/job.cfg
 REPOSITORY=$(${YQ} '.repository.repo_id // ""' ${JOB_CFG_FILE})
-EESSI_REPOS_CFG_FILE_OVERRIDE=$(${YQ} '.repository.repos_cfg_file // "cfg/repos.cfg"' ${JOB_CFG_FILE})
+EESSI_REPOS_CFG_DIR_OVERRIDE=$(${YQ} '.repository.repos_cfg_dir // "cfg"' ${JOB_CFG_FILE})
 
 # determine architecture to be used from entry .architecture in cfg/job.cfg
 # default: leave empty to let downstream script(s) determine subdir to be used
@@ -131,8 +131,8 @@ REPOSITORY_OPT=
 if [[ ! -z ${REPOSITORY} ]]; then
     REPOSITORY_OPT="--repository ${REPOSITORY}"
 fi
-# set EESSI_REPOS_CFG_FILE_OVERRIDE to ./cfg/repos.cfg
-export EESSI_REPOS_CFG_FILE_OVERRIDE=$(pwd)/cfg/repos.cfg
+# set EESSI_REPOS_CFG_DIR_OVERRIDE to ./cfg
+export EESSI_REPOS_CFG_DIR_OVERRIDE=$(pwd)/cfg
 ./eessi_container.sh --access rw \
                      ${CONTAINER_OPT} \
                      ${HTTP_PROXY_OPT} \
@@ -142,4 +142,4 @@ export EESSI_REPOS_CFG_FILE_OVERRIDE=$(pwd)/cfg/repos.cfg
                      ${REPOSITORY_OPT} \
                      --save $(pwd)/previous_tmp \
                      --storage ${STORAGE} \
-                     ./install_software_layer.sh TODO installopts TODO commonopts TODO remainingopts "$@" 2>&1 | tee -a ${run_outerr}
+                     ./install_software_layer.sh "$@" 2>&1 | tee -a ${run_outerr}

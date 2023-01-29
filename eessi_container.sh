@@ -47,8 +47,8 @@ CVMFS_VAR_LIB="var-lib-cvmfs"
 CVMFS_VAR_RUN="var-run-cvmfs"
 
 # repository cfg file, default name (default location: $PWD)
-#   can be overwritten by setting env var EESSI_REPOS_CFG_FILE_OVERRIDE
-export EESSI_REPOS_CFG_FILE="${EESSI_REPOS_CFG_FILE_OVERRIDE:=repos.cfg}"
+#   can be overwritten by setting env var EESSI_REPOS_CFG_DIR_OVERRIDE
+export EESSI_REPOS_CFG_FILE="${EESSI_REPOS_CFG_DIR_OVERRIDE:=.}/repos.cfg"
 
 
 # 0. parse args
