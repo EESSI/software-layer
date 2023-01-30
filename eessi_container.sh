@@ -210,7 +210,7 @@ fi
 
 # TODO (arg -r|--repository) check if repository is known
 # REPOSITORY_ERROR_EXITCODE
-if [[ ! -z "${REPOSITORY}" -a "${REPOSITORY}" != "EESSI-pilot" -a ! -r ${EESSI_REPOS_CFG_FILE} ]]; then
+if [[ ! -z "${REPOSITORY}" && "${REPOSITORY}" != "EESSI-pilot" && ! -r ${EESSI_REPOS_CFG_FILE} ]]; then
     fatal_error "arg '--repository ${REPOSITORY}' requires a cfg file at '${EESSI_REPOS_CFG_FILE}'" "${REPOSITORY_ERROR_EXITCODE}"
 fi
 
