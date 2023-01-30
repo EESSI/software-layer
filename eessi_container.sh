@@ -48,7 +48,10 @@ CVMFS_VAR_RUN="var-run-cvmfs"
 
 # repository cfg file, default name (default location: $PWD)
 #   can be overwritten by setting env var EESSI_REPOS_CFG_DIR_OVERRIDE
-export EESSI_REPOS_CFG_FILE="${EESSI_REPOS_CFG_DIR_OVERRIDE:=.}/repos.cfg"
+export EESSI_REPOS_CFG_FILE="${EESSI_REPOS_CFG_DIR_OVERRIDE:=${PWD}}/repos.cfg"
+# other repository cfg files in directory, default location: $PWD
+#   can be overwritten by setting env var EESSI_REPOS_CFG_DIR_OVERRIDE
+export EESSI_REPOS_CFG_DIR="${EESSI_REPOS_CFG_DIR_OVERRIDE:=${PWD}}"
 
 
 # 0. parse args
@@ -379,13 +382,22 @@ else
   # use information to set up dir ${EESSI_TMPDIR}/repos_cfg,
   #     define BIND mounts and override repo name and version
   # check if config_bundle exists, if so, unpack it into ${EESSI_TMPDIR}/repos_cfg
-  if [[ ! -r ${config_bundle} ]]; then
-    fatal_error "config bundle '${config_bundle}' is not readable" ${REPOSITORY_ERROR_EXITCODE}
+  # if config_bundle is relative path (no '/' at start) prepend it with
+  # EESSI_REPOS_CFG_DIR
+  config_bundle_path=
+  if [[ ! "${config_bundle}" =~ ^/ ]]; then
+      config_bundle_path=${EESSI_REPOS_CFG_DIR}/${config_bundle}
+  else
+      config_bundle_path=${config_bundle}
+  fi
+
+  if [[ ! -r ${config_bundle_path} ]]; then
+    fatal_error "config bundle '${config_bundle_path}' is not readable" ${REPOSITORY_ERROR_EXITCODE}
   fi
 
   # only unpack config_bundle if we're not resuming from a previous run
   if [[ -z ${RESUME} ]]; then
-    tar xf ${config_bundle} -C ${EESSI_TMPDIR}/repos_cfg
+    tar xf ${config_bundle_path} -C ${EESSI_TMPDIR}/repos_cfg
   fi
 
   for src in "${!cfg_file_map[@]}"

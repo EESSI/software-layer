@@ -96,7 +96,8 @@ fi
 
 # determine repository to be used from entry .repository in cfg/job.cfg
 REPOSITORY=$(${YQ} '.repository.repo_id // ""' ${JOB_CFG_FILE})
-EESSI_REPOS_CFG_DIR_OVERRIDE=$(${YQ} '.repository.repos_cfg_dir // "cfg"' ${JOB_CFG_FILE})
+EESSI_REPOS_CFG_DIR_OVERRIDE=$(${YQ} '.repository.repos_cfg_dir // ""' ${JOB_CFG_FILE})
+export EESSI_REPOS_CFG_DIR_OVERRIDE=${EESSI_REPOS_CFG_DIR_OVERRIDE:-${PWD}/cfg}
 
 # determine architecture to be used from entry .architecture in cfg/job.cfg
 # default: leave empty to let downstream script(s) determine subdir to be used
@@ -117,7 +118,7 @@ fi
 #     CVMFS_HTTP_PROXY added to /etc/cvmfs/default.local (this needs a robust
 #     way to determine the IP address of a proxy)
 #   - bot needs to make repos.cfg and cfg_bundle available to job (likely, by copying
-#     files into './cfg/.' and defining '.repository.repos_cfg_file' in './cfg/job.cfg')
+#     files into './cfg/.' and defining '.repository.repos_cfg_dir' in './cfg/job.cfg')
 
 # prepare options and directories for calling eessi_container.sh
 mkdir -p previous_tmp
@@ -138,8 +139,6 @@ REPOSITORY_OPT=
 if [[ ! -z ${REPOSITORY} ]]; then
     REPOSITORY_OPT="--repository ${REPOSITORY}"
 fi
-# set EESSI_REPOS_CFG_DIR_OVERRIDE to ./cfg
-export EESSI_REPOS_CFG_DIR_OVERRIDE=$(pwd)/cfg
 echo "###################################################################"
 env
 echo "###################################################################"
