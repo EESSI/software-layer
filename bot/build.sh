@@ -79,7 +79,8 @@ mkdir -p ${SINGULARITY_TMPDIR}
 
 if [[ ${STORAGE} != /tmp* ]] ;
 then
-    export SINGULARITY_BIND="${STORAGE}:/tmp"
+    echo "skip setting SINGULARITY_BIND=${STORAGE}:/tmp because another location is bind mounted to /tmp in eessi_container.sh"
+    #export SINGULARITY_BIND="${STORAGE}:/tmp"
 fi
 echo "SINGULARITY_BIND='${SINGULARITY_BIND}'"
 
