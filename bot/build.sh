@@ -106,7 +106,7 @@ else
     EESSI_SOFTWARE_SUBDIR_OVERRIDE=$(${YQ} '.architecture.software_subdir // ""' ${JOB_CFG_FILE})
 fi
 
-source init/minimal_eessi_env
+#source init/minimal_eessi_env
 
 # TODO
 #   - CODED add handling of EESSI_SOFTWARE_SUBDIR_OVERRIDE to eessi_container.sh
