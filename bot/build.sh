@@ -140,6 +140,9 @@ if [[ ! -z ${REPOSITORY} ]]; then
 fi
 # set EESSI_REPOS_CFG_DIR_OVERRIDE to ./cfg
 export EESSI_REPOS_CFG_DIR_OVERRIDE=$(pwd)/cfg
+echo "###################################################################"
+env
+echo "###################################################################"
 echo "./eessi_container.sh --access rw"
 echo "                     ${CONTAINER_OPT}"
 echo "                     ${HTTP_PROXY_OPT}"
