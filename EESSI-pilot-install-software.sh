@@ -122,15 +122,15 @@ else
     fatal_error "Failed to initialize Lmod?! (see output in ${ml_version_out}"
 fi
 
+echo ">> Configuring EasyBuild..."
+source $TOPDIR/configure_easybuild
+
 echo "@@ Check if installpath '${EASYBUILD_INSTALLPATH}' is writable @@"
 touch ${EASYBUILD_INSTALLPATH}/foo
 ls -l ${EASYBUILD_INSTALLPATH}
 
 echo "@@ Check contents of /tmp @@"
 ls -l /tmp
-
-echo ">> Configuring EasyBuild..."
-source $TOPDIR/configure_easybuild
 
 echo ">> Setting up \$MODULEPATH..."
 # make sure no modules are loaded

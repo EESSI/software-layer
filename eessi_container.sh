@@ -494,10 +494,10 @@ echo "Show contents of EESSI_TMPDIR='${EESSI_TMPDIR}'"
 find ${EESSI_TMPDIR} -type d
 
 echo "Launching container with command (next line):"
-echo "singularity ${MODE} ${EESSI_FUSE_MOUNTS[@]} ${CONTAINER} $@"
+echo "singularity -q ${MODE} ${EESSI_FUSE_MOUNTS[@]} ${CONTAINER} $@"
 # TODO for now we run singularity with '-q' (quiet), later adjust this to the log level
 #      provided to the script
-singularity -q ${MODE} "${EESSI_FUSE_MOUNTS[@]}" ${CONTAINER} "$@"
+singularity ${MODE} "${EESSI_FUSE_MOUNTS[@]}" ${CONTAINER} "$@"
 
 # 6. save tmp if requested (arg -s|--save)
 if [[ ! -z ${SAVE} ]]; then
