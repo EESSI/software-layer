@@ -126,6 +126,9 @@ echo "@@ Check if installpath '${EASYBUILD_INSTALLPATH}' is writable @@"
 touch ${EASYBUILD_INSTALLPATH}/foo
 ls -l ${EASYBUILD_INSTALLPATH}
 
+echo "@@ Check contents of /tmp @@"
+ls -l /tmp
+
 echo ">> Configuring EasyBuild..."
 source $TOPDIR/configure_easybuild
 
