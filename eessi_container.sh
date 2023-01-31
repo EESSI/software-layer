@@ -331,6 +331,8 @@ BIND_PATHS="${BIND_PATHS},${EESSI_TMPDIR}:/tmp"
 
 # set up repository config (always create directory repos_cfg and populate it with info when
 # arg -r|--repository is used)
+echo "environment BEFORE setting up repository"
+env | grep EESSI_
 mkdir -p ${EESSI_TMPDIR}/repos_cfg
 if [[ "${REPOSITORY}" == "EESSI-pilot" ]]; then
   # need to source defaults as late as possible (see other sourcing below)
@@ -410,6 +412,8 @@ else
   # need to source defaults as late as possible (after *_OVERRIDEs)
   source ${base_dir}/init/eessi_defaults
 fi
+echo "environment AFTER setting up repository"
+env | grep EESSI_
 
 # if http_proxy is not empty, we assume that the machine accesses internet
 # via a proxy. then we need to add CVMFS_HTTP_PROXY to

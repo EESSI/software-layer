@@ -108,11 +108,11 @@ else
     EESSI_SOFTWARE_SUBDIR_OVERRIDE=$(${YQ} '.architecture.software_subdir // ""' ${JOB_CFG_FILE})
 fi
 
-echo "environment BEFORE sourcing '${PWD}/init/minimal_eessi_env'"
-env | grep EESSI_
-source init/minimal_eessi_env
-echo "environment AFTER sourcing '${PWD}/init/minimal_eessi_env'"
-env | grep EESSI_
+#echo "environment BEFORE sourcing '${PWD}/init/minimal_eessi_env'"
+#env | grep EESSI_
+#source init/minimal_eessi_env
+#echo "environment AFTER sourcing '${PWD}/init/minimal_eessi_env'"
+#env | grep EESSI_
 
 # TODO
 #   - CODED add handling of EESSI_SOFTWARE_SUBDIR_OVERRIDE to eessi_container.sh
