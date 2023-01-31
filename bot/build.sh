@@ -148,7 +148,7 @@ echo "###################################################################"
 env
 echo "###################################################################"
 echo
-echo "Excuting command:"
+echo "Executing command:"
 echo "./eessi_container.sh --access rw"
 echo "                     ${CONTAINER_OPT}"
 echo "                     ${HTTP_PROXY_OPT}"
