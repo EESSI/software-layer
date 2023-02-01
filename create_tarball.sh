@@ -37,6 +37,8 @@ fi
 
 overlay_upper_dir="${eessi_tmpdir}/overlay-upper"
 echo overlay_upper_dir="${eessi_tmpdir}/overlay-upper"
+overlay_upper_dir="/tmp/overlay-upper"
+echo overlay_upper_dir="/tmp/overlay-upper"
 echo "ls ${overlay_upper_dir}"
 ls ${overlay_upper_dir}
 
