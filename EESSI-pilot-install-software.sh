@@ -457,5 +457,9 @@ $TOPDIR/update_lmod_cache.sh ${EPREFIX} ${EASYBUILD_INSTALLPATH}
 
 $TOPDIR/check_missing_installations.sh
 
+# TODO do not clean up by default (or provide a cmd line arg and when run
+# from bot, do not clean up)
 echo ">> Cleaning up ${TMPDIR}..."
 rm -r ${TMPDIR}
+
+exit 0
