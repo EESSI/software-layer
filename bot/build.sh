@@ -100,6 +100,11 @@ REPOSITORY=$(${YQ} '.repository.repo_id // ""' ${JOB_CFG_FILE})
 EESSI_REPOS_CFG_DIR_OVERRIDE=$(${YQ} '.repository.repos_cfg_dir // ""' ${JOB_CFG_FILE})
 export EESSI_REPOS_CFG_DIR_OVERRIDE=${EESSI_REPOS_CFG_DIR_OVERRIDE:-${PWD}/cfg}
 
+# determine pilot version to be used from .repository.repo_version in cfg/job.cfg
+# TODO better? set EESSI_PILOT_VERSION_OVERRIDE and "source init/eessi_defaults"
+EESSI_PILOT_VERSION=$(${YQ} '.repository.repo_version // ""' ${JOB_CFG_FILE})
+export EESSI_PILOT_VERSION=${EESSI_PILOT_VERSION:-2021.12}
+
 # determine architecture to be used from entry .architecture in cfg/job.cfg
 # default: leave empty to let downstream script(s) determine subdir to be used
 if [[ ! -z "${CPU_TARGET}" ]]; then
@@ -107,6 +112,10 @@ if [[ ! -z "${CPU_TARGET}" ]]; then
 else
     EESSI_SOFTWARE_SUBDIR_OVERRIDE=$(${YQ} '.architecture.software_subdir // ""' ${JOB_CFG_FILE})
 fi
+
+# get EESSI_OS_TYPE from cfg/job.cfg (default: linux)
+EESSI_OS_TYPE=$(${YQ} '.architecture.os_type // ""' ${JOB_CFG_FILE})
+export EESSI_OS_TYPE=${EESSI_OS_TYPE:-linux}
 
 #echo "environment BEFORE sourcing '${PWD}/init/minimal_eessi_env'"
 #env | grep EESSI_
@@ -173,9 +182,9 @@ echo "                     ./install_software_layer.sh \"$@\" 2>&1 | tee -a ${bu
 # determine temporary directory to resume from
 BUILD_TMPDIR=$(grep 'RESUME_FROM_DIR' ${build_outerr} | sed -e "s/^RESUME_FROM_DIR //")
 
-tar_outerr=$(mktemp run.outerr.XXXX)
+tar_outerr=$(mktemp tar.outerr.XXXX)
 timestamp=$(date +%s)
-export TGZ=$(printf "eessi-%s-software-%s-%s-%d.tar.gz" ${EESSI_PILOT_VERSION} ${EESSI_OS_TYPE} ${software_subdir//\//-} ${timestamp})
+export TGZ=$(printf "eessi-%s-software-%s-%s-%d.tar.gz" ${EESSI_PILOT_VERSION} ${EESSI_OS_TYPE} ${EESSI_SOFTWARE_SUBDIR_OVERRIDE//\//-} ${timestamp})
 
 echo "Executing command to create tarball:"
 echo "./eessi_container.sh --access rw"
