@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-# Script to install EESSI pilot software stack (version 2021.12)
+# Script to install EESSI pilot software stack (version set through init/eessi_defaults)
 
 # see example parsing of command line arguments at
 #   https://wiki.bash-hackers.org/scripting/posparams#using_a_while_loop
@@ -152,6 +152,10 @@ else
     pip_install_out=${TMPDIR}/pip_install.out
     pip3 install --prefix $EB_TMPDIR easybuild &> ${pip_install_out}
 
+    # keep track of original $PATH and $PYTHONPATH values, so we can restore them
+    ORIG_PATH=$PATH
+    ORIG_PYTHONPATH=$PYTHONPATH
+
     echo ">> Final installation in ${EASYBUILD_INSTALLPATH}..."
     export PATH=${EB_TMPDIR}/bin:$PATH
     export PYTHONPATH=$(ls -d ${EB_TMPDIR}/lib/python*/site-packages):$PYTHONPATH
@@ -160,6 +164,10 @@ else
     fail_msg="Installing latest EasyBuild release failed, that's not good... (output: ${eb_install_out})"
     eb --install-latest-eb-release &> ${eb_install_out}
     check_exit_code $? "${ok_msg}" "${fail_msg}"
+
+    # restore origin $PATH and $PYTHONPATH values
+    export PATH=${ORIG_PATH}
+    export PYTHONPATH=${ORIG_PYTHONPATH}
 
     eb --search EasyBuild-${REQ_EB_VERSION}.eb | grep EasyBuild-${REQ_EB_VERSION}.eb > /dev/null
     if [[ $? -eq 0 ]]; then
