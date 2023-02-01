@@ -19,6 +19,8 @@ echo ">> tmpdir: $tmpdir"
 os="linux"
 source ${base_dir}/init/eessi_defaults
 cvmfs_repo=${EESSI_CVMFS_REPO}
+# overwrite what we get from command line
+# pilot_version=${EESSI_PILOT_VERSION}
 
 software_dir="${cvmfs_repo}/versions/${pilot_version}/software/${os}/${cpu_arch_subdir}"
 if [ ! -d ${software_dir} ]; then
