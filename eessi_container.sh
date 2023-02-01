@@ -280,6 +280,7 @@ else
   fi
   EESSI_HOST_STORAGE=$(mktemp -d --tmpdir eessi.XXXXXXXXXX)
   echo "Using ${EESSI_HOST_STORAGE} as tmp storage (add '--resume ${EESSI_HOST_STORAGE}' to resume where this session ended)."
+  echo "RESUME_FROM_DIR ${EESSI_HOST_STORAGE}"
 fi
 
 # if ${RESUME} is a file (assume a tgz), unpack it into ${EESSI_HOST_STORAGE}
@@ -516,6 +517,7 @@ if [[ ! -z ${SAVE} ]]; then
   fi
   tar cf ${TGZ} -C ${EESSI_TMPDIR} .
   echo "Saved contents of '${EESSI_TMPDIR}' to '${TGZ}' (to resume, add '--resume ${TGZ}')"
+  echo "RESUME_FROM_TGZ ${TGZ}"
 fi
 
 # TODO clean up tmp by default? only retain if another option provided (--retain-tmp)
