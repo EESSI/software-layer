@@ -126,8 +126,6 @@ fi
 #     files into './cfg/.' and defining '.repository.repos_cfg_dir' in './cfg/job.cfg')
 
 # prepare options and directories for calling eessi_container.sh
-mkdir -p previous_tmp
-run_outerr=$(mktemp eessi_container.outerr.XXXXXXXXXX)
 CONTAINER_OPT=
 if [[ ! -z ${CONTAINER} ]]; then
     CONTAINER_OPT="--container ${CONTAINER}"
@@ -148,7 +146,9 @@ echo "###################################################################"
 env
 echo "###################################################################"
 echo
-echo "Executing command:"
+mkdir -p previous_tmp
+build_outerr=$(mktemp build.outerr.XXXX)
+echo "Executing command to build software:"
 echo "./eessi_container.sh --access rw"
 echo "                     ${CONTAINER_OPT}"
 echo "                     ${HTTP_PROXY_OPT}"
@@ -156,9 +156,9 @@ echo "                     ${HTTPS_PROXY_OPT}"
 echo "                     --info"
 echo "                     --mode run"
 echo "                     ${REPOSITORY_OPT}"
-echo "                     --save $(pwd)/previous_tmp"
+echo "                     --save ${PWD}/previous_tmp"
 echo "                     --storage ${STORAGE}"
-echo "                     ./install_software_layer.sh \"$@\" 2>&1 | tee -a ${run_outerr}"
+echo "                     ./install_software_layer.sh \"$@\" 2>&1 | tee -a ${build_outerr}"
 ./eessi_container.sh --access rw \
                      ${CONTAINER_OPT} \
                      ${HTTP_PROXY_OPT} \
@@ -166,8 +166,37 @@ echo "                     ./install_software_layer.sh \"$@\" 2>&1 | tee -a ${ru
                      --info \
                      --mode run \
                      ${REPOSITORY_OPT} \
-                     --save $(pwd)/previous_tmp \
+                     --save ${PWD}/previous_tmp \
                      --storage ${STORAGE} \
-                     ./install_software_layer.sh \"$@\" 2>&1 | tee -a ${run_outerr}
+                     ./install_software_layer.sh \"$@\" 2>&1 | tee -a ${build_outerr}
+
+# determine temporary directory to resume from
+BUILD_TMPDIR=$(grep 'RESUME_FROM_DIR' ${build_outerr} | sed -e "s/^RESUME_FROM_DIR //")
+
+tar_outerr=$(mktemp run.outerr.XXXX)
+timestamp=$(date +%s)
+export TGZ=$(printf "eessi-%s-software-%s-%s-%d.tar.gz" ${EESSI_PILOT_VERSION} ${EESSI_OS_TYPE} ${software_subdir//\//-} ${timestamp})
+
+echo "Executing command to create tarball:"
+echo "./eessi_container.sh --access rw"
+echo "                     ${CONTAINER_OPT}"
+echo "                     ${HTTP_PROXY_OPT}"
+echo "                     ${HTTPS_PROXY_OPT}"
+echo "                     --info"
+echo "                     --mode run"
+echo "                     ${REPOSITORY_OPT}"
+echo "                     --resume ${BUILD_TMPDIR}"
+echo "                     --save ${PWD}/previous_tmp"
+echo "                     ./create_tarball.sh ${BUILD_TMPDIR} ${EESSI_PILOT_VERSION} ${EESSI_SOFTWARE_SUBDIR_OVERRIDE} /eessi_bot_job/${TGZ} 2>&1 | tee -a ${tar_outerr}"
+./eessi_container.sh --access rw \
+                     ${CONTAINER_OPT} \
+                     ${HTTP_PROXY_OPT} \
+                     ${HTTPS_PROXY_OPT} \
+                     --info \
+                     --mode run \
+                     ${REPOSITORY_OPT} \
+                     --resume ${BUILD_TMPDIR} \
+                     --save ${PWD}/previous_tmp \
+                     ./create_tarball.sh ${BUILD_TMPDIR} ${EESSI_PILOT_VERSION} ${EESSI_SOFTWARE_SUBDIR_OVERRIDE} /eessi_bot_job/${TGZ} 2>&1 | tee -a ${tar_outerr}
 
 exit 0
