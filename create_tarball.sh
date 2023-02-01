@@ -13,6 +13,11 @@ pilot_version=$2
 cpu_arch_subdir=$3
 target_tgz=$4
 
+echo eessi_tmpdir=$1
+echo pilot_version=$2
+echo cpu_arch_subdir=$3
+echo target_tgz=$4
+
 tmpdir=`mktemp -d`
 echo ">> tmpdir: $tmpdir"
 
@@ -26,11 +31,20 @@ software_dir="${cvmfs_repo}/versions/${pilot_version}/software/${os}/${cpu_arch_
 if [ ! -d ${software_dir} ]; then
     echo "Software directory ${software_dir} does not exist?!" >&2
     exit 2
+else
+    echo "Software directory ${software_dir} does exist! GOOD!" >&2
 fi
 
 overlay_upper_dir="${eessi_tmpdir}/overlay-upper"
+echo overlay_upper_dir="${eessi_tmpdir}/overlay-upper"
+echo "ls ${overlay_upper_dir}"
+ls ${overlay_upper_dir}
 
 software_dir_overlay="${overlay_upper_dir}/versions/${pilot_version}/software/${os}/${cpu_arch_subdir}"
+echo software_dir_overlay="${overlay_upper_dir}/versions/${pilot_version}/software/${os}/${cpu_arch_subdir}"
+echo "find ${overlay_upper_dir} -type d"
+find ${overlay_upper_dir} -type d
+
 if [ ! -d ${software_dir_overlay} ]; then
     echo "Software directory overlay ${software_dir_overlay} does not exist?!" >&2
     exit 3
