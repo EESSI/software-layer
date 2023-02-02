@@ -206,6 +206,6 @@ echo "                     ./create_tarball.sh /tmp ${EESSI_PILOT_VERSION} ${EES
                      ${REPOSITORY_OPT} \
                      --resume ${BUILD_TMPDIR} \
                      --save ${PWD}/previous_tmp \
-                     ./create_tarball.sh ${BUILD_TMPDIR} ${EESSI_PILOT_VERSION} ${EESSI_SOFTWARE_SUBDIR_OVERRIDE} /eessi_bot_job/${TGZ} 2>&1 | tee -a ${tar_outerr}
+                     ./create_tarball.sh /tmp ${EESSI_PILOT_VERSION} ${EESSI_SOFTWARE_SUBDIR_OVERRIDE} /eessi_bot_job/${TGZ} 2>&1 | tee -a ${tar_outerr}
 
 exit 0
