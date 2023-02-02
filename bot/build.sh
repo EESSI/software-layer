@@ -196,7 +196,7 @@ echo "                     --mode run"
 echo "                     ${REPOSITORY_OPT}"
 echo "                     --resume ${BUILD_TMPDIR}"
 echo "                     --save ${PWD}/previous_tmp"
-echo "                     ./create_tarball.sh ${BUILD_TMPDIR} ${EESSI_PILOT_VERSION} ${EESSI_SOFTWARE_SUBDIR_OVERRIDE} /eessi_bot_job/${TGZ} 2>&1 | tee -a ${tar_outerr}"
+echo "                     ./create_tarball.sh /tmp ${EESSI_PILOT_VERSION} ${EESSI_SOFTWARE_SUBDIR_OVERRIDE} /eessi_bot_job/${TGZ} 2>&1 | tee -a ${tar_outerr}"
 ./eessi_container.sh --access rw \
                      ${CONTAINER_OPT} \
                      ${HTTP_PROXY_OPT} \
