@@ -58,6 +58,6 @@ jobs:
           # since create_directory_tarballs.sh must be accessible from within build container
           cp -a * /tmp/
           cd /tmp
-          ./build_container.sh run /tmp/$USER/EESSI /tmp/create_directory_tarballs.sh
+          ./build_container.sh run /tmp/$USER/EESSI /tmp/create_directory_tarballs.sh 2021.12
           # check if tarballs have been produced
           ls -l *.tar.gz
