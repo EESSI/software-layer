@@ -42,7 +42,7 @@ echo_green "Done! Created tarball ${tarname}."
 tartmp=$(mktemp -t -d scripts.XXXXX)
 mkdir "${tartmp}/${version}"
 tarname="eessi-${version}-scripts-$(date +%s).tar.gz"
-curl -Ls ${SOFTWARE_LAYER_TARBALL_URL} | tar xzf - -C "${tartmp}/${version}" --strip-components=1 --wildcards */scripts/
+curl -Ls ${SOFTWARE_LAYER_TARBALL_URL} | tar xzf - -C "${tartmp}/${version}" --strip-components=1 --wildcards '*/scripts/'
 tar czf "${tarname}" -C "${tartmp}" "${version}"
 rm -rf "${tartmp}"
 
