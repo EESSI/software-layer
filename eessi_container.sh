@@ -327,7 +327,14 @@ fi
 
 # define paths to add to SINGULARITY_BIND (added later when all BIND mounts are defined)
 BIND_PATHS="${EESSI_CVMFS_VAR_LIB}:/var/lib/cvmfs,${EESSI_CVMFS_VAR_RUN}:/var/run/cvmfs"
-BIND_PATHS="${BIND_PATHS},${EESSI_TMPDIR}:/tmp"
+BIND_PATHS="${BIND_PATHS},${EESSI_TMPDIR}:${EESSI_TMPDIR}"
+# provide a '/tmp' inside the container
+if [[ ${EESSI_TMPDIR} != /tmp* ]] ;
+then
+    mkdir -p ${EESSI_TMPDIR}/tmp
+    BIND_PATHS="${BIND_PATHS},${EESSI_TMPDIR}/tmp:/tmp"
+fi
+
 [[ ${INFO} -eq 1 ]] && echo "BIND_PATHS=${BIND_PATHS}"
 
 # set up repository config (always create directory repos_cfg and populate it with info when
@@ -451,12 +458,8 @@ if [[ "${ACCESS}" == "ro" ]]; then
 fi
 
 if [[ "${ACCESS}" == "rw" ]]; then
-  EESSI_CVMFS_OVERLAY_UPPER=/tmp/overlay-upper
-  EESSI_CVMFS_OVERLAY_WORK=/tmp/overlay-work
   mkdir -p ${EESSI_TMPDIR}/overlay-upper
   mkdir -p ${EESSI_TMPDIR}/overlay-work
-  [[ ${INFO} -eq 1 ]] && echo "EESSI_CVMFS_OVERLAY_UPPER='${EESSI_CVMFS_OVERLAY_UPPER}'"
-  [[ ${INFO} -eq 1 ]] && echo "EESSI_CVMFS_OVERLAY_WORK='${EESSI_CVMFS_OVERLAY_WORK}'"
 
   # set environment variables for fuse mounts in Singularity container
   export EESSI_PILOT_READONLY="container:cvmfs2 ${repo_name} /cvmfs_ro/${repo_name}"
@@ -465,8 +468,8 @@ if [[ "${ACCESS}" == "rw" ]]; then
 
   EESSI_PILOT_WRITABLE_OVERLAY="container:fuse-overlayfs"
   EESSI_PILOT_WRITABLE_OVERLAY+=" -o lowerdir=/cvmfs_ro/${repo_name}"
-  EESSI_PILOT_WRITABLE_OVERLAY+=" -o upperdir=/tmp/overlay-upper"
-  EESSI_PILOT_WRITABLE_OVERLAY+=" -o workdir=/tmp/overlay-work"
+  EESSI_PILOT_WRITABLE_OVERLAY+=" -o upperdir=${EESSI_TMPDIR}/overlay-upper"
+  EESSI_PILOT_WRITABLE_OVERLAY+=" -o workdir=${EESSI_TMPDIR}/overlay-work"
   EESSI_PILOT_WRITABLE_OVERLAY+=" ${EESSI_CVMFS_REPO}"
   export EESSI_PILOT_WRITABLE_OVERLAY
 

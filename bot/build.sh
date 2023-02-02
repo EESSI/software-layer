@@ -77,11 +77,11 @@ export SINGULARITY_HOME="$(pwd):/eessi_bot_job"
 export SINGULARITY_TMPDIR="$(pwd)/singularity_tmpdir"
 mkdir -p ${SINGULARITY_TMPDIR}
 
-if [[ ${STORAGE} != /tmp* ]] ;
-then
-    echo "skip setting SINGULARITY_BIND=${STORAGE}:/tmp because another location is bind mounted to /tmp in eessi_container.sh"
-    #export SINGULARITY_BIND="${STORAGE}:/tmp"
-fi
+#if [[ ${STORAGE} != /tmp* ]] ;
+#then
+#    echo "skip setting SINGULARITY_BIND=${STORAGE}:/tmp because another location is bind mounted to /tmp in eessi_container.sh"
+#    #export SINGULARITY_BIND="${STORAGE}:/tmp"
+#fi
 echo "SINGULARITY_BIND='${SINGULARITY_BIND}'"
 
 # load modules if LOAD_MODULES is not empty
@@ -196,7 +196,7 @@ echo "                     --mode run"
 echo "                     ${REPOSITORY_OPT}"
 echo "                     --resume ${BUILD_TMPDIR}"
 echo "                     --save ${PWD}/previous_tmp"
-echo "                     ./create_tarball.sh /tmp ${EESSI_PILOT_VERSION} ${EESSI_SOFTWARE_SUBDIR_OVERRIDE} /eessi_bot_job/${TGZ} 2>&1 | tee -a ${tar_outerr}"
+echo "                     ./create_tarball.sh ${BUILD_TMPDIR} ${EESSI_PILOT_VERSION} ${EESSI_SOFTWARE_SUBDIR_OVERRIDE} /eessi_bot_job/${TGZ} 2>&1 | tee -a ${tar_outerr}"
 ./eessi_container.sh --access rw \
                      ${CONTAINER_OPT} \
                      ${HTTP_PROXY_OPT} \
@@ -206,6 +206,6 @@ echo "                     ./create_tarball.sh /tmp ${EESSI_PILOT_VERSION} ${EES
                      ${REPOSITORY_OPT} \
                      --resume ${BUILD_TMPDIR} \
                      --save ${PWD}/previous_tmp \
-                     ./create_tarball.sh /tmp ${EESSI_PILOT_VERSION} ${EESSI_SOFTWARE_SUBDIR_OVERRIDE} /eessi_bot_job/${TGZ} 2>&1 | tee -a ${tar_outerr}
+                     ./create_tarball.sh ${BUILD_TMPDIR} ${EESSI_PILOT_VERSION} ${EESSI_SOFTWARE_SUBDIR_OVERRIDE} /eessi_bot_job/${TGZ} 2>&1 | tee -a ${tar_outerr}
 
 exit 0
