@@ -72,12 +72,6 @@ export SINGULARITY_HOME="$(pwd):/eessi_bot_job"
 export SINGULARITY_TMPDIR="$(pwd)/singularity_tmpdir"
 mkdir -p ${SINGULARITY_TMPDIR}
 
-if [[ ${STORAGE} != /tmp* ]] ;
-then
-    export SINGULARITY_BIND="${STORAGE}:/tmp"
-fi
-echo "SINGULARITY_BIND='${SINGULARITY_BIND}'"
-
 # load modules if LOAD_MODULES is not empty
 if [[ ! -z ${LOAD_MODULES} ]]; then
     for mod in $(echo ${LOAD_MODULES} | tr ',' '\n')
@@ -91,7 +85,20 @@ fi
 
 # determine repository to be used from entry .repository in cfg/job.cfg
 REPOSITORY=$(${YQ} '.repository.repo_id // ""' ${JOB_CFG_FILE})
-EESSI_REPOS_CFG_DIR_OVERRIDE=$(${YQ} '.repository.repos_cfg_dir // "cfg"' ${JOB_CFG_FILE})
+EESSI_REPOS_CFG_DIR_OVERRIDE=$(${YQ} '.repository.repos_cfg_dir // ""' ${JOB_CFG_FILE})
+export EESSI_REPOS_CFG_DIR_OVERRIDE=${EESSI_REPOS_CFG_DIR_OVERRIDE:-${PWD}/cfg}
+
+# determine pilot version to be used from .repository.repo_version in cfg/job.cfg
+# here, just set & export EESSI_PILOT_VERSION_OVERRIDE
+# next script (eessi_container.sh) makes use of it via sourcing init scripts
+# (e.g., init/eessi_defaults or init/minimal_eessi_env)
+export EESSI_PILOT_VERSION_OVERRIDE=$(${YQ} '.repository.repo_version // ""' ${JOB_CFG_FILE})
+
+# determine CVMFS repo to be used from .repository.repo_name in cfg/job.cfg
+# here, just set EESSI_CVMFS_REPO_OVERRIDE, a bit further down
+# "source init/eessi_defaults" via sourcing init/minimal_eessi_env
+export EESSI_CVMFS_REPO_OVERRIDE=$(${YQ} '.repository.repo_name // ""' ${JOB_CFG_FILE})
+
 
 # determine architecture to be used from entry .architecture in cfg/job.cfg
 # default: leave empty to let downstream script(s) determine subdir to be used
@@ -100,8 +107,11 @@ if [[ ! -z "${CPU_TARGET}" ]]; then
 else
     EESSI_SOFTWARE_SUBDIR_OVERRIDE=$(${YQ} '.architecture.software_subdir // ""' ${JOB_CFG_FILE})
 fi
+export EESSI_SOFTWARE_SUBDIR_OVERRIDE
 
-source init/minimal_eessi_env
+# get EESSI_OS_TYPE from .architecture.os_type in cfg/job.cfg (default: linux)
+EESSI_OS_TYPE=$(${YQ} '.architecture.os_type // ""' ${JOB_CFG_FILE})
+export EESSI_OS_TYPE=${EESSI_OS_TYPE:-linux}
 
 # TODO
 #   - CODED add handling of EESSI_SOFTWARE_SUBDIR_OVERRIDE to eessi_container.sh
@@ -112,11 +122,9 @@ source init/minimal_eessi_env
 #     CVMFS_HTTP_PROXY added to /etc/cvmfs/default.local (this needs a robust
 #     way to determine the IP address of a proxy)
 #   - bot needs to make repos.cfg and cfg_bundle available to job (likely, by copying
-#     files into './cfg/.' and defining '.repository.repos_cfg_file' in './cfg/job.cfg')
+#     files into './cfg/.' and defining '.repository.repos_cfg_dir' in './cfg/job.cfg')
 
 # prepare options and directories for calling eessi_container.sh
-mkdir -p previous_tmp
-run_outerr=$(mktemp eessi_container.outerr.XXXXXXXXXX)
 CONTAINER_OPT=
 if [[ ! -z ${CONTAINER} ]]; then
     CONTAINER_OPT="--container ${CONTAINER}"
@@ -133,8 +141,21 @@ REPOSITORY_OPT=
 if [[ ! -z ${REPOSITORY} ]]; then
     REPOSITORY_OPT="--repository ${REPOSITORY}"
 fi
+mkdir -p previous_tmp
+build_outerr=$(mktemp build.outerr.XXXX)
+echo "Executing command to build software:"
+echo "./eessi_container.sh --access rw"
+echo "                     ${CONTAINER_OPT}"
+echo "                     ${HTTP_PROXY_OPT}"
+echo "                     ${HTTPS_PROXY_OPT}"
+echo "                     --info"
+echo "                     --mode run"
+echo "                     ${REPOSITORY_OPT}"
+echo "                     --save ${PWD}/previous_tmp"
+echo "                     --storage ${STORAGE}"
+echo "                     ./install_software_layer.sh \"$@\" 2>&1 | tee -a ${build_outerr}"
 # set EESSI_REPOS_CFG_DIR_OVERRIDE to ./cfg
-export EESSI_REPOS_CFG_DIR_OVERRIDE=$(pwd)/cfg
+export EESSI_REPOS_CFG_DIR_OVERRIDE=${PWD}/cfg
 ./eessi_container.sh --access rw \
                      ${CONTAINER_OPT} \
                      ${HTTP_PROXY_OPT} \
@@ -142,6 +163,44 @@ export EESSI_REPOS_CFG_DIR_OVERRIDE=$(pwd)/cfg
                      --info \
                      --mode run \
                      ${REPOSITORY_OPT} \
-                     --save $(pwd)/previous_tmp \
+                     --save ${PWD}/previous_tmp \
                      --storage ${STORAGE} \
-                     ./install_software_layer.sh "$@" 2>&1 | tee -a ${run_outerr}
+                     ./install_software_layer.sh "$@" 2>&1 | tee -a ${build_outerr}
+
+# determine temporary directory to resume from
+BUILD_TMPDIR=$(grep 'RESUME_FROM_DIR' ${build_outerr} | sed -e "s/^RESUME_FROM_DIR //")
+
+tar_outerr=$(mktemp tar.outerr.XXXX)
+timestamp=$(date +%s)
+# to set EESSI_PILOT_VERSION we need to source init/eessi_defaults now
+source init/eessi_defaults
+export TGZ=$(printf "eessi-%s-software-%s-%s-%d.tar.gz" ${EESSI_PILOT_VERSION} ${EESSI_OS_TYPE} ${EESSI_SOFTWARE_SUBDIR_OVERRIDE//\//-} ${timestamp})
+
+# value of first parameter to create_tarball.sh - TMP_IN_CONTAINER - needs to be
+# synchronised with setting of TMP_IN_CONTAINER in eessi_container.sh
+# TODO should we make this a configurable parameter of eessi_container.sh using
+# /tmp as default?
+TMP_IN_CONTAINER=/tmp
+echo "Executing command to create tarball:"
+echo "./eessi_container.sh --access rw"
+echo "                     ${CONTAINER_OPT}"
+echo "                     ${HTTP_PROXY_OPT}"
+echo "                     ${HTTPS_PROXY_OPT}"
+echo "                     --info"
+echo "                     --mode run"
+echo "                     ${REPOSITORY_OPT}"
+echo "                     --resume ${BUILD_TMPDIR}"
+echo "                     --save ${PWD}/previous_tmp"
+echo "                     ./create_tarball.sh ${TMP_IN_CONTAINER} ${EESSI_PILOT_VERSION} ${EESSI_SOFTWARE_SUBDIR_OVERRIDE} /eessi_bot_job/${TGZ} 2>&1 | tee -a ${tar_outerr}"
+./eessi_container.sh --access rw \
+                     ${CONTAINER_OPT} \
+                     ${HTTP_PROXY_OPT} \
+                     ${HTTPS_PROXY_OPT} \
+                     --info \
+                     --mode run \
+                     ${REPOSITORY_OPT} \
+                     --resume ${BUILD_TMPDIR} \
+                     --save ${PWD}/previous_tmp \
+                     ./create_tarball.sh ${TMP_IN_CONTAINER} ${EESSI_PILOT_VERSION} ${EESSI_SOFTWARE_SUBDIR_OVERRIDE} /eessi_bot_job/${TGZ} 2>&1 | tee -a ${tar_outerr}
+
+exit 0
