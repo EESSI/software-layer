@@ -258,7 +258,6 @@ if [[ ! -z ${RESUME} && -d ${RESUME} ]]; then
   #   skip creating a new tmp directory, just set environment variables
   echo "Resuming from previous run using temporary storage at ${RESUME}"
   EESSI_HOST_STORAGE=${RESUME}
-  echo "RESUME_FROM_DIR ${EESSI_HOST_STORAGE}"
 else
   # we need a tmp location (and possibly init it with ${RESUME} if it was not
   #   a directory
@@ -290,6 +289,7 @@ else
   EESSI_HOST_STORAGE=$(mktemp -d --tmpdir eessi.XXXXXXXXXX)
   echo "Using ${EESSI_HOST_STORAGE} as tmp storage (add '--resume ${EESSI_HOST_STORAGE}' to resume where this session ended)."
 fi
+echo "RESUME_FROM_DIR ${EESSI_HOST_STORAGE}"
 
 # if ${RESUME} is a file (assume a tgz), unpack it into ${EESSI_HOST_STORAGE}
 if [[ ! -z ${RESUME} && -f ${RESUME} ]]; then
@@ -494,7 +494,12 @@ if [ ! -z ${EESSI_SOFTWARE_SUBDIR_OVERRIDE} ]; then
 fi
 
 # if INFO is set to 1 (arg --info), add argument '-q'
-RUN_QUIET=${INFO:--q}
+if [[ -z ${INFO} ]]; then
+    RUN_QUIET='-q'
+else
+    RUN_QUIET=''
+fi
+
 echo "Launching container with command (next line):"
 echo "singularity ${RUN_QUIET} ${MODE} ${EESSI_FUSE_MOUNTS[@]} ${CONTAINER} $@"
 # TODO for now we run singularity with '-q' (quiet), later adjust this to the log level
