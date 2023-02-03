@@ -77,13 +77,6 @@ export SINGULARITY_HOME="$(pwd):/eessi_bot_job"
 export SINGULARITY_TMPDIR="$(pwd)/singularity_tmpdir"
 mkdir -p ${SINGULARITY_TMPDIR}
 
-#if [[ ${STORAGE} != /tmp* ]] ;
-#then
-#    echo "skip setting SINGULARITY_BIND=${STORAGE}:/tmp because another location is bind mounted to /tmp in eessi_container.sh"
-#    #export SINGULARITY_BIND="${STORAGE}:/tmp"
-#fi
-echo "SINGULARITY_BIND='${SINGULARITY_BIND}'"
-
 # load modules if LOAD_MODULES is not empty
 if [[ ! -z ${LOAD_MODULES} ]]; then
     for mod in $(echo ${LOAD_MODULES} | tr ',' '\n')
@@ -186,6 +179,11 @@ tar_outerr=$(mktemp tar.outerr.XXXX)
 timestamp=$(date +%s)
 export TGZ=$(printf "eessi-%s-software-%s-%s-%d.tar.gz" ${EESSI_PILOT_VERSION} ${EESSI_OS_TYPE} ${EESSI_SOFTWARE_SUBDIR_OVERRIDE//\//-} ${timestamp})
 
+# value of first parameter to create_tarball.sh TMP_IN_CONTAINER needs to be
+# synchronised with setting of TMP_IN_CONTAINER in eessi_container.sh
+# TODO should we make this a configurable parameter of eessi_container.sh using
+# /tmp as default?
+TMP_IN_CONTAINER=/tmp
 echo "Executing command to create tarball:"
 echo "./eessi_container.sh --access rw"
 echo "                     ${CONTAINER_OPT}"
@@ -196,7 +194,7 @@ echo "                     --mode run"
 echo "                     ${REPOSITORY_OPT}"
 echo "                     --resume ${BUILD_TMPDIR}"
 echo "                     --save ${PWD}/previous_tmp"
-echo "                     ./create_tarball.sh ${BUILD_TMPDIR} ${EESSI_PILOT_VERSION} ${EESSI_SOFTWARE_SUBDIR_OVERRIDE} /eessi_bot_job/${TGZ} 2>&1 | tee -a ${tar_outerr}"
+echo "                     ./create_tarball.sh ${TMP_IN_CONTAINER} ${EESSI_PILOT_VERSION} ${EESSI_SOFTWARE_SUBDIR_OVERRIDE} /eessi_bot_job/${TGZ} 2>&1 | tee -a ${tar_outerr}"
 ./eessi_container.sh --access rw \
                      ${CONTAINER_OPT} \
                      ${HTTP_PROXY_OPT} \
@@ -206,6 +204,6 @@ echo "                     ./create_tarball.sh ${BUILD_TMPDIR} ${EESSI_PILOT_VER
                      ${REPOSITORY_OPT} \
                      --resume ${BUILD_TMPDIR} \
                      --save ${PWD}/previous_tmp \
-                     ./create_tarball.sh ${BUILD_TMPDIR} ${EESSI_PILOT_VERSION} ${EESSI_SOFTWARE_SUBDIR_OVERRIDE} /eessi_bot_job/${TGZ} 2>&1 | tee -a ${tar_outerr}
+                     ./create_tarball.sh ${TMP_IN_CONTAINER} ${EESSI_PILOT_VERSION} ${EESSI_SOFTWARE_SUBDIR_OVERRIDE} /eessi_bot_job/${TGZ} 2>&1 | tee -a ${tar_outerr}
 
 exit 0

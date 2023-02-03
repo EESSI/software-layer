@@ -46,6 +46,9 @@ RUN_SCRIPT_MISSING_EXITCODE=$((${ANY_ERROR_EXITCODE} << 11))
 CVMFS_VAR_LIB="var-lib-cvmfs"
 CVMFS_VAR_RUN="var-run-cvmfs"
 
+# target for tmp used inside container
+export TMP_IN_CONTAINER=/tmp
+
 # repository cfg file, default name (default location: $PWD)
 #   can be overwritten by setting env var EESSI_REPOS_CFG_DIR_OVERRIDE
 export EESSI_REPOS_CFG_FILE="${EESSI_REPOS_CFG_DIR_OVERRIDE:=${PWD}}/repos.cfg"
@@ -327,13 +330,13 @@ fi
 
 # define paths to add to SINGULARITY_BIND (added later when all BIND mounts are defined)
 BIND_PATHS="${EESSI_CVMFS_VAR_LIB}:/var/lib/cvmfs,${EESSI_CVMFS_VAR_RUN}:/var/run/cvmfs"
-BIND_PATHS="${BIND_PATHS},${EESSI_TMPDIR}:${EESSI_TMPDIR}"
 # provide a '/tmp' inside the container
-if [[ ${EESSI_TMPDIR} != /tmp* ]] ;
-then
-    mkdir -p ${EESSI_TMPDIR}/tmp
-    BIND_PATHS="${BIND_PATHS},${EESSI_TMPDIR}/tmp:/tmp"
-fi
+BIND_PATHS="${BIND_PATHS},${EESSI_TMPDIR}:${TMP_IN_CONTAINER}"
+#if [[ ${EESSI_TMPDIR} != /tmp* ]] ;
+#then
+#    mkdir -p ${EESSI_TMPDIR}/tmp
+#    BIND_PATHS="${BIND_PATHS},${EESSI_TMPDIR}/tmp:/tmp"
+#fi
 
 [[ ${INFO} -eq 1 ]] && echo "BIND_PATHS=${BIND_PATHS}"
 
@@ -468,8 +471,8 @@ if [[ "${ACCESS}" == "rw" ]]; then
 
   EESSI_PILOT_WRITABLE_OVERLAY="container:fuse-overlayfs"
   EESSI_PILOT_WRITABLE_OVERLAY+=" -o lowerdir=/cvmfs_ro/${repo_name}"
-  EESSI_PILOT_WRITABLE_OVERLAY+=" -o upperdir=${EESSI_TMPDIR}/overlay-upper"
-  EESSI_PILOT_WRITABLE_OVERLAY+=" -o workdir=${EESSI_TMPDIR}/overlay-work"
+  EESSI_PILOT_WRITABLE_OVERLAY+=" -o upperdir=${TMP_IN_CONTAINER}/overlay-upper"
+  EESSI_PILOT_WRITABLE_OVERLAY+=" -o workdir=${TMP_IN_CONTAINER}/overlay-work"
   EESSI_PILOT_WRITABLE_OVERLAY+=" ${EESSI_CVMFS_REPO}"
   export EESSI_PILOT_WRITABLE_OVERLAY
 
