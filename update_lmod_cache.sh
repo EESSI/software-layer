@@ -5,7 +5,7 @@
 
 TOPDIR=$(dirname $(realpath $0))
 
-source $TOPDIR/utils.sh
+source $TOPDIR/scripts/utils.sh
 
 if [ $# -ne 2 ]; then
     echo "Usage: $0 <path to compat layer directory> <path to software installation prefix>" >&2
