@@ -496,8 +496,8 @@ if [ ! -z ${EESSI_SOFTWARE_SUBDIR_OVERRIDE} ]; then
     export APPTAINERENV_EESSI_SOFTWARE_SUBDIR_OVERRIDE=${EESSI_SOFTWARE_SUBDIR_OVERRIDE}
 fi
 
-# if INFO is set to 1 (arg --info), add argument '-q'
-if [[ -z ${INFO} ]]; then
+# if INFO is set to 0 (no arg --info), add argument '-q'
+if [[ ${INFO} -eq 0 ]]; then
     RUN_QUIET='-q'
 else
     RUN_QUIET=''
