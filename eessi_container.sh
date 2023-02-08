@@ -318,7 +318,7 @@ BIND_PATHS="${BIND_PATHS},${EESSI_TMPDIR}:/tmp"
 mkdir -p ${EESSI_TMPDIR}/cfg
 if [[ "${REPOSITORY}" == "EESSI-pilot" ]]; then
   # need to source defaults as late as possible (see other sourcing below)
-  source ${base_dir}/init/eessi_defaults
+  source ${TOPDIR}/init/eessi_defaults
 
   # strip "/cvmfs/" from default setting
   repo_name=${EESSI_CVMFS_REPO/\/cvmfs\//}
@@ -383,7 +383,7 @@ else
   export EESSI_PILOT_VERSION_OVERRIDE=${repo_version}
   export EESSI_CVMFS_REPO_OVERRIDE="/cvmfs/${repo_name}"
   # need to source defaults as late as possible (after *_OVERRIDEs)
-  source ${base_dir}/init/eessi_defaults
+  source ${TOPDIR}/init/eessi_defaults
 fi
 
 
