@@ -61,7 +61,7 @@ display_help() {
   echo " OPTIONS:"
   echo "  -a | --access {ro,rw} - ro (read-only), rw (read & write) [default: ro]"
   echo "  -c | --container IMG  - image file or URL defining the container to use"
-  echo "                          [default: docker://ghcr.io/eessi/build-node:debian10]"
+  echo "                          [default: docker://ghcr.io/eessi/build-node:debian11]"
   echo "  -h | --help           - display this usage information [default: false]"
   echo "  -g | --storage DIR    - directory space on host machine (used for"
   echo "                          temporary data) [default: 1. TMPDIR, 2. /tmp]"
@@ -95,7 +95,7 @@ display_help() {
 
 # set defaults for command line arguments
 ACCESS="ro"
-CONTAINER="docker://ghcr.io/eessi/build-node:debian10"
+CONTAINER="docker://ghcr.io/eessi/build-node:debian11"
 DRY_RUN=0
 INFO=0
 STORAGE=
