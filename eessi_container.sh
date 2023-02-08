@@ -12,6 +12,10 @@
 # license: GPLv2
 #
 
+# -e: stop script as soon as any command has non-zero exit code
+# -u: treat usage of undefined variables as errors
+set -e -u
+
 # script overview
 # -. initial settings & exit codes
 # 0. parse args
