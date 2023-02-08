@@ -111,7 +111,6 @@ RESUME=
 SAVE=
 #HTTP_PROXY=
 #HTTPS_PROXY=
-RUN_SCRIPT_AND_ARGS=
 
 POSITIONAL_ARGS=()
 
@@ -220,8 +219,6 @@ fi
 if [[ "${MODE}" == "run" ]]; then
   if [[ $# -eq 0 ]]; then
     fatal_error "no command specified to run?!" "${RUN_SCRIPT_MISSING_EXITCODE}"
-  else
-    RUN_SCRIPT_AND_ARGS=$@
   fi
 fi
 
@@ -436,10 +433,10 @@ fi
 [[ ${VERBOSE} -eq 1 ]] && echo "SINGULARITY_BIND=${SINGULARITY_BIND}"
 
 echo "Launching container with command (next line):"
-echo "singularity ${MODE} ${EESSI_FUSE_MOUNTS[@]} ${CONTAINER} ${RUN_SCRIPT_AND_ARGS}"
+echo "singularity ${MODE} ${EESSI_FUSE_MOUNTS[@]} ${CONTAINER} $@"
 # TODO for now we run singularity with '-q' (quiet), later adjust this to the log level
 #      provided to the script
-singularity -q ${MODE} "${EESSI_FUSE_MOUNTS[@]}" ${CONTAINER} ${RUN_SCRIPT_AND_ARGS}
+singularity -q ${MODE} "${EESSI_FUSE_MOUNTS[@]}" ${CONTAINER} "$@"
 
 # 7. save tmp if requested (arg -s|--save)
 if [[ ! -z ${SAVE} ]]; then
