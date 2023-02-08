@@ -54,7 +54,7 @@ jobs:
                 outfile=out_container.txt
                 container="docker://ghcr.io/eessi/build-node:debian10"
                 ./eessi_container.sh --container ${container} --mode shell <<< "${test_cmd}" 2>&1 | tee ${outfile}
-                grep "${out_pattern}" ${outfile}
+                grep "Debian GNU/Linux 10" ${outfile}
 
               # test use of '--access rw' to get write access in container
               elif [[ ${{matrix.SCRIPT_TEST}} == 'readwrite' ]]; then
@@ -65,7 +65,7 @@ jobs:
                 export SINGULARITY_BIND="$PWD:/test"
                 ./eessi_container.sh --access rw --mode run /test/test_script.sh > ${outfile}
 
-                tmpdir=$(grep "--resume" ${outfile} | sed "s/.*--resume \([^']*\).*/\1/g")
+                tmpdir=$(grep "\-\-resume" ${outfile} | sed "s/.*--resume \([^']*\).*/\1/g")
                 # note: must use '--access rw' again here, since touched file is in overlay upper dir
                 ./eessi_container.sh --resume ${tmpdir} --access rw --mode shell <<< "ls -l /cvmfs/pilot.eessi-hpc.org/${fn}" > ${outfile}
                 grep "/cvmfs/pilot.eessi-hpc.org/${fn}$"> $outfile
@@ -76,7 +76,7 @@ jobs:
                 ./eessi_container.sh --mode shell <<< "${test_cmd}" 2>&1 | tee ${outfile}
                 rm -f ${outfile}
 
-                tmpdir=$(grep "--resume" ${outfile} | sed "s/.*--resume \([^']*\).*/\1/g")
+                tmpdir=$(grep "\-\-resume" ${outfile} | sed "s/.*--resume \([^']*\).*/\1/g")
                 ./eessi_container.sh --resume ${tmpdir} --mode shell <<< "${test_cmd}" > ${outfile}
                 grep "Resuming from previous run using temporary storage at ${tmpdir}" ${outfile}
                 grep "${out_pattern}" ${outfile}
