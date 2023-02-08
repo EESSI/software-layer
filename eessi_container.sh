@@ -23,13 +23,13 @@
 # 6. run container
 
 # -. initial settings & exit codes
-base_dir=$(dirname $(realpath $0))
+TOPDIR=$(dirname $(realpath $0))
 
-source ${base_dir}/utils.sh
-source ${base_dir}/cfg_files.sh
+source ${TOPDIR}/scripts/utils.sh
+source ${TOPDIR}/cfg_files.sh
 
 # exit codes: bitwise shift codes to allow for combination of exit codes
-# ANY_ERROR_EXITCODE is sourced from ${base_dir}/utils.sh
+# ANY_ERROR_EXITCODE is sourced from ${TOPDIR}/scripts/utils.sh
 CMDLINE_ARG_UNKNOWN_EXITCODE=$((${ANY_ERROR_EXITCODE} << 1))
 ACCESS_UNKNOWN_EXITCODE=$((${ANY_ERROR_EXITCODE} << 2))
 CONTAINER_ERROR_EXITCODE=$((${ANY_ERROR_EXITCODE} << 3))
