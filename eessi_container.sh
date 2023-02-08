@@ -92,7 +92,7 @@ display_help() {
   echo " FEATURES/OPTIONS to be implemented:"
   echo "  -d | --dry-run           -  run script except for executing the container,"
   echo "                              print information about setup [default: false]"
-  echo "  -i | --info              -  display configured repositories [default: false]"
+  echo "  -v | --verbose           -  display more information [default: false]"
   #echo "  -x | --http-proxy URL    -  provides URL for the env variable http_proxy"
   #echo "                              [default: not set]"
   #echo "  -y | --https-proxy URL   -  provides URL for the env variable https_proxy"
@@ -103,7 +103,7 @@ display_help() {
 ACCESS="ro"
 CONTAINER="docker://ghcr.io/eessi/build-node:debian11"
 DRY_RUN=0
-INFO=0
+VERBOSE=0
 STORAGE=
 MODE="shell"
 REPOSITORY="EESSI-pilot"
@@ -137,10 +137,6 @@ while [[ $# -gt 0 ]]; do
       display_help
       exit 0
       ;;
-    -i|--info)
-      INFO=1
-      shift 1
-      ;;
     -m|--mode)
       MODE="$2"
       shift 2
@@ -156,6 +152,10 @@ while [[ $# -gt 0 ]]; do
     -u|--resume)
       RESUME="$2"
       shift 2
+      ;;
+    -v|--verbose)
+      VERBOSE=1
+      shift 1
       ;;
 #    -x|--http-proxy)
 #      HTTP_PROXY="$2"
@@ -261,7 +261,7 @@ else
     # mktemp falls back to using /tmp if TMPDIR is empty
     # TODO check if /tmp is writable, large enough and usable (different
     #      features for ro-access and rw-access)
-    [[ ${INFO} -eq 1 ]] && echo "skipping sanity checks for /tmp"
+    [[ ${VERBOSE} -eq 1 ]] && echo "skipping sanity checks for /tmp"
   fi
   EESSI_HOST_STORAGE=$(mktemp -d --tmpdir eessi.XXXXXXXXXX)
   echo "Using ${EESSI_HOST_STORAGE} as tmp storage (add '--resume ${EESSI_HOST_STORAGE}' to resume where this session ended)."
@@ -287,32 +287,32 @@ fi
 # tmp dir for EESSI
 EESSI_TMPDIR=${EESSI_HOST_STORAGE}
 mkdir -p ${EESSI_TMPDIR}
-[[ ${INFO} -eq 1 ]] && echo "EESSI_TMPDIR=${EESSI_TMPDIR}"
+[[ ${VERBOSE} -eq 1 ]] && echo "EESSI_TMPDIR=${EESSI_TMPDIR}"
 
 # configure Singularity
 export SINGULARITY_CACHEDIR=${EESSI_TMPDIR}/singularity_cache
 mkdir -p ${SINGULARITY_CACHEDIR}
-[[ ${INFO} -eq 1 ]] && echo "SINGULARITY_CACHEDIR=${SINGULARITY_CACHEDIR}"
+[[ ${VERBOSE} -eq 1 ]] && echo "SINGULARITY_CACHEDIR=${SINGULARITY_CACHEDIR}"
 
 # set env vars and create directories for CernVM-FS
 EESSI_CVMFS_VAR_LIB=${EESSI_TMPDIR}/${CVMFS_VAR_LIB}
 EESSI_CVMFS_VAR_RUN=${EESSI_TMPDIR}/${CVMFS_VAR_RUN}
 mkdir -p ${EESSI_CVMFS_VAR_LIB}
 mkdir -p ${EESSI_CVMFS_VAR_RUN}
-[[ ${INFO} -eq 1 ]] && echo "EESSI_CVMFS_VAR_LIB=${EESSI_CVMFS_VAR_LIB}"
-[[ ${INFO} -eq 1 ]] && echo "EESSI_CVMFS_VAR_RUN=${EESSI_CVMFS_VAR_RUN}"
+[[ ${VERBOSE} -eq 1 ]] && echo "EESSI_CVMFS_VAR_LIB=${EESSI_CVMFS_VAR_LIB}"
+[[ ${VERBOSE} -eq 1 ]] && echo "EESSI_CVMFS_VAR_RUN=${EESSI_CVMFS_VAR_RUN}"
 
 # allow that SINGULARITY_HOME is defined before script is run
 if [[ -z ${SINGULARITY_HOME} ]]; then
   export SINGULARITY_HOME="${EESSI_TMPDIR}/home:/home/${USER}"
   mkdir -p ${EESSI_TMPDIR}/home
-  [[ ${INFO} -eq 1 ]] && echo "SINGULARITY_HOME=${SINGULARITY_HOME}"
+  [[ ${VERBOSE} -eq 1 ]] && echo "SINGULARITY_HOME=${SINGULARITY_HOME}"
 fi
 
 # define paths to add to SINGULARITY_BIND (added later when all BIND mounts are defined)
 BIND_PATHS="${EESSI_CVMFS_VAR_LIB}:/var/lib/cvmfs,${EESSI_CVMFS_VAR_RUN}:/var/run/cvmfs"
 BIND_PATHS="${BIND_PATHS},${EESSI_TMPDIR}:/tmp"
-[[ ${INFO} -eq 1 ]] && echo "BIND_PATHS=${BIND_PATHS}"
+[[ ${VERBOSE} -eq 1 ]] && echo "BIND_PATHS=${BIND_PATHS}"
 
 # set up repository config (always create cfg dir and populate it with info when
 # arg -r|--repository is used)
@@ -362,7 +362,7 @@ else
 
   # convert config_map into associative array cfg_file_map
   cfg_init_file_map "${config_map}"
-  [[ ${INFO} -eq 1 ]] && cfg_print_map
+  [[ ${VERBOSE} -eq 1 ]] && cfg_print_map
 
   # TODO use information to set up dir ${EESSI_TMPDIR}/cfg,
   #      define BIND mounts and override repo name and version
@@ -403,8 +403,8 @@ if [[ "${ACCESS}" == "rw" ]]; then
   EESSI_CVMFS_OVERLAY_WORK=/tmp/overlay-work
   mkdir -p ${EESSI_TMPDIR}/overlay-upper
   mkdir -p ${EESSI_TMPDIR}/overlay-work
-  [[ ${INFO} -eq 1 ]] && echo "EESSI_CVMFS_OVERLAY_UPPER=${EESSI_CVMFS_OVERLAY_UPPER}"
-  [[ ${INFO} -eq 1 ]] && echo "EESSI_CVMFS_OVERLAY_WORK=${EESSI_CVMFS_OVERLAY_WORK}"
+  [[ ${VERBOSE} -eq 1 ]] && echo "EESSI_CVMFS_OVERLAY_UPPER=${EESSI_CVMFS_OVERLAY_UPPER}"
+  [[ ${VERBOSE} -eq 1 ]] && echo "EESSI_CVMFS_OVERLAY_WORK=${EESSI_CVMFS_OVERLAY_WORK}"
 
   # set environment variables for fuse mounts in Singularity container
   export EESSI_PILOT_READONLY="container:cvmfs2 ${repo_name} /cvmfs_ro/${repo_name}"
@@ -433,7 +433,7 @@ if [[ -z ${SINGULARITY_BIND} ]]; then
 else
     export SINGULARITY_BIND="${SINGULARITY_BIND},${BIND_PATHS}"
 fi
-[[ ${INFO} -eq 1 ]] && echo "SINGULARITY_BIND=${SINGULARITY_BIND}"
+[[ ${VERBOSE} -eq 1 ]] && echo "SINGULARITY_BIND=${SINGULARITY_BIND}"
 
 echo "Launching container with command (next line):"
 echo "singularity ${MODE} ${EESSI_FUSE_MOUNTS[@]} ${CONTAINER} ${RUN_SCRIPT_AND_ARGS}"
