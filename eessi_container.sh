@@ -86,13 +86,13 @@ display_help() {
   echo "                          when a directory is provided, the format of the"
   echo "                          tarball's name will be {REPO_ID}-{TIMESTAMP}.tgz"
   echo "                          [default: not set]"
+  echo "  -v | --verbose        - display more information [default: false]"
   echo
   echo " If value for --mode is 'run', the SCRIPT provided is executed."
-  echo
-  echo " FEATURES/OPTIONS to be implemented:"
-  echo "  -d | --dry-run           -  run script except for executing the container,"
-  echo "                              print information about setup [default: false]"
-  echo "  -v | --verbose           -  display more information [default: false]"
+  #echo
+  #echo " FEATURES/OPTIONS to be implemented:"
+  #echo "  -d | --dry-run           -  run script except for executing the container,"
+  #echo "                              print information about setup [default: false]"
   #echo "  -x | --http-proxy URL    -  provides URL for the env variable http_proxy"
   #echo "                              [default: not set]"
   #echo "  -y | --https-proxy URL   -  provides URL for the env variable https_proxy"
@@ -102,7 +102,7 @@ display_help() {
 # set defaults for command line arguments
 ACCESS="ro"
 CONTAINER="docker://ghcr.io/eessi/build-node:debian11"
-DRY_RUN=0
+#DRY_RUN=0
 VERBOSE=0
 STORAGE=
 MODE="shell"
@@ -124,10 +124,10 @@ while [[ $# -gt 0 ]]; do
       CONTAINER="$2"
       shift 2
       ;;
-    -d|--dry-run)
-      DRY_RUN=1
-      shift 1
-      ;;
+#    -d|--dry-run)
+#      DRY_RUN=1
+#      shift 1
+#      ;;
     -g|--storage)
       STORAGE="$2"
       shift 2
