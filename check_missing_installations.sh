@@ -16,7 +16,7 @@ fi
 
 LOCAL_TMPDIR=$(mktemp -d)
 
-source $TOPDIR/utils.sh
+source $TOPDIR/scripts/utils.sh
 
 source $TOPDIR/configure_easybuild
 

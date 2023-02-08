@@ -23,13 +23,13 @@
 # 6. run container
 
 # -. initial settings & exit codes
-base_dir=$(dirname $(realpath $0))
+TOPDIR=$(dirname $(realpath $0))
 
-source ${base_dir}/utils.sh
-source ${base_dir}/cfg_files.sh
+source ${TOPDIR}/scripts/utils.sh
+source ${TOPDIR}/cfg_files.sh
 
 # exit codes: bitwise shift codes to allow for combination of exit codes
-# ANY_ERROR_EXITCODE is sourced from ${base_dir}/utils.sh
+# ANY_ERROR_EXITCODE is sourced from ${TOPDIR}/scripts/utils.sh
 CMDLINE_ARG_UNKNOWN_EXITCODE=$((${ANY_ERROR_EXITCODE} << 1))
 ACCESS_UNKNOWN_EXITCODE=$((${ANY_ERROR_EXITCODE} << 2))
 CONTAINER_ERROR_EXITCODE=$((${ANY_ERROR_EXITCODE} << 3))
@@ -61,14 +61,15 @@ display_help() {
   echo " OPTIONS:"
   echo "  -a | --access {ro,rw} - ro (read-only), rw (read & write) [default: ro]"
   echo "  -c | --container IMG  - image file or URL defining the container to use"
-  echo "                          [default: docker://ghcr.io/eessi/build-node:debian10]"
+  echo "                          [default: docker://ghcr.io/eessi/build-node:debian11]"
   echo "  -h | --help           - display this usage information [default: false]"
   echo "  -g | --storage DIR    - directory space on host machine (used for"
   echo "                          temporary data) [default: 1. TMPDIR, 2. /tmp]"
   echo "  -m | --mode MODE      - with MODE==shell (launch interactive shell) or"
   echo "                          MODE==run (run a script) [default: shell]"
   echo "  -r | --repository CFG - configuration file or identifier defining the"
-  echo "                          repository to use [default: EESSI-pilot]"
+  echo "                          repository to use [default: EESSI-pilot via"
+  echo "                          container configuration]"
   echo "  -u | --resume DIR/TGZ - resume a previous run from a directory or tarball,"
   echo "                          where DIR points to a previously used tmp directory"
   echo "                          (check for output 'Using DIR as tmp ...' of a previous"
@@ -95,7 +96,7 @@ display_help() {
 
 # set defaults for command line arguments
 ACCESS="ro"
-CONTAINER="docker://ghcr.io/eessi/build-node:debian10"
+CONTAINER="docker://ghcr.io/eessi/build-node:debian11"
 DRY_RUN=0
 INFO=0
 STORAGE=
