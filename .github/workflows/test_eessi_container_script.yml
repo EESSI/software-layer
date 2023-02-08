@@ -68,7 +68,7 @@ jobs:
                 tmpdir=$(grep "\-\-resume" ${outfile} | sed "s/.*--resume \([^']*\).*/\1/g")
                 # note: must use '--access rw' again here, since touched file is in overlay upper dir
                 ./eessi_container.sh --resume ${tmpdir} --access rw --mode shell <<< "ls -l /cvmfs/pilot.eessi-hpc.org/${fn}" > ${outfile}
-                grep "/cvmfs/pilot.eessi-hpc.org/${fn}$"> $outfile
+                grep "/cvmfs/pilot.eessi-hpc.org/${fn}$" $outfile
 
               # test use of --resume
               elif [[ ${{matrix.SCRIPT_TEST}} == 'resume' ]]; then
@@ -90,7 +90,7 @@ jobs:
                 rm -f ${outfile}
 
                 ./eessi_container.sh --mode shell --access rw --resume test-save.tar <<< "ls -l /cvmfs/pilot.eessi-hpc.org/${fn}" > ${outfile}
-                grep "/cvmfs/pilot.eessi-hpc.org/${fn}$"> $outfile
+                grep "/cvmfs/pilot.eessi-hpc.org/${fn}$" $outfile
 
                 tar tfv test-save.tar | grep "overlay-upper/${fn}"
 
