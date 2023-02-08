@@ -14,7 +14,8 @@
 
 # -e: stop script as soon as any command has non-zero exit code
 # -u: treat usage of undefined variables as errors
-set -e -u
+# FIXME commented out because it's OK (?) if some environment variables are not set (like $SINGULARITY_HOME)
+# set -e -u
 
 # script overview
 # -. initial settings & exit codes
