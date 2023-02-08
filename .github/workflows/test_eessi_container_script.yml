@@ -73,11 +73,13 @@ jobs:
               # test use of --resume
               elif [[ ${{matrix.SCRIPT_TEST}} == 'resume' ]]; then
                 outfile=out_resume.txt
-                ./eessi_container.sh --mode shell <<< "${test_cmd}" 2>&1 | tee ${outfile}
-                rm -f ${outfile}
+                ./eessi_container.sh --mode shell <<< "${test_cmd}" > ${outfile}
 
                 tmpdir=$(grep "\-\-resume" ${outfile} | sed "s/.*--resume \([^']*\).*/\1/g")
+                rm -f ${outfile}
+
                 ./eessi_container.sh --resume ${tmpdir} --mode shell <<< "${test_cmd}" > ${outfile}
+                cat ${outfile}
                 grep "Resuming from previous run using temporary storage at ${tmpdir}" ${outfile}
                 grep "${out_pattern}" ${outfile}
 
