@@ -6,8 +6,9 @@ on:
       - build_container.sh
       - install_software_layer.sh
       - run_in_compat_layer_env.sh
-      - utils.sh
+      - scripts/utils.sh
       - update_lmod_cache.sh
+      - create_directory_tarballs.sh
 
   pull_request:
     branches:
@@ -16,8 +17,9 @@ on:
       - build_container.sh
       - install_software_layer.sh
       - run_in_compat_layer_env.sh
-      - utils.sh
+      - scripts/utils.sh
       - update_lmod_cache.sh
+      - create_directory_tarballs.sh
 permissions:
   contents: read # to fetch code (actions/checkout)
 jobs:
@@ -49,3 +51,13 @@ jobs:
           # force using x86_64/generic, to avoid triggering an installation from scratch
           sed -i "s@./EESSI-pilot-install-software.sh@\"export EESSI_SOFTWARE_SUBDIR_OVERRIDE='x86_64/generic'; ./EESSI-pilot-install-software.sh\"@g" install_software_layer.sh
           ./build_container.sh run /tmp/$USER/EESSI /tmp/install_software_layer.sh
+
+    - name: test create_directory_tarballs.sh script
+      run: |
+          # scripts need to be copied to /tmp,
+          # since create_directory_tarballs.sh must be accessible from within build container
+          cp -a * /tmp/
+          cd /tmp
+          ./build_container.sh run /tmp/$USER/EESSI /tmp/create_directory_tarballs.sh 2021.12
+          # check if tarballs have been produced
+          ls -l *.tar.gz
