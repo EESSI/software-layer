@@ -440,6 +440,7 @@ echo "singularity ${MODE} ${EESSI_FUSE_MOUNTS[@]} ${CONTAINER} ${RUN_SCRIPT_AND_
 # TODO for now we run singularity with '-q' (quiet), later adjust this to the log level
 #      provided to the script
 singularity -q ${MODE} "${EESSI_FUSE_MOUNTS[@]}" ${CONTAINER} ${RUN_SCRIPT_AND_ARGS}
+exit_code=$?
 
 # 7. save tmp if requested (arg -s|--save)
 if [[ ! -z ${SAVE} ]]; then
@@ -461,3 +462,6 @@ if [[ ! -z ${SAVE} ]]; then
 fi
 
 # TODO clean up tmp by default? only retain if another option provided (--retain-tmp)
+
+# use exit code of container command
+exit ${exit_code}
