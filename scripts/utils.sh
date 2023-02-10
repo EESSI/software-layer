@@ -10,9 +10,14 @@ function echo_yellow() {
     echo -e "\e[33m$1\e[0m"
 }
 
+ANY_ERROR_EXITCODE=1
 function fatal_error() {
     echo_red "ERROR: $1" >&2
-    exit 1
+    if [[ $# -gt 1 ]]; then
+      exit $2
+    else
+      exit "${ANY_ERROR_EXITCODE}"
+    fi
 }
 
 function check_exit_code {
