@@ -70,6 +70,9 @@ jobs:
                 echo "id" >> explore_script.sh
                 echo "mount" >> explore_script.sh
                 echo "df -h" >> explore_script.sh
+                echo "cat /etc/fuse.conf" >> explore_script.sh
+                echo "dpkg -S /etc/fuse.conf" >> explore_script.sh
+                echo "dpkg -L fuse3" >> explore_script.sh
                 chmod +x explore_script.sh
                 echo "touch /cvmfs/pilot.eessi-hpc.org/${fn}" > test_script.sh
                 chmod u+x test_script.sh
