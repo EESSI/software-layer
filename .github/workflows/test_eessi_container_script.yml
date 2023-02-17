@@ -73,10 +73,13 @@ jobs:
                 echo "cat /etc/fuse.conf" >> explore_script.sh
                 echo "dpkg -S /etc/fuse.conf" >> explore_script.sh
                 echo "dpkg -L fuse3" >> explore_script.sh
+                echo "fuse-overlayfs -V" >> explore_script.sh
+                echo "uname -a" >> explore_script.sh
                 chmod +x explore_script.sh
                 echo "touch /cvmfs/pilot.eessi-hpc.org/${fn}" > test_script.sh
                 chmod u+x test_script.sh
                 export SINGULARITY_BIND="$PWD:/test"
+                singularity version
                 ./eessi_container.sh --verbose --access rw --mode run /test/explore_script.sh 2>&1 | tee -a ${outfile0}
                 ./eessi_container.sh --verbose --access rw --mode run /test/test_script.sh > ${outfile}
 
