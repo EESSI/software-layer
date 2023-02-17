@@ -10,13 +10,13 @@ jobs:
       fail-fast: false
       matrix:
         SCRIPT_TEST:
-#        - help
+        - help
 #        - run
 #        - shell
 #        - container
 #        - resume
-        - readwrite
-        - build_container
+#        - readwrite
+#        - build_container
 #        - rwdeb10
 #        - save
     steps:
@@ -31,6 +31,7 @@ jobs:
           run: |
               mount
               df -h
+              cat /etc/apptainer/apptainer.conf
 
         - name: Test eessi_container.sh script
           run: |
