@@ -16,6 +16,7 @@ jobs:
 #        - container
 #        - resume
         - readwrite
+        - rwdeb10
 #        - save
     steps:
         - name: Check out software-layer repository
@@ -86,6 +87,34 @@ jobs:
                 tmpdir=$(grep "\-\-resume" ${outfile} | sed "s/.*--resume \([^']*\).*/\1/g")
                 # note: must use '--access rw' again here, since touched file is in overlay upper dir
                 ./eessi_container.sh --verbose --resume ${tmpdir} --access rw --mode shell <<< "ls -l /cvmfs/pilot.eessi-hpc.org/${fn}" > ${outfile}
+                grep "/cvmfs/pilot.eessi-hpc.org/${fn}$" $outfile
+
+              # test use of '--access rw' to get write access in container
+              elif [[ ${{matrix.SCRIPT_TEST}} == rwdeb10 ]]; then
+                outfile0=out_readwrite0.txt
+                outfile=out_readwrite.txt
+                fn="test_${RANDOM}.txt"
+                container="docker://ghcr.io/eessi/build-node:debian10"
+                echo "ls -lisa /cvmfs /cvmfs/pilot.eessi-hpc.org" > explore_script.sh
+                echo "id" >> explore_script.sh
+                echo "mount" >> explore_script.sh
+                echo "df -h" >> explore_script.sh
+                echo "cat /etc/fuse.conf" >> explore_script.sh
+                echo "dpkg -S /etc/fuse.conf" >> explore_script.sh
+                echo "dpkg -L fuse3" >> explore_script.sh
+                echo "fuse-overlayfs -V" >> explore_script.sh
+                echo "uname -a" >> explore_script.sh
+                chmod +x explore_script.sh
+                echo "touch /cvmfs/pilot.eessi-hpc.org/${fn}" > test_script.sh
+                chmod u+x test_script.sh
+                export SINGULARITY_BIND="$PWD:/test"
+                singularity version
+                ./eessi_container.sh --verbose --container ${container} --access rw --mode run /test/explore_script.sh 2>&1 | tee -a ${outfile0}
+                ./eessi_container.sh --verbose --container ${container} --access rw --mode run /test/test_script.sh > ${outfile}
+
+                tmpdir=$(grep "\-\-resume" ${outfile} | sed "s/.*--resume \([^']*\).*/\1/g")
+                # note: must use '--access rw' again here, since touched file is in overlay upper dir
+                ./eessi_container.sh --verbose --container ${container} --resume ${tmpdir} --access rw --mode shell <<< "ls -l /cvmfs/pilot.eessi-hpc.org/${fn}" > ${outfile}
                 grep "/cvmfs/pilot.eessi-hpc.org/${fn}$" $outfile
 
               # test use of --resume
