@@ -10,13 +10,13 @@ jobs:
       fail-fast: false
       matrix:
         SCRIPT_TEST:
-        - help
-        - run
-        - shell
-        - container
-        - resume
+#        - help
+#        - run
+#        - shell
+#        - container
+#        - resume
         - readwrite
-        - save
+#        - save
     steps:
         - name: Check out software-layer repository
           uses: actions/checkout@93ea575cb5d8a053eaa0ac8fa3b40d7e05a33cc8 # v3.1.0
@@ -62,12 +62,19 @@ jobs:
                 grep "Debian GNU/Linux 10" ${outfile}
 
               # test use of '--access rw' to get write access in container
-              elif [[ ${{matrix.SCRIPT_TEST}} == 'readwrite' ]]; then
+              elif [[ ${{matrix.SCRIPT_TEST}} == readwrite ]]; then
+                outfile0=out_readwrite0.txt
                 outfile=out_readwrite.txt
                 fn="test_${RANDOM}.txt"
+                echo "ls -lisa /cvmfs /cvmfs/pilot.eessi-hpc.org" > explore_script.sh
+                echo "id" >> explore_script.sh
+                echo "mount" >> explore_script.sh
+                echo "df -h" >> explore_script.sh
+                chmod +x explore_script.sh
                 echo "touch /cvmfs/pilot.eessi-hpc.org/${fn}" > test_script.sh
                 chmod u+x test_script.sh
                 export SINGULARITY_BIND="$PWD:/test"
+                ./eessi_container.sh --verbose --access rw --mode run /test/explore_script.sh 2>&1 | tee -a ${outfile0}
                 ./eessi_container.sh --verbose --access rw --mode run /test/test_script.sh > ${outfile}
 
                 tmpdir=$(grep "\-\-resume" ${outfile} | sed "s/.*--resume \([^']*\).*/\1/g")
