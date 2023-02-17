@@ -16,7 +16,8 @@ jobs:
 #        - container
 #        - resume
         - readwrite
-        - rwdeb10
+        - build_container
+#        - rwdeb10
 #        - save
     steps:
         - name: Check out software-layer repository
@@ -88,6 +89,30 @@ jobs:
                 # note: must use '--access rw' again here, since touched file is in overlay upper dir
                 ./eessi_container.sh --verbose --resume ${tmpdir} --access rw --mode shell <<< "ls -l /cvmfs/pilot.eessi-hpc.org/${fn}" > ${outfile}
                 grep "/cvmfs/pilot.eessi-hpc.org/${fn}$" $outfile
+
+              # test use of build_container.sh script
+              elif [[ ${{matrix.SCRIPT_TEST}} == build_container ]]; then
+                outfile0=out_readwrite0.txt
+                outfile=out_readwrite.txt
+                fn="test_${RANDOM}.txt"
+                echo "ls -lisa /cvmfs /cvmfs/pilot.eessi-hpc.org" > explore_script.sh
+                echo "id" >> explore_script.sh
+                echo "mount" >> explore_script.sh
+                echo "df -h" >> explore_script.sh
+                echo "cat /etc/fuse.conf" >> explore_script.sh
+                echo "dpkg -S /etc/fuse.conf" >> explore_script.sh
+                echo "dpkg -L fuse3" >> explore_script.sh
+                echo "fuse-overlayfs -V" >> explore_script.sh
+                echo "uname -a" >> explore_script.sh
+                chmod +x explore_script.sh
+                echo "touch /cvmfs/pilot.eessi-hpc.org/${fn}" > test_script.sh
+                chmod u+x test_script.sh
+                cp -a * /tmp/
+                cd /tmp
+                # export SINGULARITY_BIND="$PWD:/test"
+                singularity version
+                ./build_container.sh run /tmp/$USER/EESSI /tmp/explore_script.sh
+                ./build_container.sh run /tmp/$USER/EESSI /tmp/test_script.sh
 
               # test use of '--access rw' to get write access in container
               elif [[ ${{matrix.SCRIPT_TEST}} == rwdeb10 ]]; then
