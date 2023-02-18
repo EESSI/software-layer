@@ -51,9 +51,15 @@ RUN_SCRIPT_MISSING_EXITCODE=$((${ANY_ERROR_EXITCODE} << 11))
 CVMFS_VAR_LIB="var-lib-cvmfs"
 CVMFS_VAR_RUN="var-run-cvmfs"
 
+# directory for tmp used inside container
+export TMP_IN_CONTAINER=/tmp
+
 # repository cfg file, default name (default location: $PWD)
 #   can be overwritten by setting env var EESSI_REPOS_CFG_DIR_OVERRIDE
-export EESSI_REPOS_CFG_FILE="${EESSI_REPOS_CFG_DIR_OVERRIDE:=.}/repos.cfg"
+export EESSI_REPOS_CFG_FILE="${EESSI_REPOS_CFG_DIR_OVERRIDE:=${PWD}}/repos.cfg"
+# other repository cfg files in directory, default location: $PWD
+#   can be overwritten by setting env var EESSI_REPOS_CFG_DIR_OVERRIDE
+export EESSI_REPOS_CFG_DIR="${EESSI_REPOS_CFG_DIR_OVERRIDE:=${PWD}}"
 
 
 # 0. parse args
@@ -199,7 +205,7 @@ fi
 # 1. check if argument values are valid
 # (arg -a|--access) check if ACCESS is supported
 if [[ "${ACCESS}" != "ro" && "${ACCESS}" != "rw" ]]; then
-  fatal_error "unknown access method '${ACCESS}'" "${ACCESS_UNKNOWN_EXITCODE}"
+    fatal_error "unknown access method '${ACCESS}'" "${ACCESS_UNKNOWN_EXITCODE}"
 fi
 
 # TODO (arg -c|--container) check container (is it a file or URL & access those)
@@ -211,11 +217,14 @@ fi
 
 # (arg -m|--mode) check if MODE is known
 if [[ "${MODE}" != "shell" && "${MODE}" != "run" ]]; then
-  fatal_error "unknown execution mode '${MODE}'" "${MODE_UNKNOWN_EXITCODE}"
+    fatal_error "unknown execution mode '${MODE}'" "${MODE_UNKNOWN_EXITCODE}"
 fi
 
 # TODO (arg -r|--repository) check if repository is known
 # REPOSITORY_ERROR_EXITCODE
+if [[ ! -z "${REPOSITORY}" && "${REPOSITORY}" != "EESSI-pilot" && ! -r ${EESSI_REPOS_CFG_FILE} ]]; then
+    fatal_error "arg '--repository ${REPOSITORY}' requires a cfg file at '${EESSI_REPOS_CFG_FILE}'" "${REPOSITORY_ERROR_EXITCODE}"
+fi
 
 # TODO (arg -u|--resume) check if it exists, if user has read permission,
 #      if it contains data from a previous run
@@ -249,6 +258,7 @@ if [[ ! -z ${RESUME} && -d ${RESUME} ]]; then
   #   skip creating a new tmp directory, just set environment variables
   echo "Resuming from previous run using temporary storage at ${RESUME}"
   EESSI_HOST_STORAGE=${RESUME}
+  echo "RESUME_FROM_DIR ${EESSI_HOST_STORAGE}"
 else
   # we need a tmp location (and possibly init it with ${RESUME} if it was not
   #   a directory
@@ -325,7 +335,9 @@ fi
 
 # define paths to add to SINGULARITY_BIND (added later when all BIND mounts are defined)
 BIND_PATHS="${EESSI_CVMFS_VAR_LIB}:/var/lib/cvmfs,${EESSI_CVMFS_VAR_RUN}:/var/run/cvmfs"
-BIND_PATHS="${BIND_PATHS},${EESSI_TMPDIR}:/tmp"
+# provide a '/tmp' inside the container
+BIND_PATHS="${BIND_PATHS},${EESSI_TMPDIR}:${TMP_IN_CONTAINER}"
+
 [[ ${VERBOSE} -eq 1 ]] && echo "BIND_PATHS=${BIND_PATHS}"
 
 # set up repository config (always create directory repos_cfg and populate it with info when
@@ -381,13 +393,22 @@ else
   # use information to set up dir ${EESSI_TMPDIR}/repos_cfg,
   #     define BIND mounts and override repo name and version
   # check if config_bundle exists, if so, unpack it into ${EESSI_TMPDIR}/repos_cfg
-  if [[ ! -r ${config_bundle} ]]; then
-    fatal_error "config bundle '${config_bundle}' is not readable" ${REPOSITORY_ERROR_EXITCODE}
+  # if config_bundle is relative path (no '/' at start) prepend it with
+  # EESSI_REPOS_CFG_DIR
+  config_bundle_path=
+  if [[ ! "${config_bundle}" =~ ^/ ]]; then
+      config_bundle_path=${EESSI_REPOS_CFG_DIR}/${config_bundle}
+  else
+      config_bundle_path=${config_bundle}
+  fi
+
+  if [[ ! -r ${config_bundle_path} ]]; then
+    fatal_error "config bundle '${config_bundle_path}' is not readable" ${REPOSITORY_ERROR_EXITCODE}
   fi
 
   # only unpack config_bundle if we're not resuming from a previous run
   if [[ -z ${RESUME} ]]; then
-    tar xf ${config_bundle} -C ${EESSI_TMPDIR}/repos_cfg
+    tar xf ${config_bundle_path} -C ${EESSI_TMPDIR}/repos_cfg
   fi
 
   for src in "${!cfg_file_map[@]}"
@@ -436,12 +457,8 @@ if [[ "${ACCESS}" == "ro" ]]; then
 fi
 
 if [[ "${ACCESS}" == "rw" ]]; then
-  EESSI_CVMFS_OVERLAY_UPPER=/tmp/overlay-upper
-  EESSI_CVMFS_OVERLAY_WORK=/tmp/overlay-work
   mkdir -p ${EESSI_TMPDIR}/overlay-upper
   mkdir -p ${EESSI_TMPDIR}/overlay-work
-  [[ ${VERBOSE} -eq 1 ]] && echo "EESSI_CVMFS_OVERLAY_UPPER=${EESSI_CVMFS_OVERLAY_UPPER}"
-  [[ ${VERBOSE} -eq 1 ]] && echo "EESSI_CVMFS_OVERLAY_WORK=${EESSI_CVMFS_OVERLAY_WORK}"
 
   # set environment variables for fuse mounts in Singularity container
   export EESSI_PILOT_READONLY="container:cvmfs2 ${repo_name} /cvmfs_ro/${repo_name}"
@@ -450,8 +467,8 @@ if [[ "${ACCESS}" == "rw" ]]; then
 
   EESSI_PILOT_WRITABLE_OVERLAY="container:fuse-overlayfs"
   EESSI_PILOT_WRITABLE_OVERLAY+=" -o lowerdir=/cvmfs_ro/${repo_name}"
-  EESSI_PILOT_WRITABLE_OVERLAY+=" -o upperdir=/tmp/overlay-upper"
-  EESSI_PILOT_WRITABLE_OVERLAY+=" -o workdir=/tmp/overlay-work"
+  EESSI_PILOT_WRITABLE_OVERLAY+=" -o upperdir=${TMP_IN_CONTAINER}/overlay-upper"
+  EESSI_PILOT_WRITABLE_OVERLAY+=" -o workdir=${TMP_IN_CONTAINER}/overlay-work"
   EESSI_PILOT_WRITABLE_OVERLAY+=" ${EESSI_CVMFS_REPO}"
   export EESSI_PILOT_WRITABLE_OVERLAY
 
@@ -476,11 +493,13 @@ if [ ! -z ${EESSI_SOFTWARE_SUBDIR_OVERRIDE} ]; then
     export APPTAINERENV_EESSI_SOFTWARE_SUBDIR_OVERRIDE=${EESSI_SOFTWARE_SUBDIR_OVERRIDE}
 fi
 
+# if INFO is set to 1 (arg --info), add argument '-q'
+RUN_QUIET=${INFO:--q}
 echo "Launching container with command (next line):"
-echo "singularity ${MODE} ${EESSI_FUSE_MOUNTS[@]} ${CONTAINER} $@"
+echo "singularity ${RUN_QUIET} ${MODE} ${EESSI_FUSE_MOUNTS[@]} ${CONTAINER} $@"
 # TODO for now we run singularity with '-q' (quiet), later adjust this to the log level
 #      provided to the script
-singularity -q ${MODE} "${EESSI_FUSE_MOUNTS[@]}" ${CONTAINER} "$@"
+singularity ${RUN_QUIET} ${MODE} "${EESSI_FUSE_MOUNTS[@]}" ${CONTAINER} "$@"
 exit_code=$?
 
 # 6. save tmp if requested (arg -s|--save)
@@ -500,6 +519,7 @@ if [[ ! -z ${SAVE} ]]; then
   fi
   tar cf ${TGZ} -C ${EESSI_TMPDIR} .
   echo "Saved contents of '${EESSI_TMPDIR}' to '${TGZ}' (to resume, add '--resume ${TGZ}')"
+  echo "RESUME_FROM_TGZ ${TGZ}"
 fi
 
 # TODO clean up tmp by default? only retain if another option provided (--retain-tmp)
