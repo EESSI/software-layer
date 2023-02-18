@@ -31,7 +31,7 @@
 TOPDIR=$(dirname $(realpath $0))
 
 source ${TOPDIR}/scripts/utils.sh
-source ${TOPDIR}/cfg_files.sh
+source ${TOPDIR}/scripts/cfg_files.sh
 
 # exit codes: bitwise shift codes to allow for combination of exit codes
 # ANY_ERROR_EXITCODE is sourced from ${TOPDIR}/scripts/utils.sh
