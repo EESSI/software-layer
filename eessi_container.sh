@@ -100,10 +100,6 @@ display_help() {
   echo "                           [default: not set]; uses env var \$https_proxy if set"
   echo
   echo " If value for --mode is 'run', the SCRIPT provided is executed."
-  echo
-  echo " FEATURES/OPTIONS to be implemented:"
-  echo "  -d | --dry-run         -  run script except for executing the container,"
-  echo "                            print information about setup [default: false]"
 }
 
 # set defaults for command line arguments
@@ -496,8 +492,8 @@ if [ ! -z ${EESSI_SOFTWARE_SUBDIR_OVERRIDE} ]; then
     export APPTAINERENV_EESSI_SOFTWARE_SUBDIR_OVERRIDE=${EESSI_SOFTWARE_SUBDIR_OVERRIDE}
 fi
 
-# if INFO is set to 0 (no arg --info), add argument '-q'
-if [[ ${INFO} -eq 0 ]]; then
+# if VERBOSE is set to 0 (no arg --verbose), add argument '-q'
+if [[ ${VERBOSE} -eq 0 ]]; then
     RUN_QUIET='-q'
 else
     RUN_QUIET=''
@@ -505,8 +501,6 @@ fi
 
 echo "Launching container with command (next line):"
 echo "singularity ${RUN_QUIET} ${MODE} ${EESSI_FUSE_MOUNTS[@]} ${CONTAINER} $@"
-# TODO for now we run singularity with '-q' (quiet), later adjust this to the log level
-#      provided to the script
 singularity ${RUN_QUIET} ${MODE} "${EESSI_FUSE_MOUNTS[@]}" ${CONTAINER} "$@"
 exit_code=$?
 
