@@ -70,6 +70,7 @@ display_help() {
   echo "  -h | --help            - display this usage information [default: false]"
   echo "  -g | --storage DIR     - directory space on host machine (used for"
   echo "                           temporary data) [default: 1. TMPDIR, 2. /tmp]"
+  echo "  -l | --list-repos      - list available repository identifiers [default: false]"
   echo "  -m | --mode MODE       - with MODE==shell (launch interactive shell) or"
   echo "                           MODE==run (run a script) [default: shell]"
   echo "  -r | --repository CFG  - configuration file or identifier defining the"
@@ -105,6 +106,7 @@ CONTAINER="docker://ghcr.io/eessi/build-node:debian11"
 #DRY_RUN=0
 VERBOSE=0
 STORAGE=
+LIST_REPOS=0
 MODE="shell"
 REPOSITORY="EESSI-pilot"
 RESUME=
@@ -135,6 +137,10 @@ while [[ $# -gt 0 ]]; do
     -h|--help)
       display_help
       exit 0
+      ;;
+    -l|--list-repos)
+      LIST_REPOS=1
+      shift 1
       ;;
     -m|--mode)
       MODE="$2"
@@ -178,6 +184,17 @@ done
 
 set -- "${POSITIONAL_ARGS[@]}"
 
+if [[ ${LIST_REPOS} -eq 1 ]]; then
+    echo "Repositories defined in the config file '${EESSI_REPOS_CFG_FILE}':"
+    echo "    EESSI-pilot [default]"
+    cfg_load ${EESSI_REPOS_CFG_FILE}
+    sections=$(cfg_sections)
+    while IFS= read -r repo_id
+    do
+        echo "    ${repo_id}"
+    done <<< "${sections}"
+    exit 0
+fi
 
 # 1. check if argument values are valid
 # (arg -a|--access) check if ACCESS is supported
@@ -390,17 +407,20 @@ fi
 # MOUNT if it was not yet in BIND_PATHS)
 if [[ ! -z ${http_proxy} ]]; then
     # TODO tolerate other formats for proxy URLs, for now assume format is
-    # http://SOME_HOSTNAME:SOME_PORT
-    PROXY_HOST_AND_PORT=${http_proxy#http:\/\//} # strip http://
-    PROXY_PORT=${PROXY_HOST_AND_PORT#.*:/} # remove hostname: to get port
-    HTTP_PROXY_HOSTNAME=${PROXY_HOST_AND_PORT%:${PROX_PORT}/}
-    HTTP_PROXY_IPV4=$(get_ipv4_address ${HTTP_PROXY_HOSTNAME}) 
-    echo "CVMFS_HTTP_PROXY=\"${http_proxy}|" \
-         "http://${HTTP_PROXY_IPV4}:${PROXY_PORT}\"" \
+    # http://SOME_HOSTNAME:SOME_PORT/
+    [[ ${VERBOSE} -eq 1 ]] && echo "http_proxy='${http_proxy}'"
+    PROXY_HOST=$(get_host_from_url ${http_proxy})
+    [[ ${VERBOSE} -eq 1 ]] && echo "PROXY_HOST='${PROXY_HOST}'"
+    PROXY_PORT=$(get_port_from_url ${http_proxy})
+    [[ ${VERBOSE} -eq 1 ]] && echo "PROXY_PORT='${PROXY_PORT}'"
+    HTTP_PROXY_IPV4=$(get_ipv4_address ${PROXY_HOST}) 
+    [[ ${VERBOSE} -eq 1 ]] && echo "HTTP_PROXY_IPV4='${HTTP_PROXY_IPV4}'"
+    echo "CVMFS_HTTP_PROXY=\"${http_proxy}|http://${HTTP_PROXY_IPV4}:${PROXY_PORT}\"" \
        >> ${EESSI_TMPDIR}/repos_cfg/default.local
     cat ${EESSI_TMPDIR}/repos_cfg/default.local
+
     # if default.local is not BIND mounted into container, add it to BIND_PATHS
-    if [[ ${BIND_PATHS} !~ "${EESSI_TMPDIR}/repos_cfg/default.local:/etc/cvmfs/default.local" ]]; then
+    if [[ ! ${BIND_PATHS} =~ "${EESSI_TMPDIR}/repos_cfg/default.local:/etc/cvmfs/default.local" ]]; then
         export BIND_PATHS="${BIND_PATHS},${EESSI_TMPDIR}/repos_cfg/default.local:/etc/cvmfs/default.local"
     fi
 fi
