@@ -360,6 +360,9 @@ else
   #    standard EESSI repositories)
   cfg_load ${EESSI_REPOS_CFG_FILE}
 
+  # copy repos.cfg to job directory --> makes it easier to inspect the job
+  cp ${EESSI_REPOS_CFG_FILE} ${EESSI_TMPDIR}/repos_cfg/.
+
   # cfg file should include: repo_name, repo_version, config_bundle,
   #   map { local_filepath -> container_filepath }
   #
@@ -493,8 +496,8 @@ if [ ! -z ${EESSI_SOFTWARE_SUBDIR_OVERRIDE} ]; then
     export APPTAINERENV_EESSI_SOFTWARE_SUBDIR_OVERRIDE=${EESSI_SOFTWARE_SUBDIR_OVERRIDE}
 fi
 
-# if INFO is set to 0 (no arg --info), add argument '-q'
-if [[ ${INFO} -eq 0 ]]; then
+# if INFO is set to 1 (arg --info), add argument '-q'
+if [[ -z ${INFO} ]]; then
     RUN_QUIET='-q'
 else
     RUN_QUIET=''
