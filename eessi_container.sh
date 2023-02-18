@@ -43,8 +43,8 @@ MODE_UNKNOWN_EXITCODE=$((${ANY_ERROR_EXITCODE} << 5))
 REPOSITORY_ERROR_EXITCODE=$((${ANY_ERROR_EXITCODE} << 6))
 RESUME_ERROR_EXITCODE=$((${ANY_ERROR_EXITCODE} << 7))
 SAVE_ERROR_EXITCODE=$((${ANY_ERROR_EXITCODE} << 8))
-#HTTP_PROXY_ERROR_EXITCODE=$((${ANY_ERROR_EXITCODE} << 9))
-#HTTPS_PROXY_ERROR_EXITCODE=$((${ANY_ERROR_EXITCODE} << 10))
+HTTP_PROXY_ERROR_EXITCODE=$((${ANY_ERROR_EXITCODE} << 9))
+HTTPS_PROXY_ERROR_EXITCODE=$((${ANY_ERROR_EXITCODE} << 10))
 RUN_SCRIPT_MISSING_EXITCODE=$((${ANY_ERROR_EXITCODE} << 11))
 
 # CernVM-FS settings
@@ -64,39 +64,39 @@ export EESSI_REPOS_CFG_FILE="${EESSI_REPOS_CFG_FILE_OVERRIDE:=repos.cfg}"
 display_help() {
   echo "usage: $0 [OPTIONS] [SCRIPT]"
   echo " OPTIONS:"
-  echo "  -a | --access {ro,rw} - ro (read-only), rw (read & write) [default: ro]"
-  echo "  -c | --container IMG  - image file or URL defining the container to use"
-  echo "                          [default: docker://ghcr.io/eessi/build-node:debian11]"
-  echo "  -h | --help           - display this usage information [default: false]"
-  echo "  -g | --storage DIR    - directory space on host machine (used for"
-  echo "                          temporary data) [default: 1. TMPDIR, 2. /tmp]"
-  echo "  -m | --mode MODE      - with MODE==shell (launch interactive shell) or"
-  echo "                          MODE==run (run a script) [default: shell]"
-  echo "  -r | --repository CFG - configuration file or identifier defining the"
-  echo "                          repository to use [default: EESSI-pilot via"
+  echo "  -a | --access {ro,rw}  - ro (read-only), rw (read & write) [default: ro]"
+  echo "  -c | --container IMG   - image file or URL defining the container to use"
+  echo "                           [default: docker://ghcr.io/eessi/build-node:debian11]"
+  echo "  -h | --help            - display this usage information [default: false]"
+  echo "  -g | --storage DIR     - directory space on host machine (used for"
+  echo "                           temporary data) [default: 1. TMPDIR, 2. /tmp]"
+  echo "  -m | --mode MODE       - with MODE==shell (launch interactive shell) or"
+  echo "                           MODE==run (run a script) [default: shell]"
+  echo "  -r | --repository CFG  - configuration file or identifier defining the"
+  echo "                           repository to use [default: EESSI-pilot via"
   echo "                          container configuration]"
-  echo "  -u | --resume DIR/TGZ - resume a previous run from a directory or tarball,"
-  echo "                          where DIR points to a previously used tmp directory"
-  echo "                          (check for output 'Using DIR as tmp ...' of a previous"
-  echo "                          run) and TGZ is the path to a tarball which is"
-  echo "                          unpacked the tmp dir stored on the local storage space"
-  echo "                          (see option --storage above) [default: not set]"
-  echo "  -s | --save DIR/TGZ   - save contents of tmp directory to a tarball in"
-  echo "                          directory DIR or provided with the fixed full path TGZ"
-  echo "                          when a directory is provided, the format of the"
-  echo "                          tarball's name will be {REPO_ID}-{TIMESTAMP}.tgz"
-  echo "                          [default: not set]"
-  echo "  -v | --verbose        - display more information [default: false]"
+  echo "  -u | --resume DIR/TGZ  - resume a previous run from a directory or tarball,"
+  echo "                           where DIR points to a previously used tmp directory"
+  echo "                           (check for output 'Using DIR as tmp ...' of a previous"
+  echo "                           run) and TGZ is the path to a tarball which is"
+  echo "                           unpacked the tmp dir stored on the local storage space"
+  echo "                           (see option --storage above) [default: not set]"
+  echo "  -s | --save DIR/TGZ    - save contents of tmp directory to a tarball in"
+  echo "                           directory DIR or provided with the fixed full path TGZ"
+  echo "                           when a directory is provided, the format of the"
+  echo "                           tarball's name will be {REPO_ID}-{TIMESTAMP}.tgz"
+  echo "                           [default: not set]"
+  echo "  -v | --verbose         - display more information [default: false]"
+  echo "  -x | --http-proxy URL  - provides URL for the env variable http_proxy"
+  echo "                           [default: not set]; uses env var \$http_proxy if set"
+  echo "  -y | --https-proxy URL - provides URL for the env variable https_proxy"
+  echo "                           [default: not set]; uses env var \$https_proxy if set"
   echo
   echo " If value for --mode is 'run', the SCRIPT provided is executed."
-  #echo
-  #echo " FEATURES/OPTIONS to be implemented:"
-  #echo "  -d | --dry-run           -  run script except for executing the container,"
-  #echo "                              print information about setup [default: false]"
-  #echo "  -x | --http-proxy URL    -  provides URL for the env variable http_proxy"
-  #echo "                              [default: not set]"
-  #echo "  -y | --https-proxy URL   -  provides URL for the env variable https_proxy"
-  #echo "                              [default: not set]"
+  echo
+  echo " FEATURES/OPTIONS to be implemented:"
+  echo "  -d | --dry-run         -  run script except for executing the container,"
+  echo "                            print information about setup [default: false]"
 }
 
 # set defaults for command line arguments
@@ -109,8 +109,8 @@ MODE="shell"
 REPOSITORY="EESSI-pilot"
 RESUME=
 SAVE=
-#HTTP_PROXY=
-#HTTPS_PROXY=
+HTTP_PROXY=${http_proxy:-}
+HTTPS_PROXY=${https_proxy:-}
 
 POSITIONAL_ARGS=()
 
@@ -156,16 +156,16 @@ while [[ $# -gt 0 ]]; do
       VERBOSE=1
       shift 1
       ;;
-#    -x|--http-proxy)
-#      HTTP_PROXY="$2"
-#      export http_proxy=${HTTP_PROXY}
-#      shift 2
-#      ;;
-#    -y|--https-proxy)
-#      HTTPS_PROXY="$2"
-#      export https_proxy=${HTTPS_PROXY}
-#      shift 2
-#      ;;
+    -x|--http-proxy)
+      HTTP_PROXY="$2"
+      export http_proxy=${HTTP_PROXY}
+      shift 2
+      ;;
+    -y|--https-proxy)
+      HTTPS_PROXY="$2"
+      export https_proxy=${HTTPS_PROXY}
+      shift 2
+      ;;
     -*|--*)
       fatal_error "Unknown option: $1" "${CMDLINE_ARG_UNKNOWN_EXITCODE}"
       ;;
@@ -311,9 +311,9 @@ BIND_PATHS="${EESSI_CVMFS_VAR_LIB}:/var/lib/cvmfs,${EESSI_CVMFS_VAR_RUN}:/var/ru
 BIND_PATHS="${BIND_PATHS},${EESSI_TMPDIR}:/tmp"
 [[ ${VERBOSE} -eq 1 ]] && echo "BIND_PATHS=${BIND_PATHS}"
 
-# set up repository config (always create cfg dir and populate it with info when
+# set up repository config (always create directory repos_cfg and populate it with info when
 # arg -r|--repository is used)
-mkdir -p ${EESSI_TMPDIR}/cfg
+mkdir -p ${EESSI_TMPDIR}/repos_cfg
 if [[ "${REPOSITORY}" == "EESSI-pilot" ]]; then
   # need to source defaults as late as possible (see other sourcing below)
   source ${TOPDIR}/init/eessi_defaults
@@ -370,13 +370,13 @@ else
 
   # only unpack config_bundle if we're not resuming from a previous run
   if [[ -z ${RESUME} ]]; then
-    tar xf ${config_bundle} -C ${EESSI_TMPDIR}/cfg
+    tar xf ${config_bundle} -C ${EESSI_TMPDIR}/repos_cfg
   fi
 
   for src in "${!cfg_file_map[@]}"
   do
     target=${cfg_file_map[${src}]}
-    BIND_PATHS="${BIND_PATHS},${EESSI_TMPDIR}/cfg/${src}:${target}"
+    BIND_PATHS="${BIND_PATHS},${EESSI_TMPDIR}/repos_cfg/${src}:${target}"
   done
   export EESSI_PILOT_VERSION_OVERRIDE=${repo_version}
   export EESSI_CVMFS_REPO_OVERRIDE="/cvmfs/${repo_name}"
@@ -431,6 +431,13 @@ else
     export SINGULARITY_BIND="${SINGULARITY_BIND},${BIND_PATHS}"
 fi
 [[ ${VERBOSE} -eq 1 ]] && echo "SINGULARITY_BIND=${SINGULARITY_BIND}"
+
+# pass $EESSI_SOFTWARE_SUBDIR_OVERRIDE into build container (if set)
+if [ ! -z ${EESSI_SOFTWARE_SUBDIR_OVERRIDE} ]; then
+    export SINGULARITYENV_EESSI_SOFTWARE_SUBDIR_OVERRIDE=${EESSI_SOFTWARE_SUBDIR_OVERRIDE}
+    # also specify via $APPTAINERENV_* (future proof, cfr. https://apptainer.org/docs/user/latest/singularity_compatibility.html#singularity-environment-variable-compatibility)
+    export APPTAINERENV_EESSI_SOFTWARE_SUBDIR_OVERRIDE=${EESSI_SOFTWARE_SUBDIR_OVERRIDE}
+fi
 
 echo "Launching container with command (next line):"
 echo "singularity ${MODE} ${EESSI_FUSE_MOUNTS[@]} ${CONTAINER} $@"
