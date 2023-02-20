@@ -310,9 +310,22 @@ mkdir -p ${EESSI_TMPDIR}
 [[ ${VERBOSE} -eq 1 ]] && echo "EESSI_TMPDIR=${EESSI_TMPDIR}"
 
 # configure Singularity
-export SINGULARITY_CACHEDIR=${EESSI_TMPDIR}/singularity_cache
-mkdir -p ${SINGULARITY_CACHEDIR}
+if [[ -z ${SINGULARITY_CACHEDIR} ]]; then
+    export SINGULARITY_CACHEDIR=${EESSI_TMPDIR}/singularity_cache
+    mkdir -p ${SINGULARITY_CACHEDIR}
+fi
 [[ ${VERBOSE} -eq 1 ]] && echo "SINGULARITY_CACHEDIR=${SINGULARITY_CACHEDIR}"
+
+# pull & convert image and reset CONTAINER
+CONTAINER_URL_FMT=".*://(.*)"
+if [[ ${CONTAINER} == ${CONTAINER_URL_FMT} ]]; then
+    CONTAINER_IMG=${BASH_REMATCH[1]//[:-]/_}.sif
+    singularity pull ${CONTAINER_IMG} ${CONTAINER}
+    if [[ -x ${CONTAINER_IMG} ]]; then
+        CONTAINER="${PWD}/${CONTAINER_IMG}"
+    fi
+fi
+[[ ${INFO} -eq 1 ]] && echo "CONTAINER='${CONTAINER}'"
 
 # set env vars and create directories for CernVM-FS
 EESSI_CVMFS_VAR_LIB=${EESSI_TMPDIR}/${CVMFS_VAR_LIB}
@@ -326,8 +339,8 @@ mkdir -p ${EESSI_CVMFS_VAR_RUN}
 if [[ -z ${SINGULARITY_HOME} ]]; then
   export SINGULARITY_HOME="${EESSI_TMPDIR}/home:/home/${USER}"
   mkdir -p ${EESSI_TMPDIR}/home
-  [[ ${VERBOSE} -eq 1 ]] && echo "SINGULARITY_HOME=${SINGULARITY_HOME}"
 fi
+[[ ${VERBOSE} -eq 1 ]] && echo "SINGULARITY_HOME=${SINGULARITY_HOME}"
 
 # define paths to add to SINGULARITY_BIND (added later when all BIND mounts are defined)
 BIND_PATHS="${EESSI_CVMFS_VAR_LIB}:/var/lib/cvmfs,${EESSI_CVMFS_VAR_RUN}:/var/run/cvmfs"
