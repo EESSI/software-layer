@@ -11,6 +11,8 @@ jobs:
       matrix:
         SCRIPT_TEST:
         - help
+        - listrepos_default
+        - listrepos_custom
         - run
         - shell
         - container
@@ -38,6 +40,26 @@ jobs:
 
               if [[ ${{matrix.SCRIPT_TEST}} == 'help' ]]; then
                 ./eessi_container.sh --help
+
+              # test use of --list-repos without custom repos.cfg
+              elif [[ ${{matrix.SCRIPT_TEST}} == 'listrepos_default' ]]; then
+                outfile=out_listrepos.txt
+                ./eessi_container.sh --verbose --list-repos | tee ${outfile}
+                grep "EESSI-pilot" ${outfile}
+
+              # test use of --list-repos with custom repos.cfg
+              elif [[ ${{matrix.SCRIPT_TEST}} == 'listrepos_custom' ]]; then
+                outfile=out_listrepos.txt
+                outfile2=out_listrepos_2.txt
+                mkdir -p ${PWD}/cfg
+                echo "[EESSI/2021.12]" > cfg/repos.cfg
+                echo "[EESSI/2023.02]" >> cfg/repos.cfg
+                ./eessi_container.sh --verbose --list-repos | tee ${outfile}
+                grep "EESSI-pilot" ${outfile}
+
+                export EESSI_REPOS_CFG_DIR_OVERRIDE=${PWD}/cfg
+                ./eessi_container.sh --verbose --list-repos | tee ${outfile2}
+                grep "[EESSI/2023.02]" ${outfile2}
 
               # test use of --mode run
               elif [[ ${{matrix.SCRIPT_TEST}} == 'run' ]]; then

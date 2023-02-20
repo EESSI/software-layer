@@ -325,7 +325,7 @@ if [[ ${CONTAINER} == ${CONTAINER_URL_FMT} ]]; then
         CONTAINER="${PWD}/${CONTAINER_IMG}"
     fi
 fi
-[[ ${INFO} -eq 1 ]] && echo "CONTAINER='${CONTAINER}'"
+[[ ${VERBOSE} -eq 1 ]] && echo "CONTAINER=${CONTAINER}"
 
 # set env vars and create directories for CernVM-FS
 EESSI_CVMFS_VAR_LIB=${EESSI_TMPDIR}/${CVMFS_VAR_LIB}
