@@ -186,15 +186,18 @@ done
 
 set -- "${POSITIONAL_ARGS[@]}"
 
+
 if [[ ${LIST_REPOS} -eq 1 ]]; then
-    echo "Repositories defined in the config file '${EESSI_REPOS_CFG_FILE}':"
+    echo "Listing available repositories with format 'name [source]':"
     echo "    EESSI-pilot [default]"
-    cfg_load ${EESSI_REPOS_CFG_FILE}
-    sections=$(cfg_sections)
-    while IFS= read -r repo_id
-    do
-        echo "    ${repo_id}"
-    done <<< "${sections}"
+    if [[ -r ${EESSI_REPOS_CFG_FILE} ]]; then
+        cfg_load ${EESSI_REPOS_CFG_FILE}
+        sections=$(cfg_sections)
+        while IFS= read -r repo_id
+        do
+            echo "    ${repo_id} [${EESSI_REPOS_CFG_FILE}]"
+        done <<< "${sections}"
+    fi
     exit 0
 fi
 
