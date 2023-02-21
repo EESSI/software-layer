@@ -54,12 +54,11 @@ CVMFS_VAR_RUN="var-run-cvmfs"
 # directory for tmp used inside container
 export TMP_IN_CONTAINER=/tmp
 
-# repository cfg file, default name (default location: $PWD)
-#   can be overwritten by setting env var EESSI_REPOS_CFG_DIR_OVERRIDE
-export EESSI_REPOS_CFG_FILE="${EESSI_REPOS_CFG_DIR_OVERRIDE:=${PWD}}/repos.cfg"
-# other repository cfg files in directory, default location: $PWD
-#   can be overwritten by setting env var EESSI_REPOS_CFG_DIR_OVERRIDE
+# repository cfg directory and file
+#   directory: default $PWD or EESSI_REPOS_CFG_DIR_OVERRIDE if set
+#   file: directory + '/repos.cfg'
 export EESSI_REPOS_CFG_DIR="${EESSI_REPOS_CFG_DIR_OVERRIDE:=${PWD}}"
+export EESSI_REPOS_CFG_FILE="${EESSI_REPOS_CFG_DIR}/repos.cfg"
 
 
 # 0. parse args
@@ -288,7 +287,6 @@ else
   EESSI_HOST_STORAGE=$(mktemp -d --tmpdir eessi.XXXXXXXXXX)
   echo "Using ${EESSI_HOST_STORAGE} as tmp storage (add '--resume ${EESSI_HOST_STORAGE}' to resume where this session ended)."
 fi
-echo "RESUME_FROM_DIR ${EESSI_HOST_STORAGE}"
 
 # if ${RESUME} is a file (assume a tgz), unpack it into ${EESSI_HOST_STORAGE}
 if [[ ! -z ${RESUME} && -f ${RESUME} ]]; then
@@ -312,21 +310,52 @@ EESSI_TMPDIR=${EESSI_HOST_STORAGE}
 mkdir -p ${EESSI_TMPDIR}
 [[ ${VERBOSE} -eq 1 ]] && echo "EESSI_TMPDIR=${EESSI_TMPDIR}"
 
-# configure Singularity
+# configure Singularity: if SINGULARITY_CACHEDIR is already defined, use that
+#   a global SINGULARITY_CACHEDIR would ensure that we don't consume
+#   storage space again and again for the container & also speed-up
+#   launch times across different sessions
 if [[ -z ${SINGULARITY_CACHEDIR} ]]; then
     export SINGULARITY_CACHEDIR=${EESSI_TMPDIR}/singularity_cache
     mkdir -p ${SINGULARITY_CACHEDIR}
 fi
 [[ ${VERBOSE} -eq 1 ]] && echo "SINGULARITY_CACHEDIR=${SINGULARITY_CACHEDIR}"
 
-# pull & convert image and reset CONTAINER
+# we try our best to make sure that we retain access to the container image in
+# a subsequent session ("best effort" only because pulling or copying operations
+# can fail ... in those cases the script may still succeed, but it is not
+# guaranteed that we have access to the same container when resuming later on)
+# - if CONTAINER references an image in a registry, pull & convert image
+#   and store it in ${EESSI_TMPDIR}
+#   + however, only pull image if there is no matching image in ${EESSI_TMPDIR} yet
+# - if CONTAINER references an image file, copy it to ${EESSI_TMPDIR}
+#   + however, only copy it if its base name does not yet exist in ${EESSI_TMPDIR}
+# - if the image file created (pulled or copied) or resumed exists in
+#   ${EESSI_TMPDIR}, let CONTAINER point to it
+#   + thus subsequent singularity commands in this script would just use the
+#     image file in EESSI_TMPDIR or the originally given source (some URL or
+#     path to an image file)
+CONTAINER_IMG=
 CONTAINER_URL_FMT=".*://(.*)"
-if [[ ${CONTAINER} == ${CONTAINER_URL_FMT} ]]; then
+if [[ ${CONTAINER} =~ ${CONTAINER_URL_FMT} ]]; then
+    # replace : and - with _ in match (everything after ://) and append .sif
     CONTAINER_IMG=${BASH_REMATCH[1]//[:-]/_}.sif
-    singularity pull ${CONTAINER_IMG} ${CONTAINER}
-    if [[ -x ${CONTAINER_IMG} ]]; then
-        CONTAINER="${PWD}/${CONTAINER_IMG}"
+    # pull container to ${EESSI_TMPDIR} if it is not there yet (i.e. when
+    # resuming from a previous session)
+    if [[ ! -x ${EESSI_TMPDIR}/${CONTAINER_IMG} ]]; then
+        singularity pull ${EESSI_TMPDIR}/${CONTAINER_IMG} ${CONTAINER}
     fi
+else
+    # determine file name as basename of CONTAINER
+    CONTAINER_IMG=$(basename ${CONTAINER})
+    # copy image file to ${EESSI_TMPDIR} if it is not there yet (i.e. when
+    # resuming from a previous session)
+    if [[ ! -x ${EESSI_TMPDIR}/${CONTAINER_IMG} ]]; then
+        cp -a ${CONTAINER} ${EESSI_TMPDIR}/.
+    fi
+fi
+# let CONTAINER point to the pulled, copied or resumed image file
+if [[ -x ${EESSI_TMPDIR}/${CONTAINER_IMG} ]]; then
+    CONTAINER="${EESSI_TMPDIR}/${CONTAINER_IMG}"
 fi
 [[ ${VERBOSE} -eq 1 ]] && echo "CONTAINER=${CONTAINER}"
 
@@ -373,7 +402,7 @@ else
   cfg_load ${EESSI_REPOS_CFG_FILE}
 
   # copy repos.cfg to job directory --> makes it easier to inspect the job
-  cp ${EESSI_REPOS_CFG_FILE} ${EESSI_TMPDIR}/repos_cfg/.
+  cp -a ${EESSI_REPOS_CFG_FILE} ${EESSI_TMPDIR}/repos_cfg/.
 
   # cfg file should include: repo_name, repo_version, config_bundle,
   #   map { local_filepath -> container_filepath }
@@ -453,7 +482,8 @@ if [[ ! -z ${http_proxy} ]]; then
     [[ ${VERBOSE} -eq 1 ]] && echo "HTTP_PROXY_IPV4='${HTTP_PROXY_IPV4}'"
     echo "CVMFS_HTTP_PROXY=\"${http_proxy}|http://${HTTP_PROXY_IPV4}:${PROXY_PORT}\"" \
        >> ${EESSI_TMPDIR}/repos_cfg/default.local
-    cat ${EESSI_TMPDIR}/repos_cfg/default.local
+    [[ ${VERBOSE} -eq 1 ]] && echo "contents of default.local"
+    [[ ${VERBOSE} -eq 1 ]] && cat ${EESSI_TMPDIR}/repos_cfg/default.local
 
     # if default.local is not BIND mounted into container, add it to BIND_PATHS
     if [[ ! ${BIND_PATHS} =~ "${EESSI_TMPDIR}/repos_cfg/default.local:/etc/cvmfs/default.local" ]]; then
@@ -537,7 +567,6 @@ if [[ ! -z ${SAVE} ]]; then
   fi
   tar cf ${TGZ} -C ${EESSI_TMPDIR} .
   echo "Saved contents of '${EESSI_TMPDIR}' to '${TGZ}' (to resume, add '--resume ${TGZ}')"
-  echo "RESUME_FROM_TGZ ${TGZ}"
 fi
 
 # TODO clean up tmp by default? only retain if another option provided (--retain-tmp)

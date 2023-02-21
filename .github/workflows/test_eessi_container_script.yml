@@ -52,10 +52,10 @@ jobs:
                 outfile=out_listrepos.txt
                 outfile2=out_listrepos_2.txt
                 mkdir -p ${PWD}/cfg
-                echo "[EESSI/2021.12]" > cfg/repos.cfg
-                echo "repo_version = 2021.12" >> cfg/repos.cfg
-                echo "[EESSI/2023.02]" >> cfg/repos.cfg
-                echo "repo_version = 2023.02" >> cfg/repos.cfg
+                echo "[EESSI/20AB.CD]" > cfg/repos.cfg
+                echo "repo_version = 20AB.CD" >> cfg/repos.cfg
+                echo "[EESSI/20HT.TP]" >> cfg/repos.cfg
+                echo "repo_version = 20HT.TP" >> cfg/repos.cfg
                 ./eessi_container.sh --verbose --list-repos | tee ${outfile}
                 grep "EESSI-pilot" ${outfile}
 
