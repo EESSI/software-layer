@@ -141,7 +141,7 @@ REPOSITORY_OPT=
 if [[ ! -z ${REPOSITORY} ]]; then
     REPOSITORY_OPT="--repository ${REPOSITORY}"
 fi
-mkdir -p previous_tmp
+mkdir -p previous_tmp/{build_step,tarball_step}
 build_outerr=$(mktemp build.outerr.XXXX)
 echo "Executing command to build software:"
 echo "./eessi_container.sh --access rw"
@@ -151,7 +151,7 @@ echo "                     ${HTTPS_PROXY_OPT}"
 echo "                     --info"
 echo "                     --mode run"
 echo "                     ${REPOSITORY_OPT}"
-echo "                     --save ${PWD}/previous_tmp"
+echo "                     --save ${PWD}/previous_tmp/build_step"
 echo "                     --storage ${STORAGE}"
 echo "                     ./install_software_layer.sh \"$@\" 2>&1 | tee -a ${build_outerr}"
 # set EESSI_REPOS_CFG_DIR_OVERRIDE to ./cfg
@@ -163,7 +163,7 @@ export EESSI_REPOS_CFG_DIR_OVERRIDE=${PWD}/cfg
                      --info \
                      --mode run \
                      ${REPOSITORY_OPT} \
-                     --save ${PWD}/previous_tmp \
+                     --save ${PWD}/previous_tmp/build_step \
                      --storage ${STORAGE} \
                      ./install_software_layer.sh "$@" 2>&1 | tee -a ${build_outerr}
 
@@ -190,7 +190,7 @@ echo "                     --info"
 echo "                     --mode run"
 echo "                     ${REPOSITORY_OPT}"
 echo "                     --resume ${BUILD_TMPDIR}"
-echo "                     --save ${PWD}/previous_tmp"
+echo "                     --save ${PWD}/previous_tmp/tarball_step"
 echo "                     ./create_tarball.sh ${TMP_IN_CONTAINER} ${EESSI_PILOT_VERSION} ${EESSI_SOFTWARE_SUBDIR_OVERRIDE} /eessi_bot_job/${TGZ} 2>&1 | tee -a ${tar_outerr}"
 ./eessi_container.sh --access rw \
                      ${CONTAINER_OPT} \
@@ -200,7 +200,7 @@ echo "                     ./create_tarball.sh ${TMP_IN_CONTAINER} ${EESSI_PILOT
                      --mode run \
                      ${REPOSITORY_OPT} \
                      --resume ${BUILD_TMPDIR} \
-                     --save ${PWD}/previous_tmp \
+                     --save ${PWD}/previous_tmp/tarball_step \
                      ./create_tarball.sh ${TMP_IN_CONTAINER} ${EESSI_PILOT_VERSION} ${EESSI_SOFTWARE_SUBDIR_OVERRIDE} /eessi_bot_job/${TGZ} 2>&1 | tee -a ${tar_outerr}
 
 exit 0
