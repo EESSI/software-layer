@@ -174,7 +174,7 @@ export EESSI_REPOS_CFG_DIR_OVERRIDE=${PWD}/cfg
                      ./install_software_layer.sh "$@" 2>&1 | tee -a ${build_outerr}
 
 # determine temporary directory to resume from
-BUILD_TMPDIR=$(grep 'RESUME_FROM_DIR' ${build_outerr} | sed -e "s/^RESUME_FROM_DIR //")
+BUILD_TMPDIR=$(grep ' as tmp directory ' ${build_outerr} | cut -d ' ' -f 2)
 
 tar_outerr=$(mktemp tar.outerr.XXXX)
 timestamp=$(date +%s)
