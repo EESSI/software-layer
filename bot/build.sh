@@ -209,4 +209,10 @@ echo "                     ./create_tarball.sh ${TMP_IN_CONTAINER} ${EESSI_PILOT
                      --save ${PWD}/previous_tmp/tarball_step \
                      ./create_tarball.sh ${TMP_IN_CONTAINER} ${EESSI_PILOT_VERSION} ${EESSI_SOFTWARE_SUBDIR_OVERRIDE} /eessi_bot_job/${TGZ} 2>&1 | tee -a ${tar_outerr}
 
+# if two tarballs have been generated, only keep the one from tarball step
+NUM_TARBALLS=$(find ${PWD}/previous_tmp -type f -name "*tgz" | wc -l)
+if [[ ${NUM_TARBALLS} -eq 2 ]]; then
+    rm -f previous_tmp/build_step/*.tgz
+fi
+
 exit 0
