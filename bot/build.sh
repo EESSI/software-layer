@@ -154,7 +154,7 @@ echo "./eessi_container.sh --access rw"
 echo "                     ${CONTAINER_OPT}"
 echo "                     ${HTTP_PROXY_OPT}"
 echo "                     ${HTTPS_PROXY_OPT}"
-echo "                     --info"
+echo "                     --verbose"
 echo "                     --mode run"
 echo "                     ${REPOSITORY_OPT}"
 echo "                     --save ${PWD}/previous_tmp/build_step"
@@ -166,7 +166,7 @@ export EESSI_REPOS_CFG_DIR_OVERRIDE=${PWD}/cfg
                      ${CONTAINER_OPT} \
                      ${HTTP_PROXY_OPT} \
                      ${HTTPS_PROXY_OPT} \
-                     --info \
+                     --verbose \
                      --mode run \
                      ${REPOSITORY_OPT} \
                      --save ${PWD}/previous_tmp/build_step \
@@ -192,7 +192,7 @@ echo "./eessi_container.sh --access rw"
 echo "                     ${CONTAINER_OPT}"
 echo "                     ${HTTP_PROXY_OPT}"
 echo "                     ${HTTPS_PROXY_OPT}"
-echo "                     --info"
+echo "                     --verbose"
 echo "                     --mode run"
 echo "                     ${REPOSITORY_OPT}"
 echo "                     --resume ${BUILD_TMPDIR}"
@@ -202,7 +202,7 @@ echo "                     ./create_tarball.sh ${TMP_IN_CONTAINER} ${EESSI_PILOT
                      ${CONTAINER_OPT} \
                      ${HTTP_PROXY_OPT} \
                      ${HTTPS_PROXY_OPT} \
-                     --info \
+                     --verbose \
                      --mode run \
                      ${REPOSITORY_OPT} \
                      --resume ${BUILD_TMPDIR} \
