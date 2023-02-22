@@ -56,6 +56,12 @@ LOCAL_TMP=$(${YQ} '.site_config.local_tmp // ""' ${JOB_CFG_FILE})
 echo "LOCAL_TMP='${LOCAL_TMP}'"
 # TODO should local_tmp be mandatory? --> then we check here and exit if it is not provided
 
+SINGULARITY_CACHEDIR=$(${YQ} '.site_config.container_cachedir // ""' ${JOB_CFG_FILE})
+echo "SINGULARITY_CACHEDIR='${SINGULARITY_CACHEDIR}'"
+if [[ ! -z ${SINGULARITY_CACHEDIR} ]]; then
+    export SINGULARITY_CACHEDIR
+fi
+
 echo -n "setting \$STORAGE by replacing any var in '${LOCAL_TMP}' -> "
 # replace any env variable in ${LOCAL_TMP} with its
 #   current value (e.g., a value that is local to the job)
