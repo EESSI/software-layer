@@ -12,6 +12,11 @@
 # license: GPLv2
 #
 
+# -e: stop script as soon as any command has non-zero exit code
+# -u: treat usage of undefined variables as errors
+# FIXME commented out because it's OK (?) if some environment variables are not set (like $SINGULARITY_HOME)
+# set -e -u
+
 # script overview
 # -. initial settings & exit codes
 # 0. parse args
@@ -23,13 +28,13 @@
 # 6. save tmp (if requested)
 
 # -. initial settings & exit codes
-base_dir=$(dirname $(realpath $0))
+TOPDIR=$(dirname $(realpath $0))
 
-source ${base_dir}/utils.sh
-source ${base_dir}/cfg_files.sh
+source ${TOPDIR}/scripts/utils.sh
+source ${TOPDIR}/scripts/cfg_files.sh
 
 # exit codes: bitwise shift codes to allow for combination of exit codes
-# ANY_ERROR_EXITCODE is sourced from ${base_dir}/utils.sh
+# ANY_ERROR_EXITCODE is sourced from ${TOPDIR}/scripts/utils.sh
 CMDLINE_ARG_UNKNOWN_EXITCODE=$((${ANY_ERROR_EXITCODE} << 1))
 ACCESS_UNKNOWN_EXITCODE=$((${ANY_ERROR_EXITCODE} << 2))
 CONTAINER_ERROR_EXITCODE=$((${ANY_ERROR_EXITCODE} << 3))
@@ -49,12 +54,11 @@ CVMFS_VAR_RUN="var-run-cvmfs"
 # directory for tmp used inside container
 export TMP_IN_CONTAINER=/tmp
 
-# repository cfg file, default name (default location: $PWD)
-#   can be overwritten by setting env var EESSI_REPOS_CFG_DIR_OVERRIDE
-export EESSI_REPOS_CFG_FILE="${EESSI_REPOS_CFG_DIR_OVERRIDE:=${PWD}}/repos.cfg"
-# other repository cfg files in directory, default location: $PWD
-#   can be overwritten by setting env var EESSI_REPOS_CFG_DIR_OVERRIDE
+# repository cfg directory and file
+#   directory: default $PWD or EESSI_REPOS_CFG_DIR_OVERRIDE if set
+#   file: directory + '/repos.cfg'
 export EESSI_REPOS_CFG_DIR="${EESSI_REPOS_CFG_DIR_OVERRIDE:=${PWD}}"
+export EESSI_REPOS_CFG_FILE="${EESSI_REPOS_CFG_DIR}/repos.cfg"
 
 
 # 0. parse args
@@ -69,14 +73,14 @@ display_help() {
   echo "  -c | --container IMG   - image file or URL defining the container to use"
   echo "                           [default: docker://ghcr.io/eessi/build-node:debian11]"
   echo "  -h | --help            - display this usage information [default: false]"
-  echo "  -i | --info            - display configuration information [default: false]"
   echo "  -g | --storage DIR     - directory space on host machine (used for"
   echo "                           temporary data) [default: 1. TMPDIR, 2. /tmp]"
   echo "  -l | --list-repos      - list available repository identifiers [default: false]"
   echo "  -m | --mode MODE       - with MODE==shell (launch interactive shell) or"
   echo "                           MODE==run (run a script) [default: shell]"
   echo "  -r | --repository CFG  - configuration file or identifier defining the"
-  echo "                           repository to use [default: EESSI-pilot]"
+  echo "                           repository to use [default: EESSI-pilot via"
+  echo "                           default container, see --container]"
   echo "  -u | --resume DIR/TGZ  - resume a previous run from a directory or tarball,"
   echo "                           where DIR points to a previously used tmp directory"
   echo "                           (check for output 'Using DIR as tmp ...' of a previous"
@@ -88,23 +92,20 @@ display_help() {
   echo "                           when a directory is provided, the format of the"
   echo "                           tarball's name will be {REPO_ID}-{TIMESTAMP}.tgz"
   echo "                           [default: not set]"
+  echo "  -v | --verbose         - display more information [default: false]"
   echo "  -x | --http-proxy URL  - provides URL for the env variable http_proxy"
   echo "                           [default: not set]; uses env var \$http_proxy if set"
   echo "  -y | --https-proxy URL - provides URL for the env variable https_proxy"
   echo "                           [default: not set]; uses env var \$https_proxy if set"
   echo
   echo " If value for --mode is 'run', the SCRIPT provided is executed."
-  echo
-  echo " FEATURES/OPTIONS to be implemented:"
-  echo "  -d | --dry-run         -  run script except for executing the container,"
-  echo "                            print information about setup [default: false]"
 }
 
 # set defaults for command line arguments
 ACCESS="ro"
 CONTAINER="docker://ghcr.io/eessi/build-node:debian11"
-DRY_RUN=0
-INFO=0
+#DRY_RUN=0
+VERBOSE=0
 STORAGE=
 LIST_REPOS=0
 MODE="shell"
@@ -126,10 +127,10 @@ while [[ $# -gt 0 ]]; do
       CONTAINER="$2"
       shift 2
       ;;
-    -d|--dry-run)
-      DRY_RUN=1
-      shift 1
-      ;;
+#    -d|--dry-run)
+#      DRY_RUN=1
+#      shift 1
+#      ;;
     -g|--storage)
       STORAGE="$2"
       shift 2
@@ -137,10 +138,6 @@ while [[ $# -gt 0 ]]; do
     -h|--help)
       display_help
       exit 0
-      ;;
-    -i|--info)
-      INFO=1
-      shift 1
       ;;
     -l|--list-repos)
       LIST_REPOS=1
@@ -161,6 +158,10 @@ while [[ $# -gt 0 ]]; do
     -u|--resume)
       RESUME="$2"
       shift 2
+      ;;
+    -v|--verbose)
+      VERBOSE=1
+      shift 1
       ;;
     -x|--http-proxy)
       HTTP_PROXY="$2"
@@ -185,14 +186,16 @@ done
 set -- "${POSITIONAL_ARGS[@]}"
 
 if [[ ${LIST_REPOS} -eq 1 ]]; then
-    echo "Repositories defined in the config file '${EESSI_REPOS_CFG_FILE}':"
+    echo "Listing available repositories with format 'name [source]':"
     echo "    EESSI-pilot [default]"
-    cfg_load ${EESSI_REPOS_CFG_FILE}
-    sections=$(cfg_sections)
-    while IFS= read -r repo_id
-    do
-        echo "    ${repo_id}"
-    done <<< "${sections}"
+    if [[ -r ${EESSI_REPOS_CFG_FILE} ]]; then
+        cfg_load ${EESSI_REPOS_CFG_FILE}
+        sections=$(cfg_sections)
+        while IFS= read -r repo_id
+        do
+            echo "    ${repo_id} [${EESSI_REPOS_CFG_FILE}]"
+        done <<< "${sections}"
+    fi
     exit 0
 fi
 
@@ -252,7 +255,6 @@ if [[ ! -z ${RESUME} && -d ${RESUME} ]]; then
   #   skip creating a new tmp directory, just set environment variables
   echo "Resuming from previous run using temporary storage at ${RESUME}"
   EESSI_HOST_STORAGE=${RESUME}
-  echo "RESUME_FROM_DIR ${EESSI_HOST_STORAGE}"
 else
   # we need a tmp location (and possibly init it with ${RESUME} if it was not
   #   a directory
@@ -279,7 +281,7 @@ else
     # mktemp falls back to using /tmp if TMPDIR is empty
     # TODO check if /tmp is writable, large enough and usable (different
     #      features for ro-access and rw-access)
-    [[ ${INFO} -eq 1 ]] && echo "skipping sanity checks for /tmp"
+    [[ ${VERBOSE} -eq 1 ]] && echo "skipping sanity checks for /tmp"
   fi
   EESSI_HOST_STORAGE=$(mktemp -d --tmpdir eessi.XXXXXXXXXX)
   echo "Using ${EESSI_HOST_STORAGE} as tmp storage (add '--resume ${EESSI_HOST_STORAGE}' to resume where this session ended)."
@@ -305,41 +307,85 @@ fi
 # tmp dir for EESSI
 EESSI_TMPDIR=${EESSI_HOST_STORAGE}
 mkdir -p ${EESSI_TMPDIR}
-[[ ${INFO} -eq 1 ]] && echo "EESSI_TMPDIR='${EESSI_TMPDIR}'"
+[[ ${VERBOSE} -eq 1 ]] && echo "EESSI_TMPDIR=${EESSI_TMPDIR}"
 
-# configure Singularity
-export SINGULARITY_CACHEDIR=${EESSI_TMPDIR}/singularity_cache
-mkdir -p ${SINGULARITY_CACHEDIR}
-[[ ${INFO} -eq 1 ]] && echo "SINGULARITY_CACHEDIR='${SINGULARITY_CACHEDIR}'"
+# configure Singularity: if SINGULARITY_CACHEDIR is already defined, use that
+#   a global SINGULARITY_CACHEDIR would ensure that we don't consume
+#   storage space again and again for the container & also speed-up
+#   launch times across different sessions
+if [[ -z ${SINGULARITY_CACHEDIR} ]]; then
+    export SINGULARITY_CACHEDIR=${EESSI_TMPDIR}/singularity_cache
+    mkdir -p ${SINGULARITY_CACHEDIR}
+fi
+[[ ${VERBOSE} -eq 1 ]] && echo "SINGULARITY_CACHEDIR=${SINGULARITY_CACHEDIR}"
+
+# we try our best to make sure that we retain access to the container image in
+# a subsequent session ("best effort" only because pulling or copying operations
+# can fail ... in those cases the script may still succeed, but it is not
+# guaranteed that we have access to the same container when resuming later on)
+# - if CONTAINER references an image in a registry, pull & convert image
+#   and store it in ${EESSI_TMPDIR}
+#   + however, only pull image if there is no matching image in ${EESSI_TMPDIR} yet
+# - if CONTAINER references an image file, copy it to ${EESSI_TMPDIR}
+#   + however, only copy it if its base name does not yet exist in ${EESSI_TMPDIR}
+# - if the image file created (pulled or copied) or resumed exists in
+#   ${EESSI_TMPDIR}, let CONTAINER point to it
+#   + thus subsequent singularity commands in this script would just use the
+#     image file in EESSI_TMPDIR or the originally given source (some URL or
+#     path to an image file)
+CONTAINER_IMG=
+CONTAINER_URL_FMT=".*://(.*)"
+if [[ ${CONTAINER} =~ ${CONTAINER_URL_FMT} ]]; then
+    # replace : and - with _ in match (everything after ://) and append .sif
+    CONTAINER_IMG=${BASH_REMATCH[1]//[:-]/_}.sif
+    # pull container to ${EESSI_TMPDIR} if it is not there yet (i.e. when
+    # resuming from a previous session)
+    if [[ ! -x ${EESSI_TMPDIR}/${CONTAINER_IMG} ]]; then
+        singularity pull ${EESSI_TMPDIR}/${CONTAINER_IMG} ${CONTAINER}
+    fi
+else
+    # determine file name as basename of CONTAINER
+    CONTAINER_IMG=$(basename ${CONTAINER})
+    # copy image file to ${EESSI_TMPDIR} if it is not there yet (i.e. when
+    # resuming from a previous session)
+    if [[ ! -x ${EESSI_TMPDIR}/${CONTAINER_IMG} ]]; then
+        cp -a ${CONTAINER} ${EESSI_TMPDIR}/.
+    fi
+fi
+# let CONTAINER point to the pulled, copied or resumed image file
+if [[ -x ${EESSI_TMPDIR}/${CONTAINER_IMG} ]]; then
+    CONTAINER="${EESSI_TMPDIR}/${CONTAINER_IMG}"
+fi
+[[ ${VERBOSE} -eq 1 ]] && echo "CONTAINER=${CONTAINER}"
 
 # set env vars and create directories for CernVM-FS
 EESSI_CVMFS_VAR_LIB=${EESSI_TMPDIR}/${CVMFS_VAR_LIB}
 EESSI_CVMFS_VAR_RUN=${EESSI_TMPDIR}/${CVMFS_VAR_RUN}
 mkdir -p ${EESSI_CVMFS_VAR_LIB}
 mkdir -p ${EESSI_CVMFS_VAR_RUN}
-[[ ${INFO} -eq 1 ]] && echo "EESSI_CVMFS_VAR_LIB='${EESSI_CVMFS_VAR_LIB}'"
-[[ ${INFO} -eq 1 ]] && echo "EESSI_CVMFS_VAR_RUN='${EESSI_CVMFS_VAR_RUN}'"
+[[ ${VERBOSE} -eq 1 ]] && echo "EESSI_CVMFS_VAR_LIB=${EESSI_CVMFS_VAR_LIB}"
+[[ ${VERBOSE} -eq 1 ]] && echo "EESSI_CVMFS_VAR_RUN=${EESSI_CVMFS_VAR_RUN}"
 
 # allow that SINGULARITY_HOME is defined before script is run
 if [[ -z ${SINGULARITY_HOME} ]]; then
   export SINGULARITY_HOME="${EESSI_TMPDIR}/home:/home/${USER}"
   mkdir -p ${EESSI_TMPDIR}/home
-  [[ ${INFO} -eq 1 ]] && echo "SINGULARITY_HOME='${SINGULARITY_HOME}'"
 fi
+[[ ${VERBOSE} -eq 1 ]] && echo "SINGULARITY_HOME=${SINGULARITY_HOME}"
 
 # define paths to add to SINGULARITY_BIND (added later when all BIND mounts are defined)
 BIND_PATHS="${EESSI_CVMFS_VAR_LIB}:/var/lib/cvmfs,${EESSI_CVMFS_VAR_RUN}:/var/run/cvmfs"
 # provide a '/tmp' inside the container
 BIND_PATHS="${BIND_PATHS},${EESSI_TMPDIR}:${TMP_IN_CONTAINER}"
 
-[[ ${INFO} -eq 1 ]] && echo "BIND_PATHS=${BIND_PATHS}"
+[[ ${VERBOSE} -eq 1 ]] && echo "BIND_PATHS=${BIND_PATHS}"
 
 # set up repository config (always create directory repos_cfg and populate it with info when
 # arg -r|--repository is used)
 mkdir -p ${EESSI_TMPDIR}/repos_cfg
 if [[ "${REPOSITORY}" == "EESSI-pilot" ]]; then
   # need to source defaults as late as possible (see other sourcing below)
-  source ${base_dir}/init/eessi_defaults
+  source ${TOPDIR}/init/eessi_defaults
 
   # strip "/cvmfs/" from default setting
   repo_name=${EESSI_CVMFS_REPO/\/cvmfs\//}
@@ -353,6 +399,9 @@ else
   #   (could also become part of the software layer to define multiple
   #    standard EESSI repositories)
   cfg_load ${EESSI_REPOS_CFG_FILE}
+
+  # copy repos.cfg to job directory --> makes it easier to inspect the job
+  cp -a ${EESSI_REPOS_CFG_FILE} ${EESSI_TMPDIR}/repos_cfg/.
 
   # cfg file should include: repo_name, repo_version, config_bundle,
   #   map { local_filepath -> container_filepath }
@@ -382,7 +431,7 @@ else
 
   # convert config_map into associative array cfg_file_map
   cfg_init_file_map "${config_map}"
-  [[ ${INFO} -eq 1 ]] && cfg_print_map
+  [[ ${VERBOSE} -eq 1 ]] && cfg_print_map
 
   # use information to set up dir ${EESSI_TMPDIR}/repos_cfg,
   #     define BIND mounts and override repo name and version
@@ -413,7 +462,7 @@ else
   export EESSI_PILOT_VERSION_OVERRIDE=${repo_version}
   export EESSI_CVMFS_REPO_OVERRIDE="/cvmfs/${repo_name}"
   # need to source defaults as late as possible (after *_OVERRIDEs)
-  source ${base_dir}/init/eessi_defaults
+  source ${TOPDIR}/init/eessi_defaults
 fi
 
 # if http_proxy is not empty, we assume that the machine accesses internet
@@ -423,16 +472,17 @@ fi
 if [[ ! -z ${http_proxy} ]]; then
     # TODO tolerate other formats for proxy URLs, for now assume format is
     # http://SOME_HOSTNAME:SOME_PORT/
-    [[ ${INFO} -eq 1 ]] && echo "http_proxy='${http_proxy}'"
+    [[ ${VERBOSE} -eq 1 ]] && echo "http_proxy='${http_proxy}'"
     PROXY_HOST=$(get_host_from_url ${http_proxy})
-    [[ ${INFO} -eq 1 ]] && echo "PROXY_HOST='${PROXY_HOST}'"
+    [[ ${VERBOSE} -eq 1 ]] && echo "PROXY_HOST='${PROXY_HOST}'"
     PROXY_PORT=$(get_port_from_url ${http_proxy})
-    [[ ${INFO} -eq 1 ]] && echo "PROXY_PORT='${PROXY_PORT}'"
+    [[ ${VERBOSE} -eq 1 ]] && echo "PROXY_PORT='${PROXY_PORT}'"
     HTTP_PROXY_IPV4=$(get_ipv4_address ${PROXY_HOST})
-    [[ ${INFO} -eq 1 ]] && echo "HTTP_PROXY_IPV4='${HTTP_PROXY_IPV4}'"
+    [[ ${VERBOSE} -eq 1 ]] && echo "HTTP_PROXY_IPV4='${HTTP_PROXY_IPV4}'"
     echo "CVMFS_HTTP_PROXY=\"${http_proxy}|http://${HTTP_PROXY_IPV4}:${PROXY_PORT}\"" \
        >> ${EESSI_TMPDIR}/repos_cfg/default.local
-    cat ${EESSI_TMPDIR}/repos_cfg/default.local
+    [[ ${VERBOSE} -eq 1 ]] && echo "contents of default.local"
+    [[ ${VERBOSE} -eq 1 ]] && cat ${EESSI_TMPDIR}/repos_cfg/default.local
 
     # if default.local is not BIND mounted into container, add it to BIND_PATHS
     if [[ ! ${BIND_PATHS} =~ "${EESSI_TMPDIR}/repos_cfg/default.local:/etc/cvmfs/default.local" ]]; then
@@ -478,7 +528,7 @@ if [[ -z ${SINGULARITY_BIND} ]]; then
 else
     export SINGULARITY_BIND="${SINGULARITY_BIND},${BIND_PATHS}"
 fi
-[[ ${INFO} -eq 1 ]] && echo "SINGULARITY_BIND='${SINGULARITY_BIND}'"
+[[ ${VERBOSE} -eq 1 ]] && echo "SINGULARITY_BIND=${SINGULARITY_BIND}"
 
 # pass $EESSI_SOFTWARE_SUBDIR_OVERRIDE into build container (if set)
 if [ ! -z ${EESSI_SOFTWARE_SUBDIR_OVERRIDE} ]; then
@@ -487,13 +537,17 @@ if [ ! -z ${EESSI_SOFTWARE_SUBDIR_OVERRIDE} ]; then
     export APPTAINERENV_EESSI_SOFTWARE_SUBDIR_OVERRIDE=${EESSI_SOFTWARE_SUBDIR_OVERRIDE}
 fi
 
-# if INFO is set to 1 (arg --info), add argument '-q'
-RUN_QUIET=${INFO:--q}
+# if VERBOSE is set to 0 (no arg --verbose), add argument '-q'
+if [[ ${VERBOSE} -eq 0 ]]; then
+    RUN_QUIET='-q'
+else
+    RUN_QUIET=''
+fi
+
 echo "Launching container with command (next line):"
 echo "singularity ${RUN_QUIET} ${MODE} ${EESSI_FUSE_MOUNTS[@]} ${CONTAINER} $@"
-# TODO for now we run singularity with '-q' (quiet), later adjust this to the log level
-#      provided to the script
 singularity ${RUN_QUIET} ${MODE} "${EESSI_FUSE_MOUNTS[@]}" ${CONTAINER} "$@"
+exit_code=$?
 
 # 6. save tmp if requested (arg -s|--save)
 if [[ ! -z ${SAVE} ]]; then
@@ -512,7 +566,9 @@ if [[ ! -z ${SAVE} ]]; then
   fi
   tar cf ${TGZ} -C ${EESSI_TMPDIR} .
   echo "Saved contents of '${EESSI_TMPDIR}' to '${TGZ}' (to resume, add '--resume ${TGZ}')"
-  echo "RESUME_FROM_TGZ ${TGZ}"
 fi
 
 # TODO clean up tmp by default? only retain if another option provided (--retain-tmp)
+
+# use exit code of container command
+exit ${exit_code}
