@@ -141,7 +141,7 @@ if [[ ! -z ${REPOSITORY} ]]; then
     REPOSITORY_OPT="--repository ${REPOSITORY}"
 fi
 GENERIC_OPT=
-if [[ ${EESSI_SOFTWARE_SUBDIR_OVERRIDE} =~ ".*/generic" ]]; then
+if [[ ${EESSI_SOFTWARE_SUBDIR_OVERRIDE} =~ .*/generic$ ]]; then
     GENERIC_OPT="--generic"
 fi
 
