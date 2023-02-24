@@ -23,6 +23,10 @@
 # defaults
 export JOB_CFG_FILE="${JOB_CFG_FILE_OVERRIDE:=./cfg/job.cfg}"
 
+echo "bot/build.sh: Showing job.cfg from software-layer side"
+cat cfg/job.cfg
+exit 0
+
 # source utils.sh
 source utils.sh
 
