@@ -108,6 +108,9 @@ jobs:
                 tmpdir=$(grep "\-\-resume" ${outfile} | sed "s/.*--resume \([^']*\).*/\1/g")
                 rm -f ${outfile}
 
+                # make sure that container image exists
+                test -f ${tmpdir}/ghcr.io_eessi_build_node_debian11.sif || (echo "Container image not found in ${tmpdir}" >&2 && ls ${tmpdir} && exit 1)
+
                 ./eessi_container.sh --verbose --resume ${tmpdir} --mode shell <<< "${test_cmd}" > ${outfile}
                 cat ${outfile}
                 grep "Resuming from previous run using temporary storage at ${tmpdir}" ${outfile}
