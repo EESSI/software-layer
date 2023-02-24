@@ -344,8 +344,8 @@ fi
 CONTAINER_IMG=
 CONTAINER_URL_FMT=".*://(.*)"
 if [[ ${CONTAINER} =~ ${CONTAINER_URL_FMT} ]]; then
-    # replace : and - with _ in match (everything after ://) and append .sif
-    CONTAINER_IMG=${BASH_REMATCH[1]//[:-]/_}.sif
+    # replace ':', '-', '/' with '_' in match (everything after ://) and append .sif
+    CONTAINER_IMG="$(echo ${BASH_REMATCH[1]} | sed 's/[:\/-]/_/g').sif"
     # pull container to ${EESSI_TMPDIR} if it is not there yet (i.e. when
     # resuming from a previous session)
     if [[ ! -x ${EESSI_TMPDIR}/${CONTAINER_IMG} ]]; then
