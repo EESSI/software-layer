@@ -320,6 +320,13 @@ if [[ -z ${SINGULARITY_CACHEDIR} ]]; then
 fi
 [[ ${VERBOSE} -eq 1 ]] && echo "SINGULARITY_CACHEDIR=${SINGULARITY_CACHEDIR}"
 
+# if VERBOSE is set to 0 (no arg --verbose), add argument '-q'
+if [[ ${VERBOSE} -eq 0 ]]; then
+    RUN_QUIET='-q'
+else
+    RUN_QUIET=''
+fi
+
 # we try our best to make sure that we retain access to the container image in
 # a subsequent session ("best effort" only because pulling or copying operations
 # can fail ... in those cases the script may still succeed, but it is not
@@ -342,7 +349,10 @@ if [[ ${CONTAINER} =~ ${CONTAINER_URL_FMT} ]]; then
     # pull container to ${EESSI_TMPDIR} if it is not there yet (i.e. when
     # resuming from a previous session)
     if [[ ! -x ${EESSI_TMPDIR}/${CONTAINER_IMG} ]]; then
-        singularity pull ${EESSI_TMPDIR}/${CONTAINER_IMG} ${CONTAINER}
+        [[ ${VERBOSE} -eq 1 ]] && echo "Pulling container image from ${CONTAINER} to ${EESSI_TMPDIR}/${CONTAINER_IMG}"
+        singularity ${RUN_QUIET} pull ${EESSI_TMPDIR}/${CONTAINER_IMG} ${CONTAINER}
+    else
+        [[ ${VERBOSE} -eq 1 ]] && echo "Reusing existing container image ${EESSI_TMPDIR}/${CONTAINER_IMG}"
     fi
 else
     # determine file name as basename of CONTAINER
@@ -350,7 +360,10 @@ else
     # copy image file to ${EESSI_TMPDIR} if it is not there yet (i.e. when
     # resuming from a previous session)
     if [[ ! -x ${EESSI_TMPDIR}/${CONTAINER_IMG} ]]; then
+        [[ ${VERBOSE} -eq 1 ]] && echo "Copying container image from ${CONTAINER} to ${EESSI_TMPDIR}/${CONTAINER_IMG}"
         cp -a ${CONTAINER} ${EESSI_TMPDIR}/.
+    else
+        [[ ${VERBOSE} -eq 1 ]] && echo "Reusing existing container image ${EESSI_TMPDIR}/${CONTAINER_IMG}"
     fi
 fi
 # let CONTAINER point to the pulled, copied or resumed image file
@@ -536,13 +549,6 @@ if [ ! -z ${EESSI_SOFTWARE_SUBDIR_OVERRIDE} ]; then
     export SINGULARITYENV_EESSI_SOFTWARE_SUBDIR_OVERRIDE=${EESSI_SOFTWARE_SUBDIR_OVERRIDE}
     # also specify via $APPTAINERENV_* (future proof, cfr. https://apptainer.org/docs/user/latest/singularity_compatibility.html#singularity-environment-variable-compatibility)
     export APPTAINERENV_EESSI_SOFTWARE_SUBDIR_OVERRIDE=${EESSI_SOFTWARE_SUBDIR_OVERRIDE}
-fi
-
-# if VERBOSE is set to 0 (no arg --verbose), add argument '-q'
-if [[ ${VERBOSE} -eq 0 ]]; then
-    RUN_QUIET='-q'
-else
-    RUN_QUIET=''
 fi
 
 echo "Launching container with command (next line):"
