@@ -124,21 +124,30 @@ export EESSI_OS_TYPE=${EESSI_OS_TYPE:-linux}
 #     files into './cfg/.' and defining '.repository.repos_cfg_dir' in './cfg/job.cfg')
 
 # prepare options and directories for calling eessi_container.sh
+declare -a BUILD_STEP_ARGS=()
+BUILD_STEP_ARGS+=("--access" "rw")
+BUILD_STEP_ARGS+=("--mode" "run")
+BUILD_STEP_ARGS+=("--save" "${PWD}/previous_tmp/build_step")
+BUILD_STEP_ARGS+=("--storage" "${STORAGE}")
 CONTAINER_OPT=
 if [[ ! -z ${CONTAINER} ]]; then
     CONTAINER_OPT="--container ${CONTAINER}"
+    BUILD_STEP_ARGS+=("--container" "${CONTAINER}")
 fi
 HTTP_PROXY_OPT=
 if [[ ! -z ${HTTP_PROXY} ]]; then
     HTTP_PROXY_OPT="--http-proxy ${HTTP_PROXY}"
+    BUILD_STEP_ARGS+=("--http-proxy" "${HTTP_PROXY}")
 fi
 HTTPS_PROXY_OPT=
 if [[ ! -z ${HTTPS_PROXY} ]]; then
     HTTPS_PROXY_OPT="--https-proxy ${HTTPS_PROXY}"
+    BUILD_STEP_ARGS+=("--https-proxy" "${HTTPS_PROXY}")
 fi
 REPOSITORY_OPT=
 if [[ ! -z ${REPOSITORY} ]]; then
     REPOSITORY_OPT="--repository ${REPOSITORY}"
+    BUILD_STEP_ARGS+=("--repository" "${REPOSITORY}")
 fi
 GENERIC_OPT=
 if [[ ${EESSI_SOFTWARE_SUBDIR_OVERRIDE} =~ .*/generic$ ]]; then
@@ -148,27 +157,13 @@ fi
 mkdir -p previous_tmp/{build_step,tarball_step}
 build_outerr=$(mktemp build.outerr.XXXX)
 echo "Executing command to build software:"
-echo "./eessi_container.sh --access rw"
-echo "                     ${CONTAINER_OPT}"
-echo "                     ${HTTP_PROXY_OPT}"
-echo "                     ${HTTPS_PROXY_OPT}"
+echo "./eessi_container.sh ${BUILD_STEP_ARGS[@]}"
 echo "                     --verbose"
-echo "                     --mode run"
-echo "                     ${REPOSITORY_OPT}"
-echo "                     --save ${PWD}/previous_tmp/build_step"
-echo "                     --storage ${STORAGE}"
 echo "                     -- ./install_software_layer.sh ${GENERIC_OPT} \"$@\" 2>&1 | tee -a ${build_outerr}"
 # set EESSI_REPOS_CFG_DIR_OVERRIDE to ./cfg
 export EESSI_REPOS_CFG_DIR_OVERRIDE=${PWD}/cfg
-./eessi_container.sh --access rw \
-                     "${CONTAINER_OPT}" \
-                     ${HTTP_PROXY_OPT} \
-                     ${HTTPS_PROXY_OPT} \
+./eessi_container.sh "${BUILD_STEP_ARGS[@]}" \
                      --verbose \
-                     --mode run \
-                     ${REPOSITORY_OPT} \
-                     --save ${PWD}/previous_tmp/build_step \
-                     --storage ${STORAGE} \
                      -- ./install_software_layer.sh ${GENERIC_OPT} "$@" 2>&1 | tee -a ${build_outerr}
 
 # determine temporary directory to resume from
