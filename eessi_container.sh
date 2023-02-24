@@ -349,10 +349,10 @@ if [[ ${CONTAINER} =~ ${CONTAINER_URL_FMT} ]]; then
     # pull container to ${EESSI_TMPDIR} if it is not there yet (i.e. when
     # resuming from a previous session)
     if [[ ! -x ${EESSI_TMPDIR}/${CONTAINER_IMG} ]]; then
-        [[ ${VERBOSE} -eq 1 ]] && echo "Pulling container image from ${CONTAINER} to ${EESSI_TMPDIR}/${CONTAINER_IMG}"
+        echo "Pulling container image from ${CONTAINER} to ${EESSI_TMPDIR}/${CONTAINER_IMG}"
         singularity ${RUN_QUIET} pull ${EESSI_TMPDIR}/${CONTAINER_IMG} ${CONTAINER}
     else
-        [[ ${VERBOSE} -eq 1 ]] && echo "Reusing existing container image ${EESSI_TMPDIR}/${CONTAINER_IMG}"
+        echo "Reusing existing container image ${EESSI_TMPDIR}/${CONTAINER_IMG}"
     fi
 else
     # determine file name as basename of CONTAINER
@@ -360,10 +360,10 @@ else
     # copy image file to ${EESSI_TMPDIR} if it is not there yet (i.e. when
     # resuming from a previous session)
     if [[ ! -x ${EESSI_TMPDIR}/${CONTAINER_IMG} ]]; then
-        [[ ${VERBOSE} -eq 1 ]] && echo "Copying container image from ${CONTAINER} to ${EESSI_TMPDIR}/${CONTAINER_IMG}"
+        echo "Copying container image from ${CONTAINER} to ${EESSI_TMPDIR}/${CONTAINER_IMG}"
         cp -a ${CONTAINER} ${EESSI_TMPDIR}/.
     else
-        [[ ${VERBOSE} -eq 1 ]] && echo "Reusing existing container image ${EESSI_TMPDIR}/${CONTAINER_IMG}"
+        echo "Reusing existing container image ${EESSI_TMPDIR}/${CONTAINER_IMG}"
     fi
 fi
 # let CONTAINER point to the pulled, copied or resumed image file
