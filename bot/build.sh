@@ -161,7 +161,7 @@ echo "                     -- ./install_software_layer.sh ${GENERIC_OPT} \"$@\" 
 # set EESSI_REPOS_CFG_DIR_OVERRIDE to ./cfg
 export EESSI_REPOS_CFG_DIR_OVERRIDE=${PWD}/cfg
 ./eessi_container.sh --access rw \
-                     ${CONTAINER_OPT} \
+                     "${CONTAINER_OPT}" \
                      ${HTTP_PROXY_OPT} \
                      ${HTTPS_PROXY_OPT} \
                      --verbose \
