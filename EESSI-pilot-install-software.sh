@@ -431,6 +431,16 @@ check_exit_code $? "${ok_msg}" "${fail_msg}"
 
 # CUDA support
 
+# Need recent version of EasyBuild
+echo ">> Installing EasyBuild 4.5.1..."
+ok_msg="EasyBuild v4.7.0 installed"
+fail_msg="EasyBuild v4.7.0 failed to install"
+$EB --from-pr 17065 --include-easyblocks-from-pr 2893
+check_exit_code $? "${ok_msg}" "${fail_msg}"
+
+LMOD_IGNORE_CACHE=1 module swap EasyBuild/4.7.0
+check_exit_code $? "Swapped to EasyBuild/4.7.0" "Couldn't swap to EasyBuild/4.7.0"
+
 # install p7zip (to be able to unpack RPMs)
 p7zip_ec="p7zip-17.04-GCCcore-10.3.0.eb"
 echo ">> Installing $p7zip_ec..."
@@ -450,6 +460,10 @@ check_exit_code $? "${ok_msg}" "${fail_msg}"
 # Add the host_injections CUDA so we can actually build CUDA apps
 # (which unbreaks the symlinks from the runtime installation)
 ./install_cuda_host_injections.sh 11.3.1
+echo ">> Installing $cuda_ec under host_injections..."
+ok_msg="$cuda_ec (re)installed under host_injections!"
+fail_msg="Failed to install $cuda_ec under host_injections, woopsie..."
+check_exit_code $? "${ok_msg}" "${fail_msg}"
 
 # install CUDA samples (requires EESSI support for CUDA)
 cuda_samples_ec="CUDA-Samples-11.3-GCC-10.3.0-CUDA-11.3.1.eb"
