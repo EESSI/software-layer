@@ -1,6 +1,8 @@
 #!/bin/bash
 
-BUILD_CONTAINER="docker://ghcr.io/eessi/build-node:debian10"
+base_dir=$(dirname $(realpath $0))
+
+BUILD_CONTAINER="docker://ghcr.io/eessi/build-node:debian11"
 
 if [ $# -lt 2 ]; then
     echo "Usage: $0 <shell|run> <path for temporary directories>" >&2
@@ -39,9 +41,20 @@ if [ -z $SINGULARITY_HOME ]; then
     export SINGULARITY_HOME="$EESSI_TMPDIR/home:/home/$USER"
 fi
 
+source ${base_dir}/init/eessi_defaults
+# strip "/cvmfs/" from default setting
+repo_name=${EESSI_CVMFS_REPO/\/cvmfs\//}
+
 # set environment variables for fuse mounts in Singularity container
-export EESSI_PILOT_READONLY="container:cvmfs2 pilot.eessi-hpc.org /cvmfs_ro/pilot.eessi-hpc.org"
-export EESSI_PILOT_WRITABLE_OVERLAY="container:fuse-overlayfs -o lowerdir=/cvmfs_ro/pilot.eessi-hpc.org -o upperdir=$EESSI_TMPDIR/overlay-upper -o workdir=$EESSI_TMPDIR/overlay-work /cvmfs/pilot.eessi-hpc.org"
+export EESSI_PILOT_READONLY="container:cvmfs2 ${repo_name} /cvmfs_ro/${repo_name}"
+export EESSI_PILOT_WRITABLE_OVERLAY="container:fuse-overlayfs -o lowerdir=/cvmfs_ro/${repo_name} -o upperdir=$EESSI_TMPDIR/overlay-upper -o workdir=$EESSI_TMPDIR/overlay-work ${EESSI_CVMFS_REPO}"
+
+# pass $EESSI_SOFTWARE_SUBDIR_OVERRIDE into build container (if set)
+if [ ! -z ${EESSI_SOFTWARE_SUBDIR_OVERRIDE} ]; then
+    export SINGULARITYENV_EESSI_SOFTWARE_SUBDIR_OVERRIDE=${EESSI_SOFTWARE_SUBDIR_OVERRIDE}
+    # also specify via $APPTAINERENV_* (future proof, cfr. https://apptainer.org/docs/user/latest/singularity_compatibility.html#singularity-environment-variable-compatibility)
+    export APPTAINERENV_EESSI_SOFTWARE_SUBDIR_OVERRIDE=${EESSI_SOFTWARE_SUBDIR_OVERRIDE}
+fi
 
 if [ "$SHELL_OR_RUN" == "shell" ]; then
     # start shell in Singularity container, with EESSI repository mounted with writable overlay

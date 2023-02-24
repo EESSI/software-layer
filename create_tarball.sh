@@ -2,6 +2,8 @@
 
 set -e
 
+base_dir=$(dirname $(realpath $0))
+
 if [ $# -ne 4 ]; then
     echo "ERROR: Usage: $0 <EESSI tmp dir (example: /tmp/$USER/EESSI)> <pilot version (example: 2021.03)> <CPU arch subdir (example: x86_64/amd/zen2)> <path to tarball>" >&2
     exit 1
@@ -15,7 +17,8 @@ tmpdir=`mktemp -d`
 echo ">> tmpdir: $tmpdir"
 
 os="linux"
-cvmfs_repo="/cvmfs/pilot.eessi-hpc.org"
+source ${base_dir}/init/eessi_defaults
+cvmfs_repo=${EESSI_CVMFS_REPO}
 
 software_dir="${cvmfs_repo}/versions/${pilot_version}/software/${os}/${cpu_arch_subdir}"
 if [ ! -d ${software_dir} ]; then
@@ -43,13 +46,13 @@ if [ -d ${pilot_version}/software/${os}/${cpu_arch_subdir}/.lmod ]; then
 fi
 if [ -d ${pilot_version}/software/${os}/${cpu_arch_subdir}/modules ]; then
     # module files
-    find ${pilot_version}/software/${os}/${cpu_arch_subdir}/modules -type f >> ${files_list}
+    find ${pilot_version}/software/${os}/${cpu_arch_subdir}/modules -type f | grep -v '/\.wh\.' >> ${files_list}
     # module symlinks
-    find ${pilot_version}/software/${os}/${cpu_arch_subdir}/modules -type l >> ${files_list}
+    find ${pilot_version}/software/${os}/${cpu_arch_subdir}/modules -type l | grep -v '/\.wh\.' >> ${files_list}
 fi
 if [ -d ${pilot_version}/software/${os}/${cpu_arch_subdir}/software ]; then
     # installation directories
-    ls -d ${pilot_version}/software/${os}/${cpu_arch_subdir}/software/*/* >> ${files_list}
+    ls -d ${pilot_version}/software/${os}/${cpu_arch_subdir}/software/*/* | grep -v '/\.wh\.' >> ${files_list}
 fi
 
 topdir=${cvmfs_repo}/versions/
