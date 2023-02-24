@@ -17,50 +17,39 @@
 #  - the working directory contains a directory 'cfg' where the main config
 #    file 'job.cfg' has been deposited
 #  - the directory may contain any additional files references in job.cfg
-#  - the tool 'yq' for working with json files is available via the PATH or
-#    the environment variable BOT_YQ (see https://github.com/mikefarah/yq)
 
 # defaults
 export JOB_CFG_FILE="${JOB_CFG_FILE_OVERRIDE:=./cfg/job.cfg}"
 
 echo "bot/build.sh: Showing job.cfg from software-layer side"
 cat cfg/job.cfg
-exit 0
 
-# source utils.sh
-source utils.sh
-
-# check setup / define key variables
-# get path for 'yq' (if not found, an empty string is returned)
-YQ=$(get_path_for_tool "yq" "BOT_YQ")
-exit_code=$?
-if [[ ${exit_code} -ne 0 ]]; then
-    fatal_error "could not find path to 'yq'; exiting"
-else
-    echo_green "found yq (${YQ})"
-fi
+# source utils.sh and cfg_files.sh
+source scripts/utils.sh
+source scripts/cfg_files.sh
 
 # check if './cfg/job.cfg' exists
 if [[ ! -r "${JOB_CFG_FILE}" ]]; then
     fatal_error "job config file (JOB_CFG_FILE=${JOB_CFG_FILE}) does not exist or not readable"
 fi
 echo "obtaining configuration settings from '${JOB_CFG_FILE}'"
+cfg_load ${JOB_CFG_FILE}
 
 # if http_proxy is in cfg/job.cfg use it, if not use env var $http_proxy
-HTTP_PROXY=$(${YQ} '.site_config.http_proxy // ""' ${JOB_CFG_FILE})
+HTTP_PROXY=$(cfg_get_value "site_config" "http_proxy")
 HTTP_PROXY=${HTTP_PROXY:-${http_proxy}}
 echo "HTTP_PROXY='${HTTP_PROXY}'"
 
 # if https_proxy is in cfg/job.cfg use it, if not use env var $https_proxy
-HTTPS_PROXY=$(${YQ} '.site_config.https_proxy // ""' ${JOB_CFG_FILE})
+HTTPS_PROXY=$(cfg_get_value "site_config" "https_proxy")
 HTTPS_PROXY=${HTTPS_PROXY:-${https_proxy}}
 echo "HTTPS_PROXY='${HTTPS_PROXY}'"
 
-LOCAL_TMP=$(${YQ} '.site_config.local_tmp // ""' ${JOB_CFG_FILE})
+LOCAL_TMP=$(cfg_get_value "site_config" "local_tmp")
 echo "LOCAL_TMP='${LOCAL_TMP}'"
 # TODO should local_tmp be mandatory? --> then we check here and exit if it is not provided
 
-SINGULARITY_CACHEDIR=$(${YQ} '.site_config.container_cachedir // ""' ${JOB_CFG_FILE})
+SINGULARITY_CACHEDIR=$(cfg_get_value "site_config" "container_cachedir")
 echo "SINGULARITY_CACHEDIR='${SINGULARITY_CACHEDIR}'"
 if [[ ! -z ${SINGULARITY_CACHEDIR} ]]; then
     export SINGULARITY_CACHEDIR
@@ -73,11 +62,11 @@ STORAGE=$(envsubst <<< ${LOCAL_TMP})
 echo "'${STORAGE}'"
 
 # obtain list of modules to be loaded
-LOAD_MODULES=$(${YQ} '.site_config.load_modules // ""' ${JOB_CFG_FILE})
+LOAD_MODULES=$(cfg_get_value "site_config" "load_modules")
 echo "LOAD_MODULES='${LOAD_MODULES}'"
 
 # singularity/apptainer settings: CONTAINER, HOME, TMPDIR, BIND
-CONTAINER=$(${YQ} '.repository.container // ""' ${JOB_CFG_FILE})
+CONTAINER=$(cfg_get_value "repository" "container")
 export SINGULARITY_HOME="$(pwd):/eessi_bot_job"
 export SINGULARITY_TMPDIR="$(pwd)/singularity_tmpdir"
 mkdir -p ${SINGULARITY_TMPDIR}
@@ -94,20 +83,20 @@ else
 fi
 
 # determine repository to be used from entry .repository in cfg/job.cfg
-REPOSITORY=$(${YQ} '.repository.repo_id // ""' ${JOB_CFG_FILE})
-EESSI_REPOS_CFG_DIR_OVERRIDE=$(${YQ} '.repository.repos_cfg_dir // ""' ${JOB_CFG_FILE})
+REPOSITORY=$(cfg_get_value "repository" "repo_id")
+EESSI_REPOS_CFG_DIR_OVERRIDE=$(cfg_get_value "repository" "repos_cfg_dir")
 export EESSI_REPOS_CFG_DIR_OVERRIDE=${EESSI_REPOS_CFG_DIR_OVERRIDE:-${PWD}/cfg}
 
 # determine pilot version to be used from .repository.repo_version in cfg/job.cfg
 # here, just set & export EESSI_PILOT_VERSION_OVERRIDE
 # next script (eessi_container.sh) makes use of it via sourcing init scripts
 # (e.g., init/eessi_defaults or init/minimal_eessi_env)
-export EESSI_PILOT_VERSION_OVERRIDE=$(${YQ} '.repository.repo_version // ""' ${JOB_CFG_FILE})
+export EESSI_PILOT_VERSION_OVERRIDE=$(cfg_get_value "repository" "repo_version")
 
 # determine CVMFS repo to be used from .repository.repo_name in cfg/job.cfg
 # here, just set EESSI_CVMFS_REPO_OVERRIDE, a bit further down
 # "source init/eessi_defaults" via sourcing init/minimal_eessi_env
-export EESSI_CVMFS_REPO_OVERRIDE=$(${YQ} '.repository.repo_name // ""' ${JOB_CFG_FILE})
+export EESSI_CVMFS_REPO_OVERRIDE=$(cfg_get_value "repository" "repo_name")
 
 
 # determine architecture to be used from entry .architecture in cfg/job.cfg
@@ -115,12 +104,12 @@ export EESSI_CVMFS_REPO_OVERRIDE=$(${YQ} '.repository.repo_name // ""' ${JOB_CFG
 if [[ ! -z "${CPU_TARGET}" ]]; then
     EESSI_SOFTWARE_SUBDIR_OVERRIDE=${CPU_TARGET}
 else
-    EESSI_SOFTWARE_SUBDIR_OVERRIDE=$(${YQ} '.architecture.software_subdir // ""' ${JOB_CFG_FILE})
+    EESSI_SOFTWARE_SUBDIR_OVERRIDE=$(cfg_get_value "architecture" "software_subdir")
 fi
 export EESSI_SOFTWARE_SUBDIR_OVERRIDE
 
 # get EESSI_OS_TYPE from .architecture.os_type in cfg/job.cfg (default: linux)
-EESSI_OS_TYPE=$(${YQ} '.architecture.os_type // ""' ${JOB_CFG_FILE})
+EESSI_OS_TYPE=$(cfg_get_value "architecture" "os_type")
 export EESSI_OS_TYPE=${EESSI_OS_TYPE:-linux}
 
 # TODO
