@@ -173,6 +173,11 @@ while [[ $# -gt 0 ]]; do
       export https_proxy=${HTTPS_PROXY}
       shift 2
       ;;
+    --)
+      shift
+      POSITIONAL_ARGS+=("$@") # save positional args
+      break
+      ;;
     -*|--*)
       fatal_error "Unknown option: $1" "${CMDLINE_ARG_UNKNOWN_EXITCODE}"
       ;;
