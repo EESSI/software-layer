@@ -125,29 +125,39 @@ export EESSI_OS_TYPE=${EESSI_OS_TYPE:-linux}
 
 # prepare options and directories for calling eessi_container.sh
 declare -a BUILD_STEP_ARGS=()
+BUILD_STEP_ARGS+=("--verbose")
 BUILD_STEP_ARGS+=("--access" "rw")
 BUILD_STEP_ARGS+=("--mode" "run")
 BUILD_STEP_ARGS+=("--save" "${PWD}/previous_tmp/build_step")
 BUILD_STEP_ARGS+=("--storage" "${STORAGE}")
+declare -a TARBALL_STEP_ARGS=()
+TARBALL_STEP_ARGS+=("--verbose")
+TARBALL_STEP_ARGS+=("--access" "rw")
+TARBALL_STEP_ARGS+=("--mode" "run")
+TARBALL_STEP_ARGS+=("--save" "${PWD}/previous_tmp/tarball_step")
 CONTAINER_OPT=
 if [[ ! -z ${CONTAINER} ]]; then
     CONTAINER_OPT="--container ${CONTAINER}"
     BUILD_STEP_ARGS+=("--container" "${CONTAINER}")
+    TARBALL_STEP_ARGS+=("--container" "${CONTAINER}")
 fi
 HTTP_PROXY_OPT=
 if [[ ! -z ${HTTP_PROXY} ]]; then
     HTTP_PROXY_OPT="--http-proxy ${HTTP_PROXY}"
     BUILD_STEP_ARGS+=("--http-proxy" "${HTTP_PROXY}")
+    TARBALL_STEP_ARGS+=("--http-proxy" "${HTTP_PROXY}")
 fi
 HTTPS_PROXY_OPT=
 if [[ ! -z ${HTTPS_PROXY} ]]; then
     HTTPS_PROXY_OPT="--https-proxy ${HTTPS_PROXY}"
     BUILD_STEP_ARGS+=("--https-proxy" "${HTTPS_PROXY}")
+    TARBALL_STEP_ARGS+=("--https-proxy" "${HTTPS_PROXY}")
 fi
 REPOSITORY_OPT=
 if [[ ! -z ${REPOSITORY} ]]; then
     REPOSITORY_OPT="--repository ${REPOSITORY}"
     BUILD_STEP_ARGS+=("--repository" "${REPOSITORY}")
+    TARBALL_STEP_ARGS+=("--repository" "${REPOSITORY}")
 fi
 GENERIC_OPT=
 if [[ ${EESSI_SOFTWARE_SUBDIR_OVERRIDE} =~ .*/generic$ ]]; then
@@ -158,16 +168,15 @@ mkdir -p previous_tmp/{build_step,tarball_step}
 build_outerr=$(mktemp build.outerr.XXXX)
 echo "Executing command to build software:"
 echo "./eessi_container.sh ${BUILD_STEP_ARGS[@]}"
-echo "                     --verbose"
 echo "                     -- ./install_software_layer.sh ${GENERIC_OPT} \"$@\" 2>&1 | tee -a ${build_outerr}"
 # set EESSI_REPOS_CFG_DIR_OVERRIDE to ./cfg
 export EESSI_REPOS_CFG_DIR_OVERRIDE=${PWD}/cfg
 ./eessi_container.sh "${BUILD_STEP_ARGS[@]}" \
-                     --verbose \
                      -- ./install_software_layer.sh ${GENERIC_OPT} "$@" 2>&1 | tee -a ${build_outerr}
 
 # determine temporary directory to resume from
 BUILD_TMPDIR=$(grep ' as tmp directory ' ${build_outerr} | cut -d ' ' -f 2)
+TARBALL_STEP_ARGS+=("--resume" "${BUILD_TMPDIR}")
 
 tar_outerr=$(mktemp tar.outerr.XXXX)
 timestamp=$(date +%s)
@@ -181,26 +190,10 @@ export TGZ=$(printf "eessi-%s-software-%s-%s-%d.tar.gz" ${EESSI_PILOT_VERSION} $
 # /tmp as default?
 TMP_IN_CONTAINER=/tmp
 echo "Executing command to create tarball:"
-echo "./eessi_container.sh --access rw"
-echo "                     ${CONTAINER_OPT}"
-echo "                     ${HTTP_PROXY_OPT}"
-echo "                     ${HTTPS_PROXY_OPT}"
-echo "                     --verbose"
-echo "                     --mode run"
-echo "                     ${REPOSITORY_OPT}"
-echo "                     --resume ${BUILD_TMPDIR}"
-echo "                     --save ${PWD}/previous_tmp/tarball_step"
-echo "                     ./create_tarball.sh ${TMP_IN_CONTAINER} ${EESSI_PILOT_VERSION} ${EESSI_SOFTWARE_SUBDIR_OVERRIDE} /eessi_bot_job/${TGZ} 2>&1 | tee -a ${tar_outerr}"
-./eessi_container.sh --access rw \
-                     ${CONTAINER_OPT} \
-                     ${HTTP_PROXY_OPT} \
-                     ${HTTPS_PROXY_OPT} \
-                     --verbose \
-                     --mode run \
-                     ${REPOSITORY_OPT} \
-                     --resume ${BUILD_TMPDIR} \
-                     --save ${PWD}/previous_tmp/tarball_step \
-                     ./create_tarball.sh ${TMP_IN_CONTAINER} ${EESSI_PILOT_VERSION} ${EESSI_SOFTWARE_SUBDIR_OVERRIDE} /eessi_bot_job/${TGZ} 2>&1 | tee -a ${tar_outerr}
+echo "./eessi_container.sh ${TARBALL_STEP_ARGS[@]}"
+echo "                     -- ./create_tarball.sh ${TMP_IN_CONTAINER} ${EESSI_PILOT_VERSION} ${EESSI_SOFTWARE_SUBDIR_OVERRIDE} /eessi_bot_job/${TGZ} 2>&1 | tee -a ${tar_outerr}"
+./eessi_container.sh "${TARBALL_STEP_ARGS[@]}" \
+                     -- ./create_tarball.sh ${TMP_IN_CONTAINER} ${EESSI_PILOT_VERSION} ${EESSI_SOFTWARE_SUBDIR_OVERRIDE} /eessi_bot_job/${TGZ} 2>&1 | tee -a ${tar_outerr}
 
 # if two tarballs have been generated, only keep the one from tarball step
 NUM_TARBALLS=$(find ${PWD}/previous_tmp -type f -name "*tgz" | wc -l)
