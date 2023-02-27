@@ -468,7 +468,7 @@ check_exit_code $? "${ok_msg}" "${fail_msg}"
 # install CUDA samples (requires EESSI support for CUDA)
 cuda_samples_ec="CUDA-Samples-11.3-GCC-10.3.0-CUDA-11.3.1.eb"
 echo ">> Installing $cuda_samples_ec..."
-ok_msg="$cuda_ec installed, off to a good (?) start!"
+ok_msg="$cuda_samples_ec installed, off to a good (?) start!"
 fail_msg="Failed to install $cuda_samples_ec, woopsie..."
 $EB $cuda_samples_ec --robot --from-pr=16914
 check_exit_code $? "${ok_msg}" "${fail_msg}"
