@@ -75,7 +75,7 @@ else
   fi
   # We don't want hooks used in this install, we need a vanilla CUDA installation
   touch "$tmpdir"/none.py
-  eb "${extra_args}" --hooks="$tmpdir"/none.py --installpath="${cuda_install_parent}"/ CUDA-"${install_cuda_version}".eb
+  eb ${extra_args} --hooks="$tmpdir"/none.py --installpath="${cuda_install_parent}"/ CUDA-"${install_cuda_version}".eb
   ret=$?
   if [ $ret -ne 0 ]; then
     fatal_error  "CUDA installation failed, please check EasyBuild logs..."
