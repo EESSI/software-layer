@@ -459,8 +459,8 @@ check_exit_code $? "${ok_msg}" "${fail_msg}"
 
 # Add the host_injections CUDA so we can actually build CUDA apps
 # (which unbreaks the symlinks from the runtime installation)
-./install_cuda_host_injections.sh 11.3.1
 echo ">> Installing $cuda_ec under host_injections..."
+./install_cuda_host_injections.sh 11.3.1
 ok_msg="$cuda_ec (re)installed under host_injections!"
 fail_msg="Failed to install $cuda_ec under host_injections, woopsie..."
 check_exit_code $? "${ok_msg}" "${fail_msg}"
