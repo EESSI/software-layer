@@ -38,7 +38,6 @@ else
     fi
   fi
 
-
   required_space_in_tmpdir=50000
   # Let's see if we have sources and build locations defined if not, we use the temporary space
   if [[ -z "${EASYBUILD_BUILDPATH}" ]]; then
@@ -52,11 +51,11 @@ else
 
   # The install is pretty fat, you need lots of space for download/unpack/install (~3*5GB),
   # need to do a space check before we proceed
-  avail_space=$(df --output=avail "${tmpdir}"/ | tail -n 1 | awk '{print $1}')
+  avail_space=$(df --output=avail "${cuda_install_parent}"/ | tail -n 1 | awk '{print $1}')
   if (( avail_space < 5000000 )); then
     fatal_error "Need at least 5GB disk space to install CUDA under ${cuda_install_parent}, exiting now..."
   fi
-  avail_space=$(df --output=avail "${cuda_install_parent}"/ | tail -n 1 | awk '{print $1}')
+  avail_space=$(df --output=avail "${tmpdir}"/ | tail -n 1 | awk '{print $1}')
   if (( avail_space < required_space_in_tmpdir )); then
     error1="Need at least ${required_space_in_tmpdir} disk space under ${tmpdir}.\n"
     error2="You can set EASYBUILD_BUILDPATH and/or EASYBUILD_SOURCEPATH to reduce this requirement. Exiting now..."
