@@ -432,10 +432,10 @@ check_exit_code $? "${ok_msg}" "${fail_msg}"
 # CUDA support
 
 # Need recent version of EasyBuild
-echo ">> Installing EasyBuild 4.5.1..."
+echo ">> Installing EasyBuild 4.7.0..."
 ok_msg="EasyBuild v4.7.0 installed"
 fail_msg="EasyBuild v4.7.0 failed to install"
-$EB --from-pr 17065 --include-easyblocks-from-pr 2893
+$EB --from-pr 17065 --include-easyblocks-from-pr 2893 --try-amend=use_pip=1
 check_exit_code $? "${ok_msg}" "${fail_msg}"
 
 LMOD_IGNORE_CACHE=1 module swap EasyBuild/4.7.0
