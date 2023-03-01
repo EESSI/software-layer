@@ -232,13 +232,18 @@ def cuda_postpackage(self, *args, **kwargs):
             elif copy:
                 tmp_buffer.append(line)
     # create whitelist without file extensions, they're not really needed and they only complicate things
-    whitelist = ['eula']
+    whitelist = ['EULA']
     file_extensions = [".so", ".a", ".h", ".bc"]
     for tmp in tmp_buffer:
         for word in tmp.split():
             if any(ext in word for ext in file_extensions):
                 whitelist.append(word.split(".")[0])
     whitelist = list(set(whitelist))
+    # Do some quick checks for things we should or shouldn't have in the list
+    if "nvcc" in whitelist:
+        raise EasyBuildError("Found 'nvcc' in whitelist: %s" % whitelist)
+    if "libcudart" not in whitelist:
+        raise EasyBuildError("Did not find 'libcudart' in whitelist: %s" % whitelist)
     # iterate over all files in the CUDA path
     for root, dirs, files in os.walk(self.installdir):
         for filename in files:
