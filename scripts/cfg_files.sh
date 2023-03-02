@@ -47,9 +47,7 @@ function cfg_load {
     else
       val=$(cfg_get_key_value $line)
       # trim leading and trailing spaces as well
-      #cur_key=$(echo $val | cut -f1 -d'=' | sed -e 's/^[[:space:]]*//' | sed -e 's/[[:space:]]*$//')
       cur_key=$(echo $val | cut -f1 -d'=' | cfg_trim_spaces)
-      #cur_val=$(echo $val | cut -f2 -d'=' | sed -e 's/^[[:space:]]*//' | sed -e 's/[[:space:]]*$//')
       cur_val=$(echo $val | cut -f2 -d'=' | cfg_trim_spaces)
       if [[ -n "$cur_key" ]]; then
         # section + key is the associative in bash array, the field separator is space
@@ -66,6 +64,20 @@ function cfg_print {
     echo -n "section  : $(echo $index | cut -f1 -d ' ');"
     echo -n "key  : $(echo $index | cut -f2 -d ' ');"
     echo  "value: ${cfg_repos[$index]}"
+  done
+}
+
+function cfg_sections {
+  declare -A sections
+  for key in "${!cfg_repos[@]}"
+  do
+    # extract section from the associative key
+    section=$(echo $key | cut -f1 -d ' ')
+    sections[${section}]=1
+  done
+  for repo in "${!sections[@]}"
+  do
+      echo "${repo}"
   done
 }
 
@@ -153,4 +165,3 @@ function cfg_print_map {
     echo "${index} --> ${cfg_file_map[${index}]}"
   done
 }
-

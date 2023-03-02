@@ -11,6 +11,8 @@ jobs:
       matrix:
         SCRIPT_TEST:
         - help
+        - listrepos_default
+        - listrepos_custom
         - run
         - shell
         - container
@@ -38,6 +40,28 @@ jobs:
 
               if [[ ${{matrix.SCRIPT_TEST}} == 'help' ]]; then
                 ./eessi_container.sh --help
+
+              # test use of --list-repos without custom repos.cfg
+              elif [[ ${{matrix.SCRIPT_TEST}} == 'listrepos_default' ]]; then
+                outfile=out_listrepos.txt
+                ./eessi_container.sh --verbose --list-repos | tee ${outfile}
+                grep "EESSI-pilot" ${outfile}
+
+              # test use of --list-repos with custom repos.cfg
+              elif [[ ${{matrix.SCRIPT_TEST}} == 'listrepos_custom' ]]; then
+                outfile=out_listrepos.txt
+                outfile2=out_listrepos_2.txt
+                mkdir -p ${PWD}/cfg
+                echo "[EESSI/20AB.CD]" > cfg/repos.cfg
+                echo "repo_version = 20AB.CD" >> cfg/repos.cfg
+                echo "[EESSI/20HT.TP]" >> cfg/repos.cfg
+                echo "repo_version = 20HT.TP" >> cfg/repos.cfg
+                ./eessi_container.sh --verbose --list-repos | tee ${outfile}
+                grep "EESSI-pilot" ${outfile}
+
+                export EESSI_REPOS_CFG_DIR_OVERRIDE=${PWD}/cfg
+                ./eessi_container.sh --verbose --list-repos | tee ${outfile2}
+                grep "[EESSI/2023.02]" ${outfile2}
 
               # test use of --mode run
               elif [[ ${{matrix.SCRIPT_TEST}} == 'run' ]]; then
@@ -83,6 +107,9 @@ jobs:
 
                 tmpdir=$(grep "\-\-resume" ${outfile} | sed "s/.*--resume \([^']*\).*/\1/g")
                 rm -f ${outfile}
+
+                # make sure that container image exists
+                test -f ${tmpdir}/ghcr.io_eessi_build_node_debian11.sif || (echo "Container image not found in ${tmpdir}" >&2 && ls ${tmpdir} && exit 1)
 
                 ./eessi_container.sh --verbose --resume ${tmpdir} --mode shell <<< "${test_cmd}" > ${outfile}
                 cat ${outfile}
