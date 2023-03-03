@@ -48,11 +48,11 @@ function float_greater_than() {
   fi
   # Make sure the arguments are numbers
   if [[ ! $1 =~ ^[+-]?[0-9]+\.?[0-9]*$ ]]; then
-    echo_red "Input is not a float."
+    echo_yellow "Input to float_greater_than is not a float, ignoring"
     return $ANY_ERROR_EXITCODE
   fi
   if [[ ! $2 =~ ^[+-]?[0-9]+\.?[0-9]*$ ]]; then
-    echo_red "Input is not a float."
+    echo_yellow "Input to float_greater_than is not a float, ignoring"
     return $ANY_ERROR_EXITCODE
   fi
   # Now do the actual evaluation
