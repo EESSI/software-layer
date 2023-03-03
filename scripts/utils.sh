@@ -45,8 +45,18 @@ function create_directory_structure() {
   return_code=$?
   # If it fails be explicit about the error
   if [ ${return_code} -ne 0 ]; then
-    echo_red "Creating ${dir_structure} failed with\n${error_message}" >&2
+    real_dir=$(realpath -m "$dir_structure")
+    echo_red "Creating ${dir_structure} (real path ${real_dir}) failed with:\n ${error_message}" >&2
+  else
+    # If we're creating it, our use case is that we want to be able to write there
+    # (this is a check in case the directory already existed)
+    if [ ! -w "${dir_structure}" ]; then
+      real_dir=$(realpath -m "$dir_structure")
+      echo_red "You do not have (required) write permissions to ${dir_structure} (real path ${real_dir})!"
+      return_code=$ANY_ERROR_EXITCODE
+    fi
   fi
+
   return $return_code
 }
 
