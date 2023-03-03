@@ -461,8 +461,8 @@ check_exit_code $? "${ok_msg}" "${fail_msg}"
 
 # Add the host_injections CUDA so we can actually build CUDA apps
 # (which unbreaks the symlinks from the runtime installation)
-echo ">> Installing $cuda_ec under host_injections..."
-$(dirname "$BASH_SOURCE")/gpu_support/cuda_utils/install_cuda_host_injections.sh ${cuda_version}
+echo ">> Re-installing CUDA $cuda_version under host_injections (to un-break symlinks in EESSI installation)..."
+"${TOPDIR}"/gpu_support/cuda_utils/install_cuda_host_injections.sh ${cuda_version}
 ok_msg="CUDA $cuda_version (re)installed under host_injections!"
 fail_msg="Failed to install CUDA $cuda_version under host_injections, woopsie..."
 check_exit_code $? "${ok_msg}" "${fail_msg}"
