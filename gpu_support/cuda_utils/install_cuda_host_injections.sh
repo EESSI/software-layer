@@ -58,7 +58,8 @@ else
   avail_space=$(df --output=avail "${tmpdir}"/ | tail -n 1 | awk '{print $1}')
   if (( avail_space < required_space_in_tmpdir )); then
     error="Need at least ${required_space_in_tmpdir} disk space under ${tmpdir}.\n"
-    error="${error}You can set EASYBUILD_BUILDPATH and/or EASYBUILD_SOURCEPATH "
+    error="${error}Set the environment variable CUDA_TEMP_DIR to a location with adequate space to pass this check."
+    error="${error}You can alternatively set EASYBUILD_BUILDPATH and/or EASYBUILD_SOURCEPATH "
     error="${error}to reduce this requirement. Exiting now..."
     fatal_error "${error}"
   fi
@@ -68,15 +69,14 @@ else
     module load EasyBuild
   fi
 
-  # we need the --rebuild option and a (random) dir for the module if the module
-  # file is shipped with EESSI
-  if [ -f "${EESSI_SOFTWARE_PATH}"/modules/all/CUDA/"${install_cuda_version}".lua ]; then
-    extra_args="--rebuild --installpath-modules=${tmpdir}"
-  fi
+  # we need the --rebuild option and a (random) dir for the module since we are
+  # fixing the broken links of the EESSI-shipped installation
+  extra_args="--rebuild --installpath-modules=${tmpdir}"
+
   # We don't want hooks used in this install, we need a vanilla CUDA installation
   touch "$tmpdir"/none.py
   # shellcheck disable=SC2086  # Intended splitting of extra_args
-  eb ${extra_args} --hooks="$tmpdir"/none.py --installpath="${cuda_install_parent}"/ CUDA-"${install_cuda_version}".eb
+  eb --prefix="$tmpdir" ${extra_args} --hooks="$tmpdir"/none.py --installpath="${cuda_install_parent}"/ CUDA-"${install_cuda_version}".eb
   ret=$?
   if [ $ret -ne 0 ]; then
     fatal_error  "CUDA installation failed, please check EasyBuild logs..."
