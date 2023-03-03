@@ -13,15 +13,6 @@ export INSTALL_CUDA=true && ./add_nvidia_gpu_support.sh
 ```
 This will again install the needed compatibility libraries as well as the whole CUDA suite.
 
-If you need a different CUDA version than what is shipped with EESSI, you can also specify that particular version for the script:
-```
-export INSTALL_CUDA_VERSION=xx.y.z && export INSTALL_CUDA=true && ./add_nvidia_gpu_support.sh
-```
-Please note, however, that versions for which the runtime is not shipped with EESSI are not installed in the default modules path.
-Thus, you will have to add the following to your modules path to get access to your custom CUDA version:
-```
-module use ${EESSI_SOFTWARE_PATH/versions/host_injections}/modules/all/
-```
 ## Prerequisites and tips
 * You need write permissions to `/cvmfs/pilot.eessi-hpc.org/host_injections` (which by default is a symlink to `/opt/eessi` but can be configured in your CVMFS config file to point somewhere else). If you would like to make a system-wide installation you should change this in your configuration to point somewhere on a shared filesystem.
 * If you want to install CUDA on a node without GPUs (e.g. on a login node where you want to be able to compile your CUDA-enabled code), you should `export INSTALL_WO_GPU=true` in order to skip checks and tests that can only succeed if you have access to a GPU. This approach is not recommended as there is a chance the CUDA compatibility library installed is not compatible with the existing CUDA driver on GPU nodes (and this will not be detected).
