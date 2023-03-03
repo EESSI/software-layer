@@ -41,7 +41,7 @@ function create_directory_structure() {
   dir_structure="$1"
 
   # Attempt to create the directory structure
-  error_message=$(mkdir -p  2>&1)
+  error_message=$(mkdir -p "$dir_structure" 2>&1)
   return_code=$?
   # If it fails be explicit about the error
   if [ ${return_code} -ne 0 ]; then
