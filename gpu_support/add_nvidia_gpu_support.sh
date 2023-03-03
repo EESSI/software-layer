@@ -9,6 +9,9 @@ source $TOPDIR/../scripts/utils.sh
 
 install_cuda="${INSTALL_CUDA:=false}"
 eessi_version="${EESSI_PILOT_VERSION:=latest}"
+if [ ! "$eessi_version" = "latest" ]; then
+  eessi_version="versions/$eessi_version"
+fi
 
 # If you want to install CUDA support on login nodes (typically without GPUs),
 # set this variable to true. This will skip all GPU-dependent checks
