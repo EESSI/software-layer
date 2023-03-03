@@ -28,8 +28,13 @@ if [[ ${driver_cuda_version%.*} =~ ^[0-9]+$ ]]; then
     echo_yellow "You need to update your CUDA compatibility libraries!"
   elif [[ ${eessi_cuda_version%.*} =~ ^[0-9]+$ ]]; then
     if float_greater_than $eessi_cuda_version $cuda_major_minor ; then
-      echo_green "Existing CUDA compatibility libraries in EESSI should be ok!"
-      exit 0
+      echo_yellow "Existing CUDA compatibility libraries in EESSI should be ok, testing..."
+      $TOPDIR/test_cuda.sh "${required_cuda_version}"
+      if [ $? -eq 0 ]; then
+        exit 0
+      else
+        echo_yellow "Seems not, continuing to install requested version..."
+      fi
     fi
   else
     echo_yellow "Installing CUDA compatibility libraries"
