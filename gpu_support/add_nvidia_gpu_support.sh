@@ -3,6 +3,10 @@
 # Drop into the prefix shell or pipe this script into a Prefix shell with
 #   $EPREFIX/startprefix <<< /path/to/this_script.sh
 
+TOPDIR=$(dirname $(realpath $0))
+
+source $TOPDIR/scripts/utils.sh
+
 install_cuda="${INSTALL_CUDA:=false}"
 eessi_version="${EESSI_PILOT_VERSION:=latest}"
 
@@ -17,21 +21,21 @@ if [[ "${install_wo_gpu}" != "true" ]]; then
   if command -v nvidia-smi > /dev/null 2>&1; then
     nvidia-smi > /dev/null 2>&1
     if [ $? -ne 0 ]; then
-      echo "nvidia-smi was found but returned error code, exiting now..." >&2
-      echo "If you do not have a GPU on this device but wish to force the installation,"
-      echo "please set the environment variable INSTALL_WO_GPU=true"
-      exit 1
+      error="nvidia-smi was found but returned error code, exiting now...\n"
+      error="${error}If you do not have a GPU on this device but wish to force the installation,\n"
+      error="${error}please set the environment variable INSTALL_WO_GPU=true"
+      fatal_error "$error"
     fi
     echo "nvidia-smi found, continue setup."
   else
-    echo "nvidia-smi not found, exiting now..." >&2
-    echo "If you do not have a GPU on this device but wish to force the installation,"
-    echo "please set the environment variable INSTALL_WO_GPU=true"
-    exit 1
+    error="nvidia-smi not found, exiting now...\n"
+    error="${error}If you do not have a GPU on this device but wish to force the installation,\n"
+    error="${error}please set the environment variable INSTALL_WO_GPU=true\n"
+    fatal_error "$error"
   fi
 else
-  echo "You requested to install CUDA without GPUs present."
-  echo "This means that all GPU-dependent tests/checks will be skipped!"
+  echo_green "You requested to install CUDA without GPUs present."
+  echo_green "This means that all GPU-dependent tests/checks will be skipped!"
 fi
 
 EESSI_SILENT=1 source /cvmfs/pilot.eessi-hpc.org/"${eessi_version}"/init/bash
@@ -49,9 +53,8 @@ if [[ "${install_wo_gpu}" != "true" ]]; then
   driver_major_version="${driver_major_version%%.*}"
   # Now check driver_version for compatibility
   # Check driver is at least LTS driver R450, see https://docs.nvidia.com/datacenter/tesla/drivers/#cuda-drivers
-  if (( $driver_major_version < 450 )); then
-    echo "Your NVIDIA driver version is too old, please update first.."
-    exit 1
+  if (( driver_major_version < 450 )); then
+    fatal_error "Your NVIDIA driver version ($driver_major_version) is too old, please update first.."
   fi
 fi
 
@@ -66,12 +69,11 @@ latest_cuda_version="${cuda_versions[0]}"  # EESSI starts with CUDA 11, no need 
 if [ "${install_cuda}" != false ]; then
   for cuda_version in "${cuda_versions[@]}"
   do
-    bash $(dirname "$BASH_SOURCE")/cuda_utils/install_cuda.sh ${install_cuda_version}
+    "$TOPDIR"/cuda_utils/install_cuda_host_injections.sh "${latest_cuda_version}"
   done
 fi
 ###############################################################################################
 # Prepare installation of CUDA compat libraries, i.e. install p7zip if it is missing
 ###############################################################################################
 # Try installing different versions of CUDA compat libraries until the test works.
-# Otherwise, give up
-bash $(dirname "$BASH_SOURCE")/cuda_utils/install_cuda_compatlibs_loop.sh "${latest_cuda_version}"
+"$TOPDIR"/cuda_utils/install_cuda_compatlibs_loop.sh "${latest_cuda_version}"
