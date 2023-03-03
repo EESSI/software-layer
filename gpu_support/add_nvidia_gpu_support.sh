@@ -6,14 +6,17 @@
 TOPDIR=$(dirname $(realpath $0))
 
 source $TOPDIR/../scripts/utils.sh
-# Expectation is we are in a Prefix shell (as we need certain commands), let's check
-check_in_prefix_shell
 
 install_cuda="${INSTALL_CUDA:=false}"
 eessi_version="${EESSI_PILOT_VERSION:=latest}"
 if [ ! "$eessi_version" = "latest" ]; then
   eessi_version="versions/$eessi_version"
 fi
+
+# Initialise EESSI environment
+EESSI_SILENT=1 source /cvmfs/pilot.eessi-hpc.org/"${eessi_version}"/init/bash
+# Expectation is we are in a Prefix shell (as we need certain commands), let's check
+check_in_prefix_shell
 
 # If you want to install CUDA support on login nodes (typically without GPUs),
 # set this variable to true. This will skip all GPU-dependent checks
@@ -42,8 +45,6 @@ else
   echo_yellow "You requested to install CUDA without GPUs present."
   echo_yellow "This means that all GPU-dependent tests/checks will be skipped!"
 fi
-
-EESSI_SILENT=1 source /cvmfs/pilot.eessi-hpc.org/"${eessi_version}"/init/bash
 
 ##############################################################################################
 # Check that the CUDA driver version is adequate
