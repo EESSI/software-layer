@@ -431,6 +431,8 @@ check_exit_code $? "${ok_msg}" "${fail_msg}"
 
 # CUDA support
 
+cuda_version="11.3.1"
+
 # Need recent version of EasyBuild
 echo ">> Installing EasyBuild 4.7.0..."
 ok_msg="EasyBuild v4.7.0 installed"
@@ -460,7 +462,7 @@ check_exit_code $? "${ok_msg}" "${fail_msg}"
 # Add the host_injections CUDA so we can actually build CUDA apps
 # (which unbreaks the symlinks from the runtime installation)
 echo ">> Installing $cuda_ec under host_injections..."
-$(dirname "$BASH_SOURCE")/install_cuda_host_injections.sh 11.3.1
+$(dirname "$BASH_SOURCE")/gpu_support/cuda_utils/install_cuda_host_injections.sh 11.3.1
 ok_msg="$cuda_ec (re)installed under host_injections!"
 fail_msg="Failed to install $cuda_ec under host_injections, woopsie..."
 check_exit_code $? "${ok_msg}" "${fail_msg}"
