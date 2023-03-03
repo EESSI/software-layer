@@ -1,18 +1,18 @@
 #!/bin/bash
 
 # Initialise our bash functions
-source scripts/utils.sh
+TOPDIR=$(dirname $(realpath $0))
+source "$TOPDIR"/../../scripts/utils.sh
 
 if [[ $# -eq 0 ]] ; then
     fatal_error "You must provide the CUDA version as an argument, e.g.:\n $0 11.3.1"
 fi
 cuda_version=$1
-if [[ -z "${EESSI_SOFTWARE_PATH}" ]]; then
-  fatal_error "This script cannot be used without having first defined EESSI_SOFTWARE_PATH"
-else
-  # We can figure out the (EasyBuild MNS) CUDA samples version we need since we know the version suffix
-  cuda_samples_version=$(basename "$(ls -d "${EESSI_SOFTWARE_PATH}"/software/CUDA-Samples/*-CUDA-"${cuda_version}")")
-fi
+
+check_eessi_initialised
+
+# We can figure out the (EasyBuild MNS) CUDA samples version we need since we know the version suffix
+cuda_samples_version=$(basename "$(ls -d "${EESSI_SOFTWARE_PATH}"/software/CUDA-Samples/*-CUDA-"${cuda_version}")")
 
 # Test CUDA (making sure to use EasyBuild MNS)
 unset MODULEPATH

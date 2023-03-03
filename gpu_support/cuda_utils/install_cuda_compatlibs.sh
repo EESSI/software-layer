@@ -1,30 +1,42 @@
 #!/bin/bash
 
-libs_url=$1
-cuda_install_dir=$2
+# Initialise our bash functions
+TOPDIR=$(dirname $(realpath $0))
+source "$TOPDIR"/../../scripts/utils.sh
 
-current_dir=$(dirname $(realpath $0))
+# Expect to be in a prefix shell so we know all our required commands exist
+check_in_prefix_shell
+
+# Make sure the EESSI environment has been initialised
+check_eessi_initialised
+
+libs_url=$1
+required_cuda_version=$2
+
+current_dir=$PWD
 host_injections_dir="/cvmfs/pilot.eessi-hpc.org/host_injections/nvidia"
 host_injection_linker_dir=${EESSI_EPREFIX/versions/host_injections}
 
-# Create a general space for our NVIDIA compat drivers
-if [ -w /cvmfs/pilot.eessi-hpc.org/host_injections ]; then
-  mkdir -p ${host_injections_dir}
-else
-  echo "Cannot write to eessi host_injections space, exiting now..." >&2
-  exit 1
-fi
-cd ${host_injections_dir}
-
 # Check if our target CUDA is satisfied by what is installed already
-# TODO: Find required CUDA version and see if we need an update
-driver_cuda_version=$(nvidia-smi  -q --display=COMPUTE | grep CUDA | awk 'NF>1{print $NF}' | sed s/\\.//)
-eessi_cuda_version=$(LD_LIBRARY_PATH=${host_injections_dir}/latest/compat/:$LD_LIBRARY_PATH nvidia-smi  -q --display=COMPUTE | grep CUDA | awk 'NF>1{print $NF}' | sed s/\\.//)
-if [[ $driver_cuda_version =~ ^[0-9]+$ ]]; then
-  if [ "$driver_cuda_version" -gt "$eessi_cuda_version" ]; then  echo "You need to update your CUDA compatability libraries"; fi
+# (driver CUDA is reported as major.minor, i.e., like a float)
+driver_cuda_version=$(nvidia-smi  -q --display=COMPUTE | grep CUDA | awk 'NF>1{print $NF}')
+eessi_cuda_version=$(LD_LIBRARY_PATH=${host_injections_dir}/latest/compat/:$LD_LIBRARY_PATH nvidia-smi  -q --display=COMPUTE | grep CUDA | awk 'NF>1{print $NF}')
+cuda_major_minor=${required_cuda_version%.*}
+
+if [[ ${driver_cuda_version%.*} =~ ^[0-9]+$ ]]; then
+  if float_greater_than $driver_cuda_version $eessi_cuda_version ; then
+    echo_yellow "You need to update your CUDA compatibility libraries!"
+  elif [[ ${eessi_cuda_version%.*} =~ ^[0-9]+$ ]]; then
+    if float_greater_than $eessi_cuda_version $cuda_major_minor ; then
+      echo_green "Existing CUDA compatibility libraries in EESSI should be ok!"
+      exit 0
+    fi
+  else
+    echo_yellow "Installing CUDA compatibility libraries"
+  fi
 fi
 
-# If not, grab the latest compat library RPM or deb
+# Grab the latest compat library RPM or deb
 # Download and unpack in temporary directory, easier cleanup after installation
 tmpdir=$(mktemp -d)
 cd $tmpdir
@@ -37,10 +49,6 @@ echo $compat_file
 # Keep support for deb files in case it is needed in the future
 file_extension=${compat_file##*.}
 if [[ ${file_extension} == "rpm" ]]; then
-  # p7zip is installed under host_injections for now, make that known to the environment
-  if [ -d ${cuda_install_dir}/modules/all ]; then
-    module use ${cuda_install_dir}/modules/all/
-  fi
   # Load p7zip to extract files from rpm file
   module load p7zip
   # Extract .cpio
@@ -58,9 +66,16 @@ else
   echo "File extension of cuda compat lib not supported, exiting now..." >&2
   exit 1
 fi
+
+# Create a general space for our NVIDIA compat drivers
+if ! create_directory_structure $host_injections_dir ; then
+  fatal_error "Cannot create/write to $host_injections_dir space, exiting now..."
+fi
 cd $host_injections_dir
+# install the compat libs
 cuda_dir=$(basename ${tmpdir}/usr/local/cuda-*)
-# TODO: This would prevent error messages if folder already exists, but could be problematic if only some files are missing in destination dir
+# TODO: This would prevent error messages if folder already exists, but
+#       could be problematic if only some files are missing in destination dir
 rm -rf ${cuda_dir}
 mv -n ${tmpdir}/usr/local/cuda-* .
 rm -r ${tmpdir}
@@ -69,19 +84,20 @@ rm -r ${tmpdir}
 ln -sfn ${cuda_dir} latest
 
 if [ ! -e latest ] ; then
-  echo "Symlink to latest cuda compat lib version is broken, exiting now..."
-  exit 1
+  fatal_error "Symlink to latest cuda compat lib version is broken, exiting now..."
 fi
 
-# Create the space to host the libraries
-mkdir -p ${host_injection_linker_dir}
 # Symlink in the path to the latest libraries
 if [ ! -d "${host_injection_linker_dir}/lib" ]; then
+  # Create the space to host the libraries for the linker
+  if ! create_directory_structure ${host_injection_linker_dir} ; then
+    fatal_error "Cannot create/write to ${host_injection_linker_dir} space, exiting now..."
+  fi
   ln -s ${host_injections_dir}/latest/compat ${host_injection_linker_dir}/lib
 elif [ ! "${host_injection_linker_dir}/lib" -ef "${host_injections_dir}/latest/compat" ]; then
-  echo "CUDA compat libs symlink exists but points to the wrong location, please fix this..."
-  echo "${host_injection_linker_dir}/lib should point to ${host_injections_dir}/latest/compat"
-  exit 1
+  error_msg="CUDA compat libs symlink exists but points to the wrong location, please fix this...\n"
+  error_msg="${error_msg}${host_injection_linker_dir}/lib should point to ${host_injections_dir}/latest/compat"
+  fatal_error $error_msg
 fi
 
 # return to initial dir

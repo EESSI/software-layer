@@ -32,6 +32,50 @@ function check_exit_code {
     fi
 }
 
+function check_eessi_initialised() {
+  if [[ -z "${EESSI_SOFTWARE_PATH}" ]]; then
+    fatal_error "EESSI has not been initialised!"
+  else
+    return 0
+  fi
+}
+
+function float_greater_than() {
+  # Make sure we have two arguments
+  if [ $# -ne 2 ]; then
+    echo_red "greater_than_float requires two (float) numbers" >&2
+    return $ANY_ERROR_EXITCODE
+  fi
+  # Make sure the arguments are numbers
+  if [[ ! $1 =~ ^[+-]?[0-9]+\.?[0-9]*$ ]]; then
+    echo_red "Input is not a float."
+    return $ANY_ERROR_EXITCODE
+  fi
+  if [[ ! $2 =~ ^[+-]?[0-9]+\.?[0-9]*$ ]]; then
+    echo_red "Input is not a float."
+    return $ANY_ERROR_EXITCODE
+  fi
+  # Now do the actual evaluation
+  return_code=$ANY_ERROR_EXITCODE
+  result=$(echo $1 $2 | awk '{if ($1 > $2) print "true"}')
+  if [ "$result" = true ] ; then
+    return_code=0
+  fi
+  return $return_code
+}
+
+function check_in_prefix_shell() {
+  # Make sure EPREFIX is defined
+  if [[ -z "${EPREFIX}" ]]; then
+    fatal_error "This script cannot be used without having first defined EPREFIX"
+  fi
+  if [[ ${SHELL} = ${EPREFIX}/bin/bash ]]; then
+    echo_green ">> It looks like we're in a Gentoo Prefix environment, good!"
+  else
+    fatal_error "Not running in Gentoo Prefix environment, run '${EPREFIX}/startprefix' first!"
+  fi
+}
+
 function create_directory_structure() {
   # Ensure we are given a single path argument
   if [ $# -ne 1 ]; then

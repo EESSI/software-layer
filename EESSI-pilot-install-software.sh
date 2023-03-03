@@ -72,11 +72,7 @@ else
 fi
 
 # make sure we're in Prefix environment by checking $SHELL
-if [[ ${SHELL} = ${EPREFIX}/bin/bash ]]; then
-    echo_green ">> It looks like we're in a Gentoo Prefix environment, good!"
-else
-    fatal_error "Not running in Gentoo Prefix environment, run '${EPREFIX}/startprefix' first!"
-fi
+check_in_prefix_shell
 
 # avoid that pyc files for EasyBuild are stored in EasyBuild installation directory
 export PYTHONPYCACHEPREFIX=$TMPDIR/pycache
