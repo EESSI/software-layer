@@ -51,7 +51,7 @@ function create_directory_structure() {
     # If we're creating it, our use case is that we want to be able to write there
     # (this is a check in case the directory already existed)
     if [ ! -w "${dir_structure}" ]; then
-      real_dir=$(realpath -s "$dir_structure")
+      real_dir=$(realpath -m "$dir_structure")
       echo_red "You do not have (required) write permissions to ${dir_structure} (real path ${real_dir})!"
       return_code=$ANY_ERROR_EXITCODE
     fi
