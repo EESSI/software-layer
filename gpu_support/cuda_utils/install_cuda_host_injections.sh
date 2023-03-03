@@ -68,11 +68,10 @@ else
     module load EasyBuild
   fi
 
-  # we need the --rebuild option and a (random) dir for the module if the module
-  # file is shipped with EESSI
-  if [ -f "${EESSI_SOFTWARE_PATH}"/modules/all/CUDA/"${install_cuda_version}".lua ]; then
-    extra_args="--rebuild --installpath-modules=${tmpdir}"
-  fi
+  # we need the --rebuild option and a (random) dir for the module since we are
+  # fixing the broken links of the EESSI-shipped installation
+  extra_args="--rebuild --installpath-modules=${tmpdir}"
+
   # We don't want hooks used in this install, we need a vanilla CUDA installation
   touch "$tmpdir"/none.py
   # shellcheck disable=SC2086  # Intended splitting of extra_args
