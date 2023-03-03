@@ -1,11 +1,11 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 # Drop into the prefix shell or pipe this script into a Prefix shell with
 #   $EPREFIX/startprefix <<< /path/to/this_script.sh
 
 TOPDIR=$(dirname $(realpath $0))
 
-source $TOPDIR/scripts/utils.sh
+source $TOPDIR/../scripts/utils.sh
 
 install_cuda="${INSTALL_CUDA:=false}"
 eessi_version="${EESSI_PILOT_VERSION:=latest}"
