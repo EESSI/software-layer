@@ -45,7 +45,7 @@ function create_directory_structure() {
   return_code=$?
   # If it fails be explicit about the error
   if [ ${return_code} -ne 0 ]; then
-    real_dir=$(realpath -s "$dir_structure")
+    real_dir=$(realpath -m "$dir_structure")
     echo_red "Creating ${dir_structure} (real path ${real_dir}) failed with:\n ${error_message}" >&2
   else
     # If we're creating it, our use case is that we want to be able to write there
