@@ -34,8 +34,8 @@ if [[ "${install_wo_gpu}" != "true" ]]; then
     fatal_error "$error"
   fi
 else
-  echo_green "You requested to install CUDA without GPUs present."
-  echo_green "This means that all GPU-dependent tests/checks will be skipped!"
+  echo_yellow "You requested to install CUDA without GPUs present."
+  echo_yellow "This means that all GPU-dependent tests/checks will be skipped!"
 fi
 
 EESSI_SILENT=1 source /cvmfs/pilot.eessi-hpc.org/"${eessi_version}"/init/bash
