@@ -53,7 +53,7 @@ function create_directory_structure() {
     if [ ! -w "${dir_structure}" ]; then
       real_dir=$(readlink -m "$dir_structure")
       echo_red "You do not have (required) write permissions to ${dir_structure} (real path ${real_dir})!"
-      return $ANY_ERROR_EXITCODE
+      return_code=$ANY_ERROR_EXITCODE
     fi
   fi
 
