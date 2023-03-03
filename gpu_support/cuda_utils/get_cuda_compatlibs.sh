@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 # Get arch type from EESSI environment
 if [[ -z "${EESSI_CPU_FAMILY}" ]]; then

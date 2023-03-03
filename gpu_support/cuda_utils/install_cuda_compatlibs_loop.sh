@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 # Initialise our bash functions
 TOPDIR=$(dirname $(realpath $0))
@@ -59,11 +59,11 @@ do
     fi
 
     if [ "${install_compat_libs}" == true ]; then
-      bash $TOPDIR/install_cuda_compatlibs.sh ${latest_cuda_compat_url} ${install_cuda_version}
+      $TOPDIR/install_cuda_compatlibs.sh ${latest_cuda_compat_url} ${install_cuda_version}
     fi
 
     if [[ "${install_wo_gpu}" != "true" ]]; then
-      bash $TOPDIR/test_cuda.sh "${install_cuda_version}"
+      $TOPDIR/test_cuda.sh "${install_cuda_version}"
       if [ $? -eq 0 ]
       then
         cuda_version_file="${host_injections_dir}/latest/version.txt"

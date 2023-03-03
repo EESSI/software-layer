@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 # Initialise our bash functions
 TOPDIR=$(dirname $(realpath $0))
