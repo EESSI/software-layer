@@ -7,7 +7,7 @@ TOPDIR=$(dirname $(realpath $0))
 
 source $TOPDIR/../scripts/utils.sh
 # Expectation is we are in a Prefix shell (as we need certain commands), let's check
-
+check_in_prefix_shell
 
 install_cuda="${INSTALL_CUDA:=false}"
 eessi_version="${EESSI_PILOT_VERSION:=latest}"
