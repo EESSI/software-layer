@@ -1,4 +1,14 @@
 software:
+  CUDA:
+    toolchains:
+      SYSTEM:
+        versions: '11.3.1'
+  CUDA-Samples:
+    toolchains:
+      GCC-10.3.0:
+        versions:
+          '11.3':
+            versionsuffix: -CUDA-11.3.1  
   code-server:
     toolchains:
       SYSTEM:
@@ -30,7 +40,11 @@ software:
        gompi-2020a:
          versions: ['5.6.3']
        gompi-2021a:
-         versions: ['5.7.1']
+         versions: [ '5.7.1' ]
+  p7zip:
+    toolchains:
+      GCCcore-10.3.0:
+        versions: ['17.04']
   QuantumESPRESSO:
      toolchains:
        foss-2020a:

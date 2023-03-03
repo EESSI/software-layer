@@ -429,6 +429,52 @@ fi
 $EB SciPy-bundle-2021.05-foss-2021a.eb --robot
 check_exit_code $? "${ok_msg}" "${fail_msg}"
 
+# CUDA support
+
+cuda_version="11.3.1"
+
+# Need recent version of EasyBuild
+echo ">> Installing EasyBuild 4.7.0..."
+ok_msg="EasyBuild v4.7.0 installed"
+fail_msg="EasyBuild v4.7.0 failed to install"
+$EB --from-pr 17065 --include-easyblocks-from-pr 2893 --try-amend=use_pip=1
+check_exit_code $? "${ok_msg}" "${fail_msg}"
+
+LMOD_IGNORE_CACHE=1 module swap EasyBuild/4.7.0
+check_exit_code $? "Swapped to EasyBuild/4.7.0" "Couldn't swap to EasyBuild/4.7.0"
+
+# install p7zip (to be able to unpack RPMs)
+p7zip_ec="p7zip-17.04-GCCcore-10.3.0.eb"
+echo ">> Installing $p7zip_ec..."
+ok_msg="$p7zip_ec installed, off to a good (?) start!"
+fail_msg="Failed to install $p7zip_ec, woopsie..."
+$EB $p7zip_ec --robot
+check_exit_code $? "${ok_msg}" "${fail_msg}"
+
+# install CUDA (uses eb_hooks.py to only install runtime)
+cuda_ec="CUDA-${cuda_version}.eb"
+echo ">> Installing $cuda_ec..."
+ok_msg="$cuda_ec installed, off to a good (?) start!"
+fail_msg="Failed to install $cuda_ec, woopsie..."
+$EB $cuda_ec --robot
+check_exit_code $? "${ok_msg}" "${fail_msg}"
+
+# Add the host_injections CUDA so we can actually build CUDA apps
+# (which unbreaks the symlinks from the runtime installation)
+echo ">> Re-installing CUDA $cuda_version under host_injections (to un-break symlinks in EESSI installation)..."
+"${TOPDIR}"/gpu_support/cuda_utils/install_cuda_host_injections.sh ${cuda_version}
+ok_msg="CUDA $cuda_version (re)installed under host_injections!"
+fail_msg="Failed to install CUDA $cuda_version under host_injections, woopsie..."
+check_exit_code $? "${ok_msg}" "${fail_msg}"
+
+# install CUDA samples (requires EESSI support for CUDA)
+cuda_samples_ec="CUDA-Samples-11.3-GCC-10.3.0-CUDA-11.3.1.eb"
+echo ">> Installing $cuda_samples_ec..."
+ok_msg="$cuda_samples_ec installed, off to a good (?) start!"
+fail_msg="Failed to install $cuda_samples_ec, woopsie..."
+$EB $cuda_samples_ec --robot --from-pr=16914
+check_exit_code $? "${ok_msg}" "${fail_msg}"
+
 ### add packages here
 
 echo ">> Creating/updating Lmod cache..."
