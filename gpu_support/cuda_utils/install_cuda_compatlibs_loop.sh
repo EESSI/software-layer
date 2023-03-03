@@ -6,7 +6,7 @@ source "$TOPDIR"/../../scripts/utils.sh
 
 install_cuda_version=$1
 
-MAXLOOPS=10
+MAXLOOPS=12
 
 # Check if the CUDA compat libraries are installed and compatible with the target CUDA version
 # if not find the latest version of the compatibility libraries and install them

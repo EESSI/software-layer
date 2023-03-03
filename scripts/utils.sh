@@ -69,9 +69,7 @@ function check_in_prefix_shell() {
   if [[ -z "${EPREFIX}" ]]; then
     fatal_error "This script cannot be used without having first defined EPREFIX"
   fi
-  if [[ ${SHELL} = ${EPREFIX}/bin/bash ]]; then
-    echo_green ">> It looks like we're in a Gentoo Prefix environment, good!"
-  else
+  if [[ ! ${SHELL} = ${EPREFIX}/bin/bash ]]; then
     fatal_error "Not running in Gentoo Prefix environment, run '${EPREFIX}/startprefix' first!"
   fi
 }
