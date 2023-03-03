@@ -21,7 +21,7 @@ fi
 # loop over the compat library versions until we get one that works for us
 keep_driver_check=1
 # Do a maximum of MAXLOOPS attempts
-for value in {1..$MAXLOOPS}
+for i in $(seq 1 $MAXLOOPS)
 do
     latest_cuda_compat_url=$(echo "$cuda_compat_urls" | cut -d " " -f1)
     # Chomp that value out of the list
