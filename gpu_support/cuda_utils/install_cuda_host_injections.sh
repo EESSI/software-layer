@@ -42,11 +42,11 @@ else
   # Let's see if we have sources and build locations defined if not, we use the temporary space
   if [[ -z "${EASYBUILD_BUILDPATH}" ]]; then
     export EASYBUILD_BUILDPATH=${tmpdir}/build
-    required_space_in_tmpdir=$((required_space_in_tempdir + 5000000))
+    required_space_in_tmpdir=$((required_space_in_tmpdir + 5000000))
   fi
   if [[ -z "${EASYBUILD_SOURCEPATH}" ]]; then
     export EASYBUILD_SOURCEPATH=${tmpdir}/sources
-    required_space_in_tmpdir=$((required_space_in_tempdir + 5000000))
+    required_space_in_tmpdir=$((required_space_in_tmpdir + 5000000))
   fi
 
   # The install is pretty fat, you need lots of space for download/unpack/install (~3*5GB),
@@ -57,9 +57,10 @@ else
   fi
   avail_space=$(df --output=avail "${tmpdir}"/ | tail -n 1 | awk '{print $1}')
   if (( avail_space < required_space_in_tmpdir )); then
-    error1="Need at least ${required_space_in_tmpdir} disk space under ${tmpdir}.\n"
-    error2="You can set EASYBUILD_BUILDPATH and/or EASYBUILD_SOURCEPATH to reduce this requirement. Exiting now..."
-    fatal_error "${error1}${error2}"
+    error="Need at least ${required_space_in_tmpdir} disk space under ${tmpdir}.\n"
+    error="${error}You can set EASYBUILD_BUILDPATH and/or EASYBUILD_SOURCEPATH "
+    error="${error}to reduce this requirement. Exiting now..."
+    fatal_error "${error}"
   fi
 
   if [[ -z "${EBROOTEASYBUILD}" ]]; then
@@ -69,11 +70,12 @@ else
 
   # we need the --rebuild option and a (random) dir for the module if the module
   # file is shipped with EESSI
-  if [ -f ${EESSI_SOFTWARE_PATH}/modules/all/CUDA/${install_cuda_version}.lua ]; then
+  if [ -f "${EESSI_SOFTWARE_PATH}"/modules/all/CUDA/"${install_cuda_version}".lua ]; then
     extra_args="--rebuild --installpath-modules=${tmpdir}"
   fi
   # We don't want hooks used in this install, we need a vanilla CUDA installation
   touch "$tmpdir"/none.py
+  # shellcheck disable=SC2086  # Intended splitting of extra_args
   eb ${extra_args} --hooks="$tmpdir"/none.py --installpath="${cuda_install_parent}"/ CUDA-"${install_cuda_version}".eb
   ret=$?
   if [ $ret -ne 0 ]; then
