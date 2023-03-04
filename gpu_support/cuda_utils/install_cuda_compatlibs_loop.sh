@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 # Initialise our bash functions
-TOPDIR=$(dirname $(realpath $0))
+TOPDIR=$(dirname "$(realpath "$0")")
 source "$TOPDIR"/../../scripts/utils.sh
 
 install_cuda_version=$1
@@ -12,7 +12,7 @@ MAXLOOPS=12
 # if not find the latest version of the compatibility libraries and install them
 
 # get URL to latest CUDA compat libs, exit if URL is invalid
-cuda_compat_urls="$($TOPDIR/get_cuda_compatlibs.sh)"
+cuda_compat_urls="$("$TOPDIR"/get_cuda_compatlibs.sh)"
 ret=$?
 if [ $ret -ne 0 ]; then
   fatal_error "Couldn't find current URLs of the CUDA compat libraries, instead got:\n $cuda_compat_urls"
@@ -21,11 +21,12 @@ fi
 # loop over the compat library versions until we get one that works for us
 keep_driver_check=1
 # Do a maximum of MAXLOOPS attempts
+# shellcheck disable=SC2034
 for i in $(seq 1 $MAXLOOPS)
 do
     latest_cuda_compat_url=$(echo "$cuda_compat_urls" | cut -d " " -f1)
     # Chomp that value out of the list
-    cuda_compat_urls=$(echo $cuda_compat_urls | cut -d " " -f2-)
+    cuda_compat_urls=$(echo "$cuda_compat_urls" | cut -d " " -f2-)
     latest_driver_version="${latest_cuda_compat_url%-*}"
     latest_driver_version="${latest_driver_version##*-}"
     # URLs differ for different OSes; check if we already have a number, if not remove string part that is not needed
@@ -59,13 +60,12 @@ do
     fi
 
     if [ "${install_compat_libs}" == true ]; then
-      $TOPDIR/install_cuda_compatlibs.sh ${latest_cuda_compat_url} ${install_cuda_version}
+      "$TOPDIR"/install_cuda_compatlibs.sh "${latest_cuda_compat_url}" "${install_cuda_version}"
     fi
 
-    if [[ "${install_wo_gpu}" != "true" ]]; then
-      $TOPDIR/test_cuda.sh "${install_cuda_version}"
-      if [ $? -eq 0 ]
-      then
+    if [[ "${INSTALL_WO_GPU}" != "true" ]]; then
+
+      if "$TOPDIR"/test_cuda.sh "${install_cuda_version}" ; then
         cuda_version_file="${host_injections_dir}/latest/version.txt"
         echo "${install_cuda_version}" > ${cuda_version_file}
         exit 0

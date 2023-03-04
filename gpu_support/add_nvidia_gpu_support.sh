@@ -3,9 +3,9 @@
 # Drop into the prefix shell or pipe this script into a Prefix shell with
 #   $EPREFIX/startprefix <<< /path/to/this_script.sh
 
-TOPDIR=$(dirname $(realpath $0))
+TOPDIR=$(dirname "$(realpath "$0")")
 
-source $TOPDIR/../scripts/utils.sh
+source "$TOPDIR"/../scripts/utils.sh
 
 install_cuda="${INSTALL_CUDA:=false}"
 eessi_version="${EESSI_PILOT_VERSION:=latest}"
@@ -14,12 +14,13 @@ if [ ! "$eessi_version" = "latest" ]; then
 fi
 
 # Initialise EESSI environment
+# shellcheck disable=SC1090
 EESSI_SILENT=1 source /cvmfs/pilot.eessi-hpc.org/"${eessi_version}"/init/bash
 # Expectation is we are in a Prefix shell (as we need certain commands), let's check
 check_in_prefix_shell
 
 # If you want to install CUDA support on login nodes (typically without GPUs),
-# set this variable to true. This will skip all GPU-dependent checks
+# set environment variable to true. This will skip all GPU-dependent checks
 install_wo_gpu=false
 [ "$INSTALL_WO_GPU" = true ] && install_wo_gpu=true
 
@@ -28,6 +29,7 @@ install_wo_gpu=false
 if [[ "${install_wo_gpu}" != "true" ]]; then
   if command -v nvidia-smi > /dev/null 2>&1; then
     nvidia-smi > /dev/null 2>&1
+    # shellcheck disable=SC2181
     if [ $? -ne 0 ]; then
       error="nvidia-smi was found but returned error code, exiting now...\n"
       error="${error}If you do not have a GPU on this device but wish to force the installation,\n"
@@ -75,7 +77,7 @@ latest_cuda_version="${cuda_versions[0]}"  # EESSI starts with CUDA 11, no need 
 if [ "${install_cuda}" != false ]; then
   for cuda_version in "${cuda_versions[@]}"
   do
-    "$TOPDIR"/cuda_utils/install_cuda_host_injections.sh "${latest_cuda_version}"
+    "$TOPDIR"/cuda_utils/install_cuda_host_injections.sh "${cuda_version}"
   done
 fi
 ###############################################################################################

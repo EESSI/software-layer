@@ -57,7 +57,7 @@ function float_greater_than() {
   fi
   # Now do the actual evaluation
   return_code=$ANY_ERROR_EXITCODE
-  result=$(echo $1 $2 | awk '{if ($1 > $2) print "true"}')
+  result=$(echo "$1" "$2" | awk '{if ($1 > $2) print "true"}')
   if [ "$result" = true ] ; then
     return_code=0
   fi

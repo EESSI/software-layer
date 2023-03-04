@@ -35,7 +35,7 @@ while [[ $# -gt 0 ]]; do
       export https_proxy="$2"
       shift 2
       ;;
-    -*|--*)
+    -*)
       echo "Error: Unknown option: $1" >&2
       exit 1
       ;;
@@ -48,12 +48,12 @@ done
 
 set -- "${POSITIONAL_ARGS[@]}"
 
-TOPDIR=$(dirname $(realpath $0))
+TOPDIR=$(dirname "$(realpath "$0")")
 
-source $TOPDIR/scripts/utils.sh
+source "$TOPDIR"/scripts/utils.sh
 
 # honor $TMPDIR if it is already defined, use /tmp otherwise
-if [ -z $TMPDIR ]; then
+if [ -z "$TMPDIR" ]; then
     export WORKDIR=/tmp/$USER
 else
     export WORKDIR=$TMPDIR/$USER
@@ -63,9 +63,9 @@ TMPDIR=$(mktemp -d)
 
 echo ">> Setting up environment..."
 
-source $TOPDIR/init/minimal_eessi_env
+source "$TOPDIR"/init/minimal_eessi_env
 
-if [ -d $EESSI_CVMFS_REPO ]; then
+if [ -d "$EESSI_CVMFS_REPO" ]; then
     echo_green "$EESSI_CVMFS_REPO available, OK!"
 else
     fatal_error "$EESSI_CVMFS_REPO is not available!"
@@ -88,8 +88,9 @@ if [[ "$EASYBUILD_OPTARCH" == "GENERIC" ]]; then
 fi
 
 echo ">> Determining software subdirectory to use for current build host..."
-if [ -z $EESSI_SOFTWARE_SUBDIR_OVERRIDE ]; then
-  export EESSI_SOFTWARE_SUBDIR_OVERRIDE=$(python3 $TOPDIR/eessi_software_subdir.py $DETECTION_PARAMETERS)
+if [ -z "$EESSI_SOFTWARE_SUBDIR_OVERRIDE" ]; then
+  EESSI_SOFTWARE_SUBDIR_OVERRIDE=$(python3 "$TOPDIR"/eessi_software_subdir.py "$DETECTION_PARAMETERS")
+  export EESSI_SOFTWARE_SUBDIR_OVERRIDE
   echo ">> Determined \$EESSI_SOFTWARE_SUBDIR_OVERRIDE via 'eessi_software_subdir.py $DETECTION_PARAMETERS' script"
 else
   echo ">> Picking up pre-defined \$EESSI_SOFTWARE_SUBDIR_OVERRIDE: ${EESSI_SOFTWARE_SUBDIR_OVERRIDE}"
@@ -98,7 +99,7 @@ fi
 # Set all the EESSI environment variables (respecting $EESSI_SOFTWARE_SUBDIR_OVERRIDE)
 # $EESSI_SILENT - don't print any messages
 # $EESSI_BASIC_ENV - give a basic set of environment variables
-EESSI_SILENT=1 EESSI_BASIC_ENV=1 source $TOPDIR/init/eessi_environment_variables
+EESSI_SILENT=1 EESSI_BASIC_ENV=1 source "$TOPDIR"/init/eessi_environment_variables
 
 if [[ -z ${EESSI_SOFTWARE_SUBDIR} ]]; then
     fatal_error "Failed to determine software subdirectory?!"
@@ -109,9 +110,10 @@ else
 fi
 
 echo ">> Initializing Lmod..."
-source $EPREFIX/usr/share/Lmod/init/bash
+source "$EPREFIX"/usr/share/Lmod/init/bash
 ml_version_out=$TMPDIR/ml.out
-ml --version &> $ml_version_out
+ml --version &> "$ml_version_out"
+# shellcheck disable=SC2181
 if [[ $? -eq 0 ]]; then
     echo_green ">> Found Lmod ${LMOD_VERSION}"
 else
@@ -119,14 +121,14 @@ else
 fi
 
 echo ">> Configuring EasyBuild..."
-source $TOPDIR/configure_easybuild
+source "$TOPDIR"/configure_easybuild
 
 echo ">> Setting up \$MODULEPATH..."
 # make sure no modules are loaded
 module --force purge
 # ignore current $MODULEPATH entirely
-module unuse $MODULEPATH
-module use $EASYBUILD_INSTALLPATH/modules/all
+module unuse "$MODULEPATH"
+module use "$EASYBUILD_INSTALLPATH"/modules/all
 if [[ -z ${MODULEPATH} ]]; then
     fatal_error "Failed to set up \$MODULEPATH?!"
 else
@@ -137,7 +139,8 @@ REQ_EB_VERSION='4.5.0'
 
 echo ">> Checking for EasyBuild module..."
 ml_av_easybuild_out=$TMPDIR/ml_av_easybuild.out
-module avail 2>&1 | grep -i easybuild/${REQ_EB_VERSION} &> ${ml_av_easybuild_out}
+module avail 2>&1 | grep -i easybuild/${REQ_EB_VERSION} &> "${ml_av_easybuild_out}"
+# shellcheck disable=SC2181
 if [[ $? -eq 0 ]]; then
     echo_green ">> EasyBuild module found!"
 else
@@ -146,7 +149,7 @@ else
     EB_TMPDIR=${TMPDIR}/ebtmp
     echo ">> Temporary installation (in ${EB_TMPDIR})..."
     pip_install_out=${TMPDIR}/pip_install.out
-    pip3 install --prefix $EB_TMPDIR easybuild &> ${pip_install_out}
+    pip3 install --prefix "$EB_TMPDIR" easybuild &> "${pip_install_out}"
 
     # keep track of original $PATH and $PYTHONPATH values, so we can restore them
     ORIG_PATH=$PATH
@@ -154,11 +157,12 @@ else
 
     echo ">> Final installation in ${EASYBUILD_INSTALLPATH}..."
     export PATH=${EB_TMPDIR}/bin:$PATH
-    export PYTHONPATH=$(ls -d ${EB_TMPDIR}/lib/python*/site-packages):$PYTHONPATH
+    PYTHONPATH=$(ls -d "${EB_TMPDIR}"/lib/python*/site-packages):$PYTHONPATH
+    export PYTHONPATH
     eb_install_out=${TMPDIR}/eb_install.out
     ok_msg="Latest EasyBuild release installed, let's go!"
     fail_msg="Installing latest EasyBuild release failed, that's not good... (output: ${eb_install_out})"
-    eb --install-latest-eb-release &> ${eb_install_out}
+    eb --install-latest-eb-release &> "${eb_install_out}"
     check_exit_code $? "${ok_msg}" "${fail_msg}"
 
     # restore origin $PATH and $PYTHONPATH values
@@ -169,11 +173,11 @@ else
     if [[ $? -eq 0 ]]; then
         ok_msg="EasyBuild v${REQ_EB_VERSION} installed, alright!"
         fail_msg="Installing EasyBuild v${REQ_EB_VERSION}, yikes! (output: ${eb_install_out})"
-        eb EasyBuild-${REQ_EB_VERSION}.eb >> ${eb_install_out} 2>&1
+        eb EasyBuild-${REQ_EB_VERSION}.eb >> "${eb_install_out}" 2>&1
         check_exit_code $? "${ok_msg}" "${fail_msg}"
     fi
 
-    module avail easybuild/${REQ_EB_VERSION} &> ${ml_av_easybuild_out}
+    module avail easybuild/${REQ_EB_VERSION} &> "${ml_av_easybuild_out}"
     if [[ $? -eq 0 ]]; then
         echo_green ">> EasyBuild module installed!"
     else
@@ -184,7 +188,8 @@ fi
 echo ">> Loading EasyBuild module..."
 module load EasyBuild/$REQ_EB_VERSION
 eb_show_system_info_out=${TMPDIR}/eb_show_system_info.out
-$EB --show-system-info > ${eb_show_system_info_out}
+$EB --show-system-info > "${eb_show_system_info_out}"
+# shellcheck disable=SC2181
 if [[ $? -eq 0 ]]; then
     echo_green ">> EasyBuild seems to be working!"
     $EB --version | grep "${REQ_EB_VERSION}"
@@ -196,7 +201,7 @@ if [[ $? -eq 0 ]]; then
     fi
     $EB --show-config
 else
-    cat ${eb_show_system_info_out}
+    cat "${eb_show_system_info_out}"
     fatal_error "EasyBuild not working?!"
 fi
 
@@ -237,6 +242,7 @@ if [[ $GENERIC -eq 1 ]]; then
 else
     openblas_include_easyblocks_from_pr=''
 fi
+# shellcheck disable=SC2086
 $EB $openblas_include_easyblocks_from_pr OpenBLAS-0.3.9-GCC-9.3.0.eb --robot
 check_exit_code $? "${ok_msg}" "${fail_msg}"
 
@@ -410,6 +416,7 @@ $EB CMake-3.20.1-GCCcore-10.3.0.eb --robot --include-easyblocks-from-pr 2248
 $EB --from-pr 14584 Rust-1.52.1-GCCcore-10.3.0.eb --robot
 # use OpenBLAS easyconfig from https://github.com/easybuilders/easybuild-easyconfigs/pull/15885
 # which includes a patch to fix installation on POWER
+# shellcheck disable=SC2086
 $EB $openblas_include_easyblocks_from_pr --from-pr 15885 OpenBLAS-0.3.15-GCC-10.3.0.eb --robot
 # ignore failing FlexiBLAS tests when building on POWER;
 # some tests are failing due to a segmentation fault due to "invalid memory reference",
@@ -475,14 +482,14 @@ check_exit_code $? "${ok_msg}" "${fail_msg}"
 
 echo ">> Creating/updating Lmod cache..."
 export LMOD_RC="${EASYBUILD_INSTALLPATH}/.lmod/lmodrc.lua"
-if [ ! -f $LMOD_RC ]; then
-    python3 $TOPDIR/create_lmodrc.py ${EASYBUILD_INSTALLPATH}
+if [ ! -f "$LMOD_RC" ]; then
+    python3 "$TOPDIR"/create_lmodrc.py "${EASYBUILD_INSTALLPATH}"
     check_exit_code $? "$LMOD_RC created" "Failed to create $LMOD_RC"
 fi
 
-$TOPDIR/update_lmod_cache.sh ${EPREFIX} ${EASYBUILD_INSTALLPATH}
+"$TOPDIR"/update_lmod_cache.sh "${EPREFIX}" "${EASYBUILD_INSTALLPATH}"
 
-$TOPDIR/check_missing_installations.sh
+"$TOPDIR"/check_missing_installations.sh
 
 echo ">> Cleaning up ${TMPDIR}..."
-rm -r ${TMPDIR}
+rm -r "${TMPDIR}"

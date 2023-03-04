@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 # Initialise our bash functions
-TOPDIR=$(dirname $(realpath $0))
+TOPDIR=$(dirname "$(realpath "$0")")
 source "$TOPDIR"/../../scripts/utils.sh
 
 if [[ $# -eq 0 ]] ; then
