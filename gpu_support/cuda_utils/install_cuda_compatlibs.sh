@@ -43,7 +43,7 @@ fi
 # Grab the latest compat library RPM or deb
 # Download and unpack in temporary directory, easier cleanup after installation
 tmpdir=$(mktemp -d)
-cd "$tmpdir" ||fatal_error "Couldd not 'cd' to ${tmpdir}"
+cd "$tmpdir" ||fatal_error "Could not 'cd' to ${tmpdir}"
 compat_file=${libs_url##*/}
 curl -O "${libs_url}"
 echo "$compat_file"

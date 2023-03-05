@@ -24,9 +24,11 @@ keep_driver_check=1
 # shellcheck disable=SC2034
 for i in $(seq 1 $MAXLOOPS)
 do
-    latest_cuda_compat_url=$(echo "$cuda_compat_urls" | cut -d " " -f1)
+    # shellcheck disable=SC2086
+    latest_cuda_compat_url=$(echo $cuda_compat_urls | cut -d " " -f1)
     # Chomp that value out of the list
-    cuda_compat_urls=$(echo "$cuda_compat_urls" | cut -d " " -f2-)
+    # shellcheck disable=SC2086
+    cuda_compat_urls=$(echo $cuda_compat_urls | cut -d " " -f2-)
     latest_driver_version="${latest_cuda_compat_url%-*}"
     latest_driver_version="${latest_driver_version##*-}"
     # URLs differ for different OSes; check if we already have a number, if not remove string part that is not needed
