@@ -89,7 +89,8 @@ fi
 
 echo ">> Determining software subdirectory to use for current build host..."
 if [ -z "$EESSI_SOFTWARE_SUBDIR_OVERRIDE" ]; then
-  EESSI_SOFTWARE_SUBDIR_OVERRIDE=$(python3 "$TOPDIR"/eessi_software_subdir.py "$DETECTION_PARAMETERS")
+  # shellcheck disable=SC2086
+  EESSI_SOFTWARE_SUBDIR_OVERRIDE=$(python3 "$TOPDIR"/eessi_software_subdir.py $DETECTION_PARAMETERS)
   export EESSI_SOFTWARE_SUBDIR_OVERRIDE
   echo ">> Determined \$EESSI_SOFTWARE_SUBDIR_OVERRIDE via 'eessi_software_subdir.py $DETECTION_PARAMETERS' script"
 else
