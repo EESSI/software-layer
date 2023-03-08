@@ -40,4 +40,13 @@ jobs:
               export EESSI_OS_TYPE=linux
               export EESSI_SOFTWARE_SUBDIR=${{matrix.EESSI_SOFTWARE_SUBDIR}}
               env | grep ^EESSI | sort
+              echo "just run check_missing_installations.sh (should use eessi-${{matrix.EESSI_VERSION}}.yml)"
               ./check_missing_installations.sh
+              echo "modify eessi-${{matrix.EESSI_VERSION}}.yml by adding a missing package"
+              echo "  GCC:" >> eessi-${{matrix.EESSI_VERSION}}.yml
+              echo "    toolchains:" >> eessi-${{matrix.EESSI_VERSION}}.yml
+              echo "      SYSTEM:" >> eessi-${{matrix.EESSI_VERSION}}.yml
+              echo "        versions: '8.3.0'" >> eessi-${{matrix.EESSI_VERSION}}.yml
+              tail -n 8 eessi-${{matrix.EESSI_VERSION}}.yml
+              ./check_missing_installations.sh
+              [[ $? -eq 0 ]] && exit 1 || exit 0
