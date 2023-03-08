@@ -38,7 +38,7 @@ jobs:
               eb --version
               export EESSI_PREFIX=/cvmfs/pilot.eessi-hpc.org/versions/${{matrix.EESSI_VERSION}}
               export EESSI_OS_TYPE=linux
-              export EESSI_SOFTWARE_SUBDIR_OVERRIDE=${{matrix.EESSI_SOFTWARE_SUBDIR}}
+              export EESSI_SOFTWARE_SUBDIR=${{matrix.EESSI_SOFTWARE_SUBDIR}}
               env | grep ^EESSI | sort
               echo "just run check_missing_installations.sh (should use eessi-${{matrix.EESSI_VERSION}}.yml)"
               ./check_missing_installations.sh
@@ -50,7 +50,7 @@ jobs:
               eb --version
               export EESSI_PREFIX=/cvmfs/pilot.eessi-hpc.org/versions/${{matrix.EESSI_VERSION}}
               export EESSI_OS_TYPE=linux
-              export EESSI_SOFTWARE_SUBDIR_OVERRIDE=${{matrix.EESSI_SOFTWARE_SUBDIR}}
+              export EESSI_SOFTWARE_SUBDIR=${{matrix.EESSI_SOFTWARE_SUBDIR}}
               env | grep ^EESSI | sort
               echo "modify eessi-${{matrix.EESSI_VERSION}}.yml by adding a missing package"
               echo "  GCC:" >> eessi-${{matrix.EESSI_VERSION}}.yml
