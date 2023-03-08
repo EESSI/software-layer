@@ -67,7 +67,7 @@ export EESSI_REPOS_CFG_FILE="${EESSI_REPOS_CFG_DIR}/repos.cfg"
 #    https://stackoverflow.com/questions/192249/how-do-i-parse-command-line-arguments-in-bash
 
 display_help() {
-  echo "usage: $0 [OPTIONS] [SCRIPT]"
+  echo "usage: $0 [OPTIONS] [[--] SCRIPT or COMMAND]"
   echo " OPTIONS:"
   echo "  -a | --access {ro,rw}  - ro (read-only), rw (read & write) [default: ro]"
   echo "  -c | --container IMG   - image file or URL defining the container to use"
@@ -77,7 +77,7 @@ display_help() {
   echo "                           temporary data) [default: 1. TMPDIR, 2. /tmp]"
   echo "  -l | --list-repos      - list available repository identifiers [default: false]"
   echo "  -m | --mode MODE       - with MODE==shell (launch interactive shell) or"
-  echo "                           MODE==run (run a script) [default: shell]"
+  echo "                           MODE==run (run a script or command) [default: shell]"
   echo "  -r | --repository CFG  - configuration file or identifier defining the"
   echo "                           repository to use [default: EESSI-pilot via"
   echo "                           default container, see --container]"
@@ -98,7 +98,9 @@ display_help() {
   echo "  -y | --https-proxy URL - provides URL for the env variable https_proxy"
   echo "                           [default: not set]; uses env var \$https_proxy if set"
   echo
-  echo " If value for --mode is 'run', the SCRIPT provided is executed."
+  echo " If value for --mode is 'run', the SCRIPT/COMMAND provided is executed. If"
+  echo " arguments to the script/command start with '-' or '--', use the flag terminator"
+  echo " '--' to let eessi_container.sh stop parsing arguments."
 }
 
 # set defaults for command line arguments
