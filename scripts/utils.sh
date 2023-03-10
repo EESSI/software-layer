@@ -28,7 +28,7 @@ function check_exit_code {
     if [[ $ec -eq 0 ]]; then
         echo_green "${ok_msg}"
     else
-        echo_red "${fail_msg}"
+        fatal_error "${fail_msg}"
     fi
 }
 
