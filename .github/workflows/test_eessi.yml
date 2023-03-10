@@ -59,9 +59,9 @@ jobs:
               echo "        versions: '8.3.0'" >> eessi-${{matrix.EESSI_VERSION}}.yml
               tail -n 4 eessi-${{matrix.EESSI_VERSION}}.yml
               if ./check_missing_installations.sh; then
-                echo "captured missing package; test PASSED"
-                exit 0
-              else
                 echo "did NOT capture missing package; test FAILED"
                 exit 1
+              else
+                echo "captured missing package; test PASSED"
+                exit 0
               fi
