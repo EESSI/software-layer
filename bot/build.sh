@@ -27,6 +27,7 @@ source scripts/cfg_files.sh
 
 # defaults
 export JOB_CFG_FILE="${JOB_CFG_FILE_OVERRIDE:=./cfg/job.cfg}"
+HOST_ARCH=$(uname -m)
 
 # check if ${JOB_CFG_FILE} exists
 if [[ ! -r "${JOB_CFG_FILE}" ]]; then
@@ -55,6 +56,8 @@ echo "bot/build.sh: LOCAL_TMP='${LOCAL_TMP}'"
 SINGULARITY_CACHEDIR=$(cfg_get_value "site_config" "container_cachedir")
 echo "bot/build.sh: SINGULARITY_CACHEDIR='${SINGULARITY_CACHEDIR}'"
 if [[ ! -z ${SINGULARITY_CACHEDIR} ]]; then
+    # make sure that separate directories are used for different CPU families
+    SINGULARITY_CACHEDIR=${SINGULARITY_CACHEDIR}/${HOST_ARCH}
     export SINGULARITY_CACHEDIR
 fi
 
