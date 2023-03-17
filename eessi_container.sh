@@ -67,7 +67,7 @@ export EESSI_REPOS_CFG_FILE="${EESSI_REPOS_CFG_DIR}/repos.cfg"
 #    https://stackoverflow.com/questions/192249/how-do-i-parse-command-line-arguments-in-bash
 
 display_help() {
-  echo "usage: $0 [OPTIONS] [SCRIPT]"
+  echo "usage: $0 [OPTIONS] [[--] SCRIPT or COMMAND]"
   echo " OPTIONS:"
   echo "  -a | --access {ro,rw}  - ro (read-only), rw (read & write) [default: ro]"
   echo "  -c | --container IMG   - image file or URL defining the container to use"
@@ -77,10 +77,10 @@ display_help() {
   echo "                           temporary data) [default: 1. TMPDIR, 2. /tmp]"
   echo "  -l | --list-repos      - list available repository identifiers [default: false]"
   echo "  -m | --mode MODE       - with MODE==shell (launch interactive shell) or"
-  echo "                           MODE==run (run a script) [default: shell]"
+  echo "                           MODE==run (run a script or command) [default: shell]"
   echo "  -r | --repository CFG  - configuration file or identifier defining the"
   echo "                           repository to use [default: EESSI-pilot via"
-  echo "                          container configuration]"
+  echo "                           default container, see --container]"
   echo "  -u | --resume DIR/TGZ  - resume a previous run from a directory or tarball,"
   echo "                           where DIR points to a previously used tmp directory"
   echo "                           (check for output 'Using DIR as tmp ...' of a previous"
@@ -98,7 +98,9 @@ display_help() {
   echo "  -y | --https-proxy URL - provides URL for the env variable https_proxy"
   echo "                           [default: not set]; uses env var \$https_proxy if set"
   echo
-  echo " If value for --mode is 'run', the SCRIPT provided is executed."
+  echo " If value for --mode is 'run', the SCRIPT/COMMAND provided is executed. If"
+  echo " arguments to the script/command start with '-' or '--', use the flag terminator"
+  echo " '--' to let eessi_container.sh stop parsing arguments."
 }
 
 # set defaults for command line arguments
@@ -173,6 +175,11 @@ while [[ $# -gt 0 ]]; do
       export https_proxy=${HTTPS_PROXY}
       shift 2
       ;;
+    --)
+      shift
+      POSITIONAL_ARGS+=("$@") # save positional args
+      break
+      ;;
     -*|--*)
       fatal_error "Unknown option: $1" "${CMDLINE_ARG_UNKNOWN_EXITCODE}"
       ;;
@@ -184,7 +191,6 @@ while [[ $# -gt 0 ]]; do
 done
 
 set -- "${POSITIONAL_ARGS[@]}"
-
 
 if [[ ${LIST_REPOS} -eq 1 ]]; then
     echo "Listing available repositories with format 'name [source]':"
@@ -285,7 +291,7 @@ else
     [[ ${VERBOSE} -eq 1 ]] && echo "skipping sanity checks for /tmp"
   fi
   EESSI_HOST_STORAGE=$(mktemp -d --tmpdir eessi.XXXXXXXXXX)
-  echo "Using ${EESSI_HOST_STORAGE} as tmp storage (add '--resume ${EESSI_HOST_STORAGE}' to resume where this session ended)."
+  echo "Using ${EESSI_HOST_STORAGE} as tmp directory (to resume session add '--resume ${EESSI_HOST_STORAGE}')."
 fi
 
 # if ${RESUME} is a file (assume a tgz), unpack it into ${EESSI_HOST_STORAGE}
@@ -572,7 +578,7 @@ if [[ ! -z ${SAVE} ]]; then
     TGZ=${SAVE}
   fi
   tar cf ${TGZ} -C ${EESSI_TMPDIR} .
-  echo "Saved contents of '${EESSI_TMPDIR}' to '${TGZ}' (to resume, add '--resume ${TGZ}')"
+  echo "Saved contents of tmp directory '${EESSI_TMPDIR}' to tarball '${TGZ}' (to resume session add '--resume ${TGZ}')"
 fi
 
 # TODO clean up tmp by default? only retain if another option provided (--retain-tmp)
