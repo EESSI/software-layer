@@ -51,13 +51,12 @@ if [ -d ${pilot_version}/software/${os}/${cpu_arch_subdir}/modules ]; then
     # module symlinks
     find ${pilot_version}/software/${os}/${cpu_arch_subdir}/modules -type l | grep -v '/\.wh\.' >> ${files_list}
     # module files and symlinks
-    find ${pilot_version}/software/${os}/${cpu_arch_subdir}/modules -type f -o -type l \
+    find ${pilot_version}/software/${os}/${cpu_arch_subdir}/modules/all -type f -o -type l \
         | grep -v '/\.wh\.' | sed -e 's/.lua$//' | awk -F'/' '{printf "%s/%s\n", $(NF-1), $NF}' | sort | uniq \
         >> ${module_files_list}
 fi
 if [ -d ${pilot_version}/software/${os}/${cpu_arch_subdir}/software ]; then
-    # installation directories
-    # ls -d ${pilot_version}/software/${os}/${cpu_arch_subdir}/software/*/* | grep -v '/\.wh\.' >> ${files_list}
+    # installation directories but only those for which module files were created
     for package_version in $(cat ${module_files_list}); do
         echo "handling ${package_version}"
         ls -d ${pilot_version}/software/${os}/${cpu_arch_subdir}/software/${package_version} \
@@ -65,6 +64,7 @@ if [ -d ${pilot_version}/software/${os}/${cpu_arch_subdir}/software ]; then
     done
 fi
 
+# add a bit debug output
 echo "wrote file list to ${files_list}"
 cat ${files_list}
 echo "wrote module file list to ${module_files_list}"
