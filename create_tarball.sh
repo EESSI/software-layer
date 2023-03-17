@@ -55,7 +55,7 @@ if [ -d ${pilot_version}/software/${os}/${cpu_arch_subdir}/modules ]; then
         | grep -v '/\.wh\.' | sed -e 's/.lua$//' | awk -F'/' '{printf "%s/%s\n", $(NF-1), $NF}' | sort | uniq \
         >> ${module_files_list}
 fi
-if [ -d ${pilot_version}/software/${os}/${cpu_arch_subdir}/software ]; then
+if [ -d ${pilot_version}/software/${os}/${cpu_arch_subdir}/software -a -r ${module_files_list} ]; then
     # installation directories but only those for which module files were created
     for package_version in $(cat ${module_files_list}); do
         echo "handling ${package_version}"
@@ -66,9 +66,9 @@ fi
 
 # add a bit debug output
 echo "wrote file list to ${files_list}"
-cat ${files_list}
+[ -r ${files_list} ] && cat ${files_list}
 echo "wrote module file list to ${module_files_list}"
-cat ${module_files_list}
+[ -r ${module_files_list} ] && cat ${module_files_list}
 
 topdir=${cvmfs_repo}/versions/
 
