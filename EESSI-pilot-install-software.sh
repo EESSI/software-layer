@@ -165,10 +165,6 @@ else
     eb --install-latest-eb-release &> ${eb_install_out}
     check_exit_code $? "${ok_msg}" "${fail_msg}"
 
-    # restore origin $PATH and $PYTHONPATH values
-    export PATH=${ORIG_PATH}
-    export PYTHONPATH=${ORIG_PYTHONPATH}
-
     eb --search EasyBuild-${REQ_EB_VERSION}.eb | grep EasyBuild-${REQ_EB_VERSION}.eb > /dev/null
     if [[ $? -eq 0 ]]; then
         ok_msg="EasyBuild v${REQ_EB_VERSION} installed, alright!"
@@ -176,6 +172,10 @@ else
         eb EasyBuild-${REQ_EB_VERSION}.eb >> ${eb_install_out} 2>&1
         check_exit_code $? "${ok_msg}" "${fail_msg}"
     fi
+
+    # restore origin $PATH and $PYTHONPATH values
+    export PATH=${ORIG_PATH}
+    export PYTHONPATH=${ORIG_PYTHONPATH}
 
     module avail easybuild/${REQ_EB_VERSION} &> ${ml_av_easybuild_out}
     if [[ $? -eq 0 ]]; then
