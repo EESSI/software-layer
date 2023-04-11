@@ -38,9 +38,6 @@ ${EB:-eb} --from-pr 16531 --easystack eessi-${EESSI_PILOT_VERSION}.yml --experim
 
 grep " required modules missing:" ${eb_missing_out} > /dev/null
 
-# we need to process the result (from finding `No missing modules` to NOT finding
-# ` required modules missing:` and no other error happened)
-#
 # if grep returns 1 (` required modules missing:` was NOT found), we set
 # MODULES_MISSING to 0, otherwise (it was found or another error) we set it to 1
 [[ $? -eq 1 ]] && MODULES_MISSING=0 || MODULES_MISSING=1
