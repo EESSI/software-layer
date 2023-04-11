@@ -52,11 +52,16 @@ if [ -d ${pilot_version}/software/${os}/${cpu_arch_subdir}/modules ]; then
     find ${pilot_version}/software/${os}/${cpu_arch_subdir}/modules -type l | grep -v '/\.wh\.' >> ${files_list}
     # module files and symlinks
     find ${pilot_version}/software/${os}/${cpu_arch_subdir}/modules/all -type f -o -type l \
-        | grep -v '/\.wh\.' | sed -e 's/.lua$//' | awk -F'/' '{printf "%s/%s\n", $(NF-1), $NF}' | sort | uniq \
+        | grep -v '/\.wh\.' | sed -e 's/.lua$//' | sed -e 's@.*/modules/all/@@g' | sort -u \
         >> ${module_files_list}
 fi
 if [ -d ${pilot_version}/software/${os}/${cpu_arch_subdir}/software -a -r ${module_files_list} ]; then
     # installation directories but only those for which module files were created
+    # Note, we assume that module names (as defined by 'PACKAGE_NAME/VERSION.lua'
+    # using EasyBuild's standard module naming scheme) match the name of the
+    # software installation directory (expected to be 'PACKAGE_NAME/VERSION/').
+    # If either side changes (module naming scheme or naming of software
+    # installation directories), the procedure will likely not work.
     for package_version in $(cat ${module_files_list}); do
         echo "handling ${package_version}"
         ls -d ${pilot_version}/software/${os}/${cpu_arch_subdir}/software/${package_version} \
