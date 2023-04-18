@@ -151,41 +151,48 @@ else
     echo "details =" >> ${job_result_file}
 fi
 
+function succeeded() {
+    echo "&nbsp;&nbsp;&nbsp;&nbsp;:heavy_check_mark:${1}"
+}
+
+function failed() {
+    echo "&nbsp;&nbsp;&nbsp;&nbsp;:heavy_multiplication_x:${1}"
+}
+
 if [[ ${SLURM} -eq 1 ]]; then
-    # need to indent by 4 spaces
-    echo "    job output file <code>${job_out}</code> (pattern: <code>${GP_slurm_out}</code>)" >> ${job_result_file}
+    succeeded "job output file <code>${job_out}</code>" >> ${job_result_file}
 else
-    echo "    no job output file matching <code>${GP_slurm_out}</code>" >> ${job_result_file}
+    failed "no job output file matching <code>${GP_slurm_out}</code>" >> ${job_result_file}
 fi
 
 if [[ ${ERROR} -eq 0 ]]; then
-    echo "    job output lacks message matching <code>${GP_error}</code>" >> ${job_result_file}
+    succeeded "job output lacks message matching <code>${GP_error}</code>" >> ${job_result_file}
 else
-    echo "    job output contains message matching <code>${GP_error}</code>" >> ${job_result_file}
+    failed "job output contains message matching <code>${GP_error}</code>" >> ${job_result_file}
 fi
 
 if [[ ${FAILED} -eq 0 ]]; then
-    echo "    job output lacks message matching <code>${GP_failed}</code>" >> ${job_result_file}
+    succeeded "job output lacks message matching <code>${GP_failed}</code>" >> ${job_result_file}
 else
-    echo "    job output contains message matching <code>${GP_failed}</code>" >> ${job_result_file}
+    failed "job output contains message matching <code>${GP_failed}</code>" >> ${job_result_file}
 fi
 
 if [[ ${MISSING} -eq 0 ]]; then
-    echo "    job output lacks message matching <code>${GP_req_missing}</code>" >> ${job_result_file}
+    succeeded "job output lacks message matching <code>${GP_req_missing}</code>" >> ${job_result_file}
 else
-    echo "    job output contains message matching <code>${GP_req_missing}</code>" >> ${job_result_file}
+    failed "job output contains message matching <code>${GP_req_missing}</code>" >> ${job_result_file}
 fi
 
 if [[ ${NO_MISSING} -eq 1 ]]; then
-    echo "    found message(s) matching <code>${GP_no_missing}</code>" >> ${job_result_file}
+    succeeded "found message(s) matching <code>${GP_no_missing}</code>" >> ${job_result_file}
 else
-    echo "    found no message matching <code>${GP_no_missing}</code>" >> ${job_result_file}
+    failed "found no message matching <code>${GP_no_missing}</code>" >> ${job_result_file}
 fi
 
 if [[ ${TGZ} -eq 1 ]]; then
-    echo "    found message matching <code>${GP_tgz_created}</code>" >> ${job_result_file}
+    succeeded "found message matching <code>${GP_tgz_created}</code>" >> ${job_result_file}
 else
-    echo "    found no message matching <code>${GP_tgz_created}</code>" >> ${job_result_file}
+    failed "found no message matching <code>${GP_tgz_created}</code>" >> ${job_result_file}
 fi
 
 echo "artefacts =" >> ${job_result_file}
