@@ -35,8 +35,8 @@
 
 TOPDIR=$(dirname $(realpath $0))
 
-source ${TOPDIR}/scripts/utils.sh
-source ${TOPDIR}/scripts/cfg_files.sh
+source ${TOPDIR}/../scripts/utils.sh
+source ${TOPDIR}/../scripts/cfg_files.sh
 
 display_help() {
   echo "usage: $0 [OPTIONS]"
@@ -130,6 +130,8 @@ echo "  FAILED.....: $([[ $FAILED -eq 1 ]] && echo 'yes' || echo 'no') (no)"
 echo "  REQ_MISSING: $([[ $MISSING -eq 1 ]] && echo 'yes' || echo 'no') (no)"
 echo "  NO_MISSING.: $([[ $NO_MISSING -eq 1 ]] && echo 'yes' || echo 'no') (yes)"
 echo "  TGZ_CREATED: $([[ $TGZ -eq 1 ]] && echo 'yes' || echo 'no') (yes)"
+
+job_result_file=_bot_job${SLURM_JOB_ID}.result
 
 if [[ ${SLURM} -eq 1 ]] && \
    [[ ${ERROR} -eq 0 ]] && \
