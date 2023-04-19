@@ -166,33 +166,33 @@ else
 fi
 
 if [[ ${ERROR} -eq 0 ]]; then
-    succeeded "job output lacks message matching <code>${GP_error}</code>" >> ${job_result_file}
+    succeeded "no message matching <code>${GP_error}</code>" >> ${job_result_file}
 else
-    failed "job output contains message matching <code>${GP_error}</code>" >> ${job_result_file}
+    failed "found message matching <code>${GP_error}</code>" >> ${job_result_file}
 fi
 
 if [[ ${FAILED} -eq 0 ]]; then
-    succeeded "job output lacks message matching <code>${GP_failed}</code>" >> ${job_result_file}
+    succeeded "no message matching <code>${GP_failed}</code>" >> ${job_result_file}
 else
-    failed "job output contains message matching <code>${GP_failed}</code>" >> ${job_result_file}
+    failed "found message matching <code>${GP_failed}</code>" >> ${job_result_file}
 fi
 
 if [[ ${MISSING} -eq 0 ]]; then
-    succeeded "job output lacks message matching <code>${GP_req_missing}</code>" >> ${job_result_file}
+    succeeded "no message matching <code>${GP_req_missing}</code>" >> ${job_result_file}
 else
-    failed "job output contains message matching <code>${GP_req_missing}</code>" >> ${job_result_file}
+    failed "found message matching <code>${GP_req_missing}</code>" >> ${job_result_file}
 fi
 
 if [[ ${NO_MISSING} -eq 1 ]]; then
     succeeded "found message(s) matching <code>${GP_no_missing}</code>" >> ${job_result_file}
 else
-    failed "found no message matching <code>${GP_no_missing}</code>" >> ${job_result_file}
+    failed "no message matching <code>${GP_no_missing}</code>" >> ${job_result_file}
 fi
 
 if [[ ${TGZ} -eq 1 ]]; then
     succeeded "found message matching <code>${GP_tgz_created}</code>" >> ${job_result_file}
 else
-    failed "found no message matching <code>${GP_tgz_created}</code>" >> ${job_result_file}
+    failed "no message matching <code>${GP_tgz_created}</code>" >> ${job_result_file}
 fi
 
 echo "artefacts =" >> ${job_result_file}
