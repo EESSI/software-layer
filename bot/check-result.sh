@@ -123,13 +123,13 @@ else
 fi
 [[ ${VERBOSE} -ne 0 ]] && echo "${grep_out}"
 
-echo "SUMMARY: ${job_dir}/${job_out}"
-echo "  test name  : result (expected result)"
-echo "  ERROR......: $([[ $ERROR -eq 1 ]] && echo 'yes' || echo 'no') (no)"
-echo "  FAILED.....: $([[ $FAILED -eq 1 ]] && echo 'yes' || echo 'no') (no)"
-echo "  REQ_MISSING: $([[ $MISSING -eq 1 ]] && echo 'yes' || echo 'no') (no)"
-echo "  NO_MISSING.: $([[ $NO_MISSING -eq 1 ]] && echo 'yes' || echo 'no') (yes)"
-echo "  TGZ_CREATED: $([[ $TGZ -eq 1 ]] && echo 'yes' || echo 'no') (yes)"
+[[ ${VERBOSE} -ne 0 ]] && echo "SUMMARY: ${job_dir}/${job_out}"
+[[ ${VERBOSE} -ne 0 ]] && echo "  test name  : result (expected result)"
+[[ ${VERBOSE} -ne 0 ]] && echo "  ERROR......: $([[ $ERROR -eq 1 ]] && echo 'yes' || echo 'no') (no)"
+[[ ${VERBOSE} -ne 0 ]] && echo "  FAILED.....: $([[ $FAILED -eq 1 ]] && echo 'yes' || echo 'no') (no)"
+[[ ${VERBOSE} -ne 0 ]] && echo "  REQ_MISSING: $([[ $MISSING -eq 1 ]] && echo 'yes' || echo 'no') (no)"
+[[ ${VERBOSE} -ne 0 ]] && echo "  NO_MISSING.: $([[ $NO_MISSING -eq 1 ]] && echo 'yes' || echo 'no') (yes)"
+[[ ${VERBOSE} -ne 0 ]] && echo "  TGZ_CREATED: $([[ $TGZ -eq 1 ]] && echo 'yes' || echo 'no') (yes)"
 
 job_result_file=_bot_job${SLURM_JOB_ID}.result
 
