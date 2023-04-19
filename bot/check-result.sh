@@ -152,11 +152,11 @@ else
 fi
 
 function succeeded() {
-    echo "    :heavy_check_mark:${1}"
+    echo "    :heavy_check_mark: ${1}"
 }
 
 function failed() {
-    echo "    :heavy_multiplication_x:${1}"
+    echo "    :heavy_multiplication_x: ${1}"
 }
 
 if [[ ${SLURM} -eq 1 ]]; then
