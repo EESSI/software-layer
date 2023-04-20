@@ -112,9 +112,9 @@ grep_out=$(grep "${GP_no_missing}" ${job_dir}/${job_out})
 [[ ${VERBOSE} -ne 0 ]] && echo "${grep_out}"
 
 GP_tgz_created="tar.gz created!"
+TARBALL=
 [[ ${VERBOSE} -ne 0 ]] && echo ">> searching for '"${GP_tgz_created}"'"
 grep_out=$(grep "${GP_tgz_created}" ${job_dir}/${job_out})
-TARBALL=
 if [[ $? -eq 0 ]]; then
     TGZ=1
     TARBALL=$(echo ${grep_out} | sed -e 's@^.*\(eessi[^/ ]*\) .*$@\1@')
