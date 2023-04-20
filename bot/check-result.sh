@@ -82,38 +82,42 @@ job_dir=${PWD}
 [[ ${VERBOSE} -ne 0 ]] && echo ">> analysing job in directory ${job_dir}"
 
 GP_slurm_out="slurm-${SLURM_JOB_ID}.out"
-[[ ${VERBOSE} -ne 0 ]] && echo ">> searching for job output file(s) matching '"${GP_slurm_out}"'"
 job_out=$(ls ${job_dir} | grep "${GP_slurm_out}")
 [[ $? -eq 0 ]] && SLURM=1 || SLURM=0
+# have to be careful to not add searched for pattern into slurm out file
+[[ ${VERBOSE} -ne 0 ]] && echo ">> searching for job output file(s) matching '"${GP_slurm_out}"'"
 [[ ${VERBOSE} -ne 0 ]] && echo "   found slurm output file '"${job_out}"'"
 
 GP_error='ERROR: '
-[[ ${VERBOSE} -ne 0 ]] && echo ">> searching for '"${GP_error}"'"
 grep_out=$(grep "${GP_error}" ${job_dir}/${job_out})
 [[ $? -eq 0 ]] && ERROR=1 || ERROR=0
+# have to be careful to not add searched for pattern into slurm out file
+[[ ${VERBOSE} -ne 0 ]] && echo ">> searching for '"${GP_error}"'"
 [[ ${VERBOSE} -ne 0 ]] && echo "${grep_out}"
 
 GP_failed='FAILED: '
-[[ ${VERBOSE} -ne 0 ]] && echo ">> searching for '"${GP_failed}"'"
 grep_out=$(grep "${GP_failed}" ${job_dir}/${job_out})
 [[ $? -eq 0 ]] && FAILED=1 || FAILED=0
+# have to be careful to not add searched for pattern into slurm out file
+[[ ${VERBOSE} -ne 0 ]] && echo ">> searching for '"${GP_failed}"'"
 [[ ${VERBOSE} -ne 0 ]] && echo "${grep_out}"
 
 GP_req_missing=' required modules missing:'
-[[ ${VERBOSE} -ne 0 ]] && echo ">> searching for '"${GP_req_missing}"'"
 grep_out=$(grep "${GP_req_missing}" ${job_dir}/${job_out})
 [[ $? -eq 0 ]] && MISSING=1 || MISSING=0
+# have to be careful to not add searched for pattern into slurm out file
+[[ ${VERBOSE} -ne 0 ]] && echo ">> searching for '"${GP_req_missing}"'"
 [[ ${VERBOSE} -ne 0 ]] && echo "${grep_out}"
 
 GP_no_missing='No missing modules!'
-[[ ${VERBOSE} -ne 0 ]] && echo ">> searching for '"${GP_no_missing}"'"
 grep_out=$(grep "${GP_no_missing}" ${job_dir}/${job_out})
 [[ $? -eq 0 ]] && NO_MISSING=1 || NO_MISSING=0
+# have to be careful to not add searched for pattern into slurm out file
+[[ ${VERBOSE} -ne 0 ]] && echo ">> searching for '"${GP_no_missing}"'"
 [[ ${VERBOSE} -ne 0 ]] && echo "${grep_out}"
 
 GP_tgz_created="tar.gz created!"
 TARBALL=
-[[ ${VERBOSE} -ne 0 ]] && echo ">> searching for '"${GP_tgz_created}"'"
 grep_out=$(grep "${GP_tgz_created}" ${job_dir}/${job_out})
 if [[ $? -eq 0 ]]; then
     TGZ=1
@@ -121,6 +125,8 @@ if [[ $? -eq 0 ]]; then
 else
     TGZ=0
 fi
+# have to be careful to not add searched for pattern into slurm out file
+[[ ${VERBOSE} -ne 0 ]] && echo ">> searching for '"${GP_tgz_created}"'"
 [[ ${VERBOSE} -ne 0 ]] && echo "${grep_out}"
 
 [[ ${VERBOSE} -ne 0 ]] && echo "SUMMARY: ${job_dir}/${job_out}"
