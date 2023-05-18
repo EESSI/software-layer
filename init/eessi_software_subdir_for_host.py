@@ -101,8 +101,6 @@ def find_best_target(eessi_prefix):
             continue
         if uarch in KNOWN_CPU_UARCHS:
             target_uarchs.append(KNOWN_CPU_UARCHS[uarch])
-        else:
-            warning('Ignoring unknown target "%s"' % uarch)
 
     host_uarch = KNOWN_CPU_UARCHS[host_cpu_name]
     compat_target_uarchs = sorted([x for x in target_uarchs if x <= host_uarch])
