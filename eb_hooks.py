@@ -6,7 +6,7 @@ import re
 from easybuild.easyblocks.generic.configuremake import obtain_config_guess
 from easybuild.tools.build_log import EasyBuildError, print_msg
 from easybuild.tools.config import build_option, update_build_option
-from easybuild.tools.filetools import copy_file, which
+from easybuild.tools.filetools import apply_regex_substitutions, copy_file, which
 from easybuild.tools.run import run_cmd
 from easybuild.tools.systemtools import AARCH64, POWER, X86_64, get_cpu_architecture, get_cpu_features
 from easybuild.tools.toolchain.compiler import OPTARCH_GENERIC
@@ -108,6 +108,17 @@ def gcc_postprepare(self, *args, **kwargs):
             prefix_wrapper = os.path.join(wrapper_dir, cmd_prefix + cmd)
             copy_file(wrapper, prefix_wrapper)
             self.log.info("Path to %s wrapper with '%s' prefix: %s" % (cmd, cmd_prefix, which(prefix_wrapper)))
+
+            # we need to tweak the copied wrapper script, so that:
+            regex_subs = [
+                # - CMD in the script is set to the command name without prefix, because EasyBuild's rpath_args.py
+                #   script that is used by the wrapper script only checks for 'ld', 'ld.gold', etc.
+                #   when checking whether or not to use -Wl
+                ('^CMD=.*', 'CMD=%s' % cmd),
+                # - the path to the correct actual binary is logged and called
+                ('/%s ' % cmd, '/%s ' % (cmd_prefix + cmd)),
+            ]
+            apply_regex_substitutions(prefix_wrapper, regex_subs)
     else:
         raise EasyBuildError("GCCcore-specific hook triggered for non-GCCcore easyconfig?!")
 
