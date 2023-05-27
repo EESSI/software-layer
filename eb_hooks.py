@@ -3,8 +3,11 @@
 import os
 import re
 
+from easybuild.easyblocks.generic.configuremake import obtain_config_guess
 from easybuild.tools.build_log import EasyBuildError, print_msg
 from easybuild.tools.config import build_option, update_build_option
+from easybuild.tools.filetools import copy_file, which
+from easybuild.tools.run import run_cmd
 from easybuild.tools.systemtools import AARCH64, POWER, X86_64, get_cpu_architecture, get_cpu_features
 from easybuild.tools.toolchain.compiler import OPTARCH_GENERIC
 
@@ -89,6 +92,25 @@ def pre_prepare_hook(self, *args, **kwargs):
                   mpi_family, rpath_override_dirs)
 
 
+def gcc_postprepare(self, *args, **kwargs):
+    """
+    Post-configure hook for GCCcore:
+    - copy RPATH wrapper script for linker commands to also have a wrapper in place with system type prefix like 'x86_64-pc-linux-gnu'
+    """
+    if self.name == 'GCCcore':
+        config_guess = obtain_config_guess()
+        system_type, _ = run_cmd(config_guess, log_all=True)
+        cmd_prefix = '%s-' % system_type.strip()
+        for cmd in ('ld', 'ld.gold', 'ld.bfd'):
+            wrapper = which(cmd)
+            self.log.info("Path to %s wrapper: %s" % (cmd, wrapper))
+            wrapper_dir = os.path.dirname(wrapper)
+            prefix_wrapper = os.path.join(wrapper_dir, cmd_prefix + cmd)
+            copy_file(wrapper, prefix_wrapper)
+            self.log.info("Path to %s wrapper with '%s' prefix: %s" % (cmd, cmd_prefix, which(prefix_wrapper)))
+    else:
+        raise EasyBuildError("GCCcore-specific hook triggered for non-GCCcore easyconfig?!")
+
 def post_prepare_hook(self, *args, **kwargs):
     """Main post-prepare hook: trigger custom functions."""
 
@@ -97,6 +119,9 @@ def post_prepare_hook(self, *args, **kwargs):
         update_build_option('rpath_override_dirs', getattr(self, EESSI_RPATH_OVERRIDE_ATTR))
         print_msg("Resetting rpath_override_dirs to original value: %s", getattr(self, EESSI_RPATH_OVERRIDE_ATTR))
         delattr(self, EESSI_RPATH_OVERRIDE_ATTR)
+
+    if self.name in POST_PREPARE_HOOKS:
+        POST_PREPARE_HOOKS[self.name](self, *args, **kwargs)
 
 
 def cgal_toolchainopts_precise(ec, eprefix):
@@ -185,6 +210,10 @@ PARSE_HOOKS = {
     'CGAL': cgal_toolchainopts_precise,
     'fontconfig': fontconfig_add_fonts,
     'UCX': ucx_eprefix,
+}
+
+POST_PREPARE_HOOKS = {
+    'GCCcore': gcc_postprepare,
 }
 
 PRE_CONFIGURE_HOOKS = {
