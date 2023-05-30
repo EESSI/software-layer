@@ -27,12 +27,11 @@ def get_eessi_envvar(eessi_envvar):
 def get_rpath_override_dirs(software_name):
     # determine path to installations in software layer via $EESSI_SOFTWARE_PATH
     eessi_software_path = get_eessi_envvar('EESSI_SOFTWARE_PATH')
-    eessi_pilot_version = get_eessi_envvar('EESSI_PILOT_VERSION')
 
     # construct the rpath override directory stub
     rpath_injection_stub = os.path.join(
         # Make sure we are looking inside the `host_injections` directory
-        eessi_software_path.replace(eessi_pilot_version, os.path.join('host_injections', eessi_pilot_version), 1),
+        eessi_software_path.replace('versions', 'host_injections', 1),
         # Add the subdirectory for the specific software
         'rpath_overrides',
         software_name,
