@@ -11,7 +11,7 @@ if [ $# -ne 1 ]; then
     exit 1
 fi
 
-# don't use $EB_VERSION, since that enables always running 'eb --version'
+# don't use $EASYBUILD_VERSION, since that enables always running 'eb --version'
 EB_VERSION=${1}
 
 # make sure that environment variables that we expect to be set are indeed set
@@ -20,6 +20,8 @@ if [ -z "${TMPDIR}" ]; then
     exit 2
 fi
 
+# ${EB} is used to specify which 'eb' command should be used;
+# can potentially be more than just 'eb', for example when using 'eb --optarch=GENERIC'
 if [ -z "${EB}" ]; then 
     echo "\$EB is not set" >&2
     exit 2
@@ -60,17 +62,23 @@ else
     ${EB} --install-latest-eb-release 2>&1 | tee ${eb_install_out}
     check_exit_code $? "${ok_msg}" "${fail_msg}"
 
-    eb_ec=EasyBuild-${EB_VERSION}.eb
-    ${EB} --search ${eb_ec} | grep ${eb_ec} > /dev/null
+    # maybe the module obtained with --install-latest-eb-release is exactly the EasyBuild version we wanted?
+    module avail 2>&1 | grep -i easybuild/${EB_VERSION} &> ${ml_av_easybuild_out}
     if [[ $? -eq 0 ]]; then
-        echo "Easyconfig found for EasyBuild v${EB_VERSION}, so installing it..."
-        ok_msg="EasyBuild v${EB_VERSION} installed, alright!"
-        fail_msg="Installing EasyBuild v${EB_VERSION}, yikes! (output: ${eb_install_out})"
-        #${EB} EasyBuild-${EB_VERSION}.eb >> ${eb_install_out} 2>&1
-        ${EB} EasyBuild-${EB_VERSION}.eb 2>&1 | tee -a ${eb_install_out}
-        check_exit_code $? "${ok_msg}" "${fail_msg}"
+        echo_green ">> Module for EasyBuild v${EB_VERSION} found!"
     else
-        echo "No easyconfig found for EasyBuild v${EB_VERSION}"
+        eb_ec=EasyBuild-${EB_VERSION}.eb
+        echo_yellow ">> Still no module for EasyBuild v${EB_VERSION}, trying with easyconfig ${eb_ec}..."
+        ${EB} --search ${eb_ec} | grep ${eb_ec} > /dev/null
+        if [[ $? -eq 0 ]]; then
+            echo "Easyconfig ${eb_ec} found for EasyBuild v${EB_VERSION}, so installing it..."
+            ok_msg="EasyBuild v${EB_VERSION} installed, alright!"
+            fail_msg="Installing EasyBuild v${EB_VERSION}, yikes! (output: ${eb_install_out})"
+            ${EB} EasyBuild-${EB_VERSION}.eb 2>&1 | tee -a ${eb_install_out}
+            check_exit_code $? "${ok_msg}" "${fail_msg}"
+        else
+            fatal_error "No easyconfig found for EasyBuild v${EB_VERSION}"
+        fi
     fi
 
     # restore origin $PATH and $PYTHONPATH values, and clean up environment variables that are no longer needed
@@ -80,9 +88,9 @@ else
 
     module avail easybuild/${EB_VERSION} &> ${ml_av_easybuild_out}
     if [[ $? -eq 0 ]]; then
-        echo_green ">> EasyBuild module installed!"
+        echo_green ">> EasyBuild/${EB_VERSION} module installed!"
     else
-        fatal_error "EasyBuild/${EB_VERSION} module failed to install?! (output of 'pip install' in ${pip_install_out}, output of 'eb' in ${eb_install_out}, output of 'ml av easybuild' in ${ml_av_easybuild_out})"
+        fatal_error "EasyBuild/${EB_VERSION} module failed to install?! (output of 'pip install' in ${pip_install_out}, output of 'eb' in ${eb_install_out}, output of 'module avail easybuild' in ${ml_av_easybuild_out})"
     fi
 fi
 
