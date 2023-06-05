@@ -3,7 +3,15 @@
 # and used to install the specific EasyBuild version being specified.
 #
 # This script must be sourced, since it makes changes in the current environment, like loading an EasyBuild module.
-
+#
+# This script is part of the EESSI software layer, see
+# https://github.com/EESSI/software-layer.git
+#
+# author: Kenneth Hosye (@boegel, HPC-UGent)
+#
+# license: GPLv2
+#
+#
 set -o pipefail
 
 if [ $# -ne 1 ]; then
