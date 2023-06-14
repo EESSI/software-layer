@@ -1,0 +1,6 @@
+easyconfigs:
+  - GCC-10.3.0
+  - CMake-3.20.1-GCCcore-10.3.0.eb:
+      options:
+        include-easyblocks-from-pr: 2248
+  - foss-2021a
