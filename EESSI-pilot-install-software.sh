@@ -151,7 +151,9 @@ for eb_version in '4.7.2'; do
         if [ -f ${es} ]; then
             echo_green "Feeding easystack file ${es} to EasyBuild..."
 
-            ${EB} --easystack ${TOPDIR}/${es} -M && ${EB} --easystack ${TOPDIR}/${es} --robot
+            ${EB} --easystack ${TOPDIR}/${es} --missing && ${EB} --easystack ${TOPDIR}/${es} --robot
+
+            $TOPDIR/check_missing_installations.sh ${TOPDIR}/${es}
         else
             fatal_error "Easystack file ${es} not found!"
         fi
@@ -169,8 +171,6 @@ if [ ! -f $LMOD_RC ]; then
 fi
 
 $TOPDIR/update_lmod_cache.sh ${EPREFIX} ${EASYBUILD_INSTALLPATH}
-
-$TOPDIR/check_missing_installations.sh
 
 echo ">> Cleaning up ${TMPDIR}..."
 rm -r ${TMPDIR}
