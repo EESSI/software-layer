@@ -13,8 +13,6 @@ on:
       - update_lmod_cache.sh
 
   pull_request:
-    branches:
-      - main
     paths:
       - build_container.sh
       - create_directory_tarballs.sh

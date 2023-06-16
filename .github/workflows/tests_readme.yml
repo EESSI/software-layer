@@ -7,8 +7,6 @@ on:
       - init/eessi_defaults
 
   pull_request:
-    branches:
-      - main
     paths:
       - README.md
       - init/eessi_defaults
