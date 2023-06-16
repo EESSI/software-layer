@@ -1,6 +1,6 @@
 #!/bin/bash
 
-SOFTWARE_LAYER_TARBALL_URL=https://github.com/EESSI/software-layer/tarball/main
+SOFTWARE_LAYER_TARBALL_URL=https://github.com/EESSI/software-layer/tarball/2023.06
 
 set -eo pipefail
 
