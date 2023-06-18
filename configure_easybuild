@@ -35,3 +35,6 @@ fi
 export EASYBUILD_FILTER_DEPS=$DEPS_TO_FILTER
 
 export EASYBUILD_MODULE_EXTENSIONS=1
+
+# need to enable use of experimental features, since we're using easystack files
+export EASYBUILD_EXPERIMENTAL=1
