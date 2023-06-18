@@ -60,12 +60,12 @@ def test_broadwell_host(tmpdir, capsys, monkeypatch):
     prep_tmpdir(tmpdir, ['x86_64/intel/ivybridge'])
     assert find_best_target(tmpdir) == 'x86_64/intel/ivybridge'
 
-    # unknown targets don't cause trouble (only warning)
+    # unknown targets don't cause trouble
     prep_tmpdir(tmpdir, ['x86_64/intel/no_such_intel_cpu'])
     assert find_best_target(tmpdir) == 'x86_64/intel/ivybridge'
     captured = capsys.readouterr()
     assert captured.out == ''
-    assert captured.err == 'WARNING: Ignoring unknown target "no_such_intel_cpu"\n'
+    assert captured.err == ''
 
     # older targets have to no impact on best target (sandybridge < ivybridge)
     prep_tmpdir(tmpdir, ['x86_64/intel/sandybridge'])

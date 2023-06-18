@@ -3,8 +3,11 @@
 import os
 import re
 
+from easybuild.easyblocks.generic.configuremake import obtain_config_guess
 from easybuild.tools.build_log import EasyBuildError, print_msg
 from easybuild.tools.config import build_option, update_build_option
+from easybuild.tools.filetools import apply_regex_substitutions, copy_file, which
+from easybuild.tools.run import run_cmd
 from easybuild.tools.systemtools import AARCH64, POWER, X86_64, get_cpu_architecture, get_cpu_features
 from easybuild.tools.toolchain.compiler import OPTARCH_GENERIC
 
@@ -24,12 +27,11 @@ def get_eessi_envvar(eessi_envvar):
 def get_rpath_override_dirs(software_name):
     # determine path to installations in software layer via $EESSI_SOFTWARE_PATH
     eessi_software_path = get_eessi_envvar('EESSI_SOFTWARE_PATH')
-    eessi_pilot_version = get_eessi_envvar('EESSI_PILOT_VERSION')
 
     # construct the rpath override directory stub
     rpath_injection_stub = os.path.join(
         # Make sure we are looking inside the `host_injections` directory
-        eessi_software_path.replace(eessi_pilot_version, os.path.join('host_injections', eessi_pilot_version), 1),
+        eessi_software_path.replace('versions', 'host_injections', 1),
         # Add the subdirectory for the specific software
         'rpath_overrides',
         software_name,
@@ -89,6 +91,36 @@ def pre_prepare_hook(self, *args, **kwargs):
                   mpi_family, rpath_override_dirs)
 
 
+def gcc_postprepare(self, *args, **kwargs):
+    """
+    Post-configure hook for GCCcore:
+    - copy RPATH wrapper script for linker commands to also have a wrapper in place with system type prefix like 'x86_64-pc-linux-gnu'
+    """
+    if self.name == 'GCCcore':
+        config_guess = obtain_config_guess()
+        system_type, _ = run_cmd(config_guess, log_all=True)
+        cmd_prefix = '%s-' % system_type.strip()
+        for cmd in ('ld', 'ld.gold', 'ld.bfd'):
+            wrapper = which(cmd)
+            self.log.info("Path to %s wrapper: %s" % (cmd, wrapper))
+            wrapper_dir = os.path.dirname(wrapper)
+            prefix_wrapper = os.path.join(wrapper_dir, cmd_prefix + cmd)
+            copy_file(wrapper, prefix_wrapper)
+            self.log.info("Path to %s wrapper with '%s' prefix: %s" % (cmd, cmd_prefix, which(prefix_wrapper)))
+
+            # we need to tweak the copied wrapper script, so that:
+            regex_subs = [
+                # - CMD in the script is set to the command name without prefix, because EasyBuild's rpath_args.py
+                #   script that is used by the wrapper script only checks for 'ld', 'ld.gold', etc.
+                #   when checking whether or not to use -Wl
+                ('^CMD=.*', 'CMD=%s' % cmd),
+                # - the path to the correct actual binary is logged and called
+                ('/%s ' % cmd, '/%s ' % (cmd_prefix + cmd)),
+            ]
+            apply_regex_substitutions(prefix_wrapper, regex_subs)
+    else:
+        raise EasyBuildError("GCCcore-specific hook triggered for non-GCCcore easyconfig?!")
+
 def post_prepare_hook(self, *args, **kwargs):
     """Main post-prepare hook: trigger custom functions."""
 
@@ -97,6 +129,9 @@ def post_prepare_hook(self, *args, **kwargs):
         update_build_option('rpath_override_dirs', getattr(self, EESSI_RPATH_OVERRIDE_ATTR))
         print_msg("Resetting rpath_override_dirs to original value: %s", getattr(self, EESSI_RPATH_OVERRIDE_ATTR))
         delattr(self, EESSI_RPATH_OVERRIDE_ATTR)
+
+    if self.name in POST_PREPARE_HOOKS:
+        POST_PREPARE_HOOKS[self.name](self, *args, **kwargs)
 
 
 def cgal_toolchainopts_precise(ec, eprefix):
@@ -185,6 +220,10 @@ PARSE_HOOKS = {
     'CGAL': cgal_toolchainopts_precise,
     'fontconfig': fontconfig_add_fonts,
     'UCX': ucx_eprefix,
+}
+
+POST_PREPARE_HOOKS = {
+    'GCCcore': gcc_postprepare,
 }
 
 PRE_CONFIGURE_HOOKS = {
