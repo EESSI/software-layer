@@ -196,4 +196,23 @@ echo "                     -- ./create_tarball.sh ${TMP_IN_CONTAINER} ${EESSI_PI
 ./eessi_container.sh "${COMMON_ARGS[@]}" "${TARBALL_STEP_ARGS[@]}" \
                      -- ./create_tarball.sh ${TMP_IN_CONTAINER} ${EESSI_PILOT_VERSION} ${EESSI_SOFTWARE_SUBDIR_OVERRIDE} /eessi_bot_job/${TGZ} 2>&1 | tee -a ${tar_outerr}
 
+function check_tmp_tarball {
+    dir=$1
+    ls ${dir} | grep -E 'tgz$|\.gz$'
+    return $?
+}
+
+# clean storage used on local disk
+if [[ -d ${STORAGE} ]]; then
+    # double-check that at least one tarball of the temporary storage was created
+    if check_tmp_tarball ${TARBALL_TMP_BUILD_STEP_DIR} || check_tmp_tarball ${TARBALL_TMP_TARBALL_STEP_DIR}; then
+        echo "Removing temporary storage under '${STORAGE}'"
+        # rm -rf ${STORAGE}
+    else
+        echo "Did not find any tarball containing the temporary storage for neither the"
+        echo "build nor the tar step. Hence, not removing the storage at '${STORAGE}'."
+else
+    echo "Local disk storage at '${STORAGE}' not accessible, so wasn't cleaned up."
+fi
+
 exit 0
