@@ -480,4 +480,6 @@ echo "status = ${status}" >> ${job_result_file}
 echo "artefacts = " >> ${job_result_file}
 echo "${TARBALL}" | sed -e 's/^/    /g' >> ${job_result_file}
 
+test "${status}" == "SUCCESS"
+exit $?
 exit 0
