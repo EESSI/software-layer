@@ -151,7 +151,7 @@ for eb_version in '4.7.2'; do
         if [ -f ${es} ]; then
             echo_green "Feeding easystack file ${es} to EasyBuild..."
 
-            ${EB} --easystack ${TOPDIR}/${es} --missing && ${EB} --easystack ${TOPDIR}/${es} --robot
+            ${EB} --easystack ${TOPDIR}/${es} --robot
 
             $TOPDIR/check_missing_installations.sh ${TOPDIR}/${es}
         else
