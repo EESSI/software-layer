@@ -211,6 +211,7 @@ if [[ -d ${STORAGE} ]]; then
     else
         echo "Did not find any tarball containing the temporary storage for neither the"
         echo "build nor the tar step. Hence, not removing the storage at '${STORAGE}'."
+    fi
 else
     echo "Local disk storage at '${STORAGE}' not accessible, so wasn't cleaned up."
 fi
