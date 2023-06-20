@@ -20,7 +20,7 @@
 #    - no message ERROR
 #    - no message FAILED
 #    - no message ' required modules missing:'
-#    - one or more of 'No missing modules!'
+#    - one or more of 'No missing installations'
 #    - message regarding created tarball
 #  - FAILED (one of ... implemented as NOT SUCCESS)
 #    - no slurm-JOBID.out file
@@ -188,36 +188,12 @@ else
 fi
 
 ### Example details/descriptions
-# Note, final string must not contain any line breaks. Below examples include
-# line breaks for the sake of readability.
+# Note, final string must not contain any line breaks. Below example include
+# line breaks for the sake of readability. In case of FAILURE, the structure is
+# very similar (incl. information about Artefacts if any was produced), however,
+# under Details some lines will be marked with :heavy_multiplication_x:
 # <details>
-#   <summary>:cry: FAILURE _(click triangle for detailed information)_</summary>
-#   Details:<br/>
-#   &nbsp;&nbsp;&nbsp;&nbsp;:heavy_check_mark: job output file <code>slurm-470503.out</code><br/>
-#   &nbsp;&nbsp;&nbsp;&nbsp;:heavy_multiplication_x: found message matching <code>ERROR: </code><br/>
-#   &nbsp;&nbsp;&nbsp;&nbsp;:heavy_multiplication_x: found message matching <code>FAILED: </code><br/>
-#   &nbsp;&nbsp;&nbsp;&nbsp;:heavy_multiplication_x: found message matching <code> required modules missing:</code><br/>
-#   &nbsp;&nbsp;&nbsp;&nbsp;:heavy_check_mark: found message(s) matching <code>No missing installations</code><br/>
-#   &nbsp;&nbsp;&nbsp;&nbsp;:heavy_check_mark: found message matching <code>tar.gz created!</code><br/>
-#   Artefacts:
-#   <li><code>eessi-2023.04-software-linux-x86_64-amd-zen2-1682384569.tar.gz</code></li>
-# </details>
-#
-# <details>
-#   <summary>:grin: SUCCESS _(click triangle for detailed information)_</summary>
-#   Details:<br/>
-#   &nbsp;&nbsp;&nbsp;&nbsp;:heavy_check_mark: job output file <code>slurm-470503.out</code><br/>
-#   &nbsp;&nbsp;&nbsp;&nbsp;:heavy_check_mark: found message matching <code>ERROR: </code><br/>
-#   &nbsp;&nbsp;&nbsp;&nbsp;:heavy_check_mark: found message matching <code>FAILED: </code><br/>
-#   &nbsp;&nbsp;&nbsp;&nbsp;:heavy_check_mark: found message matching <code> required modules missing:</code><br/>
-#   &nbsp;&nbsp;&nbsp;&nbsp;:heavy_check_mark: found message(s) matching <code>No missing installations</code><br/>
-#   &nbsp;&nbsp;&nbsp;&nbsp;:heavy_check_mark: found message matching <code>tar.gz created!</code><br/>
-#   Artefacts:
-#   <li><code>eessi-2023.04-software-linux-x86_64-amd-zen2-1682384569.tar.gz</code></li>
-# </details>
-#
-# <details>
-#   <summary>:grin: SUCCESS _(click triangle for detailed information)_</summary>
+#   <summary>:grin: SUCCESS _(click triangle for details)_</summary>
 #   <dl>
 #     <dt>_Details_</dt>
 #     <dd>
@@ -231,22 +207,22 @@ fi
 #     <dt>_Artefacts_</dt>
 #     <dd>
 #       <details>
-#         <summary><code>eessi-2023.04-software-linux-x86_64-generic-1682696567.tar.gz</code></summary>
+#         <summary><code>eessi-2023.06-software-linux-x86_64-generic-1682696567.tar.gz</code></summary>
 #         size: 234 MiB (245366784 bytes)<br/>
 #         entries: 1234<br/>
-#         modules under _2023.04/software/linux/x86_64/intel/cascadelake/modules/all/_<br/>
+#         modules under _2023.06/software/linux/x86_64/generic/modules/all/_<br/>
 #         <pre>
 #           GCC/9.3.0.lua<br/>
 #           GCC/10.3.0.lua<br/>
 #           OpenSSL/1.1.lua
 #         </pre>
-#         software under _2023.04/software/linux/x86_64/intel/cascadelake/software/_
+#         software under _2023.06/software/linux/x86_64/generic/software/_
 #         <pre>
 #           GCC/9.3.0/<br/>
 #           CMake/3.20.1-GCCcore-10.3.0/<br/>
 #           OpenMPI/4.1.1-GCC-10.3.0/
 #         </pre>
-#         other under _2023.04/software/linux/x86_64/intel/cascadelake/_
+#         other under _2023.06/software/linux/x86_64/generic/_
 #         <pre>
 #           .lmod/cache/spiderT.lua<br/>
 #           .lmod/cache/spiderT.luac_5.1<br/>
@@ -257,6 +233,24 @@ fi
 #   </dl>
 # </details>
 #
+# <details>
+#   <summary>:cry: FAILURE _(click triangle for details)_</summary>
+#   <dl>
+#     <dt>_Details_</dt>
+#     <dd>
+#       :heavy_check_mark: job output file <code>slurm-4682.out</code><br/>
+#       :heavy_multiplication_x: no message matching <code>ERROR: </code><br/>
+#       :heavy_check_mark: no message matching <code>FAILED: </code><br/>
+#       :heavy_multiplication_x: no message matching <code> required modules missing:</code><br/>
+#       :heavy_check_mark: found message(s) matching <code>No missing installations</code><br/>
+#       :heavy_check_mark: found message matching <code>tar.gz created!</code><br/>
+#     </dd>
+#     <dt>_Artefacts_</dt>
+#     <dd>
+#       No artefacts were created or found.
+#     </dd>
+#   </dl>
+# </details>
 ###
 
 # construct and write complete PR comment details: implements third alternative
