@@ -96,11 +96,14 @@ job_dir=${PWD}
 [[ ${VERBOSE} -ne 0 ]] && echo ">> analysing job in directory ${job_dir}"
 
 GP_slurm_out="slurm-${SLURM_JOB_ID}.out"
-job_out=$(ls ${job_dir} | grep "${GP_slurm_out}")
-[[ $? -eq 0 ]] && SLURM=1 || SLURM=0
-# have to be careful to not add searched for pattern into slurm out file
 [[ ${VERBOSE} -ne 0 ]] && echo ">> searching for job output file(s) matching '"${GP_slurm_out}"'"
-[[ ${VERBOSE} -ne 0 ]] && echo "   found slurm output file '"${job_out}"'"
+if  [[ -f ${GP_slurm_out} ]]; then
+    SLURM=1
+    [[ ${VERBOSE} -ne 0 ]] && echo "   found slurm output file '"${GP_slurm_out}"'"
+else
+    SLURM=0
+    [[ ${VERBOSE} -ne 0 ]] && echo "   Slurm output file '"${GP_slurm_out}"' NOT found"
+fi
 
 ERROR=-1
 if [[ ${SLURM} -eq 1 ]]; then
