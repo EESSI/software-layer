@@ -95,14 +95,14 @@ job_dir=${PWD}
 
 [[ ${VERBOSE} -ne 0 ]] && echo ">> analysing job in directory ${job_dir}"
 
-GP_slurm_out="slurm-${SLURM_JOB_ID}.out"
-[[ ${VERBOSE} -ne 0 ]] && echo ">> searching for job output file(s) matching '"${GP_slurm_out}"'"
-if  [[ -f ${GP_slurm_out} ]]; then
+job_out="slurm-${SLURM_JOB_ID}.out"
+[[ ${VERBOSE} -ne 0 ]] && echo ">> searching for job output file(s) matching '"${job_out}"'"
+if  [[ -f ${job_out} ]]; then
     SLURM=1
-    [[ ${VERBOSE} -ne 0 ]] && echo "   found slurm output file '"${GP_slurm_out}"'"
+    [[ ${VERBOSE} -ne 0 ]] && echo "   found slurm output file '"${job_out}"'"
 else
     SLURM=0
-    [[ ${VERBOSE} -ne 0 ]] && echo "   Slurm output file '"${GP_slurm_out}"' NOT found"
+    [[ ${VERBOSE} -ne 0 ]] && echo "   Slurm output file '"${job_out}"' NOT found"
 fi
 
 ERROR=-1
@@ -339,7 +339,7 @@ comment_summary="${comment_summary_fmt/__SUMMARY__/${summary}}"
 CoDeList=""
 
 success_msg="job output file <code>${job_out}</code>"
-failure_msg="no job output file matching <code>${GP_slurm_out}</code>"
+failure_msg="no job output file <code>${job_out}</code>"
 CoDeList=${CoDeList}$(add_detail ${SLURM} 1 "${success_msg}" "${failure_msg}")
 
 success_msg="no message matching <code>${GP_error}</code>"
