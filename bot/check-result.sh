@@ -488,6 +488,11 @@ echo "status = ${status}" >> ${job_result_file}
 echo "artefacts = " >> ${job_result_file}
 echo "${TARBALL}" | sed -e 's/^/    /g' >> ${job_result_file}
 
+# remove tmpfile
+if [[ -f ${tmpfile} ]]; then
+    rm ${tmpfile}
+fi
+
+# exit script with value that reflects overall job result: SUCCESS (0), FAILURE (1)
 test "${status}" == "SUCCESS"
 exit $?
-exit 0
