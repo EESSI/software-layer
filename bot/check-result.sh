@@ -152,7 +152,7 @@ if [[ ${SLURM} -eq 1 ]]; then
   grep_out=$(grep -v "^>> searching for " ${job_dir}/${job_out} | grep "${GP_tgz_created}" | sort -u)
   if [[ $? -eq 0 ]]; then
       TGZ=1
-      TARBALL=$(echo ${grep_out} | sed -e 's@^.*\(eessi[^/ ]*\) .*$@\1@')
+      TARBALL=$(echo ${grep_out} | sed -e 's@^.*/\(eessi[^/ ]*\) .*$@\1@')
   else
       TGZ=0
   fi
@@ -162,7 +162,7 @@ if [[ ${SLURM} -eq 1 ]]; then
 fi
 
 [[ ${VERBOSE} -ne 0 ]] && echo "SUMMARY: ${job_dir}/${job_out}"
-[[ ${VERBOSE} -ne 0 ]] && echo "  test name  : result (expected result)"
+[[ ${VERBOSE} -ne 0 ]] && echo "  <test name>: <actual result> (<expected result>)"
 [[ ${VERBOSE} -ne 0 ]] && echo "  ERROR......: $([[ $ERROR -eq 1 ]] && echo 'yes' || echo 'no') (no)"
 [[ ${VERBOSE} -ne 0 ]] && echo "  FAILED.....: $([[ $FAILED -eq 1 ]] && echo 'yes' || echo 'no') (no)"
 [[ ${VERBOSE} -ne 0 ]] && echo "  REQ_MISSING: $([[ $MISSING -eq 1 ]] && echo 'yes' || echo 'no') (no)"
@@ -377,25 +377,28 @@ CoArList=""
 
 # TARBALL should only contain a single tarball
 if [[ ! -z ${TARBALL} ]]; then
-    # TODO add tarball details: size, num entries, modules, software pkgs, misc
+    # Example of the detailed information for a tarball. The actual result MUST be a
+    # single line (no '\n') or it would break the structure of the markdown table
+    # that holds status updates of a bot job.
+    # 
     # <dd>
     #   <details>
-    #     <summary><code>eessi-2023.04-software-linux-x86_64-generic-1682696567.tar.gz</code></summary>
+    #     <summary><code>eessi-2023.06-software-linux-x86_64-generic-1682696567.tar.gz</code></summary>
     #     size: 234 MiB (245366784 bytes)<br/>
     #     entries: 1234<br/>
-    #     modules under _2023.04/software/linux/x86_64/intel/cascadelake/modules/all/_<br/>
+    #     modules under _2023.06/software/linux/x86_64/intel/cascadelake/modules/all/_<br/>
     #     <pre>
     #       GCC/9.3.0.lua<br/>
     #       GCC/10.3.0.lua<br/>
     #       OpenSSL/1.1.lua
     #     </pre>
-    #     software under _2023.04/software/linux/x86_64/intel/cascadelake/software/_
+    #     software under _2023.06/software/linux/x86_64/intel/cascadelake/software/_
     #     <pre>
     #       GCC/9.3.0/<br/>
     #       CMake/3.20.1-GCCcore-10.3.0/<br/>
     #       OpenMPI/4.1.1-GCC-10.3.0/
     #     </pre>
-    #     other under _2023.04/software/linux/x86_64/intel/cascadelake/_
+    #     other under _2023.06/software/linux/x86_64/intel/cascadelake/_
     #     <pre>
     #       .lmod/cache/spiderT.lua<br/>
     #       .lmod/cache/spiderT.luac_5.1<br/>
@@ -409,23 +412,25 @@ if [[ ! -z ${TARBALL} ]]; then
     tar tf ${TARBALL} > ${tmpfile}
     entries=$(cat ${tmpfile} | wc -l)
     # determine prefix from job config: VERSION/software/OS_TYPE/CPU_FAMILY/ARCHITECTURE
-    # 2023.04/software/linux/x86_64/intel/skylake_avx512
-    # repo_version = 2022.11
-    # software
+    # e.g., 2023.06/software/linux/x86_64/intel/skylake_avx512
+    # cfg/job.cfg contains (only the attributes to be used are shown below):
+    # [repository]
+    # repo_version = 2023.06
+    # [architecture]
     # os_type = linux
-    # software_subdir = aarch64/generic
+    # software_subdir = x86_64/intel/skylake_avx512
     repo_version=$(cfg_get_value "repository" "repo_version")
     os_type=$(cfg_get_value "architecture" "os_type")
     software_subdir=$(cfg_get_value "architecture" "software_subdir")
     prefix="${repo_version}/software/${os_type}/${software_subdir}"
+
+    # extract directories/entries from tarball content
     modules_entries=$(grep "${prefix}/modules" ${tmpfile})
     software_entries=$(grep "${prefix}/software" ${tmpfile})
-    lmod_entries=$(grep "${prefix}/.lmod/cache" ${tmpfile})
     other_entries=$(cat ${tmpfile} | grep -v "${prefix}/modules" | grep -v "${prefix}/software")
     other_shortened=$(echo "${other_entries}" | sed -e "s@^.*${prefix}/@@" | sort -u)
     modules=$(echo "${modules_entries}" | grep "/all/.*/.*lua$" | sed -e 's@^.*/\([^/]*/[^/]*.lua\)$@\1@' | sort -u)
     software_pkgs=$(echo "${software_entries}" | sed -e "s@${prefix}/software/@@" | awk -F/ '{if (NR >= 2) {print $1 "/" $2}}' | sort -u)
-    lmod_shortened=$(echo "${lmod_entries}" | sed -e "s@${prefix}/@@")
 
     artefact_summary="<summary>$(print_code_item '__ITEM__' ${TARBALL})</summary>"
     CoArList=""
