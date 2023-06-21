@@ -40,7 +40,9 @@ jobs:
         # bind current directory into container as /software-layer
         export SINGULARITY_BIND="${PWD}:/software-layer"
 
-        for EB_VERSION in '4.5.0' '4.5.1' '4.7.2'; do
+        # can't test with EasyBuild versions older than v4.5.2 when using EESSI pilot 2023.06,
+        # since Python in compat layer is Python 3.11.x
+        for EB_VERSION in '4.5.2' '4.6.0' '4.7.2'; do
           # Create script that uses load_easybuild_module.sh which we can run in compat layer environment
           # note: Be careful with single vs double quotes below!
           #       ${EB_VERSION} should be expanded, so use double quotes;
