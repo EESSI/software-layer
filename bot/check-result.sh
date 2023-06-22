@@ -191,18 +191,18 @@ fi
 # Note, final string must not contain any line breaks. Below example include
 # line breaks for the sake of readability. In case of FAILURE, the structure is
 # very similar (incl. information about Artefacts if any was produced), however,
-# under Details some lines will be marked with :heavy_multiplication_x:
+# under Details some lines will be marked with :x:
 # <details>
 #   <summary>:grin: SUCCESS _(click triangle for details)_</summary>
 #   <dl>
 #     <dt>_Details_</dt>
 #     <dd>
-#       :heavy_check_mark: job output file <code>slurm-4682.out</code><br/>
-#       :heavy_check_mark: no message matching <code>ERROR: </code><br/>
-#       :heavy_check_mark: no message matching <code>FAILED: </code><br/>
-#       :heavy_check_mark: no message matching <code> required modules missing:</code><br/>
-#       :heavy_check_mark: found message(s) matching <code>No missing installations</code><br/>
-#       :heavy_check_mark: found message matching <code>tar.gz created!</code><br/>
+#       :white_check_mark: job output file <code>slurm-4682.out</code><br/>
+#       :white_check_mark: no message matching <code>ERROR: </code><br/>
+#       :white_check_mark: no message matching <code>FAILED: </code><br/>
+#       :white_check_mark: no message matching <code> required modules missing:</code><br/>
+#       :white_check_mark: found message(s) matching <code>No missing installations</code><br/>
+#       :white_check_mark: found message matching <code>tar.gz created!</code><br/>
 #     </dd>
 #     <dt>_Artefacts_</dt>
 #     <dd>
@@ -238,12 +238,12 @@ fi
 #   <dl>
 #     <dt>_Details_</dt>
 #     <dd>
-#       :heavy_check_mark: job output file <code>slurm-4682.out</code><br/>
-#       :heavy_multiplication_x: no message matching <code>ERROR: </code><br/>
-#       :heavy_check_mark: no message matching <code>FAILED: </code><br/>
-#       :heavy_multiplication_x: no message matching <code> required modules missing:</code><br/>
-#       :heavy_check_mark: found message(s) matching <code>No missing installations</code><br/>
-#       :heavy_check_mark: found message matching <code>tar.gz created!</code><br/>
+#       :white_check_mark: job output file <code>slurm-4682.out</code><br/>
+#       :x: no message matching <code>ERROR: </code><br/>
+#       :white_check_mark: no message matching <code>FAILED: </code><br/>
+#       :x: no message matching <code> required modules missing:</code><br/>
+#       :white_check_mark: found message(s) matching <code>No missing installations</code><br/>
+#       :white_check_mark: found message matching <code>tar.gz created!</code><br/>
 #     </dd>
 #     <dt>_Artefacts_</dt>
 #     <dd>
@@ -257,8 +257,8 @@ fi
 comment_template="<details>__SUMMARY_FMT__<dl>__DETAILS_FMT____ARTEFACTS_FMT__</dl></details>"
 comment_summary_fmt="<summary>__SUMMARY__ _(click triangle for details)_</summary>"
 comment_details_fmt="<dt>_Details_</dt><dd>__DETAILS_LIST__</dd>"
-comment_success_item_fmt=":heavy_check_mark: __ITEM__"
-comment_failure_item_fmt=":heavy_multiplication_x: __ITEM__"
+comment_success_item_fmt=":white_check_mark: __ITEM__"
+comment_failure_item_fmt=":x: __ITEM__"
 comment_artefacts_fmt="<dt>_Artefacts_</dt><dd>__ARTEFACTS_LIST__</dd>"
 comment_artefact_details_fmt="<details>__ARTEFACT_SUMMARY____ARTEFACT_DETAILS__</details>"
 
