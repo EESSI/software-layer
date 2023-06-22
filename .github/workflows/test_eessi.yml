@@ -13,8 +13,8 @@ jobs:
         - 2023.06
         EESSI_SOFTWARE_SUBDIR:
         - aarch64/generic
-        - aarch64/graviton2
-        - aarch64/graviton3
+        - aarch64/neoverse_n1
+        - aarch64/neoverse_v1
         - x86_64/amd/zen2
         - x86_64/amd/zen3
         - x86_64/intel/haswell
