@@ -207,7 +207,7 @@ if [[ -d ${STORAGE} ]]; then
     # double-check that at least one tarball of the temporary storage was created
     if check_tmp_tarball ${TARBALL_TMP_BUILD_STEP_DIR} || check_tmp_tarball ${TARBALL_TMP_TARBALL_STEP_DIR}; then
         echo "Removing temporary storage under '${STORAGE}'"
-        # rm -rf ${STORAGE}
+        rm -rf ${STORAGE}
     else
         echo "Did not find any tarball containing the temporary storage for neither the"
         echo "build nor the tar step. Hence, not removing the storage at '${STORAGE}'."
