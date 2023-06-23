@@ -5,3 +5,4 @@ easyconfigs:
         include-easyblocks-from-pr: 2248
   - foss-2021a
   - libpng-1.6.37-GCCcore-10.3.0.eb:
+  - libjpeg-turbo-2.0.6-GCCcore-10.3.0.eb
