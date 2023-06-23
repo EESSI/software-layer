@@ -1,3 +1,8 @@
 easyconfigs:
   - GCC-11.2.0
-  - foss-2021b
+  - CMake-3.21.1-GCCcore-11.2.0.eb:
+      options:
+        include-easyblocks-from-pr: 2248
+  - CMake-3.22.1-GCCcore-11.2.0.eb:
+      options:
+        include-easyblocks-from-pr: 2248
