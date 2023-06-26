@@ -6,3 +6,4 @@ easyconfigs:
   - CMake-3.22.1-GCCcore-11.2.0.eb:
       options:
         include-easyblocks-from-pr: 2248
+  - zlib-1.2.11-GCCcore-11.2.0
