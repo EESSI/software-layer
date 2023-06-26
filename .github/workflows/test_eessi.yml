@@ -23,6 +23,7 @@ jobs:
         EASYSTACK_FILE:
         - eessi-2023.06-eb-4.7.2-2021a.yml
         - eessi-2023.06-eb-4.7.2-2021b.yml
+        - eessi-2023.06-eb-4.7.2-2022a.yml
         - eessi-2023.06-eb-4.7.2-2022b.yml
     steps:
         - name: Check out software-layer repository
