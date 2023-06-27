@@ -7,3 +7,4 @@ easyconfigs:
   - libpng-1.6.37-GCCcore-10.3.0.eb:
   - libjpeg-turbo-2.0.6-GCCcore-10.3.0.eb
   - QuantumESPRESSO-6.7-foss-2021a.eb
+  - Qt5-5.15.2-GCCcore-10.3.0.eb
