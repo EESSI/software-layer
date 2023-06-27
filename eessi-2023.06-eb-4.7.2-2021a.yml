@@ -9,4 +9,4 @@ easyconfigs:
   - QuantumESPRESSO-6.7-foss-2021a.eb
   - Qt5-5.15.2-GCCcore-10.3.0.eb:
        options:                                  
-         -from-pr: 18087
+         from-pr: 18087
