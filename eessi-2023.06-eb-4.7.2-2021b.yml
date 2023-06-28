@@ -7,4 +7,4 @@ easyconfigs:
       options:
         include-easyblocks-from-pr: 2248
   - zlib-1.2.11-GCCcore-11.2.0
-  - OpenMI-4.1.1-GCC-11.2.0
+  - OpenMPI-4.1.1-GCC-11.2.0
