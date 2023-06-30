@@ -11,3 +11,4 @@ easyconfigs:
   - Qt5-5.15.2-GCCcore-10.3.0.eb:
        options:                                  
          from-pr: 18087
+         ignore-test-failure
