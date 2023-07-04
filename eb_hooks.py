@@ -59,7 +59,7 @@ def parse_hook(ec, *args, **kwargs):
     # determine path to Prefix installation in compat layer via $EPREFIX
     eprefix = get_eessi_envvar('EPREFIX')
 
-#Disable Qt5/5.15.2 Sanity-check
+#Disable Qt5/5.15.2 qtwebengine in Sanity-check
     Qt5_check_qtwebengine_disable(ec, eprefix)
 
     if ec.name in PARSE_HOOKS:
