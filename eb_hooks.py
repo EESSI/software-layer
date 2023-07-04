@@ -60,12 +60,12 @@ def parse_hook(ec, *args, **kwargs):
     eprefix = get_eessi_envvar('EPREFIX')
 
 #Disable Qt5/5.15.2 Sanity-check
-    Qt5_Sanitycheck_disable(ec, eprefix)
+    Qt5_check_qtwebengine_disable(ec, eprefix)
 
     if ec.name in PARSE_HOOKS:
         PARSE_HOOKS[ec.name](ec, eprefix)
 
-def Qt5_Sanitycheck_disable(ec, eprefix):
+def Qt5_check_qtwebengine_disable(ec, eprefix):
     if ec.name == 'Qt5'and ec.version == '5.15.2':
          ec['check_qtwebengine'] = False  
          print_msg(NOTE:the value of check_qtwebengine has been set to %s , ec['check_qtwebengine'])
