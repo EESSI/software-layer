@@ -68,7 +68,7 @@ def parse_hook(ec, *args, **kwargs):
 def Qt5_check_qtwebengine_disable(ec, eprefix):
     if ec.name == 'Qt5'and ec.version == '5.15.2':
          ec['check_qtwebengine'] = False  
-         print_msg(NOTE:the value of check_qtwebengine has been set to %s , ec['check_qtwebengine'])
+         print_msg(The value of check_qtwebengine has been set to %s , ec['check_qtwebengine'])
 
 def pre_prepare_hook(self, *args, **kwargs):
     """Main pre-prepare hook: trigger custom functions."""
