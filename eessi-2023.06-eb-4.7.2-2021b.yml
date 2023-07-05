@@ -10,3 +10,4 @@ easyconfigs:
   - OpenMPI-4.1.1-GCC-11.2.0
   - gompi-2021b
   - FlexiBLAS-3.0.4-GCC-11.2.0.eb
+  - FFTW-3.3.10-gompi-2021b.eb
