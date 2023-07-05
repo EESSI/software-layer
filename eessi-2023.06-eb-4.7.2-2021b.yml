@@ -9,3 +9,4 @@ easyconfigs:
   - zlib-1.2.11-GCCcore-11.2.0
   - OpenMPI-4.1.1-GCC-11.2.0
   - gompi-2021b
+  - FlexiBLAS-3.0.4-GCC-11.2.0.eb
