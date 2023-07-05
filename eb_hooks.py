@@ -168,6 +168,8 @@ def parse_hook_Qt5_check_qtwebengine_disable(ec, eprefix):
          # see also https://github.com/easybuilders/easybuild-framework/pull/4290
          ec['check_qtwebengine'] = False
          print_msg("Checking for QtWebEgine in Qt5 installation has been disabled")
+    else:
+        raise EasyBuildError("Qt5-specific hook triggered for non-Qt5 easyconfig?!")
 
 
 def parse_hook_ucx_eprefix(ec, eprefix):
