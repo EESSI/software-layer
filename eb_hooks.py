@@ -59,16 +59,9 @@ def parse_hook(ec, *args, **kwargs):
     # determine path to Prefix installation in compat layer via $EPREFIX
     eprefix = get_eessi_envvar('EPREFIX')
 
-#Disable Qt5/5.15.2 qtwebengine in Sanity-check
-    Qt5_check_qtwebengine_disable(ec, eprefix)
-
     if ec.name in PARSE_HOOKS:
         PARSE_HOOKS[ec.name](ec, eprefix)
 
-def Qt5_check_qtwebengine_disable(ec, eprefix):
-    if ec.name == 'Qt5'and ec.version == '5.15.2':
-         ec['check_qtwebengine'] = False  
-         print_msg("The value of check_qtwebengine has been set to %s", ec['check_qtwebengine'])
 
 def pre_prepare_hook(self, *args, **kwargs):
     """Main pre-prepare hook: trigger custom functions."""
@@ -166,6 +159,19 @@ def parse_hook_fontconfig_add_fonts(ec, eprefix):
         raise EasyBuildError("fontconfig-specific hook triggered for non-fontconfig easyconfig?!")
 
 
+def parse_hook_Qt5_check_qtwebengine_disable(ec, eprefix):
+    """
+    Disable check for QtWebEngine in Qt5 as workaround for problem with determining glibc version.
+    """
+    if ec.name == 'Qt5':
+         # workaround for glibc version being reported as "UNKNOWN" in Gentoo Prefix environment by EasyBuild v4.7.2,
+         # see also https://github.com/easybuilders/easybuild-framework/pull/4290
+         ec['check_qtwebengine'] = False
+         print_msg("Checking for QtWebEgine in Qt5 installation has been disabled")
+    else:
+        raise EasyBuildError("Qt5-specific hook triggered for non-Qt5 easyconfig?!")
+
+
 def parse_hook_ucx_eprefix(ec, eprefix):
     """Make UCX aware of compatibility layer via additional configuration options."""
     if ec.name == 'UCX':
@@ -239,6 +245,7 @@ def pre_configure_hook_wrf_aarch64(self, *args, **kwargs):
 PARSE_HOOKS = {
     'CGAL': parse_hook_cgal_toolchainopts_precise,
     'fontconfig': parse_hook_fontconfig_add_fonts,
+    'Qt5': parse_hook_Qt5_check_qtwebengine_disable,
     'UCX': parse_hook_ucx_eprefix,
 }
 
