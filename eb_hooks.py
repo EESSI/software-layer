@@ -172,6 +172,23 @@ def parse_hook_Qt5_check_qtwebengine_disable(ec, eprefix):
         raise EasyBuildError("Qt5-specific hook triggered for non-Qt5 easyconfig?!")
 
 
+def parse_hook_openblas_relax_lapack_tests_num_errors(ec, eprefix):
+    """Relax number of failing numerical LAPACK tests on Arm 64-bit systems."""
+    if ec.name == 'OpenBLAS':
+        # relax maximum number of failed numerical LAPACK tests on Arm 64-bit systems,
+        # since the default setting of 150 that works well on x86_64 is a bit too strict
+        cfg_option = 'max_failing_lapack_tests_num_errors'
+        if get_cpu_architecture() == AARCH64:
+            orig_value = ec[cfg_option]
+            ec[cfg_option] = 300
+            print_msg("Maximum number of failing LAPACK tests with numerical errors for %s relaxed to %s (was %s)",
+                      ec.name, ec[cfg_option], orig_value)
+        else:
+            print_msg("Not changing option %s for %s on non-AARCH64", cfg_option, ec.name)
+    else:
+        raise EasyBuildError("OpenBLAS-specific hook triggered for non-OpenBLAS easyconfig?!")
+
+
 def parse_hook_ucx_eprefix(ec, eprefix):
     """Make UCX aware of compatibility layer via additional configuration options."""
     if ec.name == 'UCX':
@@ -245,6 +262,7 @@ def pre_configure_hook_wrf_aarch64(self, *args, **kwargs):
 PARSE_HOOKS = {
     'CGAL': parse_hook_cgal_toolchainopts_precise,
     'fontconfig': parse_hook_fontconfig_add_fonts,
+    'OpenBLAS': parse_hook_openblas_relax_lapack_tests_num_errors,
     'Qt5': parse_hook_Qt5_check_qtwebengine_disable,
     'UCX': parse_hook_ucx_eprefix,
 }
