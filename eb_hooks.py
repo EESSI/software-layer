@@ -176,6 +176,19 @@ def parse_hook_openblas_relax_lapack_tests_num_errors(ec, eprefix):
         raise EasyBuildError("OpenBLAS-specific hook triggered for non-OpenBLAS easyconfig?!")
 
 
+def parse_hook_qt5_check_qtwebengine_disable(ec, eprefix):
+    """
+    Disable check for QtWebEngine in Qt5 as workaround for problem with determining glibc version.
+    """
+    if ec.name == 'Qt5':
+         # workaround for glibc version being reported as "UNKNOWN" in Gentoo Prefix environment by EasyBuild v4.7.2,
+         # see also https://github.com/easybuilders/easybuild-framework/pull/4290
+         ec['check_qtwebengine'] = False
+         print_msg("Checking for QtWebEgine in Qt5 installation has been disabled")
+    else:
+        raise EasyBuildError("Qt5-specific hook triggered for non-Qt5 easyconfig?!")
+
+
 def parse_hook_ucx_eprefix(ec, eprefix):
     """Make UCX aware of compatibility layer via additional configuration options."""
     if ec.name == 'UCX':
@@ -250,6 +263,7 @@ PARSE_HOOKS = {
     'CGAL': parse_hook_cgal_toolchainopts_precise,
     'fontconfig': parse_hook_fontconfig_add_fonts,
     'OpenBLAS': parse_hook_openblas_relax_lapack_tests_num_errors,
+    'Qt5': parse_hook_qt5_check_qtwebengine_disable,
     'UCX': parse_hook_ucx_eprefix,
 }
 
