@@ -13,3 +13,4 @@ easyconfigs:
        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/18087
        options:                                  
          from-pr: 18087
+  - SciPy-bundle-2021.05-foss-2021a.eb
