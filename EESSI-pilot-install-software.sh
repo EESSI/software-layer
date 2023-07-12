@@ -30,6 +30,7 @@ function copy_build_log() {
         fi
         mkdir -p $(dirname ${build_log_path})
         cp -a ${build_log} ${build_log_path}
+        chmod 0644 ${build_log_path}
 
         # add context to end of copied log file
         echo >> ${build_log_path}
