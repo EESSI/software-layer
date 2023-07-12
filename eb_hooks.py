@@ -199,6 +199,15 @@ def parse_hook_ucx_eprefix(ec, eprefix):
         raise EasyBuildError("UCX-specific hook triggered for non-UCX easyconfig?!")
 
 
+def parse_hook_xvfb_cp_permissions(ec, eprefix):
+    """Add user write permission to xvfb-run before copying it in the postinstallcmds."""
+    if ec.name == 'Xvfb':
+        ec['postinstallcmds'] = ["chmod u+wx xvfb-run && cp -a xvfb-run %(installdir)s/bin/"]
+        print_msg("Using custom postinstallcmds for %s: %s", ec.name, ec['postinstallcmds'])
+    else:
+        raise EasyBuildError("Xvfb-specific hook triggered for non-Xvfb easyconfig?!")
+
+
 def pre_configure_hook(self, *args, **kwargs):
     """Main pre-configure hook: trigger custom functions based on software name."""
     if self.name in PRE_CONFIGURE_HOOKS:
@@ -265,6 +274,7 @@ PARSE_HOOKS = {
     'OpenBLAS': parse_hook_openblas_relax_lapack_tests_num_errors,
     'Qt5': parse_hook_qt5_check_qtwebengine_disable,
     'UCX': parse_hook_ucx_eprefix,
+    'Xvfb': parse_hook_xvfb_cp_permissions,
 }
 
 POST_PREPARE_HOOKS = {
