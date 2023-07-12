@@ -14,6 +14,36 @@ display_help() {
   echo "  -y | --https-proxy URL -  provides URL for the environment variable https_proxy"
 }
 
+function copy_build_log() {
+    # copy specified build log to specified directory, with some context added
+    build_log=${1}
+    build_logs_dir=${2}
+
+    # also copy to build logs directory, if specified
+    if [ ! -z "${build_logs_dir}" ]; then
+        log_filename="$(basename ${build_log})"
+        if [ ! -z "${SLURM_JOB_ID}" ]; then
+            # use subdirectory for build log in context of a Slurm job
+            build_log_path="${build_logs_dir}/jobs/${SLURM_JOB_ID}/${log_filename}"
+        else
+            build_log_path="${build_logs_dir}/non-jobs/${log_filename}"
+        fi
+        mkdir -p $(dirname ${build_log_path})
+        cp -a ${build_log} ${build_log_path}
+
+        # add context to end of copied log file
+        echo >> ${build_log_path}
+        echo "Context from which build log was copied:" >> ${build_log_path}
+        echo "- original path of build log: ${build_log}" >> ${build_log_path}
+        echo "- working directory: ${PWD}" >> ${build_log_path}
+        echo "- Slurm job ID: ${SLURM_OUT}" >> ${build_log_path}
+        echo "- EasyBuild version: ${eb_version}" >> ${build_log_path}
+        echo "- easystack file: ${es}" >> ${build_log_path}
+
+        echo "EasyBuild log file ${build_log} copied to ${build_log_path} (with context appended)"
+    fi
+}
+
 POSITIONAL_ARGS=()
 
 while [[ $# -gt 0 ]]; do
@@ -33,6 +63,10 @@ while [[ $# -gt 0 ]]; do
       ;;
     -y|--https-proxy)
       export https_proxy="$2"
+      shift 2
+      ;;
+    --build-logs-dir)
+      export build_logs_dir="${2}"
       shift 2
       ;;
     -*|--*)
@@ -150,6 +184,17 @@ for eb_version in '4.7.2'; do
             echo_green "Feeding easystack file ${es} to EasyBuild..."
 
             ${EB} --easystack ${TOPDIR}/${es} --robot
+            ec=$?
+
+            # copy EasyBuild log file if EasyBuild exited with an error
+            if [ ${ec} -ne 0 ]; then
+                eb_last_log=$(unset EB_VERBOSE; eb --last-log)
+                # copy to current working directory
+                cp -a ${eb_last_log} .
+                echo "Last EasyBuild log file copied from ${eb_last_log} to ${PWD}"
+                # copy to build logs dir (with context added)
+                copy_build_log "${eb_last_log}" "${build_logs_dir}"
+            fi
 
             $TOPDIR/check_missing_installations.sh ${TOPDIR}/${es}
         else
