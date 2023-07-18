@@ -1,3 +1,4 @@
 easyconfigs:
   - GCC-12.2.0
+  - OpenMPI-4.1.4-GCC-12.2.0
   - foss-2022b
