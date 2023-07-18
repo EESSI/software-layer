@@ -1,4 +1,10 @@
 easyconfigs:
   - GCC-11.3.0
   - OpenMPI-4.1.4-GCC-11.3.0.eb
+  - CMake-3.23.1-GCCcore-11.3.0.eb:
+      options:
+        include-easyblocks-from-pr: 2248
+  - CMake-3.24.3-GCCcore-11.3.0.eb:
+      options:
+        include-easyblocks-from-pr: 2248
   - foss-2022a
