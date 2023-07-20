@@ -1,2 +1,2 @@
 easyconfigs:
-  - ReFrame-4.2.0 ---from-pr=18320 -rebuild
+  - ReFrame-4.2.0 --from-pr=18320 --rebuild
