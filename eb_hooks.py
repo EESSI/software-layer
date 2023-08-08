@@ -164,6 +164,7 @@ def parse_hook_openblas_relax_lapack_tests_num_errors(ec, eprefix):
     if ec.name == 'OpenBLAS':
         # relax maximum number of failed numerical LAPACK tests on Arm 64-bit systems,
         # since the default setting of 150 that works well on x86_64 is a bit too strict
+        # See https://github.com/EESSI/software-layer/issues/314
         cfg_option = 'max_failing_lapack_tests_num_errors'
         if get_cpu_architecture() == AARCH64:
             orig_value = ec[cfg_option]
