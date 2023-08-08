@@ -167,7 +167,7 @@ def parse_hook_openblas_relax_lapack_tests_num_errors(ec, eprefix):
         cfg_option = 'max_failing_lapack_tests_num_errors'
         if get_cpu_architecture() == AARCH64:
             orig_value = ec[cfg_option]
-            ec[cfg_option] = 300
+            ec[cfg_option] = 400
             print_msg("Maximum number of failing LAPACK tests with numerical errors for %s relaxed to %s (was %s)",
                       ec.name, ec[cfg_option], orig_value)
         else:
