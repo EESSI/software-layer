@@ -4,7 +4,7 @@ on: [push, pull_request, workflow_dispatch]
 permissions:
   contents: read # to fetch code (actions/checkout)
 jobs:
-  eessi_pilot_repo:
+  pilot:
     runs-on: ubuntu-20.04
     strategy:
       fail-fast: false
