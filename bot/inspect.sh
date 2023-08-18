@@ -104,7 +104,7 @@ echo "bot/inspect.sh: HTTP_PROXY='${HTTP_PROXY}'"
 # if https_proxy is defined in ${JOB_CFG_FILE} use it, if not use env var $https_proxy
 HTTPS_PROXY=$(cfg_get_value "site_config" "https_proxy")
 HTTPS_PROXY=${HTTPS_PROXY:-${https_proxy}}
-echo "bot/build.sh: HTTPS_PROXY='${HTTPS_PROXY}'"
+echo "bot/inspect.sh: HTTPS_PROXY='${HTTPS_PROXY}'"
 
 LOCAL_TMP=$(cfg_get_value "site_config" "local_tmp")
 echo "bot/inspect.sh: LOCAL_TMP='${LOCAL_TMP}'"
@@ -150,8 +150,11 @@ echo "bot/inspect.sh: LOAD_MODULES='${LOAD_MODULES}'"
 
 # singularity/apptainer settings: CONTAINER, HOME, TMPDIR, BIND
 CONTAINER=$(cfg_get_value "repository" "container")
+echo "bot/inspect.sh: CONTAINER='${CONTAINER}'"
 export SINGULARITY_HOME="${PWD}:/eessi_bot_job"
+echo "bot/inspect.sh: SINGULARITY_HOME='${SINGULARITY_HOME}'"
 export SINGULARITY_TMPDIR="${PWD}/singularity_tmpdir"
+echo "bot/inspect.sh: SINGULARITY_TMPDIR='${SINGULARITY_TMPDIR}'"
 mkdir -p ${SINGULARITY_TMPDIR}
 
 # load modules if LOAD_MODULES is not empty
@@ -167,6 +170,7 @@ fi
 
 # determine repository to be used from entry .repository in ${JOB_CFG_FILE}
 REPOSITORY=$(cfg_get_value "repository" "repo_id")
+echo "bot/inspect.sh: REPOSITORY='${REPOSITORY}'"
 EESSI_REPOS_CFG_DIR_OVERRIDE=$(cfg_get_value "repository" "repos_cfg_dir")
 export EESSI_REPOS_CFG_DIR_OVERRIDE=${EESSI_REPOS_CFG_DIR_OVERRIDE:-${PWD}/cfg}
 echo "bot/inspect.sh: EESSI_REPOS_CFG_DIR_OVERRIDE='${EESSI_REPOS_CFG_DIR_OVERRIDE}'"
