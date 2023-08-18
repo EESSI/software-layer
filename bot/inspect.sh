@@ -83,7 +83,7 @@ if [[ -z ${job_dir} ]]; then
 fi
 
 # defaults
-export JOB_CFG_FILE="${job_dir}/cfg/job.cfg}"
+export JOB_CFG_FILE="${job_dir}/cfg/job.cfg"
 HOST_ARCH=$(uname -m)
 
 # check if ${JOB_CFG_FILE} exists
