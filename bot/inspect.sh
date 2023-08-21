@@ -203,42 +203,80 @@ export EESSI_OS_TYPE=${EESSI_OS_TYPE:-linux}
 echo "bot/inspect.sh: EESSI_OS_TYPE='${EESSI_OS_TYPE}'"
 
 # prepare arguments to eessi_container.sh common to build and tarball steps
-declare -a COMMON_ARGS=()
-COMMON_ARGS+=("--verbose")
-COMMON_ARGS+=("--access" "rw")
-COMMON_ARGS+=("--mode" "run")
-[[ ! -z ${CONTAINER} ]] && COMMON_ARGS+=("--container" "${CONTAINER}")
-[[ ! -z ${HTTP_PROXY} ]] && COMMON_ARGS+=("--http-proxy" "${HTTP_PROXY}")
-[[ ! -z ${HTTPS_PROXY} ]] && COMMON_ARGS+=("--https-proxy" "${HTTPS_PROXY}")
-[[ ! -z ${REPOSITORY} ]] && COMMON_ARGS+=("--repository" "${REPOSITORY}")
+declare -a CMDLINE_ARGS=()
+CMDLINE_ARGS+=("--verbose")
+CMDLINE_ARGS+=("--access" "rw")
+CMDLINE_ARGS+=("--mode" "shell")
+[[ ! -z ${CONTAINER} ]] && CMDLINE_ARGS+=("--container" "${CONTAINER}")
+[[ ! -z ${HTTP_PROXY} ]] && CMDLINE_ARGS+=("--http-proxy" "${HTTP_PROXY}")
+[[ ! -z ${HTTPS_PROXY} ]] && CMDLINE_ARGS+=("--https-proxy" "${HTTPS_PROXY}")
+[[ ! -z ${REPOSITORY} ]] && CMDLINE_ARGS+=("--repository" "${REPOSITORY}")
 
-# make sure to use the same parent dir for storing tarballs of tmp
-PREVIOUS_TMP_DIR=${PWD}/previous_tmp
+# create a directory for creating a tarball of the tmp directory
+INSPECT_TMP_DIR=$(mktemp -d ${PWD}/inspect.XXX)
 
-# prepare directory to store tarball of tmp for build step
-TARBALL_TMP_BUILD_STEP_DIR=${PREVIOUS_TMP_DIR}/build_step
-mkdir -p ${TARBALL_TMP_BUILD_STEP_DIR}
+# add arguments for temporary storage and storing a tarball of tmp
+CMDLINE_ARGS+=("--save" "${INSPECT_TMP_DIR}")
+CMDLINE_ARGS+=("--storage" "${STORAGE}")
 
-# prepare arguments to eessi_container.sh specific to build step
-declare -a BUILD_STEP_ARGS=()
-BUILD_STEP_ARGS+=("--save" "${TARBALL_TMP_BUILD_STEP_DIR}")
-BUILD_STEP_ARGS+=("--storage" "${STORAGE}")
+# # prepare arguments to install_software_layer.sh (specific to build step)
+# declare -a INSTALL_SCRIPT_ARGS=()
+# if [[ ${EESSI_SOFTWARE_SUBDIR_OVERRIDE} =~ .*/generic$ ]]; then
+#     INSTALL_SCRIPT_ARGS+=("--generic")
+# fi
+# [[ ! -z ${BUILD_LOGS_DIR} ]] && INSTALL_SCRIPT_ARGS+=("--build-logs-dir" "${BUILD_LOGS_DIR}")
 
-# prepare arguments to install_software_layer.sh (specific to build step)
-declare -a INSTALL_SCRIPT_ARGS=()
-if [[ ${EESSI_SOFTWARE_SUBDIR_OVERRIDE} =~ .*/generic$ ]]; then
-    INSTALL_SCRIPT_ARGS+=("--generic")
+# make sure some environment settings are available inside the shell started via
+# startprefix
+base_dir=$(dirname $(realpath $0))
+source ${base_dir}/init/eessi_defaults
+
+if [ -z $EESSI_PILOT_VERSION ]; then
+    echo "ERROR: \$EESSI_PILOT_VERSION must be set!" >&2
+    exit 1
 fi
-[[ ! -z ${BUILD_LOGS_DIR} ]] && INSTALL_SCRIPT_ARGS+=("--build-logs-dir" "${BUILD_LOGS_DIR}")
+EESSI_COMPAT_LAYER_DIR="${EESSI_CVMFS_REPO}/versions/${EESSI_PILOT_VERSION}/compat/linux/$(uname -m)"
 
-# create tmp file for output of build step
-build_outerr=$(mktemp build.outerr.XXXX)
+# NOTE The below requires access to the CVMFS repository. We could make a first
+# test run with a container. For now we skip the test.
+# if [ ! -d ${EESSI_COMPAT_LAYER_DIR} ]; then
+#     echo "ERROR: ${EESSI_COMPAT_LAYER_DIR} does not exist!" >&2
+#     exit 1
+# fi
 
-echo "Executing command to build software:"
-echo "./eessi_container.sh ${COMMON_ARGS[@]} ${BUILD_STEP_ARGS[@]}"
-echo "                     -- ./install_software_layer.sh \"${INSTALL_SCRIPT_ARGS[@]}\" \"$@\" 2>&1 | tee -a ${build_outerr}"
-#./eessi_container.sh "${COMMON_ARGS[@]}" "${BUILD_STEP_ARGS[@]}" \
-#                     -- ./install_software_layer.sh "${INSTALL_SCRIPT_ARGS[@]}" "$@" 2>&1 | tee -a ${build_outerr}
+# When we want to run a script with arguments, the next line is ensures to retain
+# these arguments.
+# INPUT=$(echo "$@")
+if [ ! -z ${SLURM_JOB_ID} ]; then
+    INPUT="export SLURM_JOB_ID=${SLURM_JOB_ID}; ${INPUT}"
+fi
+if [ ! -z ${EESSI_SOFTWARE_SUBDIR_OVERRIDE} ]; then
+    INPUT="export EESSI_SOFTWARE_SUBDIR_OVERRIDE=${EESSI_SOFTWARE_SUBDIR_OVERRIDE}; ${INPUT}"
+fi
+if [ ! -z ${EESSI_CVMFS_REPO_OVERRIDE} ]; then
+    INPUT="export EESSI_CVMFS_REPO_OVERRIDE=${EESSI_CVMFS_REPO_OVERRIDE}; ${INPUT}"
+fi
+if [ ! -z ${EESSI_PILOT_VERSION_OVERRIDE} ]; then
+    INPUT="export EESSI_PILOT_VERSION_OVERRIDE=${EESSI_PILOT_VERSION_OVERRIDE}; ${INPUT}"
+fi
+if [ ! -z ${http_proxy} ]; then
+    INPUT="export http_proxy=${http_proxy}; ${INPUT}"
+fi
+if [ ! -z ${https_proxy} ]; then
+    INPUT="export https_proxy=${https_proxy}; ${INPUT}"
+fi
+
+echo "Executing command to start interactive session to inspect build job:"
+# TODO possibly add information on how to init session after the prefix is
+# entered, initialization consists of
+# - environment variable settings (see 'run_in_compat_layer_env.sh')
+# - setup steps run in 'EESSI-pilot-install-software.sh'
+# These initializations are combined into a single script that is executed when
+# the shell in startprefix is started. We set the env variable BASH_ENV here.
+echo "./eessi_container.sh ${CMDLINE_ARGS[@]}"
+echo "                     -- ${EESSI_COMPAT_LAYER_DIR}/startprefix"
+./eessi_container.sh "${CMDLINE_ARGS[@]}" \
+                     -- ${EESSI_COMPAT_LAYER_DIR}/startprefix
 
 
 exit 0
