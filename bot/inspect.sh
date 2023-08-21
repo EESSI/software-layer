@@ -229,7 +229,8 @@ CMDLINE_ARGS+=("--storage" "${STORAGE}")
 # make sure some environment settings are available inside the shell started via
 # startprefix
 base_dir=$(dirname $(realpath $0))
-source ${base_dir}/init/eessi_defaults
+# base_dir of inspect.sh script is '.../bot', 'init' dir is at the same level
+source ${base_dir}/../init/eessi_defaults
 
 if [ -z $EESSI_PILOT_VERSION ]; then
     echo "ERROR: \$EESSI_PILOT_VERSION must be set!" >&2
