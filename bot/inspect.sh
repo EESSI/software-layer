@@ -30,12 +30,15 @@ set -e
 display_help() {
   echo "usage: $0 [OPTIONS]"
   echo "  -h | --help            -  display this usage information"
-  echo "  -j | --job-dir DIR     -  inspect job with the given work directory DIR"
+  echo "  -r | --resume TGZ      -  inspect job saved in tarball path TGZ; note, we assume the path"
+  echo "                            to be something like JOB_DIR/previous_tmp/{build,tarball}_step/TARBALL.tgz"
+  echo "                            and thus determine JOB_DIR from the given path"
+  echo "                            [default: none]"
   echo "  -x | --http-proxy URL  -  provides URL for the environment variable http_proxy"
   echo "  -y | --https-proxy URL -  provides URL for the environment variable https_proxy"
 }
 
-job_dir=
+resume_tgz=
 http_proxy=
 https_proxy=
 
@@ -47,8 +50,8 @@ while [[ $# -gt 0 ]]; do
       display_help
       exit 0
       ;;
-    -j|--job-dir)
-      export job_dir="${2}"
+    -r|--resume)
+      export resume_tgz="${2}"
       shift 2
       ;;
     -x|--http-proxy)
@@ -76,10 +79,19 @@ set -- "${POSITIONAL_ARGS[@]}"
 source scripts/utils.sh
 source scripts/cfg_files.sh
 
-if [[ -z ${job_dir} ]]; then
-    echo_yellow "path to job directory missing"
+if [[ -z ${resume_tgz} ]]; then
+    echo_red "path to tarball for resuming build job is missing"
     display_help
     exit 1
+fi
+
+job_dir=$(dirname $(dirname $(dirname ${resume_tgz})))
+
+if [[ -z ${job_dir} ]]; then
+    # job directory could be determined
+    echo_red "job directory could not be determined from '${resume_tgz}'"
+    display_help
+    exit 2
 fi
 
 # defaults
@@ -151,7 +163,9 @@ echo "bot/inspect.sh: LOAD_MODULES='${LOAD_MODULES}'"
 # singularity/apptainer settings: CONTAINER, HOME, TMPDIR, BIND
 CONTAINER=$(cfg_get_value "repository" "container")
 echo "bot/inspect.sh: CONTAINER='${CONTAINER}'"
-export SINGULARITY_HOME="${PWD}:/eessi_bot_job"
+# instead of using ${PWD} as HOME in the container, we use the job directory
+# to have access to output files of the job
+export SINGULARITY_HOME="${job_dir}:/eessi_bot_job"
 echo "bot/inspect.sh: SINGULARITY_HOME='${SINGULARITY_HOME}'"
 export SINGULARITY_TMPDIR="${PWD}/singularity_tmpdir"
 echo "bot/inspect.sh: SINGULARITY_TMPDIR='${SINGULARITY_TMPDIR}'"
@@ -171,6 +185,7 @@ fi
 # determine repository to be used from entry .repository in ${JOB_CFG_FILE}
 REPOSITORY=$(cfg_get_value "repository" "repo_id")
 echo "bot/inspect.sh: REPOSITORY='${REPOSITORY}'"
+# TODO better to read this from tarball???
 EESSI_REPOS_CFG_DIR_OVERRIDE=$(cfg_get_value "repository" "repos_cfg_dir")
 export EESSI_REPOS_CFG_DIR_OVERRIDE=${EESSI_REPOS_CFG_DIR_OVERRIDE:-${PWD}/cfg}
 echo "bot/inspect.sh: EESSI_REPOS_CFG_DIR_OVERRIDE='${EESSI_REPOS_CFG_DIR_OVERRIDE}'"
@@ -185,7 +200,7 @@ echo "bot/inspect.sh: EESSI_PILOT_VERSION_OVERRIDE='${EESSI_PILOT_VERSION_OVERRI
 # determine CVMFS repo to be used from .repository.repo_name in ${JOB_CFG_FILE}
 # here, just set EESSI_CVMFS_REPO_OVERRIDE, a bit further down
 # "source init/eessi_defaults" via sourcing init/minimal_eessi_env
-export EESSI_CVMFS_REPO_OVERRIDE=$(cfg_get_value "repository" "repo_name")
+export EESSI_CVMFS_REPO_OVERRIDE="/cvmfs/$(cfg_get_value 'repository' 'repo_name')"
 echo "bot/inspect.sh: EESSI_CVMFS_REPO_OVERRIDE='${EESSI_CVMFS_REPO_OVERRIDE}'"
 
 # determine architecture to be used from entry .architecture in ${JOB_CFG_FILE}
@@ -206,11 +221,13 @@ echo "bot/inspect.sh: EESSI_OS_TYPE='${EESSI_OS_TYPE}'"
 declare -a CMDLINE_ARGS=()
 CMDLINE_ARGS+=("--verbose")
 CMDLINE_ARGS+=("--access" "rw")
-CMDLINE_ARGS+=("--mode" "shell")
+CMDLINE_ARGS+=("--mode" "run")
 [[ ! -z ${CONTAINER} ]] && CMDLINE_ARGS+=("--container" "${CONTAINER}")
 [[ ! -z ${HTTP_PROXY} ]] && CMDLINE_ARGS+=("--http-proxy" "${HTTP_PROXY}")
 [[ ! -z ${HTTPS_PROXY} ]] && CMDLINE_ARGS+=("--https-proxy" "${HTTPS_PROXY}")
 [[ ! -z ${REPOSITORY} ]] && CMDLINE_ARGS+=("--repository" "${REPOSITORY}")
+
+[[ ! -z ${resume_tgz} ]] && CMDLINE_ARGS+=("--resume" "${resume_tgz}")
 
 # create a directory for creating a tarball of the tmp directory
 INSPECT_TMP_DIR=$(mktemp -d ${PWD}/inspect.XXX)
@@ -230,6 +247,7 @@ CMDLINE_ARGS+=("--storage" "${STORAGE}")
 # startprefix
 base_dir=$(dirname $(realpath $0))
 # base_dir of inspect.sh script is '.../bot', 'init' dir is at the same level
+# TODO better use script from tarball???
 source ${base_dir}/../init/eessi_defaults
 
 if [ -z $EESSI_PILOT_VERSION ]; then
