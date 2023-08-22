@@ -264,7 +264,7 @@ def pre_test_hook(self,*args, **kwargs):
         PRE_TEST_HOOKS[self.name](self, *args, **kwargs)
 
 def pre_test_hook_ignore_failing_tests_SciPybundle(self, *args, **kwargs):
-     """
+    """
     Pre-test hook for SciPy-bundle: skip failing tests for SciPy-bundle 2021.10 (currently the only version that is failing).
     In previous versions we were not as strict yet on the numpy/SciPy tests
     """
