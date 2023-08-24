@@ -229,12 +229,17 @@ CMDLINE_ARGS+=("--mode" "run")
 
 [[ ! -z ${resume_tgz} ]] && CMDLINE_ARGS+=("--resume" "${resume_tgz}")
 
-# create a directory for creating a tarball of the tmp directory
-INSPECT_TMP_DIR=$(mktemp -d ${PWD}/inspect.XXX)
+# create a directory for creating temporary data and scripts for the inspection
+INSPECT_DIR=$(mktemp --directory --tmpdir=${PWD} inspect.XXX)
+if [[ -z ${SINGULARITY_BIND} ]]; then
+    export SINGULARITY_BIND="${INSPECT_DIR}:/inspect_eessi_build_job"
+else
+    export SINGULARITY_BIND="${SINGULARITY_BIND},${INSPECT_DIR}:/inspect_eessi_build_job"
+fi
 
 # add arguments for temporary storage and storing a tarball of tmp
-CMDLINE_ARGS+=("--save" "${INSPECT_TMP_DIR}")
-CMDLINE_ARGS+=("--storage" "${STORAGE}")
+CMDLINE_ARGS+=("--save" "${INSPECT_DIR}")
+CMDLINE_ARGS+=("--storage" "${JOB_STORAGE}")
 
 # # prepare arguments to install_software_layer.sh (specific to build step)
 # declare -a INSTALL_SCRIPT_ARGS=()
@@ -266,23 +271,147 @@ EESSI_COMPAT_LAYER_DIR="${EESSI_CVMFS_REPO}/versions/${EESSI_PILOT_VERSION}/comp
 # When we want to run a script with arguments, the next line is ensures to retain
 # these arguments.
 # INPUT=$(echo "$@")
+mkdir -p ${INSPECT_DIR}/scripts
+RESUME_SCRIPT=${INSPECT_DIR}/scripts/resume_env.sh
+echo "bot/inspect.sh: creating script '${RESUME_SCRIPT}' to resume environment settings"
+
+cat << EOF > ${RESUME_SCRIPT}
+#!${EESSI_COMPAT_LAYER_DIR}/bin/bash
+echo "Sourcing '\$BASH_SOURCE' to init bot environment of build job"
+EOF
 if [ ! -z ${SLURM_JOB_ID} ]; then
-    INPUT="export SLURM_JOB_ID=${SLURM_JOB_ID}; ${INPUT}"
+    # TODO do we need the value at all? if so which one: current or of the job to
+    # inspect?
+    echo "export CURRENT_SLURM_JOB_ID=${SLURM_JOB_ID}" >> ${RESUME_SCRIPT}
 fi
 if [ ! -z ${EESSI_SOFTWARE_SUBDIR_OVERRIDE} ]; then
-    INPUT="export EESSI_SOFTWARE_SUBDIR_OVERRIDE=${EESSI_SOFTWARE_SUBDIR_OVERRIDE}; ${INPUT}"
+    echo "export EESSI_SOFTWARE_SUBDIR_OVERRIDE=${EESSI_SOFTWARE_SUBDIR_OVERRIDE}" >> ${RESUME_SCRIPT}
 fi
 if [ ! -z ${EESSI_CVMFS_REPO_OVERRIDE} ]; then
-    INPUT="export EESSI_CVMFS_REPO_OVERRIDE=${EESSI_CVMFS_REPO_OVERRIDE}; ${INPUT}"
+    echo "export EESSI_CVMFS_REPO_OVERRIDE=${EESSI_CVMFS_REPO_OVERRIDE}" >> ${RESUME_SCRIPT}
 fi
 if [ ! -z ${EESSI_PILOT_VERSION_OVERRIDE} ]; then
-    INPUT="export EESSI_PILOT_VERSION_OVERRIDE=${EESSI_PILOT_VERSION_OVERRIDE}; ${INPUT}"
+    echo "export EESSI_PILOT_VERSION_OVERRIDE=${EESSI_PILOT_VERSION_OVERRIDE}" >> ${RESUME_SCRIPT}
 fi
 if [ ! -z ${http_proxy} ]; then
-    INPUT="export http_proxy=${http_proxy}; ${INPUT}"
+    echo "export http_proxy=${http_proxy}" >> ${RESUME_SCRIPT}
 fi
 if [ ! -z ${https_proxy} ]; then
-    INPUT="export https_proxy=${https_proxy}; ${INPUT}"
+    echo "export https_proxy=${https_proxy}" >> ${RESUME_SCRIPT}
+fi
+cat << 'EOF' >> ${RESUME_SCRIPT}
+TOPDIR=$(dirname $(realpath $BASH_SOURCE))
+
+source ${TOPDIR}/scripts/utils.sh
+
+# honor $TMPDIR if it is already defined, use /tmp otherwise
+if [ -z $TMPDIR ]; then
+    export WORKDIR=/tmp/$USER
+else
+    export WORKDIR=$TMPDIR/$USER
+fi
+
+TMPDIR=$(mktemp -d)
+
+echo ">> Setting up environment..."
+
+source $TOPDIR/init/minimal_eessi_env
+
+if [ -d $EESSI_CVMFS_REPO ]; then
+    echo_green "$EESSI_CVMFS_REPO available, OK!"
+else
+    fatal_error "$EESSI_CVMFS_REPO is not available!"
+fi
+
+# make sure we're in Prefix environment by checking $SHELL
+if [[ ${SHELL} = ${EPREFIX}/bin/bash ]]; then
+    echo_green ">> It looks like we're in a Gentoo Prefix environment, good!"
+else
+    fatal_error "Not running in Gentoo Prefix environment, run '${EPREFIX}/startprefix' first!"
+fi
+
+# avoid that pyc files for EasyBuild are stored in EasyBuild installation directory
+export PYTHONPYCACHEPREFIX=$TMPDIR/pycache
+
+DETECTION_PARAMETERS=''
+GENERIC=0
+EB='eb'
+if [[ "$EASYBUILD_OPTARCH" == "GENERIC" || "$EESSI_SOFTWARE_SUBDIR_OVERRIDE" == *"/generic" ]]; then
+    echo_yellow ">> GENERIC build requested, taking appropriate measures!"
+    DETECTION_PARAMETERS="$DETECTION_PARAMETERS --generic"
+    GENERIC=1
+    export EASYBUILD_OPTARCH=GENERIC
+    EB='eb --optarch=GENERIC'
+fi
+
+echo ">> Determining software subdirectory to use for current build host..."
+if [ -z $EESSI_SOFTWARE_SUBDIR_OVERRIDE ]; then
+  export EESSI_SOFTWARE_SUBDIR_OVERRIDE=$(python3 $TOPDIR/eessi_software_subdir.py $DETECTION_PARAMETERS)
+  echo ">> Determined \$EESSI_SOFTWARE_SUBDIR_OVERRIDE via 'eessi_software_subdir.py $DETECTION_PARAMETERS' script"
+else
+  echo ">> Picking up pre-defined \$EESSI_SOFTWARE_SUBDIR_OVERRIDE: ${EESSI_SOFTWARE_SUBDIR_OVERRIDE}"
+fi
+
+# Set all the EESSI environment variables (respecting $EESSI_SOFTWARE_SUBDIR_OVERRIDE)
+# $EESSI_SILENT - don't print any messages
+# $EESSI_BASIC_ENV - give a basic set of environment variables
+EESSI_SILENT=1 EESSI_BASIC_ENV=1 source $TOPDIR/init/eessi_environment_variables
+
+if [[ -z ${EESSI_SOFTWARE_SUBDIR} ]]; then
+    fatal_error "Failed to determine software subdirectory?!"
+elif [[ "${EESSI_SOFTWARE_SUBDIR}" != "${EESSI_SOFTWARE_SUBDIR_OVERRIDE}" ]]; then
+    fatal_error "Values for EESSI_SOFTWARE_SUBDIR_OVERRIDE (${EESSI_SOFTWARE_SUBDIR_OVERRIDE}) and EESSI_SOFTWARE_SUBDIR (${EESSI_SOFTWARE_SUBDIR}) differ!"
+else
+    echo_green ">> Using ${EESSI_SOFTWARE_SUBDIR} as software subdirectory!"
+fi
+
+echo ">> Initializing Lmod..."
+source $EPREFIX/usr/share/Lmod/init/bash
+ml_version_out=$TMPDIR/ml.out
+ml --version &> $ml_version_out
+if [[ $? -eq 0 ]]; then
+    echo_green ">> Found Lmod ${LMOD_VERSION}"
+else
+    fatal_error "Failed to initialize Lmod?! (see output in ${ml_version_out}"
+fi
+
+echo ">> Configuring EasyBuild..."
+source $TOPDIR/configure_easybuild
+
+echo ">> Setting up \$MODULEPATH..."
+# make sure no modules are loaded
+module --force purge
+# ignore current $MODULEPATH entirely
+module unuse $MODULEPATH
+module use $EASYBUILD_INSTALLPATH/modules/all
+if [[ -z ${MODULEPATH} ]]; then
+    fatal_error "Failed to set up \$MODULEPATH?!"
+else
+    echo_green ">> MODULEPATH set up: ${MODULEPATH}"
+fi
+
+eb_version='4.7.2'
+
+# load EasyBuild module (will be installed if it's not available yet)
+source ${TOPDIR}/load_easybuild_module.sh ${eb_version}
+
+echo_green "All set, let's start installing some software with EasyBuild v${eb_version} in ${EASYBUILD_INSTALLPATH}..."
+
+echo "Ready for inspection of build job:"
+echo " - job directory is $HOME (\$HOME), check for slurm-*.out file"
+echo " - temporary data of job available at /tmp"
+echo " - Note, prefix $EESSI_PREFIX is writable"
+echo " - EasyBuild v${eb_version} is available"
+
+EOF
+chmod u+x ${RESUME_SCRIPT}
+
+# try to map it into the container's $HOME/.profile instead
+# TODO check if script already exists, if so change its name and source it at the beginning of the RESUME_SCRIPT
+if [[ -z ${SINGULARITY_BIND} ]]; then
+    export SINGULARITY_BIND="${RESUME_SCRIPT}:/eessi_bot_job/.profile"
+else
+    export SINGULARITY_BIND="${SINGULARITY_BIND},${RESUME_SCRIPT}:/eessi_bot_job/.profile"
 fi
 
 echo "Executing command to start interactive session to inspect build job:"
