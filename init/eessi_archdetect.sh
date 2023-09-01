@@ -3,6 +3,8 @@ VERSION="1.1.0"
 
 # Logging
 LOG_LEVEL="INFO"
+# Default result type is a best match
+CPUPATH_RESULT="best"
 
 timestamp () {
     date "+%Y-%m-%d %H:%M:%S"
@@ -120,10 +122,11 @@ cpupath(){
         fi
     done
   
-    log "INFO" "cpupath: best match for host CPU: $best_arch_match"
-    if [ "allx" == "${1}x" ]; then
+    if [ "allx" == "${CPUPATH_RESULT}x" ]; then
+        log "INFO" "cpupath: all matches for host CPU: $all_arch_matches"
         echo "$all_arch_matches"
     else
+        log "INFO" "cpupath: best match for host CPU: $best_arch_match"
         echo "$best_arch_match"
     fi
 }
@@ -136,7 +139,7 @@ while getopts 'hdva' OPTION; do
         h) echo "$USAGE"; exit 0;;
         d) LOG_LEVEL="DEBUG";;
         v) echo "eessi_archdetect.sh v$VERSION"; exit 0;;
-        a) all="all";;
+        a) CPUPATH_RESULT="all";;
         ?) echo "$USAGE"; exit 1;;
     esac
 done
@@ -145,6 +148,6 @@ shift "$(($OPTIND -1))"
 ARGUMENT=${1:-none}
 
 case "$ARGUMENT" in
-    "cpupath") cpupath $all; exit;;
+    "cpupath") cpupath; exit;;
     *) echo "$USAGE"; log "ERROR" "Missing <action> argument (possible actions: 'cpupath')";;
 esac
