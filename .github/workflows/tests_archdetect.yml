@@ -21,7 +21,9 @@ jobs:
     steps:
     - name: checkout
       uses: actions/checkout@93ea575cb5d8a053eaa0ac8fa3b40d7e05a33cc8 # v3.1.0
-    - uses: eessi/github-action-eessi@v2
+    - uses: eessi/github-action-eessi@58b50fd2eead2162c2b9ac258d4fb60cc9f30503 # v2.0.13
+      with:
+        eessi_stack_version: '2023.06'
     - name: test eessi_archdetect.sh
       run: |
           export EESSI_MACHINE_TYPE=${{matrix.proc_cpuinfo}}
