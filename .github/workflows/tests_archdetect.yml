@@ -21,11 +21,10 @@ jobs:
     steps:
     - name: checkout
       uses: actions/checkout@93ea575cb5d8a053eaa0ac8fa3b40d7e05a33cc8 # v3.1.0
-
-    - name: test eessi_archdetect.sh
-      uses: eessi/github-action-eessi@main
+    - uses: eessi/github-action-eessi@main
       with:
         eessi_stack_version: '2023.06'
+    - name: test eessi_archdetect.sh
       run: |
           export EESSI_MACHINE_TYPE=${{matrix.proc_cpuinfo}}
           export EESSI_MACHINE_TYPE=${EESSI_MACHINE_TYPE%%/*}
@@ -44,7 +43,7 @@ jobs:
               echo "Test for ${{matrix.proc_cpuinfo}} FAILED: $CPU_ARCHES" >&2
               exit 1
           fi
-          # Check all those architectures exist
+          # Check all those architectures actually exist
           for dir in $(echo "$CPU_ARCHES" | tr ':' '\n'); do
           [ -d "$EESSI_PREFIX/software/linux/$dir" ]
           done
