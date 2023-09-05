@@ -14,6 +14,9 @@ if [ ! -d ${EESSI_COMPAT_LAYER_DIR} ]; then
 fi
 
 INPUT=$(echo "$@")
+if [ ! -z ${SLURM_JOB_ID} ]; then
+    INPUT="export SLURM_JOB_ID=${SLURM_JOB_ID}; ${INPUT}"
+fi
 if [ ! -z ${EESSI_SOFTWARE_SUBDIR_OVERRIDE} ]; then
     INPUT="export EESSI_SOFTWARE_SUBDIR_OVERRIDE=${EESSI_SOFTWARE_SUBDIR_OVERRIDE}; ${INPUT}"
 fi
