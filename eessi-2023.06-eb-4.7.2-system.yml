@@ -2,7 +2,6 @@ easyconfigs:
   - ReFrame-4.2.0.eb:
       options:
         from-pr: 18320
-        rebuild: True
   - EasyBuild-4.8.0.eb:
       options:
         from-pr: 18282
