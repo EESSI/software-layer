@@ -12,3 +12,5 @@ easyconfigs:
   - FlexiBLAS-3.0.4-GCC-11.2.0.eb
   - foss-2021b.eb
   - QuantumESPRESSO-6.8-foss-2021b.eb
+  - SciPy-bundle-2021.10-foss-2021b
+  - GROMACS-2021.5-foss-2021b.eb
