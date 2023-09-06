@@ -1,5 +1,5 @@
 easyconfigs:
-  - Java-11.0.18.eb:
+  - Java-11.eb:
       # see https://github.com/easybuilders/easybuild-easyblocks/pull/2557
       options:
         include-easyblocks-from-pr: 2557
