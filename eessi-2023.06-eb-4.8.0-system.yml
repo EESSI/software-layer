@@ -3,4 +3,3 @@ easyconfigs:
       # see https://github.com/easybuilders/easybuild-easyblocks/pull/2557
       options:
         include-easyblocks-from-pr: 2557
-~                                              
