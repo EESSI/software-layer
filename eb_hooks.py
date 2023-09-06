@@ -276,7 +276,8 @@ def pre_test_hook_ignore_failing_tests_SciPybundle(self, *args, **kwargs):
 
 def pre_test_hook_ignore_failing_tests_FFTWMPI(self, *args, **kwargs):
     """
-    Pre-test hook for FFTW.MPI: skip failing tests for FFTWMPI 3.3.10
+    Pre-test hook for FFTW.MPI: skip failing tests for FFTW.MPI 3.3.10 on neoverse_v1
+    cfr. https://github.com/EESSI/software-layer/issues/325
     """
     cpu_target = get_eessi_envvar('EESSI_SOFTWARE_SUBDIR')
     if self.name == 'FFTW.MPI' and self.version == '3.3.10' and cpu_target == 'aarch64/neoverse_v1':
