@@ -1,0 +1,7 @@
+easyconfigs:
+  - Java-11.eb:
+      # patch Java binaries/libraries when using alternate sysroot to ensure correct glibc & co are picked up
+      # see https://github.com/easybuilders/easybuild-easyblocks/pull/2557
+      # + https://github.com/easybuilders/easybuild-easyblocks/pull/2995
+      options:
+        include-easyblocks-from-pr: 2995
