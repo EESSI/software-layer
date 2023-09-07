@@ -24,3 +24,4 @@ easyconfigs:
        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/18348
        options:
          from-pr: 18348
+  - R-4.1.0-foss-2021a.eb
