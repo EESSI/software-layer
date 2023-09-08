@@ -1,6 +1,7 @@
 easyconfigs:
-  - OpenFOAM-v2112-foss-2021b.eb:
+  - MPFR-4.1.0-GCCcore-11.2.0.eb:
       #fix for different output of tsprintf.c test from GNU C library <2.36
       #see https://github.com/easybuilders/easybuild-easyconfigs/pull/18746
       options:
         from-pr: 18746
+  - OpenFOAM-v2112-foss-2021b.eb
