@@ -1,2 +1,3 @@
 easyconfigs:
   - GDAL-3.3.0-foss-2021a.eb
+  - ESPResSo-4.2.1-foss-2021a.eb
