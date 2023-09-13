@@ -1,0 +1,4 @@
+easyconfigs:
+  - Java-11.eb:
+      options:
+        rebuild: True
