@@ -172,7 +172,7 @@ else
     echo_green ">> MODULEPATH set up: ${MODULEPATH}"
 fi
 
-for eb_version in '4.7.2' '4.8.0'; do
+for eb_version in '4.7.2' '4.8.0' '4.8.1'; do
 
     # load EasyBuild module (will be installed if it's not available yet)
     source ${TOPDIR}/load_easybuild_module.sh ${eb_version}
