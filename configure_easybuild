@@ -26,7 +26,7 @@ fi
 # note: filtering Bison may break some installations, like Qt5 (see https://github.com/EESSI/software-layer/issues/49)
 # filtering pkg-config breaks R-bundle-Bioconductor installation (see also https://github.com/easybuilders/easybuild-easyconfigs/pull/11104)
 # problems occur when filtering pkg-config with gnuplot too (picks up Lua 5.1 from $EPREFIX rather than from Lua 5.3 dependency)
-DEPS_TO_FILTER=Autoconf,Automake,Autotools,binutils,bzip2,cURL,DBus,flex,gettext,gperf,help2man,intltool,libreadline,libtool,Lua,M4,makeinfo,ncurses,util-linux,XZ,zlib
+DEPS_TO_FILTER=Autoconf,Automake,Autotools,binutils,bzip2,DBus,flex,gettext,gperf,help2man,intltool,libreadline,libtool,Lua,M4,makeinfo,ncurses,util-linux,XZ,zlib
 # For aarch64 we need to also filter out Yasm.
 # See https://github.com/easybuilders/easybuild-easyconfigs/issues/11190
 if [[ "$EESSI_CPU_FAMILY" == "aarch64" ]]; then

@@ -9,3 +9,9 @@ easyconfigs:
   - zlib-1.2.11-GCCcore-11.2.0
   - OpenMPI-4.1.1-GCC-11.2.0
   - gompi-2021b
+  - FlexiBLAS-3.0.4-GCC-11.2.0.eb
+  - foss-2021b.eb
+  - git-2.33.1-GCCcore-11.2.0-nodocs.eb
+  - QuantumESPRESSO-6.8-foss-2021b.eb
+  - SciPy-bundle-2021.10-foss-2021b
+  - GROMACS-2021.5-foss-2021b.eb
