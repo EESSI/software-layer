@@ -253,15 +253,13 @@ def pre_configure_hook_wrf_aarch64(self, *args, **kwargs):
     if self.name == 'WRF':
         wrfversion = int((self.version).replace(".",""))
         if get_cpu_architecture() == AARCH64:
+            pattern = "Linux x86_64 ppc64le, gfortran"
+            repl = "Linux x86_64 aarch64 ppc64le, gfortran"
             if wrfversion <= 39:
-                    pattern = "Linux x86_64 ppc64le, gfortran"
-                    repl = "Linux x86_64 aarch64 ppc64le, gfortran"
                     self.cfg.update('preconfigopts', "sed -i 's/%s/%s/g' arch/configure_new.defaults && " % (pattern, repl))
                     print_msg("Using custom preconfigopts for %s: %s", self.name, self.cfg['preconfigopts'])
                     
             if 400 <= wrfversion <= 421:
-                    pattern = "Linux x86_64 ppc64le, gfortran"
-                    repl = "Linux x86_64 aarch64 ppc64le, gfortran"
                     self.cfg.update('preconfigopts', "sed -i 's/%s/%s/g' arch/configure.defaults && " % (pattern, repl))
                     print_msg("Using custom preconfigopts for %s: %s", self.name, self.cfg['preconfigopts'])
     else:
