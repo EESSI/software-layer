@@ -1,0 +1,3 @@
+easyconfigs:
+  # rebuilt with EasyBuild v4.8.1 (now wraps around Java/11.0.20)
+  - Java-11.eb
