@@ -244,7 +244,6 @@ def pre_configure_hook_metabat_filtered_zlib_dep(self, *args, **kwargs):
     else:
         raise EasyBuildError("MetaBAT-specific hook triggered for non-MetaBAT easyconfig?!")
 
-
 def pre_configure_hook_wrf_aarch64(self, *args, **kwargs):
     """
     Pre-configure hook for WRF:
@@ -257,7 +256,7 @@ def pre_configure_hook_wrf_aarch64(self, *args, **kwargs):
             if LooseVersion(self.version) <= LooseVersion('3.9.0'):
                     self.cfg.update('preconfigopts', "sed -i 's/%s/%s/g' arch/configure_new.defaults && " % (pattern, repl))
                     print_msg("Using custom preconfigopts for %s: %s", self.name, self.cfg['preconfigopts'])
-
+                    
             if LooseVersion('4.0.0') <= LooseVersion(self.version) <= LooseVersion('4.2.1'):
                     self.cfg.update('preconfigopts', "sed -i 's/%s/%s/g' arch/configure.defaults && " % (pattern, repl))
                     print_msg("Using custom preconfigopts for %s: %s", self.name, self.cfg['preconfigopts'])
