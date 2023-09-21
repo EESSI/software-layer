@@ -5,3 +5,4 @@ easyconfigs:
       options:
         include-easyblocks-from-pr: 2248
   - foss-2022b
+  - WRF-4.4.1-foss-2022b-dmpar.eb
