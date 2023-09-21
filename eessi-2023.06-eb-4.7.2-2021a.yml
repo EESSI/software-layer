@@ -25,3 +25,4 @@ easyconfigs:
        options:
          from-pr: 18348
   - WRF-4.3-foss-2021a-dmpar.eb
+        include-easyblocks-from-pr: 3006
