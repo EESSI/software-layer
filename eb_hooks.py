@@ -254,8 +254,13 @@ def pre_configure_hook_wrf_aarch64(self, *args, **kwargs):
         if get_cpu_architecture() == AARCH64:
             pattern = "Linux x86_64 ppc64le, gfortran"
             repl = "Linux x86_64 aarch64 ppc64le, gfortran"
-            self.cfg.update('preconfigopts', "sed -i 's/%s/%s/g' arch/configure_new.defaults && " % (pattern, repl))
-            print_msg("Using custom preconfigopts for %s: %s", self.name, self.cfg['preconfigopts'])
+            if LooseVersion(self.version) <= LooseVersion('3.9.0'):
+                    self.cfg.update('preconfigopts', "sed -i 's/%s/%s/g' arch/configure_new.defaults && " % (pattern, repl))
+                    print_msg("Using custom preconfigopts for %s: %s", self.name, self.cfg['preconfigopts'])
+
+            if LooseVersion('4.0.0') <= LooseVersion(self.version) <= LooseVersion('4.2.1'):
+                    self.cfg.update('preconfigopts', "sed -i 's/%s/%s/g' arch/configure.defaults && " % (pattern, repl))
+                    print_msg("Using custom preconfigopts for %s: %s", self.name, self.cfg['preconfigopts'])
     else:
         raise EasyBuildError("WRF-specific hook triggered for non-WRF easyconfig?!")
 
