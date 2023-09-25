@@ -1,0 +1,44 @@
+ - aarch64/generic:
+    - foss/2022b:
+        - OpenBlas:
+          - issue: 314
+    - foss/2021a:
+        - OpenBlas:
+          - issue: 314
+    - foss/2021b:
+        - OpenBlas:
+          - issue: 314
+    - foss/2022a:
+        - OpenBlas:
+          - issue: 314
+ - aarch64/neoverse_n1:
+    - foss/2022b:
+        - OpenBlas:
+          - issue: 314
+            - foss/2021a:
+        - OpenBlas:
+          - issue: 314
+    - foss/2021b:
+        - OpenBlas:
+          - issue: 314
+    - foss/2022a:
+        - OpenBlas:
+          - issue: 314
+ - aarch64/neoverse_v1:
+    - foss/2022a:
+        - OpenBlas:
+          - issue: 314
+    - foss/2022b:
+        - OpenBlas:
+          - issue: 314
+             - foss/2021a:
+        - OpenBlas:
+          - issue: 314
+    - foss/2021b:
+        - OpenBlas:
+          - issue: 314
+        - SciPy-bundle:
+          - issue: 318
+    - foss/2022a:
+        - OpenBlas:
+          - issue: 314
