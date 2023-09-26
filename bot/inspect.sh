@@ -34,6 +34,7 @@ display_help() {
   echo "                            to be something like JOB_DIR/previous_tmp/{build,tarball}_step/TARBALL.tgz"
   echo "                            and thus determine JOB_DIR from the given path"
   echo "                            [default: none]"
+  echo "  -c | --command COMMAND -  command to execute inside the container, in the prefix environment"
   echo "  -x | --http-proxy URL  -  provides URL for the environment variable http_proxy"
   echo "  -y | --https-proxy URL -  provides URL for the environment variable https_proxy"
 }
@@ -60,6 +61,10 @@ while [[ $# -gt 0 ]]; do
       ;;
     -y|--https-proxy)
       export https_proxy="${2}"
+      shift 2
+      ;;
+    -c|--command)
+      export run_in_prefix="${2}"
       shift 2
       ;;
     -*|--*)
@@ -421,10 +426,16 @@ echo "Executing command to start interactive session to inspect build job:"
 # - setup steps run in 'EESSI-pilot-install-software.sh'
 # These initializations are combined into a single script that is executed when
 # the shell in startprefix is started. We set the env variable BASH_ENV here.
-echo "./eessi_container.sh ${CMDLINE_ARGS[@]}"
-echo "                     -- ${EESSI_COMPAT_LAYER_DIR}/startprefix"
-./eessi_container.sh "${CMDLINE_ARGS[@]}" \
+if [[ -z ${run_in_prefix} ]]; then
+    echo "./eessi_container.sh ${CMDLINE_ARGS[@]}"
+    echo "                     -- ${EESSI_COMPAT_LAYER_DIR}/startprefix"
+    ./eessi_container.sh "${CMDLINE_ARGS[@]}" \
                      -- ${EESSI_COMPAT_LAYER_DIR}/startprefix
-
+else
+    echo "./eessi_container.sh ${CMDLINE_ARGS[@]}"
+    echo "                     -- ${EESSI_COMPAT_LAYER_DIR}/startprefix <<< ${run_in_prefix}"
+    ./eessi_container.sh "${CMDLINE_ARGS[@]}" \
+                     -- ${EESSI_COMPAT_LAYER_DIR}/startprefix <<< ${run_in_prefix}
+fi
 
 exit 0
