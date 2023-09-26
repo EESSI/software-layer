@@ -52,7 +52,7 @@ if [ -d ${pilot_version}/software/${os}/${cpu_arch_subdir}/modules ]; then
     find ${pilot_version}/software/${os}/${cpu_arch_subdir}/modules -type l | grep -v '/\.wh\.' >> ${files_list}
     # module files and symlinks
     find ${pilot_version}/software/${os}/${cpu_arch_subdir}/modules/all -type f -o -type l \
-        | grep -v '/\.wh\.' | sed -e 's/.lua$//' | sed -e 's@.*/modules/all/@@g' | sort -u \
+        | grep -v '/\.wh\.' | grep -v '/\.modulerc\.lua' | sed -e 's/.lua$//' | sed -e 's@.*/modules/all/@@g' | sort -u \
         >> ${module_files_list}
 fi
 if [ -d ${pilot_version}/software/${os}/${cpu_arch_subdir}/software -a -r ${module_files_list} ]; then

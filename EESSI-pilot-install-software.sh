@@ -8,10 +8,12 @@
 
 display_help() {
   echo "usage: $0 [OPTIONS]"
+  echo "  --build-logs-dir       -  location to copy EasyBuild logs to for failed builds"
   echo "  -g | --generic         -  instructs script to build for generic architecture target"
   echo "  -h | --help            -  display this usage information"
   echo "  -x | --http-proxy URL  -  provides URL for the environment variable http_proxy"
   echo "  -y | --https-proxy URL -  provides URL for the environment variable https_proxy"
+  echo "  --shared-fs-path       -  path to directory on shared filesystem that can be used"
 }
 
 function copy_build_log() {
@@ -68,6 +70,10 @@ while [[ $# -gt 0 ]]; do
       ;;
     --build-logs-dir)
       export build_logs_dir="${2}"
+      shift 2
+      ;;
+    --shared-fs-path)
+      export shared_fs_path="${2}"
       shift 2
       ;;
     -*|--*)
@@ -160,6 +166,14 @@ fi
 echo ">> Configuring EasyBuild..."
 source $TOPDIR/configure_easybuild
 
+if [ ! -z "${shared_fs_path}" ]; then
+    shared_eb_sourcepath=${shared_fs_path}/easybuild/sources
+    echo ">> Using ${shared_eb_sourcepath} as shared EasyBuild source path"
+    export EASYBUILD_SOURCEPATH=${shared_eb_sourcepath}:${EASYBUILD_SOURCEPATH}
+fi
+
+${EB} --show-config
+
 echo ">> Setting up \$MODULEPATH..."
 # make sure no modules are loaded
 module --force purge
@@ -172,7 +186,7 @@ else
     echo_green ">> MODULEPATH set up: ${MODULEPATH}"
 fi
 
-for eb_version in '4.7.2'; do
+for eb_version in '4.7.2' '4.8.0' '4.8.1'; do
 
     # load EasyBuild module (will be installed if it's not available yet)
     source ${TOPDIR}/load_easybuild_module.sh ${eb_version}
