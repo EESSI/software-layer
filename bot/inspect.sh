@@ -395,6 +395,7 @@ else
     echo_green ">> MODULEPATH set up: ${MODULEPATH}"
 fi
 
+echo
 echo_green "Build environment set up with install path ${EASYBUILD_INSTALLPATH}."
 echo
 echo "The build job can be inspected with the following resources:"
