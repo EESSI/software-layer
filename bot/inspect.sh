@@ -395,18 +395,22 @@ else
     echo_green ">> MODULEPATH set up: ${MODULEPATH}"
 fi
 
-eb_version='4.7.2'
-
-# load EasyBuild module (will be installed if it's not available yet)
-source ${TOPDIR}/load_easybuild_module.sh ${eb_version}
-
-echo_green "All set, let's start installing some software with EasyBuild v${eb_version} in ${EASYBUILD_INSTALLPATH}..."
-
-echo "Ready for inspection of build job:"
+echo_green "Build environment set up with install path ${EASYBUILD_INSTALLPATH}."
+echo
+echo "The build job can be inspected with the following resources:"
 echo " - job directory is $HOME (\$HOME), check for slurm-*.out file"
-echo " - temporary data of job available at /tmp"
-echo " - Note, prefix $EESSI_PREFIX is writable"
-echo " - EasyBuild v${eb_version} is available"
+echo " - temporary data of the job is available at /tmp"
+echo " - note, the prefix $EESSI_PREFIX is writable"
+echo
+echo "You may want to load an EasyBuild module. The inspect.sh script does not load"
+echo "that automatically, because multiple versions might have been used by the job."
+echo "Choose an EasyBuild version (see installed versions with 'module avail')"
+echo "and run"
+echo
+echo "source ${TOPDIR}/load_easybuild_module.sh EasyBuild_version"
+echo
+echo "Note, if you choose a version that is not installed yet, it will be"
+echo "installed first."
 
 EOF
 chmod u+x ${RESUME_SCRIPT}
