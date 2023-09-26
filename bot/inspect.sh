@@ -404,13 +404,20 @@ echo " - note, the prefix $EESSI_PREFIX is writable"
 echo
 echo "You may want to load an EasyBuild module. The inspect.sh script does not load"
 echo "that automatically, because multiple versions might have been used by the job."
-echo "Choose an EasyBuild version (see installed versions with 'module avail')"
+echo "Choose an EasyBuild version (see installed versions with 'module avail EasyBuild')"
 echo "and run"
 echo
-echo "source ${TOPDIR}/load_easybuild_module.sh EasyBuild_version"
+echo "source ${TOPDIR}/load_easybuild_module.sh _EasyBuild_version_"
+echo
+echo "Replace _EasyBuild_version_ with the version you want to use."
 echo
 echo "Note, if you choose a version that is not installed yet, it will be"
 echo "installed first."
+echo
+echo "If the version you need is already listed with 'module avail', you can"
+echo "simply run"
+echo
+echo "module load EasyBuild/VERSION_YOU_NEED"
 
 EOF
 chmod u+x ${RESUME_SCRIPT}
