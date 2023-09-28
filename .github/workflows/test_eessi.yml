@@ -30,6 +30,8 @@ jobs:
         - eessi-2023.06-eb-4.8.0-system.yml
         - eessi-2023.06-eb-4.8.0-2021b.yml
         - eessi-2023.06-eb-4.8.1-system.yml
+        - eessi-2023.06-eb-4.8.1-2021b.yml
+        - eessi-2023.06-eb-4.8.1-2022a.yml
         - eessi-2023.06-eb-4.8.1-2023a.yml
     steps:
         - name: Check out software-layer repository
