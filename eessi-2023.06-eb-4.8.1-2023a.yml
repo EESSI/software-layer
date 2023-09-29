@@ -1,8 +1,10 @@
 easyconfigs:
   - GCC-12.3.0
   - OpenBLAS-0.3.23-GCC-12.3.0:
-      # add patch to avoid hang when running OpenBLAS test suite,
+      # add patch to disable flaky DDRGES3 LAPACK test,
+      # see https://github.com/easybuilders/easybuild-easyconfigs/pull/18887;
+      # also pulls in patch to avoid hang when running OpenBLAS test suite,
       # see https://github.com/easybuilders/easybuild-easyconfigs/pull/18790
       options:
-        from-pr: 18790
+        from-pr: 18887
   - foss-2023a
