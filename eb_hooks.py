@@ -18,6 +18,8 @@ except ImportError:
     from distutils.version import LooseVersion
 
 
+CPU_TARGET_NEOVERSE_V1 = 'aarch64/neoverse_v1'
+
 EESSI_RPATH_OVERRIDE_ATTR = 'orig_rpath_override_dirs'
 
 
@@ -160,13 +162,14 @@ def parse_hook_fontconfig_add_fonts(ec, eprefix):
 
 
 def parse_hook_openblas_relax_lapack_tests_num_errors(ec, eprefix):
-    """Relax number of failing numerical LAPACK tests on Arm 64-bit systems."""
+    """Relax number of failing numerical LAPACK tests for aarch64/neoverse_v1 CPU target."""
+    cpu_target = get_eessi_envvar('EESSI_SOFTWARE_SUBDIR')
     if ec.name == 'OpenBLAS':
-        # relax maximum number of failed numerical LAPACK tests on Arm 64-bit systems,
-        # since the default setting of 150 that works well on x86_64 is a bit too strict
+        # relax maximum number of failed numerical LAPACK tests for aarch64/neoverse_v1 CPU target
+        # since the default setting of 150 that works well on other aarch64 targets and x86_64 is a bit too strict
         # See https://github.com/EESSI/software-layer/issues/314
         cfg_option = 'max_failing_lapack_tests_num_errors'
-        if get_cpu_architecture() == AARCH64:
+        if cpu_target == CPU_TARGET_NEOVERSE_V1:
             orig_value = ec[cfg_option]
             ec[cfg_option] = 400
             print_msg("Maximum number of failing LAPACK tests with numerical errors for %s relaxed to %s (was %s)",
@@ -270,7 +273,7 @@ def pre_test_hook_ignore_failing_tests_SciPybundle(self, *args, **kwargs):
     In previous versions we were not as strict yet on the numpy/SciPy tests
     """
     cpu_target = get_eessi_envvar('EESSI_SOFTWARE_SUBDIR')
-    if self.name == 'SciPy-bundle' and self.version == '2021.10' and cpu_target == 'aarch64/neoverse_v1':
+    if self.name == 'SciPy-bundle' and self.version == '2021.10' and cpu_target == CPU_TARGET_NEOVERSE_V1:
         self.cfg['testopts'] = "|| echo ignoring failing tests" 
 
 
@@ -280,7 +283,7 @@ def pre_test_hook_ignore_failing_tests_FFTWMPI(self, *args, **kwargs):
     cfr. https://github.com/EESSI/software-layer/issues/325
     """
     cpu_target = get_eessi_envvar('EESSI_SOFTWARE_SUBDIR')
-    if self.name == 'FFTW.MPI' and self.version == '3.3.10' and cpu_target == 'aarch64/neoverse_v1':
+    if self.name == 'FFTW.MPI' and self.version == '3.3.10' and cpu_target == CPU_TARGET_NEOVERSE_V1:
         self.cfg['testopts'] = "|| echo ignoring failing tests"
 
 PARSE_HOOKS = {
