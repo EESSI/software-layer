@@ -166,7 +166,7 @@ def parse_hook_openblas_relax_lapack_tests_num_errors(ec, eprefix):
     cpu_target = get_eessi_envvar('EESSI_SOFTWARE_SUBDIR')
     if ec.name == 'OpenBLAS':
         # relax maximum number of failed numerical LAPACK tests for aarch64/neoverse_v1 CPU target
-        # since the default setting of 150 that works well on other aarch64 target and x86_64 is a bit too strict
+        # since the default setting of 150 that works well on other aarch64 targets and x86_64 is a bit too strict
         # See https://github.com/EESSI/software-layer/issues/314
         cfg_option = 'max_failing_lapack_tests_num_errors'
         if cpu_target == CPU_TARGET_NEOVERSE_V1:
