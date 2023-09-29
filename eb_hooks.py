@@ -162,7 +162,7 @@ def parse_hook_fontconfig_add_fonts(ec, eprefix):
 
 
 def parse_hook_openblas_relax_lapack_tests_num_errors(ec, eprefix):
-    """Relax number of failing numerical LAPACK tests on for aarch64/neoverse_v1 CPU target."""
+    """Relax number of failing numerical LAPACK tests for aarch64/neoverse_v1 CPU target."""
     cpu_target = get_eessi_envvar('EESSI_SOFTWARE_SUBDIR')
     if ec.name == 'OpenBLAS':
         # relax maximum number of failed numerical LAPACK tests for aarch64/neoverse_v1 CPU target
