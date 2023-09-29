@@ -412,10 +412,6 @@ echo "module load EasyBuild/_VERSION_"
 echo
 echo "Replace _VERSION_ with the version you want to use."
 echo
-echo "Note, you can try to install a newer version with 'eb'. The script"
-echo "load_easybuild_module.sh cannot be used currently, because it exits at"
-echo "the end which also leaves the container."
-echo
 
 EOF
 chmod u+x ${RESUME_SCRIPT}
