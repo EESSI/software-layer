@@ -6,3 +6,5 @@ easyconfigs:
         from-pr: 18834
   - R-4.2.0-foss-2021b.eb
   - TensorFlow-2.8.4-foss-2021b.eb
+      options:
+        include-easyblocks-from-pr: 3011
