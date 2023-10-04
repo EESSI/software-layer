@@ -1,0 +1,22 @@
+- aarch64/neoverse_v1:
+  - FFTW/3.3.10-3.3.10-GCC-11.3.0:
+      - issue: https://github.com/EESSI/software-layer/issues/325
+      - info: "Flaky FFTW tests, random failures"
+  - FFTW/3.3.10-3.3.10-gompi-2021b:
+      - issue: https://github.com/EESSI/software-layer/issues/325
+      - info: "Flaky FFTW tests, random failures"
+  - OpenBLAS/0.3.18-GCC-11.2.0:
+    - issue: https://github.com/EESSI/software-layer/issues/314
+    - info: "Increased number of non-numerical failures in OpenBLAS test suite (238 vs max. 150 on x86_64/*)"
+  - OpenBLAS/0.3.20-GCC-11.3.0:
+    - issue: https://github.com/EESSI/software-layer/issues/314
+    - info: "Increased number of non-numerical failures in OpenBLAS test suite (238 vs max. 150 on x86_64/*)"
+  - OpenBLAS/0.3.21-GCC-12.2.0:
+    - issue: https://github.com/EESSI/software-layer/issues/314
+    - info: "Increased number of non-numerical failures in OpenBLAS test suite (344 vs max. 150 on x86_64/*)"
+  - SciPy-bundle/2021.05-foss-2021a:
+    - issue: https://github.com/EESSI/software-layer/issues/318
+    - info: "2 failing tests (vs 30554 passed) in scipy test suite"
+  - SciPy-bundle/2021.10-foss-2021b:
+    - issue: https://github.com/EESSI/software-layer/issues/318
+    - info: "20 failing tests (vs 14429 passed) in numpy test suite + 55 failing tests (vs 32438 passed) in scipy test suite"
