@@ -5,3 +5,4 @@ easyconfigs:
       options:
         from-pr: 18870
   - foss-2022a
+  - BAMM-2.5.0-foss-2022a.eb
