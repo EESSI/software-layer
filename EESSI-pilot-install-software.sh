@@ -186,8 +186,11 @@ else
     echo_green ">> MODULEPATH set up: ${MODULEPATH}"
 fi
 
-# use 'git diff' to determine which easystack files were changed
-for easystack_file in $(git diff --name-only | grep '^eessi.*yml$'); do
+# assume there's only one diff file that corresponds to the PR patch file
+pr_diff=$(ls [0-9]*.diff | head -1)
+
+# use PR patch file to determine in which easystack files stuff was added
+for easystack_file in $(cat ${pr_diff} | grep '^+++' | cut -f2 -d' ' | sed 's@^[a-z]/@@g' | grep '^eessi.*yml$'); do
 
     echo -e "Processing easystack file ${easystack_file}...\n\n"
 

@@ -6,3 +6,4 @@ easyconfigs:
         from-pr: 18870
   - foss-2022a
   - SciPy-bundle-2022.05-foss-2022a
+  - BAMM-2.5.0-foss-2022a.eb
