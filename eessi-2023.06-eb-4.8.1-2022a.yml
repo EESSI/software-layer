@@ -1,0 +1,8 @@
+easyconfigs:
+  - OpenBLAS-0.3.20-GCC-11.3.0:
+      # use easyconfig that includes patch to fix detection of Neoverse V1 CPUs,
+      # see https://github.com/easybuilders/easybuild-easyconfigs/pull/18870
+      options:
+        from-pr: 18870
+  - foss-2022a
+  - BAMM-2.5.0-foss-2022a.eb

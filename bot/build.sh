@@ -57,11 +57,27 @@ echo "bot/build.sh: LOCAL_TMP='${LOCAL_TMP}'"
 BUILD_LOGS_DIR=$(cfg_get_value "site_config" "build_logs_dir")
 echo "bot/build.sh: BUILD_LOGS_DIR='${BUILD_LOGS_DIR}'"
 # if $BUILD_LOGS_DIR is set, add it to $SINGULARITY_BIND so the path is available in the build container
-mkdir -p ${BUILD_LOGS_DIR}
-if [[ -z ${SINGULARITY_BIND} ]]; then
-    export SINGULARITY_BIND="${BUILD_LOGS_DIR}"
-else
-    export SINGULARITY_BIND="${SINGULARITY_BIND},${BUILD_LOGS_DIR}"
+if [[ ! -z ${BUILD_LOGS_DIR} ]]; then
+    mkdir -p ${BUILD_LOGS_DIR}
+    if [[ -z ${SINGULARITY_BIND} ]]; then
+        export SINGULARITY_BIND="${BUILD_LOGS_DIR}"
+    else
+        export SINGULARITY_BIND="${SINGULARITY_BIND},${BUILD_LOGS_DIR}"
+    fi
+fi
+
+# check if path to directory on shared filesystem is specified,
+# and use it as location for source tarballs used by EasyBuild if so
+SHARED_FS_PATH=$(cfg_get_value "site_config" "shared_fs_path")
+echo "bot/build.sh: SHARED_FS_PATH='${SHARED_FS_PATH}'"
+# if $SHARED_FS_PATH is set, add it to $SINGULARITY_BIND so the path is available in the build container
+if [[ ! -z ${SHARED_FS_PATH} ]]; then
+    mkdir -p ${SHARED_FS_PATH}
+    if [[ -z ${SINGULARITY_BIND} ]]; then
+        export SINGULARITY_BIND="${SHARED_FS_PATH}"
+    else
+        export SINGULARITY_BIND="${SINGULARITY_BIND},${SHARED_FS_PATH}"
+    fi
 fi
 
 SINGULARITY_CACHEDIR=$(cfg_get_value "site_config" "container_cachedir")
@@ -167,6 +183,7 @@ if [[ ${EESSI_SOFTWARE_SUBDIR_OVERRIDE} =~ .*/generic$ ]]; then
     INSTALL_SCRIPT_ARGS+=("--generic")
 fi
 [[ ! -z ${BUILD_LOGS_DIR} ]] && INSTALL_SCRIPT_ARGS+=("--build-logs-dir" "${BUILD_LOGS_DIR}")
+[[ ! -z ${SHARED_FS_PATH} ]] && INSTALL_SCRIPT_ARGS+=("--shared-fs-path" "${SHARED_FS_PATH}")
 
 # create tmp file for output of build step
 build_outerr=$(mktemp build.outerr.XXXX)

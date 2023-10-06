@@ -8,10 +8,12 @@
 
 display_help() {
   echo "usage: $0 [OPTIONS]"
+  echo "  --build-logs-dir       -  location to copy EasyBuild logs to for failed builds"
   echo "  -g | --generic         -  instructs script to build for generic architecture target"
   echo "  -h | --help            -  display this usage information"
   echo "  -x | --http-proxy URL  -  provides URL for the environment variable http_proxy"
   echo "  -y | --https-proxy URL -  provides URL for the environment variable https_proxy"
+  echo "  --shared-fs-path       -  path to directory on shared filesystem that can be used"
 }
 
 function copy_build_log() {
@@ -39,7 +41,7 @@ function copy_build_log() {
         echo "- working directory: ${PWD}" >> ${build_log_path}
         echo "- Slurm job ID: ${SLURM_OUT}" >> ${build_log_path}
         echo "- EasyBuild version: ${eb_version}" >> ${build_log_path}
-        echo "- easystack file: ${es}" >> ${build_log_path}
+        echo "- easystack file: ${easystack_file}" >> ${build_log_path}
 
         echo "EasyBuild log file ${build_log} copied to ${build_log_path} (with context appended)"
     fi
@@ -68,6 +70,10 @@ while [[ $# -gt 0 ]]; do
       ;;
     --build-logs-dir)
       export build_logs_dir="${2}"
+      shift 2
+      ;;
+    --shared-fs-path)
+      export shared_fs_path="${2}"
       shift 2
       ;;
     -*|--*)
@@ -160,6 +166,14 @@ fi
 echo ">> Configuring EasyBuild..."
 source $TOPDIR/configure_easybuild
 
+if [ ! -z "${shared_fs_path}" ]; then
+    shared_eb_sourcepath=${shared_fs_path}/easybuild/sources
+    echo ">> Using ${shared_eb_sourcepath} as shared EasyBuild source path"
+    export EASYBUILD_SOURCEPATH=${shared_eb_sourcepath}:${EASYBUILD_SOURCEPATH}
+fi
+
+${EB} --show-config
+
 echo ">> Setting up \$MODULEPATH..."
 # make sure no modules are loaded
 module --force purge
@@ -172,36 +186,42 @@ else
     echo_green ">> MODULEPATH set up: ${MODULEPATH}"
 fi
 
-for eb_version in '4.7.2' '4.8.0' '4.8.1'; do
+# assume there's only one diff file that corresponds to the PR patch file
+pr_diff=$(ls [0-9]*.diff | head -1)
+
+# use PR patch file to determine in which easystack files stuff was added
+for easystack_file in $(cat ${pr_diff} | grep '^+++' | cut -f2 -d' ' | sed 's@^[a-z]/@@g' | grep '^eessi.*yml$'); do
+
+    echo -e "Processing easystack file ${easystack_file}...\n\n"
+
+    # determine version of EasyBuild module to load based on EasyBuild version included in name of easystack file
+    eb_version=$(echo ${easystack_file} | sed 's/.*eb-\([0-9.]*\).*/\1/g')
 
     # load EasyBuild module (will be installed if it's not available yet)
     source ${TOPDIR}/load_easybuild_module.sh ${eb_version}
 
     echo_green "All set, let's start installing some software with EasyBuild v${eb_version} in ${EASYBUILD_INSTALLPATH}..."
 
-    for es in $(ls eessi-${EESSI_PILOT_VERSION}-eb-${eb_version}-*.yml); do
+    if [ -f ${easystack_file} ]; then
+        echo_green "Feeding easystack file ${easystack_file} to EasyBuild..."
 
-        if [ -f ${es} ]; then
-            echo_green "Feeding easystack file ${es} to EasyBuild..."
+        ${EB} --easystack ${TOPDIR}/${easystack_file} --robot
+        ec=$?
 
-            ${EB} --easystack ${TOPDIR}/${es} --robot
-            ec=$?
-
-            # copy EasyBuild log file if EasyBuild exited with an error
-            if [ ${ec} -ne 0 ]; then
-                eb_last_log=$(unset EB_VERBOSE; eb --last-log)
-                # copy to current working directory
-                cp -a ${eb_last_log} .
-                echo "Last EasyBuild log file copied from ${eb_last_log} to ${PWD}"
-                # copy to build logs dir (with context added)
-                copy_build_log "${eb_last_log}" "${build_logs_dir}"
-            fi
-
-            $TOPDIR/check_missing_installations.sh ${TOPDIR}/${es}
-        else
-            fatal_error "Easystack file ${es} not found!"
+        # copy EasyBuild log file if EasyBuild exited with an error
+        if [ ${ec} -ne 0 ]; then
+            eb_last_log=$(unset EB_VERBOSE; eb --last-log)
+            # copy to current working directory
+            cp -a ${eb_last_log} .
+            echo "Last EasyBuild log file copied from ${eb_last_log} to ${PWD}"
+            # copy to build logs dir (with context added)
+            copy_build_log "${eb_last_log}" "${build_logs_dir}"
         fi
-    done
+
+        $TOPDIR/check_missing_installations.sh ${TOPDIR}/${easystack_file}
+    else
+        fatal_error "Easystack file ${easystack_file} not found!"
+    fi
 
 done
 
