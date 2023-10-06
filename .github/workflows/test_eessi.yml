@@ -20,20 +20,6 @@ jobs:
         - x86_64/intel/haswell
         - x86_64/intel/skylake_avx512
         - x86_64/generic
-        EASYSTACK_FILE:
-        - eessi-2023.06-eb-4.7.2-2021a.yml
-        - eessi-2023.06-eb-4.7.2-2021b.yml
-        - eessi-2023.06-eb-4.7.2-2022a.yml
-        - eessi-2023.06-eb-4.7.2-2022b.yml
-        - eessi-2023.06-eb-4.7.2-system.yml
-        - eessi-2023.06-eb-4.8.0-2021a.yml
-        - eessi-2023.06-eb-4.8.0-system.yml
-        - eessi-2023.06-eb-4.8.0-2021b.yml
-        - eessi-2023.06-eb-4.8.1-system.yml
-        - eessi-2023.06-eb-4.8.1-2021a.yml
-        - eessi-2023.06-eb-4.8.1-2021b.yml
-        - eessi-2023.06-eb-4.8.1-2022a.yml
-        - eessi-2023.06-eb-4.8.1-2023a.yml
     steps:
         - name: Check out software-layer repository
           uses: actions/checkout@93ea575cb5d8a053eaa0ac8fa3b40d7e05a33cc8 # v3.1.0
@@ -55,7 +41,12 @@ jobs:
               export EESSI_SOFTWARE_SUBDIR=${{matrix.EESSI_SOFTWARE_SUBDIR}}
               env | grep ^EESSI | sort
               echo "just run check_missing_installations.sh (should use eessi-${{matrix.EESSI_VERSION}}.yml)"
-              ./check_missing_installations.sh ${{matrix.EASYSTACK_FILE}}
+              for easystack_file in $(ls eessi-${{matrix.EESSI_VERSION}}-eb-*.yml); do
+                  echo "check missing installations for ${easystack_file}..."
+                  ./check_missing_installations.sh ${easystack_file}
+                  ec=$?
+                  if [[ ${ec} -ne 0 ]]; then echo "missing installations found for ${easystack_file}!" >&2; exit ${ec}; fi
+              done
 
         - name: Test check_missing_installations.sh with missing package (GCC/8.3.0)
           run: |
@@ -66,15 +57,18 @@ jobs:
               export EESSI_OS_TYPE=linux
               export EESSI_SOFTWARE_SUBDIR=${{matrix.EESSI_SOFTWARE_SUBDIR}}
               env | grep ^EESSI | sort
-              echo "modify easystack file by adding a missing package (GCC/8.3.0)"
-              echo "  - GCC-8.3.0:" >> ${{matrix.EASYSTACK_FILE}}
-              tail -n 5 ${{matrix.EASYSTACK_FILE}}
+              # create dummy easystack file with a single entry (something that is not installed in EESSI)
+              easystack_file="test.yml"
+              echo "easyconfigs:" > ${easystack_file}
+              echo "  - GCC-8.3.0:" >> ${easystack_file}
+              echo "created easystack file '${easystack_file}' with a missing installation (GCC/8.3.0):"
+              cat ${easystack_file}
               # note, check_missing_installations.sh exits 1 if a package was
               # missing, which is intepreted as false (exit code based, not
               # boolean logic), hence when the script exits 0 if no package was
               # missing it is interpreted as true, thus the test did not capture
               # the missing package
-              if ./check_missing_installations.sh ${{matrix.EASYSTACK_FILE}}; then
+              if ./check_missing_installations.sh ${easystack_file}; then
                 echo "did NOT capture missing package; test FAILED"
                 exit 1
               else
