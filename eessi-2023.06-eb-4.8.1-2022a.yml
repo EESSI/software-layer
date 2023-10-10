@@ -7,3 +7,4 @@ easyconfigs:
   - foss-2022a
   - SciPy-bundle-2022.05-foss-2022a
   - BAMM-2.5.0-foss-2022a.eb
+  - ImageMagick-7.1.0-37-GCCcore-11.3.0.eb
