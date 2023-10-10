@@ -18,6 +18,8 @@ except ImportError:
     from distutils.version import LooseVersion
 
 
+CPU_TARGET_NEOVERSE_V1 = 'aarch64/neoverse_v1'
+
 EESSI_RPATH_OVERRIDE_ATTR = 'orig_rpath_override_dirs'
 
 
@@ -160,13 +162,14 @@ def parse_hook_fontconfig_add_fonts(ec, eprefix):
 
 
 def parse_hook_openblas_relax_lapack_tests_num_errors(ec, eprefix):
-    """Relax number of failing numerical LAPACK tests on Arm 64-bit systems."""
+    """Relax number of failing numerical LAPACK tests for aarch64/neoverse_v1 CPU target."""
+    cpu_target = get_eessi_envvar('EESSI_SOFTWARE_SUBDIR')
     if ec.name == 'OpenBLAS':
-        # relax maximum number of failed numerical LAPACK tests on Arm 64-bit systems,
-        # since the default setting of 150 that works well on x86_64 is a bit too strict
+        # relax maximum number of failed numerical LAPACK tests for aarch64/neoverse_v1 CPU target
+        # since the default setting of 150 that works well on other aarch64 targets and x86_64 is a bit too strict
         # See https://github.com/EESSI/software-layer/issues/314
         cfg_option = 'max_failing_lapack_tests_num_errors'
-        if get_cpu_architecture() == AARCH64:
+        if cpu_target == CPU_TARGET_NEOVERSE_V1:
             orig_value = ec[cfg_option]
             ec[cfg_option] = 400
             print_msg("Maximum number of failing LAPACK tests with numerical errors for %s relaxed to %s (was %s)",
@@ -244,7 +247,6 @@ def pre_configure_hook_metabat_filtered_zlib_dep(self, *args, **kwargs):
     else:
         raise EasyBuildError("MetaBAT-specific hook triggered for non-MetaBAT easyconfig?!")
 
-
 def pre_configure_hook_wrf_aarch64(self, *args, **kwargs):
     """
     Pre-configure hook for WRF:
@@ -254,8 +256,13 @@ def pre_configure_hook_wrf_aarch64(self, *args, **kwargs):
         if get_cpu_architecture() == AARCH64:
             pattern = "Linux x86_64 ppc64le, gfortran"
             repl = "Linux x86_64 aarch64 ppc64le, gfortran"
-            self.cfg.update('preconfigopts', "sed -i 's/%s/%s/g' arch/configure_new.defaults && " % (pattern, repl))
-            print_msg("Using custom preconfigopts for %s: %s", self.name, self.cfg['preconfigopts'])
+            if LooseVersion(self.version) <= LooseVersion('3.9.0'):
+                    self.cfg.update('preconfigopts', "sed -i 's/%s/%s/g' arch/configure_new.defaults && " % (pattern, repl))
+                    print_msg("Using custom preconfigopts for %s: %s", self.name, self.cfg['preconfigopts'])
+                    
+            if LooseVersion('4.0.0') <= LooseVersion(self.version) <= LooseVersion('4.2.1'):
+                    self.cfg.update('preconfigopts', "sed -i 's/%s/%s/g' arch/configure.defaults && " % (pattern, repl))
+                    print_msg("Using custom preconfigopts for %s: %s", self.name, self.cfg['preconfigopts'])
     else:
         raise EasyBuildError("WRF-specific hook triggered for non-WRF easyconfig?!")
 
@@ -270,8 +277,34 @@ def pre_test_hook_ignore_failing_tests_SciPybundle(self, *args, **kwargs):
     In previous versions we were not as strict yet on the numpy/SciPy tests
     """
     cpu_target = get_eessi_envvar('EESSI_SOFTWARE_SUBDIR')
-    if self.name == 'SciPy-bundle' and self.version == '2021.10' and cpu_target == 'aarch64/neoverse_v1':
+    if self.name == 'SciPy-bundle' and self.version == '2021.10' and cpu_target == CPU_TARGET_NEOVERSE_V1:
         self.cfg['testopts'] = "|| echo ignoring failing tests" 
+
+
+def pre_single_extension_hook(ext, *args, **kwargs):
+    """Main pre-configure hook: trigger custom functions based on software name."""
+    if ext.name in PRE_SINGLE_EXTENSION_HOOKS:
+        PRE_SINGLE_EXTENSION_HOOKS[ext.name](ext, *args, **kwargs)
+
+
+def pre_single_extension_testthat(ext, *args, **kwargs):
+    """
+    Pre-extension hook for testthat R package, to fix build on top of recent glibc.
+    """
+    if ext.name == 'testthat' and LooseVersion(ext.version) < LooseVersion('3.1.0'):
+        # use constant value instead of SIGSTKSZ for stack size,
+        # cfr. https://github.com/r-lib/testthat/issues/1373 + https://github.com/r-lib/testthat/pull/1403
+        ext.cfg['preinstallopts'] = "sed -i 's/SIGSTKSZ/32768/g' inst/include/testthat/vendor/catch.h && "
+
+
+def pre_single_extension_isoband(ext, *args, **kwargs):
+    """
+    Pre-extension hook for isoband R package, to fix build on top of recent glibc.
+    """
+    if ext.name == 'isoband' and LooseVersion(ext.version) < LooseVersion('0.2.5'):
+        # use constant value instead of SIGSTKSZ for stack size in vendored testthat included in isoband sources,
+        # cfr. https://github.com/r-lib/isoband/commit/6984e6ce8d977f06e0b5ff73f5d88e5c9a44c027
+        ext.cfg['preinstallopts'] = "sed -i 's/SIGSTKSZ/32768/g' src/testthat/vendor/catch.h && "
 
 
 def pre_test_hook_ignore_failing_tests_FFTWMPI(self, *args, **kwargs):
@@ -280,8 +313,9 @@ def pre_test_hook_ignore_failing_tests_FFTWMPI(self, *args, **kwargs):
     cfr. https://github.com/EESSI/software-layer/issues/325
     """
     cpu_target = get_eessi_envvar('EESSI_SOFTWARE_SUBDIR')
-    if self.name == 'FFTW.MPI' and self.version == '3.3.10' and cpu_target == 'aarch64/neoverse_v1':
+    if self.name == 'FFTW.MPI' and self.version == '3.3.10' and cpu_target == CPU_TARGET_NEOVERSE_V1:
         self.cfg['testopts'] = "|| echo ignoring failing tests"
+
 
 PARSE_HOOKS = {
     'CGAL': parse_hook_cgal_toolchainopts_precise,
@@ -305,4 +339,9 @@ PRE_CONFIGURE_HOOKS = {
 PRE_TEST_HOOKS = {
     'SciPy-bundle': pre_test_hook_ignore_failing_tests_SciPybundle,
     'FFTW.MPI': pre_test_hook_ignore_failing_tests_FFTWMPI,
+}
+
+PRE_SINGLE_EXTENSION_HOOKS = {
+    'isoband': pre_single_extension_isoband,
+    'testthat': pre_single_extension_testthat,
 }
