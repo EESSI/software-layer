@@ -314,6 +314,12 @@ fail_msg="Installation of R failed, so sad..."
 $EB --from-pr 14821 X11-20210518-GCCcore-10.3.0.eb -r && $EB --from-pr 16011 R-4.1.0-foss-2021a.eb --robot --parallel-extensions-install --experimental
 check_exit_code $? "${ok_msg}" "${fail_msg}"
 
+echo ">> Installing OpenFOAM 9..."
+ok_msg="Yet another variant of OpenFOAM is installed!"
+fail_msg="Installation of OpenFOAM failed, yikes..."
+$EB --from-pr 16570 HarfBuzz-2.8.1-GCCcore-10.3.0.eb -r && eb --from-pr 16571 NSS-3.65-GCCcore-10.3.0.eb -r && $EB OpenFOAM-9-foss-2021a.eb -r
+check_exit_code $? "${ok_msg}" "${fail_msg}"
+
 echo ">> Installing Nextflow 22.10.1..."
 ok_msg="Nextflow installed, the work must flow..."
 fail_msg="Installation of Nextflow failed, that's unexpected..."
