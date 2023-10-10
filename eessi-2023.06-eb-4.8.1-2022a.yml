@@ -6,3 +6,5 @@ easyconfigs:
         from-pr: 18870
   - foss-2022a
   - ESPResSo-4.2.1-foss-2022a
+      options:
+        from-pr: 18963
