@@ -1,8 +1,8 @@
 - aarch64/neoverse_v1:
-  - FFTW/3.3.10-3.3.10-GCC-11.3.0:
+  - FFTW/3.3.10-GCC-11.3.0:
       - issue: https://github.com/EESSI/software-layer/issues/325
       - info: "Flaky FFTW tests, random failures"
-  - FFTW/3.3.10-3.3.10-gompi-2021b:
+  - FFTW/3.3.10-gompi-2021b:
       - issue: https://github.com/EESSI/software-layer/issues/325
       - info: "Flaky FFTW tests, random failures"
   - OpenBLAS/0.3.18-GCC-11.2.0:

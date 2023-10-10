@@ -22,6 +22,9 @@ source $TOPDIR/scripts/utils.sh
 
 source $TOPDIR/configure_easybuild
 
+echo ">> Active EasyBuild configuration when checking for missing installations:"
+${EB:-eb} --show-config
+
 echo ">> Checking for missing installations in ${EASYBUILD_INSTALLPATH}..."
 eb_missing_out=$LOCAL_TMPDIR/eb_missing.out
 ${EB:-eb} --easystack ${easystack} --missing 2>&1 | tee ${eb_missing_out}
