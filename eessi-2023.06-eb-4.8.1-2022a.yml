@@ -7,3 +7,9 @@ easyconfigs:
   - foss-2022a
   - SciPy-bundle-2022.05-foss-2022a
   - BAMM-2.5.0-foss-2022a.eb
+  - Pillow-9.1.1-GCCcore-11.3.0.eb:
+      # avoid that hardcoded paths like /usr/include are used in build commands
+      # Uses a hook to modify the hardcoded LIBRARY and Header paths.
+      options:
+        from-pr: 18881 
+  - matplotlib-3.5.2-foss-2022a.eb
