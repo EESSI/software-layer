@@ -27,4 +27,4 @@
     - info: "2 failing tests (vs 30554 passed) in scipy test suite"
   - SciPy-bundle-2021.10-foss-2021b:
     - issue: https://github.com/EESSI/software-layer/issues/318
-    - info: "20 ailing tests (vs 14429 passed) in numpy test suite + 55 failing tests (vs 32438 passed) in scipy test suite"
+    - info: "20 failing tests (vs 14429 passed) in numpy test suite + 55 failing tests (vs 32438 passed) in scipy test suite"
