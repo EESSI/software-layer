@@ -190,7 +190,7 @@ fi
 pr_diff=$(ls [0-9]*.diff | head -1)
 
 # use PR patch file to determine in which easystack files stuff was added
-for easystack_file in $(cat ${pr_diff} | grep '^+++' | cut -f2 -d' ' | sed 's@^[a-z]/@@g' | grep '^eessi.*yml$'); do
+for easystack_file in $(cat ${pr_diff} | grep '^+++' | cut -f2 -d' ' | sed 's@^[a-z]/@@g' | grep '^eessi.*yml$' | egrep -v 'known-issues|missing'); do
 
     echo -e "Processing easystack file ${easystack_file}...\n\n"
 
