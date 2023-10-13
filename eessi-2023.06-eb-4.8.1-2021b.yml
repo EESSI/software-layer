@@ -5,4 +5,7 @@ easyconfigs:
       options:
         from-pr: 18834
   - R-4.2.0-foss-2021b.eb
-  - LAMMPS-23Jun2022-foss-2021b-kokkos.eb
+  - LAMMPS-23Jun2022-foss-2021b-kokkos.eb:
+      # TBB is an optional dependency when building on Intel arch
+      options:
+        from-pr: 19000
