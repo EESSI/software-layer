@@ -15,13 +15,13 @@
       - info: "Flaky FFTW tests, random failures"
   - OpenBLAS-0.3.18-GCC-11.2.0:
     - issue: https://github.com/EESSI/software-layer/issues/314
-    - info: "Increased number of non-numerical failures in OpenBLAS test suite (238 vs max. 150 on x86_64/*)"
+    - info: "Increased number of numerical errors in OpenBLAS test suite (238 vs max. 150 on x86_64/*)"
   - OpenBLAS-0.3.20-GCC-11.3.0:
     - issue: https://github.com/EESSI/software-layer/issues/314
-    - info: "Increased number of non-numerical failures in OpenBLAS test suite (238 vs max. 150 on x86_64/*)"
+    - info: "Increased number of numerical errors in OpenBLAS test suite (238 vs max. 150 on x86_64/*)"
   - OpenBLAS-0.3.21-GCC-12.2.0:
     - issue: https://github.com/EESSI/software-layer/issues/314
-    - info: "Increased number of non-numerical failures in OpenBLAS test suite (344 vs max. 150 on x86_64/*)"
+    - info: "Increased number of numerical errors in OpenBLAS test suite (344 vs max. 150 on x86_64/*)"
   - SciPy-bundle-2021.05-foss-2021a:
     - issue: https://github.com/EESSI/software-layer/issues/318
     - info: "2 failing tests (vs 30554 passed) in scipy test suite"
