@@ -206,9 +206,9 @@ fi
 
 # prepare arguments to test_suite.sh (specific to test step)
 declare -a TEST_SUITE_ARGS=()
-# if [[ ${EESSI_SOFTWARE_SUBDIR_OVERRIDE} =~ .*/generic$ ]]; then
-#     TEST_SUITE_ARGS+=("--generic")
-# fi
+if [[ ${EESSI_SOFTWARE_SUBDIR_OVERRIDE} =~ .*/generic$ ]]; then
+    TEST_SUITE_ARGS+=("--generic")
+fi
 # [[ ! -z ${BUILD_LOGS_DIR} ]] && TEST_SUITE_ARGS+=("--build-logs-dir" "${BUILD_LOGS_DIR}")
 # [[ ! -z ${SHARED_FS_PATH} ]] && TEST_SUITE_ARGS+=("--shared-fs-path" "${SHARED_FS_PATH}")
 
@@ -217,8 +217,8 @@ test_outerr=$(mktemp test.outerr.XXXX)
 
 echo "Executing command to build software:"
 echo "./eessi_container.sh ${COMMON_ARGS[@]} ${TEST_STEP_ARGS[@]}"
-echo "                     -- ./test_suite.sh \"${TEST_SUITE_ARGS[@]}\" \"$@\" 2>&1 | tee -a ${test_outerr}"
+echo "                     -- ./run_tests.sh \"${TEST_SUITE_ARGS[@]}\" \"$@\" 2>&1 | tee -a ${test_outerr}"
 ./eessi_container.sh "${COMMON_ARGS[@]}" "${TEST_STEP_ARGS[@]}" \
-                     -- ./test_suite.sh "${TEST_SUITE_ARGS[@]}" "$@" 2>&1 | tee -a ${test_outerr}
+                     -- ./run_tests.sh "${TEST_SUITE_ARGS[@]}" "$@" 2>&1 | tee -a ${test_outerr}
 
 exit 0
