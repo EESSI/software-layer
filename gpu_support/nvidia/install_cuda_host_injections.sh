@@ -5,7 +5,7 @@ TOPDIR=$(dirname $(realpath $BASH_SOURCE))
 source "$TOPDIR"/../../scripts/utils.sh
 
 # Make sure EESSI is initialised
-check_eessi_initialised()
+check_eessi_initialised
 
 if [[ $# -eq 0 ]] ; then
     fatal_error "You must provide the CUDA version as an argument, e.g.:\n $0 11.3.1"
