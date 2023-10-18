@@ -5,12 +5,14 @@ base_dir=$(dirname $(realpath $0))
 BUILD_CONTAINER="docker://ghcr.io/eessi/build-node:debian11"
 
 if [ $# -lt 2 ]; then
-    echo "Usage: $0 <shell|run> <path for temporary directories>" >&2
+    echo "Usage: $0 <shell|run> <path for temporary directories> <extra arguments for singularity (optional)>" >&2
     exit 1
 fi
 SHELL_OR_RUN=$1
 EESSI_TMPDIR=$2
-shift 2
+EXTRA_ARGS_SINGULARITY=$3
+
+shift 3
 
 if [ "$SHELL_OR_RUN" == "run" ] && [ $# -eq 0 ]; then
     echo "ERROR: No command specified to run?!" >&2
@@ -24,12 +26,12 @@ echo "Using $EESSI_TMPDIR as parent for temporary directories..."
 
 # create temporary directories
 mkdir -p $EESSI_TMPDIR/{home,overlay-upper,overlay-work}
-mkdir -p $EESSI_TMPDIR/{var-lib-cvmfs,var-run-cvmfs}
+mkdir -p $EESSI_TMPDIR/{var-lib-cvmfs,var-run-cvmfs,opt-eessi}
 # configure Singularity
 export SINGULARITY_CACHEDIR=$EESSI_TMPDIR/singularity_cache
 
 # take into account that $SINGULARITY_BIND may be defined already, to bind additional paths into the build container
-BIND_PATHS="$EESSI_TMPDIR/var-run-cvmfs:/var/run/cvmfs,$EESSI_TMPDIR/var-lib-cvmfs:/var/lib/cvmfs,$EESSI_TMPDIR"
+BIND_PATHS="$EESSI_TMPDIR/var-run-cvmfs:/var/run/cvmfs,$EESSI_TMPDIR/var-lib-cvmfs:/var/lib/cvmfs,$EESSI_TMPDIR/opt-eessi:/opt/eessi,$EESSI_TMPDIR"
 if [ -z $SINGULARITY_BIND ]; then
     export SINGULARITY_BIND="$BIND_PATHS"
 else
@@ -59,10 +61,10 @@ fi
 if [ "$SHELL_OR_RUN" == "shell" ]; then
     # start shell in Singularity container, with EESSI repository mounted with writable overlay
     echo "Starting Singularity build container..."
-    singularity shell --fusemount "$EESSI_PILOT_READONLY" --fusemount "$EESSI_PILOT_WRITABLE_OVERLAY" $BUILD_CONTAINER
+    singularity shell --fusemount "$EESSI_PILOT_READONLY" --fusemount "$EESSI_PILOT_WRITABLE_OVERLAY" $EXTRA_ARGS_SINGULARITY $BUILD_CONTAINER
 elif [ "$SHELL_OR_RUN" == "run" ]; then
     echo "Running '$@' in Singularity build container..."
-    singularity exec --fusemount "$EESSI_PILOT_READONLY" --fusemount "$EESSI_PILOT_WRITABLE_OVERLAY" $BUILD_CONTAINER "$@"
+    singularity exec --fusemount "$EESSI_PILOT_READONLY" --fusemount "$EESSI_PILOT_WRITABLE_OVERLAY" $EXTRA_ARGS_SINGULARITY $BUILD_CONTAINER "$@"
 else
     echo "ERROR: Unknown action specified: $SHELL_OR_RUN (should be either 'shell' or 'run')" >&2
     exit 1
