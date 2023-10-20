@@ -26,6 +26,8 @@ if [ $? -eq 0 ]; then
     # prepend location of modules for EESSI software stack to $MODULEPATH
     echo "Prepending $EESSI_MODULEPATH to \$MODULEPATH..." >> $output
     module use $EESSI_MODULEPATH
+    echo "Prepending $EESSI_EXTEND_MODULEPATH to \$MODULEPATH..." >> $output
+    module use $EESSI_EXTEND_MODULEPATH
 
     #echo >> $output
     #echo "*** Known problems in the ${EESSI_PILOT_VERSION} pilot software stack ***" >> $output
