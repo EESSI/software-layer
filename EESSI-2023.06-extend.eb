@@ -1,0 +1,85 @@
+easyblock = 'Binary'
+
+name = 'EESSI'
+version = '2023.06'
+versionsuffix = '-extend'
+
+homepage = 'https://eessi.github.io/docs/'
+
+description = """
+ The goal of the European Environment for Scientific Software Installations
+ (EESSI, pronounced as "easy") is to build a common stack of scientific
+ software installations for HPC systems and beyond, including laptops,
+ personal workstations and cloud infrastructure.
+
+ This module allows you to extend EESSI using the same configuration for
+ EasyBuild as EESSI itself uses. It installs the modules in a special location
+ that is configurable in the CVMFS configuration (so can be on a shared
+ filesystem), and automatically found when using the default EESSI environment. 
+"""
+
+toolchain = SYSTEM
+
+source_urls = None
+sources = ['eb_hooks.py']
+checksums = ['8ae609f99b6953beae89aa1945913686c86c156509dbc55e2b6b8017b13fcf66']
+
+# Don't extend the PATH
+prepend_to_path = None
+
+# All the dependencies we filter in EESSI
+local_deps_to_filter = "Autoconf,Automake,Autotools,binutils,bzip2,DBus,flex,gettext,gperf,help2man,intltool,libreadline,libtool,Lua,M4,makeinfo,ncurses,util-linux,XZ,zlib"
+local_arch_specific_deps_to_filter = {'aarch64': ',yasm', 'x86_64': ''}
+local_deps_to_filter += local_arch_specific_deps_to_filter[ARCH]
+
+modextravars = {
+    'EASYBUILD_FILTER_DEPS': local_deps_to_filter,
+    'EASYBUILD_IGNORE_OSDEPS': '1',
+    'EASYBUILD_DEBUG': '1',
+    'EASYBUILD_TRACE': '1',
+    'EASYBUILD_ZIP_LOGS': 'bzip2',
+    'EASYBUILD_RPATH': '1',
+    'EASYBUILD_FILTER_ENV_VARS': 'LD_LIBRARY_PATH',
+    'EASYBUILD_READ_ONLY_INSTALLDIR': '1',
+    'EASYBUILD_MODULE_EXTENSIONS': '1',
+    'EASYBUILD_EXPERIMENTAL': '1',
+    'EASYBUILD_HOOKS': '%(installdir)s/eb_hooks.py',
+}
+
+# Need a few other variables, but they are more dynamic
+# EASYBUILD_SYSROOT=${EPREFIX}
+# EASYBUILD_PREFIX=${WORKDIR}/easybuild
+# EASYBUILD_INSTALLPATH=${EESSI_PREFIX}/software/${EESSI_OS_TYPE}/${EESSI_SOFTWARE_SUBDIR}
+# EASYBUILD_SOURCEPATH=${WORKDIR}/easybuild/sources:${EESSI_SOURCEPATH}
+modluafooter = """
+if (mode() == "load") then
+  -- Use a working directory for temporary build files
+  if (os.getenv("WORKING_DIR") == nil) then
+    LmodMessage("-- Using /tmp as a temporary working directory for installations, you can override this by setting the environment variable WORKING_DIR and reloading the module (e.g., /dev/shm is a common option)")
+  end
+end
+working_dir = os.getenv("WORKING_DIR") or "/tmp"
+-- Gather the EPREFIX to use as a sysroot
+sysroot = os.getenv("EPREFIX")
+-- Use an installation prefix that we _should_ have write access to
+easybuild_installpath = string.gsub(os.getenv("EESSI_SOFTWARE_PATH"), 'versions', 'host_injections')
+if (mode() == "load") then
+  LmodMessage("-- To create installations for EESSI, you _must_ have write permissions to " .. easybuild_installpath)
+  -- Advise them to reuse sources
+  if (os.getenv("EASYBUILD_SOURCEPATH") == nil) then
+    LmodMessage("-- You may wish to configure a sources directory for EasyBuild (for example, via setting the environment variable EASYBUILD_SOURCEPATH) to allow you to reuse existing sources for packages.")
+  end
+end
+-- Set the relevant environment variables for EasyBuild
+setenv ("EASYBUILD_SYSROOT", sysroot)
+setenv ("EASYBUILD_PREFIX", pathJoin(working_dir, "easybuild"))
+setenv ("EASYBUILD_INSTALLPATH", easybuild_installpath)
+always_load("EasyBuild")
+"""
+
+sanity_check_paths = {
+    'files': ['eb_hooks.py'],
+    'dirs': ['']
+}
+
+moduleclass = 'devel'
