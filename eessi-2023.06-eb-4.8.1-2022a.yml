@@ -10,3 +10,6 @@ easyconfigs:
   - ESPResSo-4.2.1-foss-2022a:
       options:
         from-pr: 18963
+  - CDO-2.0.6-gompi-2022a.eb:
+      options:
+        include-easyblocks-from-pr: 3012
