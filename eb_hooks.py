@@ -350,7 +350,7 @@ PRE_CONFIGURE_HOOKS = {
 
 PRE_TEST_HOOKS = {
     'ESPResSo': pre_test_hook_ignore_failing_tests_ESPResSo,
-    'FFTW.MPI': pre_test_hook_ignore_failing_tests_FFTWMPI,
+#    'FFTW.MPI': pre_test_hook_ignore_failing_tests_FFTWMPI,
     'SciPy-bundle': pre_test_hook_ignore_failing_tests_SciPybundle,
 }
 
