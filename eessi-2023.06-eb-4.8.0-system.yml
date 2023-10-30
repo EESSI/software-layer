@@ -8,6 +8,3 @@ easyconfigs:
   - EasyBuild-4.8.1.eb:
       options:
         from-pr: 18761
-  - EasyBuild-4.8.2.eb:
-      options:
-        from-pr: 19101
