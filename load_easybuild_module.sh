@@ -75,7 +75,7 @@ else
     if [[ $? -eq 0 ]]; then
         echo_green ">> Module for EasyBuild v${EB_VERSION} found!"
     else
-        module avail --ignore_cache 2>&1 | grep -i easybuild/${EB_VERSION} &> ${ml_av_easybuild_out}
+        module --ignore_cache avail 2>&1 | grep -i easybuild/${EB_VERSION} &> ${ml_av_easybuild_out}
         if [[ $? -eq 0 ]]; then
             echo_green ">> Module for EasyBuild v${EB_VERSION} found!"
         else
