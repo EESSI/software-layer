@@ -279,7 +279,7 @@ def pre_configure_hook_LAMMPS_aarch64(self, *args, **kwargs):
             if  get_cpu_architecture() == AARCH64:
                 self.cfg['kokkos_arch'] = 'A64FX'
     else:
-        raise EasyBuildError("PLUMED-specific hook triggered for non-PLUMED easyconfig?!")
+        raise EasyBuildError("LAMMPS-specific hook triggered for non-LAMMPS easyconfig?!")
 
 
 def pre_test_hook(self,*args, **kwargs):
