@@ -268,18 +268,16 @@ def pre_configure_hook_wrf_aarch64(self, *args, **kwargs):
         raise EasyBuildError("WRF-specific hook triggered for non-WRF easyconfig?!")
 
 
-def pre_configure_hook_PLUMED_aarch64(self, *args, **kwargs):
+def pre_configure_hook_LAMMPS_aarch64(self, *args, **kwargs):
     """
     pre-configure hook for PLUMED:
     - remove unsupported --enable-asmjit option on aarch64
     """
 
-    if self.name == 'PLUMED':
-        if  get_cpu_architecture() == AARCH64:
-            configopts = self.cfg['configopts']
-            regex = re.compile(r'--enable-asmjit')
-            if re.search(regex, configopts):
-                self.cfg['configopts'] = regex.sub('', configopts)
+    if self.name == 'LAMMPS':
+        if self.version == '23Jun2022':
+            if  get_cpu_architecture() == AARCH64:
+                self.cfg['kokkos_arch'] = 'A64FX'
     else:
         raise EasyBuildError("PLUMED-specific hook triggered for non-PLUMED easyconfig?!")
 
@@ -362,7 +360,7 @@ PRE_CONFIGURE_HOOKS = {
     'MetaBAT': pre_configure_hook_metabat_filtered_zlib_dep,
     'OpenBLAS': pre_configure_hook_openblas_optarch_generic,
     'WRF': pre_configure_hook_wrf_aarch64,
-    'PLUMED': pre_configure_hook_PLUMED_aarch64,
+    'PLUMED': pre_configure_hook_LAMMPS_aarch64,
 }
 
 PRE_TEST_HOOKS = {
