@@ -4,3 +4,6 @@ easyconfigs:
   - ReFrame-4.3.3.eb:
       options:
         from-pr: 18851
+  - EasyBuild-4.8.2.eb:
+      options:
+        from-pr: 19101
