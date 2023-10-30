@@ -270,8 +270,8 @@ def pre_configure_hook_wrf_aarch64(self, *args, **kwargs):
 
 def pre_configure_hook_LAMMPS_aarch64(self, *args, **kwargs):
     """
-    pre-configure hook for PLUMED:
-    - remove unsupported --enable-asmjit option on aarch64
+    pre-configure hook for LAMMPS:
+    - set kokkos_arch on Aarch64
     """
 
     if self.name == 'LAMMPS':
