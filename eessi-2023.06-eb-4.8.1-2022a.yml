@@ -10,9 +10,3 @@ easyconfigs:
   - ESPResSo-4.2.1-foss-2022a:
       options:
         from-pr: 18963
-  - DP3-6.0-foss-2022a:
-      options:
-        from-pr: 19010
-  - WSClean-3.4-foss-2022a:
-      options:
-        from-pr: 19010
