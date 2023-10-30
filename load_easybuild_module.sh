@@ -76,10 +76,10 @@ else
     if [[ $? -eq 0 ]]; then
         echo_green ">> Module for EasyBuild v${EB_VERSION} found!"
     else
-        IGNORE_CACHE='--ignore_cache'
         module --ignore_cache avail 2>&1 | grep -i easybuild/${EB_VERSION} &> ${ml_av_easybuild_out}
         if [[ $? -eq 0 ]]; then
             echo_green ">> Module for EasyBuild v${EB_VERSION} found!"
+            IGNORE_CACHE='--ignore_cache'
         else
             eb_ec=EasyBuild-${EB_VERSION}.eb
             echo_yellow ">> Still no module for EasyBuild v${EB_VERSION}, trying with easyconfig ${eb_ec}..."
