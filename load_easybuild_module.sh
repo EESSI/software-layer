@@ -71,10 +71,12 @@ else
     check_exit_code $? "${ok_msg}" "${fail_msg}"
 
     # maybe the module obtained with --install-latest-eb-release is exactly the EasyBuild version we wanted?
+    IGNORE_CACHE=''
     module avail 2>&1 | grep -i easybuild/${EB_VERSION} &> ${ml_av_easybuild_out}
     if [[ $? -eq 0 ]]; then
         echo_green ">> Module for EasyBuild v${EB_VERSION} found!"
     else
+        IGNORE_CACHE='--ignore_cache'
         module --ignore_cache avail 2>&1 | grep -i easybuild/${EB_VERSION} &> ${ml_av_easybuild_out}
         if [[ $? -eq 0 ]]; then
             echo_green ">> Module for EasyBuild v${EB_VERSION} found!"
@@ -108,7 +110,7 @@ else
 fi
 
 echo ">> Loading EasyBuild v${EB_VERSION} module..."
-module load EasyBuild/${EB_VERSION}
+module ${IGNORE_CACHE} load EasyBuild/${EB_VERSION}
 eb_show_system_info_out=${TMPDIR}/eb_show_system_info.out
 ${EB} --show-system-info > ${eb_show_system_info_out}
 if [[ $? -eq 0 ]]; then
