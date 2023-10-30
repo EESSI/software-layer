@@ -360,7 +360,7 @@ PRE_CONFIGURE_HOOKS = {
     'MetaBAT': pre_configure_hook_metabat_filtered_zlib_dep,
     'OpenBLAS': pre_configure_hook_openblas_optarch_generic,
     'WRF': pre_configure_hook_wrf_aarch64,
-    'PLUMED': pre_configure_hook_LAMMPS_aarch64,
+    'LAMMPS': pre_configure_hook_LAMMPS_aarch64,
 }
 
 PRE_TEST_HOOKS = {
