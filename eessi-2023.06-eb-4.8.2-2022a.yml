@@ -1,28 +1,4 @@
 easyconfigs:
-  - casacore-3.5.0-foss-2022a:
-      options:
-        from-pr: 19119
-        # Exclude ncurses
-        filter-deps:
-          - Autoconf
-          - Automake
-          - Autotools
-          - binutils
-          - bzip2
-          - DBus
-          - flex
-          - gettext
-          - gperf
-          - help2man
-          - intltool
-          - libreadline
-          - libtool
-          - Lua
-          - M4
-          - makeinfo
-          - util-linux
-          - XZ
-          - zlib
   - AOFlagger-3.4.0-foss-2022a:
       options:
         from-pr: 19119
