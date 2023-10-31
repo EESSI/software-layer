@@ -2,7 +2,7 @@ easyconfigs:
   - AOFlagger-3.4.0-foss-2022a:
       options:
         from-pr: 19119
-        # Exclude Lua
+        # Exclude Lua from `filter-deps` as the compat layer version is too old for the software
         filter-deps:
           - Autoconf
           - Automake
