@@ -1,4 +1,7 @@
 easyconfigs:
+  - casacore-3.5.0-foss-2022a:
+      options:
+        from-pr: 19119
   - AOFlagger-3.4.0-foss-2022a:
       options:
         from-pr: 19119
@@ -23,6 +26,9 @@ easyconfigs:
           - util-linux
           - XZ
           - zlib
+  - EveryBeam-0.5.2-foss-2022a:
+      options:
+        from-pr: 19119
   - DP3-6.0-foss-2022a:
       options:
         from-pr: 19119
