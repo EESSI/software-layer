@@ -69,7 +69,8 @@ if (os.getenv("EESSI_CVMFS_INSTALL") ~= nil) then
 elseif (os.getenv("EESSI_SITE_INSTALL") ~= nil) then 
   easybuild_installpath = string.gsub(os.getenv("EESSI_SOFTWARE_PATH"), 'versions', 'host_injections')
 else
-  easybuild_installpath = string.gsub(os.getenv("EESSI_SOFTWARE_PATH"), os.getenv("EESSI_CVMFS_REPO"), pathJoin(os.getenv("HOME"), "eessi"))
+  -- Would have liked to use os.getenv("EESSI_CVMFS_REPO") here but the hypen needs to be escaped
+  easybuild_installpath = string.gsub(os.getenv("EESSI_SOFTWARE_PATH"), "/cvmfs/pilot.eessi%-hpc.org", pathJoin(os.getenv("HOME"), "eessi"))
 end
 if (mode() == "load") then
   LmodMessage("-- To create installations for EESSI, you _must_ have write permissions to " .. easybuild_installpath)
