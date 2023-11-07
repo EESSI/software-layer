@@ -60,8 +60,10 @@ if [ -d $EESSI_PREFIX ]; then
           if [ -d $EESSI_MODULEPATH ]; then
             export EESSI_MODULEPATH=$EESSI_MODULEPATH
             echo "Using ${EESSI_MODULEPATH} as the directory to be added to MODULEPATH." >> $output
-            export EESSI_EXTEND_MODULEPATH=${EESSI_MODULEPATH/versions/host_injections}
-            echo "Using ${EESSI_EXTEND_MODULEPATH} as the extension directory to be added to MODULEPATH." >> $output
+            export EESSI_SITE_MODULEPATH=${EESSI_MODULEPATH/versions/host_injections}
+            echo "Using ${EESSI_SITE_MODULEPATH} as the site extension directory to be added to MODULEPATH." >> $output
+            export EESSI_USER_MODULEPATH=${EESSI_MODULEPATH/${EESSI_CVMFS_REPO}/${HOME}\/eessi}
+            echo "Using ${EESSI_USER_MODULEPATH} as the user extension directory to be added to MODULEPATH." >> $output
           else
             error "EESSI module path at $EESSI_MODULEPATH not found!"
             false
