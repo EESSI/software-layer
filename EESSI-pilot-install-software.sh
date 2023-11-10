@@ -229,7 +229,7 @@ done
 
 echo ">> Creating/updating Lmod cache..."
 export LMOD_RC="${EASYBUILD_INSTALLPATH}/.lmod/lmodrc.lua"
-if [ ! -f $LMOD_RC ]; then
+if [ ! -f $LMOD_RC ] || 'create_lmodrc.py' == $(cat ${pr_diff} | grep '^+++' | cut -f2 -d' ' | sed 's@^[a-z]/@@g' | grep '^create_lmodrc.py$' | egrep -v 'known-issues|missing'); then
     python3 $TOPDIR/create_lmodrc.py ${EASYBUILD_INSTALLPATH}
     check_exit_code $? "$LMOD_RC created" "Failed to create $LMOD_RC"
 fi

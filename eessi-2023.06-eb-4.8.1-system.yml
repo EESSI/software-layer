@@ -7,3 +7,4 @@ easyconfigs:
   - EasyBuild-4.8.2.eb:
       options:
         from-pr: 19105
+  - CUDA-12.1.1.eb
