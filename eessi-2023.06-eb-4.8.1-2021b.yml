@@ -9,11 +9,7 @@ easyconfigs:
       # the --enable-asmjit is not supported on Aarch64
       options:
         from-pr: 19110
-  - ScaFaCoS-1.0.4-foss-2021b.eb:
-      # Newer version of ScaFaCoS for LAMMPS
-      options:
-        from-pr: 19163
   - LAMMPS-23Jun2022-foss-2021b-kokkos.eb:
-      # TBB is an optional dependency when building on Intel arch
+      # TBB and ScaFaCos are optional dependencies when building on Intel arch
       options:
         from-pr: 19164
