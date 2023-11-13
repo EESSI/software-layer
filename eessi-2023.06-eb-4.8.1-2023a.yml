@@ -8,3 +8,4 @@ easyconfigs:
       options:
         from-pr: 18887
   - foss-2023a
+  - X11-20230603-GCCcore-12.3.0

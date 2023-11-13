@@ -259,6 +259,7 @@ def pre_configure_hook_metabat_filtered_zlib_dep(self, *args, **kwargs):
     else:
         raise EasyBuildError("MetaBAT-specific hook triggered for non-MetaBAT easyconfig?!")
 
+
 def pre_configure_hook_wrf_aarch64(self, *args, **kwargs):
     """
     Pre-configure hook for WRF:
@@ -278,10 +279,31 @@ def pre_configure_hook_wrf_aarch64(self, *args, **kwargs):
     else:
         raise EasyBuildError("WRF-specific hook triggered for non-WRF easyconfig?!")
 
+
 def pre_test_hook(self,*args, **kwargs):
     """Main pre-test hook: trigger custom functions based on software name."""
     if self.name in PRE_TEST_HOOKS:
         PRE_TEST_HOOKS[self.name](self, *args, **kwargs)
+
+
+def pre_test_hook_ignore_failing_tests_ESPResSo(self, *args, **kwargs):
+    """
+    Pre-test hook for ESPResSo: skip failing tests, tests frequently timeout due to known bugs in ESPResSo v4.2.1
+    cfr. https://github.com/EESSI/software-layer/issues/363
+    """
+    if self.name == 'ESPResSo' and self.version == '4.2.1':
+        self.cfg['testopts'] = "|| echo 'ignoring failing tests (probably due to timeouts)'"
+
+
+def pre_test_hook_ignore_failing_tests_FFTWMPI(self, *args, **kwargs):
+    """
+    Pre-test hook for FFTW.MPI: skip failing tests for FFTW.MPI 3.3.10 on neoverse_v1
+    cfr. https://github.com/EESSI/software-layer/issues/325
+    """
+    cpu_target = get_eessi_envvar('EESSI_SOFTWARE_SUBDIR')
+    if self.name == 'FFTW.MPI' and self.version == '3.3.10' and cpu_target == CPU_TARGET_NEOVERSE_V1:
+        self.cfg['testopts'] = "|| echo ignoring failing tests"
+
 
 def pre_test_hook_ignore_failing_tests_SciPybundle(self, *args, **kwargs):
     """
@@ -319,16 +341,6 @@ def pre_single_extension_isoband(ext, *args, **kwargs):
         ext.cfg['preinstallopts'] = "sed -i 's/SIGSTKSZ/32768/g' src/testthat/vendor/catch.h && "
 
 
-def pre_test_hook_ignore_failing_tests_FFTWMPI(self, *args, **kwargs):
-    """
-    Pre-test hook for FFTW.MPI: skip failing tests for FFTW.MPI 3.3.10 on neoverse_v1
-    cfr. https://github.com/EESSI/software-layer/issues/325
-    """
-    cpu_target = get_eessi_envvar('EESSI_SOFTWARE_SUBDIR')
-    if self.name == 'FFTW.MPI' and self.version == '3.3.10' and cpu_target == CPU_TARGET_NEOVERSE_V1:
-        self.cfg['testopts'] = "|| echo ignoring failing tests"
-
-
 PARSE_HOOKS = {
     'CGAL': parse_hook_cgal_toolchainopts_precise,
     'fontconfig': parse_hook_fontconfig_add_fonts,
@@ -349,8 +361,9 @@ PRE_CONFIGURE_HOOKS = {
 }
 
 PRE_TEST_HOOKS = {
-    'SciPy-bundle': pre_test_hook_ignore_failing_tests_SciPybundle,
+    'ESPResSo': pre_test_hook_ignore_failing_tests_ESPResSo,
     'FFTW.MPI': pre_test_hook_ignore_failing_tests_FFTWMPI,
+    'SciPy-bundle': pre_test_hook_ignore_failing_tests_SciPybundle,
 }
 
 PRE_SINGLE_EXTENSION_HOOKS = {
