@@ -10,8 +10,3 @@ easyconfigs:
   - ESPResSo-4.2.1-foss-2022a:
       options:
         from-pr: 18963
-  - Pillow-9.1.1-GCCcore-11.3.0.eb:
-      # avoid that hardcoded paths like /usr/include are used in build commands
-      options:
-        from-pr: 19266 
-  - matplotlib-3.5.2-foss-2022a.eb
