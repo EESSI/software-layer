@@ -54,25 +54,12 @@ def get_rpath_override_dirs(software_name):
 
     return rpath_injection_dirs
 
-def set_Pillow_envvars(ec):
-    """Get an EESSI_CPATH environment variable from the environment"""
-    EESSI_CPATH = os.getenv('EESSI_EPREFIX') + '/usr/include'
-    EESSI_LIB_PATH = os.getenv('EESSI_EPREFIX') + '/usr/lib64'
-    if ec.name == 'Pillow':
-        os.environ['CPATH'] = os.pathsep + EESSI_CPATH
-        os.environ['LIBRARY_PATH'] = os.pathsep + EESSI_LIB_PATH
-        print_msg("NOTE: For Pillow which has Szip as a dependancy, CPATH has been set to %s", os.getenv('CPATH'))
-        print_msg("NOTE: For Pillow which has Szip as a dependancy, LIBRARY_PATH has been set to %s", os.getenv('LIBRARY_PATH'))
-        ec.log.info("NOTE: For Pillow which has Szip as a dependancy, CPATH has been set to %s", os.getenv('CPATH'))
-        ec.log.info("NOTE: For Pillow which has Szip as a dependancy, LIBRARY_PATH has been set to %s", os.getenv('LIBRARY_PATH'))
-
 
 def parse_hook(ec, *args, **kwargs):
     """Main parse hook: trigger custom functions based on software name."""
 
     # determine path to Prefix installation in compat layer via $EPREFIX
     eprefix = get_eessi_envvar('EPREFIX')
-    set_Pillow_envvars(ec)
     if ec.name in PARSE_HOOKS:
         PARSE_HOOKS[ec.name](ec, eprefix)
 
