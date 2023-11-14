@@ -24,3 +24,4 @@ easyconfigs:
        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/18348
        options:
          from-pr: 18348
+  - waLBerla-6.1-foss-2021a.eb
