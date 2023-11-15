@@ -19,6 +19,7 @@ except ImportError:
 
 
 CPU_TARGET_NEOVERSE_V1 = 'aarch64/neoverse_v1'
+CPU_TARGET_AARCH64_GENERIC = 'aarch64/generic' 
 
 EESSI_RPATH_OVERRIDE_ATTR = 'orig_rpath_override_dirs'
 
@@ -277,7 +278,10 @@ def pre_configure_hook_LAMMPS_aarch64(self, *args, **kwargs):
     if self.name == 'LAMMPS':
         if self.version == '23Jun2022':
             if  get_cpu_architecture() == AARCH64:
-                self.cfg['kokkos_arch'] = 'A64FX'
+                if cpu_target == CPU_TARGET_AARCH64_GENERIC:
+                    self.cfg['kokkos_arch'] = 'ARM81'
+                else:
+                    self.cfg['kokkos_arch'] = 'ARM80'
     else:
         raise EasyBuildError("LAMMPS-specific hook triggered for non-LAMMPS easyconfig?!")
 
