@@ -15,11 +15,11 @@ function error() {
     false
 }
 
-# set up minimal environment: $EESSI_PREFIX, $EESSI_PILOT_VERSION, $EESSI_OS_TYPE, $EESSI_CPU_FAMILY, $EPREFIX
+# set up minimal environment: $EESSI_PREFIX, $EESSI_VERSION, $EESSI_OS_TYPE, $EESSI_CPU_FAMILY, $EPREFIX
 source $EESSI_INIT_DIR_PATH/minimal_eessi_env
 
 if [ -d $EESSI_PREFIX ]; then
-  echo "Found EESSI pilot repo @ $EESSI_PREFIX!" >> $output
+  echo "Found EESSI repo @ $EESSI_PREFIX!" >> $output
 
   export EESSI_EPREFIX=$EPREFIX
   if [ -d $EESSI_EPREFIX ]; then
@@ -82,5 +82,5 @@ if [ -d $EESSI_PREFIX ]; then
     error "Compatibility layer directory $EESSI_EPREFIX not found!"
   fi
 else
-  error "EESSI pilot repository at $EESSI_PREFIX not found!"
+  error "EESSI repository at $EESSI_PREFIX not found!"
 fi

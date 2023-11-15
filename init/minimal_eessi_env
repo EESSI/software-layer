@@ -4,11 +4,11 @@
 # $BASH_SOURCE points to correct path, see also http://mywiki.wooledge.org/BashFAQ/028
 EESSI_INIT_DIR_PATH=$(dirname $(realpath $BASH_SOURCE))
 
-# set up defaults: EESSI_CVMFS_REPO, EESSI_PILOT_VERSION
+# set up defaults: EESSI_CVMFS_REPO, EESSI_VERSION
 #   script takes *_OVERRIDEs into account
 source ${EESSI_INIT_DIR_PATH}/eessi_defaults
 
-export EESSI_PREFIX=$EESSI_CVMFS_REPO/versions/$EESSI_PILOT_VERSION
+export EESSI_PREFIX=$EESSI_CVMFS_REPO/versions/$EESSI_VERSION
 
 if [[ $(uname -s) == 'Linux' ]]; then
     export EESSI_OS_TYPE='linux'

@@ -13,7 +13,7 @@ source $(dirname "$BASH_SOURCE")/eessi_environment_variables
 # only continue if setting EESSI environment variables worked fine
 if [ $? -eq 0 ]; then
 
-    export PS1="[EESSI pilot $EESSI_PILOT_VERSION] $ "
+    export PS1="[EESSI $EESSI_VERSION] $ "
 
     # add location of commands provided by compat layer to $PATH;
     # see https://github.com/EESSI/software-layer/issues/52
@@ -28,12 +28,12 @@ if [ $? -eq 0 ]; then
     module use $EESSI_MODULEPATH
 
     #echo >> $output
-    #echo "*** Known problems in the ${EESSI_PILOT_VERSION} pilot software stack ***" >> $output
+    #echo "*** Known problems in the ${EESSI_VERSION} software stack ***" >> $output
     #echo >> $output
     #echo "1) ..." >> $output
     #echo >> $output
     #echo >> $output
 
-    echo "Environment set up to use EESSI pilot software stack, have fun!" >> $output
+    echo "Environment set up to use EESSI (${EESSI_VERSION}), have fun!"
 
 fi
