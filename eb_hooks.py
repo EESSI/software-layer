@@ -279,9 +279,9 @@ def pre_configure_hook_LAMMPS_aarch64(self, *args, **kwargs):
         if self.version == '23Jun2022':
             if  get_cpu_architecture() == AARCH64:
                 if cpu_target == CPU_TARGET_AARCH64_GENERIC:
-                    self.cfg['kokkos_arch'] = 'ARM81'
-                else:
                     self.cfg['kokkos_arch'] = 'ARM80'
+                else:
+                    self.cfg['kokkos_arch'] = 'ARM81'
     else:
         raise EasyBuildError("LAMMPS-specific hook triggered for non-LAMMPS easyconfig?!")
 
