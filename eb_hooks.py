@@ -275,6 +275,7 @@ def pre_configure_hook_LAMMPS_aarch64(self, *args, **kwargs):
     - set kokkos_arch on Aarch64
     """
 
+    cpu_target = get_eessi_envvar('EESSI_SOFTWARE_SUBDIR')
     if self.name == 'LAMMPS':
         if self.version == '23Jun2022':
             if  get_cpu_architecture() == AARCH64:
