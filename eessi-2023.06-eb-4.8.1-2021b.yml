@@ -12,4 +12,4 @@ easyconfigs:
   - LAMMPS-23Jun2022-foss-2021b-kokkos.eb:
       # TBB and ScaFaCos are optional dependencies when building on Intel arch
       options:
-        from-pr: 19164
+        from-pr: 19246
