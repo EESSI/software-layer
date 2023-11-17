@@ -1,5 +1,5 @@
 # documentation: https://help.github.com/en/articles/workflow-syntax-for-github-actions
-name: Tests relying on having EESSI pilot repo mounted
+name: Tests relying on having pilot.eessi-hpc.org mounted
 on: [push, pull_request, workflow_dispatch]
 permissions:
   contents: read # to fetch code (actions/checkout)
