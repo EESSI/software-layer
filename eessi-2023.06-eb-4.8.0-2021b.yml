@@ -4,4 +4,5 @@ easyconfigs:
       # see https://github.com/easybuilders/easybuild-easyconfigs/pull/18746
       options:
         from-pr: 18746
+  - gnuplot-5.4.2-GCCcore-11.2.0.eb
   - OpenFOAM-v2112-foss-2021b.eb
