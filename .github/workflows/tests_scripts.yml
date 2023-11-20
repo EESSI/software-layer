@@ -54,6 +54,8 @@ jobs:
           # both $EB and $TMPDIR environment must be set, required by load_easybuild_module.sh script
           echo 'export EB="eb"' >> ${test_script}
           echo 'export TMPDIR=$(mktemp -d)' >> ${test_script}
+          # debugging: check contents of CernVM-FS config repo for traces of EESSI (for software.eessi.io)
+          echo 'find /cvmfs/cvmfs-config.cern.ch -type f | grep eessi | xargs sha256sum' >> ${test_script}
           # set up environment to have utility functions in place that load_easybuild_module.sh script relies on,
           # along with $EESSI_* environment variables, and Lmod
           echo 'ls -l /software-layer/' >> ${test_script}
