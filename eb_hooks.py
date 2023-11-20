@@ -19,6 +19,7 @@ except ImportError:
 
 
 CPU_TARGET_NEOVERSE_V1 = 'aarch64/neoverse_v1'
+CPU_TARGET_AARCH64_GENERIC = 'aarch64/generic' 
 
 EESSI_RPATH_OVERRIDE_ATTR = 'orig_rpath_override_dirs'
 
@@ -268,6 +269,24 @@ def pre_configure_hook_wrf_aarch64(self, *args, **kwargs):
         raise EasyBuildError("WRF-specific hook triggered for non-WRF easyconfig?!")
 
 
+def pre_configure_hook_LAMMPS_aarch64(self, *args, **kwargs):
+    """
+    pre-configure hook for LAMMPS:
+    - set kokkos_arch on Aarch64
+    """
+
+    cpu_target = get_eessi_envvar('EESSI_SOFTWARE_SUBDIR')
+    if self.name == 'LAMMPS':
+        if self.version == '23Jun2022':
+            if  get_cpu_architecture() == AARCH64:
+                if cpu_target == CPU_TARGET_AARCH64_GENERIC:
+                    self.cfg['kokkos_arch'] = 'ARM80'
+                else:
+                    self.cfg['kokkos_arch'] = 'ARM81'
+    else:
+        raise EasyBuildError("LAMMPS-specific hook triggered for non-LAMMPS easyconfig?!")
+
+
 def pre_test_hook(self,*args, **kwargs):
     """Main pre-test hook: trigger custom functions based on software name."""
     if self.name in PRE_TEST_HOOKS:
@@ -346,6 +365,7 @@ PRE_CONFIGURE_HOOKS = {
     'MetaBAT': pre_configure_hook_metabat_filtered_zlib_dep,
     'OpenBLAS': pre_configure_hook_openblas_optarch_generic,
     'WRF': pre_configure_hook_wrf_aarch64,
+    'LAMMPS': pre_configure_hook_LAMMPS_aarch64,
 }
 
 PRE_TEST_HOOKS = {
