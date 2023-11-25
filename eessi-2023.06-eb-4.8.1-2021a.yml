@@ -1,7 +1,0 @@
-easyconfigs:
-  - Xvfb-1.20.11-GCCcore-10.3.0.eb:
-       # fix permission issues for xvfb-run script,
-       # see https://github.com/easybuilders/easybuild-easyconfigs/pull/18834
-       options:
-         from-pr: 18834
-  - R-4.1.0-foss-2021a.eb
