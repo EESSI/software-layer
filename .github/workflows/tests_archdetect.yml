@@ -14,14 +14,15 @@ jobs:
           - x86_64/amd/zen2/Azure-CentOS7-7V12
           - x86_64/amd/zen3/Azure-CentOS7-7V73X
           - ppc64le/power9le/unknown-power9le
-          - aarch64/arm/neoverse-n1/Azure-Ubuntu20-Altra
-          - aarch64/arm/neoverse-n1/AWS-awslinux-graviton2
-          - aarch64/arm/neoverse-v1/AWS-awslinux-graviton3
+          - aarch64/neoverse_n1/Azure-Ubuntu20-Altra
+          - aarch64/neoverse_n1/AWS-awslinux-graviton2
+          - aarch64/neoverse_v1/AWS-awslinux-graviton3
       fail-fast: false
     steps:
     - name: checkout
       uses: actions/checkout@93ea575cb5d8a053eaa0ac8fa3b40d7e05a33cc8 # v3.1.0
-
+    - name: Enable EESSI
+      uses: eessi/github-action-eessi@58b50fd2eead2162c2b9ac258d4fb60cc9f30503 # v2.0.13
     - name: test eessi_archdetect.sh
       run: |
           export EESSI_MACHINE_TYPE=${{matrix.proc_cpuinfo}}
@@ -34,3 +35,15 @@ jobs:
               echo "Test for ${{matrix.proc_cpuinfo}} FAILED: $CPU_ARCH" >&2
               exit 1
           fi
+          CPU_ARCHES=$(./init/eessi_archdetect.sh -a cpupath)
+          if [[ $CPU_ARCHES == "$( cat ./tests/archdetect/${{matrix.proc_cpuinfo}}.all.output )" ]]; then
+              echo "Test for ${{matrix.proc_cpuinfo}} PASSED: $CPU_ARCHES" >&2
+          else
+              echo "Test for ${{matrix.proc_cpuinfo}} FAILED: $CPU_ARCHES" >&2
+              exit 1
+          fi
+          # Check all those architectures actually exist
+          for dir in $(echo "$CPU_ARCHES" | tr ':' '\n'); do
+              # Search all EESSI versions as we may drop support at some point 
+              ls -d "$EESSI_PREFIX"/../*/software/linux/"$dir" 
+          done
