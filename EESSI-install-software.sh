@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-# Script to install EESSI pilot software stack (version set through init/eessi_defaults)
+# Script to install EESSI software stack (version set through init/eessi_defaults)
 
 # see example parsing of command line arguments at
 #   https://wiki.bash-hackers.org/scripting/posparams#using_a_while_loop
@@ -172,8 +172,6 @@ if [ ! -z "${shared_fs_path}" ]; then
     export EASYBUILD_SOURCEPATH=${shared_eb_sourcepath}:${EASYBUILD_SOURCEPATH}
 fi
 
-${EB} --show-config
-
 echo ">> Setting up \$MODULEPATH..."
 # make sure no modules are loaded
 module --force purge
@@ -199,6 +197,8 @@ for easystack_file in $(cat ${pr_diff} | grep '^+++' | cut -f2 -d' ' | sed 's@^[
 
     # load EasyBuild module (will be installed if it's not available yet)
     source ${TOPDIR}/load_easybuild_module.sh ${eb_version}
+
+    ${EB} --show-config
 
     echo_green "All set, let's start installing some software with EasyBuild v${eb_version} in ${EASYBUILD_INSTALLPATH}..."
 
