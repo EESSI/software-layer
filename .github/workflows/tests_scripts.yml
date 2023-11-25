@@ -85,7 +85,7 @@ jobs:
           cd /tmp
           # force using x86_64/generic, to avoid triggering an installation from scratch
           sed -i "s@./EESSI-install-software.sh@\"export EESSI_SOFTWARE_SUBDIR_OVERRIDE='x86_64/generic'; ./EESSI-install-software.sh\"@g" install_software_layer.sh
-          ./build_container.sh run /tmp/$USER/EESSI /tmp/install_software_layer.sh
+          ./eessi_container.sh --mode run --verbose /tmp/install_software_layer.sh
 
     - name: test create_directory_tarballs.sh script
       run: |
@@ -93,6 +93,6 @@ jobs:
           # since create_directory_tarballs.sh must be accessible from within build container
           cp -a * /tmp/
           cd /tmp
-          ./build_container.sh run /tmp/$USER/EESSI /tmp/create_directory_tarballs.sh 2023.06
+          ./eessi_container.sh --mode run --verbose /tmp/create_directory_tarballs.sh 2023.06
           # check if tarballs have been produced
           ls -l *.tar.gz
