@@ -1,7 +1,5 @@
 #!/bin/bash
 
-SOFTWARE_LAYER_TARBALL_URL=https://github.com/EESSI/software-layer/tarball/2023.06
-
 set -eo pipefail
 
 if [ $# -ne 1 ]; then
@@ -10,6 +8,8 @@ if [ $# -ne 1 ]; then
 fi
 
 version=$1
+
+SOFTWARE_LAYER_TARBALL_URL="https://github.com/EESSI/software-layer/tarball/${version}-software.eessi.io"
 
 TOPDIR=$(dirname $(realpath $0))
 
