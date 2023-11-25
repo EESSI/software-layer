@@ -1,22 +1,22 @@
 # Software layer
 
-The software layer of the EESSI project uses [EasyBuild](https://easybuild.readthedocs.io), [Lmod](https://lmod.readthedocs.io) and [archspec](https://archspec.readthedocs.io).
+The software layer of the EESSI project uses [EasyBuild](https://docs.easybuild.io), [Lmod](https://lmod.readthedocs.io) and [archspec](https://archspec.readthedocs.io).
 
-See also https://eessi.github.io/docs/software_layer.
+See also https://www.eessi.io/docs/software_layer .
 
 ## Pilot software stack
 
 You can set up your environment by sourcing the init script:
 
 ```
-$ source /cvmfs/pilot.eessi-hpc.org/versions/2023.06/init/bash
-Found EESSI pilot repo @ /cvmfs/pilot.eessi-hpc.org/versions/2023.06!
+$ source /cvmfs/software.eessi.io/versions/2023.06/init/bash
+Found EESSI repo @ /cvmfs/software.eessi.io/versions/2023.06!
 Derived subdirectory for software layer: x86_64/intel/haswell
-Using x86_64/intel/haswell subdirectory for software layer (HARDCODED)
+Using x86_64/intel/haswell subdirectory for software layer
 Initializing Lmod...
-Prepending /cvmfs/pilot.eessi-hpc.org/versions/2023.06/software/x86_64/intel/haswell/modules/all to $MODULEPATH...
-Environment set up to use EESSI pilot software stack, have fun!
-[EESSI pilot 2023.06] $
+Prepending /cvmfs/software.eessi.io/versions/2023.06/software/x86_64/intel/haswell/modules/all to $MODULEPATH...
+Environment set up to use EESSI (2023.06), have fun!
+[EESSI 2023.06] $
 ```
 
 ### Accessing EESSI via a container

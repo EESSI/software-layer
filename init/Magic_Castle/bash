@@ -6,7 +6,7 @@ EESSI_SILENT=1
 source $(dirname "$BASH_SOURCE")/../eessi_environment_variables
 
 # Don't change the default prompt
-# export PS1="[EESSI pilot $EESSI_PILOT_VERSION] $ "
+# export PS1="[EESSI $EESSI_VERSION] $ "
 
 # Provide a clean MODULEPATH
 export MODULEPATH_ROOT=$EESSI_MODULEPATH
@@ -36,4 +36,4 @@ else
    module reload
 fi
 
-echo "Environment set up to use EESSI pilot software stack (${EESSI_PILOT_VERSION}), have fun!"
+echo "Environment set up to use EESSI (${EESSI_VERSION}), have fun!"
