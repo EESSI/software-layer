@@ -195,12 +195,12 @@ EESSI_REPOS_CFG_DIR_OVERRIDE=$(cfg_get_value "repository" "repos_cfg_dir")
 export EESSI_REPOS_CFG_DIR_OVERRIDE=${EESSI_REPOS_CFG_DIR_OVERRIDE:-${PWD}/cfg}
 echo "bot/inspect.sh: EESSI_REPOS_CFG_DIR_OVERRIDE='${EESSI_REPOS_CFG_DIR_OVERRIDE}'"
 
-# determine pilot version to be used from .repository.repo_version in ${JOB_CFG_FILE}
-# here, just set & export EESSI_PILOT_VERSION_OVERRIDE
+# determine EESSI version to be used from .repository.repo_version in ${JOB_CFG_FILE}
+# here, just set & export EESSI_VERSION_OVERRIDE
 # next script (eessi_container.sh) makes use of it via sourcing init scripts
 # (e.g., init/eessi_defaults or init/minimal_eessi_env)
-export EESSI_PILOT_VERSION_OVERRIDE=$(cfg_get_value "repository" "repo_version")
-echo "bot/inspect.sh: EESSI_PILOT_VERSION_OVERRIDE='${EESSI_PILOT_VERSION_OVERRIDE}'"
+export EESSI_VERSION_OVERRIDE=$(cfg_get_value "repository" "repo_version")
+echo "bot/inspect.sh: EESSI_VERSION_OVERRIDE='${EESSI_VERSION_OVERRIDE}'"
 
 # determine CVMFS repo to be used from .repository.repo_name in ${JOB_CFG_FILE}
 # here, just set EESSI_CVMFS_REPO_OVERRIDE, a bit further down
@@ -260,11 +260,11 @@ base_dir=$(dirname $(realpath $0))
 # TODO better use script from tarball???
 source ${base_dir}/../init/eessi_defaults
 
-if [ -z $EESSI_PILOT_VERSION ]; then
-    echo "ERROR: \$EESSI_PILOT_VERSION must be set!" >&2
+if [ -z $EESSI_VERSION ]; then
+    echo "ERROR: \$EESSI_VERSION must be set!" >&2
     exit 1
 fi
-EESSI_COMPAT_LAYER_DIR="${EESSI_CVMFS_REPO}/versions/${EESSI_PILOT_VERSION}/compat/linux/$(uname -m)"
+EESSI_COMPAT_LAYER_DIR="${EESSI_CVMFS_REPO}/versions/${EESSI_VERSION}/compat/linux/$(uname -m)"
 
 # NOTE The below requires access to the CVMFS repository. We could make a first
 # test run with a container. For now we skip the test.
@@ -295,8 +295,8 @@ fi
 if [ ! -z ${EESSI_CVMFS_REPO_OVERRIDE} ]; then
     echo "export EESSI_CVMFS_REPO_OVERRIDE=${EESSI_CVMFS_REPO_OVERRIDE}" >> ${RESUME_SCRIPT}
 fi
-if [ ! -z ${EESSI_PILOT_VERSION_OVERRIDE} ]; then
-    echo "export EESSI_PILOT_VERSION_OVERRIDE=${EESSI_PILOT_VERSION_OVERRIDE}" >> ${RESUME_SCRIPT}
+if [ ! -z ${EESSI_VERSION_OVERRIDE} ]; then
+    echo "export EESSI_VERSION_OVERRIDE=${EESSI_VERSION_OVERRIDE}" >> ${RESUME_SCRIPT}
 fi
 if [ ! -z ${http_proxy} ]; then
     echo "export http_proxy=${http_proxy}" >> ${RESUME_SCRIPT}
@@ -428,7 +428,7 @@ echo "Executing command to start interactive session to inspect build job:"
 # TODO possibly add information on how to init session after the prefix is
 # entered, initialization consists of
 # - environment variable settings (see 'run_in_compat_layer_env.sh')
-# - setup steps run in 'EESSI-pilot-install-software.sh'
+# - setup steps run in 'EESSI-install-software.sh'
 # These initializations are combined into a single script that is executed when
 # the shell in startprefix is started. We set the env variable BASH_ENV here.
 if [[ -z ${run_in_prefix} ]]; then

@@ -5,7 +5,7 @@ on:
     paths:
       - build_container.sh
       - create_directory_tarballs.sh
-      - EESSI-pilot-install-software.sh
+      - EESSI-install-software.sh
       - install_software_layer.sh
       - load_easybuild_module.sh
       - run_in_compat_layer_env.sh
@@ -16,7 +16,7 @@ on:
     paths:
       - build_container.sh
       - create_directory_tarballs.sh
-      - EESSI-pilot-install-software.sh
+      - EESSI-install-software.sh
       - install_software_layer.sh
       - load_easybuild_module.sh
       - run_in_compat_layer_env.sh
@@ -40,7 +40,7 @@ jobs:
         # bind current directory into container as /software-layer
         export SINGULARITY_BIND="${PWD}:/software-layer"
 
-        # can't test with EasyBuild versions older than v4.5.2 when using EESSI pilot 2023.06,
+        # can't test with EasyBuild versions older than v4.5.2 when using EESSI 2023.06,
         # since Python in compat layer is Python 3.11.x;
         # testing with a single EasyBuild version takes a while in GitHub Actions, so stick to a single sensible version
         for EB_VERSION in '4.6.0'; do
@@ -84,7 +84,7 @@ jobs:
           cp -a * /tmp/
           cd /tmp
           # force using x86_64/generic, to avoid triggering an installation from scratch
-          sed -i "s@./EESSI-pilot-install-software.sh@\"export EESSI_SOFTWARE_SUBDIR_OVERRIDE='x86_64/generic'; ./EESSI-pilot-install-software.sh\"@g" install_software_layer.sh
+          sed -i "s@./EESSI-install-software.sh@\"export EESSI_SOFTWARE_SUBDIR_OVERRIDE='x86_64/generic'; ./EESSI-install-software.sh\"@g" install_software_layer.sh
           ./build_container.sh run /tmp/$USER/EESSI /tmp/install_software_layer.sh
 
     - name: test create_directory_tarballs.sh script
