@@ -1,8 +1,10 @@
 #!/usr/bin/env bash
-VERSION="1.0.0"
+VERSION="1.1.0"
 
 # Logging
 LOG_LEVEL="INFO"
+# Default result type is a best match
+CPUPATH_RESULT="best"
 
 timestamp () {
     date "+%Y-%m-%d %H:%M:%S"
@@ -105,7 +107,8 @@ cpupath(){
     log "DEBUG" "cpupath: CPU flags of host system: '$cpu_flags'"
   
     # Default to generic CPU
-    local best_arch_match="generic"
+    local best_arch_match="$machine_type/generic"
+    local all_arch_matches=$best_arch_match
   
     # Iterate over the supported CPU specifications to find the best match for host CPU
     # Order of the specifications matters, the last one to match will be selected
@@ -114,22 +117,29 @@ cpupath(){
         if [ "${cpu_vendor}x" == "${arch_spec[1]}x" ]; then
             # each flag in this CPU specification must be found in the list of flags of the host
             check_allinfirst "${cpu_flags[*]}" ${arch_spec[2]} && best_arch_match=${arch_spec[0]} && \
-                log "DEBUG" "cpupath: host CPU best match updated to $best_arch_match"
+                all_arch_matches="$best_arch_match:$all_arch_matches" && \
+                log "DEBUG" "cpupath: host CPU best match updated to $best_arch_match" 
         fi
     done
   
-    log "INFO" "cpupath: best match for host CPU: $best_arch_match"
-    echo "$best_arch_match"
+    if [ "allx" == "${CPUPATH_RESULT}x" ]; then
+        log "INFO" "cpupath: all matches for host CPU: $all_arch_matches"
+        echo "$all_arch_matches"
+    else
+        log "INFO" "cpupath: best match for host CPU: $best_arch_match"
+        echo "$best_arch_match"
+    fi
 }
 
 # Parse command line arguments
-USAGE="Usage: eessi_archdetect.sh [-h][-d] <action>"
+USAGE="Usage: eessi_archdetect.sh [-h][-d][-a] <action>"
 
-while getopts 'hdv' OPTION; do
+while getopts 'hdva' OPTION; do
     case "$OPTION" in
         h) echo "$USAGE"; exit 0;;
         d) LOG_LEVEL="DEBUG";;
         v) echo "eessi_archdetect.sh v$VERSION"; exit 0;;
+        a) CPUPATH_RESULT="all";;
         ?) echo "$USAGE"; exit 1;;
     esac
 done
@@ -139,5 +149,5 @@ ARGUMENT=${1:-none}
 
 case "$ARGUMENT" in
     "cpupath") cpupath; exit;;
-    *) echo "$USAGE"; log "ERROR" "Missing <action> argument";;
+    *) echo "$USAGE"; log "ERROR" "Missing <action> argument (possible actions: 'cpupath')";;
 esac
