@@ -45,7 +45,7 @@ jobs:
               elif [[ ${{matrix.SCRIPT_TEST}} == 'listrepos_default' ]]; then
                 outfile=out_listrepos.txt
                 ./eessi_container.sh --verbose --list-repos | tee ${outfile}
-                grep "EESSI-pilot" ${outfile}
+                grep "EESSI" ${outfile}
 
               # test use of --list-repos with custom repos.cfg
               elif [[ ${{matrix.SCRIPT_TEST}} == 'listrepos_custom' ]]; then
@@ -57,7 +57,7 @@ jobs:
                 echo "[EESSI/20HT.TP]" >> cfg/repos.cfg
                 echo "repo_version = 20HT.TP" >> cfg/repos.cfg
                 ./eessi_container.sh --verbose --list-repos | tee ${outfile}
-                grep "EESSI-pilot" ${outfile}
+                grep "EESSI" ${outfile}
 
                 export EESSI_REPOS_CFG_DIR_OVERRIDE=${PWD}/cfg
                 ./eessi_container.sh --verbose --list-repos | tee ${outfile2}
@@ -90,15 +90,15 @@ jobs:
               elif [[ ${{matrix.SCRIPT_TEST}} == 'readwrite' ]]; then
                 outfile=out_readwrite.txt
                 fn="test_${RANDOM}.txt"
-                echo "touch /cvmfs/pilot.eessi-hpc.org/${fn}" > test_script.sh
+                echo "touch /cvmfs/software.eessi.io/${fn}" > test_script.sh
                 chmod u+x test_script.sh
                 export SINGULARITY_BIND="$PWD:/test"
                 ./eessi_container.sh --verbose --access rw --mode run /test/test_script.sh > ${outfile}
 
                 tmpdir=$(grep "\-\-resume" ${outfile} | sed "s/.*--resume \([^']*\).*/\1/g")
                 # note: must use '--access rw' again here, since touched file is in overlay upper dir
-                ./eessi_container.sh --verbose --resume ${tmpdir} --access rw --mode shell <<< "ls -l /cvmfs/pilot.eessi-hpc.org/${fn}" > ${outfile}
-                grep "/cvmfs/pilot.eessi-hpc.org/${fn}$" $outfile
+                ./eessi_container.sh --verbose --resume ${tmpdir} --access rw --mode shell <<< "ls -l /cvmfs/software.eessi.io/${fn}" > ${outfile}
+                grep "/cvmfs/software.eessi.io/${fn}$" $outfile
 
               # test use of --resume
               elif [[ ${{matrix.SCRIPT_TEST}} == 'resume' ]]; then
@@ -120,12 +120,12 @@ jobs:
               elif [[ ${{matrix.SCRIPT_TEST}} == 'save' ]]; then
                 outfile=out_save.txt
                 fn="test_${RANDOM}.txt"
-                test_cmd="touch /cvmfs/pilot.eessi-hpc.org/${fn}"
+                test_cmd="touch /cvmfs/software.eessi.io/${fn}"
                 ./eessi_container.sh --verbose --mode shell --access rw --save test-save.tar <<< "${test_cmd}" 2>&1 | tee ${outfile}
                 rm -f ${outfile}
 
-                ./eessi_container.sh --verbose --mode shell --access rw --resume test-save.tar <<< "ls -l /cvmfs/pilot.eessi-hpc.org/${fn}" > ${outfile}
-                grep "/cvmfs/pilot.eessi-hpc.org/${fn}$" $outfile
+                ./eessi_container.sh --verbose --mode shell --access rw --resume test-save.tar <<< "ls -l /cvmfs/software.eessi.io/${fn}" > ${outfile}
+                grep "/cvmfs/software.eessi.io/${fn}$" $outfile
 
                 tar tfv test-save.tar | grep "overlay-upper/${fn}"
 
