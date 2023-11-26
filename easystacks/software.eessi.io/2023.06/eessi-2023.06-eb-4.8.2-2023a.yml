@@ -5,3 +5,6 @@ easyconfigs:
       options:
         from-pr: 19264
   - foss-2023a.eb
+  - GROMACS-2023.3-foss-2023a.eb:
+      options:
+        from-pr: 19321
