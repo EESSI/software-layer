@@ -79,20 +79,18 @@ jobs:
 
     - name: test install_software_layer.sh script
       run: |
-          # scripts need to be copied to /tmp,
-          # since install_software_layer.sh must be accessible from within build container
-          cp -a * /tmp/
-          cd /tmp
+          # bind current directory into container as /software-layer
+          export SINGULARITY_BIND="${PWD}:/software-layer"
           # force using x86_64/generic, to avoid triggering an installation from scratch
           sed -i "s@./EESSI-install-software.sh@\"export EESSI_SOFTWARE_SUBDIR_OVERRIDE='x86_64/generic'; ./EESSI-install-software.sh\"@g" install_software_layer.sh
-          ./eessi_container.sh --mode run --verbose /tmp/install_software_layer.sh
+          ./eessi_container.sh --mode run --verbose /software-layer/install_software_layer.sh
 
     - name: test create_directory_tarballs.sh script
       run: |
+          # bind current directory into container as /software-layer
+          export SINGULARITY_BIND="${PWD}:/software-layer"
           # scripts need to be copied to /tmp,
           # since create_directory_tarballs.sh must be accessible from within build container
-          cp -a * /tmp/
-          cd /tmp
-          ./eessi_container.sh --mode run --verbose /tmp/create_directory_tarballs.sh 2023.06
+          ./eessi_container.sh --mode run --verbose /software-layer/create_directory_tarballs.sh 2023.06
           # check if tarballs have been produced
           ls -l *.tar.gz
