@@ -1,0 +1,7 @@
+easyconfigs:
+  - Rust-1.70.0-GCCcore-12.3.0.eb:
+      # fix build of Rust 1.70.0 by disabling download of pre-built LLVM;
+      # see https://github.com/easybuilders/easybuild-easyconfigs/pull/19264
+      options:
+        from-pr: 19264
+  - foss-2023a.eb
