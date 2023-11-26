@@ -518,9 +518,9 @@ declare -a EESSI_FUSE_MOUNTS=()
 EESSI_FUSE_MOUNTS+=("--fusemount" "container:cvmfs2 cvmfs-config.cern.ch /cvmfs/cvmfs-config.cern.ch")
 
 if [[ "${ACCESS}" == "ro" ]]; then
-  export EESSI_PILOT_READONLY="container:cvmfs2 ${repo_name} /cvmfs/${repo_name}"
+  export EESSI_READONLY="container:cvmfs2 ${repo_name} /cvmfs/${repo_name}"
 
-  EESSI_FUSE_MOUNTS+=("--fusemount" "${EESSI_PILOT_READONLY}")
+  EESSI_FUSE_MOUNTS+=("--fusemount" "${EESSI_READONLY}")
   export EESSI_FUSE_MOUNTS
 fi
 
@@ -529,18 +529,18 @@ if [[ "${ACCESS}" == "rw" ]]; then
   mkdir -p ${EESSI_TMPDIR}/overlay-work
 
   # set environment variables for fuse mounts in Singularity container
-  export EESSI_PILOT_READONLY="container:cvmfs2 ${repo_name} /cvmfs_ro/${repo_name}"
+  export EESSI_READONLY="container:cvmfs2 ${repo_name} /cvmfs_ro/${repo_name}"
 
-  EESSI_FUSE_MOUNTS+=("--fusemount" "${EESSI_PILOT_READONLY}")
+  EESSI_FUSE_MOUNTS+=("--fusemount" "${EESSI_READONLY}")
 
-  EESSI_PILOT_WRITABLE_OVERLAY="container:fuse-overlayfs"
-  EESSI_PILOT_WRITABLE_OVERLAY+=" -o lowerdir=/cvmfs_ro/${repo_name}"
-  EESSI_PILOT_WRITABLE_OVERLAY+=" -o upperdir=${TMP_IN_CONTAINER}/overlay-upper"
-  EESSI_PILOT_WRITABLE_OVERLAY+=" -o workdir=${TMP_IN_CONTAINER}/overlay-work"
-  EESSI_PILOT_WRITABLE_OVERLAY+=" ${EESSI_CVMFS_REPO}"
-  export EESSI_PILOT_WRITABLE_OVERLAY
+  EESSI_WRITABLE_OVERLAY="container:fuse-overlayfs"
+  EESSI_WRITABLE_OVERLAY+=" -o lowerdir=/cvmfs_ro/${repo_name}"
+  EESSI_WRITABLE_OVERLAY+=" -o upperdir=${TMP_IN_CONTAINER}/overlay-upper"
+  EESSI_WRITABLE_OVERLAY+=" -o workdir=${TMP_IN_CONTAINER}/overlay-work"
+  EESSI_WRITABLE_OVERLAY+=" ${EESSI_CVMFS_REPO}"
+  export EESSI_WRITABLE_OVERLAY
 
-  EESSI_FUSE_MOUNTS+=("--fusemount" "${EESSI_PILOT_WRITABLE_OVERLAY}")
+  EESSI_FUSE_MOUNTS+=("--fusemount" "${EESSI_WRITABLE_OVERLAY}")
   export EESSI_FUSE_MOUNTS
 fi
 
