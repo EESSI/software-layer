@@ -79,7 +79,7 @@ display_help() {
   echo "  -m | --mode MODE       - with MODE==shell (launch interactive shell) or"
   echo "                           MODE==run (run a script or command) [default: shell]"
   echo "  -r | --repository CFG  - configuration file or identifier defining the"
-  echo "                           repository to use [default: EESSI-pilot via"
+  echo "                           repository to use [default: EESSI via"
   echo "                           default container, see --container]"
   echo "  -u | --resume DIR/TGZ  - resume a previous run from a directory or tarball,"
   echo "                           where DIR points to a previously used tmp directory"
@@ -111,7 +111,7 @@ VERBOSE=0
 STORAGE=
 LIST_REPOS=0
 MODE="shell"
-REPOSITORY="EESSI-pilot"
+REPOSITORY="EESSI"
 RESUME=
 SAVE=
 HTTP_PROXY=${http_proxy:-}
@@ -194,7 +194,7 @@ set -- "${POSITIONAL_ARGS[@]}"
 
 if [[ ${LIST_REPOS} -eq 1 ]]; then
     echo "Listing available repositories with format 'name [source]':"
-    echo "    EESSI-pilot [default]"
+    echo "    EESSI [default]"
     if [[ -r ${EESSI_REPOS_CFG_FILE} ]]; then
         cfg_load ${EESSI_REPOS_CFG_FILE}
         sections=$(cfg_sections)
@@ -226,7 +226,7 @@ fi
 
 # TODO (arg -r|--repository) check if repository is known
 # REPOSITORY_ERROR_EXITCODE
-if [[ ! -z "${REPOSITORY}" && "${REPOSITORY}" != "EESSI-pilot" && ! -r ${EESSI_REPOS_CFG_FILE} ]]; then
+if [[ ! -z "${REPOSITORY}" && "${REPOSITORY}" != "EESSI" && ! -r ${EESSI_REPOS_CFG_FILE} ]]; then
     fatal_error "arg '--repository ${REPOSITORY}' requires a cfg file at '${EESSI_REPOS_CFG_FILE}'" "${REPOSITORY_ERROR_EXITCODE}"
 fi
 
@@ -403,7 +403,7 @@ BIND_PATHS="${BIND_PATHS},${EESSI_TMPDIR}:${TMP_IN_CONTAINER}"
 # set up repository config (always create directory repos_cfg and populate it with info when
 # arg -r|--repository is used)
 mkdir -p ${EESSI_TMPDIR}/repos_cfg
-if [[ "${REPOSITORY}" == "EESSI-pilot" ]]; then
+if [[ "${REPOSITORY}" == "EESSI" ]]; then
   # need to source defaults as late as possible (see other sourcing below)
   source ${TOPDIR}/init/eessi_defaults
 
@@ -427,7 +427,7 @@ else
   #   map { local_filepath -> container_filepath }
   #
   # repo_name_domain is the domain part of the repo_name, e.g.,
-  #   eessi-hpc.org for pilot.eessi-hpc.org
+  #   eessi.io for software.eessi.io
   #
   # where config bundle includes the files (-> target location in container)
   # - default.local -> /etc/cvmfs/default.local
@@ -479,7 +479,7 @@ else
     target=${cfg_file_map[${src}]}
     BIND_PATHS="${BIND_PATHS},${EESSI_TMPDIR}/repos_cfg/${src}:${target}"
   done
-  export EESSI_PILOT_VERSION_OVERRIDE=${repo_version}
+  export EESSI_VERSION_OVERRIDE=${repo_version}
   export EESSI_CVMFS_REPO_OVERRIDE="/cvmfs/${repo_name}"
   # need to source defaults as late as possible (after *_OVERRIDEs)
   source ${TOPDIR}/init/eessi_defaults
@@ -513,10 +513,14 @@ fi
 # 4. set up vars and dirs specific to a scenario
 
 declare -a EESSI_FUSE_MOUNTS=()
-if [[ "${ACCESS}" == "ro" ]]; then
-  export EESSI_PILOT_READONLY="container:cvmfs2 ${repo_name} /cvmfs/${repo_name}"
 
-  EESSI_FUSE_MOUNTS+=("--fusemount" "${EESSI_PILOT_READONLY}")
+# always mount cvmfs-config repo (to get access to software.eessi.io)
+EESSI_FUSE_MOUNTS+=("--fusemount" "container:cvmfs2 cvmfs-config.cern.ch /cvmfs/cvmfs-config.cern.ch")
+
+if [[ "${ACCESS}" == "ro" ]]; then
+  export EESSI_READONLY="container:cvmfs2 ${repo_name} /cvmfs/${repo_name}"
+
+  EESSI_FUSE_MOUNTS+=("--fusemount" "${EESSI_READONLY}")
   export EESSI_FUSE_MOUNTS
 fi
 
@@ -525,18 +529,18 @@ if [[ "${ACCESS}" == "rw" ]]; then
   mkdir -p ${EESSI_TMPDIR}/overlay-work
 
   # set environment variables for fuse mounts in Singularity container
-  export EESSI_PILOT_READONLY="container:cvmfs2 ${repo_name} /cvmfs_ro/${repo_name}"
+  export EESSI_READONLY="container:cvmfs2 ${repo_name} /cvmfs_ro/${repo_name}"
 
-  EESSI_FUSE_MOUNTS+=("--fusemount" "${EESSI_PILOT_READONLY}")
+  EESSI_FUSE_MOUNTS+=("--fusemount" "${EESSI_READONLY}")
 
-  EESSI_PILOT_WRITABLE_OVERLAY="container:fuse-overlayfs"
-  EESSI_PILOT_WRITABLE_OVERLAY+=" -o lowerdir=/cvmfs_ro/${repo_name}"
-  EESSI_PILOT_WRITABLE_OVERLAY+=" -o upperdir=${TMP_IN_CONTAINER}/overlay-upper"
-  EESSI_PILOT_WRITABLE_OVERLAY+=" -o workdir=${TMP_IN_CONTAINER}/overlay-work"
-  EESSI_PILOT_WRITABLE_OVERLAY+=" ${EESSI_CVMFS_REPO}"
-  export EESSI_PILOT_WRITABLE_OVERLAY
+  EESSI_WRITABLE_OVERLAY="container:fuse-overlayfs"
+  EESSI_WRITABLE_OVERLAY+=" -o lowerdir=/cvmfs_ro/${repo_name}"
+  EESSI_WRITABLE_OVERLAY+=" -o upperdir=${TMP_IN_CONTAINER}/overlay-upper"
+  EESSI_WRITABLE_OVERLAY+=" -o workdir=${TMP_IN_CONTAINER}/overlay-work"
+  EESSI_WRITABLE_OVERLAY+=" ${EESSI_CVMFS_REPO}"
+  export EESSI_WRITABLE_OVERLAY
 
-  EESSI_FUSE_MOUNTS+=("--fusemount" "${EESSI_PILOT_WRITABLE_OVERLAY}")
+  EESSI_FUSE_MOUNTS+=("--fusemount" "${EESSI_WRITABLE_OVERLAY}")
   export EESSI_FUSE_MOUNTS
 fi
 
