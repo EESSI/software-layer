@@ -11,7 +11,7 @@ jobs:
       matrix:
         EESSI_VERSION:
         - 2023.06
-        EESSI_SOFTWARE_SUBDIR:
+        EESSI_SOFTWARE_SUBDIR_OVERRIDE:
         - aarch64/generic
         - aarch64/neoverse_n1
         - aarch64/neoverse_v1
@@ -33,12 +33,13 @@ jobs:
 
         - name: Test check_missing_installations.sh script
           run: |
+              export EESSI_SOFTWARE_SUBDIR_OVERRIDE=${{matrix.EESSI_SOFTWARE_SUBDIR_OVERRIDE}}
               source /cvmfs/software.eessi.io/versions/${{matrix.EESSI_VERSION}}/init/bash
               module load EasyBuild
+              which eb
               eb --version
               export EESSI_PREFIX=/cvmfs/software.eessi.io/versions/${{matrix.EESSI_VERSION}}
               export EESSI_OS_TYPE=linux
-              export EESSI_SOFTWARE_SUBDIR=${{matrix.EESSI_SOFTWARE_SUBDIR}}
               env | grep ^EESSI | sort
               echo "just run check_missing_installations.sh (should use easystacks/software.eessi.io/${{matrix.EESSI_VERSION}}/eessi-${{matrix.EESSI_VERSION}}-*.yml)"
               for easystack_file in $(ls easystacks/software.eessi.io/${{matrix.EESSI_VERSION}}/eessi-${{matrix.EESSI_VERSION}}-eb-*.yml); do
@@ -50,12 +51,13 @@ jobs:
 
         - name: Test check_missing_installations.sh with missing package (GCC/8.3.0)
           run: |
+              export EESSI_SOFTWARE_SUBDIR_OVERRIDE=${{matrix.EESSI_SOFTWARE_SUBDIR_OVERRIDE}}
               source /cvmfs/software.eessi.io/versions/${{matrix.EESSI_VERSION}}/init/bash
               module load EasyBuild
+              which eb
               eb --version
               export EESSI_PREFIX=/cvmfs/software.eessi.io/versions/${{matrix.EESSI_VERSION}}
               export EESSI_OS_TYPE=linux
-              export EESSI_SOFTWARE_SUBDIR=${{matrix.EESSI_SOFTWARE_SUBDIR}}
               env | grep ^EESSI | sort
               # create dummy easystack file with a single entry (something that is not installed in EESSI)
               easystack_file="test.yml"
