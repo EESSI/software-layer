@@ -189,7 +189,7 @@ def parse_hook_pybind11_replace_catch2(ec, eprefix):
     Replace Catch2 build dependency in pybind11 easyconfigs with one that doesn't use system toolchain.
     cfr. https://github.com/easybuilders/easybuild-easyconfigs/pull/19270
     """
-    # tihs is mainly necessary to avoid that --missing keeps reporting Catch2/2.13.9 is missing,
+    # this is mainly necessary to avoid that --missing keeps reporting Catch2/2.13.9 is missing,
     # and to avoid that we need to use "--from-pr 19270" for every easyconfigs that (indirectly) depends on pybind11
     if ec.name == 'pybind11' and ec.version in ['2.10.3', '2.11.1']:
         build_deps = ec['builddependencies']
