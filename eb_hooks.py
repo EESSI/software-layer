@@ -4,6 +4,7 @@ import os
 import re
 
 from easybuild.easyblocks.generic.configuremake import obtain_config_guess
+from easybuild.framework.easyconfig.constants import EASYCONFIG_CONSTANTS
 from easybuild.tools.build_log import EasyBuildError, print_msg
 from easybuild.tools.config import build_option, update_build_option
 from easybuild.tools.filetools import apply_regex_substitutions, copy_file, which
@@ -22,6 +23,8 @@ CPU_TARGET_NEOVERSE_V1 = 'aarch64/neoverse_v1'
 CPU_TARGET_AARCH64_GENERIC = 'aarch64/generic' 
 
 EESSI_RPATH_OVERRIDE_ATTR = 'orig_rpath_override_dirs'
+
+SYSTEM = EASYCONFIG_CONSTANTS['SYSTEM'][0]
 
 
 def get_eessi_envvar(eessi_envvar):
@@ -181,6 +184,25 @@ def parse_hook_openblas_relax_lapack_tests_num_errors(ec, eprefix):
         raise EasyBuildError("OpenBLAS-specific hook triggered for non-OpenBLAS easyconfig?!")
 
 
+def parse_hook_pybind11_replace_catch2(ec, eprefix):
+    """
+    Replace Catch2 build dependency in pybind11 easyconfigs with one that doesn't use system toolchain.
+    cfr. https://github.com/easybuilders/easybuild-easyconfigs/pull/19270
+    """
+    # this is mainly necessary to avoid that --missing keeps reporting Catch2/2.13.9 is missing,
+    # and to avoid that we need to use "--from-pr 19270" for every easyconfigs that (indirectly) depends on pybind11
+    if ec.name == 'pybind11' and ec.version in ['2.10.3', '2.11.1']:
+        build_deps = ec['builddependencies']
+        catch2_build_dep = None
+        catch2_name, catch2_version = ('Catch2', '2.13.9')
+        for idx, build_dep in enumerate(build_deps):
+            if build_dep[0] == catch2_name and build_dep[1] == catch2_version:
+                catch2_build_dep = build_dep
+                break
+        if catch2_build_dep and len(catch2_build_dep) == 4 and catch2_build_dep[3] == SYSTEM:
+            build_deps[idx] = (catch2_name, catch2_version)
+
+
 def parse_hook_qt5_check_qtwebengine_disable(ec, eprefix):
     """
     Disable check for QtWebEngine in Qt5 as workaround for problem with determining glibc version.
@@ -314,11 +336,19 @@ def pre_test_hook_ignore_failing_tests_FFTWMPI(self, *args, **kwargs):
 
 def pre_test_hook_ignore_failing_tests_SciPybundle(self, *args, **kwargs):
     """
-    Pre-test hook for SciPy-bundle: skip failing tests for SciPy-bundle 2021.10 (currently the only version that is failing).
+    Pre-test hook for SciPy-bundle: skip failing tests for selected SciPy-bundle versions
+    In version 2021.10, 2 failing tests in scipy 1.6.3:
+        FAILED optimize/tests/test_linprog.py::TestLinprogIPSparse::test_bug_6139 - A...
+        FAILED optimize/tests/test_linprog.py::TestLinprogIPSparsePresolve::test_bug_6139
+        = 2 failed, 30554 passed, 2064 skipped, 10992 deselected, 76 xfailed, 7 xpassed, 40 warnings in 380.27s (0:06:20) =
+    In versions 2023.07, 2 failing tests in scipy 1.11.1:
+        FAILED scipy/spatial/tests/test_distance.py::TestPdist::test_pdist_correlation_iris
+        FAILED scipy/spatial/tests/test_distance.py::TestPdist::test_pdist_correlation_iris_float32
+        = 2 failed, 54409 passed, 3016 skipped, 223 xfailed, 13 xpassed, 10917 warnings in 892.04s (0:14:52) =
     In previous versions we were not as strict yet on the numpy/SciPy tests
     """
     cpu_target = get_eessi_envvar('EESSI_SOFTWARE_SUBDIR')
-    if self.name == 'SciPy-bundle' and self.version == '2021.10' and cpu_target == CPU_TARGET_NEOVERSE_V1:
+    if self.name == 'SciPy-bundle' and self.version in ['2021.10', '2023.07'] and cpu_target == CPU_TARGET_NEOVERSE_V1:
         self.cfg['testopts'] = "|| echo ignoring failing tests" 
 
 
@@ -352,6 +382,7 @@ PARSE_HOOKS = {
     'CGAL': parse_hook_cgal_toolchainopts_precise,
     'fontconfig': parse_hook_fontconfig_add_fonts,
     'OpenBLAS': parse_hook_openblas_relax_lapack_tests_num_errors,
+    'pybind11': parse_hook_pybind11_replace_catch2,
     'Qt5': parse_hook_qt5_check_qtwebengine_disable,
     'UCX': parse_hook_ucx_eprefix,
 }
