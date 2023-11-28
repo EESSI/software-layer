@@ -336,7 +336,7 @@ def pre_test_hook_ignore_failing_tests_FFTWMPI(self, *args, **kwargs):
 
 def pre_test_hook_ignore_failing_tests_SciPybundle(self, *args, **kwargs):
     """
-    Pre-test hook for SciPy-bundle: skip failing tests for selected SciPy-bundle vrsions
+    Pre-test hook for SciPy-bundle: skip failing tests for selected SciPy-bundle versions
     In version 2021.10, 2 failing tests in scipy 1.6.3:
         FAILED optimize/tests/test_linprog.py::TestLinprogIPSparse::test_bug_6139 - A...
         FAILED optimize/tests/test_linprog.py::TestLinprogIPSparsePresolve::test_bug_6139
