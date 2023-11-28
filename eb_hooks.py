@@ -4,6 +4,7 @@ import os
 import re
 
 from easybuild.easyblocks.generic.configuremake import obtain_config_guess
+from easybuild.framework.easyconfig.constants import EASYCONFIG_CONSTANTS
 from easybuild.tools.build_log import EasyBuildError, print_msg
 from easybuild.tools.config import build_option, update_build_option
 from easybuild.tools.filetools import apply_regex_substitutions, copy_file, which
@@ -22,6 +23,8 @@ CPU_TARGET_NEOVERSE_V1 = 'aarch64/neoverse_v1'
 CPU_TARGET_AARCH64_GENERIC = 'aarch64/generic' 
 
 EESSI_RPATH_OVERRIDE_ATTR = 'orig_rpath_override_dirs'
+
+SYSTEM = EASYCONFIG_CONSTANTS['SYSTEM'][0]
 
 
 def get_eessi_envvar(eessi_envvar):
@@ -179,6 +182,25 @@ def parse_hook_openblas_relax_lapack_tests_num_errors(ec, eprefix):
             print_msg("Not changing option %s for %s on non-AARCH64", cfg_option, ec.name)
     else:
         raise EasyBuildError("OpenBLAS-specific hook triggered for non-OpenBLAS easyconfig?!")
+
+
+def parse_hook_pybind11_replace_catch2(ec, eprefix):
+    """
+    Replace Catch2 build dependency in pybind11 easyconfigs with one that doesn't use system toolchain.
+    cfr. https://github.com/easybuilders/easybuild-easyconfigs/pull/19270
+    """
+    # tihs is mainly necessary to avoid that --missing keeps reporting Catch2/2.13.9 is missing,
+    # and to avoid that we need to use "--from-pr 19270" for every easyconfigs that (indirectly) depends on pybind11
+    if ec.name == 'pybind11' and ec.version in ['2.10.3', '2.11.1']:
+        build_deps = ec['builddependencies']
+        catch2_build_dep = None
+        catch2_name, catch2_version = ('Catch2', '2.13.9')
+        for idx, build_dep in enumerate(build_deps):
+            if build_dep[0] == catch2_name and build_dep[1] == catch2_version:
+                catch2_build_dep = build_dep
+                break
+        if catch2_build_dep and len(catch2_build_dep) == 4 and catch2_build_dep[3] == SYSTEM:
+            build_deps[idx] = (catch2_name, catch2_version)
 
 
 def parse_hook_qt5_check_qtwebengine_disable(ec, eprefix):
@@ -360,6 +382,7 @@ PARSE_HOOKS = {
     'CGAL': parse_hook_cgal_toolchainopts_precise,
     'fontconfig': parse_hook_fontconfig_add_fonts,
     'OpenBLAS': parse_hook_openblas_relax_lapack_tests_num_errors,
+    'pybind11': parse_hook_pybind11_replace_catch2,
     'Qt5': parse_hook_qt5_check_qtwebengine_disable,
     'UCX': parse_hook_ucx_eprefix,
 }
