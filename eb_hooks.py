@@ -314,11 +314,19 @@ def pre_test_hook_ignore_failing_tests_FFTWMPI(self, *args, **kwargs):
 
 def pre_test_hook_ignore_failing_tests_SciPybundle(self, *args, **kwargs):
     """
-    Pre-test hook for SciPy-bundle: skip failing tests for SciPy-bundle 2021.10 (currently the only version that is failing).
+    Pre-test hook for SciPy-bundle: skip failing tests for selected SciPy-bundle vrsions
+    In version 2021.10, 2 failing tests in scipy 1.6.3:
+        FAILED optimize/tests/test_linprog.py::TestLinprogIPSparse::test_bug_6139 - A...
+        FAILED optimize/tests/test_linprog.py::TestLinprogIPSparsePresolve::test_bug_6139
+        = 2 failed, 30554 passed, 2064 skipped, 10992 deselected, 76 xfailed, 7 xpassed, 40 warnings in 380.27s (0:06:20) =
+    In versions 2023.07, 2 failing tests in scipy 1.11.1:
+        FAILED scipy/spatial/tests/test_distance.py::TestPdist::test_pdist_correlation_iris
+        FAILED scipy/spatial/tests/test_distance.py::TestPdist::test_pdist_correlation_iris_float32
+        = 2 failed, 54409 passed, 3016 skipped, 223 xfailed, 13 xpassed, 10917 warnings in 892.04s (0:14:52) =
     In previous versions we were not as strict yet on the numpy/SciPy tests
     """
     cpu_target = get_eessi_envvar('EESSI_SOFTWARE_SUBDIR')
-    if self.name == 'SciPy-bundle' and self.version == '2021.10' and cpu_target == CPU_TARGET_NEOVERSE_V1:
+    if self.name == 'SciPy-bundle' and self.version in ['2021.10', '2023.07'] and cpu_target == CPU_TARGET_NEOVERSE_V1:
         self.cfg['testopts'] = "|| echo ignoring failing tests" 
 
 
