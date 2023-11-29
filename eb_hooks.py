@@ -69,6 +69,21 @@ def parse_hook(ec, *args, **kwargs):
         PARSE_HOOKS[ec.name](ec, eprefix)
 
 
+def post_ready_hook(self, *args, **kwargs):
+    """
+    Post-ready hook: limit parallellism for selected builds, because they require a lot of memory per used core.
+    """
+    # 'parallel' easyconfig parameter is set via EasyBlock.set_parallel in ready step based on available cores.
+    # here we reduce parallellism to only use half of that for selected software,
+    # to avoid failing builds/tests due to out-of-memory problems
+    if self.name in ['TensorFlow']:
+        parallel = self.cfg['parallel']
+        if parallel > 1:
+            self.cfg['parallel'] = parallel // 2
+            msg = "limiting parallelism to %s (was %s) for %s to avoid out-of-memory failures during building/testing"
+            print_msg(msg % (self.cfg['parallel'], parallel, self.name), log=self.log)
+
+
 def pre_prepare_hook(self, *args, **kwargs):
     """Main pre-prepare hook: trigger custom functions."""
 
