@@ -12,3 +12,4 @@ easyconfigs:
       options:
         from-pr: 19270
   - SciPy-bundle-2023.07-gfbf-2023a.eb
+  - OpenFOAM-10-foss-2023a.eb
