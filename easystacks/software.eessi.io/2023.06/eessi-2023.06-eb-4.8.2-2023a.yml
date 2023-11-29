@@ -17,4 +17,5 @@ easyconfigs:
       # see https://github.com/easybuilders/easybuild-easyconfigs/pull/19268
       options:
         from-pr: 19268
+  - X11-20230603-GCCcore-12.3.0.eb
   - Qt5-5.15.10-GCCcore-12.3.0.eb
