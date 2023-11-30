@@ -53,7 +53,7 @@ fi
 # Let's make sure the driver libraries are not already in place
 link_drivers=1
 
-host_injections_nvidia_dir="/cvmfs/pilot.eessi-hpc.org/host_injections/${EESSI_CPU_FAMILY}/nvidia"
+host_injections_nvidia_dir="/cvmfs/pilot.eessi-hpc.org/host_injections/nvidia/${EESSI_CPU_FAMILY}"
 host_injection_driver_dir="${host_injections_nvidia_dir}/host"
 host_injection_driver_version_file="$host_injection_driver_dir/version.txt"
 if [ -e "$host_injection_driver_version_file" ]; then
