@@ -15,7 +15,7 @@ exclude_prefix="/cvmfs"
 found_paths=()
 # Always attempt to use /sbin/ldconfig
 if [ -x "/sbin/$command_name" ]; then
-    found_paths+=("$dir/$command_name")
+    found_paths+=("/sbin/$command_name")
 fi
 IFS=':' read -ra path_dirs <<< "$PATH"
 for dir in "${path_dirs[@]}"; do
