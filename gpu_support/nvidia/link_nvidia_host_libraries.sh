@@ -43,8 +43,9 @@ check_eessi_initialised
 # (making sure that this can still work inside prefix environment inside a container)
 export LD_LIBRARY_PATH=/.singularity.d/libs:$LD_LIBRARY_PATH
 nvidia_smi_command="nvidia-smi --query-gpu=driver_version --format=csv,noheader"
-if $nvidia_smi_command; then
-  host_cuda_version=$($nvidia_smi_command | tail -n1)
+if $nvidia_smi_command > /dev/null; then
+  host_driver_version=$($nvidia_smi_command | tail -n1)
+  host_cuda_version=$(nvidia-smi  -q --display=COMPUTE | grep CUDA | awk 'NF>1{print $NF}')
 else
   error="Failed to successfully execute\n  $nvidia_smi_command\n"
   fatal_error $error
@@ -57,7 +58,7 @@ host_injections_nvidia_dir="/cvmfs/pilot.eessi-hpc.org/host_injections/nvidia/${
 host_injection_driver_dir="${host_injections_nvidia_dir}/host"
 host_injection_driver_version_file="$host_injection_driver_dir/version.txt"
 if [ -e "$host_injection_driver_version_file" ]; then
-  if grep -q "$host_cuda_version" "$host_injection_driver_version_file"; then
+  if grep -q "$host_driver_version" "$host_injection_driver_version_file"; then
     echo_green "The host CUDA driver libraries have already been linked!"
     link_drivers=0
   else
@@ -91,8 +92,9 @@ if [ "$link_drivers" -eq 1 ]; then
   # Make symlinks to all the interesting libraries
   grep '.so$' "$temp_dir"/nvliblist.conf | xargs -i grep {} "$temp_dir"/libs.txt | xargs -i ln -s {}
 
-  # Inject CUDA version into dir
-  echo $host_cuda_version > version.txt
+  # Inject driver and CUDA versions into dir
+  echo $host_driver_version > version.txt
+  echo $host_cuda_version > cuda_version.txt
   drivers_linked=1
 
   # Remove the temporary directory when done
