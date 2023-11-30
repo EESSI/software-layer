@@ -41,8 +41,9 @@ check_eessi_initialised
 
 # Find the CUDA version of the host CUDA drivers
 # (making sure that this can still work inside prefix environment inside a container)
-nvidia_smi_command="LD_LIBRARY_PATH=/.singularity/libs:$LD_LIBRARY_PATH nvidia-smi --query-gpu=driver_version --format=csv,noheader"
-if $($nvidia_smi_command); then
+LD_LIBRARY_PATH=/.singularity/libs:$LD_LIBRARY_PATH
+nvidia_smi_command="nvidia-smi --query-gpu=driver_version --format=csv,noheader"
+if $nvidia_smi_command; then
   host_cuda_version=$($nvidia_smi_command | tail -n1)
 else
   error="Failed to successfully execute\n  $nvidia_smi_command\n"
