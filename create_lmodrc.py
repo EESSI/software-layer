@@ -81,8 +81,8 @@ local function cuda_enabled_load_hook(t)
                 end
                 if driver_libs_need_update == true then
                     local advice = "but the module you want to load requires CUDA  " .. cudaVersion_req .. ".\\n"
-                    advice = "Please update your CUDA driver libraries and then follow the instructions \\n"
-                    advice = "under https://www.eessi.io/docs/gpu/ to let EESSI know about the update.\\n"
+                    advice = advice .. "Please update your CUDA driver libraries and then follow the instructions \\n"
+                    advice = advice .. "under https://www.eessi.io/docs/gpu/ to let EESSI know about the update.\\n"
                     LmodError("Your driver CUDA version is ", cudaVersion, "\\n", advice)
                 end
             end
