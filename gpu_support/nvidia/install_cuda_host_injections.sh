@@ -1,16 +1,94 @@
 #!/usr/bin/env bash
 
+# This script can be used to install CUDA under the `.../host_injections` directory.
+# This provides the parts of the CUDA installation that cannot be redistributed as
+# part of EESSI due to license limitations. While GPU-based software from EESSI will
+# _run_ without these, installation of additional CUDA software requires the CUDA
+# installation(s) under `host_injections` to be present.
+#
+# The `host_injections` directory is a variant symlink that by default points to
+# `/opt/eessi`, unless otherwise defined in the local CVMFS configuration (see
+# https://cvmfs.readthedocs.io/en/stable/cpt-repo.html#variant-symlinks). For the
+# installation to be successful, this directory needs to be writeable by the user
+# executing this script.
+
 # Initialise our bash functions
 TOPDIR=$(dirname $(realpath $BASH_SOURCE))
 source "$TOPDIR"/../../scripts/utils.sh
 
+# Function to display help message
+show_help() {
+    echo "Usage: $0 [OPTIONS]"
+    echo "Options:"
+    echo "  --help                           Display this help message"
+    echo "  -c, --cuda-version CUDA_VERSION  Specify a version o CUDA to install (must"
+    echo "                                   have a corresponding easyconfig in the"
+    echo "                                   EasyBuild release)"
+    echo "  -t, --temp-dir /path/to/tmpdir   Specify a location to use for temporary"
+    echo "                                   storage during the CUDA install"
+    echo "                                   (must have >10GB available)"
+}
+
+# Initialize variables
+install_cuda_version=""
+
+# Parse command-line options
+while [[ $# -gt 0 ]]; do
+    case "$1" in
+        --help)
+            show_help
+            exit 0
+            ;;
+        -c|--cuda-version)
+            if [ -n "$2" ]; then
+                install_cuda_version="$2"
+                shift 2
+            else
+                echo "Error: Argument required for $1"
+                show_help
+                exit 1
+            fi
+            ;;
+        -t|--temp-dir)
+            if [ -n "$2" ]; then
+                CUDA_TEMP_DIR="$2"
+                shift 2
+            else
+                echo "Error: Argument required for $1"
+                show_help
+                exit 1
+            fi
+            ;;
+        *)
+            show_help
+            fatal_error "Error: Unknown option: $1"
+            ;;
+    esac
+done
+
+# Make sure the CUDA version supplied is a semantic version
+is_semantic_version() {
+    local version=$1
+    local regex='^[0-9]+\.[0-9]+\.[0-9]+$'
+
+    if [[ $version =~ $regex ]]; then
+        return 0  # Return success (0) if it's a semantic version
+    else
+        return 1  # Return failure (1) if it's not a semantic version
+    fi
+}
+if ! is_semantic_version "$install_cuda_version"; then
+  show_help
+  error="\nYou must provide a semantic version for CUDA (e.g., 12.1.1) via the appropriate\n"
+  error="${error}command line option. This script is intended for use with EESSI so the 'correct'\n"
+  error="${error}version to provide is probably the one that is available under\n"
+  error="${error}$EESSI_SOFTWARE_PATH/software/CUDA\n"
+  fatal_error "${error}"
+fi
+
 # Make sure EESSI is initialised
 check_eessi_initialised
 
-if [[ $# -eq 0 ]] ; then
-    fatal_error "You must provide the CUDA version as an argument, e.g.:\n $0 11.3.1"
-fi
-install_cuda_version=$1
 if [[ -z "${EESSI_SOFTWARE_PATH}" ]]; then
   fatal_error "This script cannot be used without having first defined EESSI_SOFTWARE_PATH"
 else
@@ -20,12 +98,9 @@ else
 fi
 
 # Only install CUDA if specified version is not found.
-# This is only relevant for users, the shipped CUDA installation will
-# always be in versions instead of host_injections and have symlinks pointing
-# to host_injections for everything we're not allowed to ship
 # (existence of easybuild subdir implies a successful install)
 if [ -d "${cuda_install_parent}"/software/CUDA/"${install_cuda_version}"/easybuild ]; then
-  echo_green "CUDA software found! No need to install CUDA again, proceed with testing."
+  echo_green "CUDA software found! No need to install CUDA again."
 else
   # We need to be able write to the installation space so let's make sure we can
   if ! create_directory_structure "${cuda_install_parent}"/software/CUDA ; then
@@ -68,19 +143,50 @@ else
     fatal_error "${error}"
   fi
 
-  if [[ -z "${EBROOTEASYBUILD}" ]]; then
-    echo_yellow "Loading EasyBuild module to do actual install"
+  if ! command -v "eb" &>/dev/null; then
+    echo_yellow "Attempting to load an EasyBuild module to do actual install"
     module load EasyBuild
+    # There are some scenarios where this may fail
+    if [ $? -ne 0 ]; then
+      error="'eb' command not found in your environment and\n"
+      error="${error}  module load EasyBuild\n"
+      error="${error}failed for some reason.\n"
+      error="${error}Please re-run this script with the 'eb' command available."
+      fatal_error "${error}"
+    fi
   fi
 
-  # we need the --rebuild option and a (random) dir for the module since we are
-  # fixing the broken links of the EESSI-shipped installation
+  cuda_easyconfig="CUDA-${install_cuda_version}.eb"
+
+  # Check the easyconfig file is available in the release
+  # (eb search always returns 0, so we need a grep to ensure a usable exit code)
+  eb --search ^${cuda_easyconfig}|grep CUDA > /dev/null 2>&1
+  # Check the exit code
+  if [ $? -ne 0 ]; then
+    eb_version=$(eb --version)
+    available_cuda_easyconfigs=$(eb --search ^CUDA-*.eb|grep CUDA)
+
+    error="The easyconfig ${cuda_easyconfig} was not found in EasyBuild version:\n"
+    error="${error}  ${eb_version}\n"
+    error="${error}You either need to give a different version of CUDA to install _or_ \n"
+    error="${error}use a different version of EasyBuild for the installation.\n"
+    error="${error}\nThe versions of available with the current eb command are:\n"
+    error="${error}${available_cuda_easyconfigs}"
+    fatal_error "${error}"
+  fi
+
+  # We need the --rebuild option, as the CUDA module may or may not be on the
+  # `MODULEPATH` yet. Even if it is, we still want to redo this installation
+  # since it will provide the symlinked targets for the parts of the CUDA
+  # installation in the `.../versions/...` prefix
+  # We install the module in our `tmpdir` since we do not need the modulefile,
+  # we only care about providing the targets for the symlinks.
   extra_args="--rebuild --installpath-modules=${tmpdir}"
 
   # We don't want hooks used in this install, we need a vanilla CUDA installation
   touch "$tmpdir"/none.py
   # shellcheck disable=SC2086  # Intended splitting of extra_args
-  eb --prefix="$tmpdir" ${extra_args} --hooks="$tmpdir"/none.py --installpath="${cuda_install_parent}"/ CUDA-"${install_cuda_version}".eb
+  eb --prefix="$tmpdir" ${extra_args} --hooks="$tmpdir"/none.py --installpath="${cuda_install_parent}"/ "${cuda_easyconfig}"
   ret=$?
   if [ $ret -ne 0 ]; then
     fatal_error  "CUDA installation failed, please check EasyBuild logs..."

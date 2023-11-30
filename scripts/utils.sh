@@ -40,30 +40,6 @@ function check_eessi_initialised() {
   fi
 }
 
-function float_greater_than() {
-  # Make sure we have two arguments
-  if [ $# -ne 2 ]; then
-    echo_red "greater_than_float requires two (float) numbers" >&2
-    return $ANY_ERROR_EXITCODE
-  fi
-  # Make sure the arguments are numbers
-  if [[ ! $1 =~ ^[+-]?[0-9]+\.?[0-9]*$ ]]; then
-    echo_yellow "Input to float_greater_than is not a float, ignoring"
-    return $ANY_ERROR_EXITCODE
-  fi
-  if [[ ! $2 =~ ^[+-]?[0-9]+\.?[0-9]*$ ]]; then
-    echo_yellow "Input to float_greater_than is not a float, ignoring"
-    return $ANY_ERROR_EXITCODE
-  fi
-  # Now do the actual evaluation
-  return_code=$ANY_ERROR_EXITCODE
-  result=$(echo "$1" "$2" | awk '{if ($1 > $2) print "true"}')
-  if [ "$result" = true ] ; then
-    return_code=0
-  fi
-  return $return_code
-}
-
 function check_in_prefix_shell() {
   # Make sure EPREFIX is defined
   if [[ -z "${EPREFIX}" ]]; then

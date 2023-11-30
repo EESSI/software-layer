@@ -30,8 +30,8 @@
 # -. initial settings & exit codes
 TOPDIR=$(dirname $(realpath $0))
 
-source ${TOPDIR}/scripts/utils.sh
-source ${TOPDIR}/scripts/cfg_files.sh
+source "${TOPDIR}"/scripts/utils.sh
+source "${TOPDIR}"/scripts/cfg_files.sh
 
 # exit codes: bitwise shift codes to allow for combination of exit codes
 # ANY_ERROR_EXITCODE is sourced from ${TOPDIR}/scripts/utils.sh
@@ -447,6 +447,10 @@ if [[ ${SETUP_NVIDIA} -eq 1 ]]; then
     fi
     if [[ "${NVIDIA_MODE}" == "install" || "${NVIDIA_MODE}" == "all" ]]; then
         # Add additional bind mounts to allow CUDA to install within a container
+        # (Experience tells us that these are necessary, but we don't know _why_
+        # as the CUDA installer is a black box. The suspicion is that the CUDA
+        # installer gets confused by the permissions on these directories when
+        # inside a container)
         EESSI_VAR_LOG=${EESSI_TMPDIR}/var-log
         EESSI_USR_LOCAL_CUDA=${EESSI_TMPDIR}/usr-local-cuda
         mkdir -p ${EESSI_VAR_LOG}
