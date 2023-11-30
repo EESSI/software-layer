@@ -377,6 +377,10 @@ def post_sanitycheck_cuda(self, *args, **kwargs):
                     # if it is not in the whitelist, delete the file and create a symlink to host_injections
                     source = os.path.join(root, filename)
                     target = source.replace("versions", "host_injections")
+                    # Make sure source and target are not the same
+                    if source == target:
+                        raise EasyBuildError("Source (%s) and target (%s) are the same location, are you sure you are"
+                                             "using this hook for an EESSI installation?")
                     os.remove(source)
                     # Using os.symlink requires the existence of the target directory, so we use os.system
                     system_command="ln -s '%s' '%s'" % (target, source)

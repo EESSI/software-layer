@@ -29,92 +29,61 @@ local function read_file(path)
     return content
 end
 
--- from https://stackoverflow.com/a/40195356
---- Check if a file or directory exists in this path
-function exists(file)
-    local ok, err, code = os.rename(file, file)
-    if not ok then
-        if code == 13 then
-            -- Permission denied, but it exists
-            return true
-        end
-    end
-    return ok, err
-end
-
-local function visible_hook(modT)
-    local frameStk  = require("FrameStk"):singleton()
-    local mt        = frameStk:mt()
-    local cudaDir = string.gsub(os.getenv('EESSI_SOFTWARE_PATH') or "", 'versions', 'host_injections')
-    local cudaDirExists = exists(cudaDir)
-    if not cudaDirExists then
-        local haveGpu = mt:haveProperty(modT.sn,"arch","gpu")
-        if haveGpu then
-            modT.isVisible = false
-        end
-    end
-end
-
 local function cuda_enabled_load_hook(t)
     local frameStk  = require("FrameStk"):singleton()
     local mt        = frameStk:mt()
     local simpleName = string.match(t.modFullName, "(.-)/")
-    local eprefix = os.getenv('EESSI_PREFIX') .. "/init/gpu_support"
-    -- if we try to load CUDA itself, check if the software exists in host_injections
-    -- otherwise, refuse to load CUDA and print error message
+    -- If we try to load CUDA itself, check if the full CUDA SDK was installed on the host in host_injections. 
+    -- This is required for end users to build additional CUDA software. If the full SDK isn't present, refuse
+    -- to load the CUDA module and print an informative message on how to set up GPU support for EESSI
     if simpleName == 'CUDA' then
         -- get the full host_injections path
         local hostInjections = string.gsub(os.getenv('EESSI_SOFTWARE_PATH') or "", 'versions', 'host_injections')
         -- build final path where the CUDA software should be installed
         local cudaEasyBuildDir = hostInjections .. "/software/" .. t.modFullName .. "/easybuild"
-        local cudaDirExists = exists(cudaEasyBuildDir)
+        local cudaDirExists = isDir(cudaEasyBuildDir)
         if not cudaDirExists then
-            io.stderr:write("You requested to load ",simpleName,"\\n")
-            io.stderr:write("While the module file exists, the actual software is not shipped with EESSI.\\n")
-            io.stderr:write("In order to be able to use the CUDA module, please follow the instructions in the\\n")
-            io.stderr:write("gpu_support folder. Adding the CUDA software can be as easy as:\\n")
-            io.stderr:write("export INSTALL_CUDA=true && ./add_nvidia_gpu_support.sh\\n")
-            frameStk:__clear()
+            local advice = "While the module file exists, the actual software is not shipped with EESSI.\\n"
+            advice = advice .. "In order to be able to use the CUDA module, please follow the instructions \\n"
+            advice = advice .. "available under https://www.eessi.io/docs/gpu/\\n"
+            LmodError("You requested to load ", simpleName, "\\n", advice)
         end
     end
-    -- when loading CUDA enabled modules check if the necessary matching compatibility libraries are installed
+    -- when loading CUDA enabled modules check if the necessary driver libraries are accessible to the EESSI linker,
     -- otherwise, refuse to load the requested module and print error message
     local haveGpu = mt:haveProperty(simpleName,"arch","gpu")
     if haveGpu then
         local arch = os.getenv("EESSI_CPU_FAMILY") or ""
-        local cudaVersionFile = "/cvmfs/pilot.eessi-hpc.org/host_injections/nvidia/" .. arch .. "/latest/version.txt"
-        local cudaDriverExists = exists(cudaVersionFile)
-        local singularityCudaExists = exists("/.singularity.d/libs/libcuda.so")
+        local cudaVersionFile = "/cvmfs/pilot.eessi-hpc.org/host_injections/nvidia/" .. arch .. "/latest/cuda_version.txt"
+        local cudaDriverFile = "/cvmfs/pilot.eessi-hpc.org/host_injections/nvidia/" .. arch .. "/latest/libcuda.so"
+        local cudaDriverExists = isFile(cudaDriverFile)
+        local singularityCudaExists = isFile("/.singularity.d/libs/libcuda.so")
         if not (cudaDriverExists or singularityCudaExists)  then
-            io.stderr:write("You requested to load ",simpleName,"\\n")
-            io.stderr:write("which relies on the CUDA runtime environment and its compatibility libraries.\\n")
-            io.stderr:write("In order to be able to use the module, please follow the instructions in the\\n")
-            io.stderr:write("gpu_support folder. Installing the needed compatibility libraries can be as easy as:\\n")
-            io.stderr:write("./add_nvidia_gpu_support.sh\\n")
-            frameStk:__clear()
+            local advice = "which relies on the CUDA runtime environment and driver libraries.\\n"
+            advice = advice .. "In order to be able to use the module, please follow the instructions\\n"
+            advice = advice .. "available under https://www.eessi.io/docs/gpu/\\n"
+            LmodError("You requested to load ", simpleName, "\\n", advice)
         else
+            -- CUDA driver exists, now we check its version to see if an update is needed
             if cudaDriverExists then
                 local cudaVersion = read_file(cudaVersionFile)
                 local cudaVersion_req = os.getenv("EESSICUDAVERSION")
-                local major, minor, patch = string.match(cudaVersion, "(%d+)%.(%d+)%.(%d+)")
+                -- driver CUDA versions don't give a patch version for CUDA
+                local major, minor = string.match(cudaVersion, "(%d+)%.(%d+)%")
                 local major_req, minor_req, patch_req = string.match(cudaVersion_req, "(%d+)%.(%d+)%.(%d+)")
-                local compat_libs_need_update = false
+                local driver_libs_need_update = false
                 if major < major_req then
-                    compat_libs_need_update = true
+                    driver_libs_need_update = true
                 elseif major == major_req then
                     if minor < minor_req then
-                        compat_libs_need_update = true
-                    elseif minor == minor_req then
-                        if patch < patch_req then
-                            compat_libs_need_update = true
-                        end
+                        driver_libs_need_update = true
                     end
                 end
-                if compat_libs_need_update == true then
-                    io.stderr:write("You requested to load CUDA version ",cudaVersion)
-                    io.stderr:write("but the module you want to load requires CUDA version ",cudaVersion_req,".\\n")
-                    io.stderr:write("Please update your CUDA compatibility libraries in order to use ",simpleName,".\\n")
-                    frameStk:__clear()
+                if driver_libs_need_update == true then
+                    local advice = "but the module you want to load requires CUDA  " .. cudaVersion_req .. ".\\n"
+                    advice = "Please update your CUDA driver libraries and then follow the instructions \\n"
+                    advice = "under https://www.eessi.io/docs/gpu/ to let EESSI know about the update.\\n"
+                    LmodError("Your driver CUDA version is ", cudaVersion, "\\n", advice)
                 end
             end
         end
@@ -122,7 +91,6 @@ local function cuda_enabled_load_hook(t)
 end
 
 hook.register("load", cuda_enabled_load_hook)
-hook.register("isVisibleHook", visible_hook)
 """
 
 def error(msg):
