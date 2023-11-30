@@ -21,6 +21,9 @@ show_help() {
     echo "Usage: $0 [OPTIONS]"
     echo "Options:"
     echo "  --help                           Display this help message"
+    echo "  --accept-cuda-eula               You _must_ accept the CUDA EULA to install"
+    echo "                                   CUDA, see the EULA at"
+    echo "                                   https://docs.nvidia.com/cuda/eula/index.html"
     echo "  -c, --cuda-version CUDA_VERSION  Specify a version o CUDA to install (must"
     echo "                                   have a corresponding easyconfig in the"
     echo "                                   EasyBuild release)"
@@ -31,6 +34,7 @@ show_help() {
 
 # Initialize variables
 install_cuda_version=""
+eula_accepted=0
 
 # Parse command-line options
 while [[ $# -gt 0 ]]; do
@@ -48,6 +52,10 @@ while [[ $# -gt 0 ]]; do
                 show_help
                 exit 1
             fi
+            ;;
+        --accept-cuda-eula)
+            eula_accepted=1
+            shift 1
             ;;
         -t|--temp-dir)
             if [ -n "$2" ]; then
@@ -83,6 +91,13 @@ if ! is_semantic_version "$install_cuda_version"; then
   error="${error}command line option. This script is intended for use with EESSI so the 'correct'\n"
   error="${error}version to provide is probably the one that is available under\n"
   error="${error}$EESSI_SOFTWARE_PATH/software/CUDA\n"
+  fatal_error "${error}"
+fi
+
+# Make sure they have accepted the CUDA EULA
+if [ "$eula_accepted" -ne 1 ]; then
+  show_help
+  error="\nYou _must_ accept the CUDA EULA via the appropriate command line option.\n"
   fatal_error "${error}"
 fi
 
@@ -186,7 +201,7 @@ else
   # We don't want hooks used in this install, we need a vanilla CUDA installation
   touch "$tmpdir"/none.py
   # shellcheck disable=SC2086  # Intended splitting of extra_args
-  eb --prefix="$tmpdir" ${extra_args} --hooks="$tmpdir"/none.py --installpath="${cuda_install_parent}"/ "${cuda_easyconfig}"
+  eb --prefix="$tmpdir" ${extra_args} --accept-eula-for=CUDA --hooks="$tmpdir"/none.py --installpath="${cuda_install_parent}"/ "${cuda_easyconfig}"
   ret=$?
   if [ $ret -ne 0 ]; then
     fatal_error  "CUDA installation failed, please check EasyBuild logs..."
