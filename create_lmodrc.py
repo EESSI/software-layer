@@ -69,7 +69,7 @@ local function cuda_enabled_load_hook(t)
                 local cudaVersion = read_file(cudaVersionFile)
                 local cudaVersion_req = os.getenv("EESSICUDAVERSION")
                 -- driver CUDA versions don't give a patch version for CUDA
-                local major, minor = string.match(cudaVersion, "(%d+)%.(%d+)%")
+                local major, minor = string.match(cudaVersion, "(%d+)%.(%d+)")
                 local major_req, minor_req, patch_req = string.match(cudaVersion_req, "(%d+)%.(%d+)%.(%d+)")
                 local driver_libs_need_update = false
                 if major < major_req then
