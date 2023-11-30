@@ -88,6 +88,7 @@ if [ "$link_drivers" -eq 1 ]; then
   ls /.singularity.d/libs/* >> "$temp_dir"/libs.txt 2>/dev/null
 
   # Leverage singularity to find the full list of libraries we should be linking to
+  echo_yellow "Downloading latest version of nvliblist.conf from Apptainer"
   curl -o "$temp_dir"/nvliblist.conf https://raw.githubusercontent.com/apptainer/apptainer/main/etc/nvliblist.conf
 
   # Make symlinks to all the interesting libraries
