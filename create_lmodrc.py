@@ -43,9 +43,9 @@ local function cuda_enabled_load_hook(t)
         local cudaEasyBuildDir = hostInjections .. "/software/" .. t.modFullName .. "/easybuild"
         local cudaDirExists = isDir(cudaEasyBuildDir)
         if not cudaDirExists then
-            local advice = "While the module file exists, the actual software is not shipped with EESSI. "
-            advice = advice .. "In order to be able to use the CUDA module, please follow the instructions "
-            advice = advice .. "available under https://www.eessi.io/docs/gpu/ \\n"
+            local advice = "but while the module file exists, the actual software is not entirely shipped with EESSI "
+            advice = advice .. "due to licencing. In order to be able to use the CUDA module, please follow the "
+            advice = advice .. "instructions available under https://www.eessi.io/docs/gpu/ \\n"
             LmodError("\\nYou requested to load ", simpleName, " ", advice)
         end
     end
