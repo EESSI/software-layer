@@ -46,7 +46,7 @@ local function cuda_enabled_load_hook(t)
             local advice = "While the module file exists, the actual software is not shipped with EESSI.\\n"
             advice = advice .. "In order to be able to use the CUDA module, please follow the instructions \\n"
             advice = advice .. "available under https://www.eessi.io/docs/gpu/\\n"
-            LmodError("You requested to load ", simpleName, "\\n", advice)
+            LmodError("\\nYou requested to load ", simpleName, "\\n", advice)
         end
     end
     -- when loading CUDA enabled modules check if the necessary driver libraries are accessible to the EESSI linker,
@@ -62,7 +62,7 @@ local function cuda_enabled_load_hook(t)
             local advice = "which relies on the CUDA runtime environment and driver libraries.\\n"
             advice = advice .. "In order to be able to use the module, please follow the instructions\\n"
             advice = advice .. "available under https://www.eessi.io/docs/gpu/\\n"
-            LmodError("You requested to load ", simpleName, "\\n", advice)
+            LmodError("\\nYou requested to load ", simpleName, "\\n", advice)
         else
             -- CUDA driver exists, now we check its version to see if an update is needed
             if cudaDriverExists then
@@ -83,7 +83,7 @@ local function cuda_enabled_load_hook(t)
                     local advice = "but the module you want to load requires CUDA  " .. cudaVersion_req .. ".\\n"
                     advice = advice .. "Please update your CUDA driver libraries and then follow the instructions \\n"
                     advice = advice .. "under https://www.eessi.io/docs/gpu/ to let EESSI know about the update.\\n"
-                    LmodError("Your driver CUDA version is ", cudaVersion, "\\n", advice)
+                    LmodError("\\nYour driver CUDA version is ", cudaVersion, "\\n", advice)
                 end
             end
         end
