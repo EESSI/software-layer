@@ -89,7 +89,7 @@ if [ "$link_drivers" -eq 1 ]; then
   curl -o "$temp_dir"/nvliblist.conf https://raw.githubusercontent.com/apptainer/apptainer/main/etc/nvliblist.conf
 
   # Make symlinks to all the interesting libraries
-  grep '.so$' "$temp_dir"/nvliblist.conf | xargs -i grep {} libs.txt | xargs -i ln -s {}
+  grep '.so$' "$temp_dir"/nvliblist.conf | xargs -i grep {} "$temp_dir"/libs.txt | xargs -i ln -s {}
 
   # Inject CUDA version into dir
   echo $host_cuda_version > version.txt
