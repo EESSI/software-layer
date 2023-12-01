@@ -5,3 +5,11 @@ easyconfigs:
       options:
         from-pr: 18834
   - R-4.2.0-foss-2021b.eb
+  - PLUMED-2.7.3-foss-2021b.eb:
+      # the --enable-asmjit is not supported on Aarch64
+      options:
+        from-pr: 19110
+  - LAMMPS-23Jun2022-foss-2021b-kokkos.eb:
+      # TBB and ScaFaCos are optional dependencies when building on Intel arch
+      options:
+        from-pr: 19246

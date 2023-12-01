@@ -5,27 +5,6 @@ easyconfigs:
   - AOFlagger-3.4.0-foss-2022a:
       options:
         from-pr: 19119
-        # Exclude Lua from `filter-deps` as the compat layer version is too old for the software
-        filter-deps:
-          - Autoconf
-          - Automake
-          - Autotools
-          - binutils
-          - bzip2
-          - DBus
-          - flex
-          - gettext
-          - gperf
-          - help2man
-          - intltool
-          - libreadline
-          - libtool
-          - ncurses
-          - M4
-          - makeinfo
-          - util-linux
-          - XZ
-          - zlib
   - EveryBeam-0.5.2-foss-2022a:
       options:
         from-pr: 19119
@@ -35,3 +14,8 @@ easyconfigs:
   - WSClean-3.4-foss-2022a:
       options:
         from-pr: 19119
+  - Pillow-9.1.1-GCCcore-11.3.0.eb:
+      # avoid that hardcoded paths like /usr/include are used in build commands
+      options:
+        from-pr: 19226
+  - matplotlib-3.5.2-foss-2022a.eb

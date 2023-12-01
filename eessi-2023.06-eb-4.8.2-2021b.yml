@@ -1,0 +1,6 @@
+easyconfigs:
+  - Pillow-8.3.2-GCCcore-11.2.0.eb:
+      # avoid that hardcoded paths like /usr/include are used in build commands
+      options:
+        from-pr: 19226
+  - matplotlib-3.4.3-foss-2021b.eb
