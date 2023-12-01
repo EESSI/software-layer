@@ -1,5 +1,5 @@
 export EASYBUILD_PREFIX=${WORKDIR}/easybuild
-export EASYBUILD_INSTALLPATH=${EESSI_PREFIX}/software/${EESSI_OS_TYPE}/${EESSI_SOFTWARE_SUBDIR}
+export EASYBUILD_INSTALLPATH=${EESSI_PREFIX}/software/${EESSI_OS_TYPE}/${EESSI_SOFTWARE_SUBDIR}/testing
 export EASYBUILD_SOURCEPATH=${WORKDIR}/easybuild/sources:${EESSI_SOURCEPATH}
 
 # just ignore OS dependencies for now, see https://github.com/easybuilders/easybuild-framework/issues/3430
