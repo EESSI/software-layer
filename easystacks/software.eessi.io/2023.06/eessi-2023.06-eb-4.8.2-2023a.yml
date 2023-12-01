@@ -22,4 +22,7 @@ easyconfigs:
       options:
         from-pr: 19339
   - Qt5-5.15.10-GCCcore-12.3.0.eb
+  - gnuplot-5.4.8-GCCcore-12.3.0.eb: 
+      options:
+        from-pr: 19261
   - OpenFOAM-10-foss-2023a.eb
