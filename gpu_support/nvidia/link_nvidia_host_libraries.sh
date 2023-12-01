@@ -19,11 +19,14 @@ if [ -x "/sbin/$command_name" ]; then
 fi
 IFS=':' read -ra path_dirs <<< "$PATH"
 for dir in "${path_dirs[@]}"; do
-    if [[ ! "$dir" =~ ^$exclude_prefix ]]; then
-        if [ -x "$dir/$command_name" ]; then
-            found_paths+=("$dir/$command_name")
-        fi
-    fi
+  if [ "$dir" = "/sbin" ]; then
+    continue  # we've already checked for $command_name in /sbin, don't need to do it twice
+  fi
+  if [[ ! "$dir" =~ ^$exclude_prefix ]]; then
+      if [ -x "$dir/$command_name" ]; then
+          found_paths+=("$dir/$command_name")
+      fi
+  fi
 done
 
 if [ ${#found_paths[@]} -gt 0 ]; then

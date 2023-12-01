@@ -74,6 +74,9 @@ while [[ $# -gt 0 ]]; do
     esac
 done
 
+# Make sure EESSI is initialised
+check_eessi_initialised
+
 # Make sure the CUDA version supplied is a semantic version
 is_semantic_version() {
     local version=$1
@@ -89,7 +92,7 @@ if ! is_semantic_version "$install_cuda_version"; then
   show_help
   error="\nYou must provide a semantic version for CUDA (e.g., 12.1.1) via the appropriate\n"
   error="${error}command line option. This script is intended for use with EESSI so the 'correct'\n"
-  error="${error}version to provide is probably the one that is available under\n"
+  error="${error}version to provide is probably one of those available under\n"
   error="${error}$EESSI_SOFTWARE_PATH/software/CUDA\n"
   fatal_error "${error}"
 fi
@@ -101,16 +104,9 @@ if [ "$eula_accepted" -ne 1 ]; then
   fatal_error "${error}"
 fi
 
-# Make sure EESSI is initialised
-check_eessi_initialised
-
-if [[ -z "${EESSI_SOFTWARE_PATH}" ]]; then
-  fatal_error "This script cannot be used without having first defined EESSI_SOFTWARE_PATH"
-else
-  # As an installation location just use $EESSI_SOFTWARE_PATH but replacing `versions` with `host_injections`
-  # (CUDA is a binary installation so no need to worry too much about the EasyBuild setup)
-  cuda_install_parent=${EESSI_SOFTWARE_PATH/versions/host_injections}
-fi
+# As an installation location just use $EESSI_SOFTWARE_PATH but replacing `versions` with `host_injections`
+# (CUDA is a binary installation so no need to worry too much about the EasyBuild setup)
+cuda_install_parent=${EESSI_SOFTWARE_PATH/versions/host_injections}
 
 # Only install CUDA if specified version is not found.
 # (existence of easybuild subdir implies a successful install)
