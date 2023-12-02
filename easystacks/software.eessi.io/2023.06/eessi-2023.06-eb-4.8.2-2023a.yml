@@ -22,3 +22,4 @@ easyconfigs:
       options:
         from-pr: 19339
   - Qt5-5.15.10-GCCcore-12.3.0.eb
+  - OSU-Micro-Benchmarks-7.1-1-gompi-2023a.eb
