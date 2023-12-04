@@ -1,10 +1,17 @@
-# Allow for a silent mode
-if [[ -v EESSI_SILENT ]]; then
-  # EESSI_SILENT set
-  output=/dev/null
-else
-  output=/dev/stdout
-fi
+function show_msg {
+  msg=$1
+  if [[ ! -v EESSI_SILENT ]]; then
+    echo "$msg"
+  fi
+}
+
+## Allow for a silent mode
+#if [[ -v EESSI_SILENT ]]; then
+#  # EESSI_SILENT set
+#  output=/dev/null
+#else
+#  output=/dev/stdout
+#fi
 
 # The following method should be safe, but might break if file is a symlink
 # (could switch to $(dirname "$(readlink -f "$BASH_SOURCE")") in that case)
@@ -20,11 +27,11 @@ if [ $? -eq 0 ]; then
     export PATH=$EPREFIX/usr/bin:$EPREFIX/bin:$PATH
 
     # init Lmod
-    echo "Initializing Lmod..." >> $output
+    show_msg "Initializing Lmod..."
     source $EESSI_EPREFIX/usr/share/Lmod/init/bash
 
     # prepend location of modules for EESSI software stack to $MODULEPATH
-    echo "Prepending $EESSI_MODULEPATH to \$MODULEPATH..." >> $output
+    show_msg "Prepending $EESSI_MODULEPATH to \$MODULEPATH..."
     module use $EESSI_MODULEPATH
 
     #echo >> $output
