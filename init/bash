@@ -13,7 +13,7 @@ source $(dirname "$BASH_SOURCE")/eessi_environment_variables
 # only continue if setting EESSI environment variables worked fine
 if [ $? -eq 0 ]; then
 
-    export PS1="[EESSI $EESSI_VERSION]$PS1"
+    export PS1="{EESSI $EESSI_VERSION}$PS1"
 
     # add location of commands provided by compat layer to $PATH;
     # see https://github.com/EESSI/software-layer/issues/52
