@@ -26,3 +26,4 @@ easyconfigs:
       options:
         from-pr: 19261
   - OpenFOAM-10-foss-2023a.eb
+  - OSU-Micro-Benchmarks-7.1-1-gompi-2023a.eb
