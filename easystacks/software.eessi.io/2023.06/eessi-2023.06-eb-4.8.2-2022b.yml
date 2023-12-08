@@ -1,2 +1,8 @@
 easyconfigs:
   - foss-2022b.eb
+  - pybind11-2.10.3-GCCcore-12.2.0.eb:
+      # avoid indirect dependency on old CMake version built with GCCcore/10.2.0 via Catch2 build dependency;
+      # see https://github.com/easybuilders/easybuild-easyconfigs/pull/19270
+      options:
+        from-pr: 19270
+  - GDAL-3.6.2-foss-2022b.eb
