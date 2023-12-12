@@ -1,3 +1,5 @@
 easyconfigs:
   - foss-2022b.eb
-  - Qt5-5.15.7-GCCcore-12.2.0.eb
+  - Qt5-5.15.7-GCCcore-12.2.0.eb:
+      options:
+        from-pr: 19339
