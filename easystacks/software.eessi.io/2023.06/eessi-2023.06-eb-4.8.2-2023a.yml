@@ -26,3 +26,6 @@ easyconfigs:
   - LHAPDF-6.5.4-GCC-12.3.0.eb:
       options:
         from-pr: 19363
+  - LoopTools-2.15-GCC-12.3.0.eb:
+      options:
+        from-pr: 19397
