@@ -29,3 +29,6 @@ easyconfigs:
   - LoopTools-2.15-GCC-12.3.0.eb:
       options:
         from-pr: 19397
+  - R-4.3.2-gfbf-2023a.eb:
+      options:
+        from-pr: 19185
