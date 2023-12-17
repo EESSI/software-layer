@@ -32,3 +32,6 @@ easyconfigs:
   - R-4.3.2-gfbf-2023a.eb:
       options:
         from-pr: 19185
+  - R-bundle-CRAN-2023.12-foss-2023a.eb:
+      options:
+        from-pr: 19170
