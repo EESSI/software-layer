@@ -1,5 +1,6 @@
 easyconfigs:
   - foss-2022b.eb
-  - Qt5-5.15.7-GCCcore-12.2.0.eb:
+  - HarfBuzz-5.3.1-GCCcore-12.2.0.eb:
       options:
         from-pr: 19339
+  - Qt5-5.15.7-GCCcore-12.2.0.eb
