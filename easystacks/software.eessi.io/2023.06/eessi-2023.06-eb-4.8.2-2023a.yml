@@ -32,3 +32,6 @@ easyconfigs:
   - R-4.3.2-gfbf-2023a.eb:
       options:
         from-pr: 19185
+  - BWA-0.7.17.202209-GCCcore-12.3.0.eb:
+      options:
+        from-pr: 19273
