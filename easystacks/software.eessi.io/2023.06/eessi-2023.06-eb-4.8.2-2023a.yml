@@ -32,6 +32,9 @@ easyconfigs:
   - R-4.3.2-gfbf-2023a.eb:
       options:
         from-pr: 19185
+  - MPFR-4.2.0-GCCcore-12.3.0.eb:
+      options:
+        from-pr: 19438
   - LERC-4.0.0-GCCcore-12.3.0.eb:
       # avoid RPATH-related sanity check errors by compiling LERC's test binary in postinstallcmds;
       # see https://github.com/easybuilders/easybuild-easyconfigs/pull/19386
