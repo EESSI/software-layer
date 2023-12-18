@@ -11,3 +11,5 @@ easyconfigs:
       options:
         from-pr: 18963
   - BWA-0.7.17-GCCcore-11.3.0.eb
+      options:
+        from-pr: 19273
