@@ -34,3 +34,4 @@ easyconfigs:
         from-pr: 19185
   - Boost-1.82.0-GCC-12.3.0.eb
   - netCDF-4.9.2-gompi-2023a.eb
+  - FFmpeg-6.0-GCCcore-12.3.0.eb
