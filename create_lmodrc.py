@@ -54,8 +54,8 @@ local function cuda_enabled_load_hook(t)
     local haveGpu = mt:haveProperty(simpleName,"arch","gpu")
     if haveGpu then
         local arch = os.getenv("EESSI_CPU_FAMILY") or ""
-        local cudaVersionFile = "/cvmfs/pilot.eessi-hpc.org/host_injections/nvidia/" .. arch .. "/latest/cuda_version.txt"
-        local cudaDriverFile = "/cvmfs/pilot.eessi-hpc.org/host_injections/nvidia/" .. arch .. "/latest/libcuda.so"
+        local cudaVersionFile = "/cvmfs/software.eessi.io/host_injections/nvidia/" .. arch .. "/latest/cuda_version.txt"
+        local cudaDriverFile = "/cvmfs/software.eessi.io/host_injections/nvidia/" .. arch .. "/latest/libcuda.so"
         local cudaDriverExists = isFile(cudaDriverFile)
         local singularityCudaExists = isFile("/.singularity.d/libs/libcuda.so")
         if not (cudaDriverExists or singularityCudaExists)  then
