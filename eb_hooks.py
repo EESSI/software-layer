@@ -68,6 +68,9 @@ def parse_hook(ec, *args, **kwargs):
     if ec.name in PARSE_HOOKS:
         PARSE_HOOKS[ec.name](ec, eprefix)
 
+    # inject the GPU property (if required)
+    ec = inject_gpu_property(ec)
+
 
 def post_ready_hook(self, *args, **kwargs):
     """
@@ -247,6 +250,12 @@ def pre_configure_hook(self, *args, **kwargs):
         PRE_CONFIGURE_HOOKS[self.name](self, *args, **kwargs)
 
 
+def post_sanitycheck_hook(self, *args, **kwargs):
+    """Main post-sanity-check hook: trigger custom functions based on software name."""
+    if self.name in POST_SANITYCHECK_HOOKS:
+        POST_SANITYCHECK_HOOKS[self.name](self, *args, **kwargs)
+
+
 def pre_configure_hook_openblas_optarch_generic(self, *args, **kwargs):
     """
     Pre-configure hook for OpenBLAS: add DYNAMIC_ARCH=1 to build/test/install options when using --optarch=GENERIC
@@ -393,6 +402,81 @@ def pre_single_extension_isoband(ext, *args, **kwargs):
         ext.cfg['preinstallopts'] = "sed -i 's/SIGSTKSZ/32768/g' src/testthat/vendor/catch.h && "
 
 
+def post_sanitycheck_cuda(self, *args, **kwargs):
+    """Delete CUDA files we are not allowed to ship and replace them with a symlink to a possible installation under host_injections."""
+    print_msg("Replacing CUDA stuff we cannot ship with symlinks...")
+    # read CUDA EULA
+    eula_path = os.path.join(self.installdir, "EULA.txt")
+    tmp_buffer = []
+    with open(eula_path) as infile:
+        copy = False
+        for line in infile:
+            if line.strip() == "2.6. Attachment A":
+                copy = True
+                continue
+            elif line.strip() == "2.7. Attachment B":
+                copy = False
+                continue
+            elif copy:
+                tmp_buffer.append(line)
+    # create whitelist without file extensions, they're not really needed and they only complicate things
+    whitelist = ['EULA', 'README']
+    file_extensions = [".so", ".a", ".h", ".bc"]
+    for tmp in tmp_buffer:
+        for word in tmp.split():
+            if any(ext in word for ext in file_extensions):
+                whitelist.append(word.split(".")[0])
+    whitelist = list(set(whitelist))
+    # Do some quick checks for things we should or shouldn't have in the list
+    if "nvcc" in whitelist:
+        raise EasyBuildError("Found 'nvcc' in whitelist: %s" % whitelist)
+    if "libcudart" not in whitelist:
+        raise EasyBuildError("Did not find 'libcudart' in whitelist: %s" % whitelist)
+    # iterate over all files in the CUDA path
+    for root, dirs, files in os.walk(self.installdir):
+        for filename in files:
+            # we only really care about real files, i.e. not symlinks
+            if not os.path.islink(os.path.join(root, filename)):
+                # check if the current file is part of the whitelist
+                basename = filename.split(".")[0]
+                if basename not in whitelist:
+                    # if it is not in the whitelist, delete the file and create a symlink to host_injections
+                    source = os.path.join(root, filename)
+                    target = source.replace("versions", "host_injections")
+                    # Make sure source and target are not the same
+                    if source == target:
+                        raise EasyBuildError("Source (%s) and target (%s) are the same location, are you sure you are"
+                                             "using this hook for an EESSI installation?")
+                    os.remove(source)
+                    # Using os.symlink requires the existence of the target directory, so we use os.system
+                    system_command="ln -s '%s' '%s'" % (target, source)
+                    if os.system(system_command) != 0:
+                        raise EasyBuildError("Failed to create symbolic link: %s" % system_command)
+
+
+def inject_gpu_property(ec):
+    ec_dict = ec.asdict()
+    # Check if CUDA is in the dependencies, if so add the GPU Lmod tag
+    if ("CUDA" in [dep[0] for dep in iter(ec_dict["dependencies"])]):
+        ec.log.info("[parse hook] Injecting gpu as Lmod arch property and envvar with CUDA version")
+        key = "modluafooter"
+        value = 'add_property("arch","gpu")'
+        cuda_version = 0
+        for dep in iter(ec_dict["dependencies"]):
+            # Make CUDA a build dependency only (rpathing saves us from link errors)
+            if "CUDA" in dep[0]:
+                cuda_version = dep[1]
+                ec_dict["dependencies"].remove(dep)
+                ec_dict["builddependencies"].append(dep) if dep not in ec_dict["builddependencies"] else ec_dict["builddependencies"]
+        value = "\n".join([value, 'setenv("EESSICUDAVERSION","%s")' % cuda_version])
+        if key in ec_dict:
+            if not value in ec_dict[key]:
+                ec[key] = "\n".join([ec_dict[key], value])
+        else:
+            ec[key] = value
+    return ec
+
+
 PARSE_HOOKS = {
     'CGAL': parse_hook_cgal_toolchainopts_precise,
     'fontconfig': parse_hook_fontconfig_add_fonts,
@@ -423,4 +507,8 @@ PRE_TEST_HOOKS = {
 PRE_SINGLE_EXTENSION_HOOKS = {
     'isoband': pre_single_extension_isoband,
     'testthat': pre_single_extension_testthat,
+}
+
+POST_SANITYCHECK_HOOKS = {
+    'CUDA': post_sanitycheck_cuda,
 }
