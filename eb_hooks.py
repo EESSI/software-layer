@@ -7,7 +7,7 @@ from easybuild.easyblocks.generic.configuremake import obtain_config_guess
 from easybuild.framework.easyconfig.constants import EASYCONFIG_CONSTANTS
 from easybuild.tools.build_log import EasyBuildError, print_msg
 from easybuild.tools.config import build_option, update_build_option
-from easybuild.tools.filetools import apply_regex_substitutions, copy_file, which
+from easybuild.tools.filetools import apply_regex_substitutions, copy_file, remove_file, symlink, which
 from easybuild.tools.run import run_cmd
 from easybuild.tools.systemtools import AARCH64, POWER, X86_64, get_cpu_architecture, get_cpu_features
 from easybuild.tools.toolchain.compiler import OPTARCH_GENERIC
@@ -250,12 +250,6 @@ def pre_configure_hook(self, *args, **kwargs):
         PRE_CONFIGURE_HOOKS[self.name](self, *args, **kwargs)
 
 
-def post_sanitycheck_hook(self, *args, **kwargs):
-    """Main post-sanity-check hook: trigger custom functions based on software name."""
-    if self.name in POST_SANITYCHECK_HOOKS:
-        POST_SANITYCHECK_HOOKS[self.name](self, *args, **kwargs)
-
-
 def pre_configure_hook_openblas_optarch_generic(self, *args, **kwargs):
     """
     Pre-configure hook for OpenBLAS: add DYNAMIC_ARCH=1 to build/test/install options when using --optarch=GENERIC
@@ -402,76 +396,99 @@ def pre_single_extension_isoband(ext, *args, **kwargs):
         ext.cfg['preinstallopts'] = "sed -i 's/SIGSTKSZ/32768/g' src/testthat/vendor/catch.h && "
 
 
+def post_sanitycheck_hook(self, *args, **kwargs):
+    """Main post-sanity-check hook: trigger custom functions based on software name."""
+    if self.name in POST_SANITYCHECK_HOOKS:
+        POST_SANITYCHECK_HOOKS[self.name](self, *args, **kwargs)
+
+
 def post_sanitycheck_cuda(self, *args, **kwargs):
-    """Delete CUDA files we are not allowed to ship and replace them with a symlink to a possible installation under host_injections."""
-    print_msg("Replacing CUDA stuff we cannot ship with symlinks...")
-    # read CUDA EULA
-    eula_path = os.path.join(self.installdir, "EULA.txt")
-    tmp_buffer = []
-    with open(eula_path) as infile:
-        copy = False
-        for line in infile:
-            if line.strip() == "2.6. Attachment A":
-                copy = True
-                continue
-            elif line.strip() == "2.7. Attachment B":
-                copy = False
-                continue
-            elif copy:
-                tmp_buffer.append(line)
-    # create whitelist without file extensions, they're not really needed and they only complicate things
-    whitelist = ['EULA', 'README']
-    file_extensions = [".so", ".a", ".h", ".bc"]
-    for tmp in tmp_buffer:
-        for word in tmp.split():
-            if any(ext in word for ext in file_extensions):
-                whitelist.append(word.split(".")[0])
-    whitelist = list(set(whitelist))
-    # Do some quick checks for things we should or shouldn't have in the list
-    if "nvcc" in whitelist:
-        raise EasyBuildError("Found 'nvcc' in whitelist: %s" % whitelist)
-    if "libcudart" not in whitelist:
-        raise EasyBuildError("Did not find 'libcudart' in whitelist: %s" % whitelist)
-    # iterate over all files in the CUDA path
-    for root, dirs, files in os.walk(self.installdir):
-        for filename in files:
-            # we only really care about real files, i.e. not symlinks
-            if not os.path.islink(os.path.join(root, filename)):
-                # check if the current file is part of the whitelist
-                basename = filename.split(".")[0]
-                if basename not in whitelist:
-                    # if it is not in the whitelist, delete the file and create a symlink to host_injections
-                    source = os.path.join(root, filename)
-                    target = source.replace("versions", "host_injections")
-                    # Make sure source and target are not the same
-                    if source == target:
-                        raise EasyBuildError("Source (%s) and target (%s) are the same location, are you sure you are"
-                                             "using this hook for an EESSI installation?")
-                    os.remove(source)
-                    # Using os.symlink requires the existence of the target directory, so we use os.system
-                    system_command="ln -s '%s' '%s'" % (target, source)
-                    if os.system(system_command) != 0:
-                        raise EasyBuildError("Failed to create symbolic link: %s" % system_command)
+    """
+    Remove files from CUDA installation that we are not allowed to ship,
+    and replace them with a symlink to a corresponding installation under host_injections.
+    """
+    if self.name == 'CUDA':
+        print_msg("Replacing files in CUDA installation that we can not ship with symlinks to host_injections...")
+
+        # read CUDA EULA, construct allowlist based on section 2.6 that specifies list of files that can be shipped
+        eula_path = os.path.join(self.installdir, 'EULA.txt')
+        relevant_eula_lines = []
+        with open(eula_path) as infile:
+            copy = False
+            for line in infile:
+                if line.strip() == "2.6. Attachment A":
+                    copy = True
+                    continue
+                elif line.strip() == "2.7. Attachment B":
+                    copy = False
+                    continue
+                elif copy:
+                    relevant_eula_lines.append(line)
+
+        # create list without file extensions, they're not really needed and they only complicate things
+        allowlist = ['EULA', 'README']
+        file_extensions = ['.so', '.a', '.h', '.bc']
+        for line in relevant_eula_lines:
+            for word in line.split():
+                if any(ext in word for ext in file_extensions):
+                    allowlist.append(os.path.splitext(word)[0])
+        allowlist = sorted(set(allowlist))
+        self.log.info("Allowlist for files in CUDA installation that can be redistributed: " + ', '.join(allowlist))
+
+        # Do some quick sanity checks for things we should or shouldn't have in the list
+        if 'nvcc' in allowlist:
+            raise EasyBuildError("Found 'nvcc' in allowlist: %s" % allowlist)
+        if 'libcudart' not in allowlist:
+            raise EasyBuildError("Did not find 'libcudart' in allowlist: %s" % allowlist)
+
+        # iterate over all files in the CUDA installation directory
+        for dir_path, _, files in os.walk(self.installdir):
+            for filename in files:
+                full_path = os.path.join(dir_path, filename)
+                # we only really care about real files, i.e. not symlinks
+                if not os.path.islink(full_path):
+                    # check if the current file is part of the allowlist
+                    basename = os.path.splitext(filename)[0]
+                    if basename in allowlist:
+                        self.log.debug("%s is found in allowlist, so keeping it: %s", basename, full_path)
+                    else:
+                        self.log.debug("%s is not found in allowlist, so replacing it with symlink: %s",
+                                       basename, full_path)
+                        # if it is not in the allowlist, delete the file and create a symlink to host_injections
+                        host_inj_path = full_path.replace('versions', 'host_injections')
+                        # make sure source and target of symlink are not the same
+                        if full_path == host_inj_path:
+                            raise EasyBuildError("Source (%s) and target (%s) are the same location, are you sure you "
+                                                 "are using this hook for an EESSI installation?",
+                                                 full_path, host_inj_path)
+                        remove_file(full_path)
+                        symlink(host_inj_path, full_path)
+    else:
+        raise EasyBuildError("CUDA-specific hook triggered for non-CUDA easyconfig?!")
 
 
 def inject_gpu_property(ec):
+    """
+    Add 'gpu' property, via modluafooter easyconfig parameter
+    """
     ec_dict = ec.asdict()
-    # Check if CUDA is in the dependencies, if so add the GPU Lmod tag
-    if ("CUDA" in [dep[0] for dep in iter(ec_dict["dependencies"])]):
-        ec.log.info("[parse hook] Injecting gpu as Lmod arch property and envvar with CUDA version")
-        key = "modluafooter"
+    # Check if CUDA is in the dependencies, if so add the 'gpu' Lmod property
+    if ('CUDA' in [dep[0] for dep in iter(ec_dict['dependencies'])]):
+        ec.log.info("Injecting gpu as Lmod arch property and envvar with CUDA version")
+        key = 'modluafooter'
         value = 'add_property("arch","gpu")'
         cuda_version = 0
-        for dep in iter(ec_dict["dependencies"]):
+        for dep in iter(ec_dict['dependencies']):
             # Make CUDA a build dependency only (rpathing saves us from link errors)
-            if "CUDA" in dep[0]:
+            if 'CUDA' in dep[0]:
                 cuda_version = dep[1]
-                ec_dict["dependencies"].remove(dep)
-                ec_dict["builddependencies"].append(dep) if dep not in ec_dict["builddependencies"] else ec_dict["builddependencies"]
-        value = "\n".join([value, 'setenv("EESSICUDAVERSION","%s")' % cuda_version])
+                ec_dict['dependencies'].remove(dep)
+                if dep not in ec_dict['builddependencies']:
+                    ec_dict['builddependencies'].append(dep)
+        value = '\n'.join([value, 'setenv("EESSICUDAVERSION","%s")' % cuda_version])
         if key in ec_dict:
             if not value in ec_dict[key]:
-                ec[key] = "\n".join([ec_dict[key], value])
+                ec[key] = '\n'.join([ec_dict[key], value])
         else:
             ec[key] = value
     return ec
