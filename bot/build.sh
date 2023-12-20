@@ -176,6 +176,11 @@ mkdir -p ${TARBALL_TMP_BUILD_STEP_DIR}
 declare -a BUILD_STEP_ARGS=()
 BUILD_STEP_ARGS+=("--save" "${TARBALL_TMP_BUILD_STEP_DIR}")
 BUILD_STEP_ARGS+=("--storage" "${STORAGE}")
+# add options required to handle NVIDIA support
+BUILD_STEP_ARGS+=("--nvidia" "all")
+if [[ ! -z ${SHARED_FS_PATH} ]]; then
+    BUILD_STEP_ARGS+=("--host-injections ${SHARED_FS_PATH}/host-injections")
+fi
 
 # prepare arguments to install_software_layer.sh (specific to build step)
 declare -a INSTALL_SCRIPT_ARGS=()
