@@ -36,7 +36,7 @@ if [ ${#found_paths[@]} -gt 0 ]; then
     host_ldconfig=${found_paths[0]}
 else
     error="$command_name not found in PATH or only found in paths starting with $exclude_prefix."
-    fatal_error $error
+    fatal_error "$error"
 fi
 
 # Make sure EESSI is initialised (doesn't matter what version)
@@ -52,7 +52,7 @@ if $nvidia_smi_command > /dev/null; then
   host_cuda_version=$(nvidia-smi  -q --display=COMPUTE | grep CUDA | awk 'NF>1{print $NF}')
 else
   error="Failed to successfully execute\n  $nvidia_smi_command\n"
-  fatal_error $error
+  fatal_error "$error"
 fi
 
 # Let's make sure the driver libraries are not already in place
@@ -71,7 +71,7 @@ if [ -e "$host_injection_driver_version_file" ]; then
     rm $host_injection_driver_dir/*
     if [ $? -ne 0 ]; then
       error="Unable to remove files under '$host_injection_driver_dir'."
-      fatal_error $error
+      fatal_error "$error"
     fi
   fi
 fi
