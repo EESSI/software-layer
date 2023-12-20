@@ -118,7 +118,6 @@ STORAGE=
 LIST_REPOS=0
 MODE="shell"
 SETUP_NVIDIA=0
-ADDITIONAL_SINGULARITY_FLAGS=
 REPOSITORY="EESSI"
 RESUME=
 SAVE=
@@ -437,12 +436,14 @@ BIND_PATHS="${BIND_PATHS},${EESSI_TMPDIR}:${TMP_IN_CONTAINER}"
 
 [[ ${VERBOSE} -eq 1 ]] && echo "BIND_PATHS=${BIND_PATHS}"
 
+declare -a ADDITIONAL_CONTAINER_OPTIONS=()
+
 # Configure anything we need for NVIDIA GPUs and CUDA installation
 if [[ ${SETUP_NVIDIA} -eq 1 ]]; then
     if [[ "${NVIDIA_MODE}" == "run" || "${NVIDIA_MODE}" == "all" ]]; then
         # Give singularity the appropriate flag
-        ADDITIONAL_SINGULARITY_FLAGS="--nv ${ADDITIONAL_SINGULARITY_FLAGS}"
-        [[ ${VERBOSE} -eq 1 ]] && echo "ADDITIONAL_SINGULARITY_FLAGS=${ADDITIONAL_SINGULARITY_FLAGS}"
+        ADDITIONAL_CONTAINER_OPTIONS+=(--nv)
+        [[ ${VERBOSE} -eq 1 ]] && echo "ADDITIONAL_CONTAINER_OPTIONS=${ADDITIONAL_CONTAINER_OPTIONS[@]}"
     fi
     if [[ "${NVIDIA_MODE}" == "install" || "${NVIDIA_MODE}" == "all" ]]; then
         # Add additional bind mounts to allow CUDA to install within a container
@@ -621,8 +622,8 @@ if [ ! -z ${EESSI_SOFTWARE_SUBDIR_OVERRIDE} ]; then
 fi
 
 echo "Launching container with command (next line):"
-echo "singularity ${RUN_QUIET} ${MODE} ${ADDITIONAL_SINGULARITY_FLAGS} ${EESSI_FUSE_MOUNTS[@]} ${CONTAINER} $@"
-singularity ${RUN_QUIET} ${MODE} ${ADDITIONAL_SINGULARITY_FLAGS} "${EESSI_FUSE_MOUNTS[@]}" ${CONTAINER} "$@"
+echo "singularity ${RUN_QUIET} ${MODE} ${ADDITIONAL_CONTAINER_OPTIONS[@]} ${EESSI_FUSE_MOUNTS[@]} ${CONTAINER} $@"
+singularity ${RUN_QUIET} ${MODE} "${ADDITIONAL_CONTAINER_OPTIONS[@]}" "${EESSI_FUSE_MOUNTS[@]}" ${CONTAINER} "$@"
 exit_code=$?
 
 # 6. save tmp if requested (arg -s|--save)
