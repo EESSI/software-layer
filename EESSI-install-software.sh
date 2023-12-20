@@ -198,7 +198,9 @@ ${TOPDIR}/install_scripts.sh --prefix ${EESSI_PREFIX}
 ${EESSI_PREFIX}/gpu_support/nvidia/install_cuda_host_injections.sh -c 12.1.1 --accept-cuda-eula
 
 # Install drivers in host_injections
-${EESSI_PREFIX}/gpu_support/nvidia/link_nvidia_host_libraries.sh
+# TODO: this is commented out for now, because the script assumes that nvidia-smi is available and works;
+#       if not, an error is produced, and the bot flags the whole build as failed (even when not installing GPU software)
+# ${EESSI_PREFIX}/gpu_support/nvidia/link_nvidia_host_libraries.sh
 
 # use PR patch file to determine in which easystack files stuff was added
 for easystack_file in $(cat ${pr_diff} | grep '^+++' | cut -f2 -d' ' | sed 's@^[a-z]/@@g' | grep '^easystacks/.*yml$' | egrep -v 'known-issues|missing'); do
