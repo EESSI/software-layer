@@ -189,19 +189,16 @@ pr_diff=$(ls [0-9]*.diff | head -1)
 
 # install any additional required scripts
 # order is important: these are needed to install a full CUDA SDK in host_injections
-install_scripts_changed=$(cat ${pr_diff} | grep '^+++' | cut -f2 -d' ' | sed 's@^[a-z]/@@g' | grep '^install_scripts.sh$' > /dev/null; echo $?)
-if [ ${install_scripts_changed} == '0' ]; then
-    # for now, this just reinstalls all scripts. Note the most elegant, but works
-    ${TOPDIR}/install_scripts.sh --prefix ${EESSI_CVMFS_REPO}
-fi
+# for now, this just reinstalls all scripts. Note the most elegant, but works
+${TOPDIR}/install_scripts.sh --prefix ${EESSI_PREFIX}
 
 # Install full CUDA SDK in host_injections
 # Hardcode this for now, see if it works
 # TODO: We should make a nice yaml and loop over all CUDA versions in that yaml to figure out what to install
-${EESSI_CVMFS_REPO}/gpu_support/nvidia/install_cuda_host_injections.sh 12.1.1
+${EESSI_PREFIX}/gpu_support/nvidia/install_cuda_host_injections.sh -c 12.1.1 --accept-cuda-eula
 
 # Install drivers in host_injections
-${EESSI_CVMFS_REPO}/gpu_support/nvidia/link_nvidia_host_libraries.sh
+${EESSI_PREFIX}/gpu_support/nvidia/link_nvidia_host_libraries.sh
 
 # use PR patch file to determine in which easystack files stuff was added
 for easystack_file in $(cat ${pr_diff} | grep '^+++' | cut -f2 -d' ' | sed 's@^[a-z]/@@g' | grep '^easystacks/.*yml$' | egrep -v 'known-issues|missing'); do
