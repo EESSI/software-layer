@@ -35,7 +35,8 @@ easyconfigs:
   - Boost-1.82.0-GCC-12.3.0.eb
   - netCDF-4.9.2-gompi-2023a.eb
   - FFmpeg-6.0-GCCcore-12.3.0.eb
-  - CUDA-Samples-12.1-GCC-12.3.0-CUDA-12.1.1.eb
+
+  - CUDA-Samples-12.1-GCC-12.3.0-CUDA-12.1.1.eb:
       # use easyconfig that only install subset of CUDA samples,
       # to circumvent problem with nvcc linking to glibc of host OS;
       # see https://github.com/easybuilders/easybuild-easyconfigs/pull/19189

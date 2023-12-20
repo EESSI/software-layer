@@ -13,7 +13,7 @@ POSITIONAL_ARGS=()
 
 while [[ $# -gt 0 ]]; do
   case $1 in
-    -o|--prefix)
+    -p|--prefix)
       INSTALL_PREFIX="$2"
       shift 2
       ;;
@@ -38,25 +38,25 @@ set -- "${POSITIONAL_ARGS[@]}"
 TOPDIR=$(dirname $(realpath $0))
 
 # Subdirs for generic scripts
-SCRIPTS_DIR_SOURCE=${TOPDIR}/scripts/  # Source dir
-SCRIPTS_DIR_TARGET=${INSTALL_PREFIX}/scripts/  # Target dir
+SCRIPTS_DIR_SOURCE=${TOPDIR}/scripts  # Source dir
+SCRIPTS_DIR_TARGET=${INSTALL_PREFIX}/scripts  # Target dir
 
 # Create target dir
 mkdir -p ${SCRIPTS_DIR_TARGET}
 
 # Copy scripts into this prefix
 for file in utils.sh; do
-    cp ${SCRIPTS_DIR_SOURCE}/${file} ${SCRIPTS_DIR_TARGET}/${file}
+    cp -u ${SCRIPTS_DIR_SOURCE}/${file} ${SCRIPTS_DIR_TARGET}/${file}
 done
 # Subdirs for GPU support
-NVIDIA_GPU_SUPPORT_DIR_SOURCE=${TOPDIR}/gpu_support/nvidia/  # Source dir
-NVIDIA_GPU_SUPPORT_DIR_TARGET=${INSTALL_PREFIX}/gpu_support/nvidia/  # Target dir
+NVIDIA_GPU_SUPPORT_DIR_SOURCE=${TOPDIR}/gpu_support/nvidia  # Source dir
+NVIDIA_GPU_SUPPORT_DIR_TARGET=${INSTALL_PREFIX}/gpu_support/nvidia  # Target dir
 
 # Create target dir
 mkdir -p ${NVIDIA_GPU_SUPPORT_DIR_TARGET}
 
 # Copy files from this directory into the prefix
 # To be on the safe side, we dont do recursive copies, but we are explicitely copying each individual file we want to add
-for file in install_cuda_host_injections.sh link_nvidia_host_injections.sh; do
-    cp ${NVIDIA_GPU_SUPPORT_DIR_SOURCE}/${file} ${NVIDIA_GPU_SUPPORT_DIR_TARGET}/${file}
+for file in install_cuda_host_injections.sh link_nvidia_host_libraries.sh; do
+    cp -u ${NVIDIA_GPU_SUPPORT_DIR_SOURCE}/${file} ${NVIDIA_GPU_SUPPORT_DIR_TARGET}/${file}
 done
