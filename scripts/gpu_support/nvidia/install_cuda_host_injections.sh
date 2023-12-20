@@ -14,7 +14,7 @@
 
 # Initialise our bash functions
 TOPDIR=$(dirname $(realpath $BASH_SOURCE))
-source "$TOPDIR"/../../scripts/utils.sh
+source "$TOPDIR"/../../utils.sh
 
 # Function to display help message
 show_help() {

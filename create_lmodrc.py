@@ -36,6 +36,7 @@ local function cuda_enabled_load_hook(t)
     -- If we try to load CUDA itself, check if the full CUDA SDK was installed on the host in host_injections. 
     -- This is required for end users to build additional CUDA software. If the full SDK isn't present, refuse
     -- to load the CUDA module and print an informative message on how to set up GPU support for EESSI
+    local refer_to_docs = "For more information on how to do this, see https://www.eessi.io/docs/gpu/.\\n"
     if simpleName == 'CUDA' then
         -- get the full host_injections path
         local hostInjections = string.gsub(os.getenv('EESSI_SOFTWARE_PATH') or "", 'versions', 'host_injections')
@@ -43,11 +44,10 @@ local function cuda_enabled_load_hook(t)
         local cudaEasyBuildDir = hostInjections .. "/software/" .. t.modFullName .. "/easybuild"
         local cudaDirExists = isDir(cudaEasyBuildDir)
         if not cudaDirExists then
-            local cvmfsRepo = os.getenv('EESSI_CVMFS_REPO')
             local advice = "but while the module file exists, the actual software is not entirely shipped with EESSI "
-            advice = advice .. "due to licencing. Please install a full copy of the CUDA SDK using the script "
-            advice = advice .. cvmfsRepo .. "/gpu_support/nvidia/install_cuda_host_injections.sh.\\n"
-            advice = advice .. "More information, see https://www.eessi.io/docs/gpu/.\\n"
+            advice = advice .. "due to licencing. You will need to install a full copy of the CUDA SDK where EESSI "
+            advice = advice .. "can find it.\\n"
+            advice = advice .. refer_to_docs
             LmodError("\\nYou requested to load ", simpleName, " ", advice)
         end
     end
@@ -62,10 +62,9 @@ local function cuda_enabled_load_hook(t)
         local singularityCudaExists = isFile("/.singularity.d/libs/libcuda.so")
         if not (cudaDriverExists or singularityCudaExists)  then
             local advice = "which relies on the CUDA runtime environment and driver libraries. "
-            advice = advice .. "In order to be able to use the module, please run the script "
-            advice = advice .. cvmfsRepo .. "/gpu_support/nvidia/link_nvidia_host_libraries.sh "
-            advice = advice .. "to make sure EESSI can find the drivers from on your host system.\\n"
-            advice = advice .. "More information, see https://www.eessi.io/docs/gpu/.\\n"
+            advice = advice .. "In order to be able to use the module, you will need "
+            advice = advice .. "to make sure EESSI can find the driver libraries on your host system.\\n"
+            advice = advice .. refer_to_docs
             LmodError("\\nYou requested to load ", simpleName, " ", advice)
         else
             -- CUDA driver exists, now we check its version to see if an update is needed
@@ -85,10 +84,9 @@ local function cuda_enabled_load_hook(t)
                 end
                 if driver_libs_need_update == true then
                     local advice = "but the module you want to load requires CUDA  " .. cudaVersion_req .. ". "
-                    advice = advice .. "Please update your CUDA driver libraries and rerun the script"
-                    advice = advice .. cvmfsRepo .. "/gpu_support/nvidia/install_cuda_host_injections.sh "
-                    advice = advice .. "to let EESSI know about the update.\\n"
-                    advice = advice .. "More information, see https://www.eessi.io/docs/gpu/.\\n"
+                    advice = advice .. "Please update your CUDA driver libraries and then "
+                    advice = advice .. "let EESSI know about the update.\\n"
+                    advice = advice .. refer_to_docs
                     LmodError("\\nYour driver CUDA version is ", cudaVersion, " ", advice)
                 end
             end

@@ -50,8 +50,8 @@ for file in utils.sh; do
     cp -v -u ${SCRIPTS_DIR_SOURCE}/${file} ${SCRIPTS_DIR_TARGET}/${file}
 done
 # Subdirs for GPU support
-NVIDIA_GPU_SUPPORT_DIR_SOURCE=${TOPDIR}/gpu_support/nvidia  # Source dir
-NVIDIA_GPU_SUPPORT_DIR_TARGET=${INSTALL_PREFIX}/gpu_support/nvidia  # Target dir
+NVIDIA_GPU_SUPPORT_DIR_SOURCE=${SCRIPTS_DIR_SOURCE}/gpu_support/nvidia  # Source dir
+NVIDIA_GPU_SUPPORT_DIR_TARGET=${SCRIPTS_DIR_TARGET}/gpu_support/nvidia  # Target dir
 
 # Create target dir
 mkdir -p ${NVIDIA_GPU_SUPPORT_DIR_TARGET}

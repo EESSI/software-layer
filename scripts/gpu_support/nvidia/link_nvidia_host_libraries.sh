@@ -5,7 +5,7 @@
 
 # Initialise our bash functions
 TOPDIR=$(dirname $(realpath $BASH_SOURCE))
-source "$TOPDIR"/../../scripts/utils.sh
+source "$TOPDIR"/../../utils.sh
 
 # We rely on ldconfig to give us the location of the libraries on the host
 command_name="ldconfig"
