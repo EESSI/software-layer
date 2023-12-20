@@ -179,7 +179,7 @@ BUILD_STEP_ARGS+=("--storage" "${STORAGE}")
 # add options required to handle NVIDIA support
 BUILD_STEP_ARGS+=("--nvidia" "all")
 if [[ ! -z ${SHARED_FS_PATH} ]]; then
-    BUILD_STEP_ARGS+=("--host-injections ${SHARED_FS_PATH}/host-injections")
+    BUILD_STEP_ARGS+=("--host-injections" "${SHARED_FS_PATH}/host-injections")
 fi
 
 # prepare arguments to install_software_layer.sh (specific to build step)
