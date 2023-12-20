@@ -442,7 +442,7 @@ declare -a ADDITIONAL_CONTAINER_OPTIONS=()
 if [[ ${SETUP_NVIDIA} -eq 1 ]]; then
     if [[ "${NVIDIA_MODE}" == "run" || "${NVIDIA_MODE}" == "all" ]]; then
         # Give singularity the appropriate flag
-        ADDITIONAL_CONTAINER_OPTIONS+=(--nv)
+        ADDITIONAL_CONTAINER_OPTIONS+=("--nv")
         [[ ${VERBOSE} -eq 1 ]] && echo "ADDITIONAL_CONTAINER_OPTIONS=${ADDITIONAL_CONTAINER_OPTIONS[@]}"
     fi
     if [[ "${NVIDIA_MODE}" == "install" || "${NVIDIA_MODE}" == "all" ]]; then
