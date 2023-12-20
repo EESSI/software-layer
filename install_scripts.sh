@@ -45,8 +45,9 @@ SCRIPTS_DIR_TARGET=${INSTALL_PREFIX}/scripts  # Target dir
 mkdir -p ${SCRIPTS_DIR_TARGET}
 
 # Copy scripts into this prefix
+echo "copying scripts from ${SCRIPTS_DIR_SOURCE} to ${SCRIPTS_DIR_TARGET}"
 for file in utils.sh; do
-    cp -u ${SCRIPTS_DIR_SOURCE}/${file} ${SCRIPTS_DIR_TARGET}/${file}
+    cp -v -u ${SCRIPTS_DIR_SOURCE}/${file} ${SCRIPTS_DIR_TARGET}/${file}
 done
 # Subdirs for GPU support
 NVIDIA_GPU_SUPPORT_DIR_SOURCE=${TOPDIR}/gpu_support/nvidia  # Source dir
@@ -57,6 +58,7 @@ mkdir -p ${NVIDIA_GPU_SUPPORT_DIR_TARGET}
 
 # Copy files from this directory into the prefix
 # To be on the safe side, we dont do recursive copies, but we are explicitely copying each individual file we want to add
+echo "copying scripts from ${NVIDIA_GPU_SUPPORT_DIR_SOURCE} to ${NVIDIA_GPU_SUPPORT_DIR_TARGET}"
 for file in install_cuda_host_injections.sh link_nvidia_host_libraries.sh; do
-    cp -u ${NVIDIA_GPU_SUPPORT_DIR_SOURCE}/${file} ${NVIDIA_GPU_SUPPORT_DIR_TARGET}/${file}
+    cp -v -u ${NVIDIA_GPU_SUPPORT_DIR_SOURCE}/${file} ${NVIDIA_GPU_SUPPORT_DIR_TARGET}/${file}
 done
