@@ -8,6 +8,23 @@ display_help() {
   echo "  -h | --help            -  display this usage information"
 }
 
+compare_and_copy() {
+    if [ "$#" -ne 2 ]; then
+        echo "Usage of function: compare_and_copy <source_file> <destination_file>"
+        return 1
+    fi
+
+    source_file="$1"
+    destination_file="$2"
+
+    if [ ! -f "$destination_file" ] || ! diff -q "$source_file" "$destination_file" ; then
+        cp "$source_file" "$destination_file"
+        echo "File $1 copied to $2."
+    else
+        echo "Files $1 and $2 are identical. No copy needed."
+    fi
+}
+
 
 POSITIONAL_ARGS=()
 
@@ -47,7 +64,7 @@ mkdir -p ${SCRIPTS_DIR_TARGET}
 # Copy scripts into this prefix
 echo "copying scripts from ${SCRIPTS_DIR_SOURCE} to ${SCRIPTS_DIR_TARGET}"
 for file in utils.sh; do
-    cp -v -u ${SCRIPTS_DIR_SOURCE}/${file} ${SCRIPTS_DIR_TARGET}/${file}
+    compare_and_copy ${SCRIPTS_DIR_SOURCE}/${file} ${SCRIPTS_DIR_TARGET}/${file}
 done
 # Subdirs for GPU support
 NVIDIA_GPU_SUPPORT_DIR_SOURCE=${SCRIPTS_DIR_SOURCE}/gpu_support/nvidia  # Source dir
@@ -60,5 +77,5 @@ mkdir -p ${NVIDIA_GPU_SUPPORT_DIR_TARGET}
 # To be on the safe side, we dont do recursive copies, but we are explicitely copying each individual file we want to add
 echo "copying scripts from ${NVIDIA_GPU_SUPPORT_DIR_SOURCE} to ${NVIDIA_GPU_SUPPORT_DIR_TARGET}"
 for file in install_cuda_host_injections.sh link_nvidia_host_libraries.sh; do
-    cp -v -u ${NVIDIA_GPU_SUPPORT_DIR_SOURCE}/${file} ${NVIDIA_GPU_SUPPORT_DIR_TARGET}/${file}
+    compare_and_copy ${NVIDIA_GPU_SUPPORT_DIR_SOURCE}/${file} ${NVIDIA_GPU_SUPPORT_DIR_TARGET}/${file}
 done
