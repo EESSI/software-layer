@@ -19,7 +19,7 @@ compare_and_copy() {
 
     if [ ! -f "$destination_file" ] || ! diff -q "$source_file" "$destination_file" ; then
         cp "$source_file" "$destination_file"
-        echo "File $1 copied to $2."
+        echo "File $1 copied to $2"
     else
         echo "Files $1 and $2 are identical. No copy needed."
     fi
