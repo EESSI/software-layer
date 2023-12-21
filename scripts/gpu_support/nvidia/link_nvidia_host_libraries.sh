@@ -48,8 +48,10 @@ export LD_LIBRARY_PATH=/.singularity.d/libs:$LD_LIBRARY_PATH
 nvidia_smi_command="nvidia-smi --query-gpu=driver_version --format=csv,noheader"
 if $nvidia_smi_command > /dev/null; then
   host_driver_version=$($nvidia_smi_command | tail -n1)
+  echo_green "Found NVIDIA GPU driver version ${host_driver_version}"
   # If the first worked, this should work too
   host_cuda_version=$(nvidia-smi  -q --display=COMPUTE | grep CUDA | awk 'NF>1{print $NF}')
+  echo_green "Found host CUDA version ${host_cuda_version}"
 else
   error="Failed to successfully execute\n  $nvidia_smi_command\n"
   fatal_error "$error"
@@ -58,12 +60,18 @@ fi
 # Let's make sure the driver libraries are not already in place
 link_drivers=1
 
+# first make sure that target of host_injections variant symlink is an existing directory
+host_injections_target=$(realpath -m ${EESSI_CVMFS_REPO}/host_injections)
+if [ ! -d ${host_injections_target} ]; then
+    create_directory_structure ${host_injections_target}
+fi
+
 host_injections_nvidia_dir="${EESSI_CVMFS_REPO}/host_injections/nvidia/${EESSI_CPU_FAMILY}"
 host_injection_driver_dir="${host_injections_nvidia_dir}/host"
 host_injection_driver_version_file="$host_injection_driver_dir/driver_version.txt"
 if [ -e "$host_injection_driver_version_file" ]; then
   if grep -q "$host_driver_version" "$host_injection_driver_version_file"; then
-    echo_green "The host CUDA driver libraries have already been linked!"
+    echo_green "The host GPU driver libraries (v${host_driver_version}) have already been linked! (based on ${host_injection_driver_version_file})"
     link_drivers=0
   else
     # There's something there but it is out of date
@@ -91,8 +99,8 @@ if [ "$link_drivers" -eq 1 ]; then
   ls /.singularity.d/libs/* >> "$temp_dir"/libs.txt 2>/dev/null
 
   # Leverage singularity to find the full list of libraries we should be linking to
-  echo_yellow "Downloading latest version of nvliblist.conf from Apptainer"
-  curl -o "$temp_dir"/nvliblist.conf https://raw.githubusercontent.com/apptainer/apptainer/main/etc/nvliblist.conf
+  echo_yellow "Downloading latest version of nvliblist.conf from Apptainer to ${temp_dir}/nvliblist.conf"
+  curl --silent --output "$temp_dir"/nvliblist.conf https://raw.githubusercontent.com/apptainer/apptainer/main/etc/nvliblist.conf
 
   # Make symlinks to all the interesting libraries
   grep '.so$' "$temp_dir"/nvliblist.conf | xargs -i grep {} "$temp_dir"/libs.txt | xargs -i ln -s {}
@@ -133,4 +141,4 @@ else
   ln -s $host_injections_nvidia_dir/latest lib
 fi
 
-echo_green "Host NVIDIA gpu drivers linked successfully for EESSI"
+echo_green "Host NVIDIA GPU drivers linked successfully for EESSI"
