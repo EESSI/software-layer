@@ -63,7 +63,7 @@ local function cuda_enabled_load_hook(t)
         if not (cudaDriverExists or singularityCudaExists)  then
             local advice = "which relies on the CUDA runtime environment and driver libraries. "
             advice = advice .. "In order to be able to use the module, you will need "
-            advice = advice .. "to make sure EESSI can find the driver libraries on your host system.\\n"
+            advice = advice .. "to make sure EESSI can find the GPU driver libraries on your host system.\\n"
             advice = advice .. refer_to_docs
             LmodError("\\nYou requested to load ", simpleName, " ", advice)
         else
