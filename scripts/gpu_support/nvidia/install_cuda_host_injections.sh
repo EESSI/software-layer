@@ -14,7 +14,7 @@
 
 # Initialise our bash functions
 TOPDIR=$(dirname $(realpath $BASH_SOURCE))
-source "$TOPDIR"/../../scripts/utils.sh
+source "$TOPDIR"/../../utils.sh
 
 # Function to display help message
 show_help() {
@@ -200,7 +200,9 @@ else
   eb --prefix="$tmpdir" ${extra_args} --accept-eula-for=CUDA --hooks="$tmpdir"/none.py --installpath="${cuda_install_parent}"/ "${cuda_easyconfig}"
   ret=$?
   if [ $ret -ne 0 ]; then
-    fatal_error  "CUDA installation failed, please check EasyBuild logs..."
+    eb_last_log=$(unset EB_VERBOSE; eb --last-log)
+    cp -a ${eb_last_log} .
+    fatal_error "CUDA installation failed, please check EasyBuild logs $(basename ${eb_last_log})..."
   else
     echo_green "CUDA installation at ${cuda_install_parent}/software/CUDA/${install_cuda_version} succeeded!"
   fi
