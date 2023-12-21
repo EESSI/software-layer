@@ -43,13 +43,13 @@ module_files_list=${tmpdir}/module_files.list.txt
 # include scripts that were copied by install_scripts.sh
 if [ -d ${eessi_version}/scripts ]; then
     # include scripts we wish to ship along with EESSI,
-    find ${eessi_version}/scripts -type f | grep -v '/\.wh\.' >> ${files_list}
+    find ${eessi_version}/scripts -type f | grep -v '/\.wh\.' > ${files_list}
 fi
 
 if [ -d ${eessi_version}/software/${os}/${cpu_arch_subdir}/.lmod ]; then
     # include Lmod cache and configuration file (lmodrc.lua),
     # skip whiteout files and backup copies of Lmod cache (spiderT.old.*)
-    find ${eessi_version}/software/${os}/${cpu_arch_subdir}/.lmod -type f | egrep -v '/\.wh\.|spiderT.old' > ${files_list}
+    find ${eessi_version}/software/${os}/${cpu_arch_subdir}/.lmod -type f | egrep -v '/\.wh\.|spiderT.old' >> ${files_list}
 fi
 if [ -d ${eessi_version}/software/${os}/${cpu_arch_subdir}/modules ]; then
     # module files
