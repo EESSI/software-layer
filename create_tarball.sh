@@ -40,10 +40,12 @@ echo ">> Collecting list of files/directories to include in tarball via ${PWD}..
 files_list=${tmpdir}/files.list.txt
 module_files_list=${tmpdir}/module_files.list.txt
 
+# include scripts that were copied by install_scripts.sh
 if [ -d ${eessi_version}/scripts ]; then
     # include scripts we wish to ship along with EESSI,
     find ${eessi_version}/scripts -type f | grep -v '/\.wh\.' >> ${files_list}
 fi
+
 if [ -d ${eessi_version}/software/${os}/${cpu_arch_subdir}/.lmod ]; then
     # include Lmod cache and configuration file (lmodrc.lua),
     # skip whiteout files and backup copies of Lmod cache (spiderT.old.*)
