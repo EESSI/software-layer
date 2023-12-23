@@ -1,0 +1,5 @@
+easyconfigs:
+  - CUDA-12.1.1.eb:
+      options:
+        include-easyblocks-from-pr: 3045
+        accept-eula-for: CUDA
