@@ -40,12 +40,6 @@ echo ">> Collecting list of files/directories to include in tarball via ${PWD}..
 files_list=${tmpdir}/files.list.txt
 module_files_list=${tmpdir}/module_files.list.txt
 
-# include Lmod cache and configuration file (lmodrc.lua),
-if [ -d ${eessi_version}/software/${os}/${cpu_arch_subdir}/.lmod ]; then
-    # skip whiteout files and backup copies of Lmod cache (spiderT.old.*)
-    find ${eessi_version}/software/${os}/${cpu_arch_subdir}/.lmod -type f | egrep -v '/\.wh\.|spiderT.old' >> ${files_list}
-fi
-
 if [ -d ${eessi_version}/software/${os}/${cpu_arch_subdir}/.lmod ]; then
     # include Lmod cache and configuration file (lmodrc.lua),
     # skip whiteout files and backup copies of Lmod cache (spiderT.old.*)
