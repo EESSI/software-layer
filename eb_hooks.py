@@ -3,6 +3,7 @@
 import os
 import re
 
+import easybuild.tools.environment as env
 from easybuild.easyblocks.generic.configuremake import obtain_config_guess
 from easybuild.framework.easyconfig.constants import EASYCONFIG_CONSTANTS
 from easybuild.tools.build_log import EasyBuildError, print_msg
@@ -258,6 +259,13 @@ def pre_configure_hook_openblas_optarch_generic(self, *args, **kwargs):
         if build_option('optarch') == OPTARCH_GENERIC:
             for step in ('build', 'test', 'install'):
                 self.cfg.update(f'{step}opts', "DYNAMIC_ARCH=1")
+
+            # use -mtune=generic rather than -mcpu=generic in $CFLAGS on aarch64,
+            # because -mcpu=generic implies a particular -march=armv* which clashes with those used by OpenBLAS
+            # when building with DYNAMIC_ARCH=1
+            if get_cpu_architecture() == AARCH64:
+                cflags = os.getenv('CFLAGS').replace('-mcpu=generic', '-mtune=generic')
+                env.setvar('CFLAGS', cflags)
     else:
         raise EasyBuildError("OpenBLAS-specific hook triggered for non-OpenBLAS easyconfig?!")
 
