@@ -1,3 +1,4 @@
 easyconfigs:
   - GCC-13.2.0.eb
   - foss-2023b.eb
+  - SciPy-bundle-2023.11-gfbf-2023b.eb
