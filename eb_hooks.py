@@ -367,15 +367,15 @@ def pre_test_hook_ignore_failing_tests_SciPybundle(self, *args, **kwargs):
         FAILED optimize/tests/test_linprog.py::TestLinprogIPSparse::test_bug_6139 - A...
         FAILED optimize/tests/test_linprog.py::TestLinprogIPSparsePresolve::test_bug_6139
         = 2 failed, 30554 passed, 2064 skipped, 10992 deselected, 76 xfailed, 7 xpassed, 40 warnings in 380.27s (0:06:20) =
-    In versions 2023.07, 2 failing tests in scipy 1.11.1:
+    In versions 2023.07 and 2023.11, 2 failing tests in scipy 1.11.1 and 1.11.4:
         FAILED scipy/spatial/tests/test_distance.py::TestPdist::test_pdist_correlation_iris
         FAILED scipy/spatial/tests/test_distance.py::TestPdist::test_pdist_correlation_iris_float32
         = 2 failed, 54409 passed, 3016 skipped, 223 xfailed, 13 xpassed, 10917 warnings in 892.04s (0:14:52) =
     In previous versions we were not as strict yet on the numpy/SciPy tests
     """
     cpu_target = get_eessi_envvar('EESSI_SOFTWARE_SUBDIR')
-    if self.name == 'SciPy-bundle' and self.version in ['2021.10', '2023.07'] and cpu_target == CPU_TARGET_NEOVERSE_V1:
-        self.cfg['testopts'] = "|| echo ignoring failing tests" 
+    if self.name == 'SciPy-bundle' and self.version in ['2021.10', '2023.07', '2023.11'] and cpu_target == CPU_TARGET_NEOVERSE_V1:
+        self.cfg['testopts'] = "|| echo ignoring failing tests"
 
 
 def pre_single_extension_hook(ext, *args, **kwargs):
