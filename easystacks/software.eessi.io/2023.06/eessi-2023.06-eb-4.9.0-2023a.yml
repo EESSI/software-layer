@@ -1,0 +1,4 @@
+easyconfigs:
+  - PyTorch-2.1.2-foss-2023a.eb:
+      options:
+        from-pr: 19480
