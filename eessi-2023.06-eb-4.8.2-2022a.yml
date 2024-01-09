@@ -19,3 +19,4 @@ easyconfigs:
       options:
         from-pr: 19226
   - matplotlib-3.5.2-foss-2022a.eb
+  - ImageMagick-7.1.0-37-GCCcore-11.3.0.eb
