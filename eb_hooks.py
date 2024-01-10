@@ -384,16 +384,6 @@ def pre_single_extension_hook(ext, *args, **kwargs):
         PRE_SINGLE_EXTENSION_HOOKS[ext.name](ext, *args, **kwargs)
 
 
-def pre_single_extension_testthat(ext, *args, **kwargs):
-    """
-    Pre-extension hook for testthat R package, to fix build on top of recent glibc.
-    """
-    if ext.name == 'testthat' and LooseVersion(ext.version) < LooseVersion('3.1.0'):
-        # use constant value instead of SIGSTKSZ for stack size,
-        # cfr. https://github.com/r-lib/testthat/issues/1373 + https://github.com/r-lib/testthat/pull/1403
-        ext.cfg['preinstallopts'] = "sed -i 's/SIGSTKSZ/32768/g' inst/include/testthat/vendor/catch.h && "
-
-
 def pre_single_extension_isoband(ext, *args, **kwargs):
     """
     Pre-extension hook for isoband R package, to fix build on top of recent glibc.
@@ -402,6 +392,33 @@ def pre_single_extension_isoband(ext, *args, **kwargs):
         # use constant value instead of SIGSTKSZ for stack size in vendored testthat included in isoband sources,
         # cfr. https://github.com/r-lib/isoband/commit/6984e6ce8d977f06e0b5ff73f5d88e5c9a44c027
         ext.cfg['preinstallopts'] = "sed -i 's/SIGSTKSZ/32768/g' src/testthat/vendor/catch.h && "
+
+
+def pre_single_extension_scipy(ext, *args, **kwargs):
+    """
+    Pre-extension hook for scipy, to change -march=native to -march=armv8.4-a for scipy 1.10.x when buidling for
+    aarch64/neoverse_v1 CPU target.
+    """
+    cpu_target = get_eessi_envvar('EESSI_SOFTWARE_SUBDIR')
+    if ext.name == 'scipy' and ext.version == '1.10.1' and cpu_target == CPU_TARGET_NEOVERSE_V1:
+        cflags = os.getenv('CFLAGS')
+        if '-mcpu=native' in cflags:
+            cflags = cflags.replace('-mcpu=native', '-march=armv8.4-a')
+            ext.cfg.update('configopts', ' '.join([
+                "-Dc_args='%s'" % cflags,
+                "-Dcpp_args='%s'" % cflags,
+                "-Dfortran_args='%s'" % cflags,
+            ]))
+
+
+def pre_single_extension_testthat(ext, *args, **kwargs):
+    """
+    Pre-extension hook for testthat R package, to fix build on top of recent glibc.
+    """
+    if ext.name == 'testthat' and LooseVersion(ext.version) < LooseVersion('3.1.0'):
+        # use constant value instead of SIGSTKSZ for stack size,
+        # cfr. https://github.com/r-lib/testthat/issues/1373 + https://github.com/r-lib/testthat/pull/1403
+        ext.cfg['preinstallopts'] = "sed -i 's/SIGSTKSZ/32768/g' inst/include/testthat/vendor/catch.h && "
 
 
 def post_sanitycheck_hook(self, *args, **kwargs):
@@ -531,6 +548,7 @@ PRE_TEST_HOOKS = {
 
 PRE_SINGLE_EXTENSION_HOOKS = {
     'isoband': pre_single_extension_isoband,
+    'scipy': pre_single_extension_scipy,
     'testthat': pre_single_extension_testthat,
 }
 
