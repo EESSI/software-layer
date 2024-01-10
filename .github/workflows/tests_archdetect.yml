@@ -18,6 +18,8 @@ jobs:
           - aarch64/neoverse_n1/Azure-Ubuntu20-Altra
           - aarch64/neoverse_n1/AWS-awslinux-graviton2
           - aarch64/neoverse_v1/AWS-awslinux-graviton3
+          # commented out since these targets are currently not supported in software.eessi.io repo
+          # (and some tests assume that the corresponding subdirectory in software layer is there)
           # - ppc64le/power9le/unknown-power9le
       fail-fast: false
     steps:
