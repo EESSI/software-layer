@@ -394,21 +394,19 @@ def pre_single_extension_isoband(ext, *args, **kwargs):
         ext.cfg['preinstallopts'] = "sed -i 's/SIGSTKSZ/32768/g' src/testthat/vendor/catch.h && "
 
 
-def pre_single_extension_scipy(ext, *args, **kwargs):
+def pre_single_extension_numpy(ext, *args, **kwargs):
     """
-    Pre-extension hook for scipy, to change -march=native to -march=armv8.4-a for scipy 1.10.x when buidling for
+    Pre-extension hook for numpy, to change -march=native to -march=armv8.4-a for scipy 1.10.x when buidling for
     aarch64/neoverse_v1 CPU target.
     """
     cpu_target = get_eessi_envvar('EESSI_SOFTWARE_SUBDIR')
-    if ext.name == 'scipy' and ext.version == '1.10.1' and cpu_target == CPU_TARGET_NEOVERSE_V1:
-        cflags = os.getenv('CFLAGS')
-        if '-mcpu=native' in cflags:
-            cflags = cflags.replace('-mcpu=native', '-march=armv8.4-a')
-            ext.cfg.update('configopts', ' '.join([
-                "-Dc_args='%s'" % cflags,
-                "-Dcpp_args='%s'" % cflags,
-                "-Dfortran_args='%s'" % cflags,
-            ]))
+    if ext.name == 'numpy' and ext.version == '1.24.2' and cpu_target == CPU_TARGET_NEOVERSE_V1:
+        # unsure which of these actually matter for numpy, so changing all of them
+        for envvar in ('CFLAGS', 'CXXFLAGS', 'F90FLAGS', 'FFLAGS'):
+            value = os.getenv(envvar)
+            if '-mcpu=native' in value:
+                value = value.replace('-mcpu=native', '-march=armv8.4-a')
+                env.setvar(envvar, value)
 
 
 def pre_single_extension_testthat(ext, *args, **kwargs):
@@ -548,7 +546,7 @@ PRE_TEST_HOOKS = {
 
 PRE_SINGLE_EXTENSION_HOOKS = {
     'isoband': pre_single_extension_isoband,
-    'scipy': pre_single_extension_scipy,
+    'numpy': pre_single_extension_numpy,
     'testthat': pre_single_extension_testthat,
 }
 
