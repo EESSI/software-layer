@@ -403,7 +403,7 @@ def pre_single_extension_isoband(ext, *args, **kwargs):
 
 def pre_single_extension_numpy(ext, *args, **kwargs):
     """
-    Pre-extension hook for numpy, to change -march=native to -march=armv8.4-a for scipy 1.10.x
+    Pre-extension hook for numpy, to change -march=native to -march=armv8.4-a for numpy 1.24.2
     when building for aarch64/neoverse_v1 CPU target.
     """
     cpu_target = get_eessi_envvar('EESSI_SOFTWARE_SUBDIR')
