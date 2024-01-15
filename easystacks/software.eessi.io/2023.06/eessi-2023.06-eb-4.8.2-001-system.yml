@@ -5,3 +5,4 @@ easyconfigs:
   - Nextflow-23.10.0.eb:
       options:
         from-pr: 19172
+  - ReFrame-4.3.3.eb
