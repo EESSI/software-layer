@@ -1,0 +1,4 @@
+easyconfigs:
+  - OpenFOAM-11-foss-2023a.eb:
+      options:
+        from-pr: 19545
