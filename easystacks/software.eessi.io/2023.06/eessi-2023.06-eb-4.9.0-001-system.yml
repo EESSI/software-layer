@@ -1,0 +1,4 @@
+easyconfigs:
+  - EasyBuild-4.9.0.eb:
+      options:
+        from-pr: 19464

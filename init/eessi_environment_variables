@@ -2,24 +2,24 @@
 # $BASH_SOURCE points to correct path, see also http://mywiki.wooledge.org/BashFAQ/028
 EESSI_INIT_DIR_PATH=$(dirname $(realpath $BASH_SOURCE))
 
-# Allow for a silent mode
-if [[ -v EESSI_SILENT ]]; then
-  # EESSI_SILENT set
-  output=/dev/null
-else
-  output=/dev/stdout
-fi
-
 function error() {
     echo -e "\e[31mERROR: $1\e[0m" >&2
     false
 }
 
-# set up minimal environment: $EESSI_PREFIX, $EESSI_PILOT_VERSION, $EESSI_OS_TYPE, $EESSI_CPU_FAMILY, $EPREFIX
+function show_msg {
+  # only echo msg if EESSI_SILENT is unset
+  msg=$1
+  if [[ ! -v EESSI_SILENT ]]; then
+    echo "$msg"
+  fi
+}
+
+# set up minimal environment: $EESSI_PREFIX, $EESSI_VERSION, $EESSI_OS_TYPE, $EESSI_CPU_FAMILY, $EPREFIX
 source $EESSI_INIT_DIR_PATH/minimal_eessi_env
 
 if [ -d $EESSI_PREFIX ]; then
-  echo "Found EESSI pilot repo @ $EESSI_PREFIX!" >> $output
+  show_msg "Found EESSI repo @ $EESSI_PREFIX!"
 
   export EESSI_EPREFIX=$EPREFIX
   if [ -d $EESSI_EPREFIX ]; then
@@ -28,19 +28,21 @@ if [ -d $EESSI_PREFIX ]; then
     if [ "$EESSI_USE_ARCHDETECT" == "1" ]; then
       # if archdetect is enabled, use internal code
       export EESSI_SOFTWARE_SUBDIR=$(${EESSI_INIT_DIR_PATH}/eessi_archdetect.sh cpupath)
-      echo "archdetect says ${EESSI_SOFTWARE_SUBDIR}" >> $output
-    else
+      show_msg "archdetect says ${EESSI_SOFTWARE_SUBDIR}"
+    elif [ "$EESSI_USE_ARCHSPEC" == "1" ]; then
       # note: eessi_software_subdir_for_host.py will pick up value from $EESSI_SOFTWARE_SUBDIR_OVERRIDE if it's defined!
       export EESSI_EPREFIX_PYTHON=$EESSI_EPREFIX/usr/bin/python3
       export EESSI_SOFTWARE_SUBDIR=$($EESSI_EPREFIX_PYTHON ${EESSI_INIT_DIR_PATH}/eessi_software_subdir_for_host.py $EESSI_PREFIX)
-      echo "archspec says ${EESSI_SOFTWARE_SUBDIR}" >> $output
+      show_msg "archspec says ${EESSI_SOFTWARE_SUBDIR}"
+    else
+      error "Don't know how to detect host CPU, giving up!"
     fi
     if [ ! -z $EESSI_SOFTWARE_SUBDIR ]; then
 
-        echo "Using ${EESSI_SOFTWARE_SUBDIR} as software subdirectory." >> $output
+        show_msg "Using ${EESSI_SOFTWARE_SUBDIR} as software subdirectory."
         export EESSI_SOFTWARE_PATH=$EESSI_PREFIX/software/$EESSI_OS_TYPE/$EESSI_SOFTWARE_SUBDIR
         if [ ! -z $EESSI_BASIC_ENV ]; then
-          echo "Only setting up basic environment, so we're done" >> $output
+          show_msg "Only setting up basic environment, so we're done"
         elif [ -d $EESSI_SOFTWARE_PATH ]; then
           # Allow for the use of a custom MNS
           if [ -z ${EESSI_CUSTOM_MODULEPATH+x} ]; then
@@ -53,13 +55,13 @@ if [ -d $EESSI_PREFIX ]; then
             fi
             EESSI_MODULEPATH=$EESSI_SOFTWARE_PATH/$EESSI_MODULE_SUBDIR
           else
-            echo "Using defined environment variable \$EESSI_CUSTOM_MODULEPATH to set EESSI_MODULEPATH." >> $output
+            show_msg "Using defined environment variable \$EESSI_CUSTOM_MODULEPATH to set EESSI_MODULEPATH."
             EESSI_MODULEPATH=$EESSI_CUSTOM_MODULEPATH
           fi
 
           if [ -d $EESSI_MODULEPATH ]; then
             export EESSI_MODULEPATH=$EESSI_MODULEPATH
-            echo "Using ${EESSI_MODULEPATH} as the directory to be added to MODULEPATH." >> $output
+            show_msg "Using ${EESSI_MODULEPATH} as the directory to be added to MODULEPATH."
           else
             error "EESSI module path at $EESSI_MODULEPATH not found!"
             false
@@ -67,7 +69,7 @@ if [ -d $EESSI_PREFIX ]; then
 
           export LMOD_RC="$EESSI_SOFTWARE_PATH/.lmod/lmodrc.lua"
           if [ -f $LMOD_RC ]; then
-            echo "Found Lmod configuration file at $LMOD_RC" >> $output
+            show_msg "Found Lmod configuration file at $LMOD_RC"
           else
             error "Lmod configuration file not found at $LMOD_RC"
           fi
@@ -82,5 +84,5 @@ if [ -d $EESSI_PREFIX ]; then
     error "Compatibility layer directory $EESSI_EPREFIX not found!"
   fi
 else
-  error "EESSI pilot repository at $EESSI_PREFIX not found!"
+  error "EESSI repository at $EESSI_PREFIX not found!"
 fi

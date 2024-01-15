@@ -1,0 +1,20 @@
+# documentation: https://help.github.com/en/articles/workflow-syntax-for-github-actions
+name: Test software licenses
+on: [push, pull_request]
+permissions:
+  contents: read # to fetch code (actions/checkout)
+jobs:
+  build:
+    runs-on: ubuntu-20.04
+    steps:
+        - name: Check out software-layer repository
+          uses: actions/checkout@93ea575cb5d8a053eaa0ac8fa3b40d7e05a33cc8 # v3.1.0
+
+        - name: set up Python
+          uses: actions/setup-python@13ae5bb136fac2878aff31522b9efb785519f984 # v4.3.0
+          with:
+            python-version: '3.9'
+
+        - name: Check software licenses
+          run: |
+            python licenses/spdx.py licenses/licenses.json

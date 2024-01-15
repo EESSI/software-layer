@@ -12,10 +12,10 @@ export EESSI_SILENT=1
 # for MacOS due to the use of `readlink`)
 source $(dirname "$(readlink -f "$BASH_SOURCE")")/../eessi_environment_variables
 
-eessi_pilot_python=$(ls ${EESSI_SOFTWARE_PATH}/software/Python/3*GCCcore*/bin/python | sed 1q)
-if [ -f "$eessi_pilot_python" ]; then
-  $eessi_pilot_python "$@"
+eessi_python=$(ls ${EESSI_SOFTWARE_PATH}/software/Python/3*GCCcore*/bin/python | sed 1q)
+if [ -f "$eessi_python" ]; then
+  $eessi_python "$@"
 else
-  echo "ERROR: No EESSI pilot python 3 available."
+  echo "ERROR: No EESSI Python 3 available."
   false
 fi

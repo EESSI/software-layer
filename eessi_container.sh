@@ -30,8 +30,8 @@
 # -. initial settings & exit codes
 TOPDIR=$(dirname $(realpath $0))
 
-source ${TOPDIR}/scripts/utils.sh
-source ${TOPDIR}/scripts/cfg_files.sh
+source "${TOPDIR}"/scripts/utils.sh
+source "${TOPDIR}"/scripts/cfg_files.sh
 
 # exit codes: bitwise shift codes to allow for combination of exit codes
 # ANY_ERROR_EXITCODE is sourced from ${TOPDIR}/scripts/utils.sh
@@ -46,6 +46,7 @@ SAVE_ERROR_EXITCODE=$((${ANY_ERROR_EXITCODE} << 8))
 HTTP_PROXY_ERROR_EXITCODE=$((${ANY_ERROR_EXITCODE} << 9))
 HTTPS_PROXY_ERROR_EXITCODE=$((${ANY_ERROR_EXITCODE} << 10))
 RUN_SCRIPT_MISSING_EXITCODE=$((${ANY_ERROR_EXITCODE} << 11))
+NVIDIA_MODE_UNKNOWN_EXITCODE=$((${ANY_ERROR_EXITCODE} << 12))
 
 # CernVM-FS settings
 CVMFS_VAR_LIB="var-lib-cvmfs"
@@ -72,14 +73,19 @@ display_help() {
   echo "  -a | --access {ro,rw}  - ro (read-only), rw (read & write) [default: ro]"
   echo "  -c | --container IMG   - image file or URL defining the container to use"
   echo "                           [default: docker://ghcr.io/eessi/build-node:debian11]"
-  echo "  -h | --help            - display this usage information [default: false]"
   echo "  -g | --storage DIR     - directory space on host machine (used for"
   echo "                           temporary data) [default: 1. TMPDIR, 2. /tmp]"
+  echo "  -h | --help            - display this usage information [default: false]"
+  echo "  -i | --host-injections - directory to link to for host_injections "
+  echo "                           [default: /..storage../opt-eessi]"
   echo "  -l | --list-repos      - list available repository identifiers [default: false]"
   echo "  -m | --mode MODE       - with MODE==shell (launch interactive shell) or"
   echo "                           MODE==run (run a script or command) [default: shell]"
+  echo "  -n | --nvidia MODE     - configure the container to work with NVIDIA GPUs,"
+  echo "                           MODE==install for a CUDA installation, MODE==run to"
+  echo "                           attach a GPU, MODE==all for both [default: false]"
   echo "  -r | --repository CFG  - configuration file or identifier defining the"
-  echo "                           repository to use [default: EESSI-pilot via"
+  echo "                           repository to use [default: EESSI via"
   echo "                           default container, see --container]"
   echo "  -u | --resume DIR/TGZ  - resume a previous run from a directory or tarball,"
   echo "                           where DIR points to a previously used tmp directory"
@@ -111,7 +117,8 @@ VERBOSE=0
 STORAGE=
 LIST_REPOS=0
 MODE="shell"
-REPOSITORY="EESSI-pilot"
+SETUP_NVIDIA=0
+REPOSITORY="EESSI"
 RESUME=
 SAVE=
 HTTP_PROXY=${http_proxy:-}
@@ -141,12 +148,21 @@ while [[ $# -gt 0 ]]; do
       display_help
       exit 0
       ;;
+    -i|--host-injections)
+      USER_HOST_INJECTIONS="$2"
+      shift 2
+      ;;
     -l|--list-repos)
       LIST_REPOS=1
       shift 1
       ;;
     -m|--mode)
       MODE="$2"
+      shift 2
+      ;;
+    -n|--nvidia)
+      SETUP_NVIDIA=1
+      NVIDIA_MODE="$2"
       shift 2
       ;;
     -r|--repository)
@@ -194,7 +210,7 @@ set -- "${POSITIONAL_ARGS[@]}"
 
 if [[ ${LIST_REPOS} -eq 1 ]]; then
     echo "Listing available repositories with format 'name [source]':"
-    echo "    EESSI-pilot [default]"
+    echo "    EESSI [default]"
     if [[ -r ${EESSI_REPOS_CFG_FILE} ]]; then
         cfg_load ${EESSI_REPOS_CFG_FILE}
         sections=$(cfg_sections)
@@ -224,9 +240,16 @@ if [[ "${MODE}" != "shell" && "${MODE}" != "run" ]]; then
     fatal_error "unknown execution mode '${MODE}'" "${MODE_UNKNOWN_EXITCODE}"
 fi
 
+# Also validate the NVIDIA GPU mode (if present)
+if [[ ${SETUP_NVIDIA} -eq 1 ]]; then
+    if [[ "${NVIDIA_MODE}" != "run" && "${NVIDIA_MODE}" != "install" && "${NVIDIA_MODE}" != "all" ]]; then
+        fatal_error "unknown NVIDIA mode '${NVIDIA_MODE}'" "${NVIDIA_MODE_UNKNOWN_EXITCODE}"
+    fi
+fi
+
 # TODO (arg -r|--repository) check if repository is known
 # REPOSITORY_ERROR_EXITCODE
-if [[ ! -z "${REPOSITORY}" && "${REPOSITORY}" != "EESSI-pilot" && ! -r ${EESSI_REPOS_CFG_FILE} ]]; then
+if [[ ! -z "${REPOSITORY}" && "${REPOSITORY}" != "EESSI" && ! -r ${EESSI_REPOS_CFG_FILE} ]]; then
     fatal_error "arg '--repository ${REPOSITORY}' requires a cfg file at '${EESSI_REPOS_CFG_FILE}'" "${REPOSITORY_ERROR_EXITCODE}"
 fi
 
@@ -310,11 +333,24 @@ fi
 #      |-overlay-work
 #      |-home
 #      |-repos_cfg
+#      |-opt-eessi (unless otherwise specificed for host_injections)
 
 # tmp dir for EESSI
 EESSI_TMPDIR=${EESSI_HOST_STORAGE}
 mkdir -p ${EESSI_TMPDIR}
 [[ ${VERBOSE} -eq 1 ]] && echo "EESSI_TMPDIR=${EESSI_TMPDIR}"
+
+# Set host_injections directory and ensure it is a writable directory (if user provided)
+if [ -z ${USER_HOST_INJECTIONS+x} ]; then
+    # Not set, so use our default
+    HOST_INJECTIONS=${EESSI_TMPDIR}/opt-eessi
+    mkdir -p $HOST_INJECTIONS
+else
+    # Make sure the host_injections directory specified exists and is a folder
+    mkdir -p ${USER_HOST_INJECTIONS} || fatal_error "host_injections directory ${USER_HOST_INJECTIONS} is either not a directory or cannot be created"
+    HOST_INJECTIONS=${USER_HOST_INJECTIONS}
+fi
+[[ ${VERBOSE} -eq 1 ]] && echo "HOST_INJECTIONS=${HOST_INJECTIONS}"
 
 # configure Singularity: if SINGULARITY_CACHEDIR is already defined, use that
 #   a global SINGULARITY_CACHEDIR would ensure that we don't consume
@@ -394,16 +430,40 @@ fi
 [[ ${VERBOSE} -eq 1 ]] && echo "SINGULARITY_HOME=${SINGULARITY_HOME}"
 
 # define paths to add to SINGULARITY_BIND (added later when all BIND mounts are defined)
-BIND_PATHS="${EESSI_CVMFS_VAR_LIB}:/var/lib/cvmfs,${EESSI_CVMFS_VAR_RUN}:/var/run/cvmfs"
+BIND_PATHS="${EESSI_CVMFS_VAR_LIB}:/var/lib/cvmfs,${EESSI_CVMFS_VAR_RUN}:/var/run/cvmfs,${HOST_INJECTIONS}:/opt/eessi"
 # provide a '/tmp' inside the container
 BIND_PATHS="${BIND_PATHS},${EESSI_TMPDIR}:${TMP_IN_CONTAINER}"
 
 [[ ${VERBOSE} -eq 1 ]] && echo "BIND_PATHS=${BIND_PATHS}"
 
+declare -a ADDITIONAL_CONTAINER_OPTIONS=()
+
+# Configure anything we need for NVIDIA GPUs and CUDA installation
+if [[ ${SETUP_NVIDIA} -eq 1 ]]; then
+    if [[ "${NVIDIA_MODE}" == "run" || "${NVIDIA_MODE}" == "all" ]]; then
+        # Give singularity the appropriate flag
+        ADDITIONAL_CONTAINER_OPTIONS+=("--nv")
+        [[ ${VERBOSE} -eq 1 ]] && echo "ADDITIONAL_CONTAINER_OPTIONS=${ADDITIONAL_CONTAINER_OPTIONS[@]}"
+    fi
+    if [[ "${NVIDIA_MODE}" == "install" || "${NVIDIA_MODE}" == "all" ]]; then
+        # Add additional bind mounts to allow CUDA to install within a container
+        # (Experience tells us that these are necessary, but we don't know _why_
+        # as the CUDA installer is a black box. The suspicion is that the CUDA
+        # installer gets confused by the permissions on these directories when
+        # inside a container)
+        EESSI_VAR_LOG=${EESSI_TMPDIR}/var-log
+        EESSI_USR_LOCAL_CUDA=${EESSI_TMPDIR}/usr-local-cuda
+        mkdir -p ${EESSI_VAR_LOG}
+        mkdir -p ${EESSI_USR_LOCAL_CUDA}
+        BIND_PATHS="${BIND_PATHS},${EESSI_VAR_LOG}:/var/log,${EESSI_USR_LOCAL_CUDA}:/usr/local/cuda"
+        [[ ${VERBOSE} -eq 1 ]] && echo "BIND_PATHS=${BIND_PATHS}"
+    fi
+fi
+
 # set up repository config (always create directory repos_cfg and populate it with info when
 # arg -r|--repository is used)
 mkdir -p ${EESSI_TMPDIR}/repos_cfg
-if [[ "${REPOSITORY}" == "EESSI-pilot" ]]; then
+if [[ "${REPOSITORY}" == "EESSI" ]]; then
   # need to source defaults as late as possible (see other sourcing below)
   source ${TOPDIR}/init/eessi_defaults
 
@@ -427,7 +487,7 @@ else
   #   map { local_filepath -> container_filepath }
   #
   # repo_name_domain is the domain part of the repo_name, e.g.,
-  #   eessi-hpc.org for pilot.eessi-hpc.org
+  #   eessi.io for software.eessi.io
   #
   # where config bundle includes the files (-> target location in container)
   # - default.local -> /etc/cvmfs/default.local
@@ -479,7 +539,7 @@ else
     target=${cfg_file_map[${src}]}
     BIND_PATHS="${BIND_PATHS},${EESSI_TMPDIR}/repos_cfg/${src}:${target}"
   done
-  export EESSI_PILOT_VERSION_OVERRIDE=${repo_version}
+  export EESSI_VERSION_OVERRIDE=${repo_version}
   export EESSI_CVMFS_REPO_OVERRIDE="/cvmfs/${repo_name}"
   # need to source defaults as late as possible (after *_OVERRIDEs)
   source ${TOPDIR}/init/eessi_defaults
@@ -513,10 +573,14 @@ fi
 # 4. set up vars and dirs specific to a scenario
 
 declare -a EESSI_FUSE_MOUNTS=()
-if [[ "${ACCESS}" == "ro" ]]; then
-  export EESSI_PILOT_READONLY="container:cvmfs2 ${repo_name} /cvmfs/${repo_name}"
 
-  EESSI_FUSE_MOUNTS+=("--fusemount" "${EESSI_PILOT_READONLY}")
+# always mount cvmfs-config repo (to get access to software.eessi.io)
+EESSI_FUSE_MOUNTS+=("--fusemount" "container:cvmfs2 cvmfs-config.cern.ch /cvmfs/cvmfs-config.cern.ch")
+
+if [[ "${ACCESS}" == "ro" ]]; then
+  export EESSI_READONLY="container:cvmfs2 ${repo_name} /cvmfs/${repo_name}"
+
+  EESSI_FUSE_MOUNTS+=("--fusemount" "${EESSI_READONLY}")
   export EESSI_FUSE_MOUNTS
 fi
 
@@ -525,18 +589,18 @@ if [[ "${ACCESS}" == "rw" ]]; then
   mkdir -p ${EESSI_TMPDIR}/overlay-work
 
   # set environment variables for fuse mounts in Singularity container
-  export EESSI_PILOT_READONLY="container:cvmfs2 ${repo_name} /cvmfs_ro/${repo_name}"
+  export EESSI_READONLY="container:cvmfs2 ${repo_name} /cvmfs_ro/${repo_name}"
 
-  EESSI_FUSE_MOUNTS+=("--fusemount" "${EESSI_PILOT_READONLY}")
+  EESSI_FUSE_MOUNTS+=("--fusemount" "${EESSI_READONLY}")
 
-  EESSI_PILOT_WRITABLE_OVERLAY="container:fuse-overlayfs"
-  EESSI_PILOT_WRITABLE_OVERLAY+=" -o lowerdir=/cvmfs_ro/${repo_name}"
-  EESSI_PILOT_WRITABLE_OVERLAY+=" -o upperdir=${TMP_IN_CONTAINER}/overlay-upper"
-  EESSI_PILOT_WRITABLE_OVERLAY+=" -o workdir=${TMP_IN_CONTAINER}/overlay-work"
-  EESSI_PILOT_WRITABLE_OVERLAY+=" ${EESSI_CVMFS_REPO}"
-  export EESSI_PILOT_WRITABLE_OVERLAY
+  EESSI_WRITABLE_OVERLAY="container:fuse-overlayfs"
+  EESSI_WRITABLE_OVERLAY+=" -o lowerdir=/cvmfs_ro/${repo_name}"
+  EESSI_WRITABLE_OVERLAY+=" -o upperdir=${TMP_IN_CONTAINER}/overlay-upper"
+  EESSI_WRITABLE_OVERLAY+=" -o workdir=${TMP_IN_CONTAINER}/overlay-work"
+  EESSI_WRITABLE_OVERLAY+=" ${EESSI_CVMFS_REPO}"
+  export EESSI_WRITABLE_OVERLAY
 
-  EESSI_FUSE_MOUNTS+=("--fusemount" "${EESSI_PILOT_WRITABLE_OVERLAY}")
+  EESSI_FUSE_MOUNTS+=("--fusemount" "${EESSI_WRITABLE_OVERLAY}")
   export EESSI_FUSE_MOUNTS
 fi
 
@@ -558,8 +622,8 @@ if [ ! -z ${EESSI_SOFTWARE_SUBDIR_OVERRIDE} ]; then
 fi
 
 echo "Launching container with command (next line):"
-echo "singularity ${RUN_QUIET} ${MODE} ${EESSI_FUSE_MOUNTS[@]} ${CONTAINER} $@"
-singularity ${RUN_QUIET} ${MODE} "${EESSI_FUSE_MOUNTS[@]}" ${CONTAINER} "$@"
+echo "singularity ${RUN_QUIET} ${MODE} ${ADDITIONAL_CONTAINER_OPTIONS[@]} ${EESSI_FUSE_MOUNTS[@]} ${CONTAINER} $@"
+singularity ${RUN_QUIET} ${MODE} "${ADDITIONAL_CONTAINER_OPTIONS[@]}" "${EESSI_FUSE_MOUNTS[@]}" ${CONTAINER} "$@"
 exit_code=$?
 
 # 6. save tmp if requested (arg -s|--save)

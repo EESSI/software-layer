@@ -1,0 +1,85 @@
+# documentation: https://help.github.com/en/articles/workflow-syntax-for-github-actions
+name: Check for missing software installations in software.eessi.io
+on: [push, pull_request, workflow_dispatch]
+permissions:
+  contents: read # to fetch code (actions/checkout)
+jobs:
+  check_missing:
+    runs-on: ubuntu-22.04
+    strategy:
+      fail-fast: false
+      matrix:
+        EESSI_VERSION:
+        - 2023.06
+        EESSI_SOFTWARE_SUBDIR_OVERRIDE:
+        - aarch64/generic
+        - aarch64/neoverse_n1
+        - aarch64/neoverse_v1
+        - x86_64/amd/zen2
+        - x86_64/amd/zen3
+        - x86_64/intel/haswell
+        - x86_64/intel/skylake_avx512
+        - x86_64/generic
+    steps:
+        - name: Check out software-layer repository
+          uses: actions/checkout@93ea575cb5d8a053eaa0ac8fa3b40d7e05a33cc8 # v3.1.0
+
+        - name: Mount EESSI CernVM-FS pilot repository
+          uses: cvmfs-contrib/github-action-cvmfs@d4641d0d591c9a5c3be23835ced2fb648b44c04b # v3.1
+          with:
+              cvmfs_config_package: https://github.com/EESSI/filesystem-layer/releases/download/latest/cvmfs-config-eessi_latest_all.deb
+              cvmfs_http_proxy: DIRECT
+              cvmfs_repositories: software.eessi.io
+
+        - name: Test check_missing_installations.sh script
+          run: |
+              export EESSI_SOFTWARE_SUBDIR_OVERRIDE=${{matrix.EESSI_SOFTWARE_SUBDIR_OVERRIDE}}
+              source /cvmfs/software.eessi.io/versions/${{matrix.EESSI_VERSION}}/init/bash
+              # set $EESSI_CPU_FAMILY to the CPU architecture that corresponds to $EESSI_SOFTWARE_SUBDIR_OVERRIDE (part before the first slash),
+              # to prevent issues with checks in the Easybuild configuration that use this variable
+              export EESSI_CPU_FAMILY=${EESSI_SOFTWARE_SUBDIR_OVERRIDE%%/*}
+              module load EasyBuild
+              which eb
+              eb --version
+              export EESSI_PREFIX=/cvmfs/software.eessi.io/versions/${{matrix.EESSI_VERSION}}
+              export EESSI_OS_TYPE=linux
+              env | grep ^EESSI | sort
+              echo "just run check_missing_installations.sh (should use easystacks/software.eessi.io/${{matrix.EESSI_VERSION}}/eessi-${{matrix.EESSI_VERSION}}-*.yml)"
+              for easystack_file in $(ls easystacks/software.eessi.io/${{matrix.EESSI_VERSION}}/eessi-${{matrix.EESSI_VERSION}}-eb-*.yml); do
+                  echo "check missing installations for ${easystack_file}..."
+                  ./check_missing_installations.sh ${easystack_file}
+                  ec=$?
+                  if [[ ${ec} -ne 0 ]]; then echo "missing installations found for ${easystack_file}!" >&2; exit ${ec}; fi
+              done
+
+        - name: Test check_missing_installations.sh with missing package (GCC/8.3.0)
+          run: |
+              export EESSI_SOFTWARE_SUBDIR_OVERRIDE=${{matrix.EESSI_SOFTWARE_SUBDIR_OVERRIDE}}
+              source /cvmfs/software.eessi.io/versions/${{matrix.EESSI_VERSION}}/init/bash
+              # set $EESSI_CPU_FAMILY to the CPU architecture that corresponds to $EESSI_SOFTWARE_SUBDIR_OVERRIDE (part before the first slash),
+              # to prevent issues with checks in the Easybuild configuration that use this variable
+              export EESSI_CPU_FAMILY=${EESSI_SOFTWARE_SUBDIR_OVERRIDE%%/*}
+              module load EasyBuild
+              which eb
+              eb --version
+              export EESSI_PREFIX=/cvmfs/software.eessi.io/versions/${{matrix.EESSI_VERSION}}
+              export EESSI_OS_TYPE=linux
+              env | grep ^EESSI | sort
+              # create dummy easystack file with a single entry (something that is not installed in EESSI)
+              easystack_file="test.yml"
+              echo "easyconfigs:" > ${easystack_file}
+              echo "  - GCC-8.3.0:" >> ${easystack_file}
+              echo "created easystack file '${easystack_file}' with a missing installation (GCC/8.3.0):"
+              cat ${easystack_file}
+              # note, check_missing_installations.sh exits 1 if a package was
+              # missing, which is intepreted as false (exit code based, not
+              # boolean logic), hence when the script exits 0 if no package was
+              # missing it is interpreted as true, thus the test did not capture
+              # the missing package
+              if ./check_missing_installations.sh ${easystack_file}; then
+                echo "did NOT capture missing package; test FAILED"
+                exit 1
+              else
+                echo "captured missing package; test PASSED"
+                exit 0
+              fi

@@ -25,30 +25,49 @@ jobs:
     steps:
     - name: checkout
       uses: actions/checkout@93ea575cb5d8a053eaa0ac8fa3b40d7e05a33cc8 # v3.1.0
-    - name: Enable EESSI
-      #uses: eessi/github-action-eessi@58b50fd2eead2162c2b9ac258d4fb60cc9f30503 # v2.0.13
-      uses: eessi/github-action-eessi@v3
+
+    - name: Mount EESSI CernVM-FS pilot repository
+      uses: cvmfs-contrib/github-action-cvmfs@d4641d0d591c9a5c3be23835ced2fb648b44c04b # v3.1
+      with:
+          cvmfs_config_package: https://github.com/EESSI/filesystem-layer/releases/download/latest/cvmfs-config-eessi_latest_all.deb
+          cvmfs_http_proxy: DIRECT
+          cvmfs_repositories: software.eessi.io
+
     - name: test eessi_archdetect.sh
       run: |
           export EESSI_MACHINE_TYPE=${{matrix.proc_cpuinfo}}
           export EESSI_MACHINE_TYPE=${EESSI_MACHINE_TYPE%%/*}
           export EESSI_PROC_CPUINFO=./tests/archdetect/${{matrix.proc_cpuinfo}}.cpuinfo
+          # check that printing of best match works correctly
           CPU_ARCH=$(./init/eessi_archdetect.sh cpupath)
           if [[ $CPU_ARCH == "$( cat ./tests/archdetect/${{matrix.proc_cpuinfo}}.output )" ]]; then
-              echo "Test for ${{matrix.proc_cpuinfo}} PASSED: $CPU_ARCH" >&2
+              echo "Test for ${{matrix.proc_cpuinfo}} PASSED: $CPU_ARCH"
           else
               echo "Test for ${{matrix.proc_cpuinfo}} FAILED: $CPU_ARCH" >&2
               exit 1
           fi
+          # check that $EESSI_SOFTWARE_SUBDIR_OVERRIDE is honored
+          export EESSI_SOFTWARE_SUBDIR_OVERRIDE='dummy/cpu'
+          CPU_ARCH=$(./init/eessi_archdetect.sh cpupath)
+          if [[ $CPU_ARCH == "${EESSI_SOFTWARE_SUBDIR_OVERRIDE}" ]]; then
+              echo "Test for picking up on \$EESSI_SOFTWARE_SUBDIR_OVERRIDE PASSED"
+          else
+              echo "Test for picking up on \$EESSI_SOFTWARE_SUBDIR_OVERRIDE FAILED" >&2
+              exit 1
+          fi
+          unset EESSI_SOFTWARE_SUBDIR_OVERRIDE
+          # check that printing of all matches works correctly (-a option for cpupath action)
           CPU_ARCHES=$(./init/eessi_archdetect.sh -a cpupath)
           if [[ $CPU_ARCHES == "$( cat ./tests/archdetect/${{matrix.proc_cpuinfo}}.all.output )" ]]; then
-              echo "Test for ${{matrix.proc_cpuinfo}} PASSED: $CPU_ARCHES" >&2
+              echo "Test for ${{matrix.proc_cpuinfo}} PASSED: $CPU_ARCHES"
           else
               echo "Test for ${{matrix.proc_cpuinfo}} FAILED: $CPU_ARCHES" >&2
               exit 1
           fi
-          # Check all those architectures actually exist
-          for dir in $(echo "$CPU_ARCHES" | tr ':' '\n'); do
-              # Search all EESSI versions as we may drop support at some point 
-              ls -d "$EESSI_PREFIX"/../*/software/linux/"$dir" 
-          done
+          # Check all those architectures actually exist (if this EESSI version has been populated already)
+          if [ -d ${EESSI_PREFIX}/software/linux ]; then
+            for dir in $(echo "$CPU_ARCHES" | tr ':' '\n'); do
+                # Search all EESSI versions as we may drop support at some point
+                ls -d ${EESSI_PREFIX}/software/linux/${dir}
+            done
+          fi
