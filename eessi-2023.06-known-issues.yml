@@ -1,0 +1,4 @@
+- aarch64/neoverse_v1:
+  - netCDF-4.9.2-GCC-12.3.0/GCC-13.2.0:
+      - issue: https://github.com/EESSI/software-layer/issues/425
+      - info: "netCDF intermittent test failures"
