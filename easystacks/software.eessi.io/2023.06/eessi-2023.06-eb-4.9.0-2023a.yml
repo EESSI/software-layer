@@ -1,4 +1,9 @@
 easyconfigs:
   - OpenFOAM-11-foss-2023a.eb:
+      # see https://github.com/easybuilders/easybuild-easyconfigs/pull/19545
       options:
         from-pr: 19545
+  - ESPResSo-4.2.1-foss-2023a.eb:
+      # see https://github.com/easybuilders/easybuild-easyconfigs/pull/19592    
+      options:
+        from-pr: 19592
