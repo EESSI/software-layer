@@ -380,7 +380,7 @@ def pre_test_hook_ignore_failing_tests_SciPybundle(self, *args, **kwargs):
 
 def pre_test_hook_ignore_failing_tests_netCDF(self, *args, **kwargs):
     """
-    Pre-test hook for SciPy-bundle: skip failing tests for selected netCDF versions on neoverse_v1
+    Pre-test hook for netCDF: skip failing tests for selected netCDF versions on neoverse_v1
     cfr. https://github.com/EESSI/software-layer/issues/425
     The following tests are problematic:
         163 - nc_test4_run_par_test (Timeout)
