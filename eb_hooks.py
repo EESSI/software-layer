@@ -339,7 +339,8 @@ def pre_configure_hook_atspi2core_filter_ld_library_path(self, *args, **kwargs):
     """
     pre-configure hook for at-spi2-core:
     - instruct GObject-Introspection's g-ir-scanner tool to not set $LD_LIBRARY_PATH
-      when EasyBuild is configured to filter it
+      when EasyBuild is configured to filter it, see:
+      https://github.com/EESSI/software-layer/issues/196
     """
     if self.name == 'at-spi2-core':
         if build_option('filter_env_vars') and 'LD_LIBRARY_PATH' in build_option('filter_env_vars'):
