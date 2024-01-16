@@ -2,3 +2,4 @@ easyconfigs:
   - OpenFOAM-11-foss-2023a.eb:
       options:
         from-pr: 19545
+  - at-spi2-core-2.49.91-GCCcore-12.3.0.eb
