@@ -343,7 +343,7 @@ def pre_configure_hook_atspi2core_filter_ld_library_path(self, *args, **kwargs):
     """
     if self.name == 'at-spi2-core':
         if build_option('filter_env_vars') and 'LD_LIBRARY_PATH' in build_option('filter_env_vars'):
-            sed_cmd = 'sed -i "s/gir_extra_args = \[/gir_extra_args = \[\\n  \'--lib-dirs-envvar=FILTER_LD_LIBRARY_PATH\',/g" %(start_dir)s/atspi/meson.build && ')
+            sed_cmd = 'sed -i "s/gir_extra_args = \[/gir_extra_args = \[\\n  \'--lib-dirs-envvar=FILTER_LD_LIBRARY_PATH\',/g" %(start_dir)s/atspi/meson.build && '
             self.cfg.update('preconfigopts', sed_cmd)
     else:
         raise EasyBuildError("at-spi2-core-specific hook triggered for non-at-spi2-core easyconfig?!")
