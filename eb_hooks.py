@@ -335,6 +335,21 @@ def pre_configure_hook_LAMMPS_aarch64(self, *args, **kwargs):
         raise EasyBuildError("LAMMPS-specific hook triggered for non-LAMMPS easyconfig?!")
 
 
+def pre_configure_hook_atspi2core_filter_ld_library_path(self, *args, **kwargs):
+    """
+    pre-configure hook for at-spi2-core:
+    - instruct GObject-Introspection's g-ir-scanner tool to not set $LD_LIBRARY_PATH
+      when EasyBuild is configured to filter it, see:
+      https://github.com/EESSI/software-layer/issues/196
+    """
+    if self.name == 'at-spi2-core':
+        if build_option('filter_env_vars') and 'LD_LIBRARY_PATH' in build_option('filter_env_vars'):
+            sed_cmd = 'sed -i "s/gir_extra_args = \[/gir_extra_args = \[\\n  \'--lib-dirs-envvar=FILTER_LD_LIBRARY_PATH\',/g" %(start_dir)s/atspi/meson.build && '
+            self.cfg.update('preconfigopts', sed_cmd)
+    else:
+        raise EasyBuildError("at-spi2-core-specific hook triggered for non-at-spi2-core easyconfig?!")
+
+
 def pre_test_hook(self,*args, **kwargs):
     """Main pre-test hook: trigger custom functions based on software name."""
     if self.name in PRE_TEST_HOOKS:
@@ -367,14 +382,15 @@ def pre_test_hook_ignore_failing_tests_SciPybundle(self, *args, **kwargs):
         FAILED optimize/tests/test_linprog.py::TestLinprogIPSparse::test_bug_6139 - A...
         FAILED optimize/tests/test_linprog.py::TestLinprogIPSparsePresolve::test_bug_6139
         = 2 failed, 30554 passed, 2064 skipped, 10992 deselected, 76 xfailed, 7 xpassed, 40 warnings in 380.27s (0:06:20) =
-    In versions 2023.07 and 2023.11, 2 failing tests in scipy 1.11.1 and 1.11.4:
+    In versions 2023.02, 2023.07, and 2023.11, 2 failing tests in scipy (versions 1.10.1, 1.11.1, 1.11.4):
         FAILED scipy/spatial/tests/test_distance.py::TestPdist::test_pdist_correlation_iris
         FAILED scipy/spatial/tests/test_distance.py::TestPdist::test_pdist_correlation_iris_float32
         = 2 failed, 54409 passed, 3016 skipped, 223 xfailed, 13 xpassed, 10917 warnings in 892.04s (0:14:52) =
     In previous versions we were not as strict yet on the numpy/SciPy tests
     """
     cpu_target = get_eessi_envvar('EESSI_SOFTWARE_SUBDIR')
-    if self.name == 'SciPy-bundle' and self.version in ['2021.10', '2023.07', '2023.11'] and cpu_target == CPU_TARGET_NEOVERSE_V1:
+    scipy_bundle_versions = ('2021.10', '2023.02', '2023.07', '2023.11')
+    if self.name == 'SciPy-bundle' and self.version in scipy_bundle_versions and cpu_target == CPU_TARGET_NEOVERSE_V1:
         self.cfg['testopts'] = "|| echo ignoring failing tests"
 
 def pre_test_hook_ignore_failing_tests_netCDF(self, *args, **kwargs):
@@ -391,19 +407,15 @@ def pre_test_hook_ignore_failing_tests_netCDF(self, *args, **kwargs):
         self.cfg['testopts'] = "|| echo ignoring failing tests" 
 
 def pre_single_extension_hook(ext, *args, **kwargs):
-    """Main pre-configure hook: trigger custom functions based on software name."""
+    """Main pre-extension: trigger custom functions based on software name."""
     if ext.name in PRE_SINGLE_EXTENSION_HOOKS:
         PRE_SINGLE_EXTENSION_HOOKS[ext.name](ext, *args, **kwargs)
 
 
-def pre_single_extension_testthat(ext, *args, **kwargs):
-    """
-    Pre-extension hook for testthat R package, to fix build on top of recent glibc.
-    """
-    if ext.name == 'testthat' and LooseVersion(ext.version) < LooseVersion('3.1.0'):
-        # use constant value instead of SIGSTKSZ for stack size,
-        # cfr. https://github.com/r-lib/testthat/issues/1373 + https://github.com/r-lib/testthat/pull/1403
-        ext.cfg['preinstallopts'] = "sed -i 's/SIGSTKSZ/32768/g' inst/include/testthat/vendor/catch.h && "
+def post_single_extension_hook(ext, *args, **kwargs):
+    """Main post-extension hook: trigger custom functions based on software name."""
+    if ext.name in POST_SINGLE_EXTENSION_HOOKS:
+        POST_SINGLE_EXTENSION_HOOKS[ext.name](ext, *args, **kwargs)
 
 
 def pre_single_extension_isoband(ext, *args, **kwargs):
@@ -414,6 +426,39 @@ def pre_single_extension_isoband(ext, *args, **kwargs):
         # use constant value instead of SIGSTKSZ for stack size in vendored testthat included in isoband sources,
         # cfr. https://github.com/r-lib/isoband/commit/6984e6ce8d977f06e0b5ff73f5d88e5c9a44c027
         ext.cfg['preinstallopts'] = "sed -i 's/SIGSTKSZ/32768/g' src/testthat/vendor/catch.h && "
+
+
+def pre_single_extension_numpy(ext, *args, **kwargs):
+    """
+    Pre-extension hook for numpy, to change -march=native to -march=armv8.4-a for numpy 1.24.2
+    when building for aarch64/neoverse_v1 CPU target.
+    """
+    cpu_target = get_eessi_envvar('EESSI_SOFTWARE_SUBDIR')
+    if ext.name == 'numpy' and ext.version == '1.24.2' and cpu_target == CPU_TARGET_NEOVERSE_V1:
+        # note: this hook is called before build environment is set up (by calling toolchain.prepare()),
+        # so environment variables like $CFLAGS are not defined yet
+        # unsure which of these actually matter for numpy, so changing all of them
+        ext.orig_optarch = build_option('optarch')
+        update_build_option('optarch', 'march=armv8.4-a')
+
+
+def post_single_extension_numpy(ext, *args, **kwargs):
+    """
+    Post-extension hook for numpy, to reset 'optarch' build option.
+    """
+    cpu_target = get_eessi_envvar('EESSI_SOFTWARE_SUBDIR')
+    if ext.name == 'numpy' and ext.version == '1.24.2' and cpu_target == CPU_TARGET_NEOVERSE_V1:
+        update_build_option('optarch', ext.orig_optarch)
+
+
+def pre_single_extension_testthat(ext, *args, **kwargs):
+    """
+    Pre-extension hook for testthat R package, to fix build on top of recent glibc.
+    """
+    if ext.name == 'testthat' and LooseVersion(ext.version) < LooseVersion('3.1.0'):
+        # use constant value instead of SIGSTKSZ for stack size,
+        # cfr. https://github.com/r-lib/testthat/issues/1373 + https://github.com/r-lib/testthat/pull/1403
+        ext.cfg['preinstallopts'] = "sed -i 's/SIGSTKSZ/32768/g' inst/include/testthat/vendor/catch.h && "
 
 
 def post_sanitycheck_hook(self, *args, **kwargs):
@@ -533,6 +578,7 @@ PRE_CONFIGURE_HOOKS = {
     'OpenBLAS': pre_configure_hook_openblas_optarch_generic,
     'WRF': pre_configure_hook_wrf_aarch64,
     'LAMMPS': pre_configure_hook_LAMMPS_aarch64,
+    'at-spi2-core': pre_configure_hook_atspi2core_filter_ld_library_path,
 }
 
 PRE_TEST_HOOKS = {
@@ -544,7 +590,12 @@ PRE_TEST_HOOKS = {
 
 PRE_SINGLE_EXTENSION_HOOKS = {
     'isoband': pre_single_extension_isoband,
+    'numpy': pre_single_extension_numpy,
     'testthat': pre_single_extension_testthat,
+}
+
+POST_SINGLE_EXTENSION_HOOKS = {
+    'numpy': post_single_extension_numpy,
 }
 
 POST_SANITYCHECK_HOOKS = {
