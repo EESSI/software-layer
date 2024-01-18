@@ -8,3 +8,6 @@ easyconfigs:
       # see https://github.com/easybuilders/easybuild-easyconfigs/pull/19592    
       options:
         from-pr: 19592
+  - Rivet-3.1.9-gompi-2023a-HepMC3-3.2.6.eb:
+      options:
+        from-pr: 19631
