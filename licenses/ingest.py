@@ -6,6 +6,15 @@
 
 # python traduction:
 import requests
+import argparse
+import json
+
+parser=argparse.ArgumentParser(description='Script to ingest licences')
+
+parser.add_argument('--source', help='Project available in GitHub,pypi,cran')
+parser.add_argument('project', help='Project. For GitHub you should specify owner/repo')
+parser.add_argument('--spdx')
+args=parser.parse_args()
 
 def gitHUBLicenses(repo):
 	"""
@@ -34,21 +43,53 @@ def pypiLicenses(project):
 	return(r['info']['license'])
 
 def CRANLicenses(project):
+    """
+	Function that retrieves licence from CRAN
+	"""
     url = "http://crandb.r-pkg.org/"
     r = requests.get(url + project).json()
-    print(r['License'])
+    return(r['License'])
 	
 #    if r.status_code != 200:
 #        return "not found"
 #    else:
 #        return r.json()['Licence']    
 
+def updateJson(licenseInfo):
+#	"""
+#	Function that updates json file
+#	"""
+	with open('dummy.json', 'w') as dummy:
+		json.dump(licenseInfo,dummy)
+def licenseInfo(project):
+	"""
+	Function that create the project dict
+	"""
+	if args.pypi: 
+		lic=pypiLicenses(project)
+		source="pypi"
+		info=dict(license=lic, source=source)
+		test={project:info}
+#	if args.github:
+#		lic=gitHUBLicenses(args.project)
+#	if args.cran:
+#		lic=CRANLicenses(args.project)
+	# fill the dictionary with
+	#	{
+	# "Software": {
+	#         "license": "license", 
+	#         "source": "manual, pypi, cran, repology, libraries.io,.."
+	#         "spdx": "spdx_id",
+	#}
+	#
+	return test
+
 def main():
+	updateJson(licenseInfo(args.project))
 #	repo="SINGROUP/SOAPLite"
-#	gitHUBLicenses("SINGROUP/SOAPLite")
+#	print(gitHUBLicenses("SINGROUP/SOAPLite"))
 #	pypiLicenses("easybuild")
 #	CRANLicenses('mirai')
-Other packages
 
 
 main()
