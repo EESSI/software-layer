@@ -393,6 +393,18 @@ def pre_test_hook_ignore_failing_tests_SciPybundle(self, *args, **kwargs):
     if self.name == 'SciPy-bundle' and self.version in scipy_bundle_versions and cpu_target == CPU_TARGET_NEOVERSE_V1:
         self.cfg['testopts'] = "|| echo ignoring failing tests"
 
+def pre_test_hook_ignore_failing_tests_netCDF(self, *args, **kwargs):
+    """
+    Pre-test hook for netCDF: skip failing tests for selected netCDF versions on neoverse_v1
+    cfr. https://github.com/EESSI/software-layer/issues/425
+    The following tests are problematic:
+        163 - nc_test4_run_par_test (Timeout)
+        190 - h5_test_run_par_tests (Timeout)
+    A few other tests are skipped in the easyconfig and patches for similar issues, see above issue for details.
+    """
+    cpu_target = get_eessi_envvar('EESSI_SOFTWARE_SUBDIR')
+    if self.name == 'netCDF' and self.version == '4.9.2' and cpu_target == CPU_TARGET_NEOVERSE_V1:
+        self.cfg['testopts'] = "|| echo ignoring failing tests" 
 
 def pre_single_extension_hook(ext, *args, **kwargs):
     """Main pre-extension: trigger custom functions based on software name."""
@@ -573,6 +585,7 @@ PRE_TEST_HOOKS = {
     'ESPResSo': pre_test_hook_ignore_failing_tests_ESPResSo,
     'FFTW.MPI': pre_test_hook_ignore_failing_tests_FFTWMPI,
     'SciPy-bundle': pre_test_hook_ignore_failing_tests_SciPybundle,
+    'netCDF': pre_test_hook_ignore_failing_tests_netCDF,
 }
 
 PRE_SINGLE_EXTENSION_HOOKS = {
