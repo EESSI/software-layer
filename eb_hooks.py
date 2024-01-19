@@ -185,20 +185,21 @@ def parse_hook_fontconfig_add_fonts(ec, eprefix):
 
 
 def parse_hook_openblas_relax_lapack_tests_num_errors(ec, eprefix):
-    """Relax number of failing numerical LAPACK tests for aarch64/neoverse_v1 CPU target."""
+    """Relax number of failing numerical LAPACK tests for aarch64/neoverse_v1 CPU target for OpenBLAS < 0.3.23"""
     cpu_target = get_eessi_envvar('EESSI_SOFTWARE_SUBDIR')
     if ec.name == 'OpenBLAS':
-        # relax maximum number of failed numerical LAPACK tests for aarch64/neoverse_v1 CPU target
-        # since the default setting of 150 that works well on other aarch64 targets and x86_64 is a bit too strict
-        # See https://github.com/EESSI/software-layer/issues/314
-        cfg_option = 'max_failing_lapack_tests_num_errors'
-        if cpu_target == CPU_TARGET_NEOVERSE_V1:
-            orig_value = ec[cfg_option]
-            ec[cfg_option] = 400
-            print_msg("Maximum number of failing LAPACK tests with numerical errors for %s relaxed to %s (was %s)",
-                      ec.name, ec[cfg_option], orig_value)
-        else:
-            print_msg("Not changing option %s for %s on non-AARCH64", cfg_option, ec.name)
+        if LooseVersion(ec.version) < LooseVersion('0.3.23'):
+            # relax maximum number of failed numerical LAPACK tests for aarch64/neoverse_v1 CPU target
+            # since the default setting of 150 that works well on other aarch64 targets and x86_64 is a bit too strict
+            # See https://github.com/EESSI/software-layer/issues/314
+            cfg_option = 'max_failing_lapack_tests_num_errors'
+            if cpu_target == CPU_TARGET_NEOVERSE_V1:
+                orig_value = ec[cfg_option]
+                ec[cfg_option] = 400
+                print_msg("Maximum number of failing LAPACK tests with numerical errors for %s relaxed to %s (was %s)",
+                          ec.name, ec[cfg_option], orig_value)
+            else:
+                print_msg("Not changing option %s for %s on non-AARCH64", cfg_option, ec.name)
     else:
         raise EasyBuildError("OpenBLAS-specific hook triggered for non-OpenBLAS easyconfig?!")
 
