@@ -17,10 +17,10 @@
   - OpenBLAS-0.3.21-GCC-12.2.0:
     - issue: https://github.com/EESSI/software-layer/issues/314
     - info: "Increased number of numerical errors in OpenBLAS test suite (344 vs max. 150 on x86_64/*)"
-  - SciPy-bundle-2023.11-gfbf-2023b:
+  - SciPy-bundle-2023.02-gfbf-2022b:
     - issue: https://github.com/EESSI/software-layer/issues/318
     - info: "numpy built with -march=armv8.4-a instead of -mcpu=native (no SVE) + 2 failing tests (vs 50005 passed) in scipy test suite"
-  - SciPy-bundle-2023.11-gfbf-2023b:
+  - SciPy-bundle-2023.07-gfbf-2023a:
     - issue: https://github.com/EESSI/software-layer/issues/318
     - info: "2 failing tests (vs 54409 passed) in scipy test suite"
   - SciPy-bundle-2023.11-gfbf-2023b:
