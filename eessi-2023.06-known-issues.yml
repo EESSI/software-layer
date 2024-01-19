@@ -1,7 +1,28 @@
 - aarch64/neoverse_v1:
+  - ESPResSo-4.2.1-foss-2023a:
+      - issue: https://github.com/EESSI/software-layer/issues/363
+      - info: "ESPResSo tests failing due to timeouts"
+  - FFTW.MPI-3.3.10-gompi-2023a:
+      - issue: https://github.com/EESSI/software-layer/issues/325
+      - info: "Flaky FFTW tests, random failures"
+  - FFTW.MPI-3.3.10-gompi-2023b:
+      - issue: https://github.com/EESSI/software-layer/issues/325
+      - info: "Flaky FFTW tests, random failures"
   - netCDF-4.9.2-gompi-2023a.eb:
       - issue: https://github.com/EESSI/software-layer/issues/425
       - info: "netCDF intermittent test failures"
   - netCDF-4.9.2-gompi-2023b.eb:
       - issue: https://github.com/EESSI/software-layer/issues/425
       - info: "netCDF intermittent test failures"
+  - OpenBLAS-0.3.21-GCC-12.2.0:
+    - issue: https://github.com/EESSI/software-layer/issues/314
+    - info: "Increased number of numerical errors in OpenBLAS test suite (344 vs max. 150 on x86_64/*)"
+  - SciPy-bundle-2023.11-gfbf-2023b:
+    - issue: https://github.com/EESSI/software-layer/issues/318
+    - info: "numpy built with -march=armv8.4-a instead of -mcpu=native (no SVE) + 2 failing tests (vs 50005 passed) in scipy test suite"
+  - SciPy-bundle-2023.11-gfbf-2023b:
+    - issue: https://github.com/EESSI/software-layer/issues/318
+    - info: "2 failing tests (vs 54409 passed) in scipy test suite"
+  - SciPy-bundle-2023.11-gfbf-2023b:
+    - issue: https://github.com/EESSI/software-layer/issues/318
+    - info: "2 failing tests (vs 54876 passed) in scipy test suite"
