@@ -5,3 +5,6 @@ easyconfigs:
   - netCDF-4.9.2-gompi-2023b.eb:
       options:
         from-pr: 19534
+  - matplotlib-3.8.2-gfbf-2023b.eb:
+      options:
+        from-pr: 19552
