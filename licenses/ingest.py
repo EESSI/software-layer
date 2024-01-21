@@ -13,10 +13,11 @@ parser=argparse.ArgumentParser(description='Script to ingest licences')
 
 parser.add_argument('--source', help='Project available in GitHub,pypi,cran')
 parser.add_argument('project', help='Project. For GitHub you should specify owner/repo')
-parser.add_argument('--spdx')
+parser.add_argument('--manual',required=False)
 args=parser.parse_args()
+print (args)
 
-def gitHUBLicenses(repo):
+def github(repo):
 	"""
 	Function that gets spdx_id from github using his API
 	"""
@@ -34,7 +35,7 @@ def gitHUBLicenses(repo):
 	else:
 		return('no available')
 
-def pypiLicenses(project):
+def pypi(project):
 	"""
 	Function that retrives licence from PiPy
 	"""
@@ -42,50 +43,51 @@ def pypiLicenses(project):
 	r = requests.get(url + project  + "/json").json()
 	return(r['info']['license'])
 
-def CRANLicenses(project):
+def cran(project):
     """
 	Function that retrieves licence from CRAN
 	"""
     url = "http://crandb.r-pkg.org/"
     r = requests.get(url + project).json()
     return(r['License'])
-	
+
 #    if r.status_code != 200:
 #        return "not found"
 #    else:
 #        return r.json()['Licence']    
 
-def updateJson(licenseInfo):
-#	"""
-#	Function that updates json file
-#	"""
-	with open('dummy.json', 'w') as dummy:
-		json.dump(licenseInfo,dummy)
+def repology(project):
+    url="https://repology.org//api/v1/"
+    r = requests.get(url + project).json()
+    return(r['License'])
+
 def licenseInfo(project):
 	"""
 	Function that create the project dict
 	"""
-	if args.pypi: 
-		lic=pypiLicenses(project)
-		source="pypi"
-		info=dict(license=lic, source=source)
-		test={project:info}
-#	if args.github:
-#		lic=gitHUBLicenses(args.project)
-#	if args.cran:
-#		lic=CRANLicenses(args.project)
-	# fill the dictionary with
-	#	{
-	# "Software": {
-	#         "license": "license", 
-	#         "source": "manual, pypi, cran, repology, libraries.io,.."
-	#         "spdx": "spdx_id",
-	#}
-	#
-	return test
+	if args.source=='pypi': 
+		lic=pypi(project)
+		info=[("license",lic), ("source",args.source)]
+	print(project,info)
+	return info
+
+def updateJson(project,info):
+	"""
+	Function that updates json file
+	"""
+	with open('licenses.json','r') as licDict:
+		licenses=json.loads(licDict.read())
+	
+	if project not in licenses.keys():
+		print('we do not have the license')
+		licenses[project]=info
+	print(licenses)
+	
 
 def main():
-	updateJson(licenseInfo(args.project))
+	project=args.project
+	info=licenseInfo(project)
+	updateJson(project,info)
 #	repo="SINGROUP/SOAPLite"
 #	print(gitHUBLicenses("SINGROUP/SOAPLite"))
 #	pypiLicenses("easybuild")
