@@ -4,4 +4,6 @@ easyconfigs:
       options:
         from-pr: 19339
   - Qt5-5.15.7-GCCcore-12.2.0.eb
-  - QuantumESPRESSO-7.2-foss-2022b.eb
+  - QuantumESPRESSO-7.2-foss-2022b.eb:
+      options:
+        parallel: 1
