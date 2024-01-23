@@ -25,7 +25,7 @@ def github(repo):
 	url="https://api.github.com/repos/"+repo+"/license"
 	headers = {
 		"Accept": "application/vnd.github+json",
-		"Authorization" : "Bearer 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",
+		"Authorization" : "Bearer TOKEN",
 		"X-GitHub-Api-Version": "2022-11-28",
 	}
 	
@@ -80,9 +80,11 @@ def updateJson(project,info):
 	
 	if project not in licenses.keys():
 		print('we do not have the license')
-		licenses[project]=info
-	print(licenses)
-	
+		licenses[project]=dict(info)
+	licJson=json.dumps(licenses, indent=4)
+
+	with open('licenses.json','w') as licFile:
+		licFile.write(licJson)
 
 def main():
 	project=args.project
