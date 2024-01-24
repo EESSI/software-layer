@@ -383,7 +383,6 @@ def pre_test_hook_increase_max_failed_tests_arm_PyTorch(self, *args, **kwargs):
     Pre-test hook for PyTorch: increase max failing tests for ARM for PyTorch 2.1.2
     See https://github.com/EESSI/software-layer/pull/444#issuecomment-1890416171
     """
-    cpu_target = get_eessi_envvar('EESSI_SOFTWARE_SUBDIR')
     if self.name == 'PyTorch' and self.version == '2.1.2' and get_cpu_architecture() == AARCH64:
         self.cfg['max_failed_tests'] = 10
 
