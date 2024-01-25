@@ -8,6 +8,9 @@ easyconfigs:
       # see https://github.com/easybuilders/easybuild-easyconfigs/pull/19592    
       options:
         from-pr: 19592
+  - Rivet-3.1.9-gompi-2023a-HepMC3-3.2.6.eb:
+      options:
+        from-pr: 19679
   - PyTorch-2.1.2-foss-2023a.eb:
       options:
         from-pr: 19573
