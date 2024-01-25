@@ -8,3 +8,6 @@ easyconfigs:
   - matplotlib-3.8.2-gfbf-2023b.eb:
       options:
         from-pr: 19552
+  - Qt5-5.15.11-GCCcore-13.2.0.eb:
+      options:
+        from-pr: 19320
