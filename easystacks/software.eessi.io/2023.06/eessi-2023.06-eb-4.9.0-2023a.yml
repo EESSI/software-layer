@@ -11,3 +11,6 @@ easyconfigs:
   - Rivet-3.1.9-gompi-2023a-HepMC3-3.2.6.eb:
       options:
         from-pr: 19679
+  - GROMACS-2023.4-foss-2023a.eb:
+      options:
+        from-pr: 19728
