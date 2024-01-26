@@ -80,7 +80,7 @@ def post_ready_hook(self, *args, **kwargs):
     # 'parallel' easyconfig parameter is set via EasyBlock.set_parallel in ready step based on available cores.
     # here we reduce parallellism to only use half of that for selected software,
     # to avoid failing builds/tests due to out-of-memory problems
-    if self.name in ['TensorFlow']:
+    if self.name in ['TensorFlow', 'libxc']:
         parallel = self.cfg['parallel']
         if parallel > 1:
             self.cfg['parallel'] = parallel // 2
