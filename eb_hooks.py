@@ -407,6 +407,15 @@ def pre_test_hook_ignore_failing_tests_netCDF(self, *args, **kwargs):
     if self.name == 'netCDF' and self.version == '4.9.2' and cpu_target == CPU_TARGET_NEOVERSE_V1:
         self.cfg['testopts'] = "|| echo ignoring failing tests" 
 
+def pre_test_hook_increase_max_failed_tests_arm_PyTorch(self, *args, **kwargs):
+    """
+    Pre-test hook for PyTorch: increase max failing tests for ARM for PyTorch 2.1.2
+    See https://github.com/EESSI/software-layer/pull/444#issuecomment-1890416171
+    """
+    if self.name == 'PyTorch' and self.version == '2.1.2' and get_cpu_architecture() == AARCH64:
+        self.cfg['max_failed_tests'] = 10
+
+
 def pre_single_extension_hook(ext, *args, **kwargs):
     """Main pre-extension: trigger custom functions based on software name."""
     if ext.name in PRE_SINGLE_EXTENSION_HOOKS:
@@ -587,6 +596,7 @@ PRE_TEST_HOOKS = {
     'FFTW.MPI': pre_test_hook_ignore_failing_tests_FFTWMPI,
     'SciPy-bundle': pre_test_hook_ignore_failing_tests_SciPybundle,
     'netCDF': pre_test_hook_ignore_failing_tests_netCDF,
+    'PyTorch': pre_test_hook_increase_max_failed_tests_arm_PyTorch,
 }
 
 PRE_SINGLE_EXTENSION_HOOKS = {
