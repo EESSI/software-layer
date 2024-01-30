@@ -39,22 +39,22 @@ def pypi(project):
     Function that retrives licence from PiPy
     """
     url = "https://pypi.org/pypi/"
-    r = requests.get(url + project  + "/json").json()
+    r = requests.get(url + project  + "/json")
     if r.status_code != 200:
         return "not found"
     else:
-        return(r['info']['license'])
+        return(r.json()['info']['license'])
 
 def cran(project):
     """
     Function that retrieves licence from CRAN
     """
     url = "http://crandb.r-pkg.org/"
-    r = requests.get(url + project).json()
+    r = requests.get(url + project)
     if r.status_code != 200:
         return "not found"
     else:
-        return(r['License'])
+        return(r.json()['License'])
 
 def repology(project):
     url="https://repology.org//api/v1/"
