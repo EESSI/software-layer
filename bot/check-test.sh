@@ -28,7 +28,8 @@ job_test_result_file="_bot_job${SLURM_JOB_ID}.test"
 #[  FAILED  ] Ran 3/3 test case(s) from 2 check(s) (2 failure(s), 0 skipped, 0 aborted)
 
 # We will grep for the last and final line, since this reflects the overall result
-error_pattern="\[\s+FAILED\s+\]"
+# Specifically, we grep for FAILED, since this is also what we print if a step in the test script itself fails
+error_pattern="FAILED"
 grep_out=$(grep "${error_pattern}" ${job_dir}/${job_out})
 [[ $? -eq 0 ]] && ERROR=1 || ERROR=0
 
