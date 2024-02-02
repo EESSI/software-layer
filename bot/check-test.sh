@@ -36,7 +36,7 @@ grep_out=$(grep "${error_pattern}" ${job_dir}/${job_out})
 # Write the result to the job_test_result_file
 echo "[TEST]" > ${job_test_result_file}
 if [[ ${ERROR} -eq 1 ]]; then
-    echo "comment_description = Test suite failed: ${grep_out}" >> ${job_test_result_file}
+    echo "comment_description = Test suite failed" >> ${job_test_result_file}
     echo "status = FAILURE" >> ${job_test_result_file}
 else
     echo "comment_description = <em>(no tests yet)</em>" >> ${job_test_result_file}
