@@ -144,41 +144,63 @@ else
     echo_green ">> MODULEPATH set up: ${MODULEPATH}"
 fi
 
-# assume there's only one diff file that corresponds to the PR patch file
-pr_diff=$(ls [0-9]*.diff | head -1)
+# TODO: this should not be hardcoded. Ideally, we put some logic in place to discover the newest version
+# of the ReFrame module available in the current environment
+module load ReFrame/4.3.3
+if [[ $? -eq 0 ]]; then
+    echo_green ">> Loaded ReFrame/4.3.3"
+else
+    fatal_error "Failed to load the ReFrame module"
+fi
 
-# "split" the file by prefixing each line belonging to the same file with the
-# same number
-split_file=$(awk '/^\+\+\+/{n++}{print n, "  ", $0 }' ${pr_diff})
+# Check ReFrame came with the hpctestlib and we can import it
+python3 -c 'import hpctestlib.sciapps.gromacs'
+if [[ $? -eq 0 ]]; then
+    echo_green "Succesfully found and imported hpctestlib.sciapps.gromas"
+else
+    fatal_error "Failed to load hpctestlib"
+fi
 
-# determine which easystack files may have changed
-changed_es_files=$(echo "${split_file}" | grep '^[0-9 ]*+++ ./eessi.*.yml$' | egrep -v 'known-issues|missing')
+# Clone the EESSI test suite
+git clone https://github.com/EESSI/test-suite EESSI-test-suite
+export TESTSUITEPREFIX=$PWD/EESSI-test-suite
+export PYTHONPATH=$TESTSUITEPREFIX:$PYTHONPATH
 
-# process all changed easystackfiles
-for es_file_num in $(echo "${changed_es_files}" | cut -f1 -d' ')
-do
-    # determine added lines that do not contain a yaml comment only
-    added_lines=$(echo "${split_file}" | grep "${es_file_num}    + " | sed -e "s/^"${es_file_num}"    + //" | grep -v "^[ ]*#")
-    # determine easyconfigs
-    easyconfigs=$(echo "${added_lines}" | cut -f3 -d' ')
-    # get easystack file name
-    easystack_file=$(echo "${changed_es_files}" | grep "^${es_file_num}" | sed -e "s/^"${es_file_num}"    ... .\///")
-    echo -e "Processing easystack file ${easystack_file}...\n\n"
+# Check that we can import from the testsuite
+python3 -c 'import eessi.testsuite'
+if [[ $? -eq 0 ]]; then
+    echo_green "Succesfully found and imported eessi.testsuite"
+else
+    fatal_error "FAILED to import from eessi.testsuite in Python"
+fi
 
-    # determine version of EasyBuild module to load based on EasyBuild version included in name of easystack file
-    eb_version=$(echo ${easystack_file} | sed 's/.*eb-\([0-9.]*\).*/\1/g')
+# Configure ReFrame
+export RFM_CONFIG_FILES=$TESTSUITEPREFIX/config/github_actions.py
+export RFM_CHECK_SEARCH_PATH=$TESTSUITEPREFIX/eessi/testsuite/tests
+export RFM_CHECK_SEARCH_RECURSIVE=1
+export RFM_PREFIX=$PWD/reframe_runs
 
-    # load EasyBuild module
-    module load EasyBuild/${eb_version}
+# Check we can run reframe
+reframe --version
+if [[ $? -eq 0 ]]; then
+    echo_green "Succesfully ran reframe --version"
+else
+    fatal_error "Failed to run ReFrame --version"
+fi
 
-    echo_green "All set, let's run sanity checks for installed packages..."
+# List the tests we want to run
+export REFRAME_ARGS='--tag CI --tag 1_nodes'
+reframe "${REFRAME_ARGS}" --list
+if [[ $? -eq 0 ]]; then
+    echo_green "Succesfully listed ReFrame tests with command: reframe ${REFRAME_ARGS} --list"
+else
+    fatal_error "Failed to list ReFrame tests with command: reframe ${REFRAME_ARGS} --list"
+fi
 
-    for easyconfig in ${easyconfigs};
-    do
-        echo "Running sanity check for '${easyconfig}'..."
-        eb --sanity-check-only ${easyconfig}
-    done
-done
+# Run all tests
+reframe "${REFRAME_ARGS}" --run
 
 echo ">> Cleaning up ${TMPDIR}..."
 rm -r ${TMPDIR}
+
+exit 0
