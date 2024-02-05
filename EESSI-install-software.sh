@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-# Script to install EESSI pilot software stack (version set through init/eessi_defaults)
+# Script to install EESSI software stack (version set through init/eessi_defaults)
 
 # see example parsing of command line arguments at
 #   https://wiki.bash-hackers.org/scripting/posparams#using_a_while_loop
@@ -172,8 +172,6 @@ if [ ! -z "${shared_fs_path}" ]; then
     export EASYBUILD_SOURCEPATH=${shared_eb_sourcepath}:${EASYBUILD_SOURCEPATH}
 fi
 
-${EB} --show-config
-
 echo ">> Setting up \$MODULEPATH..."
 # make sure no modules are loaded
 module --force purge
@@ -189,47 +187,70 @@ fi
 # assume there's only one diff file that corresponds to the PR patch file
 pr_diff=$(ls [0-9]*.diff | head -1)
 
+# install any additional required scripts
+# order is important: these are needed to install a full CUDA SDK in host_injections
+# for now, this just reinstalls all scripts. Note the most elegant, but works
+${TOPDIR}/install_scripts.sh --prefix ${EESSI_PREFIX}
+
+# Install full CUDA SDK in host_injections
+# Hardcode this for now, see if it works
+# TODO: We should make a nice yaml and loop over all CUDA versions in that yaml to figure out what to install
+${EESSI_PREFIX}/scripts/gpu_support/nvidia/install_cuda_host_injections.sh -c 12.1.1 --accept-cuda-eula
+
+# Install drivers in host_injections
+# TODO: this is commented out for now, because the script assumes that nvidia-smi is available and works;
+#       if not, an error is produced, and the bot flags the whole build as failed (even when not installing GPU software)
+# ${EESSI_PREFIX}/scripts/gpu_support/nvidia/link_nvidia_host_libraries.sh
+
 # use PR patch file to determine in which easystack files stuff was added
-for easystack_file in $(cat ${pr_diff} | grep '^+++' | cut -f2 -d' ' | sed 's@^[a-z]/@@g' | grep '^eessi.*yml$' | egrep -v 'known-issues|missing'); do
-
-    echo -e "Processing easystack file ${easystack_file}...\n\n"
-
-    # determine version of EasyBuild module to load based on EasyBuild version included in name of easystack file
-    eb_version=$(echo ${easystack_file} | sed 's/.*eb-\([0-9.]*\).*/\1/g')
-
-    # load EasyBuild module (will be installed if it's not available yet)
-    source ${TOPDIR}/load_easybuild_module.sh ${eb_version}
-
-    echo_green "All set, let's start installing some software with EasyBuild v${eb_version} in ${EASYBUILD_INSTALLPATH}..."
-
-    if [ -f ${easystack_file} ]; then
-        echo_green "Feeding easystack file ${easystack_file} to EasyBuild..."
-
-        ${EB} --easystack ${TOPDIR}/${easystack_file} --robot
-        ec=$?
-
-        # copy EasyBuild log file if EasyBuild exited with an error
-        if [ ${ec} -ne 0 ]; then
-            eb_last_log=$(unset EB_VERBOSE; eb --last-log)
-            # copy to current working directory
-            cp -a ${eb_last_log} .
-            echo "Last EasyBuild log file copied from ${eb_last_log} to ${PWD}"
-            # copy to build logs dir (with context added)
-            copy_build_log "${eb_last_log}" "${build_logs_dir}"
+changed_easystacks=$(cat ${pr_diff} | grep '^+++' | cut -f2 -d' ' | sed 's@^[a-z]/@@g' | grep '^easystacks/.*yml$' | egrep -v 'known-issues|missing') 
+if [ -z ${changed_easystacks} ]; then
+    echo "No missing installations, party time!"  # Ensure the bot report success, as there was nothing to be build here
+else
+    for easystack_file in ${changed_easystacks}; do
+    
+        echo -e "Processing easystack file ${easystack_file}...\n\n"
+    
+        # determine version of EasyBuild module to load based on EasyBuild version included in name of easystack file
+        eb_version=$(echo ${easystack_file} | sed 's/.*eb-\([0-9.]*\).*/\1/g')
+    
+        # load EasyBuild module (will be installed if it's not available yet)
+        source ${TOPDIR}/load_easybuild_module.sh ${eb_version}
+    
+        ${EB} --show-config
+    
+        echo_green "All set, let's start installing some software with EasyBuild v${eb_version} in ${EASYBUILD_INSTALLPATH}..."
+    
+        if [ -f ${easystack_file} ]; then
+            echo_green "Feeding easystack file ${easystack_file} to EasyBuild..."
+    
+            ${EB} --easystack ${TOPDIR}/${easystack_file} --robot
+            ec=$?
+    
+            # copy EasyBuild log file if EasyBuild exited with an error
+            if [ ${ec} -ne 0 ]; then
+                eb_last_log=$(unset EB_VERBOSE; eb --last-log)
+                # copy to current working directory
+                cp -a ${eb_last_log} .
+                echo "Last EasyBuild log file copied from ${eb_last_log} to ${PWD}"
+                # copy to build logs dir (with context added)
+                copy_build_log "${eb_last_log}" "${build_logs_dir}"
+            fi
+    
+            $TOPDIR/check_missing_installations.sh ${TOPDIR}/${easystack_file}
+        else
+            fatal_error "Easystack file ${easystack_file} not found!"
         fi
-
-        $TOPDIR/check_missing_installations.sh ${TOPDIR}/${easystack_file}
-    else
-        fatal_error "Easystack file ${easystack_file} not found!"
-    fi
-
-done
+    
+    done
+fi
 
 ### add packages here
 
 echo ">> Creating/updating Lmod cache..."
 export LMOD_RC="${EASYBUILD_INSTALLPATH}/.lmod/lmodrc.lua"
-if [ ! -f $LMOD_RC ]; then
+lmodrc_changed=$(cat ${pr_diff} | grep '^+++' | cut -f2 -d' ' | sed 's@^[a-z]/@@g' | grep '^create_lmodrc.py$' > /dev/null; echo $?)
+if [ ! -f $LMOD_RC ] || [ ${lmodrc_changed} == '0' ]; then
     python3 $TOPDIR/create_lmodrc.py ${EASYBUILD_INSTALLPATH}
     check_exit_code $? "$LMOD_RC created" "Failed to create $LMOD_RC"
 fi

@@ -1,0 +1,17 @@
+easyconfigs:
+  - OpenFOAM-11-foss-2023a.eb:
+      # see https://github.com/easybuilders/easybuild-easyconfigs/pull/19545
+      options:
+        from-pr: 19545
+  - at-spi2-core-2.49.91-GCCcore-12.3.0.eb
+  - ESPResSo-4.2.1-foss-2023a.eb:
+      # see https://github.com/easybuilders/easybuild-easyconfigs/pull/19592    
+      options:
+        from-pr: 19592
+  - Rivet-3.1.9-gompi-2023a-HepMC3-3.2.6.eb:
+      options:
+        from-pr: 19679
+  - PyTorch-2.1.2-foss-2023a.eb:
+      options:
+        from-pr: 19573
+  - scikit-learn-1.3.1-gfbf-2023a.eb

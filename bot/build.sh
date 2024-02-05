@@ -128,12 +128,12 @@ EESSI_REPOS_CFG_DIR_OVERRIDE=$(cfg_get_value "repository" "repos_cfg_dir")
 export EESSI_REPOS_CFG_DIR_OVERRIDE=${EESSI_REPOS_CFG_DIR_OVERRIDE:-${PWD}/cfg}
 echo "bot/build.sh: EESSI_REPOS_CFG_DIR_OVERRIDE='${EESSI_REPOS_CFG_DIR_OVERRIDE}'"
 
-# determine pilot version to be used from .repository.repo_version in ${JOB_CFG_FILE}
-# here, just set & export EESSI_PILOT_VERSION_OVERRIDE
+# determine EESSI version to be used from .repository.repo_version in ${JOB_CFG_FILE}
+# here, just set & export EESSI_VERSION_OVERRIDE
 # next script (eessi_container.sh) makes use of it via sourcing init scripts
 # (e.g., init/eessi_defaults or init/minimal_eessi_env)
-export EESSI_PILOT_VERSION_OVERRIDE=$(cfg_get_value "repository" "repo_version")
-echo "bot/build.sh: EESSI_PILOT_VERSION_OVERRIDE='${EESSI_PILOT_VERSION_OVERRIDE}'"
+export EESSI_VERSION_OVERRIDE=$(cfg_get_value "repository" "repo_version")
+echo "bot/build.sh: EESSI_VERSION_OVERRIDE='${EESSI_VERSION_OVERRIDE}'"
 
 # determine CVMFS repo to be used from .repository.repo_name in ${JOB_CFG_FILE}
 # here, just set EESSI_CVMFS_REPO_OVERRIDE, a bit further down
@@ -176,6 +176,11 @@ mkdir -p ${TARBALL_TMP_BUILD_STEP_DIR}
 declare -a BUILD_STEP_ARGS=()
 BUILD_STEP_ARGS+=("--save" "${TARBALL_TMP_BUILD_STEP_DIR}")
 BUILD_STEP_ARGS+=("--storage" "${STORAGE}")
+# add options required to handle NVIDIA support
+BUILD_STEP_ARGS+=("--nvidia" "all")
+if [[ ! -z ${SHARED_FS_PATH} ]]; then
+    BUILD_STEP_ARGS+=("--host-injections" "${SHARED_FS_PATH}/host-injections")
+fi
 
 # prepare arguments to install_software_layer.sh (specific to build step)
 declare -a INSTALL_SCRIPT_ARGS=()
@@ -210,9 +215,9 @@ BUILD_TMPDIR=$(grep ' as tmp directory ' ${build_outerr} | cut -d ' ' -f 2)
 TARBALL_STEP_ARGS+=("--resume" "${BUILD_TMPDIR}")
 
 timestamp=$(date +%s)
-# to set EESSI_PILOT_VERSION we need to source init/eessi_defaults now
+# to set EESSI_VERSION we need to source init/eessi_defaults now
 source init/eessi_defaults
-export TGZ=$(printf "eessi-%s-software-%s-%s-%d.tar.gz" ${EESSI_PILOT_VERSION} ${EESSI_OS_TYPE} ${EESSI_SOFTWARE_SUBDIR_OVERRIDE//\//-} ${timestamp})
+export TGZ=$(printf "eessi-%s-software-%s-%s-%d.tar.gz" ${EESSI_VERSION} ${EESSI_OS_TYPE} ${EESSI_SOFTWARE_SUBDIR_OVERRIDE//\//-} ${timestamp})
 
 # value of first parameter to create_tarball.sh - TMP_IN_CONTAINER - needs to be
 # synchronised with setting of TMP_IN_CONTAINER in eessi_container.sh
@@ -221,8 +226,8 @@ export TGZ=$(printf "eessi-%s-software-%s-%s-%d.tar.gz" ${EESSI_PILOT_VERSION} $
 TMP_IN_CONTAINER=/tmp
 echo "Executing command to create tarball:"
 echo "./eessi_container.sh ${COMMON_ARGS[@]} ${TARBALL_STEP_ARGS[@]}"
-echo "                     -- ./create_tarball.sh ${TMP_IN_CONTAINER} ${EESSI_PILOT_VERSION} ${EESSI_SOFTWARE_SUBDIR_OVERRIDE} /eessi_bot_job/${TGZ} 2>&1 | tee -a ${tar_outerr}"
+echo "                     -- ./create_tarball.sh ${TMP_IN_CONTAINER} ${EESSI_VERSION} ${EESSI_SOFTWARE_SUBDIR_OVERRIDE} /eessi_bot_job/${TGZ} 2>&1 | tee -a ${tar_outerr}"
 ./eessi_container.sh "${COMMON_ARGS[@]}" "${TARBALL_STEP_ARGS[@]}" \
-                     -- ./create_tarball.sh ${TMP_IN_CONTAINER} ${EESSI_PILOT_VERSION} ${EESSI_SOFTWARE_SUBDIR_OVERRIDE} /eessi_bot_job/${TGZ} 2>&1 | tee -a ${tar_outerr}
+                     -- ./create_tarball.sh ${TMP_IN_CONTAINER} ${EESSI_VERSION} ${EESSI_SOFTWARE_SUBDIR_OVERRIDE} /eessi_bot_job/${TGZ} 2>&1 | tee -a ${tar_outerr}
 
 exit 0
