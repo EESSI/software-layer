@@ -42,7 +42,7 @@ fi
 # Specifically, we grep for FAILED, since this is also what we print if a step in the test script itself fails
 FAILED=-1
 if [[ ${SLURM} -eq 1 ]]; then
-  GP_failed='\[\s*FAILED\s*\]'
+  GP_failed='\[.*FAILED.*\].*Ran .* test case'
   grep_reframe_result=$(grep -v "^>> searching for " ${job_dir}/${job_out} | grep "${GP_failed}")
   [[ $? -eq 0 ]] && FAILED=1 || FAILED=0
   # have to be careful to not add searched for pattern into slurm out file
@@ -64,7 +64,7 @@ fi
 
 # Grep for the success pattern, so we can report the amount of tests run
 if [[ ${SLURM} -eq 1 ]]; then
-  GP_success='\[\s*PASSED\s*\]'
+  GP_success='\[.*PASSED.*\].*Ran .* test case'
   grep_reframe_result=$(grep -v "^>> searching for " ${job_dir}/${job_out} | grep "${GP_success}")
   # have to be careful to not add searched for pattern into slurm out file
   [[ ${VERBOSE} -ne 0 ]] && echo ">> searching for '"${GP_success}"'"
@@ -119,6 +119,8 @@ else
 fi
 
 # Only add if there is a reframe summary (e.g. no reframe summary if reframe wasn't launched succesfully)
+echo "ReFrame result:"
+echo "${grep_reframe_result}"
 if [[ ! -z ${grep_reframe_result} ]]; then
     comment_reframe_fmt="<dt>_ReFrame Summary_</dt><dd>__REFRAME_SUMMARY__</dd>"
     reframe_summary=${comment_reframe_ftm/__REFRAME_SUMMARY__/${grep_reframe_result}}
