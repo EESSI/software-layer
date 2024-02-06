@@ -130,7 +130,7 @@ function add_detail() {
 # then use it to set comment_details
 
 # Initialize with summary_details, which elaborates on the reason for failure
-CoDeList=$(print_br_item "__ITEM__" "${summary_details}"
+CoDeList=$(print_br_item "__ITEM__" "${summary_details}")
 
 success_msg="job output file <code>${job_out}</code>"
 failure_msg="no job output file <code>${job_out}</code>"
