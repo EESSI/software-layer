@@ -141,9 +141,14 @@ else
     fatal_error "Failed to load hpctestlib"
 fi
 
-# Clone the EESSI test suite
-git clone https://github.com/EESSI/test-suite EESSI-test-suite
+# Cloning should already be done by clone_eessi_test_suite.sh, which runs in compat layer to have 'git' available
+# git clone https://github.com/EESSI/test-suite EESSI-test-suite
 export TESTSUITEPREFIX=$PWD/EESSI-test-suite
+if [ -d $TESTSUITEPREFIX ]; then
+    echo_green "Clone of the test suite $TESTSUITEPREFIX available, OK!"
+else
+    fatal_error "Clone of the test suite $TESTSUITEPREFIX is not available!"
+fi
 export PYTHONPATH=$TESTSUITEPREFIX:$PYTHONPATH
 
 # Check that we can import from the testsuite
