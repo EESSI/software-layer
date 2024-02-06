@@ -123,7 +123,7 @@ echo "ReFrame result:"
 echo "${grep_reframe_result}"
 if [[ ! -z ${grep_reframe_result} ]]; then
     comment_reframe_fmt="<dt>_ReFrame Summary_</dt><dd>__REFRAME_SUMMARY__</dd>"
-    reframe_summary=${comment_reframe_ftm/__REFRAME_SUMMARY__/${grep_reframe_result}}
+    reframe_summary=${comment_reframe_fmt/__REFRAME_SUMMARY__/${grep_reframe_result}}
     comment_description=${comment_description/__REFRAME_FMT__/${reframe_summary}}
 else
     comment_description=${comment_description/__REFRAME_FMT__/""}
