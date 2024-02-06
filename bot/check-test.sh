@@ -64,15 +64,87 @@ fi
 
 echo "[TEST]" > ${job_test_result_file}
 if [[ ${SLURM} -eq 0 ]]; then
-    echo "comment_description = :cry: FAILED (job output file not found, cannot check test results)" >> ${job_test_result_file}
+    summary=":cry: FAILURE"
+    summary_details="(job output file not found, cannot check test results)"# >> ${job_test_result_file}
+    status="FAILURE"
 elif [[ ${ERROR} -eq 1 ]]; then
-    echo "comment_description = :cry: FAILED (EESSI test suite was not run, test step itself failed to execute)" >> ${job_test_result_file}
-    echo "status = FAILURE" >> ${job_test_result_file}
+    summary=":cry: FAILURE"
+    summary_details="(EESSI test suite was not run, test step itself failed to execute)"# >> ${job_test_result_file}
+    status="FAILURE"
+#    echo "status = FAILURE" >> ${job_test_result_file}
 elif [[ ${FAILED} -eq 1 ]]; then
-    echo "comment_description = :cry: FAILED (EESSI test suite produced failures)" >> ${job_test_result_file}
+    summary=":cry: FAILURE"
+    summary_details="(EESSI test suite produced failures)"# >> ${job_test_result_file}
+    status="FAILURE"
 else
-    echo "comment_description = :grin: SUCCESS" >> ${job_test_result_file}
-    echo "status = SUCCESS" >> ${job_test_result_file}
+    summary=":grin: SUCCESS"# >> ${job_test_result_file}
+    summary_details=""
+    status="SUCCESS"
+#    echo "status = SUCCESS" >> ${job_test_result_file}
 fi
+
+function add_detail() {
+    actual=${1}
+    expected=${2}
+    success_msg="${3}"
+    failure_msg="${4}"
+    if [[ ${actual} -eq ${expected} ]]; then
+        success "${success_msg}"
+    else
+        failure "${failure_msg}"
+    fi
+}
+
+echo "[TEST]" > ${job_result_file}
+echo -n "comment_description = " >> ${job_result_file}
+
+# Use template for writing PR comment with details
+# construct and write complete PR comment details: implements third alternative
+comment_template="<details>__SUMMARY_FMT__<dl>__DETAILS_FMT____ARTEFACTS_FMT__</dl></details>"
+comment_summary_fmt="<summary>__SUMMARY__ _(click triangle for details)_</summary>"
+comment_details_fmt="<dt>_Details_</dt><dd>__DETAILS_LIST__</dd>"
+comment_success_item_fmt=":white_check_mark: __ITEM__"
+comment_failure_item_fmt=":x: __ITEM__"
+comment_artefacts_fmt="<dt>_Artefacts_</dt><dd>__ARTEFACTS_LIST__</dd>"
+comment_artefact_details_fmt="<details>__ARTEFACT_SUMMARY____ARTEFACT_DETAILS__</details>"
+
+comment_summary="${comment_summary_fmt/__SUMMARY__/${summary}}"
+
+# first construct comment_details_list, abbreviated CoDeList
+# then use it to set comment_details
+CoDeList=""
+
+success_msg="job output file <code>${job_out}</code>"
+failure_msg="no job output file <code>${job_out}</code>"
+CoDeList=${CoDeList}$(add_detail ${SLURM} 1 "${success_msg}" "${failure_msg}")
+
+success_msg="no message matching <code>${GP_error}</code>"
+failure_msg="found message matching <code>${GP_error}</code>"
+CoDeList=${CoDeList}$(add_detail ${ERROR} 0 "${success_msg}" "${failure_msg}")
+
+success_msg="no message matching <code>${GP_failed}</code>"
+failure_msg="found message matching <code>${GP_failed}</code>"
+CoDeList=${CoDeList}$(add_detail ${FAILED} 0 "${success_msg}" "${failure_msg}")
+
+# Should not be needed for testing, I think? Maybe for loading ReFrame module...
+# success_msg="no message matching <code>${GP_req_missing}</code>"
+# failure_msg="found message matching <code>${GP_req_missing}</code>"
+# CoDeList=${CoDeList}$(add_detail ${MISSING} 0 "${success_msg}" "${failure_msg}")
+# 
+# success_msg="found message(s) matching <code>${GP_no_missing}</code>"
+# failure_msg="no message matching <code>${GP_no_missing}</code>"
+# CoDeList=${CoDeList}$(add_detail ${NO_MISSING} 1 "${success_msg}" "${failure_msg}")
+# 
+# success_msg="found message matching <code>${GP_tgz_created}</code>"
+# failure_msg="no message matching <code>${GP_tgz_created}</code>"
+# CoDeList=${CoDeList}$(add_detail ${TGZ} 1 "${success_msg}" "${failure_msg}")
+
+comment_details="${comment_details_fmt/__DETAILS_LIST__/${CoDeList}}"
+
+comment_description=${comment_template/__SUMMARY_FMT__/${comment_summary}}
+comment_description=${comment_description/__DETAILS_FMT__/${comment_details}}
+
+# Actually writing the comment description to the result file
+echo "${comment_description}" >> ${job_result_file}
 
 exit 0
