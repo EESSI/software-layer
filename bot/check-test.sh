@@ -64,14 +64,14 @@ fi
 
 echo "[TEST]" > ${job_test_result_file}
 if [[ ${SLURM} -eq 0 ]]; then
-    echo "comment_description = FAILED (job output file not found)" >> ${job_test_result_file}
+    echo "comment_description = :cry: FAILED (job output file not found, cannot check test results)" >> ${job_test_result_file}
 elif [[ ${ERROR} -eq 1 ]]; then
-    echo "comment_description = FAILED (test step failed to execute)" >> ${job_test_result_file}
+    echo "comment_description = :cry: FAILED (EESSI test suite was not run, test step itself failed to execute)" >> ${job_test_result_file}
     echo "status = FAILURE" >> ${job_test_result_file}
 elif [[ ${FAILED} -eq 1 ]]; then
-    echo "comment_description = FAILED (EESSI test suite produced failures)" >> ${job_test_result_file}
+    echo "comment_description = :cry: FAILED (EESSI test suite produced failures)" >> ${job_test_result_file}
 else
-    echo "comment_description = Test step run succesfully" >> ${job_test_result_file}
+    echo "comment_description = :grin: SUCCESS" >> ${job_test_result_file}
     echo "status = SUCCESS" >> ${job_test_result_file}
 fi
 

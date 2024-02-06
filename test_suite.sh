@@ -78,25 +78,8 @@ else
     fatal_error "$EESSI_CVMFS_REPO is not available!"
 fi
 
-# make sure we're in Prefix environment by checking $SHELL
-if [[ ${SHELL} = ${EPREFIX}/bin/bash ]]; then
-    echo_green ">> It looks like we're in a Gentoo Prefix environment, good!"
-else
-    fatal_error "Not running in Gentoo Prefix environment, run '${EPREFIX}/startprefix' first!"
-fi
-
 # avoid that pyc files for EasyBuild are stored in EasyBuild installation directory
 export PYTHONPYCACHEPREFIX=$TMPDIR/pycache
-
-DETECTION_PARAMETERS=''
-GENERIC=0
-EB='eb'
-if [[ "$EASYBUILD_OPTARCH" == "GENERIC" ]]; then
-    echo_yellow ">> GENERIC build/test requested, taking appropriate measures!"
-    DETECTION_PARAMETERS="$DETECTION_PARAMETERS --generic"
-    GENERIC=1
-    EB='eb --optarch=GENERIC'
-fi
 
 echo ">> Determining software subdirectory to use for current build/test host..."
 if [ -z $EESSI_SOFTWARE_SUBDIR_OVERRIDE ]; then
@@ -128,9 +111,6 @@ if [[ $? -eq 0 ]]; then
 else
     fatal_error "Failed to initialize Lmod?! (see output in ${ml_version_out}"
 fi
-
-echo ">> Configuring EasyBuild..."
-source $TOPDIR/configure_easybuild
 
 echo ">> Setting up \$MODULEPATH..."
 # make sure no modules are loaded
