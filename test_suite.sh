@@ -175,7 +175,7 @@ fi
 
 # List the tests we want to run
 export REFRAME_ARGS='--tag CI --tag 1_nodes'
-reframe $REFRAME_ARGS --list
+reframe ${REFRAME_ARGS} --list
 if [[ $? -eq 0 ]]; then
     echo_green "Succesfully listed ReFrame tests with command: reframe ${REFRAME_ARGS} --list"
 else
@@ -184,6 +184,12 @@ fi
 
 # Run all tests
 reframe "${REFRAME_ARGS}" --run
+if [[ $? -eq 0 ]]; then
+    echo_green "ReFrame runtime ran succesfully with command: reframe ${REFRAME_ARGS} --run."
+else
+    fatal_error "ReFrame runtime failed to run with command: reframe ${REFRAME_ARGS} --run."
+fi
+
 
 echo ">> Cleaning up ${TMPDIR}..."
 rm -r ${TMPDIR}
