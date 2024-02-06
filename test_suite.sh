@@ -117,7 +117,7 @@ echo ">> Setting up \$MODULEPATH..."
 module --force purge
 # ignore current $MODULEPATH entirely
 module unuse $MODULEPATH
-module use $EASYBUILD_INSTALLPATH/modules/all
+module use ${EESSI_SOFTWARE_PATH}/modules/all
 if [[ -z ${MODULEPATH} ]]; then
     fatal_error "Failed to set up \$MODULEPATH?!"
 else
