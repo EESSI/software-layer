@@ -137,14 +137,20 @@ function add_detail() {
 
 # first construct comment_details_list, abbreviated CoDeList
 # then use it to set comment_details
+CoDeList=""
 
 # Initialize with summary_details, which elaborates on the reason for failure
-CoDeList=$(print_br_item "__ITEM__" "${summary_details}")
+if [[ ! -z ${summary_details} ]]; then
+    CoDeList=${CoDeList}$(print_br_item "__ITEM__" "${summary_details}")
+fi
 
 # Add final ReFrame line as line
 if [[ ! -z ${grep_reframe_result} ]]; then
     CoDeList=${CoDeList}$(print_br_item "__ITEM__" "${grep_reframe_result}")
 fi
+echo "CoDeList up here is"
+echo ${CoDeList}
+
 
 success_msg="job output file <code>${job_out}</code>"
 failure_msg="no job output file <code>${job_out}</code>"
