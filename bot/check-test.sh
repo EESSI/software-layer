@@ -74,19 +74,19 @@ fi
 echo "[TEST]" > ${job_test_result_file}
 if [[ ${SLURM} -eq 0 ]]; then
     summary=":cry: FAILURE"
-    summary_details="Reason: job output file not found, cannot check test results."
+    reason="Reason: job output file not found, cannot check test results."
     status="FAILURE"
 elif [[ ${ERROR} -eq 1 ]]; then
     summary=":cry: FAILURE"
-    summary_details="Reason: EESSI test suite was not run, test step itself failed to execute."
+    reason="Reason: EESSI test suite was not run, test step itself failed to execute."
     status="FAILURE"
 elif [[ ${FAILED} -eq 1 ]]; then
     summary=":cry: FAILURE"
-    summary_details="Reason: EESSI test suite produced failures."
+    reason="Reason: EESSI test suite produced failures."
     status="FAILURE"
 else
     summary=":grin: SUCCESS"
-    summary_details=""
+    reason=""
     status="SUCCESS"
 fi
 
@@ -96,13 +96,36 @@ echo -n "comment_description = " >> ${job_test_result_file}
 
 # Use template for writing PR comment with details
 # construct and write complete PR comment details: implements third alternative
-comment_template="<details>__SUMMARY_FMT__<dl>__DETAILS_FMT__</dl></details>"
-comment_summary_fmt="<summary>__SUMMARY__ _(click triangle for details)_</summary>"
-comment_details_fmt="<dt>_Details_</dt><dd>__DETAILS_LIST__</dd>"
+comment_template="<details>__SUMMARY_FMT__<dl>__REASON_FMT____REFRAME_FMT____DETAILS_FMT__</dl></details>"
 comment_success_item_fmt=":white_check_mark: __ITEM__"
 comment_failure_item_fmt=":x: __ITEM__"
 
+# Initialize comment_description
+comment_description=${comment_template}
+
+# Now, start replacing template items one by one
+comment_summary_fmt="<summary>__SUMMARY__ _(click triangle for details)_</summary>"
 comment_summary="${comment_summary_fmt/__SUMMARY__/${summary}}"
+comment_description=${comment_description/__SUMMARY_FMT__/${comment_summary}}
+
+
+# Omit this if there is no reason (e.g. because it was succesful)
+if [[ -z ${reason} ]]; then
+    comment_reason_fmt="<dt>_Reason_</dt><dd>__REASONS__</dd>"
+    reason_details="${comment_reason_fmt/__REASONS__/${reason}}"
+    comment_description=${comment_description/__REASON_FMT__/${reason_details}}
+else
+    comment_description=${comment_description/__REASON_FMT__/""}
+fi
+
+# Omit this if there is no reframe summary (i.e. the workflow didn't run succesfully)
+if [[ -z ${grep_reframe_result} ]]; then
+    comment_reframe_fmt="<dt>_ReFrame Summary_</dt><dd>__REFRAME_SUMMARY__</dd>"
+    reframe_summary=${comment_reframe_ftm/__REFRAME_SUMMARY__/${grep_reframe_result}}
+    comment_description=${comment_description/__REFRAME_FMT__/${reframe_summary}}
+else
+    comment_description=${comment_description/__REFRAME_FMT__/""}
+fi
 
 # Declare functions
 function print_br_item() {
@@ -139,17 +162,17 @@ function add_detail() {
 # then use it to set comment_details
 CoDeList=""
 
-# Initialize with summary_details, which elaborates on the reason for failure
-if [[ ! -z ${summary_details} ]]; then
-    CoDeList=${CoDeList}$(print_br_item "__ITEM__" "${summary_details}")
-fi
-
-# Add final ReFrame line as line
-if [[ ! -z ${grep_reframe_result} ]]; then
-    CoDeList=${CoDeList}$(print_br_item "__ITEM__" "${grep_reframe_result}")
-fi
-echo "CoDeList up here is"
-echo ${CoDeList}
+# # Initialize with summary_details, which elaborates on the reason for failure
+# if [[ ! -z ${summary_details} ]]; then
+#     CoDeList=${CoDeList}$(print_br_item "__ITEM__" "${summary_details}")
+# fi
+# 
+# # Add final ReFrame line as line
+# if [[ ! -z ${grep_reframe_result} ]]; then
+#     CoDeList=${CoDeList}$(print_br_item "__ITEM__" "${grep_reframe_result}")
+# fi
+# echo "CoDeList up here is"
+# echo ${CoDeList}
 
 
 success_msg="job output file <code>${job_out}</code>"
@@ -180,9 +203,8 @@ CoDeList=${CoDeList}$(add_detail ${FAILED} 0 "${success_msg}" "${failure_msg}")
 echo "Finale CoDeList is:"
 echo ${CoDeList}
 
+comment_details_fmt="<dt>_Details_</dt><dd>__DETAILS_LIST__</dd>"
 comment_details="${comment_details_fmt/__DETAILS_LIST__/${CoDeList}}"
-
-comment_description=${comment_template/__SUMMARY_FMT__/${comment_summary}}
 comment_description=${comment_description/__DETAILS_FMT__/${comment_details}}
 
 # Actually writing the comment description to the result file
