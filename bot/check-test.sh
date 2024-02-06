@@ -65,24 +65,37 @@ fi
 echo "[TEST]" > ${job_test_result_file}
 if [[ ${SLURM} -eq 0 ]]; then
     summary=":cry: FAILURE"
-    summary_details="(job output file not found, cannot check test results)"# >> ${job_test_result_file}
+    summary_details="Reason: job output file not found, cannot check test results."
     status="FAILURE"
 elif [[ ${ERROR} -eq 1 ]]; then
     summary=":cry: FAILURE"
-    summary_details="(EESSI test suite was not run, test step itself failed to execute)"# >> ${job_test_result_file}
+    summary_details="Reason: EESSI test suite was not run, test step itself failed to execute."
     status="FAILURE"
-#    echo "status = FAILURE" >> ${job_test_result_file}
 elif [[ ${FAILED} -eq 1 ]]; then
     summary=":cry: FAILURE"
-    summary_details="(EESSI test suite produced failures)"# >> ${job_test_result_file}
+    summary_details="Reason: EESSI test suite produced failures."
     status="FAILURE"
 else
-    summary=":grin: SUCCESS"# >> ${job_test_result_file}
+    summary=":grin: SUCCESS"
     summary_details=""
     status="SUCCESS"
-#    echo "status = SUCCESS" >> ${job_test_result_file}
 fi
 
+
+echo "[TEST]" > ${job_test_result_file}
+echo -n "comment_description = " >> ${job_test_result_file}
+
+# Use template for writing PR comment with details
+# construct and write complete PR comment details: implements third alternative
+comment_template="<details>__SUMMARY_FMT__<dl>__DETAILS_FMT__</dl></details>"
+comment_summary_fmt="<summary>__SUMMARY__ _(click triangle for details)_</summary>"
+comment_details_fmt="<dt>_Details_</dt><dd>__DETAILS_LIST__</dd>"
+comment_success_item_fmt=":white_check_mark: __ITEM__"
+comment_failure_item_fmt=":x: __ITEM__"
+
+comment_summary="${comment_summary_fmt/__SUMMARY__/${summary}}"
+
+# Declare functions
 function print_br_item() {
     format="${1}"
     item="${2}"
@@ -113,22 +126,11 @@ function add_detail() {
     fi
 }
 
-echo "[TEST]" > ${job_test_result_file}
-echo -n "comment_description = " >> ${job_test_result_file}
-
-# Use template for writing PR comment with details
-# construct and write complete PR comment details: implements third alternative
-comment_template="<details>__SUMMARY_FMT__<dl>__DETAILS_FMT__</dl></details>"
-comment_summary_fmt="<summary>__SUMMARY__ _(click triangle for details)_</summary>"
-comment_details_fmt="<dt>_Details_</dt><dd>__DETAILS_LIST__</dd>"
-comment_success_item_fmt=":white_check_mark: __ITEM__"
-comment_failure_item_fmt=":x: __ITEM__"
-
-comment_summary="${comment_summary_fmt/__SUMMARY__/${summary}}"
-
 # first construct comment_details_list, abbreviated CoDeList
 # then use it to set comment_details
-CoDeList=""
+
+# Initialize with summary_details, which elaborates on the reason for failure
+CoDeList=$(print_br_item "__ITEM__" "${summary_details}"
 
 success_msg="job output file <code>${job_out}</code>"
 failure_msg="no job output file <code>${job_out}</code>"
