@@ -62,10 +62,12 @@ if [[ ${SLURM} -eq 1 ]]; then
   [[ ${VERBOSE} -ne 0 ]] && echo "${grep_out}"
 fi
 
+SUCCESS=-1
 # Grep for the success pattern, so we can report the amount of tests run
 if [[ ${SLURM} -eq 1 ]]; then
   GP_success='\[.*PASSED.*\].*Ran .* test case'
   grep_reframe_result=$(grep -v "^>> searching for " ${job_dir}/${job_out} | grep "${GP_success}")
+  [[ $? -eq 0 ]] && SUCCESS=1 || SUCCESS=0
   # have to be careful to not add searched for pattern into slurm out file
   [[ ${VERBOSE} -ne 0 ]] && echo ">> searching for '"${GP_success}"'"
   [[ ${VERBOSE} -ne 0 ]] && echo "${grep_reframe_result}"
@@ -74,19 +76,27 @@ fi
 echo "[TEST]" > ${job_test_result_file}
 if [[ ${SLURM} -eq 0 ]]; then
     summary=":cry: FAILURE"
-    reason="Reason: job output file not found, cannot check test results."
+    reason="Job output file not found, cannot check test results."
+    status="FAILURE"
+# Should come before general errors: if SUCCESS==1, it indicates the test suite ran succesfully
+# regardless of other things that might have gone wrong
+elif [[ ${SUCCESS} -eq 1 ]]; then
+    summary=":grin: SUCCESS"
+    reason=""
+    status="SUCCESS"
+# Should come before general errors: if FAILED==1, it indicates the test suite ran
+# otherwise the pattern wouldn't have been there
+elif [[ ${FAILED} -eq 1 ]]; then
+    summary=":cry: FAILURE"
+    reason="EESSI test suite produced failures."
     status="FAILURE"
 elif [[ ${ERROR} -eq 1 ]]; then
     summary=":cry: FAILURE"
-    reason="Reason: EESSI test suite was not run, test step itself failed to execute."
-    status="FAILURE"
-elif [[ ${FAILED} -eq 1 ]]; then
-    summary=":cry: FAILURE"
-    reason="Reason: EESSI test suite produced failures."
+    reason="EESSI test suite was not run, test step itself failed to execute."
     status="FAILURE"
 else
-    summary=":grin: SUCCESS"
-    reason=""
+    summary=":grin: FAILURE"
+    reason="Failed for unknown reason"
     status="SUCCESS"
 fi
 
