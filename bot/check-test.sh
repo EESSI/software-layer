@@ -118,13 +118,11 @@ echo -n "comment_description = " >> ${job_test_result_file}
 
 # Use template for writing PR comment with details
 # construct and write complete PR comment details: implements third alternative
-comment_template="<details>__SUMMARY_FMT__<dl>__DETAILS_FMT____ARTEFACTS_FMT__</dl></details>"
+comment_template="<details>__SUMMARY_FMT__<dl>__DETAILS_FMT__</dl></details>"
 comment_summary_fmt="<summary>__SUMMARY__ _(click triangle for details)_</summary>"
 comment_details_fmt="<dt>_Details_</dt><dd>__DETAILS_LIST__</dd>"
 comment_success_item_fmt=":white_check_mark: __ITEM__"
 comment_failure_item_fmt=":x: __ITEM__"
-comment_artefacts_fmt="<dt>_Artefacts_</dt><dd>__ARTEFACTS_LIST__</dd>"
-comment_artefact_details_fmt="<details>__ARTEFACT_SUMMARY____ARTEFACT_DETAILS__</details>"
 
 comment_summary="${comment_summary_fmt/__SUMMARY__/${summary}}"
 
