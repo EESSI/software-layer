@@ -83,6 +83,24 @@ else
 #    echo "status = SUCCESS" >> ${job_test_result_file}
 fi
 
+function print_br_item() {
+    format="${1}"
+    item="${2}"
+    echo -n "${format//__ITEM__/${item}}<br/>"
+}
+
+function success() {
+    format="${comment_success_item_fmt}"
+    item="$1"
+    print_br_item "${format}" "${item}"
+}
+
+function failure() {
+    format="${comment_failure_item_fmt}"
+    item="$1"
+    print_br_item "${format}" "${item}"
+}
+
 function add_detail() {
     actual=${1}
     expected=${2}
