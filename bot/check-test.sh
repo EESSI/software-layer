@@ -187,9 +187,6 @@ CoDeList=${CoDeList}$(add_detail ${FAILED} 0 "${success_msg}" "${failure_msg}")
 # failure_msg="no message matching <code>${GP_tgz_created}</code>"
 # CoDeList=${CoDeList}$(add_detail ${TGZ} 1 "${success_msg}" "${failure_msg}")
 
-echo "Finale CoDeList is:"
-echo ${CoDeList}
-
 comment_details_fmt="<dt>_Details_</dt><dd>__DETAILS_LIST__</dd>"
 comment_details="${comment_details_fmt/__DETAILS_LIST__/${CoDeList}}"
 comment_description=${comment_description/__DETAILS_FMT__/${comment_details}}
