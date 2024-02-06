@@ -43,11 +43,11 @@ fi
 FAILED=-1
 if [[ ${SLURM} -eq 1 ]]; then
   GP_failed='\[\s*FAILED\s*\]'
-  grep_out=$(grep -v "^>> searching for " ${job_dir}/${job_out} | grep "${GP_failed}")
+  grep_reframe_result=$(grep -v "^>> searching for " ${job_dir}/${job_out} | grep "${GP_failed}")
   [[ $? -eq 0 ]] && FAILED=1 || FAILED=0
   # have to be careful to not add searched for pattern into slurm out file
   [[ ${VERBOSE} -ne 0 ]] && echo ">> searching for '"${GP_failed}"'"
-  [[ ${VERBOSE} -ne 0 ]] && echo "${grep_out}"
+  [[ ${VERBOSE} -ne 0 ]] && echo "${grep_reframe_result}"
 fi
 
 # Here, we grep for 'ERROR:', which is printed if a fatal_error is encountered when executing the test step
@@ -60,6 +60,15 @@ if [[ ${SLURM} -eq 1 ]]; then
   # have to be careful to not add searched for pattern into slurm out file
   [[ ${VERBOSE} -ne 0 ]] && echo ">> searching for '"${GP_error}"'"
   [[ ${VERBOSE} -ne 0 ]] && echo "${grep_out}"
+fi
+
+# Grep for the success pattern, so we can report the amount of tests run
+if [[ ${SLURM} -eq 1 ]]; then
+  GP_success='\[\s*PASSED\s*\]'
+  grep_reframe_result=$(grep -v "^>> searching for " ${job_dir}/${job_out} | grep "${GP_success}")
+  # have to be careful to not add searched for pattern into slurm out file
+  [[ ${VERBOSE} -ne 0 ]] && echo ">> searching for '"${GP_success}"'"
+  [[ ${VERBOSE} -ne 0 ]] && echo "${grep_reframe_result}"
 fi
 
 echo "[TEST]" > ${job_test_result_file}
@@ -132,6 +141,11 @@ function add_detail() {
 # Initialize with summary_details, which elaborates on the reason for failure
 CoDeList=$(print_br_item "__ITEM__" "${summary_details}")
 
+# Add final ReFrame line as line
+if [[ ! -z ${grep_reframe_result} ]]; then
+    CoDeList=${CoDeList}$(print_br_item "__ITEM__" "${grep_reframe_result}"
+fi
+
 success_msg="job output file <code>${job_out}</code>"
 failure_msg="no job output file <code>${job_out}</code>"
 CoDeList=${CoDeList}$(add_detail ${SLURM} 1 "${success_msg}" "${failure_msg}")
@@ -140,8 +154,8 @@ success_msg="no message matching <code>${GP_error}</code>"
 failure_msg="found message matching <code>${GP_error}</code>"
 CoDeList=${CoDeList}$(add_detail ${ERROR} 0 "${success_msg}" "${failure_msg}")
 
-success_msg="no message matching <code>${GP_failed}</code>"
-failure_msg="found message matching <code>${GP_failed}</code>"
+success_msg="no message matching <code>""${GP_failed}""</code>"
+failure_msg="found message matching <code>""${GP_failed}""</code>"
 CoDeList=${CoDeList}$(add_detail ${FAILED} 0 "${success_msg}" "${failure_msg}")
 
 # Should not be needed for testing, I think? Maybe for loading ReFrame module...
