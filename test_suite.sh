@@ -166,7 +166,7 @@ export RFM_CHECK_SEARCH_RECURSIVE=1
 export RFM_PREFIX=$PWD/reframe_runs
 
 # Check we can run reframe
-reframe --version
+reframe --version BLABLABLA
 if [[ $? -eq 0 ]]; then
     echo_green "Succesfully ran reframe --version"
 else
@@ -174,7 +174,7 @@ else
 fi
 
 # List the tests we want to run
-export REFRAME_ARGS='--tag CI --tag 1_nodes'
+export REFRAME_ARGS='--tag CI --tag 1_node'
 reframe ${REFRAME_ARGS} --list
 if [[ $? -eq 0 ]]; then
     echo_green "Succesfully listed ReFrame tests with command: reframe ${REFRAME_ARGS} --list"
