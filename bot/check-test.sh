@@ -109,8 +109,8 @@ comment_summary="${comment_summary_fmt/__SUMMARY__/${summary}}"
 comment_description=${comment_description/__SUMMARY_FMT__/${comment_summary}}
 
 
-# Omit this if there is no reason (e.g. because it was succesful)
-if [[ -z ${reason} ]]; then
+# Only add if there is a reason (e.g. no reason for successful runs)
+if [[ ! -z ${reason} ]]; then
     comment_reason_fmt="<dt>_Reason_</dt><dd>__REASONS__</dd>"
     reason_details="${comment_reason_fmt/__REASONS__/${reason}}"
     comment_description=${comment_description/__REASON_FMT__/${reason_details}}
@@ -118,8 +118,8 @@ else
     comment_description=${comment_description/__REASON_FMT__/""}
 fi
 
-# Omit this if there is no reframe summary (i.e. the workflow didn't run succesfully)
-if [[ -z ${grep_reframe_result} ]]; then
+# Only add if there is a reframe summary (e.g. no reframe summary if reframe wasn't launched succesfully)
+if [[ ! -z ${grep_reframe_result} ]]; then
     comment_reframe_fmt="<dt>_ReFrame Summary_</dt><dd>__REFRAME_SUMMARY__</dd>"
     reframe_summary=${comment_reframe_ftm/__REFRAME_SUMMARY__/${grep_reframe_result}}
     comment_description=${comment_description/__REFRAME_FMT__/${reframe_summary}}
@@ -161,19 +161,6 @@ function add_detail() {
 # first construct comment_details_list, abbreviated CoDeList
 # then use it to set comment_details
 CoDeList=""
-
-# # Initialize with summary_details, which elaborates on the reason for failure
-# if [[ ! -z ${summary_details} ]]; then
-#     CoDeList=${CoDeList}$(print_br_item "__ITEM__" "${summary_details}")
-# fi
-# 
-# # Add final ReFrame line as line
-# if [[ ! -z ${grep_reframe_result} ]]; then
-#     CoDeList=${CoDeList}$(print_br_item "__ITEM__" "${grep_reframe_result}")
-# fi
-# echo "CoDeList up here is"
-# echo ${CoDeList}
-
 
 success_msg="job output file <code>${job_out}</code>"
 failure_msg="no job output file <code>${job_out}</code>"
