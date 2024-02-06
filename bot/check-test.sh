@@ -13,6 +13,17 @@ job_dir=${PWD}
 job_out="slurm-${SLURM_JOB_ID}.out"
 job_test_result_file="_bot_job${SLURM_JOB_ID}.test"
 
+# Check that job output file is found
+[[ ${VERBOSE} -ne 0 ]] && echo ">> searching for job output file(s) matching '"${job_out}"'"
+if  [[ -f ${job_out} ]]; then
+    SLURM=1
+    [[ ${VERBOSE} -ne 0 ]] && echo "   found slurm output file '"${job_out}"'"
+else
+    SLURM=0
+    [[ ${VERBOSE} -ne 0 ]] && echo "   Slurm output file '"${job_out}"' NOT found"
+fi
+
+
 # ReFrame prints e.g.
 #[----------] start processing checks
 #[ RUN      ] GROMACS_EESSI %benchmark_info=HECBioSim/Crambin %nb_impl=cpu %scale=2_nodes %module_name=GROMACS/2021.3-foss-2021a /d597cff4 @snellius:rome+default
@@ -39,7 +50,6 @@ if [[ ${SLURM} -eq 1 ]]; then
   [[ ${VERBOSE} -ne 0 ]] && echo "${grep_out}"
 fi
 
-
 # Here, we grep for 'ERROR:', which is printed if a fatal_error is encountered when executing the test step
 # I.e. this is an error in execution of the run_tests.sh itself, NOT in running the actual tests
 ERROR=-1
@@ -53,11 +63,13 @@ if [[ ${SLURM} -eq 1 ]]; then
 fi
 
 echo "[TEST]" > ${job_test_result_file}
-if [[ ${ERROR} -eq 1 ]]; then
-    echo "comment_description = Failure to execute test step" >> ${job_test_result_file}
+if [[ ${SLURM} -eq 0 ]]; then
+    echo "comment_description = FAILED (job output file not found)" >> ${job_test_result_file}
+elif [[ ${ERROR} -eq 1 ]]; then
+    echo "comment_description = FAILED (test step failed to execute)" >> ${job_test_result_file}
     echo "status = FAILURE" >> ${job_test_result_file}
 elif [[ ${FAILED} -eq 1 ]]; then
-    echo "comment_description = EESSI test suite produced failures" >> ${job_test_result_file}
+    echo "comment_description = FAILED (EESSI test suite produced failures)" >> ${job_test_result_file}
 else
     echo "comment_description = Test step run succesfully" >> ${job_test_result_file}
     echo "status = SUCCESS" >> ${job_test_result_file}
