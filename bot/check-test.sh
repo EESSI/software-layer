@@ -143,7 +143,7 @@ CoDeList=$(print_br_item "__ITEM__" "${summary_details}")
 
 # Add final ReFrame line as line
 if [[ ! -z ${grep_reframe_result} ]]; then
-    CoDeList=${CoDeList}$(print_br_item "__ITEM__" "${grep_reframe_result}"
+    CoDeList=${CoDeList}$(print_br_item "__ITEM__" "${grep_reframe_result}")
 fi
 
 success_msg="job output file <code>${job_out}</code>"
