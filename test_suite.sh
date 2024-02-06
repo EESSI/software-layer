@@ -183,7 +183,7 @@ else
 fi
 
 # Run all tests
-reframe "${REFRAME_ARGS}" --run
+reframe ${REFRAME_ARGS} --run
 if [[ $? -eq 0 ]]; then
     echo_green "ReFrame runtime ran succesfully with command: reframe ${REFRAME_ARGS} --run."
 else
