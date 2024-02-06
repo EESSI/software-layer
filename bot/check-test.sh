@@ -95,8 +95,8 @@ function add_detail() {
     fi
 }
 
-echo "[TEST]" > ${job_result_file}
-echo -n "comment_description = " >> ${job_result_file}
+echo "[TEST]" > ${job_test_result_file}
+echo -n "comment_description = " >> ${job_test_result_file}
 
 # Use template for writing PR comment with details
 # construct and write complete PR comment details: implements third alternative
@@ -145,6 +145,6 @@ comment_description=${comment_template/__SUMMARY_FMT__/${comment_summary}}
 comment_description=${comment_description/__DETAILS_FMT__/${comment_details}}
 
 # Actually writing the comment description to the result file
-echo "${comment_description}" >> ${job_result_file}
+echo "${comment_description}" >> ${job_test_result_file}
 
 exit 0
