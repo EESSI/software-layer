@@ -43,11 +43,11 @@ fi
 FAILED=-1
 if [[ ${SLURM} -eq 1 ]]; then
   GP_failed='\[.*FAILED.*\].*Ran .* test case'
-  grep_reframe_result=$(grep -v "^>> searching for " ${job_dir}/${job_out} | grep "${GP_failed}")
+  grep_reframe_failed=$(grep -v "^>> searching for " ${job_dir}/${job_out} | grep "${GP_failed}")
   [[ $? -eq 0 ]] && FAILED=1 || FAILED=0
   # have to be careful to not add searched for pattern into slurm out file
   [[ ${VERBOSE} -ne 0 ]] && echo ">> searching for '"${GP_failed}"'"
-  [[ ${VERBOSE} -ne 0 ]] && echo "${grep_reframe_result}"
+  [[ ${VERBOSE} -ne 0 ]] && echo "${grep_reframe_failed}"
 fi
 
 # Here, we grep for 'ERROR:', which is printed if a fatal_error is encountered when executing the test step
@@ -66,11 +66,17 @@ SUCCESS=-1
 # Grep for the success pattern, so we can report the amount of tests run
 if [[ ${SLURM} -eq 1 ]]; then
   GP_success='\[.*PASSED.*\].*Ran .* test case'
-  grep_reframe_result=$(grep -v "^>> searching for " ${job_dir}/${job_out} | grep "${GP_success}")
+  grep_reframe_success=$(grep -v "^>> searching for " ${job_dir}/${job_out} | grep "${GP_success}")
   [[ $? -eq 0 ]] && SUCCESS=1 || SUCCESS=0
   # have to be careful to not add searched for pattern into slurm out file
   [[ ${VERBOSE} -ne 0 ]] && echo ">> searching for '"${GP_success}"'"
-  [[ ${VERBOSE} -ne 0 ]] && echo "${grep_reframe_result}"
+  [[ ${VERBOSE} -ne 0 ]] && echo "${grep_reframe_success}"
+fi
+
+if [[ ! -z ${grep_reframe_failed} ]]; then
+    grep_reframe_results=${grep_reframe_failed}
+else
+    grep_reframe_results=${grep_reframe_success}
 fi
 
 echo "[TEST]" > ${job_test_result_file}
