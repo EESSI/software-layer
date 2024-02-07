@@ -160,7 +160,7 @@ else
 fi
 
 # Configure ReFrame
-export RFM_CONFIG_FILES=$TESTSUITEPREFIX/config/github_actions.py
+export RFM_CONFIG_FILES=$TESTSUITEPREFIX/config/software_layer_bot.py
 export RFM_CHECK_SEARCH_PATH=$TESTSUITEPREFIX/eessi/testsuite/tests
 export RFM_CHECK_SEARCH_RECURSIVE=1
 export RFM_PREFIX=$PWD/reframe_runs
