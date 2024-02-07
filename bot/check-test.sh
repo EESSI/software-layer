@@ -74,9 +74,9 @@ if [[ ${SLURM} -eq 1 ]]; then
 fi
 
 if [[ ! -z ${grep_reframe_failed} ]]; then
-    grep_reframe_results=${grep_reframe_failed}
+    grep_reframe_result=${grep_reframe_failed}
 else
-    grep_reframe_results=${grep_reframe_success}
+    grep_reframe_result=${grep_reframe_success}
 fi
 
 echo "[TEST]" > ${job_test_result_file}
