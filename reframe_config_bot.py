@@ -25,7 +25,7 @@ site_configuration = {
                         'num_sockets': __NUM_SOCKETS__,
                         'num_cpus_per_core': __NUM_CPUS_PER_CORE__,
                         'num_cpus_per_socket': __NUM_CPUS_PER_SOCKET__,
-                    }
+                    },
                     'resources': [
                         {
                             'name': 'memory',
