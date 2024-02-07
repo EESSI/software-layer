@@ -156,17 +156,44 @@ python3 -c 'import eessi.testsuite'
 if [[ $? -eq 0 ]]; then
     echo_green "Succesfully found and imported eessi.testsuite"
 else
-    fatal_error "FAILED to import from eessi.testsuite in Python"
+    fatal_error "Failed to import from eessi.testsuite in Python"
 fi
 
 # Configure ReFrame
-export RFM_CONFIG_FILES=$TESTSUITEPREFIX/config/software_layer_bot.py
+export RFM_CONFIG_FILES=$TOPDIR/reframe_config_bot.py
 export RFM_CHECK_SEARCH_PATH=$TESTSUITEPREFIX/eessi/testsuite/tests
 export RFM_CHECK_SEARCH_RECURSIVE=1
 export RFM_PREFIX=$PWD/reframe_runs
 
 echo "Configured reframe with the following environment variables:"
 env | grep "RFM_"
+
+# Inject correct CPU properties into the ReFrame config file
+cpuinfo=$(lscpu)
+if [[ "${cpuinfo}" =~ CPU\(s\):[^0-9]*([0-9]+) ]]; then
+    cpu_count=${BASH_REMATCH[1]}
+else
+    fatal_error "Failed to get the number of CPUs for the current test hardware with lscpu."
+fi
+if [[ "${text}" =~ Socket\(s\):[^0-9]*([0-9]+) ]]; then
+    socket_count=${BASH_REMATCH[1]}
+else
+    fatal_error "Failed to get the number of sockets for the current test hardware with lscpu."
+fi
+if [[ "${text}" =~ (Thread\(s\) per core:[^0-9]*([0-9]+)) ]]; then
+    threads_per_core=${BASH_REMATCH[2]}
+else
+    fatal_error "Failed to get the number of threads per core for the current test hardware with lscpu."
+fi
+if [[ "${text}" =~ (Core\(s\) per socket:[^0-9]*([0-9]+)) ]]; then
+    cores_per_socket=${BASH_REMATCH[2]}
+else
+    fatal_error "Failed to get the number of cores per socket for the current test hardware with lscpu."
+fi
+sed -i "s/__NUM_CPUS__/${cpu_count}/g" $RFM_CONFIG_FILES
+sed -i "s/__NUM_SOCKETS__/${socket_count}/g" $RFM_CONFIG_FILES
+sed -i "s/__NUM_CPUS_PER_CORE__/${threads_per_core}/g" $RFM_CONFIG_FILES
+sed -i "s/__NUM_CPUS_PER_SOCKETS__/${cores_per_socket}/g" $RFM_CONFIG_FILES
 
 # Check we can run reframe
 reframe --version
