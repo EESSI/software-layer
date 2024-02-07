@@ -9,7 +9,7 @@ from eessi.testsuite.constants import *  # noqa: F403
 site_configuration = {
     'systems': [
         {
-            'name': 'Testing in bot Build jobs for EESSI software Layer',
+            'name': 'BotBuildTests',
             'descr': 'Software-layer bot',
             'hostnames': ['.*'],
             'modules_system': 'lmod',
