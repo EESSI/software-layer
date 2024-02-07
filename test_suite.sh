@@ -165,8 +165,11 @@ export RFM_CHECK_SEARCH_PATH=$TESTSUITEPREFIX/eessi/testsuite/tests
 export RFM_CHECK_SEARCH_RECURSIVE=1
 export RFM_PREFIX=$PWD/reframe_runs
 
+echo "Configured reframe with the following environment variables:"
+env | grep "RFM_"
+
 # Check we can run reframe
-reframe --version BLABLABLA
+reframe --version
 if [[ $? -eq 0 ]]; then
     echo_green "Succesfully ran reframe --version"
 else
@@ -175,6 +178,7 @@ fi
 
 # List the tests we want to run
 export REFRAME_ARGS='--tag CI --tag 1_node'
+echo "Listing tests: reframe ${REFRAME_ARGS} --list"
 reframe ${REFRAME_ARGS} --list
 if [[ $? -eq 0 ]]; then
     echo_green "Succesfully listed ReFrame tests with command: reframe ${REFRAME_ARGS} --list"
@@ -183,13 +187,13 @@ else
 fi
 
 # Run all tests
+echo "Running tests: reframe ${REFRAME_ARGS} --run"
 reframe ${REFRAME_ARGS} --run
 if [[ $? -eq 0 ]]; then
     echo_green "ReFrame runtime ran succesfully with command: reframe ${REFRAME_ARGS} --run."
 else
     fatal_error "ReFrame runtime failed to run with command: reframe ${REFRAME_ARGS} --run."
 fi
-
 
 echo ">> Cleaning up ${TMPDIR}..."
 rm -r ${TMPDIR}
