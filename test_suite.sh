@@ -193,7 +193,7 @@ fi
 sed -i "s/__NUM_CPUS__/${cpu_count}/g" $RFM_CONFIG_FILES
 sed -i "s/__NUM_SOCKETS__/${socket_count}/g" $RFM_CONFIG_FILES
 sed -i "s/__NUM_CPUS_PER_CORE__/${threads_per_core}/g" $RFM_CONFIG_FILES
-sed -i "s/__NUM_CPUS_PER_SOCKETS__/${cores_per_socket}/g" $RFM_CONFIG_FILES
+sed -i "s/__NUM_CPUS_PER_SOCKET__/${cores_per_socket}/g" $RFM_CONFIG_FILES
 
 # Check we can run reframe
 reframe --version
