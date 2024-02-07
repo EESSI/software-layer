@@ -175,17 +175,17 @@ if [[ "${cpuinfo}" =~ CPU\(s\):[^0-9]*([0-9]+) ]]; then
 else
     fatal_error "Failed to get the number of CPUs for the current test hardware with lscpu."
 fi
-if [[ "${text}" =~ Socket\(s\):[^0-9]*([0-9]+) ]]; then
+if [[ "${cpuinfo}" =~ Socket\(s\):[^0-9]*([0-9]+) ]]; then
     socket_count=${BASH_REMATCH[1]}
 else
     fatal_error "Failed to get the number of sockets for the current test hardware with lscpu."
 fi
-if [[ "${text}" =~ (Thread\(s\) per core:[^0-9]*([0-9]+)) ]]; then
+if [[ "${cpuinfo}" =~ (Thread\(s\) per core:[^0-9]*([0-9]+)) ]]; then
     threads_per_core=${BASH_REMATCH[2]}
 else
     fatal_error "Failed to get the number of threads per core for the current test hardware with lscpu."
 fi
-if [[ "${text}" =~ (Core\(s\) per socket:[^0-9]*([0-9]+)) ]]; then
+if [[ "${cpuinfo}" =~ (Core\(s\) per socket:[^0-9]*([0-9]+)) ]]; then
     cores_per_socket=${BASH_REMATCH[2]}
 else
     fatal_error "Failed to get the number of cores per socket for the current test hardware with lscpu."
