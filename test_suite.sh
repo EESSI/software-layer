@@ -129,11 +129,11 @@ else
     echo_green ">> MODULEPATH set up: ${MODULEPATH}"
 fi
 
-# TODO: this should not be hardcoded. Ideally, we put some logic in place to discover the newest version
-# of the ReFrame module available in the current environment
-module load ReFrame/4.3.3
+# Load the ReFrame module
+# Currently, we load the default version. Maybe we should somehow make this configurable in the future?
+module load ReFrame
 if [[ $? -eq 0 ]]; then
-    echo_green ">> Loaded ReFrame/4.3.3"
+    echo_green ">> Loaded ReFrame module"
 else
     fatal_error "Failed to load the ReFrame module"
 fi
