@@ -1,9 +1,14 @@
 #!/bin/bash
 #
-# Run sanity check for all requested modules (and built dependencies)?
-# get ec from diff
-# set up EasyBuild
-# run `eb --sanity-only ec`
+# This script creates a ReFrame config file from a template, in which CPU properties get replaced
+# based on where this script is run (typically: a build node). Then, it runs the EESSI test suite.
+#
+# This script is part of the EESSI software layer, see
+# https://github.com/EESSI/software-layer.git
+#
+# author: Caspar van Leeuwen (@casparvl)
+#
+# license: GPLv2
 
 display_help() {
   echo "usage: $0 [OPTIONS]"

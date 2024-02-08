@@ -9,7 +9,7 @@
 # This script is part of the EESSI software layer, see
 # https://github.com/EESSI/software-layer.git
 #
-# author: Caspar van Leeuwe (@casparvl)
+# author: Caspar van Leeuwen (@casparvl)
 #
 # license: GPLv2
 #
