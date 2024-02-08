@@ -95,7 +95,7 @@ job_dir=${PWD}
 
 [[ ${VERBOSE} -ne 0 ]] && echo ">> analysing job in directory ${job_dir}"
 
-job_out="slurm-${SLURM_OUTPUT_FOUND_JOB_ID}.out"
+job_out="slurm-${SLURM_JOB_ID}.out"
 [[ ${VERBOSE} -ne 0 ]] && echo ">> searching for job output file(s) matching '"${job_out}"'"
 if  [[ -f ${job_out} ]]; then
     SLURM_OUTPUT_FOUND=1
@@ -169,7 +169,7 @@ fi
 [[ ${VERBOSE} -ne 0 ]] && echo "  NO_MISSING.: $([[ $NO_MISSING -eq 1 ]] && echo 'yes' || echo 'no') (yes)"
 [[ ${VERBOSE} -ne 0 ]] && echo "  TGZ_CREATED: $([[ $TGZ -eq 1 ]] && echo 'yes' || echo 'no') (yes)"
 
-job_result_file=_bot_job${SLURM_OUTPUT_FOUND_JOB_ID}.result
+job_result_file=_bot_job${SLURM_JOB_ID}.result
 
 if [[ ${SLURM_OUTPUT_FOUND} -eq 1 ]] && \
    [[ ${ERROR} -eq 0 ]] && \
