@@ -334,35 +334,35 @@ echo -n "comment_description = " >> ${job_result_file}
 
 comment_summary="${comment_summary_fmt/__SUMMARY__/${summary}}"
 
-# first construct comment_details_list, abbreviated CoDeList
+# first construct comment_details_list, abbreviated comment_details_list
 # then use it to set comment_details
-CoDeList=""
+comment_details_list=""
 
 success_msg="job output file <code>${job_out}</code>"
 failure_msg="no job output file <code>${job_out}</code>"
-CoDeList=${CoDeList}$(add_detail ${SLURM_OUTPUT_FOUND} 1 "${success_msg}" "${failure_msg}")
+comment_details_list=${comment_details_list}$(add_detail ${SLURM_OUTPUT_FOUND} 1 "${success_msg}" "${failure_msg}")
 
 success_msg="no message matching <code>${GP_error}</code>"
 failure_msg="found message matching <code>${GP_error}</code>"
-CoDeList=${CoDeList}$(add_detail ${ERROR} 0 "${success_msg}" "${failure_msg}")
+comment_details_list=${comment_details_list}$(add_detail ${ERROR} 0 "${success_msg}" "${failure_msg}")
 
 success_msg="no message matching <code>${GP_failed}</code>"
 failure_msg="found message matching <code>${GP_failed}</code>"
-CoDeList=${CoDeList}$(add_detail ${FAILED} 0 "${success_msg}" "${failure_msg}")
+comment_details_list=${comment_details_list}$(add_detail ${FAILED} 0 "${success_msg}" "${failure_msg}")
 
 success_msg="no message matching <code>${GP_req_missing}</code>"
 failure_msg="found message matching <code>${GP_req_missing}</code>"
-CoDeList=${CoDeList}$(add_detail ${MISSING} 0 "${success_msg}" "${failure_msg}")
+comment_details_list=${comment_details_list}$(add_detail ${MISSING} 0 "${success_msg}" "${failure_msg}")
 
 success_msg="found message(s) matching <code>${GP_no_missing}</code>"
 failure_msg="no message matching <code>${GP_no_missing}</code>"
-CoDeList=${CoDeList}$(add_detail ${NO_MISSING} 1 "${success_msg}" "${failure_msg}")
+comment_details_list=${comment_details_list}$(add_detail ${NO_MISSING} 1 "${success_msg}" "${failure_msg}")
 
 success_msg="found message matching <code>${GP_tgz_created}</code>"
 failure_msg="no message matching <code>${GP_tgz_created}</code>"
-CoDeList=${CoDeList}$(add_detail ${TGZ} 1 "${success_msg}" "${failure_msg}")
+comment_details_list=${comment_details_list}$(add_detail ${TGZ} 1 "${success_msg}" "${failure_msg}")
 
-comment_details="${comment_details_fmt/__DETAILS_LIST__/${CoDeList}}"
+comment_details="${comment_details_fmt/__DETAILS_LIST__/${comment_details_list}}"
 
 
 # first construct comment_artefacts_list, abbreviated CoArList
