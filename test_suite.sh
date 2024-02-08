@@ -130,7 +130,7 @@ else
 fi
 
 # Load the ReFrame module
-# Currently, we load the default version. Maybe we should somehow make this configurable in the future?
+ Currently, we load the default version. Maybe we should somehow make this configurable in the future?
 module load ReFrame
 if [[ $? -eq 0 ]]; then
     echo_green ">> Loaded ReFrame module"
@@ -139,15 +139,16 @@ else
 fi
 
 # Check ReFrame came with the hpctestlib and we can import it
-python3 -c 'import hpctestlib.sciapps.gromacs'
+reframe_import="hpctestlib.sciapps.gromacs"
+python3 -c "import ${reframe_import}"
 if [[ $? -eq 0 ]]; then
-    echo_green "Succesfully found and imported hpctestlib.sciapps.gromas"
+    echo_green "Succesfully found and imported ${reframe_import}"
 else
-    fatal_error "Failed to load hpctestlib"
+    fatal_error "Failed to import ${reframe_import}"
 fi
 
-# Cloning should already be done by clone_eessi_test_suite.sh, which runs in compat layer to have 'git' available
-# git clone https://github.com/EESSI/test-suite EESSI-test-suite
+# Cloning should already be done in run_tests.sh before test_suite.sh is invoked
+# Check if that succeeded
 export TESTSUITEPREFIX=$PWD/EESSI-test-suite
 if [ -d $TESTSUITEPREFIX ]; then
     echo_green "Clone of the test suite $TESTSUITEPREFIX available, OK!"
@@ -157,14 +158,15 @@ fi
 export PYTHONPATH=$TESTSUITEPREFIX:$PYTHONPATH
 
 # Check that we can import from the testsuite
-python3 -c 'import eessi.testsuite'
+testsuite_import="eessi.testsuite"
+python3 -c "import ${testsuite_import}"
 if [[ $? -eq 0 ]]; then
-    echo_green "Succesfully found and imported eessi.testsuite"
+    echo_green "Succesfully found and imported ${testsuite_import}"
 else
-    fatal_error "Failed to import from eessi.testsuite in Python"
+    fatal_error "Failed to import ${testsuite_import}"
 fi
 
-# Configure ReFrame
+# Configure ReFrame, see https://www.eessi.io/docs/test-suite/installation-configuration
 export RFM_CONFIG_FILES=$TOPDIR/reframe_config_bot.py
 export RFM_CONFIG_FILE_TEMPLATE=$TOPDIR/reframe_config_bot.py.tmpl
 export RFM_CHECK_SEARCH_PATH=$TESTSUITEPREFIX/eessi/testsuite/tests
