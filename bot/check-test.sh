@@ -192,19 +192,6 @@ success_msg="no message matching <code>""${GP_failed}""</code>"
 failure_msg="found message matching <code>""${GP_failed}""</code>"
 comment_details_list=${comment_details_list}$(add_detail ${FAILED} 0 "${success_msg}" "${failure_msg}")
 
-# Should not be needed for testing, I think? Maybe for loading ReFrame module...
-# success_msg="no message matching <code>${GP_req_missing}</code>"
-# failure_msg="found message matching <code>${GP_req_missing}</code>"
-# comment_details_list=${comment_details_list}$(add_detail ${MISSING} 0 "${success_msg}" "${failure_msg}")
-# 
-# success_msg="found message(s) matching <code>${GP_no_missing}</code>"
-# failure_msg="no message matching <code>${GP_no_missing}</code>"
-# comment_details_list=${comment_details_list}$(add_detail ${NO_MISSING} 1 "${success_msg}" "${failure_msg}")
-# 
-# success_msg="found message matching <code>${GP_tgz_created}</code>"
-# failure_msg="no message matching <code>${GP_tgz_created}</code>"
-# comment_details_list=${comment_details_list}$(add_detail ${TGZ} 1 "${success_msg}" "${failure_msg}")
-
 comment_details_fmt="<dt>_Details_</dt><dd>__DETAILS_LIST__</dd>"
 comment_details="${comment_details_fmt/__DETAILS_LIST__/${comment_details_list}}"
 comment_description=${comment_description/__DETAILS_FMT__/${comment_details}}
