@@ -11,7 +11,7 @@
 #
 job_dir=${PWD}
 job_out="slurm-${SLURM_JOB_ID}.out"
-job_test_result_file="_bot_job${SLURM__JOB_ID}.test"
+job_test_result_file="_bot_job${SLURM_JOB_ID}.test"
 
 # Check that job output file is found
 [[ ${VERBOSE} -ne 0 ]] && echo ">> searching for job output file(s) matching '"${job_out}"'"
