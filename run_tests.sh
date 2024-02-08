@@ -1,13 +1,24 @@
 #!/bin/bash
+#
+# This script gets invoked by the bot/test.sh script to run within the EESSI container
+# Thus, this script defines all of the steps that should run for the tests.
+# Note that, unless we have good reason, we don't run test steps in the prefix environment:
+# users also typically don't run in the prefix environment, and we want to check if the
+# software works well in that specific setup.
+#
+# This script is part of the EESSI software layer, see
+# https://github.com/EESSI/software-layer.git
+#
+# author: Caspar van Leeuwe (@casparvl)
+#
+# license: GPLv2
+#
+
 base_dir=$(dirname $(realpath $0))
 source ${base_dir}/init/eessi_defaults
 
-# Note: for these tests, we _don't_ run in the compat layer env
-# These tests should mimic what users do, and they are typically not in a prefix environment
-
-# Run eb --sanity-check-only on changed easyconfigs
-# TODO: in the future we may implement this as a light first check.
+# Git clone has to be run in compat layer, to make the git command available
+./run_in_compat_layer_env.sh "git clone https://github.com/EESSI/test-suite EESSI-test-suite"
 
 # Run the test suite
-./run_in_compat_layer_env.sh "git clone https://github.com/EESSI/test-suite EESSI-test-suite"
 ./test_suite.sh
