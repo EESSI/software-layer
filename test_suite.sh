@@ -198,17 +198,18 @@ if [[ "${cpuinfo}" =~ (Core\(s\) per socket:[^0-9]*([0-9]+)) ]]; then
 else
     fatal_error "Failed to get the number of cores per socket for the current test hardware with lscpu."
 fi
-sed "s/__NUM_CPUS__/${cpu_count}/g" $RFM_CONFIG_FILE_TEMPLATE > $RFM_CONFIG_FILES
-sed "s/__NUM_SOCKETS__/${socket_count}/g" $RFM_CONFIG_FILE_TEMPLATE > $RFM_CONFIG_FILES
-sed "s/__NUM_CPUS_PER_CORE__/${threads_per_core}/g" $RFM_CONFIG_FILE_TEMPLATE > $RFM_CONFIG_FILES
-sed "s/__NUM_CPUS_PER_SOCKET__/${cores_per_socket}/g" $RFM_CONFIG_FILE_TEMPLATE > $RFM_CONFIG_FILES
+cp ${RFM_CONFIG_FILE_TEMPLATE} ${RFM_CONFIG_FILES}
+sed -i "s/__NUM_CPUS__/${cpu_count}/g" $RFM_CONFIG_FILES
+sed -i "s/__NUM_SOCKETS__/${socket_count}/g" $RFM_CONFIG_FILES
+sed -i "s/__NUM_CPUS_PER_CORE__/${threads_per_core}/g" $RFM_CONFIG_FILES
+sed -i "s/__NUM_CPUS_PER_SOCKET__/${cores_per_socket}/g" $RFM_CONFIG_FILES
 
 # Check we can run reframe
 reframe --version
 if [[ $? -eq 0 ]]; then
-    echo_green "Succesfully ran reframe --version"
+    echo_green "Succesfully ran 'reframe --version'"
 else
-    fatal_error "Failed to run ReFrame --version"
+    fatal_error "Failed to run 'reframe --version'"
 fi
 
 # List the tests we want to run
@@ -224,7 +225,8 @@ fi
 # Run all tests
 echo "Running tests: reframe ${REFRAME_ARGS} --run"
 reframe ${REFRAME_ARGS} --run
-if [[ $? -eq 0 ]]; then
+reframe_exit_code=$?
+if [[ ${reframe_exit_code} -eq 0 ]]; then
     echo_green "ReFrame runtime ran succesfully with command: reframe ${REFRAME_ARGS} --run."
 else
     fatal_error "ReFrame runtime failed to run with command: reframe ${REFRAME_ARGS} --run."
@@ -233,4 +235,4 @@ fi
 echo ">> Cleaning up ${TMPDIR}..."
 rm -r ${TMPDIR}
 
-exit 0
+exit ${reframe_exit_code}
