@@ -9,5 +9,5 @@ source ${base_dir}/init/eessi_defaults
 # TODO: in the future we may implement this as a light first check.
 
 # Run the test suite
-./run_in_compat_layer_env.sh ./clone_eessi_test_suite.sh
+./run_in_compat_layer_env.sh "git clone https://github.com/EESSI/test-suite EESSI-test-suite"
 ./test_suite.sh
