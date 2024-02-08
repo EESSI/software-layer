@@ -103,7 +103,7 @@ elif [[ ${ERROR} -eq 1 ]]; then
 else
     summary=":grin: FAILURE"
     reason="Failed for unknown reason"
-    status="SUCCESS"
+    status="FAILURE"
 fi
 
 
