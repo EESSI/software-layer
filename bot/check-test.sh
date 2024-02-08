@@ -10,16 +10,16 @@
 # license: GPLv2
 #
 job_dir=${PWD}
-job_out="slurm-${SLURM_JOB_ID}.out"
-job_test_result_file="_bot_job${SLURM_JOB_ID}.test"
+job_out="slurm-${SLURM_OUTPUT_FOUND_JOB_ID}.out"
+job_test_result_file="_bot_job${SLURM_OUTPUT_FOUND_JOB_ID}.test"
 
 # Check that job output file is found
 [[ ${VERBOSE} -ne 0 ]] && echo ">> searching for job output file(s) matching '"${job_out}"'"
 if  [[ -f ${job_out} ]]; then
-    SLURM=1
+    SLURM_OUTPUT_FOUND=1
     [[ ${VERBOSE} -ne 0 ]] && echo "   found slurm output file '"${job_out}"'"
 else
-    SLURM=0
+    SLURM_OUTPUT_FOUND=0
     [[ ${VERBOSE} -ne 0 ]] && echo "   Slurm output file '"${job_out}"' NOT found"
 fi
 
@@ -41,7 +41,7 @@ fi
 # We will grep for the last and final line, since this reflects the overall result
 # Specifically, we grep for FAILED, since this is also what we print if a step in the test script itself fails
 FAILED=-1
-if [[ ${SLURM} -eq 1 ]]; then
+if [[ ${SLURM_OUTPUT_FOUND} -eq 1 ]]; then
   GP_failed='\[.*FAILED.*\].*Ran .* test case'
   grep_reframe_failed=$(grep -v "^>> searching for " ${job_dir}/${job_out} | grep "${GP_failed}")
   [[ $? -eq 0 ]] && FAILED=1 || FAILED=0
@@ -53,7 +53,7 @@ fi
 # Here, we grep for 'ERROR:', which is printed if a fatal_error is encountered when executing the test step
 # I.e. this is an error in execution of the run_tests.sh itself, NOT in running the actual tests
 ERROR=-1
-if [[ ${SLURM} -eq 1 ]]; then
+if [[ ${SLURM_OUTPUT_FOUND} -eq 1 ]]; then
   GP_error='ERROR: '
   grep_out=$(grep -v "^>> searching for " ${job_dir}/${job_out} | grep "${GP_error}")
   [[ $? -eq 0 ]] && ERROR=1 || ERROR=0
@@ -64,7 +64,7 @@ fi
 
 SUCCESS=-1
 # Grep for the success pattern, so we can report the amount of tests run
-if [[ ${SLURM} -eq 1 ]]; then
+if [[ ${SLURM_OUTPUT_FOUND} -eq 1 ]]; then
   GP_success='\[.*PASSED.*\].*Ran .* test case'
   grep_reframe_success=$(grep -v "^>> searching for " ${job_dir}/${job_out} | grep "${GP_success}")
   [[ $? -eq 0 ]] && SUCCESS=1 || SUCCESS=0
@@ -80,7 +80,7 @@ else
 fi
 
 echo "[TEST]" > ${job_test_result_file}
-if [[ ${SLURM} -eq 0 ]]; then
+if [[ ${SLURM_OUTPUT_FOUND} -eq 0 ]]; then
     summary=":cry: FAILURE"
     reason="Job output file not found, cannot check test results."
     status="FAILURE"
@@ -182,7 +182,7 @@ CoDeList=""
 
 success_msg="job output file <code>${job_out}</code>"
 failure_msg="no job output file <code>${job_out}</code>"
-CoDeList=${CoDeList}$(add_detail ${SLURM} 1 "${success_msg}" "${failure_msg}")
+CoDeList=${CoDeList}$(add_detail ${SLURM_OUTPUT_FOUND} 1 "${success_msg}" "${failure_msg}")
 
 success_msg="no message matching <code>${GP_error}</code>"
 failure_msg="found message matching <code>${GP_error}</code>"

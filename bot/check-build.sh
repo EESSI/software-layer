@@ -95,18 +95,18 @@ job_dir=${PWD}
 
 [[ ${VERBOSE} -ne 0 ]] && echo ">> analysing job in directory ${job_dir}"
 
-job_out="slurm-${SLURM_JOB_ID}.out"
+job_out="slurm-${SLURM_OUTPUT_FOUND_JOB_ID}.out"
 [[ ${VERBOSE} -ne 0 ]] && echo ">> searching for job output file(s) matching '"${job_out}"'"
 if  [[ -f ${job_out} ]]; then
-    SLURM=1
+    SLURM_OUTPUT_FOUND=1
     [[ ${VERBOSE} -ne 0 ]] && echo "   found slurm output file '"${job_out}"'"
 else
-    SLURM=0
+    SLURM_OUTPUT_FOUND=0
     [[ ${VERBOSE} -ne 0 ]] && echo "   Slurm output file '"${job_out}"' NOT found"
 fi
 
 ERROR=-1
-if [[ ${SLURM} -eq 1 ]]; then
+if [[ ${SLURM_OUTPUT_FOUND} -eq 1 ]]; then
   GP_error='ERROR: '
   grep_out=$(grep -v "^>> searching for " ${job_dir}/${job_out} | grep "${GP_error}")
   [[ $? -eq 0 ]] && ERROR=1 || ERROR=0
@@ -116,7 +116,7 @@ if [[ ${SLURM} -eq 1 ]]; then
 fi
 
 FAILED=-1
-if [[ ${SLURM} -eq 1 ]]; then
+if [[ ${SLURM_OUTPUT_FOUND} -eq 1 ]]; then
   GP_failed='FAILED: '
   grep_out=$(grep -v "^>> searching for " ${job_dir}/${job_out} | grep "${GP_failed}")
   [[ $? -eq 0 ]] && FAILED=1 || FAILED=0
@@ -126,7 +126,7 @@ if [[ ${SLURM} -eq 1 ]]; then
 fi
 
 MISSING=-1
-if [[ ${SLURM} -eq 1 ]]; then
+if [[ ${SLURM_OUTPUT_FOUND} -eq 1 ]]; then
   GP_req_missing=' required modules missing:'
   grep_out=$(grep -v "^>> searching for " ${job_dir}/${job_out} | grep "${GP_req_missing}")
   [[ $? -eq 0 ]] && MISSING=1 || MISSING=0
@@ -136,7 +136,7 @@ if [[ ${SLURM} -eq 1 ]]; then
 fi
 
 NO_MISSING=-1
-if [[ ${SLURM} -eq 1 ]]; then
+if [[ ${SLURM_OUTPUT_FOUND} -eq 1 ]]; then
   GP_no_missing='No missing installations'
   grep_out=$(grep -v "^>> searching for " ${job_dir}/${job_out} | grep "${GP_no_missing}")
   [[ $? -eq 0 ]] && NO_MISSING=1 || NO_MISSING=0
@@ -147,7 +147,7 @@ fi
 
 TGZ=-1
 TARBALL=
-if [[ ${SLURM} -eq 1 ]]; then
+if [[ ${SLURM_OUTPUT_FOUND} -eq 1 ]]; then
   GP_tgz_created="\.tar\.gz created!"
   grep_out=$(grep -v "^>> searching for " ${job_dir}/${job_out} | grep "${GP_tgz_created}" | sort -u)
   if [[ $? -eq 0 ]]; then
@@ -169,9 +169,9 @@ fi
 [[ ${VERBOSE} -ne 0 ]] && echo "  NO_MISSING.: $([[ $NO_MISSING -eq 1 ]] && echo 'yes' || echo 'no') (yes)"
 [[ ${VERBOSE} -ne 0 ]] && echo "  TGZ_CREATED: $([[ $TGZ -eq 1 ]] && echo 'yes' || echo 'no') (yes)"
 
-job_result_file=_bot_job${SLURM_JOB_ID}.result
+job_result_file=_bot_job${SLURM_OUTPUT_FOUND_JOB_ID}.result
 
-if [[ ${SLURM} -eq 1 ]] && \
+if [[ ${SLURM_OUTPUT_FOUND} -eq 1 ]] && \
    [[ ${ERROR} -eq 0 ]] && \
    [[ ${FAILED} -eq 0 ]] && \
    [[ ${MISSING} -eq 0 ]] && \
@@ -340,7 +340,7 @@ CoDeList=""
 
 success_msg="job output file <code>${job_out}</code>"
 failure_msg="no job output file <code>${job_out}</code>"
-CoDeList=${CoDeList}$(add_detail ${SLURM} 1 "${success_msg}" "${failure_msg}")
+CoDeList=${CoDeList}$(add_detail ${SLURM_OUTPUT_FOUND} 1 "${success_msg}" "${failure_msg}")
 
 success_msg="no message matching <code>${GP_error}</code>"
 failure_msg="found message matching <code>${GP_error}</code>"
