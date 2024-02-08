@@ -161,6 +161,7 @@ fi
 
 # Configure ReFrame
 export RFM_CONFIG_FILES=$TOPDIR/reframe_config_bot.py
+export RFM_CONFIG_FILE_TEMPLATE=$TOPDIR/reframe_config_bot.py.tmpl
 export RFM_CHECK_SEARCH_PATH=$TESTSUITEPREFIX/eessi/testsuite/tests
 export RFM_CHECK_SEARCH_RECURSIVE=1
 export RFM_PREFIX=$PWD/reframe_runs
@@ -190,10 +191,10 @@ if [[ "${cpuinfo}" =~ (Core\(s\) per socket:[^0-9]*([0-9]+)) ]]; then
 else
     fatal_error "Failed to get the number of cores per socket for the current test hardware with lscpu."
 fi
-sed -i "s/__NUM_CPUS__/${cpu_count}/g" $RFM_CONFIG_FILES
-sed -i "s/__NUM_SOCKETS__/${socket_count}/g" $RFM_CONFIG_FILES
-sed -i "s/__NUM_CPUS_PER_CORE__/${threads_per_core}/g" $RFM_CONFIG_FILES
-sed -i "s/__NUM_CPUS_PER_SOCKET__/${cores_per_socket}/g" $RFM_CONFIG_FILES
+sed "s/__NUM_CPUS__/${cpu_count}/g" $RFM_CONFIG_FILE_TEMPLATE > $RFM_CONFIG_FILES
+sed "s/__NUM_SOCKETS__/${socket_count}/g" $RFM_CONFIG_FILE_TEMPLATE > $RFM_CONFIG_FILES
+sed "s/__NUM_CPUS_PER_CORE__/${threads_per_core}/g" $RFM_CONFIG_FILE_TEMPLATE > $RFM_CONFIG_FILES
+sed "s/__NUM_CPUS_PER_SOCKET__/${cores_per_socket}/g" $RFM_CONFIG_FILE_TEMPLATE > $RFM_CONFIG_FILES
 
 # Check we can run reframe
 reframe --version
