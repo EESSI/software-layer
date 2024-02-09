@@ -350,6 +350,7 @@ def pre_test_hook_exclude_failing_tests_Highway(self, *args, **kwargs):
     if self.name == 'Highway' and self.version in ['1.0.3'] and cpu_target == CPU_TARGET_NEOVERSE_V1:
         self.cfg['runtest'] += ' ARGS="-E TestAllShiftRightLanes/SVE"'
 
+
 def pre_test_hook_ignore_failing_tests_ESPResSo(self, *args, **kwargs):
     """
     Pre-test hook for ESPResSo: skip failing tests, tests frequently timeout due to known bugs in ESPResSo v4.2.1
