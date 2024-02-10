@@ -357,6 +357,16 @@ def pre_test_hook(self,*args, **kwargs):
         PRE_TEST_HOOKS[self.name](self, *args, **kwargs)
 
 
+def pre_test_hook_exclude_failing_test_Highway(self, *args, **kwargs):
+    """
+    Pre-test hook for Highway: exclude failing TestAllShiftRightLanes/SVE_256 test on neoverse_v1
+    cfr. https://github.com/EESSI/software-layer/issues/469
+    """
+    cpu_target = get_eessi_envvar('EESSI_SOFTWARE_SUBDIR')
+    if self.name == 'Highway' and self.version in ['1.0.3'] and cpu_target == CPU_TARGET_NEOVERSE_V1:
+        self.cfg['runtest'] += ' ARGS="-E TestAllShiftRightLanes/SVE_256"'
+
+
 def pre_test_hook_ignore_failing_tests_ESPResSo(self, *args, **kwargs):
     """
     Pre-test hook for ESPResSo: skip failing tests, tests frequently timeout due to known bugs in ESPResSo v4.2.1
@@ -594,6 +604,7 @@ PRE_CONFIGURE_HOOKS = {
 PRE_TEST_HOOKS = {
     'ESPResSo': pre_test_hook_ignore_failing_tests_ESPResSo,
     'FFTW.MPI': pre_test_hook_ignore_failing_tests_FFTWMPI,
+    'Highway': pre_test_hook_exclude_failing_test_Highway,
     'SciPy-bundle': pre_test_hook_ignore_failing_tests_SciPybundle,
     'netCDF': pre_test_hook_ignore_failing_tests_netCDF,
     'PyTorch': pre_test_hook_increase_max_failed_tests_arm_PyTorch,
