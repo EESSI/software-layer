@@ -27,8 +27,17 @@ if [ -d $EESSI_PREFIX ]; then
     # determine subdirectory in software layer
     if [ "$EESSI_USE_ARCHDETECT" == "1" ]; then
       # if archdetect is enabled, use internal code
-      export EESSI_SOFTWARE_SUBDIR=$(${EESSI_INIT_DIR_PATH}/eessi_archdetect.sh cpupath)
-      show_msg "archdetect says ${EESSI_SOFTWARE_SUBDIR}"
+      all_cpupaths=$(${EESSI_INIT_DIR_PATH}/eessi_archdetect.sh -a cpupath)
+      # iterate over colon-separated list verifying if the architecture is present
+      #   under $EESSI_PREFIX/software/$EESSI_OS_TYPE; if so use the architecture as best match
+      IFS=: read -r -a archs <<< "${all_cpupaths}"
+      for arch in "${archs[@]}"; do
+        if [ -d ${EESSI_PREFIX}/software/${EESSI_OS_TYPE}/${arch} ]; then
+          export EESSI_SOFTWARE_SUBDIR=${arch}
+          show_msg "archdetect says ${EESSI_SOFTWARE_SUBDIR}"
+          break
+        fi
+      done
     elif [ "$EESSI_USE_ARCHSPEC" == "1" ]; then
       # note: eessi_software_subdir_for_host.py will pick up value from $EESSI_SOFTWARE_SUBDIR_OVERRIDE if it's defined!
       export EESSI_EPREFIX_PYTHON=$EESSI_EPREFIX/usr/bin/python3
