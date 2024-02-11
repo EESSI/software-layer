@@ -1,3 +1,4 @@
 easyconfigs:
   - SciPy-bundle-2023.02-gfbf-2022b.eb
   - GDAL-3.6.2-foss-2022b.eb
+  - ImageMagick-7.1.0-53-GCCcore-12.2.0.eb
