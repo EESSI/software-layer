@@ -64,14 +64,38 @@ def repology(project):
     else:
         return(r['License'])
 
+def ecosysteDotms_pypi(project):
+    """
+    Function that retrieves license info from ecosystem.ms for pipy packages
+    """
+    url = "https://packages.ecosyste.ms/api/v1/registries/pypi.org/packages/"
+    r = requests.get(url + project)
+    if r.status_code != 200:
+        return "not found"
+    else:
+        return(r.json()['licenses'])
+def ecosysteDotms_github(source):
+    """
+    Function that retrieves license info from ecosystem.ms for github repos
+    """
+    repo=source.removeprefix('github:')
+    url= "https://repos.ecosyste.ms/api/v1/hosts/GitHub/repositories/"
+    r = requests.get(url + repo)
+    if r.status_code != 200:
+        return "not found"
+    else:
+        return(r.json()['license'])
+
 def licenseInfo(project):
     """
     Function that create the project info
     """
     if args.source=='pypi': 
-        lic=pypi(project)
+        lic=ecosysteDotms_pypi(project)
+#        lic=pypi(project)
     elif "github" in args.source:
-        lic=github(args.source)
+        lic=ecosysteDotms_github(args.source)
+#        lic=github(args.source)
     elif args.spdx:
         lic=args.spdx
     
