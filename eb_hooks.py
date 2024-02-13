@@ -80,7 +80,7 @@ def post_ready_hook(self, *args, **kwargs):
     # 'parallel' easyconfig parameter is set via EasyBlock.set_parallel in ready step based on available cores.
     # here we reduce parallellism to only use half of that for selected software,
     # to avoid failing builds/tests due to out-of-memory problems
-    if self.name in ['TensorFlow']:
+    if self.name in ['TensorFlow', 'libxc']:
         parallel = self.cfg['parallel']
         if parallel > 1:
             self.cfg['parallel'] = parallel // 2
@@ -185,20 +185,21 @@ def parse_hook_fontconfig_add_fonts(ec, eprefix):
 
 
 def parse_hook_openblas_relax_lapack_tests_num_errors(ec, eprefix):
-    """Relax number of failing numerical LAPACK tests for aarch64/neoverse_v1 CPU target."""
+    """Relax number of failing numerical LAPACK tests for aarch64/neoverse_v1 CPU target for OpenBLAS < 0.3.23"""
     cpu_target = get_eessi_envvar('EESSI_SOFTWARE_SUBDIR')
     if ec.name == 'OpenBLAS':
-        # relax maximum number of failed numerical LAPACK tests for aarch64/neoverse_v1 CPU target
-        # since the default setting of 150 that works well on other aarch64 targets and x86_64 is a bit too strict
-        # See https://github.com/EESSI/software-layer/issues/314
-        cfg_option = 'max_failing_lapack_tests_num_errors'
-        if cpu_target == CPU_TARGET_NEOVERSE_V1:
-            orig_value = ec[cfg_option]
-            ec[cfg_option] = 400
-            print_msg("Maximum number of failing LAPACK tests with numerical errors for %s relaxed to %s (was %s)",
-                      ec.name, ec[cfg_option], orig_value)
-        else:
-            print_msg("Not changing option %s for %s on non-AARCH64", cfg_option, ec.name)
+        if LooseVersion(ec.version) < LooseVersion('0.3.23'):
+            # relax maximum number of failed numerical LAPACK tests for aarch64/neoverse_v1 CPU target
+            # since the default setting of 150 that works well on other aarch64 targets and x86_64 is a bit too strict
+            # See https://github.com/EESSI/software-layer/issues/314
+            cfg_option = 'max_failing_lapack_tests_num_errors'
+            if cpu_target == CPU_TARGET_NEOVERSE_V1:
+                orig_value = ec[cfg_option]
+                ec[cfg_option] = 400
+                print_msg("Maximum number of failing LAPACK tests with numerical errors for %s relaxed to %s (was %s)",
+                          ec.name, ec[cfg_option], orig_value)
+            else:
+                print_msg("Not changing option %s for %s on non-AARCH64", cfg_option, ec.name)
     else:
         raise EasyBuildError("OpenBLAS-specific hook triggered for non-OpenBLAS easyconfig?!")
 
@@ -356,6 +357,16 @@ def pre_test_hook(self,*args, **kwargs):
         PRE_TEST_HOOKS[self.name](self, *args, **kwargs)
 
 
+def pre_test_hook_exclude_failing_test_Highway(self, *args, **kwargs):
+    """
+    Pre-test hook for Highway: exclude failing TestAllShiftRightLanes/SVE_256 test on neoverse_v1
+    cfr. https://github.com/EESSI/software-layer/issues/469
+    """
+    cpu_target = get_eessi_envvar('EESSI_SOFTWARE_SUBDIR')
+    if self.name == 'Highway' and self.version in ['1.0.3'] and cpu_target == CPU_TARGET_NEOVERSE_V1:
+        self.cfg['runtest'] += ' ARGS="-E TestAllShiftRightLanes/SVE_256"'
+
+
 def pre_test_hook_ignore_failing_tests_ESPResSo(self, *args, **kwargs):
     """
     Pre-test hook for ESPResSo: skip failing tests, tests frequently timeout due to known bugs in ESPResSo v4.2.1
@@ -395,7 +406,7 @@ def pre_test_hook_ignore_failing_tests_SciPybundle(self, *args, **kwargs):
 
 def pre_test_hook_ignore_failing_tests_netCDF(self, *args, **kwargs):
     """
-    Pre-test hook for SciPy-bundle: skip failing tests for selected netCDF versions on neoverse_v1
+    Pre-test hook for netCDF: skip failing tests for selected netCDF versions on neoverse_v1
     cfr. https://github.com/EESSI/software-layer/issues/425
     The following tests are problematic:
         163 - nc_test4_run_par_test (Timeout)
@@ -405,6 +416,15 @@ def pre_test_hook_ignore_failing_tests_netCDF(self, *args, **kwargs):
     cpu_target = get_eessi_envvar('EESSI_SOFTWARE_SUBDIR')
     if self.name == 'netCDF' and self.version == '4.9.2' and cpu_target == CPU_TARGET_NEOVERSE_V1:
         self.cfg['testopts'] = "|| echo ignoring failing tests" 
+
+def pre_test_hook_increase_max_failed_tests_arm_PyTorch(self, *args, **kwargs):
+    """
+    Pre-test hook for PyTorch: increase max failing tests for ARM for PyTorch 2.1.2
+    See https://github.com/EESSI/software-layer/pull/444#issuecomment-1890416171
+    """
+    if self.name == 'PyTorch' and self.version == '2.1.2' and get_cpu_architecture() == AARCH64:
+        self.cfg['max_failed_tests'] = 10
+
 
 def pre_single_extension_hook(ext, *args, **kwargs):
     """Main pre-extension: trigger custom functions based on software name."""
@@ -584,8 +604,10 @@ PRE_CONFIGURE_HOOKS = {
 PRE_TEST_HOOKS = {
     'ESPResSo': pre_test_hook_ignore_failing_tests_ESPResSo,
     'FFTW.MPI': pre_test_hook_ignore_failing_tests_FFTWMPI,
+    'Highway': pre_test_hook_exclude_failing_test_Highway,
     'SciPy-bundle': pre_test_hook_ignore_failing_tests_SciPybundle,
     'netCDF': pre_test_hook_ignore_failing_tests_netCDF,
+    'PyTorch': pre_test_hook_increase_max_failed_tests_arm_PyTorch,
 }
 
 PRE_SINGLE_EXTENSION_HOOKS = {

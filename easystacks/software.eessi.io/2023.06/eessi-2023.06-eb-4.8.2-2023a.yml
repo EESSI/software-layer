@@ -50,3 +50,9 @@ easyconfigs:
   - ALL-0.9.2-foss-2023a.eb:
       options:
         from-pr: 19455
+  - CDO-2.2.2-gompi-2023a.eb:
+      options:
+        from-pr: 19735
+  - BWA-0.7.17-20220923-GCCcore-12.3.0.eb:
+      options: 
+        from-pr: 19820 
