@@ -188,6 +188,8 @@ success_msg="no message matching <code>${GP_error}</code>"
 failure_msg="found message matching <code>${GP_error}</code>"
 comment_details_list=${comment_details_list}$(add_detail ${ERROR} 0 "${success_msg}" "${failure_msg}")
 
+# Add an escape character to every *, for it to be printed correctly in the comment on GitHub
+GP_failed="${GP_failed//\*/\\*}"
 success_msg="no message matching <code>""${GP_failed}""</code>"
 failure_msg="found message matching <code>""${GP_failed}""</code>"
 comment_details_list=${comment_details_list}$(add_detail ${FAILED} 0 "${success_msg}" "${failure_msg}")
