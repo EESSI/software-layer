@@ -24,3 +24,8 @@ easyconfigs:
       options:
         from-pr: 19471
         include-easyblocks-from-pr: 3036
+  - matplotlib-3.7.2-gfbf-2023a.eb
+  - PyQt5-5.15.10-GCCcore-12.3.0.eb:
+      # see https://github.com/easybuilders/easybuild-easyconfigs/pull/19554
+      options:
+        from-pr: 19554
