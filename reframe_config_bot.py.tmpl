@@ -19,7 +19,9 @@ site_configuration = {
                     'scheduler': 'local',
                     'launcher': 'mpirun',
                     'environs': ['default'],
-                    'features': [FEATURES[CPU]],
+                    'features': [
+                        FEATURES[CPU]
+                    ] + list(SCALES.keys()),
                     'processor': {
                         'num_cpus': __NUM_CPUS__,
                         'num_sockets': __NUM_SOCKETS__,

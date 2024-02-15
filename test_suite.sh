@@ -213,7 +213,7 @@ else
 fi
 
 # List the tests we want to run
-export REFRAME_ARGS='--tag CI --tag 1_node'
+export REFRAME_ARGS='--tag CI --tag 1_node --nocolor'
 echo "Listing tests: reframe ${REFRAME_ARGS} --list"
 reframe ${REFRAME_ARGS} --list
 if [[ $? -eq 0 ]]; then
