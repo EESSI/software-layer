@@ -42,7 +42,7 @@ fi
 # Specifically, we grep for FAILED, since this is also what we print if a step in the test script itself fails
 FAILED=-1
 if [[ ${SLURM_OUTPUT_FOUND} -eq 1 ]]; then
-  GP_failed='\[.*FAILED.*\].*Ran .* test case'
+  GP_failed='\[\s*FAILED\s*\].*Ran .* test case'
   grep_reframe_failed=$(grep -v "^>> searching for " ${job_dir}/${job_out} | grep "${GP_failed}")
   [[ $? -eq 0 ]] && FAILED=1 || FAILED=0
   # have to be careful to not add searched for pattern into slurm out file
@@ -65,7 +65,7 @@ fi
 SUCCESS=-1
 # Grep for the success pattern, so we can report the amount of tests run
 if [[ ${SLURM_OUTPUT_FOUND} -eq 1 ]]; then
-  GP_success='\[.*PASSED.*\].*Ran .* test case'
+  GP_success='\[\s*PASSED\s*\].*Ran .* test case'
   grep_reframe_success=$(grep -v "^>> searching for " ${job_dir}/${job_out} | grep "${GP_success}")
   [[ $? -eq 0 ]] && SUCCESS=1 || SUCCESS=0
   # have to be careful to not add searched for pattern into slurm out file
