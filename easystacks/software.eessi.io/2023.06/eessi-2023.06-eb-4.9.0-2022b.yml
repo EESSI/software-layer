@@ -1,6 +1,6 @@
 easyconfigs:
   - SciPy-bundle-2023.02-gfbf-2022b.eb
   - GDAL-3.6.2-foss-2022b.eb
-  - waLBerla-6.1-foss-2022b.eb 19324
+  - waLBerla-6.1-foss-2022b.eb
       options:
-        from-pr: 19252
+        from-pr: 19324
