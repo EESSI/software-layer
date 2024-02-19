@@ -74,68 +74,28 @@ fi
 TMPDIR=$(mktemp -d)
 
 echo ">> Setting up environment..."
-
-source $TOPDIR/init/minimal_eessi_env
-
-if [ -d $EESSI_CVMFS_REPO ]; then
-    echo_green "$EESSI_CVMFS_REPO available, OK!"
-else
-    fatal_error "$EESSI_CVMFS_REPO is not available!"
-fi
-
-# avoid that pyc files for EasyBuild are stored in EasyBuild installation directory
-export PYTHONPYCACHEPREFIX=$TMPDIR/pycache
-
-echo ">> Determining software subdirectory to use for current build/test host..."
-if [ -z $EESSI_SOFTWARE_SUBDIR_OVERRIDE ]; then
-  export EESSI_SOFTWARE_SUBDIR_OVERRIDE=$(python3 $TOPDIR/eessi_software_subdir.py $DETECTION_PARAMETERS)
-  echo ">> Determined \$EESSI_SOFTWARE_SUBDIR_OVERRIDE via 'eessi_software_subdir.py $DETECTION_PARAMETERS' script"
-else
-  echo ">> Picking up pre-defined \$EESSI_SOFTWARE_SUBDIR_OVERRIDE: ${EESSI_SOFTWARE_SUBDIR_OVERRIDE}"
-fi
-
-# Set all the EESSI environment variables (respecting $EESSI_SOFTWARE_SUBDIR_OVERRIDE)
-# $EESSI_SILENT - don't print any messages
-# $EESSI_BASIC_ENV - give a basic set of environment variables
-EESSI_SILENT=1 EESSI_BASIC_ENV=1 source $TOPDIR/init/eessi_environment_variables
-
-if [[ -z ${EESSI_SOFTWARE_SUBDIR} ]]; then
-    fatal_error "Failed to determine software subdirectory?!"
-elif [[ "${EESSI_SOFTWARE_SUBDIR}" != "${EESSI_SOFTWARE_SUBDIR_OVERRIDE}" ]]; then
-    fatal_error "Values for EESSI_SOFTWARE_SUBDIR_OVERRIDE (${EESSI_SOFTWARE_SUBDIR_OVERRIDE}) and EESSI_SOFTWARE_SUBDIR (${EESSI_SOFTWARE_SUBDIR}) differ!"
-else
-    echo_green ">> Using ${EESSI_SOFTWARE_SUBDIR} as software subdirectory!"
-fi
-
-echo ">> Initializing Lmod..."
-source $EPREFIX/usr/share/Lmod/init/bash
-ml_version_out=$TMPDIR/ml.out
-ml --version &> $ml_version_out
-if [[ $? -eq 0 ]]; then
-    echo_green ">> Found Lmod ${LMOD_VERSION}"
-else
-    fatal_error "Failed to initialize Lmod?! (see output in ${ml_version_out}"
-fi
-
-echo ">> Setting up \$MODULEPATH..."
-# make sure no modules are loaded
 module --force purge
-# ignore current $MODULEPATH entirely
-module unuse $MODULEPATH
-module use ${EESSI_SOFTWARE_PATH}/modules/all
-if [[ -z ${MODULEPATH} ]]; then
-    fatal_error "Failed to set up \$MODULEPATH?!"
-else
-    echo_green ">> MODULEPATH set up: ${MODULEPATH}"
-fi
+# Make sure defaults are set for EESSI_CVMFS_REPO and EESSI_VERSION, before initializing EESSI
+source $TOPDIR/init/eessi_defaults
+# Initialize EESSI
+source ${EESSI_CVMFS_REPO}/versions/${EESSI_VERSION}/init/bash
 
 # Load the ReFrame module
- Currently, we load the default version. Maybe we should somehow make this configurable in the future?
+# Currently, we load the default version. Maybe we should somehow make this configurable in the future?
 module load ReFrame
 if [[ $? -eq 0 ]]; then
     echo_green ">> Loaded ReFrame module"
 else
     fatal_error "Failed to load the ReFrame module"
+fi
+
+# Check that a system python3 is available
+python3_found=$(which python3)
+if [ -z ${python3_found} ]; then
+    fatal_error "No system python3 found"
+else
+    echo_green "System python3 found:"
+    python3 -V
 fi
 
 # Check ReFrame came with the hpctestlib and we can import it
