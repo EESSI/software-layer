@@ -8,3 +8,33 @@ easyconfigs:
   - matplotlib-3.8.2-gfbf-2023b.eb:
       options:
         from-pr: 19552
+  - AOFlagger-3.4.0-foss-2023b.eb:
+      options:
+        from-pr: 19840
+        # Exclude Lua from `filter-deps` as the compat layer version is too old for the software
+        filter-deps:
+          - Autoconf
+          - Automake
+          - Autotools
+          - binutils
+          - bzip2
+          - DBus
+          - flex
+          - gettext
+          - gperf
+          - help2man
+          - intltool
+          - libreadline
+          - libtool
+          - ncurses
+          - M4
+          - makeinfo
+          - util-linux
+          - XZ
+          - zlib
+  - DP3-6.0-foss-2023b.eb:
+      options:
+        from-pr: 19840
+  - WSClean-3.4-foss-2023b.eb:
+      options:
+        from-pr: 19840
