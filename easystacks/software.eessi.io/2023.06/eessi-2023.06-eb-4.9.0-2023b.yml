@@ -10,11 +10,11 @@ easyconfigs:
         from-pr: 19552
   - AOFlagger-3.4.0-foss-2023b.eb:
       options:
-        from:pr: 19840
+        from-pr: 19840
         include-easyblocks-from-pr: 3088
   - casacore-3.5.0-foss-2023b.eb:
       options:
-        from:pr: 19840
+        from-pr: 19840
         include-easyblocks-from-pr: 3088
   - DP3-6.0-foss-2023b.eb:
       options:
