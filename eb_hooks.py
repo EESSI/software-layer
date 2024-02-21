@@ -246,6 +246,23 @@ def parse_hook_ucx_eprefix(ec, eprefix):
         raise EasyBuildError("UCX-specific hook triggered for non-UCX easyconfig?!")
 
 
+def parse_hook_lammps_remove_deps_for_CI_aarch64(ec, *args, **kwargs):
+    """
+    Remove x86_64 specific dependencies for the CI to pass on aarch64
+    """
+    if ec.name == 'LAMMPS' and ec.version in ('2Aug2023_update2',):
+        if os.getenv('EESSI_CPU_FAMILY') == 'aarch64':
+            # ScaFaCoS and tbb are not compatible with aarch64/* CPU targets,
+            # so remove them as dependencies for LAMMPS (they're optional);
+            # see also https://github.com/easybuilders/easybuild-easyconfigs/pull/19164 +
+            # https://github.com/easybuilders/easybuild-easyconfigs/pull/19000;
+            # we need this hook because we check for missing installations for all CPU targets
+            # on an x86_64 VM in GitHub Actions (so condition based on ARCH in LAMMPS easyconfig is always true)
+            ec['dependencies'] = [dep for dep in ec['dependencies'] if dep[0] not in ('ScaFaCoS', 'tbb')]
+    else:
+        raise EasyBuildError("LAMMPS-specific hook triggered for non-LAMMPS easyconfig?!")
+
+
 def pre_configure_hook(self, *args, **kwargs):
     """Main pre-configure hook: trigger custom functions based on software name."""
     if self.name in PRE_CONFIGURE_HOOKS:
@@ -316,24 +333,6 @@ def pre_configure_hook_wrf_aarch64(self, *args, **kwargs):
                     print_msg("Using custom preconfigopts for %s: %s", self.name, self.cfg['preconfigopts'])
     else:
         raise EasyBuildError("WRF-specific hook triggered for non-WRF easyconfig?!")
-
-
-def pre_configure_hook_LAMMPS_aarch64(self, *args, **kwargs):
-    """
-    pre-configure hook for LAMMPS:
-    - set kokkos_arch on Aarch64
-    """
-
-    cpu_target = get_eessi_envvar('EESSI_SOFTWARE_SUBDIR')
-    if self.name == 'LAMMPS':
-        if self.version == '23Jun2022':
-            if  get_cpu_architecture() == AARCH64:
-                if cpu_target == CPU_TARGET_AARCH64_GENERIC:
-                    self.cfg['kokkos_arch'] = 'ARM80'
-                else:
-                    self.cfg['kokkos_arch'] = 'ARM81'
-    else:
-        raise EasyBuildError("LAMMPS-specific hook triggered for non-LAMMPS easyconfig?!")
 
 
 def pre_configure_hook_atspi2core_filter_ld_library_path(self, *args, **kwargs):
@@ -586,6 +585,7 @@ PARSE_HOOKS = {
     'pybind11': parse_hook_pybind11_replace_catch2,
     'Qt5': parse_hook_qt5_check_qtwebengine_disable,
     'UCX': parse_hook_ucx_eprefix,
+    'LAMMPS': parse_hook_lammps_remove_deps_for_CI_aarch64,
 }
 
 POST_PREPARE_HOOKS = {
@@ -597,7 +597,6 @@ PRE_CONFIGURE_HOOKS = {
     'MetaBAT': pre_configure_hook_metabat_filtered_zlib_dep,
     'OpenBLAS': pre_configure_hook_openblas_optarch_generic,
     'WRF': pre_configure_hook_wrf_aarch64,
-    'LAMMPS': pre_configure_hook_LAMMPS_aarch64,
     'at-spi2-core': pre_configure_hook_atspi2core_filter_ld_library_path,
 }
 
