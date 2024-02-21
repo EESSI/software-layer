@@ -16,15 +16,15 @@ easyconfigs:
       options:
         from-pr: 19840
         include-easyblocks-from-pr: 3088
-  - DP3-6.0-foss-2023b.eb:
-      options:
-        from-pr: 19840
-        include-easyblocks-from-pr: 3088
-  - IDG-1.2.0-foss-2023b.eb:
+  - IDG-1.2.e0-foss-2023b.eb:
       options:
         from-pr: 19840
         include-easyblocks-from-pr: 3088
   - EveryBeam-0.5.2-foss-2023b.eb:
+      options:
+        from-pr: 19840
+        include-easyblocks-from-pr: 3088
+  - DP3-6.0-foss-2023b.eb:
       options:
         from-pr: 19840
         include-easyblocks-from-pr: 3088
