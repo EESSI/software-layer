@@ -12,6 +12,10 @@ easyconfigs:
       options:
         from-pr: 19840
         include-easyblocks-from-pr: 3088
+  - arpack-ng-3.9.0-foss-2023b.eb:
+      options:
+        from-pr: 19840
+        include-easyblocks-from-pr: 3088
   - Armadillo-12.8.0-foss-2023b.eb:
       options:
         from-pr: 19840
