@@ -159,10 +159,11 @@ def post_prepare_hook(self, *args, **kwargs):
     if self.name in POST_PREPARE_HOOKS:
         POST_PREPARE_HOOKS[self.name](self, *args, **kwargs)
 
+
 def parse_hook_casacore_disable_vectorize(ec, eprefix):
     """
     Disable 'vectorize' toolchain option for casacore 3.5.0 on aarch64/neoverse_v1
-    Compiling casacore 3.5.0 with GCC 13.2.0 (foss-2023) gives an error when building for aarch64/neoverse_v1.
+    Compiling casacore 3.5.0 with GCC 13.2.0 (foss-2023b) gives an error when building for aarch64/neoverse_v1.
     See also, https://github.com/EESSI/software-layer/pull/479
     """
     if ec.name == 'casacore':
@@ -180,6 +181,7 @@ def parse_hook_casacore_disable_vectorize(ec, eprefix):
             print_msg("Not changing option vectorize for %s %s %s", ec.name, ec.version, ec.toolchain)
     else:
         raise EasyBuildError("casacore-specific hook triggered for non-casacore easyconfig?!")
+
 
 def parse_hook_cgal_toolchainopts_precise(ec, eprefix):
     """Enable 'precise' rather than 'strict' toolchain option for CGAL on POWER."""
