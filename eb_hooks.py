@@ -178,7 +178,6 @@ def parse_hook_casacore_disable_vectorize(ec, eprefix):
                 print_msg("Not changing option vectorize for %s on non-AARCH64", ec.name)
         else:
             print_msg("Not changing option vectorize for %s %s %s", ec.name, ec.version, ec.toolchain)
-
     else:
         raise EasyBuildError("casacore-specific hook triggered for non-casacore easyconfig?!")
 
