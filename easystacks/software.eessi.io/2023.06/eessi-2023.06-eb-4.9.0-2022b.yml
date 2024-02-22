@@ -4,3 +4,4 @@ easyconfigs:
   - waLBerla-6.1-foss-2022b.eb:
       options:
         from-pr: 19324
+  - WRF-4.4.1-foss-2022b-dmpar.eb
