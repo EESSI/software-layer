@@ -177,7 +177,7 @@ def parse_hook_casacore_disable_vectorize(ec, eprefix):
                 ec['toolchainopts']['vectorize'] = False
                 print_msg("Changed toochainopts for %s: %s", ec.name, ec['toolchainopts'])
             else:
-                print_msg("Not changing option vectorize for %s on non-AARCH64", ec.name)
+                print_msg("Not changing option vectorize for %s on non-neoverse_v1", ec.name)
         else:
             print_msg("Not changing option vectorize for %s %s %s", ec.name, ec.version, ec.toolchain)
     else:
