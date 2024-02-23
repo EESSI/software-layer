@@ -172,7 +172,8 @@ def parse_hook_casacore_disable_vectorize(ec, eprefix):
             LooseVersion(ec.version) == LooseVersion('3.5.0') and
             tcname == 'foss' and tcversion == '2023b'
         ):
-            if get_cpu_architecture() == CPU_TARGET_NEOVERSE_V1:
+            cpu_target = get_eessi_envvar('EESSI_SOFTWARE_SUBDIR')
+            if cpu_target == CPU_TARGET_NEOVERSE_V1:
                 ec['toolchainopts']['vectorize'] = False
                 print_msg("Changed toochainopts for %s: %s", ec.name, ec['toolchainopts'])
             else:
