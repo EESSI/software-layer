@@ -174,6 +174,8 @@ def parse_hook_casacore_disable_vectorize(ec, eprefix):
         ):
             cpu_target = get_eessi_envvar('EESSI_SOFTWARE_SUBDIR')
             if cpu_target == CPU_TARGET_NEOVERSE_V1:
+                if not hasattr(ec, 'toolchainopts'):
+                    ec['toolchainopts'] = {}
                 ec['toolchainopts']['vectorize'] = False
                 print_msg("Changed toochainopts for %s: %s", ec.name, ec['toolchainopts'])
             else:
