@@ -186,6 +186,32 @@ def parse_hook_casacore_disable_vectorize(ec, eprefix):
         raise EasyBuildError("casacore-specific hook triggered for non-casacore easyconfig?!")
 
 
+def parse_hook_dp3_enable_relaxed_vector_conversions(ec, eprefix):
+    """
+    Enable lax vector conversion for DP3 on aarch64/neoverse_v1
+    Compiling DP3 6.0 with GCC 13.2.0 (foss-2023b) gives a conversion error when building for aarch64/neoverse_v1.
+    See also, https://github.com/EESSI/software-layer/pull/479
+    """
+    if ec.name == 'DP3':
+        tcname, tcversion = ec['toolchain']['name'], ec['toolchain']['version']
+        if (
+            LooseVersion(ec.version) == LooseVersion('6.0') and
+            tcname == 'foss' and tcversion == '2023b'
+        ):
+            cpu_target = get_eessi_envvar('EESSI_SOFTWARE_SUBDIR')
+            if cpu_target == CPU_TARGET_NEOVERSE_V1:
+                if not hasattr(ec, 'configopts'):
+                    ec['configopts'] = ""
+                ec['configopts'] += ' -DCMAKE_CXX_FLAGS="$CXXFLAGS -flax-vector-conversions" '
+                print_msg("Changed configopts for %s: %s", ec.name, ec['configopts'])
+            else:
+                print_msg("Not changing configopts for %s on non-neoverse_v1", ec.name)
+        else:
+            print_msg("Not changing configopts for %s %s %s", ec.name, ec.version, ec.toolchain)
+    else:
+        raise EasyBuildError("DP3-specific hook triggered for non-DP3 easyconfig?!")
+
+
 def parse_hook_cgal_toolchainopts_precise(ec, eprefix):
     """Enable 'precise' rather than 'strict' toolchain option for CGAL on POWER."""
     if ec.name == 'CGAL':
@@ -607,6 +633,7 @@ def inject_gpu_property(ec):
 PARSE_HOOKS = {
     'casacore': parse_hook_casacore_disable_vectorize,
     'CGAL': parse_hook_cgal_toolchainopts_precise,
+    'DP3': parse_hook_dp3_enable_relaxed_vector_conversions,
     'fontconfig': parse_hook_fontconfig_add_fonts,
     'OpenBLAS': parse_hook_openblas_relax_lapack_tests_num_errors,
     'pybind11': parse_hook_pybind11_replace_catch2,
