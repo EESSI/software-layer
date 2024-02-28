@@ -29,4 +29,7 @@ easyconfigs:
       # see https://github.com/easybuilders/easybuild-easyconfigs/pull/19554
       options:
         from-pr: 19554
-  - dask-2023.9.2-foss-2023a.eb
+  - dask-2023.9.2-foss-2023a.eb:
+      options:
+        from-pr: 19996
+ 
