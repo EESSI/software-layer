@@ -205,6 +205,7 @@ def parse_hook_openblas_relax_lapack_tests_num_errors(ec, eprefix):
 
 
 def parse_hook_Pillow_SIMD_harcoded_paths(ec, eprefix):
+    """Make Pillow-SIMD aware of sysroot."""
     # patch setup.py to prefix hardcoded /usr/* and /lib paths with value of %(sysroot) template
     # (which will be empty if EasyBuild is not configured to use an alternate sysroot);
     # see also https://gitlab.com/eessi/support/-/issues/9
@@ -249,6 +250,7 @@ def parse_hook_qt5_check_qtwebengine_disable(ec, eprefix):
 
 
 def parse_hook_ucx_eprefix(ec, eprefix):
+    """Make UCX aware of compatibility layer via additional configuration options."""
     if ec.name == 'UCX':
         ec.update('configopts', '--with-sysroot=%s' % eprefix)
         ec.update('configopts', '--with-rdmacm=%s' % os.path.join(eprefix, 'usr'))
