@@ -32,4 +32,3 @@ easyconfigs:
   - dask-2023.9.2-foss-2023a.eb:
       options:
         from-pr: 19996
- 
