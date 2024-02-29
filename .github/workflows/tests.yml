@@ -22,7 +22,7 @@ jobs:
 
     - name: install Python packages
       run: |
-        pip install archspec
+        pip install archspec==0.2.2
 
     - name: test eessi_software_subdir.py script
       run: |
