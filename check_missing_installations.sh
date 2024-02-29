@@ -23,7 +23,8 @@ git clone -b develop https://github.com/easybuilders/easybuild-easyconfigs.git $
 EASYBUILD_ROBOT_PATHS=$LOCAL_TMPDIR/easyconfigs/easybuild/easyconfigs
 
 # All PRs used in EESSI are supposed to be merged, so we can strip out all cases of from-pr
-grep -v from-pr ${easystack} > ${LOCAL_TMPDIR}/${easystack} 
+tmp_easystack=${LOCAL_TMPDIR}/$(basename ${easystack})
+grep -v from-pr ${easystack} > ${tmp_easystack} 
 
 source $TOPDIR/scripts/utils.sh
 
@@ -34,7 +35,7 @@ ${EB:-eb} --show-config
 
 echo ">> Checking for missing installations in ${EASYBUILD_INSTALLPATH}..."
 eb_missing_out=$LOCAL_TMPDIR/eb_missing.out
-${EB:-eb} --easystack ${LOCAL_TMPDIR}/${easystack} --missing 2>&1 | tee ${eb_missing_out}
+${EB:-eb} --easystack ${tmp_easystack} --missing 2>&1 | tee ${eb_missing_out}
 exit_code=${PIPESTATUS[0]}
 
 ok_msg="Command 'eb --missing ...' succeeded, analysing output..."
