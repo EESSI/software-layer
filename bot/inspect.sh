@@ -338,12 +338,10 @@ fi
 # avoid that pyc files for EasyBuild are stored in EasyBuild installation directory
 export PYTHONPYCACHEPREFIX=$TMPDIR/pycache
 
-DETECTION_PARAMETERS=''
 GENERIC=0
 EB='eb'
 if [[ "$EASYBUILD_OPTARCH" == "GENERIC" || "$EESSI_SOFTWARE_SUBDIR_OVERRIDE" == *"/generic" ]]; then
     echo_yellow ">> GENERIC build requested, taking appropriate measures!"
-    DETECTION_PARAMETERS="$DETECTION_PARAMETERS --generic"
     GENERIC=1
     export EASYBUILD_OPTARCH=GENERIC
     EB='eb --optarch=GENERIC'
@@ -351,8 +349,17 @@ fi
 
 echo ">> Determining software subdirectory to use for current build host..."
 if [ -z $EESSI_SOFTWARE_SUBDIR_OVERRIDE ]; then
-  export EESSI_SOFTWARE_SUBDIR_OVERRIDE=$(python3 $TOPDIR/eessi_software_subdir.py $DETECTION_PARAMETERS)
-  echo ">> Determined \$EESSI_SOFTWARE_SUBDIR_OVERRIDE via 'eessi_software_subdir.py $DETECTION_PARAMETERS' script"
+  possible_subdir_paths=$(bash $TOPDIR/init/eessi_archdetect.sh -a cpupath)
+
+  if [[ "$GENERIC" -eq 1 ]]; then
+      # Last path is the generic case
+      override_subdir="${possible_subdir_paths##*:}"
+  else
+      # First path is the best option (according to archspec)
+      override_subdir="${possible_subdir_paths%%:*}"
+  fi
+  export EESSI_SOFTWARE_SUBDIR_OVERRIDE="$override_subdir"
+  echo ">> Determined \$EESSI_SOFTWARE_SUBDIR_OVERRIDE via 'archdetect' script ($override_subdir from $possible_subdir_paths)"
 else
   echo ">> Picking up pre-defined \$EESSI_SOFTWARE_SUBDIR_OVERRIDE: ${EESSI_SOFTWARE_SUBDIR_OVERRIDE}"
 fi
