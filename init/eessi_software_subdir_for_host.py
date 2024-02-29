@@ -6,8 +6,22 @@ import glob
 import os
 import platform
 import sys
-import archspec.cpu
-from archspec.cpu.detect import compatible_microarchitectures, raw_info_dictionary
+
+import archspec
+
+from archspec.cpu.detect import compatible_microarchitectures
+if hasattr(archspec, '__version__'):
+    module_version = archspec.__version__
+    legacy_version = '0.2.2'
+
+    if module_version >= legacy_version:
+        from archspec.cpu.detect import detected_info as raw_info
+    else:
+        # Handle the case where the module version is not compatible
+        from archspec.cpu.detect import raw_info_dictionary as raw_info
+
+
+
 
 VENDOR_MAP = {
     'GenuineIntel': 'intel',
@@ -39,7 +53,7 @@ def det_host_triple():
         """Helper function to sort compatible microarchitectures."""
         return len(item.ancestors), len(item.features)
 
-    raw_cpu_info = raw_info_dictionary()
+    raw_cpu_info = raw_info()
     compat_targets = compatible_microarchitectures(raw_cpu_info)
 
     # filter out generic targets
