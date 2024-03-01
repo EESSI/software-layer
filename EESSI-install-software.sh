@@ -210,7 +210,7 @@ if [ $UID -eq 0 ]; then
                     app_dir=${EASYBUILD_INSTALLPATH}/software/${app}
                     app_module=${EASYBUILD_INSTALLPATH}/modules/all/${app}.lua
                     echo_yellow "Removing ${app_dir} and ${app_module}..."
-                    rm -rf ${appdir}
+                    rm -rf ${app_dir}
                     rm -rf ${app_module}
                 done
             else
