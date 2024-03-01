@@ -34,3 +34,5 @@ easyconfigs:
         # see https://github.com/easybuilders/easybuild-easyconfigs/pull/19996
         from-pr: 19996
   - dask-2023.9.2-foss-2023a.eb
+  - OSU-Micro-Benchmarks-7.2-gompi-2023a-CUDA-12.1.1.eb
+  - OSU-Micro-Benchmarks-7.2-gompi-2023b.eb
