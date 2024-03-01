@@ -219,7 +219,8 @@ if [ $UID -eq 0 ]; then
         done
     fi
     # now rerun the script with a regular user account to do the software installations
-    exec su eessi $( readlink -f "$0" ) -- "$@"
+    #exec su eessi $( readlink -f "$0" ) -- "$@"
+    exit
 fi
 
 # install any additional required scripts
