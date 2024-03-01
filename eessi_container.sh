@@ -586,7 +586,8 @@ fi
 
 if [[ "${ACCESS}" == "rw" ]]; then
   if [[ ! -z ${JOB_CFG_FILE} ]]; then
-    # always launch build jobs triggered by the job with --fakeroot,
+    # always launch build jobs triggered by the job with --fakeroot in order to be able to remove existing installations, see:
+    # https://github.com/EESSI/software-layer/issues/312
     # we drop back to a regular user in the build script
     ADDITIONAL_CONTAINER_OPTIONS+=("--fakeroot")
   fi
