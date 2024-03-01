@@ -234,7 +234,7 @@ else
     done
 
     # drop back to a regular user
-    su - eessi
+    su eessi
 
     for easystack_file in ${changed_easystacks}; do
 
