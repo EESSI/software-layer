@@ -228,6 +228,9 @@ else
                 rm -rf ${appdir}
                 rm -rf ${app_module}
             done
+        else
+            fatal_error "Easystack file ${easystack_file} not found!"
+        fi
     done
 
     # drop back to a regular user
