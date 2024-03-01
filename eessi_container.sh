@@ -585,6 +585,11 @@ if [[ "${ACCESS}" == "ro" ]]; then
 fi
 
 if [[ "${ACCESS}" == "rw" ]]; then
+  if [[ ! -z ${JOB_CFG_FILE} ]]; then
+    # always launch build jobs triggered by the job with --fakeroot,
+    # we drop back to a regular user in the build script
+    ADDITIONAL_CONTAINER_OPTIONS+=("--fakeroot")
+  fi
   mkdir -p ${EESSI_TMPDIR}/overlay-upper
   mkdir -p ${EESSI_TMPDIR}/overlay-work
 
