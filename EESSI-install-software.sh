@@ -208,19 +208,19 @@ if [ -z ${changed_easystacks} ]; then
     echo "No missing installations, party time!"  # Ensure the bot report success, as there was nothing to be build here
 else
     for easystack_file in ${changed_easystacks}; do
-    
+
         echo -e "Processing easystack file ${easystack_file}...\n\n"
-    
+
         # determine version of EasyBuild module to load based on EasyBuild version included in name of easystack file
         eb_version=$(echo ${easystack_file} | sed 's/.*eb-\([0-9.]*\).*/\1/g')
-    
+
         # load EasyBuild module (will be installed if it's not available yet)
         source ${TOPDIR}/load_easybuild_module.sh ${eb_version}
-    
+
         ${EB} --show-config
-    
+
         echo_green "All set, let's start installing some software with EasyBuild v${eb_version} in ${EASYBUILD_INSTALLPATH}..."
-    
+
         if [ -f ${easystack_file} ]; then
             if [ $(basename $(dirname ${easystack_file})) = 'rebuilds' ]; then
               echo_green "Software rebuild(s) requested, so determining which existing installation have to be removed..."
@@ -240,10 +240,10 @@ else
             su - eessi
 
             echo_green "Feeding easystack file ${easystack_file} to EasyBuild..."
-    
+
             ${EB} --easystack ${TOPDIR}/${easystack_file} --robot
             ec=$?
-    
+
             # copy EasyBuild log file if EasyBuild exited with an error
             if [ ${ec} -ne 0 ]; then
                 eb_last_log=$(unset EB_VERBOSE; eb --last-log)
@@ -253,12 +253,12 @@ else
                 # copy to build logs dir (with context added)
                 copy_build_log "${eb_last_log}" "${build_logs_dir}"
             fi
-    
+
             $TOPDIR/check_missing_installations.sh ${TOPDIR}/${easystack_file}
         else
             fatal_error "Easystack file ${easystack_file} not found!"
         fi
-    
+
     done
 fi
 
