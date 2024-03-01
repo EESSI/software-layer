@@ -222,7 +222,7 @@ else
         echo_green "All set, let's start installing some software with EasyBuild v${eb_version} in ${EASYBUILD_INSTALLPATH}..."
     
         if [ -f ${easystack_file} ]; then
-            if [ $(basename $(dirname ${easystack_file} = 'rebuilds' ]; then
+            if [ $(basename $(dirname ${easystack_file})) = 'rebuilds' ]; then
               echo_green "Software rebuild(s) requested, so determining which existing installation have to be removed..."
               # we need to remove existing installation directories first,
               # so let's figure out which modules have to be rebuilt by doing a dry-run and grepping "someapp/someversion" for the relevant lines (with [R])
