@@ -207,6 +207,32 @@ changed_easystacks=$(cat ${pr_diff} | grep '^+++' | cut -f2 -d' ' | sed 's@^[a-z
 if [ -z ${changed_easystacks} ]; then
     echo "No missing installations, party time!"  # Ensure the bot report success, as there was nothing to be build here
 else
+    changed_easystacks_rebuilds=$(grep "/rebuilds/" <<< ${changed_easystacks})
+    for easystack_file in ${changed_easystacks_rebuilds}; do
+        # determine version of EasyBuild module to load based on EasyBuild version included in name of easystack file
+        eb_version=$(echo ${easystack_file} | sed 's/.*eb-\([0-9.]*\).*/\1/g')
+
+        # load EasyBuild module (will be installed if it's not available yet)
+        source ${TOPDIR}/load_easybuild_module.sh ${eb_version}
+
+        if [ -f ${easystack_file} ]; then
+            echo_green "Software rebuild(s) requested in ${easystack_file}, so determining which existing installation have to be removed..."
+            # we need to remove existing installation directories first,
+            # so let's figure out which modules have to be rebuilt by doing a dry-run and grepping "someapp/someversion" for the relevant lines (with [R])
+            #  * [R] $CFGS/s/someapp/someapp-someversion.eb (module: someapp/someversion)
+            rebuild_apps=$(${EB} --allow-use-as-root-and-accept-consequences --dry-run-short --rebuild --easystack ${easystack_file} | grep "^ \* \[R\]" | grep -o "module: .*[^)]" | awk '{print $2}')
+            for app in ${rebuild_apps}; do
+                app_dir=${EASYBUILD_INSTALLPATH}/software/${app}
+                app_module=${EASYBUILD_INSTALLPATH}/modules/all/${app}.lua
+                echo_yellow "Removing ${app_dir} and ${app_module}..."
+                rm -rf ${appdir}
+                rm -rf ${app_module}
+            done
+    done
+
+    # drop back to a regular user
+    su - eessi
+
     for easystack_file in ${changed_easystacks}; do
 
         echo -e "Processing easystack file ${easystack_file}...\n\n"
@@ -222,23 +248,6 @@ else
         echo_green "All set, let's start installing some software with EasyBuild v${eb_version} in ${EASYBUILD_INSTALLPATH}..."
 
         if [ -f ${easystack_file} ]; then
-            if [ $(basename $(dirname ${easystack_file})) = 'rebuilds' ]; then
-              echo_green "Software rebuild(s) requested, so determining which existing installation have to be removed..."
-              # we need to remove existing installation directories first,
-              # so let's figure out which modules have to be rebuilt by doing a dry-run and grepping "someapp/someversion" for the relevant lines (with [R])
-              #  * [R] $CFGS/s/someapp/someapp-someversion.eb (module: someapp/someversion)
-              rebuild_apps=$(${EB} --allow-use-as-root-and-accept-consequences --dry-run-short --rebuild --easystack ${easystack_file} | grep "^ \* \[R\]" | grep -o "module: .*[^)]" | awk '{print $2}')
-              for app in ${rebuild_apps}; do
-                app_dir=${EASYBUILD_INSTALLPATH}/software/${app}
-                app_module=${EASYBUILD_INSTALLPATH}/modules/all/${app}.lua
-                echo_yellow "Removing ${app_dir} and ${app_module}..."
-                rm -rf ${appdir}
-                rm -rf ${app_module}
-              done
-            fi
-            # drop back to a regular user
-            su - eessi
-
             echo_green "Feeding easystack file ${easystack_file} to EasyBuild..."
 
             ${EB} --easystack ${TOPDIR}/${easystack_file} --robot
