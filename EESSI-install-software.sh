@@ -231,7 +231,7 @@ else
               for app in ${rebuild_apps}; do
                 app_dir=${EASYBUILD_INSTALLPATH}/software/${app}
                 app_module=${EASYBUILD_INSTALLPATH}/modules/all/${app}.lua
-                echo_yellow "Removing ${appdir} and ${app_module}..."
+                echo_yellow "Removing ${app_dir} and ${app_module}..."
                 rm -rf ${appdir}
                 rm -rf ${app_module}
               done
