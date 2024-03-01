@@ -227,7 +227,7 @@ else
               # we need to remove existing installation directories first,
               # so let's figure out which modules have to be rebuilt by doing a dry-run and grepping "someapp/someversion" for the relevant lines (with [R])
               #  * [R] $CFGS/s/someapp/someapp-someversion.eb (module: someapp/someversion)
-              rebuild_apps=$(${EB} --dry-run-short --rebuild --easystack ${easystack_file} | grep "^ \* \[R\]" | grep -o "module: .*[^)]" | awk '{print $2}')
+              rebuild_apps=$(${EB} --allow-use-as-root-and-accept-consequences --dry-run-short --rebuild --easystack ${easystack_file} | grep "^ \* \[R\]" | grep -o "module: .*[^)]" | awk '{print $2}')
               for app in ${rebuild_apps}; do
                 app_dir=${EASYBUILD_INSTALLPATH}/software/${app}
                 app_module=${EASYBUILD_INSTALLPATH}/modules/all/${app}.lua
