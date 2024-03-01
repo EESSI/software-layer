@@ -164,6 +164,9 @@ sed -i "s/__NUM_SOCKETS__/${socket_count}/g" $RFM_CONFIG_FILES
 sed -i "s/__NUM_CPUS_PER_CORE__/${threads_per_core}/g" $RFM_CONFIG_FILES
 sed -i "s/__NUM_CPUS_PER_SOCKET__/${cores_per_socket}/g" $RFM_CONFIG_FILES
 
+# Workaround for https://github.com/EESSI/software-layer/pull/467#issuecomment-1973341966
+export PSM3_DEVICES='self,shm'  # this is enough, since we only run single node for now
+
 # Check we can run reframe
 reframe --version
 if [[ $? -eq 0 ]]; then
