@@ -90,7 +90,7 @@ else
 fi
 
 # Check that a system python3 is available
-python3_found=$(which python3)
+python3_found=$(command -v python3)
 if [ -z ${python3_found} ]; then
     fatal_error "No system python3 found"
 else
