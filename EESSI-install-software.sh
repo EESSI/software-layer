@@ -222,6 +222,23 @@ else
         echo_green "All set, let's start installing some software with EasyBuild v${eb_version} in ${EASYBUILD_INSTALLPATH}..."
     
         if [ -f ${easystack_file} ]; then
+            if [ $(basename $(dirname ${easystack_file} = 'rebuilds' ]; then
+              echo_green "Software rebuild(s) requested, so determining which existing installation have to be removed..."
+              # we need to remove existing installation directories first,
+              # so let's figure out which modules have to be rebuilt by doing a dry-run and grepping "someapp/someversion" for the relevant lines (with [R])
+              #  * [R] $CFGS/s/someapp/someapp-someversion.eb (module: someapp/someversion)
+              rebuild_apps=$(${EB} --dry-run-short --rebuild --easystack ${easystack_file} | grep "^ \* \[R\]" | grep -o "module: .*[^)]" | awk '{print $2}')
+              for app in ${rebuild_apps}; do
+                app_dir=${EASYBUILD_INSTALLPATH}/software/${app}
+                app_module=${EASYBUILD_INSTALLPATH}/modules/all/${app}.lua
+                echo_yellow "Removing ${appdir} and {app_module}..."
+                rm -rf ${appdir}
+                rm -rf ${app_module}
+              done
+            fi
+            # drop back to a regular user
+            su - eessi
+
             echo_green "Feeding easystack file ${easystack_file} to EasyBuild..."
     
             ${EB} --easystack ${TOPDIR}/${easystack_file} --robot
