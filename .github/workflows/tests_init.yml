@@ -20,9 +20,30 @@ jobs:
         python-version: ${{matrix.python}}
         architecture: x64
 
-    - name: install Python packages
+    - name: install Python packages with legacy archspec
       run: |
-        pip install archspec pytest
+        pip install archspec==0.2.2 pytest
+
+    - name: unit tests for eessi_software_subdir_for_host.py script
+      run:
+          pytest -v init/test.py
+
+    - name: test eessi_software_subdir_for_host.py script
+      env:
+          EESSI_X86_64: /tmp/EESSI/software/linux/x86_64
+      run: |
+          mkdir -p ${EESSI_X86_64}/intel/{pentium4,sandybridge,haswell,skylake_avx512} ${EESSI_X86_64}/generic
+          python3 ./init/eessi_software_subdir_for_host.py /tmp/EESSI > out.txt
+          grep '^x86_64/' out.txt
+
+          # check override via $EESSI_SOFTWARE_SUBDIR_OVERRIDE
+          export EESSI_SOFTWARE_SUBDIR_OVERRIDE=x86_64/intel/pentium4
+          python3 ./init/eessi_software_subdir_for_host.py /tmp/EESSI > out.txt
+          grep '^x86_64/intel/pentium4$' out.txt
+
+    - name: upgrade Python package archspec
+      run: |
+        pip install --upgrade archspec
 
     - name: unit tests for eessi_software_subdir_for_host.py script
       run:

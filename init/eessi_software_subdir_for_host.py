@@ -14,7 +14,8 @@ if hasattr(archspec, '__version__'):
     module_version = archspec.__version__
     legacy_version = '0.2.2'
 
-    if module_version >= legacy_version:
+    # Let's assume well-behaved semantic versioning for archspec
+    if tuple(map(int, (module_version.split(".")))) > tuple(map(int, (legacy_version.split(".")))):
         from archspec.cpu.detect import detected_info as raw_info
     else:
         # Handle the case where the module version is not compatible
