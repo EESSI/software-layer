@@ -29,7 +29,7 @@ local function read_file(path)
     return content
 end
 
-local function cuda_enabled_load_hook(t)
+local function eessi_cuda_enabled_load_hook(t)
     local frameStk  = require("FrameStk"):singleton()
     local mt        = frameStk:mt()
     local simpleName = string.match(t.modFullName, "(.-)/")
@@ -94,7 +94,7 @@ local function cuda_enabled_load_hook(t)
     end
 end
 
-local function openmpi_load_hook(t)
+local function eessi_openmpi_load_hook(t)
     -- disable smcuda BTL when loading OpenMPI module for aarch64/neoverse_v1,
     -- to work around hang/crash due to bug in OpenMPI;
     -- see https://gitlab.com/eessi/support/-/issues/41
@@ -114,8 +114,8 @@ local function openmpi_load_hook(t)
     end
 end
 
-hook.register("load", cuda_enabled_load_hook)
-hook.register("load", openmpi_load_hook)
+hook.register("load", eessi_cuda_enabled_load_hook)
+hook.register("load", eessi_openmpi_load_hook)
 """
 
 def error(msg):
