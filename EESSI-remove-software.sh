@@ -62,15 +62,6 @@ TOPDIR=$(dirname $(realpath $0))
 
 source $TOPDIR/scripts/utils.sh
 
-# honor $TMPDIR if it is already defined, use /tmp otherwise
-if [ -z $TMPDIR ]; then
-    export WORKDIR=/tmp/$USER
-else
-    export WORKDIR=$TMPDIR/$USER
-fi
-
-TMPDIR=$(mktemp -d)
-
 echo ">> Setting up environment..."
 
 source $TOPDIR/init/minimal_eessi_env
@@ -82,7 +73,7 @@ else
 fi
 
 # avoid that pyc files for EasyBuild are stored in EasyBuild installation directory
-export PYTHONPYCACHEPREFIX=$TMPDIR/pycache
+#export PYTHONPYCACHEPREFIX=$TMPDIR/pycache
 
 DETECTION_PARAMETERS=''
 GENERIC=0
@@ -117,12 +108,11 @@ fi
 
 echo ">> Initializing Lmod..."
 source $EPREFIX/usr/share/Lmod/init/bash
-ml_version_out=$TMPDIR/ml.out
-ml --version &> $ml_version_out
+ml --version
 if [[ $? -eq 0 ]]; then
     echo_green ">> Found Lmod ${LMOD_VERSION}"
 else
-    fatal_error "Failed to initialize Lmod?! (see output in ${ml_version_out}"
+    fatal_error "Failed to initialize Lmod?!"
 fi
 
 echo ">> Configuring EasyBuild..."
@@ -183,7 +173,3 @@ if [ $UID -eq 0 ]; then
 else
     fatal_error "This script can only be run by root!"
 fi
-
-
-#echo ">> Cleaning up ${TMPDIR}..."
-#rm -r ${TMPDIR}
