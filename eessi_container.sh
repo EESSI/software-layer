@@ -585,12 +585,12 @@ if [[ "${ACCESS}" == "ro" ]]; then
 fi
 
 if [[ "${ACCESS}" == "rw" ]]; then
-  if [[ ! -z ${JOB_CFG_FILE} ]]; then
+  #if [[ ! -z ${JOB_CFG_FILE} ]]; then
     # always launch build jobs triggered by the job with --fakeroot in order to be able to remove existing installations, see:
     # https://github.com/EESSI/software-layer/issues/312
     # we drop back to a regular user in the build script
-    ADDITIONAL_CONTAINER_OPTIONS+=("--fakeroot")
-  fi
+    #ADDITIONAL_CONTAINER_OPTIONS+=("--fakeroot")
+  #fi
   mkdir -p ${EESSI_TMPDIR}/overlay-upper
   mkdir -p ${EESSI_TMPDIR}/overlay-work
 
@@ -625,6 +625,12 @@ if [ ! -z ${EESSI_SOFTWARE_SUBDIR_OVERRIDE} ]; then
     export SINGULARITYENV_EESSI_SOFTWARE_SUBDIR_OVERRIDE=${EESSI_SOFTWARE_SUBDIR_OVERRIDE}
     # also specify via $APPTAINERENV_* (future proof, cfr. https://apptainer.org/docs/user/latest/singularity_compatibility.html#singularity-environment-variable-compatibility)
     export APPTAINERENV_EESSI_SOFTWARE_SUBDIR_OVERRIDE=${EESSI_SOFTWARE_SUBDIR_OVERRIDE}
+fi
+
+if [[ ! -z ${JOB_CFG_FILE} ]]; then
+    echo "Removing software by launching container with command (next line):"
+    echo "singularity ${RUN_QUIET} exec --fakeroot ${ADDITIONAL_CONTAINER_OPTIONS[@]} ${EESSI_FUSE_MOUNTS[@]} ${CONTAINER} ./EESSI-remove-software.sh"
+    singularity ${RUN_QUIET} exec --fakeroot "${ADDITIONAL_CONTAINER_OPTIONS[@]}" "${EESSI_FUSE_MOUNTS[@]}" ${CONTAINER} ./EESSI-remove-software.sh
 fi
 
 echo "Launching container with command (next line):"
