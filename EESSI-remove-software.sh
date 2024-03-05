@@ -60,6 +60,8 @@ set -- "${POSITIONAL_ARGS[@]}"
 
 TOPDIR=$(dirname $(realpath $0))
 
+export TMPDIR=$(mktemp -d /tmp/eessi-remove.XXXXXXXX)
+
 source $TOPDIR/scripts/utils.sh
 
 echo ">> Setting up environment..."
