@@ -114,8 +114,15 @@ local function eessi_openmpi_load_hook(t)
     end
 end
 
-hook.register("load", eessi_cuda_enabled_load_hook)
-hook.register("load", eessi_openmpi_load_hook)
+-- Combine both functions into a single one, as we can only register one function as load hook in lmod
+-- Also: make it non-local, so it can be imported and extended by other lmodrc files if needed
+function eessi_load_hook(t)
+    eessi_cuda_enabled_load_hook(t)
+    eessi_openmpi_load_hook(t)
+end
+
+
+hook.register("load", eessi_load_hook)
 """
 
 def error(msg):
