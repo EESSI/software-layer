@@ -180,10 +180,10 @@ if [ $UID -eq 0 ]; then
             fi
         done
     fi
-    # now rerun the script with a regular user account to do the software installations
-    #exec su eessi $( readlink -f "$0" ) -- "$@"
-    exit
+else
+    fatal_error "This script can only be run by root!"
 fi
 
-echo ">> Cleaning up ${TMPDIR}..."
-rm -r ${TMPDIR}
+
+#echo ">> Cleaning up ${TMPDIR}..."
+#rm -r ${TMPDIR}
