@@ -82,6 +82,11 @@ if [ -d $EESSI_PREFIX ]; then
           else
             error "Lmod configuration file not found at $LMOD_RC"
           fi
+          # Allow for site-specific lmod configuration
+          host_lmod_rc="$EESSI_CVMFS_REPO"/host_injections/.lmod/lmodrc.lua
+          if [ -f $host_lmod_rc ]; then
+              export LMOD_RC="$host_lmod_rc"
+          fi
 
         else
           error "EESSI software layer at $EESSI_SOFTWARE_PATH not found!"
