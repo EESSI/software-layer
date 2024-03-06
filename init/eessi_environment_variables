@@ -85,6 +85,7 @@ if [ -d $EESSI_PREFIX ]; then
           # Allow for site-specific lmod configuration
           host_lmod_rc="${EESSI_PREFIX/versions/host_injections}"/.lmod/lmodrc.lua
           if [ -f $host_lmod_rc ]; then
+              show_msg "Found site Lmod configuration file at $LMOD_RC"
               export LMOD_RC="$host_lmod_rc"
           fi
 
