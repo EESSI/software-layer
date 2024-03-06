@@ -83,7 +83,7 @@ if [ -d $EESSI_PREFIX ]; then
             error "Lmod configuration file not found at $LMOD_RC"
           fi
           # Allow for site-specific lmod configuration
-          host_lmod_rc="${EESSI_PREFIX/versions/host_injections}/.lmod/lmodrc.lua
+          host_lmod_rc="${EESSI_PREFIX/versions/host_injections}"/.lmod/lmodrc.lua
           if [ -f $host_lmod_rc ]; then
               export LMOD_RC="$host_lmod_rc"
           fi
