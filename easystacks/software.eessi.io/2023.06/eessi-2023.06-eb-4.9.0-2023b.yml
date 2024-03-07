@@ -8,3 +8,6 @@ easyconfigs:
   - matplotlib-3.8.2-gfbf-2023b.eb:
       options:
         from-pr: 19552
+  - CDO-2.2.2-gompi-2023b.eb:
+      options:
+        from-pr: 19792   
