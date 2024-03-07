@@ -76,17 +76,11 @@ if [ -d $EESSI_PREFIX ]; then
             false
           fi
 
-          export LMOD_CONFIG_DIR="$EESSI_SOFTWARE_PATH/.lmod"
-          if [ -f $LMOD_CONFIG_DIR/lmodrc.lua ]; then
-            show_msg "Found Lmod configuration file at $LMOD_CONFIG_DIR/lmodrc.lua"
+          export LMOD_RC="$EESSI_SOFTWARE_PATH/.lmod/lmodrc.lua"
+          if [ -f $LMOD_RC ]; then
+            show_msg "Found Lmod configuration file at $LMOD_RC"
           else
-            error "Lmod configuration file not found at $LMOD_CONFIG_DIR/lmodrc.lua"
-          fi
-          # Allow for site-specific lmod configuration
-          host_lmod_rc="${EESSI_PREFIX/versions/host_injections}"/.lmod/lmodrc.lua
-          if [ -f $host_lmod_rc ]; then
-              show_msg "Found site Lmod configuration file at $LMOD_RC"
-              export LMOD_RC="$host_lmod_rc"
+            error "Lmod configuration file not found at $LMOD_RC"
           fi
 
         else
