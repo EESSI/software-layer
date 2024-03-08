@@ -10,8 +10,15 @@
 
 TOPDIR=$(dirname $(realpath $0))
 
-if [ $# -ne 1 ]; then
-    echo "ERROR: Usage: $0 <path to easystack file>" >&2
+if [ "$#" -eq 1 ]; then
+    true
+elif [ "$#" -eq 2 ]; then
+    echo "Using $2 to give create exceptions for PR filtering of easystack"
+    # Find lines that are added and use from-pr, make them unique, grab the
+    # PR numbers and use them to construct something we can use within awk
+    pr_exceptions=$(grep ^+ $2 | grep from-pr | uniq | awk '{print $3}' | xargs -i echo " || /'{}'/")
+else
+    echo "ERROR: Usage: $0 <path to easystack file> (<optional path to PR diff>)" >&2
     exit 1
 fi
 easystack=$1
@@ -24,7 +31,10 @@ export EASYBUILD_ROBOT_PATHS=$LOCAL_TMPDIR/easyconfigs/easybuild/easyconfigs
 
 # All PRs used in EESSI are supposed to be merged, so we can strip out all cases of from-pr
 tmp_easystack=${LOCAL_TMPDIR}/$(basename ${easystack})
-grep -v from-pr ${easystack} > ${tmp_easystack} 
+# Let's use awk so we can allow for exceptions if we are given a PR diff file
+awk_command="awk '\!/'from-pr'/ EXCEPTIONS' $easystack"
+awk_command=${awk_command/\\/}  # Strip out the backslash we needed for !
+eval ${awk_command/EXCEPTIONS/$pr_exceptions} > ${tmp_easystack}
 
 source $TOPDIR/scripts/utils.sh
 
@@ -40,6 +50,10 @@ exit_code=${PIPESTATUS[0]}
 
 ok_msg="Command 'eb --missing ...' succeeded, analysing output..."
 fail_msg="Command 'eb --missing ...' failed, check log '${eb_missing_out}'"
+if [ "$#" -eq 1 ]; then
+    fail_msg="$fail_msg (are you sure all PRs referenced have been merged in EasyBuild?)"
+fi
+
 check_exit_code ${exit_code} "${ok_msg}" "${fail_msg}"
 
 # the above assesses the installed software for each easyconfig provided in
