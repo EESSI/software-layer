@@ -193,9 +193,9 @@ remove_outerr=$(mktemp remove.outerr.XXXX)
 
 echo "Executing command to remove software:"
 echo "./eessi_container.sh ${COMMON_ARGS[@]} ${REMOVE_STEP_ARGS[@]}"
-echo "                     -- ./install_software_layer.sh \"${INSTALL_SCRIPT_ARGS[@]}\" \"$@\" 2>&1 | tee -a ${remove_outerr}"
+echo "                     -- ./EESSI-remove-software.sh \"${INSTALL_SCRIPT_ARGS[@]}\" \"$@\" 2>&1 | tee -a ${remove_outerr}"
 ./eessi_container.sh "${COMMON_ARGS[@]}" "${REMOVE_STEP_ARGS[@]}" \
-                     -- ./install_software_layer.sh "${INSTALL_SCRIPT_ARGS[@]}" "$@" 2>&1 | tee -a ${remove_outerr}
+                     -- ./EESSI-remove-software.sh "${INSTALL_SCRIPT_ARGS[@]}" "$@" 2>&1 | tee -a ${remove_outerr}
 
 # prepare arguments to eessi_container.sh specific to build step
 declare -a BUILD_STEP_ARGS=()
