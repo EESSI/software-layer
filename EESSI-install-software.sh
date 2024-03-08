@@ -87,8 +87,6 @@ while [[ $# -gt 0 ]]; do
   esac
 done
 
-echo "Software installation user: $EUID $UID"
-
 set -- "${POSITIONAL_ARGS[@]}"
 
 TOPDIR=$(dirname $(realpath $0))
