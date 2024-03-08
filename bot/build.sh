@@ -181,6 +181,8 @@ BUILD_STEP_ARGS+=("--nvidia" "all")
 if [[ ! -z ${SHARED_FS_PATH} ]]; then
     BUILD_STEP_ARGS+=("--host-injections" "${SHARED_FS_PATH}/host-injections")
 fi
+# add fakeroot option in order to be able to remove software
+BUILD_STEP_ARGS+=("--fakeroot")
 
 # prepare arguments to install_software_layer.sh (specific to build step)
 declare -a INSTALL_SCRIPT_ARGS=()
