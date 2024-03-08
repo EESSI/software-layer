@@ -169,9 +169,9 @@ COMMON_ARGS+=("--mode" "run")
 PREVIOUS_TMP_DIR=${PWD}/previous_tmp
 
 # prepare directory to store tarball of tmp for removal and build steps
-TARBALL_TMP_REMOVE_STEP_DIR=${PREVIOUS_TMP_DIR}/remove_step
+TARBALL_TMP_REMOVAL_STEP_DIR=${PREVIOUS_TMP_DIR}/removal_step
 TARBALL_TMP_BUILD_STEP_DIR=${PREVIOUS_TMP_DIR}/build_step
-mkdir -p ${TARBALL_TMP_BUILD_STEP_DIR} ${TARBALL_TMP_REMOVE_STEP_DIR}
+mkdir -p ${TARBALL_TMP_BUILD_STEP_DIR} ${TARBALL_TMP_REMOVAL_STEP_DIR}
 
 # prepare arguments to install_software_layer.sh (specific to build step)
 declare -a INSTALL_SCRIPT_ARGS=()
@@ -182,20 +182,20 @@ fi
 [[ ! -z ${SHARED_FS_PATH} ]] && INSTALL_SCRIPT_ARGS+=("--shared-fs-path" "${SHARED_FS_PATH}")
 
 # prepare arguments to eessi_container.sh specific to remove step
-declare -a REMOVE_STEP_ARGS=()
-REMOVE_STEP_ARGS+=("--save" "${TARBALL_TMP_BUILD_STEP_DIR}")
-REMOVE_STEP_ARGS+=("--storage" "${STORAGE}")
+declare -a REMOVAL_STEP_ARGS=()
+REMOVAL_STEP_ARGS+=("--save" "${TARBALL_TMP_BUILD_STEP_DIR}")
+REMOVAL_STEP_ARGS+=("--storage" "${STORAGE}")
 # add fakeroot option in order to be able to remove software
-REMOVE_STEP_ARGS+=("--fakeroot")
+REMOVAL_STEP_ARGS+=("--fakeroot")
 
 # create tmp file for output of removal step
-remove_outerr=$(mktemp remove.outerr.XXXX)
+removal_outerr=$(mktemp remove.outerr.XXXX)
 
 echo "Executing command to remove software:"
-echo "./eessi_container.sh ${COMMON_ARGS[@]} ${REMOVE_STEP_ARGS[@]}"
-echo "                     -- ./EESSI-remove-software.sh \"${INSTALL_SCRIPT_ARGS[@]}\" \"$@\" 2>&1 | tee -a ${remove_outerr}"
-./eessi_container.sh "${COMMON_ARGS[@]}" "${REMOVE_STEP_ARGS[@]}" \
-                     -- ./EESSI-remove-software.sh "${INSTALL_SCRIPT_ARGS[@]}" "$@" 2>&1 | tee -a ${remove_outerr}
+echo "./eessi_container.sh ${COMMON_ARGS[@]} ${REMOVAL_STEP_ARGS[@]}"
+echo "                     -- ./EESSI-remove-software.sh \"${INSTALL_SCRIPT_ARGS[@]}\" \"$@\" 2>&1 | tee -a ${removal_outerr}"
+./eessi_container.sh "${COMMON_ARGS[@]}" "${REMOVAL_STEP_ARGS[@]}" \
+                     -- ./EESSI-remove-software.sh "${INSTALL_SCRIPT_ARGS[@]}" "$@" 2>&1 | tee -a ${removal_outerr}
 
 # prepare arguments to eessi_container.sh specific to build step
 declare -a BUILD_STEP_ARGS=()
@@ -208,8 +208,8 @@ if [[ ! -z ${SHARED_FS_PATH} ]]; then
 fi
 
 # determine temporary directory to resume from; this is important in case software was removed for a rebuild
-REMOVE_TMPDIR=$(grep ' as tmp directory ' ${remove_outerr} | cut -d ' ' -f 2)
-BUILD_STEP_ARGS+=("--resume" "${REMOVE_TMPDIR}")
+REMOVAL_TMPDIR=$(grep ' as tmp directory ' ${removal_outerr} | cut -d ' ' -f 2)
+BUILD_STEP_ARGS+=("--resume" "${REMOVAL_TMPDIR}")
 
 # create tmp file for output of build step
 build_outerr=$(mktemp build.outerr.XXXX)
@@ -232,8 +232,7 @@ declare -a TARBALL_STEP_ARGS=()
 TARBALL_STEP_ARGS+=("--save" "${TARBALL_TMP_TARBALL_STEP_DIR}")
 
 # determine temporary directory to resume from
-BUILD_TMPDIR=$(grep ' as tmp directory ' ${build_outerr} | cut -d ' ' -f 2)
-TARBALL_STEP_ARGS+=("--resume" "${BUILD_TMPDIR}")
+TARBALL_STEP_ARGS+=("--resume" "${REMOVAL_TMPDIR}")
 
 timestamp=$(date +%s)
 # to set EESSI_VERSION we need to source init/eessi_defaults now
