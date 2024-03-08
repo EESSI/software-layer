@@ -627,11 +627,11 @@ if [ ! -z ${EESSI_SOFTWARE_SUBDIR_OVERRIDE} ]; then
     export APPTAINERENV_EESSI_SOFTWARE_SUBDIR_OVERRIDE=${EESSI_SOFTWARE_SUBDIR_OVERRIDE}
 fi
 
-if [[ ! -z ${JOB_CFG_FILE} ]]; then
-    echo "Removing software by launching container with command (next line):"
-    echo "singularity ${RUN_QUIET} exec --fakeroot ${ADDITIONAL_CONTAINER_OPTIONS[@]} ${EESSI_FUSE_MOUNTS[@]} ${CONTAINER} ./EESSI-remove-software.sh"
-    singularity ${RUN_QUIET} exec --fakeroot "${ADDITIONAL_CONTAINER_OPTIONS[@]}" "${EESSI_FUSE_MOUNTS[@]}" ${CONTAINER} ./EESSI-remove-software.sh
-fi
+#if [[ ! -z ${JOB_CFG_FILE} ]]; then
+#    echo "Removing software by launching container with command (next line):"
+#    echo "singularity ${RUN_QUIET} exec --fakeroot ${ADDITIONAL_CONTAINER_OPTIONS[@]} ${EESSI_FUSE_MOUNTS[@]} ${CONTAINER} ./EESSI-remove-software.sh"
+#    singularity ${RUN_QUIET} exec --fakeroot "${ADDITIONAL_CONTAINER_OPTIONS[@]}" "${EESSI_FUSE_MOUNTS[@]}" ${CONTAINER} ./EESSI-remove-software.sh
+#fi
 
 echo "Launching container with command (next line):"
 echo "singularity ${RUN_QUIET} ${MODE} ${ADDITIONAL_CONTAINER_OPTIONS[@]} ${EESSI_FUSE_MOUNTS[@]} ${CONTAINER} $@"
