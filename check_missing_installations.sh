@@ -61,10 +61,10 @@ if [ "$exit_code" -eq 1 ]; then
     echo ${msg}
     eb_missing_out=$LOCAL_TMPDIR/eb_missing_with_from_pr.out
     ${EB:-eb} --easystack ${tmp_easystack} --missing 2>&1 | tee ${eb_missing_out}
-    exit_code=${PIPESTATUS[0]}
+    exit_code_with_from_pr=${PIPESTATUS[0]}
 
     # If now we succeeded, the reason must be that we originally stripped the --from-pr's
-    if [ "$#" -eq 0 ]; then
+    if [ "$exit_code_with_from_pr" -eq 0 ]; then
         fail_msg="$fail_msg (are you sure all PRs referenced have been merged in EasyBuild?)"
     fi
 fi
