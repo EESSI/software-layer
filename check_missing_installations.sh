@@ -33,11 +33,6 @@ export EASYBUILD_ROBOT_PATHS=$LOCAL_TMPDIR/easyconfigs/easybuild/easyconfigs
 tmp_easystack=${LOCAL_TMPDIR}/$(basename ${easystack})
 grep -v from-pr ${easystack} > ${tmp_easystack}
 
-# Let's use awk so we can allow for exceptions if we are given a PR diff file
-awk_command="awk '\!/'from-pr'/ EXCEPTIONS' $easystack"
-awk_command=${awk_command/\\/}  # Strip out the backslash we needed for !
-eval ${awk_command/EXCEPTIONS/$pr_exceptions} > ${tmp_easystack}
-
 source $TOPDIR/scripts/utils.sh
 
 source $TOPDIR/configure_easybuild
