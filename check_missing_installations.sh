@@ -47,7 +47,7 @@ exit_code=${PIPESTATUS[0]}
 
 ok_msg="Command 'eb --missing ...' succeeded, analysing output..."
 fail_msg="Command 'eb --missing ...' failed, check log '${eb_missing_out}'"
-if [ "$#" -eq 1 ]; then
+if [ "$exit_code" -eq 1 ]; then
     # We might have failed due to unmerged PRs. Try to make exceptions for --from-pr added in this PR
     # to software-layer, and see if then it passes. If so, we can report a more specific fail_msg
 
