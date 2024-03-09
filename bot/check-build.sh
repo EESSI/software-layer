@@ -207,6 +207,8 @@ elif [[ ${UNMERGED_EASYCONFIG} -eq 1 ]]; then
 else
     # FAILURE
     status="FAILURE"
+    # General failure, we don't know a more specific reason
+    reason=""
     summary=":cry: FAILURE"
 fi
 
