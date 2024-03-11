@@ -400,7 +400,7 @@ comment_details_list=${comment_details_list}$(add_detail ${NO_MISSING} 1 "${succ
 success_msg="found message matching <code>${GP_tgz_created}</code>"
 failure_msg="no message matching <code>${GP_tgz_created}</code>"
 comment_details_list=${comment_details_list}$(add_detail ${TGZ} 1 "${success_msg}" "${failure_msg}")
-# Now, do the actual repalcement of __DETAILS_FMT__
+# Now, do the actual replacement of __DETAILS_FMT__
 comment_details_fmt="<dt>_Details_</dt><dd>__DETAILS_LIST__</dd>"
 comment_details="${comment_details_fmt/__DETAILS_LIST__/${comment_details_list}}"
 comment_description=${comment_description/__DETAILS_FMT__/${comment_details}}
