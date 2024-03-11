@@ -47,9 +47,11 @@ exit_code=${PIPESTATUS[0]}
 
 ok_msg="Command 'eb --missing ...' succeeded, analysing output..."
 fail_msg="Command 'eb --missing ...' failed, check log '${eb_missing_out}'"
-if [ "$exit_code" -eq 1 ]; then
+if [ "$exit_code" -eq 1 ] && [ ! -z $pr_exceptions ]; then
     # We might have failed due to unmerged PRs. Try to make exceptions for --from-pr added in this PR
     # to software-layer, and see if then it passes. If so, we can report a more specific fail_msg
+    # Note that if no --from-pr's were used in this PR, $pr_exceptions will be empty and we might as
+    # well skip this check - unmerged PRs can not be the reason for the non-zero exit code in that scenario
 
     # Let's use awk so we can allow for exceptions if we are given a PR diff file
     awk_command="awk '\!/'from-pr'/ EXCEPTIONS' $easystack"
