@@ -257,7 +257,7 @@ if [ ! -f $lmod_rc_file ] || [ ${lmodrc_changed} == '0' ]; then
 fi
 
 echo ">> Creating/updating Lmod SitePackage.lua ..."
-export LMOD_PACKAGE_PATH=${EASYBUILD_INSTALLPATH}/.lmod"
+export LMOD_PACKAGE_PATH="${EASYBUILD_INSTALLPATH}/.lmod"
 lmod_sitepackage_file="$LMOD_PACKAGE_PATH/SitePackage.lua"
 if [ ! -f $lmod_sitepackage_file ] || [ ${sitepackage_changed} == '0' ]; then
     python3 $TOPDIR/create_lmodsitepackage.py ${EASYBUILD_INSTALLPATH}
