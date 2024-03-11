@@ -129,11 +129,10 @@ if not os.path.exists(prefix):
     error("Prefix directory %s does not exist!" % prefix)
 
 sitepackage_path = os.path.join(prefix, DOT_LMOD, 'SitePackage.lua')
-sitepackage_txt += hook_txt
 try:
     os.makedirs(os.path.dirname(sitepackage_path), exist_ok=True)
     with open(sitepackage_path, 'w') as fp:
-        fp.write(sitepackage_txt)
+        fp.write(hook_txt)
 
 except (IOError, OSError) as err:
     error("Failed to create %s: %s" % (sitepackage_path, err))
