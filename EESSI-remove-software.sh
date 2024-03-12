@@ -27,14 +27,6 @@ while [[ $# -gt 0 ]]; do
       # no shifting needed here, we're done.
       exit 0
       ;;
-    -x|--http-proxy)
-      export http_proxy="$2"
-      shift 2
-      ;;
-    -y|--https-proxy)
-      export https_proxy="$2"
-      shift 2
-      ;;
     --build-logs-dir)
       export build_logs_dir="${2}"
       shift 2
