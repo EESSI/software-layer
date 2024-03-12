@@ -260,7 +260,7 @@ echo ">> Creating/updating Lmod SitePackage.lua ..."
 export LMOD_PACKAGE_PATH="${EASYBUILD_INSTALLPATH}/.lmod"
 lmod_sitepackage_file="$LMOD_PACKAGE_PATH/SitePackage.lua"
 sitepackage_changed=$(cat ${pr_diff} | grep '^+++' | cut -f2 -d' ' | sed 's@^[a-z]/@@g' | grep '^create_lmodsitepackage.py$' > /dev/null; echo $?)
-if [ ! -f $lmod_sitepackage_file ] || [ "${sitepackage_changed}" == '0' ]; then
+if [ ! -f "$lmod_sitepackage_file" ] || [ "${sitepackage_changed}" == '0' ]; then
     python3 $TOPDIR/create_lmodsitepackage.py ${EASYBUILD_INSTALLPATH}
     check_exit_code $? "$lmod_sitepackage_file created" "Failed to create $lmod_sitepackage_file"
 fi
