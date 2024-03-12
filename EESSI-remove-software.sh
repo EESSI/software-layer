@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-# Script to install EESSI software stack (version set through init/eessi_defaults)
+# Script to remove part of the EESSI software stack (version set through init/eessi_defaults)
 
 # see example parsing of command line arguments at
 #   https://wiki.bash-hackers.org/scripting/posparams#using_a_while_loop
