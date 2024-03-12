@@ -27,10 +27,6 @@ while [[ $# -gt 0 ]]; do
       # no shifting needed here, we're done.
       exit 0
       ;;
-    --build-logs-dir)
-      export build_logs_dir="${2}"
-      shift 2
-      ;;
     --shared-fs-path)
       export shared_fs_path="${2}"
       shift 2
