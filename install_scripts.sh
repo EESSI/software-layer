@@ -112,4 +112,4 @@ copy_files_by_list ${TOPDIR}/scripts ${INSTALL_PREFIX}/scripts "${script_files[@
 nvidia_files=(
     install_cuda_host_injections.sh link_nvidia_host_libraries.sh
 )
-copy_files_by_list ${TOPDIR}/gpu_support/nvidia ${INSTALL_PREFIX}/gpu_support/nvidia "${nvidia_files[@]}"
+copy_files_by_list ${TOPDIR}/scripts/gpu_support/nvidia ${INSTALL_PREFIX}/scripts/gpu_support/nvidia "${nvidia_files[@]}"
