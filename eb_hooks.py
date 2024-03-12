@@ -21,7 +21,7 @@ except ImportError:
 
 
 CPU_TARGET_NEOVERSE_V1 = 'aarch64/neoverse_v1'
-CPU_TARGET_AARCH64_GENERIC = 'aarch64/generic' 
+CPU_TARGET_AARCH64_GENERIC = 'aarch64/generic'
 
 EESSI_RPATH_OVERRIDE_ATTR = 'orig_rpath_override_dirs'
 
@@ -80,7 +80,7 @@ def post_ready_hook(self, *args, **kwargs):
     # 'parallel' easyconfig parameter is set via EasyBlock.set_parallel in ready step based on available cores.
     # here we reduce parallellism to only use half of that for selected software,
     # to avoid failing builds/tests due to out-of-memory problems
-    if self.name in ['TensorFlow']:
+    if self.name in ['TensorFlow', 'libxc']:
         parallel = self.cfg['parallel']
         if parallel > 1:
             self.cfg['parallel'] = parallel // 2
@@ -158,6 +158,32 @@ def post_prepare_hook(self, *args, **kwargs):
 
     if self.name in POST_PREPARE_HOOKS:
         POST_PREPARE_HOOKS[self.name](self, *args, **kwargs)
+
+
+def parse_hook_casacore_disable_vectorize(ec, eprefix):
+    """
+    Disable 'vectorize' toolchain option for casacore 3.5.0 on aarch64/neoverse_v1
+    Compiling casacore 3.5.0 with GCC 13.2.0 (foss-2023b) gives an error when building for aarch64/neoverse_v1.
+    See also, https://github.com/EESSI/software-layer/pull/479
+    """
+    if ec.name == 'casacore':
+        tcname, tcversion = ec['toolchain']['name'], ec['toolchain']['version']
+        if (
+            LooseVersion(ec.version) == LooseVersion('3.5.0') and
+            tcname == 'foss' and tcversion == '2023b'
+        ):
+            cpu_target = get_eessi_envvar('EESSI_SOFTWARE_SUBDIR')
+            if cpu_target == CPU_TARGET_NEOVERSE_V1:
+                if not hasattr(ec, 'toolchainopts'):
+                    ec['toolchainopts'] = {}
+                ec['toolchainopts']['vectorize'] = False
+                print_msg("Changed toochainopts for %s: %s", ec.name, ec['toolchainopts'])
+            else:
+                print_msg("Not changing option vectorize for %s on non-neoverse_v1", ec.name)
+        else:
+            print_msg("Not changing option vectorize for %s %s %s", ec.name, ec.version, ec.toolchain)
+    else:
+        raise EasyBuildError("casacore-specific hook triggered for non-casacore easyconfig?!")
 
 
 def parse_hook_cgal_toolchainopts_precise(ec, eprefix):
@@ -246,6 +272,23 @@ def parse_hook_ucx_eprefix(ec, eprefix):
         raise EasyBuildError("UCX-specific hook triggered for non-UCX easyconfig?!")
 
 
+def parse_hook_lammps_remove_deps_for_CI_aarch64(ec, *args, **kwargs):
+    """
+    Remove x86_64 specific dependencies for the CI to pass on aarch64
+    """
+    if ec.name == 'LAMMPS' and ec.version in ('2Aug2023_update2',):
+        if os.getenv('EESSI_CPU_FAMILY') == 'aarch64':
+            # ScaFaCoS and tbb are not compatible with aarch64/* CPU targets,
+            # so remove them as dependencies for LAMMPS (they're optional);
+            # see also https://github.com/easybuilders/easybuild-easyconfigs/pull/19164 +
+            # https://github.com/easybuilders/easybuild-easyconfigs/pull/19000;
+            # we need this hook because we check for missing installations for all CPU targets
+            # on an x86_64 VM in GitHub Actions (so condition based on ARCH in LAMMPS easyconfig is always true)
+            ec['dependencies'] = [dep for dep in ec['dependencies'] if dep[0] not in ('ScaFaCoS', 'tbb')]
+    else:
+        raise EasyBuildError("LAMMPS-specific hook triggered for non-LAMMPS easyconfig?!")
+
+
 def pre_configure_hook(self, *args, **kwargs):
     """Main pre-configure hook: trigger custom functions based on software name."""
     if self.name in PRE_CONFIGURE_HOOKS:
@@ -310,30 +353,12 @@ def pre_configure_hook_wrf_aarch64(self, *args, **kwargs):
             if LooseVersion(self.version) <= LooseVersion('3.9.0'):
                     self.cfg.update('preconfigopts', "sed -i 's/%s/%s/g' arch/configure_new.defaults && " % (pattern, repl))
                     print_msg("Using custom preconfigopts for %s: %s", self.name, self.cfg['preconfigopts'])
-                    
+
             if LooseVersion('4.0.0') <= LooseVersion(self.version) <= LooseVersion('4.2.1'):
                     self.cfg.update('preconfigopts', "sed -i 's/%s/%s/g' arch/configure.defaults && " % (pattern, repl))
                     print_msg("Using custom preconfigopts for %s: %s", self.name, self.cfg['preconfigopts'])
     else:
         raise EasyBuildError("WRF-specific hook triggered for non-WRF easyconfig?!")
-
-
-def pre_configure_hook_LAMMPS_aarch64(self, *args, **kwargs):
-    """
-    pre-configure hook for LAMMPS:
-    - set kokkos_arch on Aarch64
-    """
-
-    cpu_target = get_eessi_envvar('EESSI_SOFTWARE_SUBDIR')
-    if self.name == 'LAMMPS':
-        if self.version == '23Jun2022':
-            if  get_cpu_architecture() == AARCH64:
-                if cpu_target == CPU_TARGET_AARCH64_GENERIC:
-                    self.cfg['kokkos_arch'] = 'ARM80'
-                else:
-                    self.cfg['kokkos_arch'] = 'ARM81'
-    else:
-        raise EasyBuildError("LAMMPS-specific hook triggered for non-LAMMPS easyconfig?!")
 
 
 def pre_configure_hook_atspi2core_filter_ld_library_path(self, *args, **kwargs):
@@ -355,6 +380,16 @@ def pre_test_hook(self,*args, **kwargs):
     """Main pre-test hook: trigger custom functions based on software name."""
     if self.name in PRE_TEST_HOOKS:
         PRE_TEST_HOOKS[self.name](self, *args, **kwargs)
+
+
+def pre_test_hook_exclude_failing_test_Highway(self, *args, **kwargs):
+    """
+    Pre-test hook for Highway: exclude failing TestAllShiftRightLanes/SVE_256 test on neoverse_v1
+    cfr. https://github.com/EESSI/software-layer/issues/469
+    """
+    cpu_target = get_eessi_envvar('EESSI_SOFTWARE_SUBDIR')
+    if self.name == 'Highway' and self.version in ['1.0.3'] and cpu_target == CPU_TARGET_NEOVERSE_V1:
+        self.cfg['runtest'] += ' ARGS="-E TestAllShiftRightLanes/SVE_256"'
 
 
 def pre_test_hook_ignore_failing_tests_ESPResSo(self, *args, **kwargs):
@@ -405,7 +440,16 @@ def pre_test_hook_ignore_failing_tests_netCDF(self, *args, **kwargs):
     """
     cpu_target = get_eessi_envvar('EESSI_SOFTWARE_SUBDIR')
     if self.name == 'netCDF' and self.version == '4.9.2' and cpu_target == CPU_TARGET_NEOVERSE_V1:
-        self.cfg['testopts'] = "|| echo ignoring failing tests" 
+        self.cfg['testopts'] = "|| echo ignoring failing tests"
+
+def pre_test_hook_increase_max_failed_tests_arm_PyTorch(self, *args, **kwargs):
+    """
+    Pre-test hook for PyTorch: increase max failing tests for ARM for PyTorch 2.1.2
+    See https://github.com/EESSI/software-layer/pull/444#issuecomment-1890416171
+    """
+    if self.name == 'PyTorch' and self.version == '2.1.2' and get_cpu_architecture() == AARCH64:
+        self.cfg['max_failed_tests'] = 10
+
 
 def pre_single_extension_hook(ext, *args, **kwargs):
     """Main pre-extension: trigger custom functions based on software name."""
@@ -561,12 +605,14 @@ def inject_gpu_property(ec):
 
 
 PARSE_HOOKS = {
+    'casacore': parse_hook_casacore_disable_vectorize,
     'CGAL': parse_hook_cgal_toolchainopts_precise,
     'fontconfig': parse_hook_fontconfig_add_fonts,
     'OpenBLAS': parse_hook_openblas_relax_lapack_tests_num_errors,
     'pybind11': parse_hook_pybind11_replace_catch2,
     'Qt5': parse_hook_qt5_check_qtwebengine_disable,
     'UCX': parse_hook_ucx_eprefix,
+    'LAMMPS': parse_hook_lammps_remove_deps_for_CI_aarch64,
 }
 
 POST_PREPARE_HOOKS = {
@@ -578,15 +624,16 @@ PRE_CONFIGURE_HOOKS = {
     'MetaBAT': pre_configure_hook_metabat_filtered_zlib_dep,
     'OpenBLAS': pre_configure_hook_openblas_optarch_generic,
     'WRF': pre_configure_hook_wrf_aarch64,
-    'LAMMPS': pre_configure_hook_LAMMPS_aarch64,
     'at-spi2-core': pre_configure_hook_atspi2core_filter_ld_library_path,
 }
 
 PRE_TEST_HOOKS = {
     'ESPResSo': pre_test_hook_ignore_failing_tests_ESPResSo,
     'FFTW.MPI': pre_test_hook_ignore_failing_tests_FFTWMPI,
+    'Highway': pre_test_hook_exclude_failing_test_Highway,
     'SciPy-bundle': pre_test_hook_ignore_failing_tests_SciPybundle,
     'netCDF': pre_test_hook_ignore_failing_tests_netCDF,
+    'PyTorch': pre_test_hook_increase_max_failed_tests_arm_PyTorch,
 }
 
 PRE_SINGLE_EXTENSION_HOOKS = {
