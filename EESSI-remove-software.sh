@@ -11,7 +11,6 @@ display_help() {
   echo "  --build-logs-dir       -  location to copy EasyBuild logs to for failed builds"
   echo "  -g | --generic         -  instructs script to build for generic architecture target"
   echo "  -h | --help            -  display this usage information"
-  echo "  --shared-fs-path       -  path to directory on shared filesystem that can be used"
 }
 
 POSITIONAL_ARGS=()
@@ -26,10 +25,6 @@ while [[ $# -gt 0 ]]; do
       display_help  # Call your function
       # no shifting needed here, we're done.
       exit 0
-      ;;
-    --shared-fs-path)
-      export shared_fs_path="${2}"
-      shift 2
       ;;
     -*|--*)
       echo "Error: Unknown option: $1" >&2
@@ -102,12 +97,6 @@ fi
 
 echo ">> Configuring EasyBuild..."
 source $TOPDIR/configure_easybuild
-
-if [ ! -z "${shared_fs_path}" ]; then
-    shared_eb_sourcepath=${shared_fs_path}/easybuild/sources
-    echo ">> Using ${shared_eb_sourcepath} as shared EasyBuild source path"
-    export EASYBUILD_SOURCEPATH=${shared_eb_sourcepath}:${EASYBUILD_SOURCEPATH}
-fi
 
 echo ">> Setting up \$MODULEPATH..."
 # make sure no modules are loaded
