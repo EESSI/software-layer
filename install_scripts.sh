@@ -27,7 +27,7 @@ compare_and_copy() {
 
 copy_files_by_list() {
 # Compares and copies listed files from a source to a target directory
-    if [ "$#" -ne 3 ]; then
+    if [ ! "$#" -ge 3 ]; then
         echo "Usage of function: copy_files_by_list <source_dir> <destination_dir> <file_list>"
         echo "Here, file_list is an (expanded) bash array"
         echo "Example:"
