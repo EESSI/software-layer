@@ -43,3 +43,9 @@ easyconfigs:
   - CDO-2.2.2-gompi-2023b.eb:
       options:
         from-pr: 19792
+  - python-casacore-3.5.2-foss-2023b.eb:
+      options:
+        from-pr: 20084
+  - libspatialindex-1.9.3-GCCcore-13.2.0.eb:
+      options:
+        from-pr: 19922
