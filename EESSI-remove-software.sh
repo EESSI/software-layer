@@ -11,8 +11,6 @@ display_help() {
   echo "  --build-logs-dir       -  location to copy EasyBuild logs to for failed builds"
   echo "  -g | --generic         -  instructs script to build for generic architecture target"
   echo "  -h | --help            -  display this usage information"
-  echo "  -x | --http-proxy URL  -  provides URL for the environment variable http_proxy"
-  echo "  -y | --https-proxy URL -  provides URL for the environment variable https_proxy"
   echo "  --shared-fs-path       -  path to directory on shared filesystem that can be used"
 }
 
