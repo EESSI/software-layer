@@ -60,9 +60,6 @@ else
     fatal_error "$EESSI_CVMFS_REPO is not available!"
 fi
 
-# avoid that pyc files for EasyBuild are stored in EasyBuild installation directory
-#export PYTHONPYCACHEPREFIX=$TMPDIR/pycache
-
 DETECTION_PARAMETERS=''
 GENERIC=0
 EB='eb'
