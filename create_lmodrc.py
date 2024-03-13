@@ -95,14 +95,13 @@ local function eessi_cuda_enabled_load_hook(t)
 end
 
 local function eessi_openmpi_load_hook(t)
-    -- disable smcuda BTL when loading OpenMPI module for aarch64/neoverse_v1,
+    -- disable smcuda BTL when loading OpenMPI module,
     -- to work around hang/crash due to bug in OpenMPI;
-    -- see https://gitlab.com/eessi/support/-/issues/41
+    -- Fix should be merged via https://github.com/EESSI/software-layer/pull/488
     local frameStk = require("FrameStk"):singleton()
     local mt = frameStk:mt()
     local moduleName = string.match(t.modFullName, "(.-)/")
-    local cpuTarget = os.getenv("EESSI_SOFTWARE_SUBDIR") or ""
-    if (moduleName == "OpenMPI") and (cpuTarget == "aarch64/neoverse_v1") then
+    if (moduleName == "OpenMPI") then
         local msg = "Adding '^smcuda' to $OMPI_MCA_btl to work around bug in OpenMPI"
         LmodMessage(msg .. " (see https://gitlab.com/eessi/support/-/issues/41)")
 	local ompiMcaBtl = os.getenv("OMPI_MCA_btl")
