@@ -49,3 +49,6 @@ easyconfigs:
   - libspatialindex-1.9.3-GCCcore-13.2.0.eb:
       options:
         from-pr: 19922
+  - GROMACS-2024.1-foss-2023b.eb:
+      options:
+        from-pr: 20102
