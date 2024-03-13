@@ -29,7 +29,7 @@ local function read_file(path)
     return content
 end
 
-local function cuda_enabled_load_hook(t)
+local function eessi_cuda_enabled_load_hook(t)
     local frameStk  = require("FrameStk"):singleton()
     local mt        = frameStk:mt()
     local simpleName = string.match(t.modFullName, "(.-)/")
@@ -95,6 +95,15 @@ local function cuda_enabled_load_hook(t)
 end
 
 hook.register("load", cuda_enabled_load_hook)
+
+-- Combine both functions into a single one, as we can only register one function as load hook in lmod
+-- Also: make it non-local, so it can be imported and extended by other lmodrc files if needed
+function eessi_load_hook(t)
+    eessi_cuda_enabled_load_hook(t)
+end
+
+
+hook.register("load", eessi_load_hook)
 """
 
 def error(msg):
