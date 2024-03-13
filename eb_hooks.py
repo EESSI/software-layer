@@ -21,7 +21,7 @@ except ImportError:
 
 
 CPU_TARGET_NEOVERSE_V1 = 'aarch64/neoverse_v1'
-CPU_TARGET_AARCH64_GENERIC = 'aarch64/generic' 
+CPU_TARGET_AARCH64_GENERIC = 'aarch64/generic'
 
 EESSI_RPATH_OVERRIDE_ATTR = 'orig_rpath_override_dirs'
 
@@ -158,6 +158,32 @@ def post_prepare_hook(self, *args, **kwargs):
 
     if self.name in POST_PREPARE_HOOKS:
         POST_PREPARE_HOOKS[self.name](self, *args, **kwargs)
+
+
+def parse_hook_casacore_disable_vectorize(ec, eprefix):
+    """
+    Disable 'vectorize' toolchain option for casacore 3.5.0 on aarch64/neoverse_v1
+    Compiling casacore 3.5.0 with GCC 13.2.0 (foss-2023b) gives an error when building for aarch64/neoverse_v1.
+    See also, https://github.com/EESSI/software-layer/pull/479
+    """
+    if ec.name == 'casacore':
+        tcname, tcversion = ec['toolchain']['name'], ec['toolchain']['version']
+        if (
+            LooseVersion(ec.version) == LooseVersion('3.5.0') and
+            tcname == 'foss' and tcversion == '2023b'
+        ):
+            cpu_target = get_eessi_envvar('EESSI_SOFTWARE_SUBDIR')
+            if cpu_target == CPU_TARGET_NEOVERSE_V1:
+                if not hasattr(ec, 'toolchainopts'):
+                    ec['toolchainopts'] = {}
+                ec['toolchainopts']['vectorize'] = False
+                print_msg("Changed toochainopts for %s: %s", ec.name, ec['toolchainopts'])
+            else:
+                print_msg("Not changing option vectorize for %s on non-neoverse_v1", ec.name)
+        else:
+            print_msg("Not changing option vectorize for %s %s %s", ec.name, ec.version, ec.toolchain)
+    else:
+        raise EasyBuildError("casacore-specific hook triggered for non-casacore easyconfig?!")
 
 
 def parse_hook_cgal_toolchainopts_precise(ec, eprefix):
@@ -327,7 +353,7 @@ def pre_configure_hook_wrf_aarch64(self, *args, **kwargs):
             if LooseVersion(self.version) <= LooseVersion('3.9.0'):
                     self.cfg.update('preconfigopts', "sed -i 's/%s/%s/g' arch/configure_new.defaults && " % (pattern, repl))
                     print_msg("Using custom preconfigopts for %s: %s", self.name, self.cfg['preconfigopts'])
-                    
+
             if LooseVersion('4.0.0') <= LooseVersion(self.version) <= LooseVersion('4.2.1'):
                     self.cfg.update('preconfigopts', "sed -i 's/%s/%s/g' arch/configure.defaults && " % (pattern, repl))
                     print_msg("Using custom preconfigopts for %s: %s", self.name, self.cfg['preconfigopts'])
@@ -414,7 +440,7 @@ def pre_test_hook_ignore_failing_tests_netCDF(self, *args, **kwargs):
     """
     cpu_target = get_eessi_envvar('EESSI_SOFTWARE_SUBDIR')
     if self.name == 'netCDF' and self.version == '4.9.2' and cpu_target == CPU_TARGET_NEOVERSE_V1:
-        self.cfg['testopts'] = "|| echo ignoring failing tests" 
+        self.cfg['testopts'] = "|| echo ignoring failing tests"
 
 def pre_test_hook_increase_max_failed_tests_arm_PyTorch(self, *args, **kwargs):
     """
@@ -579,6 +605,7 @@ def inject_gpu_property(ec):
 
 
 PARSE_HOOKS = {
+    'casacore': parse_hook_casacore_disable_vectorize,
     'CGAL': parse_hook_cgal_toolchainopts_precise,
     'fontconfig': parse_hook_fontconfig_add_fonts,
     'OpenBLAS': parse_hook_openblas_relax_lapack_tests_num_errors,
