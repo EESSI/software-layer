@@ -174,7 +174,7 @@ fi
 # For now, we only analyse unmerged EasyConfigs as potential cause, but we can easily add checks for other
 # specific scenarios below
 
-# Check for the pattern being added here https://github.com/EESSI/software-layer/pull/493 to the output to
+# Check for the pattern being added here by check_missing_installations.sh to the output to
 # see if EasyConfigs might have been unmerged, and that's causing a failure
 UNMERGED_EASYCONFIG=-1
 if [[ ${SLURM_OUTPUT_FOUND} -eq 1 ]]; then
