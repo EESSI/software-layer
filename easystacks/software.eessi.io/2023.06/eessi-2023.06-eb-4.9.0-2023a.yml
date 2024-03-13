@@ -40,3 +40,4 @@ easyconfigs:
   - ImageMagick-7.1.1-15-GCCcore-12.3.0.eb:
       options:
         from-pr: 20086
+  - R-bundle-CRAN-2023.12-foss-2023a.eb
