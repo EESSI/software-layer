@@ -49,6 +49,3 @@ easyconfigs:
   - libspatialindex-1.9.3-GCCcore-13.2.0.eb:
       options:
         from-pr: 19922
-  - CFITSIO-4.3.1-GCCcore-13.2.0.eb:
-      options:
-        from-pr: 19840
