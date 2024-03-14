@@ -237,7 +237,7 @@ else
                 copy_build_log "${eb_last_log}" "${build_logs_dir}"
             fi
     
-            $TOPDIR/check_missing_installations.sh ${TOPDIR}/${easystack_file}
+            $TOPDIR/check_missing_installations.sh ${TOPDIR}/${easystack_file} ${TOPDIR}/${pr_diff}
         else
             fatal_error "Easystack file ${easystack_file} not found!"
         fi
