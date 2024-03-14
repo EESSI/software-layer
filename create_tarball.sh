@@ -56,8 +56,6 @@ if [ -d ${eessi_version}/init ]; then
     find ${eessi_version}/init -type f | grep -v '/\.wh\.' >> ${files_list}
 fi
 
-
-
 if [ -d ${eessi_version}/software/${os}/${cpu_arch_subdir}/modules ]; then
     # module files
     find ${eessi_version}/software/${os}/${cpu_arch_subdir}/modules -type f | grep -v '/\.wh\.' >> ${files_list}
