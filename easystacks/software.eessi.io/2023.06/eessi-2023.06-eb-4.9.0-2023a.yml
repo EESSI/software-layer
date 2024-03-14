@@ -46,3 +46,4 @@ easyconfigs:
         # and we need to workaround the problem this creates,
         # see https://github.com/EESSI/software-layer/pull/501 for details
         from-pr: 20050
+  - PyOpenGL-3.1.7-GCCcore-12.3.0.eb
