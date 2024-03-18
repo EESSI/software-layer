@@ -49,6 +49,9 @@ easyconfigs:
   - PyOpenGL-3.1.7-GCCcore-12.3.0.eb:
       options:
         from-pr: 20007
+  - ipympl-0.9.3-foss-2023a.eb:
+      options:
+        from-pr: 20126
   - QuantumESPRESSO-7.3-foss-2023a.eb:
       options:
         from-pr: 20105
