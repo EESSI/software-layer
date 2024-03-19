@@ -71,3 +71,6 @@ easyconfigs:
       options:
         # see https://github.com/easybuilders/easybuild-easyconfigs/pull/20238
         from-pr: 20238
+  - Extrae-4.0.6-gompi-2023a.eb:
+      options:
+        from-pr: 20153
