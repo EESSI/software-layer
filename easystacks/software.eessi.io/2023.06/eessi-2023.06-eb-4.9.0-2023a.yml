@@ -55,4 +55,4 @@ easyconfigs:
   - QuantumESPRESSO-7.3-foss-2023a.eb:
       options:
         from-pr: 20105
-        include-easyblocks-from-pr: 3241
+        include-easyblocks-from-pr: 3258
