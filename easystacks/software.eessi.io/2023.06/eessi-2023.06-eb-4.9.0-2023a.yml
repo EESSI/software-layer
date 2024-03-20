@@ -52,3 +52,5 @@ easyconfigs:
   - ipympl-0.9.3-foss-2023a.eb:
       options:
         from-pr: 20126
+  - ELPA-2023.05.001-foss-2023a.eb
+  - libxc-6.2.2-GCC-12.3.0.eb
