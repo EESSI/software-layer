@@ -21,4 +21,4 @@ source ${base_dir}/init/eessi_defaults
 ./run_in_compat_layer_env.sh "git clone https://github.com/EESSI/test-suite EESSI-test-suite"
 
 # Run the test suite
-./test_suite.sh
+./test_suite.sh "$@"

@@ -23,7 +23,7 @@ POSITIONAL_ARGS=()
 while [[ $# -gt 0 ]]; do
   case $1 in
     -g|--generic)
-      EASYBUILD_OPTARCH="GENERIC"
+      DETECTION_PARAMETERS="--generic"
       shift
       ;;
     -h|--help)
@@ -75,10 +75,9 @@ TMPDIR=$(mktemp -d)
 
 echo ">> Setting up environment..."
 module --force purge
-# Make sure defaults are set for EESSI_CVMFS_REPO and EESSI_VERSION, before initializing EESSI
-source $TOPDIR/init/eessi_defaults
-# Initialize EESSI
-source ${EESSI_CVMFS_REPO}/versions/${EESSI_VERSION}/init/bash
+export EESSI_SOFTWARE_SUBDIR_OVERRIDE=$(python3 $TOPDIR/eessi_software_subdir.py $DETECTION_PARAMETERS)
+
+source $TOPDIR/init/bash
 
 # Load the ReFrame module
 # Currently, we load the default version. Maybe we should somehow make this configurable in the future?
