@@ -171,8 +171,10 @@ PREVIOUS_TMP_DIR=${PWD}/previous_tmp
 # prepare arguments to install_software_layer.sh (specific to build step)
 declare -a BUILD_STEP_ARGS=()
 declare -a INSTALL_SCRIPT_ARGS=()
+declare -a REMOVAL_SCRIPT_ARGS=()
 if [[ ${EESSI_SOFTWARE_SUBDIR_OVERRIDE} =~ .*/generic$ ]]; then
     INSTALL_SCRIPT_ARGS+=("--generic")
+    REMOVAL_SCRIPT_ARGS+=("--generic")
 fi
 [[ ! -z ${BUILD_LOGS_DIR} ]] && INSTALL_SCRIPT_ARGS+=("--build-logs-dir" "${BUILD_LOGS_DIR}")
 [[ ! -z ${SHARED_FS_PATH} ]] && INSTALL_SCRIPT_ARGS+=("--shared-fs-path" "${SHARED_FS_PATH}")
@@ -200,9 +202,9 @@ else
 
     echo "Executing command to remove software:"
     echo "./eessi_container.sh ${COMMON_ARGS[@]} ${REMOVAL_STEP_ARGS[@]}"
-    echo "                     -- ./EESSI-remove-software.sh \"${INSTALL_SCRIPT_ARGS[@]}\" \"$@\" 2>&1 | tee -a ${removal_outerr}"
+    echo "                     -- ./EESSI-remove-software.sh \"${REMOVAL_SCRIPT_ARGS[@]}\" \"$@\" 2>&1 | tee -a ${removal_outerr}"
     ./eessi_container.sh "${COMMON_ARGS[@]}" "${REMOVAL_STEP_ARGS[@]}" \
-                         -- ./EESSI-remove-software.sh "${INSTALL_SCRIPT_ARGS[@]}" "$@" 2>&1 | tee -a ${removal_outerr}
+                         -- ./EESSI-remove-software.sh "${REMOVAL_SCRIPT_ARGS[@]}" "$@" 2>&1 | tee -a ${removal_outerr}
 
     # make sure that the build step resumes from the same temporary directory
     # this is important, as otherwise the removed software will still be there
