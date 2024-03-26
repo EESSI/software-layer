@@ -52,6 +52,7 @@ easyconfigs:
   - ipympl-0.9.3-foss-2023a.eb:
       options:
         from-pr: 20126
+  - OpenJPEG-2.5.0-GCCcore-12.3.0.eb
   - SuperLU_DIST-8.1.2-foss-2023a.eb:
       options:
         from-pr: 20162
