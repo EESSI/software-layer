@@ -180,7 +180,7 @@ echo "bot/test.sh: EESSI_OS_TYPE='${EESSI_OS_TYPE}'"
 # prepare arguments to eessi_container.sh common to build and tarball steps
 declare -a COMMON_ARGS=()
 COMMON_ARGS+=("--verbose")
-COMMON_ARGS+=("--access" "rw")
+COMMON_ARGS+=("--access" "ro")
 COMMON_ARGS+=("--mode" "run")
 [[ ! -z ${CONTAINER} ]] && COMMON_ARGS+=("--container" "${CONTAINER}")
 [[ ! -z ${HTTP_PROXY} ]] && COMMON_ARGS+=("--http-proxy" "${HTTP_PROXY}")
