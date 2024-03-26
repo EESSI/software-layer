@@ -155,6 +155,13 @@ else
   fi
 
   if ! command -v "eb" &>/dev/null; then
+    env | sort
+    module --version
+    declare -f module
+    module list
+    ls ${EESSI_SOFTWARE_PATH}
+    ls ${cuda_install_parent}
+
     echo_yellow "Attempting to load an EasyBuild module to do actual install"
     module load EasyBuild
     # There are some scenarios where this may fail
