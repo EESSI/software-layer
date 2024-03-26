@@ -200,5 +200,6 @@ comment_description=${comment_description/__DETAILS_FMT__/${comment_details}}
 
 # Actually writing the comment description to the result file
 echo "${comment_description}" >> ${job_test_result_file}
+echo "status = ${status}" >> ${job_test_result_file}
 
 exit 0
