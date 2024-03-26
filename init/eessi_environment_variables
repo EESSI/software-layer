@@ -85,6 +85,22 @@ if [ -d $EESSI_PREFIX ]; then
             false
           fi
 
+          export LMOD_CONFIG_DIR="$EESSI_SOFTWARE_PATH/.lmod"
+          lmod_rc_file="$LMOD_CONFIG_DIR/lmodrc.lua"
+          if [ -f $lmod_rc_file ]; then
+            show_msg "Found Lmod configuration file at $lmod_rc_file"
+          else
+            error "Lmod configuration file not found at $lmod_rc_file"
+          fi
+
+          export LMOD_PACKAGE_PATH="$EESSI_SOFTWARE_PATH/.lmod"
+          lmod_sitepackage_file="$LMOD_PACKAGE_PATH/SitePackage.lua"
+          if [ -f $lmod_sitepackage_file ]; then
+            show_msg "Found Lmod SitePackage.lua file at $lmod_sitepackage_file"
+          else
+            error "Lmod SitePackage.lua file not found at $lmod_sitepackage_file"
+          fi
+
         else
           error "EESSI software layer at $EESSI_SOFTWARE_PATH not found!"
         fi
