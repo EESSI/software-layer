@@ -56,12 +56,10 @@ else
 fi
 
 DETECTION_PARAMETERS=''
-GENERIC=0
 EB='eb'
 if [[ "$EASYBUILD_OPTARCH" == "GENERIC" ]]; then
     echo_yellow ">> GENERIC build requested, taking appropriate measures!"
     DETECTION_PARAMETERS="$DETECTION_PARAMETERS --generic"
-    GENERIC=1
     EB='eb --optarch=GENERIC'
 fi
 
