@@ -203,8 +203,12 @@ ${EESSI_PREFIX}/scripts/gpu_support/nvidia/install_cuda_host_injections.sh -c 12
 # ${EESSI_PREFIX}/scripts/gpu_support/nvidia/link_nvidia_host_libraries.sh
 
 # use PR patch file to determine in which easystack files stuff was added
-changed_easystacks=$(cat ${pr_diff} | grep '^+++' | cut -f2 -d' ' | sed 's@^[a-z]/@@g' | grep '^easystacks/.*yml$' | egrep -v 'known-issues|missing') 
-if [ -z ${changed_easystacks} ]; then
+# Get rebuild easystacks seperately, so they can be rebuild first.
+# This avoids missing dependencies when the regular EasyStacks are built.
+changed_easystacks_rebuilds=$(cat ${pr_diff} | grep '^+++' | cut -f2 -d' ' | sed 's@^[a-z]/@@g' | grep '^easystacks/.*yml$' | egrep -v 'known-issues|missing' | grep "/rebuilds/")
+changed_easystacks=$(cat ${pr_diff} | grep '^+++' | cut -f2 -d' ' | sed 's@^[a-z]/@@g' | grep '^easystacks/.*yml$' | egrep -v 'known-issues|missing' | grep -v "/rebuilds/")
+all_changed_easystacks="${changed_easystacks_rebuilds} ${changed_easystacks}"
+if [ -z "${all_changed_easystacks}" ]; then
     echo "No missing installations, party time!"  # Ensure the bot report success, as there was nothing to be build here
 else
 
