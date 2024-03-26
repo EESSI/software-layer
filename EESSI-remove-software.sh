@@ -17,7 +17,6 @@ POSITIONAL_ARGS=()
 while [[ $# -gt 0 ]]; do
   case $1 in
     -g|--generic)
-      echo_yellow ">> GENERIC build requested, taking appropriate measures!"
       DETECTION_PARAMETERS="--generic"
       shift
       ;;
