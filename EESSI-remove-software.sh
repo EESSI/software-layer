@@ -47,6 +47,14 @@ export TMPDIR=$(mktemp -d /tmp/eessi-remove.XXXXXXXX)
 
 source $TOPDIR/scripts/utils.sh
 
+echo ">> Determining software subdirectory to use for current build host..."
+if [ -z $EESSI_SOFTWARE_SUBDIR_OVERRIDE ]; then
+  export EESSI_SOFTWARE_SUBDIR_OVERRIDE=$(python3 $TOPDIR/eessi_software_subdir.py $DETECTION_PARAMETERS)
+  echo ">> Determined \$EESSI_SOFTWARE_SUBDIR_OVERRIDE via 'eessi_software_subdir.py $DETECTION_PARAMETERS' script"
+else
+  echo ">> Picking up pre-defined \$EESSI_SOFTWARE_SUBDIR_OVERRIDE: ${EESSI_SOFTWARE_SUBDIR_OVERRIDE}"
+fi
+
 echo ">> Setting up environment..."
 
 source $TOPDIR/init/bash
@@ -57,34 +65,12 @@ else
     fatal_error "$EESSI_CVMFS_REPO is not available!"
 fi
 
-echo ">> Determining software subdirectory to use for current build host..."
-if [ -z $EESSI_SOFTWARE_SUBDIR_OVERRIDE ]; then
-  export EESSI_SOFTWARE_SUBDIR_OVERRIDE=$(python3 $TOPDIR/eessi_software_subdir.py $DETECTION_PARAMETERS)
-  echo ">> Determined \$EESSI_SOFTWARE_SUBDIR_OVERRIDE via 'eessi_software_subdir.py $DETECTION_PARAMETERS' script"
-else
-  echo ">> Picking up pre-defined \$EESSI_SOFTWARE_SUBDIR_OVERRIDE: ${EESSI_SOFTWARE_SUBDIR_OVERRIDE}"
-fi
-
-# Set all the EESSI environment variables (respecting $EESSI_SOFTWARE_SUBDIR_OVERRIDE)
-# $EESSI_SILENT - don't print any messages
-# $EESSI_BASIC_ENV - give a basic set of environment variables
-EESSI_SILENT=1 EESSI_BASIC_ENV=1 source $TOPDIR/init/eessi_environment_variables
-
 if [[ -z ${EESSI_SOFTWARE_SUBDIR} ]]; then
     fatal_error "Failed to determine software subdirectory?!"
 elif [[ "${EESSI_SOFTWARE_SUBDIR}" != "${EESSI_SOFTWARE_SUBDIR_OVERRIDE}" ]]; then
     fatal_error "Values for EESSI_SOFTWARE_SUBDIR_OVERRIDE (${EESSI_SOFTWARE_SUBDIR_OVERRIDE}) and EESSI_SOFTWARE_SUBDIR (${EESSI_SOFTWARE_SUBDIR}) differ!"
 else
     echo_green ">> Using ${EESSI_SOFTWARE_SUBDIR} as software subdirectory!"
-fi
-
-echo ">> Initializing Lmod..."
-source $EPREFIX/usr/share/Lmod/init/bash
-ml --version
-if [[ $? -eq 0 ]]; then
-    echo_green ">> Found Lmod ${LMOD_VERSION}"
-else
-    fatal_error "Failed to initialize Lmod?!"
 fi
 
 echo ">> Configuring EasyBuild..."
