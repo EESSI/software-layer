@@ -47,7 +47,7 @@ source $TOPDIR/scripts/utils.sh
 
 echo ">> Setting up environment..."
 
-source $TOPDIR/init/minimal_eessi_env
+source $TOPDIR/init/bash
 
 if [ -d $EESSI_CVMFS_REPO ]; then
     echo_green "$EESSI_CVMFS_REPO available, OK!"
