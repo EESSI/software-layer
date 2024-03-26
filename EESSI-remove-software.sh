@@ -18,7 +18,9 @@ POSITIONAL_ARGS=()
 while [[ $# -gt 0 ]]; do
   case $1 in
     -g|--generic)
+      echo_yellow ">> GENERIC build requested, taking appropriate measures!"
       EASYBUILD_OPTARCH="GENERIC"
+      DETECTION_PARAMETERS="--generic"
       shift
       ;;
     -h|--help)
@@ -53,14 +55,6 @@ if [ -d $EESSI_CVMFS_REPO ]; then
     echo_green "$EESSI_CVMFS_REPO available, OK!"
 else
     fatal_error "$EESSI_CVMFS_REPO is not available!"
-fi
-
-DETECTION_PARAMETERS=''
-EB='eb'
-if [[ "$EASYBUILD_OPTARCH" == "GENERIC" ]]; then
-    echo_yellow ">> GENERIC build requested, taking appropriate measures!"
-    DETECTION_PARAMETERS="$DETECTION_PARAMETERS --generic"
-    EB='eb --optarch=GENERIC'
 fi
 
 echo ">> Determining software subdirectory to use for current build host..."
@@ -129,7 +123,7 @@ if [ $EUID -eq 0 ]; then
                 # we need to remove existing installation directories first,
                 # so let's figure out which modules have to be rebuilt by doing a dry-run and grepping "someapp/someversion" for the relevant lines (with [R])
                 #  * [R] $CFGS/s/someapp/someapp-someversion.eb (module: someapp/someversion)
-                rebuild_apps=$(${EB} --allow-use-as-root-and-accept-consequences --dry-run-short --rebuild --easystack ${easystack_file} | grep "^ \* \[R\]" | grep -o "module: .*[^)]" | awk '{print $2}')
+                rebuild_apps=$(eb --allow-use-as-root-and-accept-consequences --dry-run-short --rebuild --easystack ${easystack_file} | grep "^ \* \[R\]" | grep -o "module: .*[^)]" | awk '{print $2}')
                 for app in ${rebuild_apps}; do
                     app_dir=${EASYBUILD_INSTALLPATH}/software/${app}
                     app_module=${EASYBUILD_INSTALLPATH}/modules/all/${app}.lua
