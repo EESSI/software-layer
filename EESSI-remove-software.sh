@@ -18,7 +18,6 @@ while [[ $# -gt 0 ]]; do
   case $1 in
     -g|--generic)
       echo_yellow ">> GENERIC build requested, taking appropriate measures!"
-      export EASYBUILD_OPTARCH="GENERIC"
       DETECTION_PARAMETERS="--generic"
       shift
       ;;
