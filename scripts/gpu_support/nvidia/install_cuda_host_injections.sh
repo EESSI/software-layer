@@ -165,12 +165,14 @@ else
       error="${error}Please re-run this script with the 'eb' command available."
       fatal_error "${error}"
     fi
+    echo_yellow "EasyBuild module loaded"
   fi
 
   cuda_easyconfig="CUDA-${install_cuda_version}.eb"
 
   # Check the easyconfig file is available in the release
   # (eb search always returns 0, so we need a grep to ensure a usable exit code)
+  echo_yellow "Searching for easyconfig '${cuda_easyconfig}'"
   eb --search ^${cuda_easyconfig}|grep CUDA > /dev/null 2>&1
   # Check the exit code
   if [ $? -ne 0 ]; then
@@ -185,6 +187,7 @@ else
     error="${error}${available_cuda_easyconfigs}"
     fatal_error "${error}"
   fi
+  echo_yellow "Search for easyconfig '${cuda_easyconfig}' done"
 
   # We need the --rebuild option, as the CUDA module may or may not be on the
   # `MODULEPATH` yet. Even if it is, we still want to redo this installation
@@ -195,10 +198,13 @@ else
   extra_args="--rebuild --installpath-modules=${tmpdir}"
 
   # We don't want hooks used in this install, we need a vanilla CUDA installation
+  echo_yellow "Creating empty hooks file"
   touch "$tmpdir"/none.py
   # shellcheck disable=SC2086  # Intended splitting of extra_args
+  echo_yellow "Running 'eb --prefix=$tmpdir ${extra_args} --accept-eula-for=CUDA --hooks=$tmpdir/none.py --installpath=${cuda_install_parent}/ ${cuda_easyconfig}'"
   eb --prefix="$tmpdir" ${extra_args} --accept-eula-for=CUDA --hooks="$tmpdir"/none.py --installpath="${cuda_install_parent}"/ "${cuda_easyconfig}"
   ret=$?
+  echo_yellow "eb command finished with exit code '$ret'"
   if [ $ret -ne 0 ]; then
     eb_last_log=$(unset EB_VERBOSE; eb --last-log)
     cp -a ${eb_last_log} .
