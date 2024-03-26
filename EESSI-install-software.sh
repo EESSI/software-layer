@@ -265,7 +265,5 @@ if [ ! -f "$lmod_sitepackage_file" ] || [ "${sitepackage_changed}" == '0' ]; the
     check_exit_code $? "$lmod_sitepackage_file created" "Failed to create $lmod_sitepackage_file"
 fi
 
-$TOPDIR/update_lmod_cache.sh ${EPREFIX} ${EASYBUILD_INSTALLPATH}
-
 echo ">> Cleaning up ${TMPDIR}..."
 rm -r ${TMPDIR}
