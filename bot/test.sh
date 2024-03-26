@@ -8,6 +8,7 @@
 # https://github.com/EESSI/software-layer.git
 #
 # author: Thomas Roeblitz (@trz42)
+# author: Caspar van Leeuwen (@casparvl)
 #
 # license: GPLv2
 #
