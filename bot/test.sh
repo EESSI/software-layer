@@ -190,7 +190,7 @@ COMMON_ARGS+=("--mode" "run")
 # make sure to use the same parent dir for storing tarballs of tmp
 PREVIOUS_TMP_DIR=${PWD}/previous_tmp
 
-# prepare directory to store tarball of tmp for build step
+# prepare directory to store tarball of tmp for test step
 TARBALL_TMP_TEST_STEP_DIR=${PREVIOUS_TMP_DIR}/test_step
 mkdir -p ${TARBALL_TMP_TEST_STEP_DIR}
 
@@ -216,7 +216,7 @@ fi
 # create tmp file for output of build step
 test_outerr=$(mktemp test.outerr.XXXX)
 
-echo "Executing command to build software:"
+echo "Executing command to test software:"
 echo "./eessi_container.sh ${COMMON_ARGS[@]} ${TEST_STEP_ARGS[@]}"
 echo "                     -- ./run_tests.sh \"${TEST_SUITE_ARGS[@]}\" \"$@\" 2>&1 | tee -a ${test_outerr}"
 ./eessi_container.sh "${COMMON_ARGS[@]}" "${TEST_STEP_ARGS[@]}" \
