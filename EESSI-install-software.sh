@@ -247,7 +247,7 @@ fi
 
 ### add packages here
 
-echo ">> Creating/updating Lmod cache..."
+echo ">> Creating/updating Lmod RC file..."
 export LMOD_CONFIG_DIR="${EASYBUILD_INSTALLPATH}/.lmod"
 lmod_rc_file="$LMOD_CONFIG_DIR/lmodrc.lua"
 lmodrc_changed=$(cat ${pr_diff} | grep '^+++' | cut -f2 -d' ' | sed 's@^[a-z]/@@g' | grep '^create_lmodrc.py$' > /dev/null; echo $?)
