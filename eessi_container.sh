@@ -457,6 +457,12 @@ if [[ ${SETUP_NVIDIA} -eq 1 ]]; then
         mkdir -p ${EESSI_USR_LOCAL_CUDA}
         BIND_PATHS="${BIND_PATHS},${EESSI_VAR_LOG}:/var/log,${EESSI_USR_LOCAL_CUDA}:/usr/local/cuda"
         [[ ${VERBOSE} -eq 1 ]] && echo "BIND_PATHS=${BIND_PATHS}"
+        if [[ "${NVIDIA_MODE}" == "install" ]] ; then
+            # We need to "trick" our LMOD_RC file to allow us to load CUDA modules even without a CUDA driver
+            # (this works because we build within a container and the LMOD_RC recognises that)
+            touch ${EESSI_TMPDIR}/libcuda.so
+            export SINGULARITY_CONTAINLIBS="${EESSI_TMPDIR}/libcuda.so"
+        fi
     fi
 fi
 
