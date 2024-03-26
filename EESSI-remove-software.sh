@@ -74,6 +74,7 @@ else
 fi
 
 echo ">> Configuring EasyBuild..."
+EB="eb"
 source $TOPDIR/configure_easybuild
 
 echo ">> Setting up \$MODULEPATH..."
