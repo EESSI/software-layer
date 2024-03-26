@@ -8,7 +8,6 @@
 
 display_help() {
   echo "usage: $0 [OPTIONS]"
-  echo "  --build-logs-dir       -  location to copy EasyBuild logs to for failed builds"
   echo "  -g | --generic         -  instructs script to build for generic architecture target"
   echo "  -h | --help            -  display this usage information"
 }
