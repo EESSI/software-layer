@@ -51,9 +51,8 @@ site_configuration = {
         {
             'purge_environment': True,
             'resolve_module_conflicts': False,  # avoid loading the module before submitting the job
-            # Enable automatic detection of CPU architecture
-            # See https://reframe-hpc.readthedocs.io/en/stable/configure.html#auto-detecting-processor-information
-            'remote_detect': True,
+            # disable automatic detection of CPU architecture (since we're using local scheduler)
+            'remote_detect': False,
         }
     ],
     'logging': common_logging_config(),
