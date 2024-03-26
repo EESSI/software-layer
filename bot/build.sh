@@ -168,12 +168,56 @@ COMMON_ARGS+=("--mode" "run")
 # make sure to use the same parent dir for storing tarballs of tmp
 PREVIOUS_TMP_DIR=${PWD}/previous_tmp
 
+# prepare arguments to install_software_layer.sh (specific to build step)
+declare -a BUILD_STEP_ARGS=()
+declare -a INSTALL_SCRIPT_ARGS=()
+declare -a REMOVAL_SCRIPT_ARGS=()
+if [[ ${EESSI_SOFTWARE_SUBDIR_OVERRIDE} =~ .*/generic$ ]]; then
+    INSTALL_SCRIPT_ARGS+=("--generic")
+    REMOVAL_SCRIPT_ARGS+=("--generic")
+fi
+[[ ! -z ${BUILD_LOGS_DIR} ]] && INSTALL_SCRIPT_ARGS+=("--build-logs-dir" "${BUILD_LOGS_DIR}")
+[[ ! -z ${SHARED_FS_PATH} ]] && INSTALL_SCRIPT_ARGS+=("--shared-fs-path" "${SHARED_FS_PATH}")
+
+# determine if the removal step has to be run
+# assume there's only one diff file that corresponds to the PR patch file
+pr_diff=$(ls [0-9]*.diff | head -1)
+changed_easystacks_rebuilds=$(cat ${pr_diff} | grep '^+++' | cut -f2 -d' ' | sed 's@^[a-z]/@@g' | grep '^easystacks/.*yml$' | grep "/rebuilds/")
+if [[ -z ${changed_easystacks_rebuilds} ]]; then
+    echo "This PR does not add any easystack files in a rebuilds subdirectory, so let's skip the removal step."
+else
+    # prepare directory to store tarball of tmp for removal and build steps
+    TARBALL_TMP_REMOVAL_STEP_DIR=${PREVIOUS_TMP_DIR}/removal_step
+    mkdir -p ${TARBALL_TMP_REMOVAL_STEP_DIR}
+
+    # prepare arguments to eessi_container.sh specific to remove step
+    declare -a REMOVAL_STEP_ARGS=()
+    REMOVAL_STEP_ARGS+=("--save" "${TARBALL_TMP_BUILD_STEP_DIR}")
+    REMOVAL_STEP_ARGS+=("--storage" "${STORAGE}")
+    # add fakeroot option in order to be able to remove software, see:
+    # https://github.com/EESSI/software-layer/issues/312
+    REMOVAL_STEP_ARGS+=("--fakeroot")
+
+    # create tmp file for output of removal step
+    removal_outerr=$(mktemp remove.outerr.XXXX)
+
+    echo "Executing command to remove software:"
+    echo "./eessi_container.sh ${COMMON_ARGS[@]} ${REMOVAL_STEP_ARGS[@]}"
+    echo "                     -- ./EESSI-remove-software.sh \"${REMOVAL_SCRIPT_ARGS[@]}\" \"$@\" 2>&1 | tee -a ${removal_outerr}"
+    ./eessi_container.sh "${COMMON_ARGS[@]}" "${REMOVAL_STEP_ARGS[@]}" \
+                         -- ./EESSI-remove-software.sh "${REMOVAL_SCRIPT_ARGS[@]}" "$@" 2>&1 | tee -a ${removal_outerr}
+
+    # make sure that the build step resumes from the same temporary directory
+    # this is important, as otherwise the removed software will still be there
+    REMOVAL_TMPDIR=$(grep ' as tmp directory ' ${removal_outerr} | cut -d ' ' -f 2)
+    BUILD_STEP_ARGS+=("--resume" "${REMOVAL_TMPDIR}")
+fi
+
 # prepare directory to store tarball of tmp for build step
 TARBALL_TMP_BUILD_STEP_DIR=${PREVIOUS_TMP_DIR}/build_step
 mkdir -p ${TARBALL_TMP_BUILD_STEP_DIR}
 
 # prepare arguments to eessi_container.sh specific to build step
-declare -a BUILD_STEP_ARGS=()
 BUILD_STEP_ARGS+=("--save" "${TARBALL_TMP_BUILD_STEP_DIR}")
 BUILD_STEP_ARGS+=("--storage" "${STORAGE}")
 # add options required to handle NVIDIA support
@@ -181,14 +225,6 @@ BUILD_STEP_ARGS+=("--nvidia" "all")
 if [[ ! -z ${SHARED_FS_PATH} ]]; then
     BUILD_STEP_ARGS+=("--host-injections" "${SHARED_FS_PATH}/host-injections")
 fi
-
-# prepare arguments to install_software_layer.sh (specific to build step)
-declare -a INSTALL_SCRIPT_ARGS=()
-if [[ ${EESSI_SOFTWARE_SUBDIR_OVERRIDE} =~ .*/generic$ ]]; then
-    INSTALL_SCRIPT_ARGS+=("--generic")
-fi
-[[ ! -z ${BUILD_LOGS_DIR} ]] && INSTALL_SCRIPT_ARGS+=("--build-logs-dir" "${BUILD_LOGS_DIR}")
-[[ ! -z ${SHARED_FS_PATH} ]] && INSTALL_SCRIPT_ARGS+=("--shared-fs-path" "${SHARED_FS_PATH}")
 
 # create tmp file for output of build step
 build_outerr=$(mktemp build.outerr.XXXX)
@@ -211,8 +247,7 @@ declare -a TARBALL_STEP_ARGS=()
 TARBALL_STEP_ARGS+=("--save" "${TARBALL_TMP_TARBALL_STEP_DIR}")
 
 # determine temporary directory to resume from
-BUILD_TMPDIR=$(grep ' as tmp directory ' ${build_outerr} | cut -d ' ' -f 2)
-TARBALL_STEP_ARGS+=("--resume" "${BUILD_TMPDIR}")
+TARBALL_STEP_ARGS+=("--resume" "${REMOVAL_TMPDIR}")
 
 timestamp=$(date +%s)
 # to set EESSI_VERSION we need to source init/eessi_defaults now
