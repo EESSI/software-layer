@@ -204,11 +204,15 @@ ${EESSI_PREFIX}/scripts/gpu_support/nvidia/install_cuda_host_injections.sh -c 12
 
 # use PR patch file to determine in which easystack files stuff was added
 changed_easystacks=$(cat ${pr_diff} | grep '^+++' | cut -f2 -d' ' | sed 's@^[a-z]/@@g' | grep '^easystacks/.*yml$' | egrep -v 'known-issues|missing') 
-if [ -z ${changed_easystacks} ]; then
+if [ -z "${changed_easystacks}" ]; then
     echo "No missing installations, party time!"  # Ensure the bot report success, as there was nothing to be build here
 else
 
-    for easystack_file in ${changed_easystacks}; do
+    # first process rebuilds, if any, then easystack files for new installations
+    # "|| true" is used to make sure that the grep command always returns success
+    rebuild_easystacks=$(echo "${changed_easystacks}" | (grep "/rebuilds/" || true))
+    new_easystacks=$(echo "${changed_easystacks}" | (grep -v "/rebuilds/" || true))
+    for easystack_file in ${rebuild_easystacks} ${new_easystacks}; do
 
         echo -e "Processing easystack file ${easystack_file}...\n\n"
 
