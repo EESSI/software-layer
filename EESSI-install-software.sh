@@ -209,8 +209,8 @@ if [ -z ${changed_easystacks} ]; then
 else
 
     # first process rebuilds if any, then easystack files for new installations
-    rebuild_easystacks=$(echo "${changed_easystacks} | grep /rebuilds/ || true)
-    new_easystacks=$(echo "${changed_easystacks} | grep -v /rebuilds/ || true)
+    rebuild_easystacks=$(echo "${changed_easystacks}" | grep /rebuilds/ || true)
+    new_easystacks=$(echo "${changed_easystacks}" | grep -v /rebuilds/ || true)
     for easystack_file in ${rebuild_easystacks} ${new_easystacks}; do
 
         echo -e "Processing easystack file ${easystack_file}...\n\n"
