@@ -54,3 +54,4 @@ easyconfigs:
         from-pr: 20126
   - OpenJPEG-2.5.0-GCCcore-12.3.0.eb
   - OpenFOAM-10-foss-2023a.eb
+  - pypmt-1.2.0-gfbf-2023a.eb
