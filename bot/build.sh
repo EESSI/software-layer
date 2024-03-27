@@ -182,6 +182,8 @@ fi
 # determine if the removal step has to be run
 # assume there's only one diff file that corresponds to the PR patch file
 pr_diff=$(ls [0-9]*.diff | head -1)
+# the true at the end of the next command is important: grep will expectedly return 1 if there is no easystack file being added under rebuilds,
+# but due to "set -e" the entire script would otherwise fail
 changed_easystacks_rebuilds=$(cat ${pr_diff} | grep '^+++' | cut -f2 -d' ' | sed 's@^[a-z]/@@g' | grep '^easystacks/.*yml$' | (grep "/rebuilds/" || true))
 if [[ -z "${changed_easystacks_rebuilds}" ]]; then
     echo "This PR does not add any easystack files in a rebuilds subdirectory, so let's skip the removal step."
