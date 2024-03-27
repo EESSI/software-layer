@@ -252,7 +252,7 @@ fi
 
 ### add packages here
 
-echo ">> Creating/updating Lmod cache..."
+echo ">> Creating/updating Lmod RC file..."
 export LMOD_CONFIG_DIR="${EASYBUILD_INSTALLPATH}/.lmod"
 lmod_rc_file="$LMOD_CONFIG_DIR/lmodrc.lua"
 lmodrc_changed=$(cat ${pr_diff} | grep '^+++' | cut -f2 -d' ' | sed 's@^[a-z]/@@g' | grep '^create_lmodrc.py$' > /dev/null; echo $?)
@@ -269,8 +269,6 @@ if [ ! -f "$lmod_sitepackage_file" ] || [ "${sitepackage_changed}" == '0' ]; the
     python3 $TOPDIR/create_lmodsitepackage.py ${EASYBUILD_INSTALLPATH}
     check_exit_code $? "$lmod_sitepackage_file created" "Failed to create $lmod_sitepackage_file"
 fi
-
-$TOPDIR/update_lmod_cache.sh ${EPREFIX} ${EASYBUILD_INSTALLPATH}
 
 echo ">> Cleaning up ${TMPDIR}..."
 rm -r ${TMPDIR}
