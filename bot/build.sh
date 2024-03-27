@@ -182,8 +182,10 @@ fi
 # determine if the removal step has to be run
 # assume there's only one diff file that corresponds to the PR patch file
 pr_diff=$(ls [0-9]*.diff | head -1)
-changed_easystacks_rebuilds=$(cat ${pr_diff} | grep '^+++' | cut -f2 -d' ' | sed 's@^[a-z]/@@g' | grep '^easystacks/.*yml$' | grep "/rebuilds/")
-if [[ -z ${changed_easystacks_rebuilds} ]]; then
+# the true at the end of the next command is important: grep will expectedly return 1 if there is no easystack file being added under rebuilds,
+# but due to "set -e" the entire script would otherwise fail
+changed_easystacks_rebuilds=$(cat ${pr_diff} | grep '^+++' | cut -f2 -d' ' | sed 's@^[a-z]/@@g' | grep '^easystacks/.*yml$' | (grep "/rebuilds/" || true))
+if [[ -z "${changed_easystacks_rebuilds}" ]]; then
     echo "This PR does not add any easystack files in a rebuilds subdirectory, so let's skip the removal step."
 else
     # prepare directory to store tarball of tmp for removal and build steps
@@ -192,7 +194,7 @@ else
 
     # prepare arguments to eessi_container.sh specific to remove step
     declare -a REMOVAL_STEP_ARGS=()
-    REMOVAL_STEP_ARGS+=("--save" "${TARBALL_TMP_BUILD_STEP_DIR}")
+    REMOVAL_STEP_ARGS+=("--save" "${TARBALL_TMP_REMOVAL_STEP_DIR}")
     REMOVAL_STEP_ARGS+=("--storage" "${STORAGE}")
     # add fakeroot option in order to be able to remove software, see:
     # https://github.com/EESSI/software-layer/issues/312
@@ -247,7 +249,14 @@ declare -a TARBALL_STEP_ARGS=()
 TARBALL_STEP_ARGS+=("--save" "${TARBALL_TMP_TARBALL_STEP_DIR}")
 
 # determine temporary directory to resume from
-TARBALL_STEP_ARGS+=("--resume" "${REMOVAL_TMPDIR}")
+if [[ -z ${REMOVAL_TMPDIR} ]]; then
+    # no rebuild step was done, so the tarball step should resume from the build directory
+    BUILD_TMPDIR=$(grep ' as tmp directory ' ${build_outerr} | cut -d ' ' -f 2)
+    TARBALL_STEP_ARGS+=("--resume" "${BUILD_TMPDIR}")
+else
+    # a removal step was done, so resume from its temporary directory (which was also used for the build step)
+    TARBALL_STEP_ARGS+=("--resume" "${REMOVAL_TMPDIR}")
+fi
 
 timestamp=$(date +%s)
 # to set EESSI_VERSION we need to source init/eessi_defaults now
