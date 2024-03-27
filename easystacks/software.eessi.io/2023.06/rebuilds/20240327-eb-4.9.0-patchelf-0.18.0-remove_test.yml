@@ -1,0 +1,4 @@
+# 2024-03-27
+# Rebuild patchelf 0.18.0 to test PR #518
+easyconfigs:
+  - patchelf-0.18.0-GCCcore-12.3.0.eb
