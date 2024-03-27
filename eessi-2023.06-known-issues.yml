@@ -1,3 +1,11 @@
+- aarch64/generic:
+  - PyTorch-2.1.2-foss-2023a:
+    - issue: https://github.com/EESSI/software-layer/issues/461
+    - info: "8 failing tests (out of 209539) on aarch64/*"
+- aarch64/neoverse_n1:
+  - PyTorch-2.1.2-foss-2023a:
+    - issue: https://github.com/EESSI/software-layer/issues/461
+    - info: "8 failing tests (out of 209539) on aarch64/*"
 - aarch64/neoverse_v1:
   - ESPResSo-4.2.1-foss-2023a:
       - issue: https://github.com/EESSI/software-layer/issues/363
@@ -8,6 +16,9 @@
   - FFTW.MPI-3.3.10-gompi-2023b:
       - issue: https://github.com/EESSI/software-layer/issues/325
       - info: "Flaky FFTW tests, random failures"
+  - Highway-1.0.3-GCCcore-12.2.0.eb:
+    - issue: https://github.com/EESSI/software-layer/issues/469
+    - info: "failing SVE test due to wrong expected value"
   - netCDF-4.9.2-gompi-2023a.eb:
       - issue: https://github.com/EESSI/software-layer/issues/425
       - info: "netCDF intermittent test failures"
@@ -17,6 +28,9 @@
   - OpenBLAS-0.3.21-GCC-12.2.0:
     - issue: https://github.com/EESSI/software-layer/issues/314
     - info: "Increased number of numerical errors in OpenBLAS test suite (344 vs max. 150 on x86_64/*)"
+  - PyTorch-2.1.2-foss-2023a:
+    - issue: https://github.com/EESSI/software-layer/issues/461
+    - info: "8 failing tests (out of 209539) on aarch64/*"
   - SciPy-bundle-2023.02-gfbf-2022b:
     - issue: https://github.com/EESSI/software-layer/issues/318
     - info: "numpy built with -march=armv8.4-a instead of -mcpu=native (no SVE) + 2 failing tests (vs 50005 passed) in scipy test suite"

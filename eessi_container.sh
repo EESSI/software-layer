@@ -73,6 +73,7 @@ display_help() {
   echo "  -a | --access {ro,rw}  - ro (read-only), rw (read & write) [default: ro]"
   echo "  -c | --container IMG   - image file or URL defining the container to use"
   echo "                           [default: docker://ghcr.io/eessi/build-node:debian11]"
+  echo "  -f | --fakeroot        - run the container with --fakeroot [default: false]"
   echo "  -g | --storage DIR     - directory space on host machine (used for"
   echo "                           temporary data) [default: 1. TMPDIR, 2. /tmp]"
   echo "  -h | --help            - display this usage information [default: false]"
@@ -113,6 +114,7 @@ display_help() {
 ACCESS="ro"
 CONTAINER="docker://ghcr.io/eessi/build-node:debian11"
 #DRY_RUN=0
+FAKEROOT=0
 VERBOSE=0
 STORAGE=
 LIST_REPOS=0
@@ -140,6 +142,10 @@ while [[ $# -gt 0 ]]; do
 #      DRY_RUN=1
 #      shift 1
 #      ;;
+    -f|--fakeroot)
+      FAKEROOT=1
+      shift 1
+      ;;
     -g|--storage)
       STORAGE="$2"
       shift 2
@@ -457,7 +463,18 @@ if [[ ${SETUP_NVIDIA} -eq 1 ]]; then
         mkdir -p ${EESSI_USR_LOCAL_CUDA}
         BIND_PATHS="${BIND_PATHS},${EESSI_VAR_LOG}:/var/log,${EESSI_USR_LOCAL_CUDA}:/usr/local/cuda"
         [[ ${VERBOSE} -eq 1 ]] && echo "BIND_PATHS=${BIND_PATHS}"
+        if [[ "${NVIDIA_MODE}" == "install" ]] ; then
+            # We need to "trick" our LMOD_RC file to allow us to load CUDA modules even without a CUDA driver
+            # (this works because we build within a container and the LMOD_RC recognises that)
+            touch ${EESSI_TMPDIR}/libcuda.so
+            export SINGULARITY_CONTAINLIBS="${EESSI_TMPDIR}/libcuda.so"
+        fi
     fi
+fi
+
+# Configure the fakeroot setting for the container
+if [[ ${FAKEROOT} -eq 1 ]]; then
+  ADDITIONAL_CONTAINER_OPTIONS+=("--fakeroot")
 fi
 
 # set up repository config (always create directory repos_cfg and populate it with info when
