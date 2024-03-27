@@ -247,7 +247,14 @@ declare -a TARBALL_STEP_ARGS=()
 TARBALL_STEP_ARGS+=("--save" "${TARBALL_TMP_TARBALL_STEP_DIR}")
 
 # determine temporary directory to resume from
-TARBALL_STEP_ARGS+=("--resume" "${REMOVAL_TMPDIR}")
+if [[ -z ${REMOVAL_TMPDIR} ]]; then
+    # no rebuild step was done, so the tarball step should resume from the build directory
+    BUILD_TMPDIR=$(grep ' as tmp directory ' ${build_outerr} | cut -d ' ' -f 2)
+    TARBALL_STEP_ARGS+=("--resume" "${BUILD_TMPDIR}")
+else
+    # a removal step was done, so resume from its temporary directory (which was also used for the build step)
+    TARBALL_STEP_ARGS+=("--resume" "${REMOVAL_TMPDIR}")
+fi
 
 timestamp=$(date +%s)
 # to set EESSI_VERSION we need to source init/eessi_defaults now
