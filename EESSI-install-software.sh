@@ -212,7 +212,7 @@ if [ -z "${all_changed_easystacks}" ]; then
     echo "No missing installations, party time!"  # Ensure the bot report success, as there was nothing to be build here
 else
 
-    for easystack_file in ${changed_easystacks}; do
+    for easystack_file in ${all_changed_easystacks}; do
 
         echo -e "Processing easystack file ${easystack_file}...\n\n"
 
