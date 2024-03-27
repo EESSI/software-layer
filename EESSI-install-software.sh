@@ -204,7 +204,7 @@ ${EESSI_PREFIX}/scripts/gpu_support/nvidia/install_cuda_host_injections.sh -c 12
 
 # use PR patch file to determine in which easystack files stuff was added
 changed_easystacks=$(cat ${pr_diff} | grep '^+++' | cut -f2 -d' ' | sed 's@^[a-z]/@@g' | grep '^easystacks/.*yml$' | egrep -v 'known-issues|missing') 
-if [ -z ${changed_easystacks} ]; then
+if [ -z "${changed_easystacks}" ]; then
     echo "No missing installations, party time!"  # Ensure the bot report success, as there was nothing to be build here
 else
 
