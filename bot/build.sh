@@ -183,7 +183,7 @@ fi
 # assume there's only one diff file that corresponds to the PR patch file
 pr_diff=$(ls [0-9]*.diff | head -1)
 changed_easystacks_rebuilds=$(cat ${pr_diff} | grep '^+++' | cut -f2 -d' ' | sed 's@^[a-z]/@@g' | grep '^easystacks/.*yml$' | grep "/rebuilds/" || true)
-if [[ -z ${changed_easystacks_rebuilds} ]]; then
+if [[ -z "${changed_easystacks_rebuilds}" ]]; then
     echo "This PR does not add any easystack files in a rebuilds subdirectory, so let's skip the removal step."
 else
     # prepare directory to store tarball of tmp for removal and build steps
