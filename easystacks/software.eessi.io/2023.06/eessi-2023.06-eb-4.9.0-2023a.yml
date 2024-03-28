@@ -54,3 +54,6 @@ easyconfigs:
         from-pr: 20126
   - OpenJPEG-2.5.0-GCCcore-12.3.0.eb
   - OpenFOAM-10-foss-2023a.eb
+  - GROMACS-2023.4-foss-2023a.eb:
+      options:
+        from-pr: 19728
