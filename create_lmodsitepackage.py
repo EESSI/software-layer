@@ -77,7 +77,7 @@ local function load_sitespecific_hooks()
     local archSitePackage = archHostInjections .. "/.lmod/SitePackage.lua"
 
     -- If the file exists, run it
-    if isDir(archSitePackage)
+    if isDir(archSitePackage) then
         dofile(archSitePackage)
     end
     
