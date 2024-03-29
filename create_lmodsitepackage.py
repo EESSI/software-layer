@@ -19,6 +19,71 @@ local function read_file(path)
     return content
 end
 
+local function load_sitespecific_hooks()
+    -- This function will be run after the EESSI hooks are registered
+    -- It will load a local SitePackage.lua that is architecture independent (if it exists) from e.g.
+    -- /cvmfs/software.eessi.io/host_injections/2023.06/.lmod/SitePackage.lua
+    -- That can define a new hook
+    --
+    -- function site_specific_load_hook(t)
+    --     <some_action_on_load>
+    -- end
+    --
+    -- And the either append to the existing hook:
+    --
+    -- local function final_load_hook(t)
+    --    eessi_load_hook(t)
+    --    site_specific_load_hook(t)
+    -- end
+    --
+    -- Over overwrite the EESSI hook entirely:
+    --
+    -- hook.register("load", final_load_hook)
+    --
+    -- Note that the appending procedure can be simplified once we have an lmod >= 8.7.36
+    -- See https://github.com/TACC/Lmod/pull/696#issuecomment-1998765722
+    --
+    -- Subsequently, this function will look for an architecture-specific SitePackage.lua, e.g. from
+    -- /cvmfs/software.eessi.io/host_injections/2023.06/software/linux/x86_64/amd/zen2/.lmod/SitePackage.lua
+    -- This can then register an additional hook, e.g.
+    --
+    -- function arch_specific_load_hook(t)
+    --     <some_action_on_load>
+    -- end
+    --
+    -- local function final_load_hook(t)
+    --   eessi_load_hook(t)
+    --   site_specific_load_hook(t)
+    --   arch_specific_load_hook(t)
+    -- end
+    --
+    -- hook.register("load", final_load_hook)
+    --
+    -- Again, the host site could also decide to overwrite by simply doing
+    --
+    -- hook.register("load", arch_specific_load_hook)
+
+    -- get path to to architecture independent SitePackage.lua
+    local prefixHostInjections = string.gsub(os.getenv('EESSI_PREFIX'), 'versions', 'host_injections')
+    local hostSitePackage = prefixHostInjections .. "/.lmod/SitePackage.lua"
+
+    -- If the file exists, run it
+    if isDir(hostSitePackage) then
+        dofile(hostSitePackage)
+    end
+
+    -- build the full architecture specific path in host_injections
+    local archHostInjections = string.gsub(os.getenv('EESSI_SOFTWARE_PATH') or "", 'versions', 'host_injections')
+    local archSitePackage = archHostInjections .. "/.lmod/SitePackage.lua"
+
+    -- If the file exists, run it
+    if isDir(archSitePackage)
+        dofile(archSitePackage)
+    end
+    
+end
+
+
 local function eessi_cuda_enabled_load_hook(t)
     local frameStk  = require("FrameStk"):singleton()
     local mt        = frameStk:mt()
@@ -92,6 +157,9 @@ end
 
 
 hook.register("load", eessi_load_hook)
+
+-- Note that this needs to happen at the end, so that any EESSI specific hooks can be overwritten by the site
+load_site_specific_hooks()
 """
 
 def error(msg):
