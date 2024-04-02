@@ -19,7 +19,7 @@ local function read_file(path)
     return content
 end
 
-local function load_sitespecific_hooks()
+local function load_site_specific_hooks()
     -- This function will be run after the EESSI hooks are registered
     -- It will load a local SitePackage.lua that is architecture independent (if it exists) from e.g.
     -- /cvmfs/software.eessi.io/host_injections/2023.06/.lmod/SitePackage.lua
