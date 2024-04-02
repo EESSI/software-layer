@@ -113,6 +113,6 @@ jobs:
           chmod u+x ${test_script}
 
           ./eessi_container.sh --mode run --verbose /software-layer/run_in_compat_layer_env.sh /software-layer/test_lmod_sitepackage.sh 2>&1 | tee ${out}
-          for pattern in "^Site Pkg location.*$PWD/.lmod/SitePackage.lua" "LMOD_SITEPACKAGE_LOCATION.*${PWD}/.lmod/SitePackage.lua"; do
+          for pattern in "^Site Pkg location.*/software-layer/.lmod/SitePackage.lua" "LMOD_SITEPACKAGE_LOCATION.*/software-layer/.lmod/SitePackage.lua"; do
             grep "${pattern}" ${out} || (echo "Pattern '${pattern}' not found in output!" && exit 1)
           done
