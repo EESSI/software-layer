@@ -40,3 +40,17 @@ easyconfigs:
   - ImageMagick-7.1.1-15-GCCcore-12.3.0.eb:
       options:
         from-pr: 20086
+  - Z3-4.12.2-GCCcore-12.3.0.eb:
+      options:
+        # The Z3 dependency of PyTorch had it's versionsuffix removed
+        # and we need to workaround the problem this creates,
+        # see https://github.com/EESSI/software-layer/pull/501 for details
+        from-pr: 20050
+  - PyOpenGL-3.1.7-GCCcore-12.3.0.eb:
+      options:
+        from-pr: 20007
+  - ipympl-0.9.3-foss-2023a.eb:
+      options:
+        from-pr: 20126
+  - OpenJPEG-2.5.0-GCCcore-12.3.0.eb
+  - OpenFOAM-10-foss-2023a.eb
