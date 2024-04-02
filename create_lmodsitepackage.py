@@ -68,7 +68,7 @@ local function load_sitespecific_hooks()
     local hostSitePackage = prefixHostInjections .. "/.lmod/SitePackage.lua"
 
     -- If the file exists, run it
-    if isDir(hostSitePackage) then
+    if isFile(hostSitePackage) then
         dofile(hostSitePackage)
     end
 
@@ -77,7 +77,7 @@ local function load_sitespecific_hooks()
     local archSitePackage = archHostInjections .. "/.lmod/SitePackage.lua"
 
     -- If the file exists, run it
-    if isDir(archSitePackage) then
+    if isFile(archSitePackage) then
         dofile(archSitePackage)
     end
     
