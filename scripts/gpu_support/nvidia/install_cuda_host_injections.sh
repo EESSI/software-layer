@@ -12,6 +12,9 @@
 # installation to be successful, this directory needs to be writeable by the user
 # executing this script.
 
+# TRIGGER SCRIPT CHANGE TO REPRODUCE https://github.com/EESSI/software-layer/issues/517
+# THIS COMMENT SHOULD NEVER BE MERGED!
+
 # Initialise our bash functions
 TOPDIR=$(dirname $(realpath $BASH_SOURCE))
 source "$TOPDIR"/../../utils.sh
