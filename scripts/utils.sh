@@ -1,3 +1,6 @@
+## THIS COMMENT IS ONLY TO RETRIGGER #517
+## IT SHOULD NEVER BE MERGED
+
 function echo_green() {
     echo -e "\e[32m$1\e[0m"
 }
