@@ -102,11 +102,12 @@ jobs:
           # bind current directory into container as /software-layer
           export SINGULARITY_BIND="${PWD}:/software-layer"
 
+          # Creates .lmod/SitePackage.lua in current dir, which then gets bind-mounted into /software-layer
           python3 create_lmodsitepackage.py .
-          export LMOD_PACKAGE_PATH="$PWD/.lmod"
           # run some commands to make sure that generated Lmod SitePackage file works
           test_script="${PWD}/test_lmod_sitepackage.sh"
           echo '#!/bin/bash' > ${test_script}
+          echo 'export LMOD_PACKAGE_PATH="/software-layer/.lmod"' > ${test_script}
           echo 'ml --config' >> ${test_script}
 
           chmod u+x ${test_script}
