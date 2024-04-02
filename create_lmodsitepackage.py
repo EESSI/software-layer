@@ -64,7 +64,7 @@ local function load_sitespecific_hooks()
     -- hook.register("load", arch_specific_load_hook)
 
     -- get path to to architecture independent SitePackage.lua
-    local prefixHostInjections = string.gsub(os.getenv('EESSI_PREFIX'), 'versions', 'host_injections')
+    local prefixHostInjections = string.gsub(os.getenv('EESSI_PREFIX') or "", 'versions', 'host_injections')
     local hostSitePackage = prefixHostInjections .. "/.lmod/SitePackage.lua"
 
     -- If the file exists, run it
