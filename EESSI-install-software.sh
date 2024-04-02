@@ -201,7 +201,7 @@ ${TOPDIR}/install_scripts.sh --prefix ${EESSI_PREFIX}
 # Hardcode this for now, see if it works
 # TODO: We should make a nice yaml and loop over all CUDA versions in that yaml to figure out what to install
 # Allow skipping CUDA SDK install in e.g. CI environments
-if [ ! -z "${skip_cuda_install}" ] && [ ! "${skip_cuda_install}" ]; then
+if [ -z "${skip_cuda_install}" ] || [ ! "${skip_cuda_install}" ]; then
     ${EESSI_PREFIX}/scripts/gpu_support/nvidia/install_cuda_host_injections.sh -c 12.1.1 --accept-cuda-eula
 fi
 
