@@ -13,7 +13,7 @@ parser=argparse.ArgumentParser(description='Script to ingest licences')
 
 parser.add_argument('--source', help='Project available in GitHub,pypi,cran or user that push the license')
 parser.add_argument('project', help='Project')
-parser.add_argument('--spdx',required=False)
+parser.add_argument('--manual',required=False)
 args=parser.parse_args()
 
 def github(source):
@@ -96,8 +96,8 @@ def licenseInfo(project):
     elif "github" in args.source:
         lic=ecosysteDotms_github(args.source)
 #        lic=github(args.source)
-    elif args.spdx:
-        lic=args.spdx
+    elif args.manual:
+        lic=args.manual
     
     info=[("license",lic), ("source",args.source)]
     return info
