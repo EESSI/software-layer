@@ -83,6 +83,8 @@ jobs:
           export SINGULARITY_BIND="${PWD}:/software-layer"
           # force using x86_64/generic, to avoid triggering an installation from scratch
           sed -i "s@./EESSI-install-software.sh@\"export EESSI_SOFTWARE_SUBDIR_OVERRIDE='x86_64/generic'; ./EESSI-install-software.sh\"@g" install_software_layer.sh
+          # skip installation of CUDA SDKs, since this is too heavy for CI
+          sed -i "s@./EESSI-install-software.sh@./EESSI-install-software.sh --skip-cuda-install@g" install_software_layer.sh
           ./eessi_container.sh --mode run --verbose /software-layer/install_software_layer.sh
 
     - name: test create_directory_tarballs.sh script
