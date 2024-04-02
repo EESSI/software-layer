@@ -14,6 +14,7 @@ display_help() {
   echo "  -x | --http-proxy URL  -  provides URL for the environment variable http_proxy"
   echo "  -y | --https-proxy URL -  provides URL for the environment variable https_proxy"
   echo "  --shared-fs-path       -  path to directory on shared filesystem that can be used"
+  echo "  --skip-cuda-install    -  disable installing a full CUDA SDK in the host_injections prefix (e.g. in CI)"
 }
 
 function copy_build_log() {
@@ -75,6 +76,10 @@ while [[ $# -gt 0 ]]; do
     --shared-fs-path)
       export shared_fs_path="${2}"
       shift 2
+      ;;
+    --skip-cuda-install)
+      export skip_cuda_install=True
+      shift 1
       ;;
     -*|--*)
       echo "Error: Unknown option: $1" >&2
@@ -195,7 +200,10 @@ ${TOPDIR}/install_scripts.sh --prefix ${EESSI_PREFIX}
 # Install full CUDA SDK in host_injections
 # Hardcode this for now, see if it works
 # TODO: We should make a nice yaml and loop over all CUDA versions in that yaml to figure out what to install
-${EESSI_PREFIX}/scripts/gpu_support/nvidia/install_cuda_host_injections.sh -c 12.1.1 --accept-cuda-eula
+# Allow skipping CUDA SDK install in e.g. CI environments
+if [ ! -z "${skip_cuda_install}" ] && [ ! "${skip_cuda_install}" ]; then
+    ${EESSI_PREFIX}/scripts/gpu_support/nvidia/install_cuda_host_injections.sh -c 12.1.1 --accept-cuda-eula
+fi
 
 # Install drivers in host_injections
 # TODO: this is commented out for now, because the script assumes that nvidia-smi is available and works;
