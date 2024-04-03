@@ -19,6 +19,18 @@ local function read_file(path)
     return content
 end
 
+local function from_eessi_prefix(t)
+    local eessi_prefix = os.getenv("EESSI_PREFIX")
+    -- If EESSI_PREFIX wasn't defined, we cannot check if this module was from the EESSI environment
+    -- In that case, we assume it isn't, otherwise EESSI_PREFIX would (probably) have been set
+    if eessi_prefix == nil then
+        return False
+    else
+        -- Check if the full modulepath starts with the eessi_prefix
+        return t.fn:find( "^" .. eessi_prefix) ~= nil
+    end
+end
+
 local function load_site_specific_hooks()
     -- This function will be run after the EESSI hooks are registered
     -- It will load a local SitePackage.lua that is architecture independent (if it exists) from e.g.
@@ -152,9 +164,12 @@ end
 -- Combine both functions into a single one, as we can only register one function as load hook in lmod
 -- Also: make it non-local, so it can be imported and extended by other lmodrc files if needed
 function eessi_load_hook(t)
-    eessi_cuda_enabled_load_hook(t)
+    -- Only apply CUDA hooks if the loaded module is in the EESSI prefix
+    -- This avoids getting an Lmod Error when trying to load a CUDA module from a local software stack
+    if from_eessi_prefix(t) then
+        eessi_cuda_enabled_load_hook(t)
+    end
 end
-
 
 hook.register("load", eessi_load_hook)
 
