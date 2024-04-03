@@ -376,6 +376,18 @@ def pre_configure_hook_atspi2core_filter_ld_library_path(self, *args, **kwargs):
         raise EasyBuildError("at-spi2-core-specific hook triggered for non-at-spi2-core easyconfig?!")
 
 
+def pre_configure_hook_highway_disable_tests((self, *args, **kwargs):
+    """
+    pre-configure hook for Highway: disable tests on neoverse_v1
+    cfr. https://github.com/EESSI/software-layer/issues/469
+    """
+    cpu_target = get_eessi_envvar('EESSI_SOFTWARE_SUBDIR')
+    if self.name == 'Highway ' and cpu_target == CPU_TARGET_NEOVERSE_V1:
+        self.cfg.update('configopts', '-DHWY_ENABLE_TESTS=OFF')
+    else:
+        raise EasyBuildError("Highway-specific hook triggered for non-Highway easyconfig?!")
+
+
 def pre_test_hook(self,*args, **kwargs):
     """Main pre-test hook: trigger custom functions based on software name."""
     if self.name in PRE_TEST_HOOKS:
@@ -625,6 +637,7 @@ PRE_CONFIGURE_HOOKS = {
     'OpenBLAS': pre_configure_hook_openblas_optarch_generic,
     'WRF': pre_configure_hook_wrf_aarch64,
     'at-spi2-core': pre_configure_hook_atspi2core_filter_ld_library_path,
+    'Highway': pre_configure_hook_highway_disable_tests,
 }
 
 PRE_TEST_HOOKS = {
