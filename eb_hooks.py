@@ -20,6 +20,7 @@ except ImportError:
     from distutils.version import LooseVersion
 
 
+CPU_TARGET_NEOVERSE_N1 = 'aarch64/neoverse_n1'
 CPU_TARGET_NEOVERSE_V1 = 'aarch64/neoverse_v1'
 CPU_TARGET_AARCH64_GENERIC = 'aarch64/generic'
 
@@ -173,7 +174,7 @@ def parse_hook_casacore_disable_vectorize(ec, eprefix):
             tcname == 'foss' and tcversion == '2023b'
         ):
             cpu_target = get_eessi_envvar('EESSI_SOFTWARE_SUBDIR')
-            if cpu_target == CPU_TARGET_NEOVERSE_V1:
+            if cpu_target in [CPU_TARGET_NEOVERSE_V1, CPU_TARGET_NEOVERSE_N1]:
                 if not hasattr(ec, 'toolchainopts'):
                     ec['toolchainopts'] = {}
                 ec['toolchainopts']['vectorize'] = False
