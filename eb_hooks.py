@@ -174,7 +174,7 @@ def parse_hook_casacore_disable_vectorize(ec, eprefix):
             tcname == 'foss' and tcversion == '2023b'
         ):
             cpu_target = get_eessi_envvar('EESSI_SOFTWARE_SUBDIR')
-            if cpu_target in [CPU_TARGET_NEOVERSE_V1, CPU_TARGET_NEOVERSE_N1]:
+            if cpu_target == CPU_TARGET_NEOVERSE_V1:
                 if not hasattr(ec, 'toolchainopts'):
                     ec['toolchainopts'] = {}
                 ec['toolchainopts']['vectorize'] = False
@@ -299,7 +299,7 @@ def parse_hook_highway_disable_tests(ec, eprefix):
         tcname, tcversion = ec['toolchain']['name'], ec['toolchain']['version']
         cpu_target = get_eessi_envvar('EESSI_SOFTWARE_SUBDIR')
         if ec.version in ['1.0.4'] and tcname == 'GCCcore' and tcversion == '12.3.0':
-            if cpu_target == CPU_TARGET_NEOVERSE_V1:
+            if cpu_target in [CPU_TARGET_NEOVERSE_V1, CPU_TARGET_NEOVERSE_N1]:
                 ec.update('configopts', '-DHWY_ENABLE_TESTS=OFF')
     else:
         raise EasyBuildError("Highway-specific hook triggered for non-Highway easyconfig?!")
