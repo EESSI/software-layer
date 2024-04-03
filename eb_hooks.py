@@ -289,7 +289,7 @@ def parse_hook_lammps_remove_deps_for_CI_aarch64(ec, *args, **kwargs):
         raise EasyBuildError("LAMMPS-specific hook triggered for non-LAMMPS easyconfig?!")
 
 
-def parse_hook_highway_disable_tests(ec, eprefix):):
+def parse_hook_highway_disable_tests(ec, eprefix):
     """
     pre-configure hook for Highway: disable tests on neoverse_v1 for Highway 1.0.4 and GCC 12.3.0
     cfr. https://github.com/EESSI/software-layer/issues/469
