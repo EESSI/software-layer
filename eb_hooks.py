@@ -382,7 +382,7 @@ def pre_configure_hook_highway_disable_tests(self, *args, **kwargs):
     cfr. https://github.com/EESSI/software-layer/issues/469
     """
     cpu_target = get_eessi_envvar('EESSI_SOFTWARE_SUBDIR')
-    if self.name == 'Highway ' and cpu_target == CPU_TARGET_NEOVERSE_V1:
+    if self.name == 'Highway' and cpu_target == CPU_TARGET_NEOVERSE_V1:
         self.cfg.update('configopts', '-DHWY_ENABLE_TESTS=OFF')
     else:
         raise EasyBuildError("Highway-specific hook triggered for non-Highway easyconfig?!")
