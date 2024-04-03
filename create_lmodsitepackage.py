@@ -23,6 +23,10 @@ local function from_eessi_prefix(t)
     -- eessi_prefix is the prefix with official EESSI modules
     -- e.g. /cvmfs/software.eessi.io/versions/2023.06
     local eessi_prefix = os.getenv("EESSI_PREFIX")
+
+    -- NOTE: exact paths for site and user extensions aren't final, so may need to be updated later.
+    -- See https://github.com/EESSI/software-layer/pull/371
+
     -- eessi_prefix_host_injections is the prefix with site-extensions (i.e. additional modules)
     -- to the official EESSI modules, e.g. /cvmfs/software.eessi.io/host_injections/2023.06
     local eessi_prefix_host_injections = string.gsub(eessi_prefix, 'versions', 'host_injections')
