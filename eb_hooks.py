@@ -376,7 +376,7 @@ def pre_configure_hook_atspi2core_filter_ld_library_path(self, *args, **kwargs):
         raise EasyBuildError("at-spi2-core-specific hook triggered for non-at-spi2-core easyconfig?!")
 
 
-def pre_configure_hook_highway_disable_tests((self, *args, **kwargs):
+def pre_configure_hook_highway_disable_tests(self, *args, **kwargs):
     """
     pre-configure hook for Highway: disable tests on neoverse_v1
     cfr. https://github.com/EESSI/software-layer/issues/469
