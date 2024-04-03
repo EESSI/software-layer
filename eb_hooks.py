@@ -289,6 +289,21 @@ def parse_hook_lammps_remove_deps_for_CI_aarch64(ec, *args, **kwargs):
         raise EasyBuildError("LAMMPS-specific hook triggered for non-LAMMPS easyconfig?!")
 
 
+def parse_hook_highway_disable_tests(ec, eprefix):):
+    """
+    pre-configure hook for Highway: disable tests on neoverse_v1 for Highway 1.0.4 and GCC 12.3.0
+    cfr. https://github.com/EESSI/software-layer/issues/469
+    """
+    if ec.name == 'Highway':
+        tcname, tcversion = ec['toolchain']['name'], ec['toolchain']['version']
+        cpu_target = get_eessi_envvar('EESSI_SOFTWARE_SUBDIR')
+        if ec.version in ['1.0.4'] and tcname == 'GCCcore' and tcversion == '12.3.0':
+            if cpu_target == CPU_TARGET_NEOVERSE_V1:
+                ec.update('configopts', '-DHWY_ENABLE_TESTS=OFF')
+    else:
+        raise EasyBuildError("Highway-specific hook triggered for non-Highway easyconfig?!")
+
+
 def pre_configure_hook(self, *args, **kwargs):
     """Main pre-configure hook: trigger custom functions based on software name."""
     if self.name in PRE_CONFIGURE_HOOKS:
@@ -374,18 +389,6 @@ def pre_configure_hook_atspi2core_filter_ld_library_path(self, *args, **kwargs):
             self.cfg.update('preconfigopts', sed_cmd)
     else:
         raise EasyBuildError("at-spi2-core-specific hook triggered for non-at-spi2-core easyconfig?!")
-
-
-def pre_configure_hook_highway_disable_tests(self, *args, **kwargs):
-    """
-    pre-configure hook for Highway: disable tests on neoverse_v1
-    cfr. https://github.com/EESSI/software-layer/issues/469
-    """
-    cpu_target = get_eessi_envvar('EESSI_SOFTWARE_SUBDIR')
-    if self.name == 'Highway' and cpu_target == CPU_TARGET_NEOVERSE_V1:
-        self.cfg.update('configopts', '-DHWY_ENABLE_TESTS=OFF')
-    else:
-        raise EasyBuildError("Highway-specific hook triggered for non-Highway easyconfig?!")
 
 
 def pre_test_hook(self,*args, **kwargs):
@@ -620,11 +623,12 @@ PARSE_HOOKS = {
     'casacore': parse_hook_casacore_disable_vectorize,
     'CGAL': parse_hook_cgal_toolchainopts_precise,
     'fontconfig': parse_hook_fontconfig_add_fonts,
+    'Highway': parse_hook_highway_disable_tests,
+    'LAMMPS': parse_hook_lammps_remove_deps_for_CI_aarch64,
     'OpenBLAS': parse_hook_openblas_relax_lapack_tests_num_errors,
     'pybind11': parse_hook_pybind11_replace_catch2,
     'Qt5': parse_hook_qt5_check_qtwebengine_disable,
     'UCX': parse_hook_ucx_eprefix,
-    'LAMMPS': parse_hook_lammps_remove_deps_for_CI_aarch64,
 }
 
 POST_PREPARE_HOOKS = {
@@ -637,7 +641,6 @@ PRE_CONFIGURE_HOOKS = {
     'OpenBLAS': pre_configure_hook_openblas_optarch_generic,
     'WRF': pre_configure_hook_wrf_aarch64,
     'at-spi2-core': pre_configure_hook_atspi2core_filter_ld_library_path,
-    'Highway': pre_configure_hook_highway_disable_tests,
 }
 
 PRE_TEST_HOOKS = {
