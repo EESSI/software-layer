@@ -290,17 +290,20 @@ def parse_hook_lammps_remove_deps_for_CI_aarch64(ec, *args, **kwargs):
         raise EasyBuildError("LAMMPS-specific hook triggered for non-LAMMPS easyconfig?!")
 
 
-def parse_hook_highway_disable_tests(ec, eprefix):
+def parse_hook_highway_handle_test_compilation_issues(ec, eprefix):
     """
-    pre-configure hook for Highway: disable tests on neoverse_v1 for Highway 1.0.4 and GCC 12.3.0
+    pre-configure hook for Highway that solves issue that arise during the compilation of the tests
+    on both neoverse_n1 and neoverse_v1 with Highway 1.0.4 and GCC 12.3.0
     cfr. https://github.com/EESSI/software-layer/issues/469
     """
     if ec.name == 'Highway':
         tcname, tcversion = ec['toolchain']['name'], ec['toolchain']['version']
         cpu_target = get_eessi_envvar('EESSI_SOFTWARE_SUBDIR')
         if ec.version in ['1.0.4'] and tcname == 'GCCcore' and tcversion == '12.3.0':
-            if cpu_target in [CPU_TARGET_NEOVERSE_V1, CPU_TARGET_NEOVERSE_N1]:
+            if cpu_target == CPU_TARGET_NEOVERSE_V1:
                 ec.update('configopts', '-DHWY_ENABLE_TESTS=OFF')
+            if cpu_target == CPU_TARGET_NEOVERSE_N1:
+                update_build_option('optarch', OPTARCH_GENERIC)
     else:
         raise EasyBuildError("Highway-specific hook triggered for non-Highway easyconfig?!")
 
@@ -624,7 +627,7 @@ PARSE_HOOKS = {
     'casacore': parse_hook_casacore_disable_vectorize,
     'CGAL': parse_hook_cgal_toolchainopts_precise,
     'fontconfig': parse_hook_fontconfig_add_fonts,
-    'Highway': parse_hook_highway_disable_tests,
+    'Highway': parse_hook_highway_handle_test_compilation_issues,
     'LAMMPS': parse_hook_lammps_remove_deps_for_CI_aarch64,
     'OpenBLAS': parse_hook_openblas_relax_lapack_tests_num_errors,
     'pybind11': parse_hook_pybind11_replace_catch2,
