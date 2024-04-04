@@ -7,6 +7,7 @@ import sys
 
 DOT_LMOD = '.lmod'
 
+# LMOD_RC file is the place to define properties, see https://lmod.readthedocs.io/en/latest/145_properties.html
 TEMPLATE_LMOD_RC = """propT = {
 }
 scDescriptT = {
