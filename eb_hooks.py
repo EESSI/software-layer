@@ -292,8 +292,10 @@ def parse_hook_lammps_remove_deps_for_CI_aarch64(ec, *args, **kwargs):
 
 def parse_hook_highway_handle_test_compilation_issues(ec, eprefix):
     """
-    pre-configure hook for Highway that solves issue that arise during the compilation of the tests
-    on both neoverse_n1 and neoverse_v1 with Highway 1.0.4 and GCC 12.3.0
+    Solve issues with compiling or running the tests on both
+    neoverse_n1 and neoverse_v1 with Highway 1.0.4 and GCC 12.3.0:
+      - for neoverse_n1 we set optarch to GENERIC
+      - for neoverse_v1 we completely disable the tests
     cfr. https://github.com/EESSI/software-layer/issues/469
     """
     if ec.name == 'Highway':
