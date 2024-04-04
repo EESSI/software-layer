@@ -304,6 +304,8 @@ def pre_prepare_hook_highway_handle_test_compilation_issues(self, *args, **kwarg
     if self.name == 'Highway':
         tcname, tcversion = self.toolchain.name, self.toolchain.version
         cpu_target = get_eessi_envvar('EESSI_SOFTWARE_SUBDIR')
+        # note: keep condition in sync with the one used in 
+        # post_prepare_hook_highway_handle_test_compilation_issues
         if self.version in ['1.0.4'] and tcname == 'GCCcore' and tcversion == '12.3.0':
             if cpu_target == CPU_TARGET_NEOVERSE_V1:
                 self.cfg.update('configopts', '-DHWY_ENABLE_TESTS=OFF')
