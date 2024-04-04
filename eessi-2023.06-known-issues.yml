@@ -3,6 +3,9 @@
     - issue: https://github.com/EESSI/software-layer/issues/461
     - info: "8 failing tests (out of 209539) on aarch64/*"
 - aarch64/neoverse_n1:
+  - Highway-1.0.4-GCCcore-12.3.0.eb:
+      - issue: https://github.com/EESSI/software-layer/issues/469
+      - info: "failing to build the tests"
   - PyTorch-2.1.2-foss-2023a:
     - issue: https://github.com/EESSI/software-layer/issues/461
     - info: "8 failing tests (out of 209539) on aarch64/*"
