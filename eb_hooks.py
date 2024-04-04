@@ -20,6 +20,7 @@ except ImportError:
     from distutils.version import LooseVersion
 
 
+CPU_TARGET_NEOVERSE_N1 = 'aarch64/neoverse_n1'
 CPU_TARGET_NEOVERSE_V1 = 'aarch64/neoverse_v1'
 CPU_TARGET_AARCH64_GENERIC = 'aarch64/generic'
 
@@ -287,6 +288,26 @@ def parse_hook_lammps_remove_deps_for_CI_aarch64(ec, *args, **kwargs):
             ec['dependencies'] = [dep for dep in ec['dependencies'] if dep[0] not in ('ScaFaCoS', 'tbb')]
     else:
         raise EasyBuildError("LAMMPS-specific hook triggered for non-LAMMPS easyconfig?!")
+
+
+def parse_hook_highway_handle_test_compilation_issues(ec, eprefix):
+    """
+    Solve issues with compiling or running the tests on both
+    neoverse_n1 and neoverse_v1 with Highway 1.0.4 and GCC 12.3.0:
+      - for neoverse_n1 we set optarch to GENERIC
+      - for neoverse_v1 we completely disable the tests
+    cfr. https://github.com/EESSI/software-layer/issues/469
+    """
+    if ec.name == 'Highway':
+        tcname, tcversion = ec['toolchain']['name'], ec['toolchain']['version']
+        cpu_target = get_eessi_envvar('EESSI_SOFTWARE_SUBDIR')
+        if ec.version in ['1.0.4'] and tcname == 'GCCcore' and tcversion == '12.3.0':
+            if cpu_target == CPU_TARGET_NEOVERSE_V1:
+                ec.update('configopts', '-DHWY_ENABLE_TESTS=OFF')
+            if cpu_target == CPU_TARGET_NEOVERSE_N1:
+                update_build_option('optarch', OPTARCH_GENERIC)
+    else:
+        raise EasyBuildError("Highway-specific hook triggered for non-Highway easyconfig?!")
 
 
 def pre_configure_hook(self, *args, **kwargs):
@@ -608,11 +629,12 @@ PARSE_HOOKS = {
     'casacore': parse_hook_casacore_disable_vectorize,
     'CGAL': parse_hook_cgal_toolchainopts_precise,
     'fontconfig': parse_hook_fontconfig_add_fonts,
+    'Highway': parse_hook_highway_handle_test_compilation_issues,
+    'LAMMPS': parse_hook_lammps_remove_deps_for_CI_aarch64,
     'OpenBLAS': parse_hook_openblas_relax_lapack_tests_num_errors,
     'pybind11': parse_hook_pybind11_replace_catch2,
     'Qt5': parse_hook_qt5_check_qtwebengine_disable,
     'UCX': parse_hook_ucx_eprefix,
-    'LAMMPS': parse_hook_lammps_remove_deps_for_CI_aarch64,
 }
 
 POST_PREPARE_HOOKS = {
