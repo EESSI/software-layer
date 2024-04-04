@@ -8,3 +8,6 @@ easyconfigs:
   - ImageMagick-7.1.0-53-GCCcore-12.2.0.eb:
       options:
         from-pr: 20086
+  - R-4.2.2-foss-2022b.eb:
+      options:
+        from-pr: 20238
