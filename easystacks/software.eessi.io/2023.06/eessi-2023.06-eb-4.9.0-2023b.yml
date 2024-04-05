@@ -57,3 +57,6 @@ easyconfigs:
   - Qt5-5.15.13-GCCcore-13.2.0.eb:
       options:
         from-pr: 20201
+  - Qt6-6.6.3-GCCcore-13.2.0.eb:
+      options:
+        from-pr: 20257  
