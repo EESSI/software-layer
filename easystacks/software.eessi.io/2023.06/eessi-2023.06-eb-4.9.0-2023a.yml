@@ -57,3 +57,13 @@ easyconfigs:
   - Highway-1.0.4-GCCcore-12.3.0.eb
   - ELPA-2023.05.001-foss-2023a.eb
   - libxc-6.2.2-GCC-12.3.0.eb
+  - SuperLU_DIST-8.1.2-foss-2023a.eb:
+      options:
+        from-pr: 20162
+  - PETSc-3.20.3-foss-2023a.eb:
+      options:
+        include-easyblocks-from-pr: 3086
+        from-pr: 19686
+  - MODFLOW-6.4.4-foss-2023a.eb:
+      options:
+        from-pr: 20142
