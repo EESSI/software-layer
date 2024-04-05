@@ -20,6 +20,7 @@ except ImportError:
     from distutils.version import LooseVersion
 
 
+CPU_TARGET_NEOVERSE_N1 = 'aarch64/neoverse_n1'
 CPU_TARGET_NEOVERSE_V1 = 'aarch64/neoverse_v1'
 CPU_TARGET_AARCH64_GENERIC = 'aarch64/generic'
 
@@ -114,6 +115,9 @@ def pre_prepare_hook(self, *args, **kwargs):
         update_build_option('rpath_override_dirs', rpath_override_dirs)
         print_msg("Updated rpath_override_dirs (to allow overriding MPI family %s): %s",
                   mpi_family, rpath_override_dirs)
+
+    if self.name in PRE_PREPARE_HOOKS:
+        PRE_PREPARE_HOOKS[self.name](self, *args, **kwargs)
 
 
 def post_prepare_hook_gcc_prefixed_ld_rpath_wrapper(self, *args, **kwargs):
@@ -288,6 +292,42 @@ def parse_hook_lammps_remove_deps_for_CI_aarch64(ec, *args, **kwargs):
     else:
         raise EasyBuildError("LAMMPS-specific hook triggered for non-LAMMPS easyconfig?!")
 
+
+def pre_prepare_hook_highway_handle_test_compilation_issues(self, *args, **kwargs):
+    """
+    Solve issues with compiling or running the tests on both
+    neoverse_n1 and neoverse_v1 with Highway 1.0.4 and GCC 12.3.0:
+      - for neoverse_n1 we set optarch to GENERIC
+      - for neoverse_v1 we completely disable the tests
+    cfr. https://github.com/EESSI/software-layer/issues/469
+    """
+    if self.name == 'Highway':
+        tcname, tcversion = self.toolchain.name, self.toolchain.version
+        cpu_target = get_eessi_envvar('EESSI_SOFTWARE_SUBDIR')
+        # note: keep condition in sync with the one used in 
+        # post_prepare_hook_highway_handle_test_compilation_issues
+        if self.version in ['1.0.4'] and tcname == 'GCCcore' and tcversion == '12.3.0':
+            if cpu_target == CPU_TARGET_NEOVERSE_V1:
+                self.cfg.update('configopts', '-DHWY_ENABLE_TESTS=OFF')
+            if cpu_target == CPU_TARGET_NEOVERSE_N1:
+                self.orig_optarch = build_option('optarch')
+                update_build_option('optarch', OPTARCH_GENERIC)
+    else:
+        raise EasyBuildError("Highway-specific hook triggered for non-Highway easyconfig?!")
+
+
+def post_prepare_hook_highway_handle_test_compilation_issues(self, *args, **kwargs):
+    """
+    Post-prepare hook for Highway to reset optarch build option.
+    """
+    if self.name == 'Highway':
+        tcname, tcversion = self.toolchain.name, self.toolchain.version
+        cpu_target = get_eessi_envvar('EESSI_SOFTWARE_SUBDIR')
+        # note: keep condition in sync with the one used in 
+        # pre_prepare_hook_highway_handle_test_compilation_issues
+        if self.version in ['1.0.4'] and tcname == 'GCCcore' and tcversion == '12.3.0':
+            if cpu_target == CPU_TARGET_NEOVERSE_N1:
+                update_build_option('optarch', self.orig_optarch)
 
 def pre_configure_hook(self, *args, **kwargs):
     """Main pre-configure hook: trigger custom functions based on software name."""
@@ -608,15 +648,20 @@ PARSE_HOOKS = {
     'casacore': parse_hook_casacore_disable_vectorize,
     'CGAL': parse_hook_cgal_toolchainopts_precise,
     'fontconfig': parse_hook_fontconfig_add_fonts,
+    'LAMMPS': parse_hook_lammps_remove_deps_for_CI_aarch64,
     'OpenBLAS': parse_hook_openblas_relax_lapack_tests_num_errors,
     'pybind11': parse_hook_pybind11_replace_catch2,
     'Qt5': parse_hook_qt5_check_qtwebengine_disable,
     'UCX': parse_hook_ucx_eprefix,
-    'LAMMPS': parse_hook_lammps_remove_deps_for_CI_aarch64,
+}
+
+PRE_PREPARE_HOOKS = {
+    'Highway': pre_prepare_hook_highway_handle_test_compilation_issues,
 }
 
 POST_PREPARE_HOOKS = {
     'GCCcore': post_prepare_hook_gcc_prefixed_ld_rpath_wrapper,
+    'Highway': post_prepare_hook_highway_handle_test_compilation_issues,
 }
 
 PRE_CONFIGURE_HOOKS = {

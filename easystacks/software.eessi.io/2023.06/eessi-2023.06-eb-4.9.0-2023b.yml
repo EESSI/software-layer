@@ -49,3 +49,11 @@ easyconfigs:
   - libspatialindex-1.9.3-GCCcore-13.2.0.eb:
       options:
         from-pr: 19922
+  - LittleCMS-2.15-GCCcore-13.2.0.eb
+  - giflib-5.2.1-GCCcore-13.2.0.eb
+  - OpenJPEG-2.5.0-GCCcore-13.2.0.eb
+  - libwebp-1.3.2-GCCcore-13.2.0.eb
+  - Wayland-1.22.0-GCCcore-13.2.0.eb
+  - Qt5-5.15.13-GCCcore-13.2.0.eb:
+      options:
+        from-pr: 20201
