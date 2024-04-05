@@ -57,3 +57,4 @@ easyconfigs:
   - Highway-1.0.4-GCCcore-12.3.0.eb
   - ELPA-2023.05.001-foss-2023a.eb
   - libxc-6.2.2-GCC-12.3.0.eb
+  - R-bundle-Bioconductor-3.18-foss-2023a-R-4.3.2.eb
