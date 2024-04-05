@@ -67,4 +67,6 @@ easyconfigs:
   - MODFLOW-6.4.4-foss-2023a.eb:
       options:
         from-pr: 20142
-  - R-bundle-Bioconductor-3.18-foss-2023a-R-4.3.2.eb
+  - R-bundle-Bioconductor-3.18-foss-2023a-R-4.3.2.eb:
+      options:
+        from-pr: 19949
