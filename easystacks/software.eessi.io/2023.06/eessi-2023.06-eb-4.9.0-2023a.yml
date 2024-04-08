@@ -73,4 +73,4 @@ easyconfigs:
         from-pr: 20238
   - R-bundle-Bioconductor-3.18-foss-2023a-R-4.3.2.eb:
       options:
-        from-pr: 19949
+        from-pr: 20316
