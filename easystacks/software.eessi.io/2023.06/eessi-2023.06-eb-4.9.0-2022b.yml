@@ -11,4 +11,6 @@ easyconfigs:
   - R-4.2.2-foss-2022b.eb:
       options:
         from-pr: 20238
-  - R-bundle-Bioconductor-3.16-foss-2022b-R-4.2.2.eb
+  - R-bundle-Bioconductor-3.16-foss-2022b-R-4.2.2.eb:
+      options:
+        from-pr: 20316
