@@ -181,7 +181,7 @@ try:
     os.makedirs(os.path.dirname(sitepackage_path), exist_ok=True)
     with open(sitepackage_path, 'w') as fp:
         fp.write(hook_txt)
-    # Make sure that the created Lmod file has "read" permissions for the "other" UNIX group
+    # Make sure that the created Lmod file has "read/write" for the user/group and "read" permissions for others
     os.chmod(sitepackage_path, S_IREAD|S_IWRITE|S_IRGRP|S_IWGRP|S_IROTH)
 
 except (IOError, OSError) as err:
