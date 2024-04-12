@@ -2,6 +2,8 @@
 
 set -e
 
+base_dir=$(dirname $(realpath $0))
+
 if [ $# -ne 4 ]; then
     echo "ERROR: Usage: $0 <EESSI tmp dir (example: /tmp/$USER/EESSI)> <pilot version (example: 2021.03)> <CPU arch subdir (example: x86_64/amd/zen2)> <path to tarball>" >&2
     exit 1
@@ -15,7 +17,8 @@ tmpdir=`mktemp -d`
 echo ">> tmpdir: $tmpdir"
 
 os="linux"
-cvmfs_repo="/cvmfs/pilot.eessi-hpc.org"
+source ${base_dir}/init/eessi_defaults
+cvmfs_repo=${EESSI_CVMFS_REPO}
 
 software_dir="${cvmfs_repo}/versions/${pilot_version}/software/${os}/${cpu_arch_subdir}"
 if [ ! -d ${software_dir} ]; then
@@ -35,6 +38,7 @@ cd ${overlay_upper_dir}/versions/
 echo ">> Collecting list of files/directories to include in tarball via ${PWD}..."
 
 files_list=${tmpdir}/files.list.txt
+module_files_list=${tmpdir}/module_files.list.txt
 
 if [ -d ${pilot_version}/software/${os}/${cpu_arch_subdir}/.lmod ]; then
     # include Lmod cache and configuration file (lmodrc.lua),
@@ -46,11 +50,30 @@ if [ -d ${pilot_version}/software/${os}/${cpu_arch_subdir}/modules ]; then
     find ${pilot_version}/software/${os}/${cpu_arch_subdir}/modules -type f | grep -v '/\.wh\.' >> ${files_list}
     # module symlinks
     find ${pilot_version}/software/${os}/${cpu_arch_subdir}/modules -type l | grep -v '/\.wh\.' >> ${files_list}
+    # module files and symlinks
+    find ${pilot_version}/software/${os}/${cpu_arch_subdir}/modules/all -type f -o -type l \
+        | grep -v '/\.wh\.' | sed -e 's/.lua$//' | sed -e 's@.*/modules/all/@@g' | sort -u \
+        >> ${module_files_list}
 fi
-if [ -d ${pilot_version}/software/${os}/${cpu_arch_subdir}/software ]; then
-    # installation directories
-    ls -d ${pilot_version}/software/${os}/${cpu_arch_subdir}/software/*/* | grep -v '/\.wh\.' >> ${files_list}
+if [ -d ${pilot_version}/software/${os}/${cpu_arch_subdir}/software -a -r ${module_files_list} ]; then
+    # installation directories but only those for which module files were created
+    # Note, we assume that module names (as defined by 'PACKAGE_NAME/VERSION.lua'
+    # using EasyBuild's standard module naming scheme) match the name of the
+    # software installation directory (expected to be 'PACKAGE_NAME/VERSION/').
+    # If either side changes (module naming scheme or naming of software
+    # installation directories), the procedure will likely not work.
+    for package_version in $(cat ${module_files_list}); do
+        echo "handling ${package_version}"
+        ls -d ${pilot_version}/software/${os}/${cpu_arch_subdir}/software/${package_version} \
+            | grep -v '/\.wh\.' >> ${files_list}
+    done
 fi
+
+# add a bit debug output
+echo "wrote file list to ${files_list}"
+[ -r ${files_list} ] && cat ${files_list}
+echo "wrote module file list to ${module_files_list}"
+[ -r ${module_files_list} ] && cat ${module_files_list}
 
 topdir=${cvmfs_repo}/versions/
 

@@ -4,9 +4,12 @@ on:
   push:
     paths:
       - build_container.sh
+      - create_directory_tarballs.sh
+      - EESSI-pilot-install-software.sh
       - install_software_layer.sh
+      - load_easybuild_module.sh
       - run_in_compat_layer_env.sh
-      - utils.sh
+      - scripts/utils.sh
       - update_lmod_cache.sh
 
   pull_request:
@@ -14,9 +17,12 @@ on:
       - main
     paths:
       - build_container.sh
+      - create_directory_tarballs.sh
+      - EESSI-pilot-install-software.sh
       - install_software_layer.sh
+      - load_easybuild_module.sh
       - run_in_compat_layer_env.sh
-      - utils.sh
+      - scripts/utils.sh
       - update_lmod_cache.sh
 permissions:
   contents: read # to fetch code (actions/checkout)
@@ -27,18 +33,48 @@ jobs:
     - name: checkout
       uses: actions/checkout@93ea575cb5d8a053eaa0ac8fa3b40d7e05a33cc8 # v3.1.0
 
-    # see https://github.com/apptainer/singularity/issues/5390#issuecomment-899111181
     - name: install Apptainer
       run: |
-        sudo apt-get install alien
-        alien --version
-        apptainer_rpm=$(curl --silent -L https://dl.fedoraproject.org/pub/epel/8/Everything/x86_64/Packages/a/ | grep 'apptainer-[0-9]' | sed 's/.*\(apptainer[0-9._a-z-]*.rpm\).*/\1/g')
-        curl -OL https://dl.fedoraproject.org/pub/epel/8/Everything/x86_64/Packages/a/$apptainer_rpm
-        sudo alien -d $apptainer_rpm
-        sudo apt install ./apptainer*.deb
-        apptainer --version
-        # also check whether 'singularity' command is still provided by Apptainer installation
-        singularity --version
+        ./install_apptainer_ubuntu.sh
+
+    - name: test load_easybuild_module.sh script
+      run: |
+        # bind current directory into container as /software-layer
+        export SINGULARITY_BIND="${PWD}:/software-layer"
+
+        for EB_VERSION in '4.5.0' '4.5.1' '4.7.2'; do
+          # Create script that uses load_easybuild_module.sh which we can run in compat layer environment
+          # note: Be careful with single vs double quotes below!
+          #       ${EB_VERSION} should be expanded, so use double quotes;
+          #       For statements using variables that are only defined in the script, like ${EASYBUILD_INSTALLPATH},
+          #       use single quotes to avoid expansion while creating the script.
+          test_script="${PWD}/eb-${EB_VERSION}.sh"
+          echo '#!/bin/bash' > ${test_script}
+          # both $EB and $TMPDIR environment must be set, required by load_easybuild_module.sh script
+          echo 'export EB="eb"' >> ${test_script}
+          echo 'export TMPDIR=$(mktemp -d)' >> ${test_script}
+          # set up environment to have utility functions in place that load_easybuild_module.sh script relies on,
+          # along with $EESSI_* environment variables, and Lmod
+          echo 'ls -l /software-layer/' >> ${test_script}
+          echo 'source /software-layer/scripts/utils.sh' >> ${test_script}
+          echo 'source /software-layer/init/eessi_environment_variables' >> ${test_script}
+          echo 'source ${EPREFIX}/usr/share/Lmod/init/bash' >> ${test_script}
+          # minimal configuration for EasyBuild so we can test installation aspect of load_easybuild_module.sh script
+          echo "export EASYBUILD_INSTALLPATH=/tmp/eb-${EB_VERSION}" >> ${test_script}
+          echo 'module use ${EASYBUILD_INSTALLPATH}/modules/all' >> ${test_script}
+          echo '' >> ${test_script}
+          echo "source /software-layer/load_easybuild_module.sh ${EB_VERSION}" >> ${test_script}
+          echo 'module list' >> ${test_script}
+          echo 'eb --version' >> ${test_script}
+
+          chmod u+x ${test_script}
+
+          # run wrapper script + capture & check output
+          out="${PWD}/eb-${EB_VERSION}.out"
+          ./eessi_container.sh --access rw --mode run --verbose /software-layer/run_in_compat_layer_env.sh /software-layer/eb-${EB_VERSION}.sh 2>&1 | tee ${out}
+          pattern="^This is EasyBuild ${EB_VERSION} "
+          grep "${pattern}" ${out} || (echo "Pattern '${pattern}' not found in output!" && exit 1)
+        done
 
     - name: test install_software_layer.sh script
       run: |
@@ -49,3 +85,13 @@ jobs:
           # force using x86_64/generic, to avoid triggering an installation from scratch
           sed -i "s@./EESSI-pilot-install-software.sh@\"export EESSI_SOFTWARE_SUBDIR_OVERRIDE='x86_64/generic'; ./EESSI-pilot-install-software.sh\"@g" install_software_layer.sh
           ./build_container.sh run /tmp/$USER/EESSI /tmp/install_software_layer.sh
+
+    - name: test create_directory_tarballs.sh script
+      run: |
+          # scripts need to be copied to /tmp,
+          # since create_directory_tarballs.sh must be accessible from within build container
+          cp -a * /tmp/
+          cd /tmp
+          ./build_container.sh run /tmp/$USER/EESSI /tmp/create_directory_tarballs.sh 2021.12
+          # check if tarballs have been produced
+          ls -l *.tar.gz

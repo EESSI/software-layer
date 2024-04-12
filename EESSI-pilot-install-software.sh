@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-# Script to install EESSI pilot software stack (version 2021.12)
+# Script to install EESSI pilot software stack (version set through init/eessi_defaults)
 
 # see example parsing of command line arguments at
 #   https://wiki.bash-hackers.org/scripting/posparams#using_a_while_loop
@@ -50,7 +50,7 @@ set -- "${POSITIONAL_ARGS[@]}"
 
 TOPDIR=$(dirname $(realpath $0))
 
-source $TOPDIR/utils.sh
+source $TOPDIR/scripts/utils.sh
 
 # honor $TMPDIR if it is already defined, use /tmp otherwise
 if [ -z $TMPDIR ]; then
@@ -139,62 +139,8 @@ fi
 
 REQ_EB_VERSION='4.5.0'
 
-echo ">> Checking for EasyBuild module..."
-ml_av_easybuild_out=$TMPDIR/ml_av_easybuild.out
-module avail 2>&1 | grep -i easybuild/${REQ_EB_VERSION} &> ${ml_av_easybuild_out}
-if [[ $? -eq 0 ]]; then
-    echo_green ">> EasyBuild module found!"
-else
-    echo_yellow ">> No EasyBuild module yet, installing it..."
-
-    EB_TMPDIR=${TMPDIR}/ebtmp
-    echo ">> Temporary installation (in ${EB_TMPDIR})..."
-    pip_install_out=${TMPDIR}/pip_install.out
-    pip3 install --prefix $EB_TMPDIR easybuild &> ${pip_install_out}
-
-    echo ">> Final installation in ${EASYBUILD_INSTALLPATH}..."
-    export PATH=${EB_TMPDIR}/bin:$PATH
-    export PYTHONPATH=$(ls -d ${EB_TMPDIR}/lib/python*/site-packages):$PYTHONPATH
-    eb_install_out=${TMPDIR}/eb_install.out
-    ok_msg="Latest EasyBuild release installed, let's go!"
-    fail_msg="Installing latest EasyBuild release failed, that's not good... (output: ${eb_install_out})"
-    eb --install-latest-eb-release &> ${eb_install_out}
-    check_exit_code $? "${ok_msg}" "${fail_msg}"
-
-    eb --search EasyBuild-${REQ_EB_VERSION}.eb | grep EasyBuild-${REQ_EB_VERSION}.eb > /dev/null
-    if [[ $? -eq 0 ]]; then
-        ok_msg="EasyBuild v${REQ_EB_VERSION} installed, alright!"
-        fail_msg="Installing EasyBuild v${REQ_EB_VERSION}, yikes! (output: ${eb_install_out})"
-        eb EasyBuild-${REQ_EB_VERSION}.eb >> ${eb_install_out} 2>&1
-        check_exit_code $? "${ok_msg}" "${fail_msg}"
-    fi
-
-    module avail easybuild/${REQ_EB_VERSION} &> ${ml_av_easybuild_out}
-    if [[ $? -eq 0 ]]; then
-        echo_green ">> EasyBuild module installed!"
-    else
-        fatal_error "EasyBuild/${REQ_EB_VERSION} module failed to install?! (output of 'pip install' in ${pip_install_out}, output of 'eb' in ${eb_install_out}, output of 'ml av easybuild' in ${ml_av_easybuild_out})"
-    fi
-fi
-
-echo ">> Loading EasyBuild module..."
-module load EasyBuild/$REQ_EB_VERSION
-eb_show_system_info_out=${TMPDIR}/eb_show_system_info.out
-$EB --show-system-info > ${eb_show_system_info_out}
-if [[ $? -eq 0 ]]; then
-    echo_green ">> EasyBuild seems to be working!"
-    $EB --version | grep "${REQ_EB_VERSION}"
-    if [[ $? -eq 0 ]]; then
-        echo_green "Found EasyBuild version ${REQ_EB_VERSION}, looking good!"
-    else
-        $EB --version
-        fatal_error "Expected to find EasyBuild version ${REQ_EB_VERSION}, giving up here..."
-    fi
-    $EB --show-config
-else
-    cat ${eb_show_system_info_out}
-    fatal_error "EasyBuild not working?!"
-fi
+# load EasyBuild module (will be installed if it's not available yet)
+source ${TOPDIR}/load_easybuild_module.sh ${REQ_EB_VERSION}
 
 echo_green "All set, let's start installing some software in ${EASYBUILD_INSTALLPATH}..."
 
@@ -360,6 +306,12 @@ echo ">> Installing WRF 3.9.1.1..."
 ok_msg="WRF installed, it's getting hot in here!"
 fail_msg="Installation of WRF failed, that's unexpected..."
 OMPI_MCA_pml=ucx UCX_TLS=tcp $EB WRF-3.9.1.1-foss-2020a-dmpar.eb -r --include-easyblocks-from-pr 2648
+check_exit_code $? "${ok_msg}" "${fail_msg}"
+
+echo ">> Installing R 4.1.0 (better be patient)..."
+ok_msg="R installed, wow!"
+fail_msg="Installation of R failed, so sad..."
+$EB --from-pr 14821 X11-20210518-GCCcore-10.3.0.eb -r && $EB --from-pr 16011 R-4.1.0-foss-2021a.eb --robot --parallel-extensions-install --experimental
 check_exit_code $? "${ok_msg}" "${fail_msg}"
 
 echo ">> Installing Nextflow 22.10.1..."

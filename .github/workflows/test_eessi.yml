@@ -40,4 +40,33 @@ jobs:
               export EESSI_OS_TYPE=linux
               export EESSI_SOFTWARE_SUBDIR=${{matrix.EESSI_SOFTWARE_SUBDIR}}
               env | grep ^EESSI | sort
+              echo "just run check_missing_installations.sh (should use eessi-${{matrix.EESSI_VERSION}}.yml)"
               ./check_missing_installations.sh
+
+        - name: Test check_missing_installations.sh with missing package (GCC/8.3.0)
+          run: |
+              source /cvmfs/pilot.eessi-hpc.org/versions/${{matrix.EESSI_VERSION}}/init/bash
+              module load EasyBuild
+              eb --version
+              export EESSI_PREFIX=/cvmfs/pilot.eessi-hpc.org/versions/${{matrix.EESSI_VERSION}}
+              export EESSI_OS_TYPE=linux
+              export EESSI_SOFTWARE_SUBDIR=${{matrix.EESSI_SOFTWARE_SUBDIR}}
+              env | grep ^EESSI | sort
+              echo "modify eessi-${{matrix.EESSI_VERSION}}.yml by adding a missing package (GCC/8.3.0)"
+              echo "  GCC:" >> eessi-${{matrix.EESSI_VERSION}}.yml
+              echo "    toolchains:" >> eessi-${{matrix.EESSI_VERSION}}.yml
+              echo "      SYSTEM:" >> eessi-${{matrix.EESSI_VERSION}}.yml
+              echo "        versions: '8.3.0'" >> eessi-${{matrix.EESSI_VERSION}}.yml
+              tail -n 4 eessi-${{matrix.EESSI_VERSION}}.yml
+              # note, check_missing_installations.sh exits 1 if a package was
+              # missing, which is intepreted as false (exit code based, not
+              # boolean logic), hence when the script exits 0 if no package was
+              # missing it is interpreted as true, thus the test did not capture
+              # the missing package
+              if ./check_missing_installations.sh; then
+                echo "did NOT capture missing package; test FAILED"
+                exit 1
+              else
+                echo "captured missing package; test PASSED"
+                exit 0
+              fi

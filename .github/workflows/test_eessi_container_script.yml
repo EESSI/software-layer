@@ -1,0 +1,135 @@
+# documentation: https://help.github.com/en/articles/workflow-syntax-for-github-actions
+name: Tests for eessi_container.sh script
+on: [push, pull_request, workflow_dispatch]
+permissions:
+  contents: read # to fetch code (actions/checkout)
+jobs:
+  eessi_container_script:
+    runs-on: ubuntu-20.04
+    strategy:
+      fail-fast: false
+      matrix:
+        SCRIPT_TEST:
+        - help
+        - listrepos_default
+        - listrepos_custom
+        - run
+        - shell
+        - container
+        - resume
+        # FIXME disabled because '--access rw' is not working in CI environment
+        #- readwrite
+        #- save
+    steps:
+        - name: Check out software-layer repository
+          uses: actions/checkout@93ea575cb5d8a053eaa0ac8fa3b40d7e05a33cc8 # v3.1.0
+
+        - name: install Apptainer
+          run: |
+            ./install_apptainer_ubuntu.sh
+
+        - name: Collect info on test environment
+          run: |
+              mount
+              df -h
+
+        - name: Test eessi_container.sh script
+          run: |
+              test_cmd="cat /etc/os-release"
+              out_pattern="Debian GNU/Linux 11"
+
+              if [[ ${{matrix.SCRIPT_TEST}} == 'help' ]]; then
+                ./eessi_container.sh --help
+
+              # test use of --list-repos without custom repos.cfg
+              elif [[ ${{matrix.SCRIPT_TEST}} == 'listrepos_default' ]]; then
+                outfile=out_listrepos.txt
+                ./eessi_container.sh --verbose --list-repos | tee ${outfile}
+                grep "EESSI-pilot" ${outfile}
+
+              # test use of --list-repos with custom repos.cfg
+              elif [[ ${{matrix.SCRIPT_TEST}} == 'listrepos_custom' ]]; then
+                outfile=out_listrepos.txt
+                outfile2=out_listrepos_2.txt
+                mkdir -p ${PWD}/cfg
+                echo "[EESSI/20AB.CD]" > cfg/repos.cfg
+                echo "repo_version = 20AB.CD" >> cfg/repos.cfg
+                echo "[EESSI/20HT.TP]" >> cfg/repos.cfg
+                echo "repo_version = 20HT.TP" >> cfg/repos.cfg
+                ./eessi_container.sh --verbose --list-repos | tee ${outfile}
+                grep "EESSI-pilot" ${outfile}
+
+                export EESSI_REPOS_CFG_DIR_OVERRIDE=${PWD}/cfg
+                ./eessi_container.sh --verbose --list-repos | tee ${outfile2}
+                grep "[EESSI/2023.02]" ${outfile2}
+
+              # test use of --mode run
+              elif [[ ${{matrix.SCRIPT_TEST}} == 'run' ]]; then
+                outfile=out_run.txt
+                echo "${test_cmd}" > test_script.sh
+                chmod u+x test_script.sh
+                export SINGULARITY_BIND="$PWD:/test"
+                ./eessi_container.sh --verbose --mode run /test/test_script.sh | tee ${outfile}
+                grep "${out_pattern}" ${outfile}
+
+              # test use of --mode shell
+              elif [[ ${{matrix.SCRIPT_TEST}} == 'shell' ]]; then
+                outfile=out_shell.txt
+                ./eessi_container.sh --verbose --mode shell <<< "${test_cmd}" 2>&1 | tee ${outfile}
+                grep "${out_pattern}" ${outfile}
+
+              # test use of --container option, using a totally different container;
+              # cfr. https://github.com/easybuilders/easybuild-containers
+              elif [[ ${{matrix.SCRIPT_TEST}} == 'container' ]]; then
+                outfile=out_container.txt
+                container="docker://ghcr.io/eessi/build-node:debian10"
+                ./eessi_container.sh --verbose --container ${container} --mode shell <<< "${test_cmd}" 2>&1 | tee ${outfile}
+                grep "Debian GNU/Linux 10" ${outfile}
+
+              # test use of '--access rw' to get write access in container
+              elif [[ ${{matrix.SCRIPT_TEST}} == 'readwrite' ]]; then
+                outfile=out_readwrite.txt
+                fn="test_${RANDOM}.txt"
+                echo "touch /cvmfs/pilot.eessi-hpc.org/${fn}" > test_script.sh
+                chmod u+x test_script.sh
+                export SINGULARITY_BIND="$PWD:/test"
+                ./eessi_container.sh --verbose --access rw --mode run /test/test_script.sh > ${outfile}
+
+                tmpdir=$(grep "\-\-resume" ${outfile} | sed "s/.*--resume \([^']*\).*/\1/g")
+                # note: must use '--access rw' again here, since touched file is in overlay upper dir
+                ./eessi_container.sh --verbose --resume ${tmpdir} --access rw --mode shell <<< "ls -l /cvmfs/pilot.eessi-hpc.org/${fn}" > ${outfile}
+                grep "/cvmfs/pilot.eessi-hpc.org/${fn}$" $outfile
+
+              # test use of --resume
+              elif [[ ${{matrix.SCRIPT_TEST}} == 'resume' ]]; then
+                outfile=out_resume.txt
+                ./eessi_container.sh --verbose --mode shell <<< "${test_cmd}" > ${outfile}
+
+                tmpdir=$(grep "\-\-resume" ${outfile} | sed "s/.*--resume \([^']*\).*/\1/g")
+                rm -f ${outfile}
+
+                # make sure that container image exists
+                test -f ${tmpdir}/ghcr.io_eessi_build_node_debian11.sif || (echo "Container image not found in ${tmpdir}" >&2 && ls ${tmpdir} && exit 1)
+
+                ./eessi_container.sh --verbose --resume ${tmpdir} --mode shell <<< "${test_cmd}" > ${outfile}
+                cat ${outfile}
+                grep "Resuming from previous run using temporary storage at ${tmpdir}" ${outfile}
+                grep "${out_pattern}" ${outfile}
+
+              # test use of --save (+ --resume)
+              elif [[ ${{matrix.SCRIPT_TEST}} == 'save' ]]; then
+                outfile=out_save.txt
+                fn="test_${RANDOM}.txt"
+                test_cmd="touch /cvmfs/pilot.eessi-hpc.org/${fn}"
+                ./eessi_container.sh --verbose --mode shell --access rw --save test-save.tar <<< "${test_cmd}" 2>&1 | tee ${outfile}
+                rm -f ${outfile}
+
+                ./eessi_container.sh --verbose --mode shell --access rw --resume test-save.tar <<< "ls -l /cvmfs/pilot.eessi-hpc.org/${fn}" > ${outfile}
+                grep "/cvmfs/pilot.eessi-hpc.org/${fn}$" $outfile
+
+                tar tfv test-save.tar | grep "overlay-upper/${fn}"
+
+              else
+                  echo "Unknown test case: ${{matrix.SCRIPT_TEST}}" >&2
+                  exit 1
+              fi
