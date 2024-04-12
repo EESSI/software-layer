@@ -1,7 +1,5 @@
 #!/bin/bash
 
-SOFTWARE_LAYER_TARBALL_URL=https://github.com/EESSI/software-layer/tarball/main
-
 set -eo pipefail
 
 if [ $# -ne 1 ]; then
@@ -10,6 +8,8 @@ if [ $# -ne 1 ]; then
 fi
 
 version=$1
+
+SOFTWARE_LAYER_TARBALL_URL="https://github.com/EESSI/software-layer/tarball/${version}-software.eessi.io"
 
 TOPDIR=$(dirname $(realpath $0))
 
@@ -28,9 +28,9 @@ mkdir "${tartmp}/${version}"
 tarname="eessi-${version}-init-$(date +%s).tar.gz"
 curl -Ls ${SOFTWARE_LAYER_TARBALL_URL} | tar xzf - -C "${tartmp}/${version}" --strip-components=1 --no-wildcards-match-slash --wildcards '*/init/'
 source "${tartmp}/${version}/init/minimal_eessi_env"
-if [ "${EESSI_PILOT_VERSION}" != "${version}" ]
+if [ "${EESSI_VERSION}" != "${version}" ]
 then
-  fatal_error "Specified version ${version} does not match version ${EESSI_PILOT_VERSION} in the init files!"
+  fatal_error "Specified version ${version} does not match version ${EESSI_VERSION} in the init files!"
 fi
 tar czf "${tarname}" -C "${tartmp}" "${version}"
 rm -rf "${tartmp}"

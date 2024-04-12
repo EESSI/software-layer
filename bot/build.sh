@@ -53,6 +53,33 @@ LOCAL_TMP=$(cfg_get_value "site_config" "local_tmp")
 echo "bot/build.sh: LOCAL_TMP='${LOCAL_TMP}'"
 # TODO should local_tmp be mandatory? --> then we check here and exit if it is not provided
 
+# check if path to copy build logs to is specified, so we can copy build logs for failing builds there
+BUILD_LOGS_DIR=$(cfg_get_value "site_config" "build_logs_dir")
+echo "bot/build.sh: BUILD_LOGS_DIR='${BUILD_LOGS_DIR}'"
+# if $BUILD_LOGS_DIR is set, add it to $SINGULARITY_BIND so the path is available in the build container
+if [[ ! -z ${BUILD_LOGS_DIR} ]]; then
+    mkdir -p ${BUILD_LOGS_DIR}
+    if [[ -z ${SINGULARITY_BIND} ]]; then
+        export SINGULARITY_BIND="${BUILD_LOGS_DIR}"
+    else
+        export SINGULARITY_BIND="${SINGULARITY_BIND},${BUILD_LOGS_DIR}"
+    fi
+fi
+
+# check if path to directory on shared filesystem is specified,
+# and use it as location for source tarballs used by EasyBuild if so
+SHARED_FS_PATH=$(cfg_get_value "site_config" "shared_fs_path")
+echo "bot/build.sh: SHARED_FS_PATH='${SHARED_FS_PATH}'"
+# if $SHARED_FS_PATH is set, add it to $SINGULARITY_BIND so the path is available in the build container
+if [[ ! -z ${SHARED_FS_PATH} ]]; then
+    mkdir -p ${SHARED_FS_PATH}
+    if [[ -z ${SINGULARITY_BIND} ]]; then
+        export SINGULARITY_BIND="${SHARED_FS_PATH}"
+    else
+        export SINGULARITY_BIND="${SINGULARITY_BIND},${SHARED_FS_PATH}"
+    fi
+fi
+
 SINGULARITY_CACHEDIR=$(cfg_get_value "site_config" "container_cachedir")
 echo "bot/build.sh: SINGULARITY_CACHEDIR='${SINGULARITY_CACHEDIR}'"
 if [[ ! -z ${SINGULARITY_CACHEDIR} ]]; then
@@ -101,12 +128,12 @@ EESSI_REPOS_CFG_DIR_OVERRIDE=$(cfg_get_value "repository" "repos_cfg_dir")
 export EESSI_REPOS_CFG_DIR_OVERRIDE=${EESSI_REPOS_CFG_DIR_OVERRIDE:-${PWD}/cfg}
 echo "bot/build.sh: EESSI_REPOS_CFG_DIR_OVERRIDE='${EESSI_REPOS_CFG_DIR_OVERRIDE}'"
 
-# determine pilot version to be used from .repository.repo_version in ${JOB_CFG_FILE}
-# here, just set & export EESSI_PILOT_VERSION_OVERRIDE
+# determine EESSI version to be used from .repository.repo_version in ${JOB_CFG_FILE}
+# here, just set & export EESSI_VERSION_OVERRIDE
 # next script (eessi_container.sh) makes use of it via sourcing init scripts
 # (e.g., init/eessi_defaults or init/minimal_eessi_env)
-export EESSI_PILOT_VERSION_OVERRIDE=$(cfg_get_value "repository" "repo_version")
-echo "bot/build.sh: EESSI_PILOT_VERSION_OVERRIDE='${EESSI_PILOT_VERSION_OVERRIDE}'"
+export EESSI_VERSION_OVERRIDE=$(cfg_get_value "repository" "repo_version")
+echo "bot/build.sh: EESSI_VERSION_OVERRIDE='${EESSI_VERSION_OVERRIDE}'"
 
 # determine CVMFS repo to be used from .repository.repo_name in ${JOB_CFG_FILE}
 # here, just set EESSI_CVMFS_REPO_OVERRIDE, a bit further down
@@ -141,19 +168,64 @@ COMMON_ARGS+=("--mode" "run")
 # make sure to use the same parent dir for storing tarballs of tmp
 PREVIOUS_TMP_DIR=${PWD}/previous_tmp
 
+# prepare arguments to install_software_layer.sh (specific to build step)
+declare -a BUILD_STEP_ARGS=()
+declare -a INSTALL_SCRIPT_ARGS=()
+declare -a REMOVAL_SCRIPT_ARGS=()
+if [[ ${EESSI_SOFTWARE_SUBDIR_OVERRIDE} =~ .*/generic$ ]]; then
+    INSTALL_SCRIPT_ARGS+=("--generic")
+    REMOVAL_SCRIPT_ARGS+=("--generic")
+fi
+[[ ! -z ${BUILD_LOGS_DIR} ]] && INSTALL_SCRIPT_ARGS+=("--build-logs-dir" "${BUILD_LOGS_DIR}")
+[[ ! -z ${SHARED_FS_PATH} ]] && INSTALL_SCRIPT_ARGS+=("--shared-fs-path" "${SHARED_FS_PATH}")
+
+# determine if the removal step has to be run
+# assume there's only one diff file that corresponds to the PR patch file
+pr_diff=$(ls [0-9]*.diff | head -1)
+# the true at the end of the next command is important: grep will expectedly return 1 if there is no easystack file being added under rebuilds,
+# but due to "set -e" the entire script would otherwise fail
+changed_easystacks_rebuilds=$(cat ${pr_diff} | grep '^+++' | cut -f2 -d' ' | sed 's@^[a-z]/@@g' | grep '^easystacks/.*yml$' | (grep "/rebuilds/" || true))
+if [[ -z "${changed_easystacks_rebuilds}" ]]; then
+    echo "This PR does not add any easystack files in a rebuilds subdirectory, so let's skip the removal step."
+else
+    # prepare directory to store tarball of tmp for removal and build steps
+    TARBALL_TMP_REMOVAL_STEP_DIR=${PREVIOUS_TMP_DIR}/removal_step
+    mkdir -p ${TARBALL_TMP_REMOVAL_STEP_DIR}
+
+    # prepare arguments to eessi_container.sh specific to remove step
+    declare -a REMOVAL_STEP_ARGS=()
+    REMOVAL_STEP_ARGS+=("--save" "${TARBALL_TMP_REMOVAL_STEP_DIR}")
+    REMOVAL_STEP_ARGS+=("--storage" "${STORAGE}")
+    # add fakeroot option in order to be able to remove software, see:
+    # https://github.com/EESSI/software-layer/issues/312
+    REMOVAL_STEP_ARGS+=("--fakeroot")
+
+    # create tmp file for output of removal step
+    removal_outerr=$(mktemp remove.outerr.XXXX)
+
+    echo "Executing command to remove software:"
+    echo "./eessi_container.sh ${COMMON_ARGS[@]} ${REMOVAL_STEP_ARGS[@]}"
+    echo "                     -- ./EESSI-remove-software.sh \"${REMOVAL_SCRIPT_ARGS[@]}\" \"$@\" 2>&1 | tee -a ${removal_outerr}"
+    ./eessi_container.sh "${COMMON_ARGS[@]}" "${REMOVAL_STEP_ARGS[@]}" \
+                         -- ./EESSI-remove-software.sh "${REMOVAL_SCRIPT_ARGS[@]}" "$@" 2>&1 | tee -a ${removal_outerr}
+
+    # make sure that the build step resumes from the same temporary directory
+    # this is important, as otherwise the removed software will still be there
+    REMOVAL_TMPDIR=$(grep ' as tmp directory ' ${removal_outerr} | cut -d ' ' -f 2)
+    BUILD_STEP_ARGS+=("--resume" "${REMOVAL_TMPDIR}")
+fi
+
 # prepare directory to store tarball of tmp for build step
 TARBALL_TMP_BUILD_STEP_DIR=${PREVIOUS_TMP_DIR}/build_step
 mkdir -p ${TARBALL_TMP_BUILD_STEP_DIR}
 
 # prepare arguments to eessi_container.sh specific to build step
-declare -a BUILD_STEP_ARGS=()
 BUILD_STEP_ARGS+=("--save" "${TARBALL_TMP_BUILD_STEP_DIR}")
 BUILD_STEP_ARGS+=("--storage" "${STORAGE}")
-
-# prepare arguments to install_software_layer.sh (specific to build step)
-GENERIC_OPT=
-if [[ ${EESSI_SOFTWARE_SUBDIR_OVERRIDE} =~ .*/generic$ ]]; then
-    GENERIC_OPT="--generic"
+# add options required to handle NVIDIA support
+BUILD_STEP_ARGS+=("--nvidia" "all")
+if [[ ! -z ${SHARED_FS_PATH} ]]; then
+    BUILD_STEP_ARGS+=("--host-injections" "${SHARED_FS_PATH}/host-injections")
 fi
 
 # create tmp file for output of build step
@@ -161,9 +233,9 @@ build_outerr=$(mktemp build.outerr.XXXX)
 
 echo "Executing command to build software:"
 echo "./eessi_container.sh ${COMMON_ARGS[@]} ${BUILD_STEP_ARGS[@]}"
-echo "                     -- ./install_software_layer.sh ${GENERIC_OPT} \"$@\" 2>&1 | tee -a ${build_outerr}"
+echo "                     -- ./install_software_layer.sh \"${INSTALL_SCRIPT_ARGS[@]}\" \"$@\" 2>&1 | tee -a ${build_outerr}"
 ./eessi_container.sh "${COMMON_ARGS[@]}" "${BUILD_STEP_ARGS[@]}" \
-                     -- ./install_software_layer.sh ${GENERIC_OPT} "$@" 2>&1 | tee -a ${build_outerr}
+                     -- ./install_software_layer.sh "${INSTALL_SCRIPT_ARGS[@]}" "$@" 2>&1 | tee -a ${build_outerr}
 
 # prepare directory to store tarball of tmp for tarball step
 TARBALL_TMP_TARBALL_STEP_DIR=${PREVIOUS_TMP_DIR}/tarball_step
@@ -177,13 +249,19 @@ declare -a TARBALL_STEP_ARGS=()
 TARBALL_STEP_ARGS+=("--save" "${TARBALL_TMP_TARBALL_STEP_DIR}")
 
 # determine temporary directory to resume from
-BUILD_TMPDIR=$(grep ' as tmp directory ' ${build_outerr} | cut -d ' ' -f 2)
-TARBALL_STEP_ARGS+=("--resume" "${BUILD_TMPDIR}")
+if [[ -z ${REMOVAL_TMPDIR} ]]; then
+    # no rebuild step was done, so the tarball step should resume from the build directory
+    BUILD_TMPDIR=$(grep ' as tmp directory ' ${build_outerr} | cut -d ' ' -f 2)
+    TARBALL_STEP_ARGS+=("--resume" "${BUILD_TMPDIR}")
+else
+    # a removal step was done, so resume from its temporary directory (which was also used for the build step)
+    TARBALL_STEP_ARGS+=("--resume" "${REMOVAL_TMPDIR}")
+fi
 
 timestamp=$(date +%s)
-# to set EESSI_PILOT_VERSION we need to source init/eessi_defaults now
+# to set EESSI_VERSION we need to source init/eessi_defaults now
 source init/eessi_defaults
-export TGZ=$(printf "eessi-%s-software-%s-%s-%d.tar.gz" ${EESSI_PILOT_VERSION} ${EESSI_OS_TYPE} ${EESSI_SOFTWARE_SUBDIR_OVERRIDE//\//-} ${timestamp})
+export TGZ=$(printf "eessi-%s-software-%s-%s-%d.tar.gz" ${EESSI_VERSION} ${EESSI_OS_TYPE} ${EESSI_SOFTWARE_SUBDIR_OVERRIDE//\//-} ${timestamp})
 
 # value of first parameter to create_tarball.sh - TMP_IN_CONTAINER - needs to be
 # synchronised with setting of TMP_IN_CONTAINER in eessi_container.sh
@@ -192,8 +270,8 @@ export TGZ=$(printf "eessi-%s-software-%s-%s-%d.tar.gz" ${EESSI_PILOT_VERSION} $
 TMP_IN_CONTAINER=/tmp
 echo "Executing command to create tarball:"
 echo "./eessi_container.sh ${COMMON_ARGS[@]} ${TARBALL_STEP_ARGS[@]}"
-echo "                     -- ./create_tarball.sh ${TMP_IN_CONTAINER} ${EESSI_PILOT_VERSION} ${EESSI_SOFTWARE_SUBDIR_OVERRIDE} /eessi_bot_job/${TGZ} 2>&1 | tee -a ${tar_outerr}"
+echo "                     -- ./create_tarball.sh ${TMP_IN_CONTAINER} ${EESSI_VERSION} ${EESSI_SOFTWARE_SUBDIR_OVERRIDE} /eessi_bot_job/${TGZ} 2>&1 | tee -a ${tar_outerr}"
 ./eessi_container.sh "${COMMON_ARGS[@]}" "${TARBALL_STEP_ARGS[@]}" \
-                     -- ./create_tarball.sh ${TMP_IN_CONTAINER} ${EESSI_PILOT_VERSION} ${EESSI_SOFTWARE_SUBDIR_OVERRIDE} /eessi_bot_job/${TGZ} 2>&1 | tee -a ${tar_outerr}
+                     -- ./create_tarball.sh ${TMP_IN_CONTAINER} ${EESSI_VERSION} ${EESSI_SOFTWARE_SUBDIR_OVERRIDE} /eessi_bot_job/${TGZ} 2>&1 | tee -a ${tar_outerr}
 
 exit 0
