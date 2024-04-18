@@ -1,2 +1,3 @@
 easyconfigs:
   - ncdu-1.18-GCC-12.3.0.eb
+  - EESSI-extend-2023.06-easybuild.eb 
