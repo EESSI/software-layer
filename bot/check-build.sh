@@ -98,15 +98,15 @@ job_dir=${PWD}
 job_out="slurm-${SLURM_JOB_ID}.out"
 [[ ${VERBOSE} -ne 0 ]] && echo ">> searching for job output file(s) matching '"${job_out}"'"
 if  [[ -f ${job_out} ]]; then
-    SLURM=1
+    SLURM_OUTPUT_FOUND=1
     [[ ${VERBOSE} -ne 0 ]] && echo "   found slurm output file '"${job_out}"'"
 else
-    SLURM=0
+    SLURM_OUTPUT_FOUND=0
     [[ ${VERBOSE} -ne 0 ]] && echo "   Slurm output file '"${job_out}"' NOT found"
 fi
 
 ERROR=-1
-if [[ ${SLURM} -eq 1 ]]; then
+if [[ ${SLURM_OUTPUT_FOUND} -eq 1 ]]; then
   GP_error='ERROR: '
   grep_out=$(grep -v "^>> searching for " ${job_dir}/${job_out} | grep "${GP_error}")
   [[ $? -eq 0 ]] && ERROR=1 || ERROR=0
@@ -116,7 +116,7 @@ if [[ ${SLURM} -eq 1 ]]; then
 fi
 
 FAILED=-1
-if [[ ${SLURM} -eq 1 ]]; then
+if [[ ${SLURM_OUTPUT_FOUND} -eq 1 ]]; then
   GP_failed='FAILED: '
   grep_out=$(grep -v "^>> searching for " ${job_dir}/${job_out} | grep "${GP_failed}")
   [[ $? -eq 0 ]] && FAILED=1 || FAILED=0
@@ -126,7 +126,7 @@ if [[ ${SLURM} -eq 1 ]]; then
 fi
 
 MISSING=-1
-if [[ ${SLURM} -eq 1 ]]; then
+if [[ ${SLURM_OUTPUT_FOUND} -eq 1 ]]; then
   GP_req_missing=' required modules missing:'
   grep_out=$(grep -v "^>> searching for " ${job_dir}/${job_out} | grep "${GP_req_missing}")
   [[ $? -eq 0 ]] && MISSING=1 || MISSING=0
@@ -136,7 +136,7 @@ if [[ ${SLURM} -eq 1 ]]; then
 fi
 
 NO_MISSING=-1
-if [[ ${SLURM} -eq 1 ]]; then
+if [[ ${SLURM_OUTPUT_FOUND} -eq 1 ]]; then
   GP_no_missing='No missing installations'
   grep_out=$(grep -v "^>> searching for " ${job_dir}/${job_out} | grep "${GP_no_missing}")
   [[ $? -eq 0 ]] && NO_MISSING=1 || NO_MISSING=0
@@ -147,7 +147,7 @@ fi
 
 TGZ=-1
 TARBALL=
-if [[ ${SLURM} -eq 1 ]]; then
+if [[ ${SLURM_OUTPUT_FOUND} -eq 1 ]]; then
   GP_tgz_created="\.tar\.gz created!"
   grep_out=$(grep -v "^>> searching for " ${job_dir}/${job_out} | grep "${GP_tgz_created}" | sort -u)
   if [[ $? -eq 0 ]]; then
@@ -169,9 +169,27 @@ fi
 [[ ${VERBOSE} -ne 0 ]] && echo "  NO_MISSING.: $([[ $NO_MISSING -eq 1 ]] && echo 'yes' || echo 'no') (yes)"
 [[ ${VERBOSE} -ne 0 ]] && echo "  TGZ_CREATED: $([[ $TGZ -eq 1 ]] && echo 'yes' || echo 'no') (yes)"
 
+# Here, we try to do some additional analysis on the output file
+# to see if we can print a more clear 'reason' for the failure
+# For now, we only analyse unmerged EasyConfigs as potential cause, but we can easily add checks for other
+# specific scenarios below
+
+# Check for the pattern being added here by check_missing_installations.sh to the output to
+# see if EasyConfigs might have been unmerged, and that's causing a failure
+UNMERGED_EASYCONFIG=-1
+if [[ ${SLURM_OUTPUT_FOUND} -eq 1 ]]; then
+  gp_unmerged="are you sure all PRs referenced have been merged in EasyBuild"
+  grep_unmerged=$(grep -v "^>> searching for " ${job_dir}/${job_out} | grep "${gp_unmerged}")
+  [[ $? -eq 0 ]] && UNMERGED_EASYCONFIG=1 || UNMERGED_EASYCONFIG=0
+  # have to be careful to not add searched for pattern into slurm out file
+  [[ ${VERBOSE} -ne 0 ]] && echo ">> searching for '"${gp_unmerged}"'"
+  [[ ${VERBOSE} -ne 0 ]] && echo "${grep_unmerged}"
+fi
+
 job_result_file=_bot_job${SLURM_JOB_ID}.result
 
-if [[ ${SLURM} -eq 1 ]] && \
+# Default reason:
+if [[ ${SLURM_OUTPUT_FOUND} -eq 1 ]] && \
    [[ ${ERROR} -eq 0 ]] && \
    [[ ${FAILED} -eq 0 ]] && \
    [[ ${MISSING} -eq 0 ]] && \
@@ -180,10 +198,17 @@ if [[ ${SLURM} -eq 1 ]] && \
    [[ ! -z ${TARBALL} ]]; then
     # SUCCESS
     status="SUCCESS"
+    reason=""
     summary=":grin: SUCCESS"
+elif [[ ${UNMERGED_EASYCONFIG} -eq 1 ]]; then
+    status="FAILURE"
+    reason="EasyConfig not found during missing installation check. Are you sure all PRs referenced have been merged in EasyBuild?"
+    summary=":cry: FAILURE"
 else
     # FAILURE
     status="FAILURE"
+    # General failure, we don't know a more specific reason
+    reason=""
     summary=":cry: FAILURE"
 fi
 
@@ -253,14 +278,6 @@ fi
 # </details>
 ###
 
-# construct and write complete PR comment details: implements third alternative
-comment_template="<details>__SUMMARY_FMT__<dl>__DETAILS_FMT____ARTEFACTS_FMT__</dl></details>"
-comment_summary_fmt="<summary>__SUMMARY__ _(click triangle for details)_</summary>"
-comment_details_fmt="<dt>_Details_</dt><dd>__DETAILS_LIST__</dd>"
-comment_success_item_fmt=":white_check_mark: __ITEM__"
-comment_failure_item_fmt=":x: __ITEM__"
-comment_artefacts_fmt="<dt>_Artefacts_</dt><dd>__ARTEFACTS_LIST__</dd>"
-comment_artefact_details_fmt="<details>__ARTEFACT_SUMMARY____ARTEFACT_DETAILS__</details>"
 
 function print_br_item() {
     format="${1}"
@@ -332,42 +349,66 @@ echo -n "comment_description = " >> ${job_result_file}
 # - __DETAILS_FMT__ -> variable $comment_details
 # - __ARTEFACTS_FMT__ -> variable $comment_artefacts
 
-comment_summary="${comment_summary_fmt/__SUMMARY__/${summary}}"
+# construct and write complete PR comment details: implements third alternative
+comment_template="<details>__SUMMARY_FMT__<dl>__REASON_FMT____DETAILS_FMT____ARTEFACTS_FMT__</dl></details>"
+comment_success_item_fmt=":white_check_mark: __ITEM__"
+comment_failure_item_fmt=":x: __ITEM__"
 
-# first construct comment_details_list, abbreviated CoDeList
+# Initialize comment_description
+comment_description=${comment_template}
+
+# Now, start replacing template items one by one
+# Replace the summary template (__SUMMARY_FMT__)
+comment_summary_fmt="<summary>__SUMMARY__ _(click triangle for details)_</summary>"
+comment_summary="${comment_summary_fmt/__SUMMARY__/${summary}}"
+comment_description=${comment_template/__SUMMARY_FMT__/${comment_summary}}
+
+# Only add if there is a reason (e.g. no reason for successful runs)
+if [[ ! -z ${reason} ]]; then
+    comment_reason_fmt="<dt>_Reason_</dt><dd>__REASONS__</dd>"
+    reason_details="${comment_reason_fmt/__REASONS__/${reason}}"
+    comment_description=${comment_description/__REASON_FMT__/${reason_details}}
+else
+    comment_description=${comment_description/__REASON_FMT__/""}
+fi
+
+# Replace the details template (__DETAILS_FMT__)
+# first construct comment_details_list, abbreviated comment_details_list
 # then use it to set comment_details
-CoDeList=""
+comment_details_list=""
 
 success_msg="job output file <code>${job_out}</code>"
 failure_msg="no job output file <code>${job_out}</code>"
-CoDeList=${CoDeList}$(add_detail ${SLURM} 1 "${success_msg}" "${failure_msg}")
+comment_details_list=${comment_details_list}$(add_detail ${SLURM_OUTPUT_FOUND} 1 "${success_msg}" "${failure_msg}")
 
 success_msg="no message matching <code>${GP_error}</code>"
 failure_msg="found message matching <code>${GP_error}</code>"
-CoDeList=${CoDeList}$(add_detail ${ERROR} 0 "${success_msg}" "${failure_msg}")
+comment_details_list=${comment_details_list}$(add_detail ${ERROR} 0 "${success_msg}" "${failure_msg}")
 
 success_msg="no message matching <code>${GP_failed}</code>"
 failure_msg="found message matching <code>${GP_failed}</code>"
-CoDeList=${CoDeList}$(add_detail ${FAILED} 0 "${success_msg}" "${failure_msg}")
+comment_details_list=${comment_details_list}$(add_detail ${FAILED} 0 "${success_msg}" "${failure_msg}")
 
 success_msg="no message matching <code>${GP_req_missing}</code>"
 failure_msg="found message matching <code>${GP_req_missing}</code>"
-CoDeList=${CoDeList}$(add_detail ${MISSING} 0 "${success_msg}" "${failure_msg}")
+comment_details_list=${comment_details_list}$(add_detail ${MISSING} 0 "${success_msg}" "${failure_msg}")
 
 success_msg="found message(s) matching <code>${GP_no_missing}</code>"
 failure_msg="no message matching <code>${GP_no_missing}</code>"
-CoDeList=${CoDeList}$(add_detail ${NO_MISSING} 1 "${success_msg}" "${failure_msg}")
+comment_details_list=${comment_details_list}$(add_detail ${NO_MISSING} 1 "${success_msg}" "${failure_msg}")
 
 success_msg="found message matching <code>${GP_tgz_created}</code>"
 failure_msg="no message matching <code>${GP_tgz_created}</code>"
-CoDeList=${CoDeList}$(add_detail ${TGZ} 1 "${success_msg}" "${failure_msg}")
+comment_details_list=${comment_details_list}$(add_detail ${TGZ} 1 "${success_msg}" "${failure_msg}")
 
-comment_details="${comment_details_fmt/__DETAILS_LIST__/${CoDeList}}"
+# Now, do the actual replacement of __DETAILS_FMT__
+comment_details_fmt="<dt>_Details_</dt><dd>__DETAILS_LIST__</dd>"
+comment_details="${comment_details_fmt/__DETAILS_LIST__/${comment_details_list}}"
+comment_description=${comment_description/__DETAILS_FMT__/${comment_details}}
 
-
-# first construct comment_artefacts_list, abbreviated CoArList
+# first construct comment_artefacts_list
 # then use it to set comment_artefacts
-CoArList=""
+comment_artifacts_list=""
 
 # TARBALL should only contain a single tarball
 if [[ ! -z ${TARBALL} ]]; then
@@ -427,50 +468,49 @@ if [[ ! -z ${TARBALL} ]]; then
     software_pkgs=$(echo "${software_entries}" | sed -e "s@${prefix}/software/@@" | awk -F/ '{if (NR >= 2) {print $1 "/" $2}}' | sort -u)
 
     artefact_summary="<summary>$(print_code_item '__ITEM__' ${TARBALL})</summary>"
-    CoArList=""
-    CoArList="${CoArList}$(print_br_item2 'size: __ITEM__ MiB (__ITEM2__ bytes)' ${size_mib} ${size})"
-    CoArList="${CoArList}$(print_br_item 'entries: __ITEM__' ${entries})"
-    CoArList="${CoArList}$(print_br_item 'modules under ___ITEM___' ${prefix}/modules/all)"
-    CoArList="${CoArList}<pre>"
+    comment_artifacts_list=""
+    comment_artifacts_list="${comment_artifacts_list}$(print_br_item2 'size: __ITEM__ MiB (__ITEM2__ bytes)' ${size_mib} ${size})"
+    comment_artifacts_list="${comment_artifacts_list}$(print_br_item 'entries: __ITEM__' ${entries})"
+    comment_artifacts_list="${comment_artifacts_list}$(print_br_item 'modules under ___ITEM___' ${prefix}/modules/all)"
+    comment_artifacts_list="${comment_artifacts_list}<pre>"
     if [[ ! -z ${modules} ]]; then
         while IFS= read -r mod ; do
-            CoArList="${CoArList}$(print_br_item '<code>__ITEM__</code>' ${mod})"
+            comment_artifacts_list="${comment_artifacts_list}$(print_br_item '<code>__ITEM__</code>' ${mod})"
         done <<< "${modules}"
     else
-        CoArList="${CoArList}$(print_br_item '__ITEM__' 'no module files in tarball')"
+        comment_artifacts_list="${comment_artifacts_list}$(print_br_item '__ITEM__' 'no module files in tarball')"
     fi
-    CoArList="${CoArList}</pre>"
-    CoArList="${CoArList}$(print_br_item 'software under ___ITEM___' ${prefix}/software)"
-    CoArList="${CoArList}<pre>"
+    comment_artifacts_list="${comment_artifacts_list}</pre>"
+    comment_artifacts_list="${comment_artifacts_list}$(print_br_item 'software under ___ITEM___' ${prefix}/software)"
+    comment_artifacts_list="${comment_artifacts_list}<pre>"
     if [[ ! -z ${software_pkgs} ]]; then
         while IFS= read -r sw_pkg ; do
-            CoArList="${CoArList}$(print_br_item '<code>__ITEM__</code>' ${sw_pkg})"
+            comment_artifacts_list="${comment_artifacts_list}$(print_br_item '<code>__ITEM__</code>' ${sw_pkg})"
         done <<< "${software_pkgs}"
     else
-        CoArList="${CoArList}$(print_br_item '__ITEM__' 'no software packages in tarball')"
+        comment_artifacts_list="${comment_artifacts_list}$(print_br_item '__ITEM__' 'no software packages in tarball')"
     fi
-    CoArList="${CoArList}</pre>"
-    CoArList="${CoArList}$(print_br_item 'other under ___ITEM___' ${prefix})"
-    CoArList="${CoArList}<pre>"
+    comment_artifacts_list="${comment_artifacts_list}</pre>"
+    comment_artifacts_list="${comment_artifacts_list}$(print_br_item 'other under ___ITEM___' ${prefix})"
+    comment_artifacts_list="${comment_artifacts_list}<pre>"
     if [[ ! -z ${other_shortened} ]]; then
         while IFS= read -r other ; do
-            CoArList="${CoArList}$(print_br_item '<code>__ITEM__</code>' ${other})"
+            comment_artifacts_list="${comment_artifacts_list}$(print_br_item '<code>__ITEM__</code>' ${other})"
         done <<< "${other_shortened}"
     else
-        CoArList="${CoArList}$(print_br_item '__ITEM__' 'no other files in tarball')"
+        comment_artifacts_list="${comment_artifacts_list}$(print_br_item '__ITEM__' 'no other files in tarball')"
     fi
-    CoArList="${CoArList}</pre>"
+    comment_artifacts_list="${comment_artifacts_list}</pre>"
 else
-    CoArList="${CoArList}$(print_dd_item 'No artefacts were created or found.' '')"
+    comment_artifacts_list="${comment_artifacts_list}$(print_dd_item 'No artefacts were created or found.' '')"
 fi
 
+comment_artefact_details_fmt="<details>__ARTEFACT_SUMMARY____ARTEFACT_DETAILS__</details>"
 comment_artefacts_details="${comment_artefact_details_fmt/__ARTEFACT_SUMMARY__/${artefact_summary}}"
-comment_artefacts_details="${comment_artefacts_details/__ARTEFACT_DETAILS__/${CoArList}}"
-comment_artefacts="${comment_artefacts_fmt/__ARTEFACTS_LIST__/${comment_artefacts_details}}"
+comment_artefacts_details="${comment_artefacts_details/__ARTEFACT_DETAILS__/${comment_artifacts_list}}"
 
-# now put all pieces together creating comment_details from comment_template
-comment_description=${comment_template/__SUMMARY_FMT__/${comment_summary}}
-comment_description=${comment_description/__DETAILS_FMT__/${comment_details}}
+comment_artefacts_fmt="<dt>_Artefacts_</dt><dd>__ARTEFACTS_LIST__</dd>"
+comment_artefacts="${comment_artefacts_fmt/__ARTEFACTS_LIST__/${comment_artefacts_details}}"
 comment_description=${comment_description/__ARTEFACTS_FMT__/${comment_artefacts}}
 
 echo "${comment_description}" >> ${job_result_file}
