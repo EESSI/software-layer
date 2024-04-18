@@ -264,6 +264,14 @@ fi
 
 ### add packages here
 
+# use PR patch file to determine if the EasyBuild hooks have changed
+changed_eb_hooks=$(cat ${pr_diff} | grep '^+++' | cut -f2 -d' ' | sed 's@^[a-z]/@@g' | grep '^eb_hooks.py$') 
+if [ -n "${changed_eb_hooks}" ]; then
+    # If the hooks have been changed we need to copy them over to the init directory
+    mkdir -p ${EESSI_PREFIX}/init/easybuild
+    cp eb_hooks.py ${EESSI_PREFIX}/init/easybuild
+fi
+
 echo ">> Creating/updating Lmod RC file..."
 export LMOD_CONFIG_DIR="${EASYBUILD_INSTALLPATH}/.lmod"
 lmod_rc_file="$LMOD_CONFIG_DIR/lmodrc.lua"

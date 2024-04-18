@@ -1,4 +1,4 @@
-easyblock = 'Binary'
+easyblock = 'Bundle'
 
 name = 'EESSI-extend'
 version = '2023.06'
@@ -22,13 +22,6 @@ description = """
 
 toolchain = SYSTEM
 
-source_urls = None
-sources = ['eb_hooks.py']
-checksums = ['8ae609f99b6953beae89aa1945913686c86c156509dbc55e2b6b8017b13fcf66']
-
-# Don't extend the PATH
-prepend_to_path = None
-
 # All the dependencies we filter in EESSI
 local_deps_to_filter = "Autoconf,Automake,Autotools,binutils,bzip2,DBus,flex,gettext,gperf,help2man,intltool,libreadline,libtool,M4,makeinfo,ncurses,util-linux,XZ,zlib"
 local_arch_specific_deps_to_filter = {'aarch64': ',yasm', 'x86_64': ''}
@@ -45,12 +38,12 @@ modextravars = {
     'EASYBUILD_READ_ONLY_INSTALLDIR': '1',
     'EASYBUILD_MODULE_EXTENSIONS': '1',
     'EASYBUILD_EXPERIMENTAL': '1',
-    'EASYBUILD_HOOKS': '%(installdir)s/eb_hooks.py',
 }
 
 # Need a few other variables, but they are more dynamic
 # EASYBUILD_SYSROOT=${EPREFIX}
 # EASYBUILD_PREFIX=${WORKDIR}/easybuild
+# EASYBUILD_HOOKS=${EESSI_PREFIX}/init/easybuild/eb_hooks.py
 # EASYBUILD_INSTALLPATH=${EESSI_PREFIX}/software/${EESSI_OS_TYPE}/${EESSI_SOFTWARE_SUBDIR}
 # EASYBUILD_SOURCEPATH=${WORKDIR}/easybuild/sources:${EESSI_SOURCEPATH}
 modluafooter = """
@@ -82,14 +75,10 @@ end
 setenv ("EASYBUILD_SYSROOT", sysroot)
 setenv ("EASYBUILD_PREFIX", pathJoin(working_dir, "easybuild"))
 setenv ("EASYBUILD_INSTALLPATH", easybuild_installpath)
+setenv ("EASYBUILD_HOOKS", pathJoin(os.getenv("EESSI_PREFIX"), "init", "easybuild", "hooks.py"))
 if not ( isloaded("EasyBuild") ) then
     load("EasyBuild")
 end
 """
-
-sanity_check_paths = {
-    'files': ['eb_hooks.py'],
-    'dirs': ['']
-}
 
 moduleclass = 'devel'
