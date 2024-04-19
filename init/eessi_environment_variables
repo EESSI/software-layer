@@ -51,14 +51,23 @@ if [ -d $EESSI_PREFIX ]; then
         show_msg "Using ${EESSI_SOFTWARE_SUBDIR} as software subdirectory."
         export EESSI_SOFTWARE_PATH=$EESSI_PREFIX/software/$EESSI_OS_TYPE/$EESSI_SOFTWARE_SUBDIR
 
-        # Configure our LMOD_RC file
-        export LMOD_RC="$EESSI_SOFTWARE_PATH/.lmod/lmodrc.lua"
-        if [ -f $LMOD_RC ]; then
-          show_msg "Found Lmod configuration file at $LMOD_RC"
+        # Configure our LMOD
+        export LMOD_CONFIG_DIR="$EESSI_SOFTWARE_PATH/.lmod"
+        lmod_rc_file="$LMOD_CONFIG_DIR/lmodrc.lua"
+        if [ -f $lmod_rc_file ]; then
+          show_msg "Found Lmod configuration file at $lmod_rc_file"
         else
-          error "Lmod configuration file not found at $LMOD_RC"
+          error "Lmod configuration file not found at $lmod_rc_file"
         fi
 
+        export LMOD_PACKAGE_PATH="$EESSI_SOFTWARE_PATH/.lmod"
+        lmod_sitepackage_file="$LMOD_PACKAGE_PATH/SitePackage.lua"
+        if [ -f $lmod_sitepackage_file ]; then
+          show_msg "Found Lmod SitePackage.lua file at $lmod_sitepackage_file"
+        else
+          error "Lmod SitePackage.lua file not found at $lmod_sitepackage_file"
+        fi
+       
         if [ ! -z $EESSI_BASIC_ENV ]; then
           show_msg "Only setting up basic environment, so we're done"
         elif [ -d $EESSI_SOFTWARE_PATH ]; then
@@ -85,21 +94,6 @@ if [ -d $EESSI_PREFIX ]; then
             false
           fi
 
-          export LMOD_CONFIG_DIR="$EESSI_SOFTWARE_PATH/.lmod"
-          lmod_rc_file="$LMOD_CONFIG_DIR/lmodrc.lua"
-          if [ -f $lmod_rc_file ]; then
-            show_msg "Found Lmod configuration file at $lmod_rc_file"
-          else
-            error "Lmod configuration file not found at $lmod_rc_file"
-          fi
-
-          export LMOD_PACKAGE_PATH="$EESSI_SOFTWARE_PATH/.lmod"
-          lmod_sitepackage_file="$LMOD_PACKAGE_PATH/SitePackage.lua"
-          if [ -f $lmod_sitepackage_file ]; then
-            show_msg "Found Lmod SitePackage.lua file at $lmod_sitepackage_file"
-          else
-            error "Lmod SitePackage.lua file not found at $lmod_sitepackage_file"
-          fi
 
         else
           error "EESSI software layer at $EESSI_SOFTWARE_PATH not found!"

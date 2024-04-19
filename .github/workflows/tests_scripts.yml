@@ -5,6 +5,7 @@ on:
     paths:
       - build_container.sh
       - create_directory_tarballs.sh
+      - create_lmodsitepackage.py
       - EESSI-install-software.sh
       - install_software_layer.sh
       - load_easybuild_module.sh
@@ -16,6 +17,7 @@ on:
     paths:
       - build_container.sh
       - create_directory_tarballs.sh
+      - create_lmodsitepackage.py
       - EESSI-install-software.sh
       - install_software_layer.sh
       - load_easybuild_module.sh
@@ -83,6 +85,8 @@ jobs:
           export SINGULARITY_BIND="${PWD}:/software-layer"
           # force using x86_64/generic, to avoid triggering an installation from scratch
           sed -i "s@./EESSI-install-software.sh@\"export EESSI_SOFTWARE_SUBDIR_OVERRIDE='x86_64/generic'; ./EESSI-install-software.sh\"@g" install_software_layer.sh
+          # skip installation of CUDA SDKs, since this is too heavy for CI
+          sed -i "s@./EESSI-install-software.sh@./EESSI-install-software.sh --skip-cuda-install@g" install_software_layer.sh
           ./eessi_container.sh --mode run --verbose /software-layer/install_software_layer.sh
 
     - name: test create_directory_tarballs.sh script
@@ -94,3 +98,24 @@ jobs:
           ./eessi_container.sh --mode run --verbose /software-layer/create_directory_tarballs.sh 2023.06
           # check if tarballs have been produced
           ls -l *.tar.gz
+
+    - name: test create_lmodsitepackage.py script
+      run: |
+          # bind current directory into container as /software-layer
+          export SINGULARITY_BIND="${PWD}:/software-layer"
+
+          # Creates .lmod/SitePackage.lua in current dir, which then gets bind-mounted into /software-layer
+          python3 create_lmodsitepackage.py .
+          # run some commands to make sure that generated Lmod SitePackage file works
+          test_script="${PWD}/test_lmod_sitepackage.sh"
+          echo '#!/bin/bash' > ${test_script}
+          echo 'export LMOD_PACKAGE_PATH="/software-layer/.lmod"' > ${test_script}
+          echo 'ml --config' >> ${test_script}
+
+          chmod u+x ${test_script}
+
+          out="${PWD}/test_create_lmodsitepackage.out"
+          ./eessi_container.sh --mode run --verbose /software-layer/run_in_compat_layer_env.sh /software-layer/test_lmod_sitepackage.sh 2>&1 | tee ${out}
+          for pattern in "^Site Pkg location.*/software-layer/.lmod/SitePackage.lua" "LMOD_SITEPACKAGE_LOCATION.*/software-layer/.lmod/SitePackage.lua"; do
+            grep "${pattern}" ${out} || (echo "Pattern '${pattern}' not found in output!" && exit 1)
+          done
