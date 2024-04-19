@@ -75,7 +75,7 @@ end
 setenv ("EASYBUILD_SYSROOT", sysroot)
 setenv ("EASYBUILD_PREFIX", pathJoin(working_dir, "easybuild"))
 setenv ("EASYBUILD_INSTALLPATH", easybuild_installpath)
-setenv ("EASYBUILD_HOOKS", pathJoin(os.getenv("EESSI_PREFIX"), "init", "easybuild", "hooks.py"))
+setenv ("EASYBUILD_HOOKS", pathJoin(os.getenv("EESSI_PREFIX"), "init", "easybuild", "eb_hooks.py"))
 if not ( isloaded("EasyBuild") ) then
     load("EasyBuild")
 end
