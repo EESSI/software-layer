@@ -80,6 +80,8 @@ echo ">> Setting up environment..."
 #export EESSI_SOFTWARE_SUBDIR_OVERRIDE=$(python3 $TOPDIR/eessi_software_subdir.py $DETECTION_PARAMETERS)
 echo "EESSI_SOFTWARE_SUBDIR_OVERRIDE='${EESSI_SOFTWARE_SUBDIR_OVERRIDE}'"
 
+echo "sourcing '$TOPDIR/init/bash'"
+cat $TOPDIR/init/bash
 source $TOPDIR/init/bash
 
 # Load the ReFrame module
