@@ -10,7 +10,7 @@ source $(dirname "$BASH_SOURCE")/../eessi_environment_variables
 
 # Provide a clean MODULEPATH
 export MODULEPATH_ROOT=$EESSI_MODULEPATH
-export MODULEPATH=$EESSI_USER_MODULEPATH:$EESSI_SITE_MODULEPATH:$EESSI_MODULEPATH
+export MODULEPATH=$EESSI_SITE_MODULEPATH:$EESSI_MODULEPATH
 
 # Extensions are too many, let's not print them by default (requires Lmod 8.4.12)
 export LMOD_AVAIL_EXTENSIONS=no

@@ -91,8 +91,6 @@ if [ -d $EESSI_PREFIX ]; then
             show_msg "Using ${EESSI_MODULEPATH} as the directory to be added to MODULEPATH."
             export EESSI_SITE_MODULEPATH=${EESSI_MODULEPATH/versions/host_injections}
             show_msg "Using ${EESSI_SITE_MODULEPATH} as the site extension directory to be added to MODULEPATH."
-            export EESSI_USER_MODULEPATH=${EESSI_MODULEPATH/${EESSI_CVMFS_REPO}/${HOME}\/eessi}
-            show_msg "Using ${EESSI_USER_MODULEPATH} as the user extension directory to be added to MODULEPATH."
           else
             error "EESSI module path at $EESSI_MODULEPATH not found!"
             false

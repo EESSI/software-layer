@@ -28,8 +28,6 @@ if [ $? -eq 0 ]; then
     module use $EESSI_MODULEPATH
     echo "Prepending site path $EESSI_SITE_MODULEPATH to \$MODULEPATH..." >> $output
     module use $EESSI_SITE_MODULEPATH
-    echo "Prepending user path $EESSI_SITE_MODULEPATH to \$MODULEPATH..." >> $output
-    module use $EESSI_USER_MODULEPATH
 
     #show_msg ""
     #show_msg "*** Known problems in the ${EESSI_VERSION} software stack ***"
