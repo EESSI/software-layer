@@ -162,7 +162,7 @@ fi
 _lmod_sitepackage_file=${_lmod_cfg_dir}/SitePackage.lua
 if [ ! -f ${_lmod_sitepackage_file} ]; then
     command -V python3
-    python3 ${TOPDIR}/create_lmodrc.py ${_eessi_software_path}
+    python3 ${TOPDIR}/create_lmodsitepackage.py ${_eessi_software_path}
 fi
 
 # Set all the EESSI environment variables (respecting $EESSI_SOFTWARE_SUBDIR_OVERRIDE)
