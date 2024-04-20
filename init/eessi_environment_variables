@@ -27,7 +27,7 @@ if [ -d $EESSI_PREFIX ]; then
     # determine subdirectory in software layer
     if [ "$EESSI_USE_ARCHDETECT" == "1" ]; then
       # if archdetect is enabled, use internal code
-      all_cpupaths=$(${EESSI_INIT_DIR_PATH}/eessi_archdetect.sh -d -a cpupath)
+      all_cpupaths=$(${EESSI_INIT_DIR_PATH}/eessi_archdetect.sh -a cpupath)
       # iterate over colon-separated list verifying if the architecture is present
       #   under $EESSI_PREFIX/software/$EESSI_OS_TYPE; if so use the architecture as best match
       IFS=: read -r -a archs <<< "${all_cpupaths}"
