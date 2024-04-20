@@ -102,7 +102,9 @@ else
     if not isDir(project_install) then
       LmodError("The location of EESSI_PROJECT_INSTALL (" .. project_install .. ") does not exist or is not a folder")
     end
-    LmodMessage("Configuring for use of EESSI_PROJECT_INSTALL under " .. project_install)
+    if (mode() == "load") then
+      LmodMessage("Configuring for use of EESSI_PROJECT_INSTALL under " .. project_install)
+    end
     easybuild_installpath = string.gsub(os.getenv("EESSI_SOFTWARE_PATH"), os.getenv("EESSI_CVMFS_REPO"), project_install)
     project_modulepath = pathJoin(easybuild_installpath, 'modules', 'all')
   end
@@ -119,7 +121,9 @@ else
     end
   end
   if (user_install ~= nil) then
-    LmodMessage("Configuring for use of EESSI_USER_INSTALL under " .. user_install)
+    if (mode() == "load") then
+      LmodMessage("Configuring for use of EESSI_USER_INSTALL under " .. user_install)
+    end
     easybuild_installpath = string.gsub(os.getenv("EESSI_SOFTWARE_PATH"), os.getenv("EESSI_CVMFS_REPO"), user_install)
     user_modulepath = pathJoin(easybuild_installpath, 'modules', 'all')
   end
