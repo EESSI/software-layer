@@ -143,18 +143,18 @@ setenv ("EASYBUILD_HOOKS", pathJoin(os.getenv("EESSI_PREFIX"), "init", "easybuil
 
 -- Set all related environment variables if we have project or user installations (including extending MODULEPATH)
 if (user_modulepath ~= nil) then
-  setenv ("EASYBUILD_SET_GID_BIT", "1")
-  setenv ("EASYBUILD_GROUP_WRITABLE_INSTALLDIR", "1")
-  setenv ("EASYBUILD_UMASK", "002")
-  setenv ("EASYBUILD_STICKY_BIT", "0")
+  setenv ("EASYBUILD_UMASK", "022")
+  setenv ("EASYBUILD_STICKY_BIT", "1")
   -- configure MODULEPATH
   if (project_modulepath ~= nil) then
     prepend_path("MODULEPATH", project_modulepath)
   end
   prepend_path("MODULEPATH", user_modulepath)
 elseif (project_modulepath ~= nil) then
-  setenv ("EASYBUILD_UMASK", "022")
-  setenv ("EASYBUILD_STICKY_BIT", "1")
+  setenv ("EASYBUILD_SET_GID_BIT", "1")
+  setenv ("EASYBUILD_GROUP_WRITABLE_INSTALLDIR", "1")
+  setenv ("EASYBUILD_UMASK", "002")
+  setenv ("EASYBUILD_STICKY_BIT", "0")
   -- configure MODULEPATH
   prepend_path("MODULEPATH", project_modulepath)
 end
