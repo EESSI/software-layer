@@ -231,7 +231,7 @@ else
     echo_yellow ">> No EasyBuild module found: skipping step to install CUDA (see output in ${module_avail_out})"
     export skip_cuda_install=True
 fi
-if
+
 if [ -z "${skip_cuda_install}" ] || [ ! "${skip_cuda_install}" ]; then
     ${EESSI_PREFIX}/scripts/gpu_support/nvidia/install_cuda_host_injections.sh -c 12.1.1 --accept-cuda-eula
 else
