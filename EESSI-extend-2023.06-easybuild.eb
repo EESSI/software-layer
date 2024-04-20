@@ -109,7 +109,7 @@ else
   user_install = os.getenv("EESSI_USER_INSTALL")
   user_modulepath = nil
   if (project_install == nil) then
-    if (user_install ~= nil) then
+    if (user_install == nil) then
       user_install = pathJoin(os.getenv("HOME"), "eessi")
     else
       -- Check the folder exists
