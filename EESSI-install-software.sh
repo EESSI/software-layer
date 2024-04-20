@@ -147,6 +147,24 @@ else
   mkdir -p ${EESSI_PREFIX}/software/${EESSI_OS_TYPE}/${EESSI_SOFTWARE_SUBDIR_OVERRIDE}
 fi
 
+# if we run the script for the first time, e.g., to start building for a new
+#   stack, we need to ensure certain files are present in
+#   ${EESSI_PREFIX}/software/${EESSI_OS_TYPE}/${EESSI_SOFTWARE_SUBDIR_OVERRIDE}
+# - .lmod/lmodrc.lua
+# - .lmod/SitePackage.lua
+_eessi_software_path=${EESSI_PREFIX}/software/${EESSI_OS_TYPE}/${EESSI_SOFTWARE_SUBDIR_OVERRIDE}
+_lmod_cfg_dir=${_eessi_software_path}/.lmod
+_lmod_rc_file=${_lmod_cfg_dir}/lmodrc.lua
+if [ ! -f ${_lmod_rc_file} ]; then
+    command -V python3
+    python3 ${TOPDIR}/create_lmodrc.py ${_eessi_software_path}
+fi
+_lmod_sitepackage_file=${_lmod_cfg_dir}/SitePackage.lua
+if [ ! -f ${_lmod_sitepackage_file} ]; then
+    command -V python3
+    python3 ${TOPDIR}/create_lmodrc.py ${_eessi_software_path}
+fi
+
 # Set all the EESSI environment variables (respecting $EESSI_SOFTWARE_SUBDIR_OVERRIDE)
 # $EESSI_SILENT - don't print any messages
 # $EESSI_BASIC_ENV - give a basic set of environment variables
