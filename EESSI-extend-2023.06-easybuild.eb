@@ -82,14 +82,14 @@ sysroot = os.getenv("EESSI_EPREFIX")
 -- Use an installation prefix that we _should_ have write access to
 if (os.getenv("EESSI_CVMFS_INSTALL") ~= nil) then
   -- Make sure no other EESSI install environment variables are set
-  if (os.getenv("EESSI_SITE_INSTALL") ~= nil) or (os.getenv("EESSI_PROJECT_INSTALL") ~= nil) or (os.getenv("EESSI_USER_INSTALL") then
+  if ((os.getenv("EESSI_SITE_INSTALL") ~= nil) or (os.getenv("EESSI_PROJECT_INSTALL") ~= nil) or (os.getenv("EESSI_USER_INSTALL") ~= nil)) then
     LmodError("You cannot use EESSI_CVMFS_INSTALL in combination with any other EESSI_*_INSTALL environment variables")
   end
   eessi_cvmfs_install = true
   easybuild_installpath = os.getenv("EESSI_SOFTWARE_PATH")
 elseif (os.getenv("EESSI_SITE_INSTALL") ~= nil) then
   -- Make sure no other EESSI install environment variables are set
-  if (os.getenv("EESSI_PROJECT_INSTALL") ~= nil) or (os.getenv("EESSI_USER_INSTALL") then
+  if ((os.getenv("EESSI_PROJECT_INSTALL") ~= nil) or (os.getenv("EESSI_USER_INSTALL") ~= nil)) then
     LmodError("You cannot use EESSI_SITE_INSTALL in combination with any other EESSI_*_INSTALL environment variables")
   end
   easybuild_installpath = string.gsub(os.getenv("EESSI_SOFTWARE_PATH"), 'versions', 'host_injections')
