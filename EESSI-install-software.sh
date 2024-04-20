@@ -221,10 +221,21 @@ ${TOPDIR}/install_scripts.sh --prefix ${EESSI_PREFIX}
 # Hardcode this for now, see if it works
 # TODO: We should make a nice yaml and loop over all CUDA versions in that yaml to figure out what to install
 # Allow skipping CUDA SDK install in e.g. CI environments
+# The install_cuda... script uses EasyBuild. So, we need to check if we have EB
+# or skip this step.
+module_avail_out=$TMPDIR/ml.out
+module avail 2>&1 | grep EasyBuild &> ${module_avail_out}
+if [[ $? -eq 0 ]]; then
+    echo_green ">> Found an EasyBuild module"
+else
+    echo_yellow ">> No EasyBuild module found: skipping step to install CUDA (see output in ${module_avail_out})"
+    export skip_cuda_install=True
+fi
+if
 if [ -z "${skip_cuda_install}" ] || [ ! "${skip_cuda_install}" ]; then
     ${EESSI_PREFIX}/scripts/gpu_support/nvidia/install_cuda_host_injections.sh -c 12.1.1 --accept-cuda-eula
 else
-    echo "Skipping installation of CUDA SDK in host_injections, since the --skip-cuda-install flag was passed"
+    echo "Skipping installation of CUDA SDK in host_injections, since the --skip-cuda-install flag was passed OR no EasyBuild module was found"
 fi
 
 # Install drivers in host_injections
