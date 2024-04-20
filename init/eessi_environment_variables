@@ -25,26 +25,39 @@ if [ -d $EESSI_PREFIX ]; then
   if [ -d $EESSI_EPREFIX ]; then
 
     # determine subdirectory in software layer
-    if [ "$EESSI_USE_ARCHDETECT" == "1" ]; then
-      # if archdetect is enabled, use internal code
-      all_cpupaths=$(${EESSI_INIT_DIR_PATH}/eessi_archdetect.sh -a cpupath)
-      # iterate over colon-separated list verifying if the architecture is present
-      #   under $EESSI_PREFIX/software/$EESSI_OS_TYPE; if so use the architecture as best match
-      IFS=: read -r -a archs <<< "${all_cpupaths}"
-      for arch in "${archs[@]}"; do
-        if [ -d ${EESSI_PREFIX}/software/${EESSI_OS_TYPE}/${arch} ]; then
-          export EESSI_SOFTWARE_SUBDIR=${arch}
-          show_msg "archdetect says ${EESSI_SOFTWARE_SUBDIR}"
-          break
-        fi
-      done
-    elif [ "$EESSI_USE_ARCHSPEC" == "1" ]; then
-      # note: eessi_software_subdir_for_host.py will pick up value from $EESSI_SOFTWARE_SUBDIR_OVERRIDE if it's defined!
-      export EESSI_EPREFIX_PYTHON=$EESSI_EPREFIX/usr/bin/python3
-      export EESSI_SOFTWARE_SUBDIR=$($EESSI_EPREFIX_PYTHON ${EESSI_INIT_DIR_PATH}/eessi_software_subdir_for_host.py $EESSI_PREFIX)
-      show_msg "archspec says ${EESSI_SOFTWARE_SUBDIR}"
+    if [ ! -z "$EESSI_SOFTWARE_SUBDIR_OVERRIDE" ]; then
+      # a specific software subdirectory is given, so we use that and don't
+      # detect it
+      export EESSI_SOFTWARE_SUBDIR=${EESSI_SOFTWARE_SUBDIR_OVERRIDE}
+      # however, check if the directory is present in the CernVM-FS repository
+      # and show a warning if it isn't
+      cvmfs_software_path=${EESSI_PREFIX}/software/${EESSI_OS_TYPE}/${EESSI_SOFTWARE_SUBDIR}
+      if [ ! -d ${cvmfs_software_path} ]; then
+        show_msg "Warning: EESSI_SOFTWARE_SUBDIRECTORY_OVERRIDE is '${EESSI_SOFTWARE_SUBDIRECTORY_OVERRIDE}',"
+        show_msg "         but directory '${cvmfs_software_path}' does NOT exist in CernVM-FS repository"
+      fi
     else
-      error "Don't know how to detect host CPU, giving up!"
+      if [ "$EESSI_USE_ARCHDETECT" == "1" ]; then
+        # if archdetect is enabled, use internal code
+        all_cpupaths=$(${EESSI_INIT_DIR_PATH}/eessi_archdetect.sh -a cpupath)
+        # iterate over colon-separated list verifying if the architecture is present
+        #   under $EESSI_PREFIX/software/$EESSI_OS_TYPE; if so use the architecture as best match
+        IFS=: read -r -a archs <<< "${all_cpupaths}"
+        for arch in "${archs[@]}"; do
+          if [ -d ${EESSI_PREFIX}/software/${EESSI_OS_TYPE}/${arch} ]; then
+            export EESSI_SOFTWARE_SUBDIR=${arch}
+            show_msg "archdetect says ${EESSI_SOFTWARE_SUBDIR}"
+            break
+          fi
+        done
+      elif [ "$EESSI_USE_ARCHSPEC" == "1" ]; then
+        # note: eessi_software_subdir_for_host.py will pick up value from $EESSI_SOFTWARE_SUBDIR_OVERRIDE if it's defined!
+        export EESSI_EPREFIX_PYTHON=$EESSI_EPREFIX/usr/bin/python3
+        export EESSI_SOFTWARE_SUBDIR=$($EESSI_EPREFIX_PYTHON ${EESSI_INIT_DIR_PATH}/eessi_software_subdir_for_host.py $EESSI_PREFIX)
+        show_msg "archspec says ${EESSI_SOFTWARE_SUBDIR}"
+      else
+        error "Don't know how to detect host CPU, giving up!"
+      fi
     fi
     if [ ! -z $EESSI_SOFTWARE_SUBDIR ]; then
 
