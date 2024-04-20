@@ -74,13 +74,17 @@ fi
 TMPDIR=$(mktemp -d)
 
 echo ">> Setting up environment..."
-module --force purge
-export EESSI_SOFTWARE_SUBDIR_OVERRIDE=$(python3 $TOPDIR/eessi_software_subdir.py $DETECTION_PARAMETERS)
+# TODO test if module is declared, if so purge modules
+#module --force purge
+# TODO why do we need to set this here? should already be defined by bot
+#export EESSI_SOFTWARE_SUBDIR_OVERRIDE=$(python3 $TOPDIR/eessi_software_subdir.py $DETECTION_PARAMETERS)
+echo "EESSI_SOFTWARE_SUBDIR_OVERRIDE='${EESSI_SOFTWARE_SUBDIR_OVERRIDE}'"
 
 source $TOPDIR/init/bash
 
 # Load the ReFrame module
 # Currently, we load the default version. Maybe we should somehow make this configurable in the future?
+# TODO what if no ReFrame module is available yet? --> FAILURE with description?
 module load ReFrame
 if [[ $? -eq 0 ]]; then
     echo_green ">> Loaded ReFrame module"
