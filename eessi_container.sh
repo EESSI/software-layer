@@ -594,11 +594,47 @@ declare -a EESSI_FUSE_MOUNTS=()
 # always mount cvmfs-config repo (to get access to software.eessi.io)
 EESSI_FUSE_MOUNTS+=("--fusemount" "container:cvmfs2 cvmfs-config.cern.ch /cvmfs/cvmfs-config.cern.ch")
 
+# check if we got some data via --resume and, if so, use the overlayfs
+# example scenario:
+# 1st step: some software is build in rw mode
+# 2nd step: the software is tested in ro mode (same access as when we would use a
+#           repository)
 if [[ "${ACCESS}" == "ro" ]]; then
-  export EESSI_READONLY="container:cvmfs2 ${repo_name} /cvmfs/${repo_name}"
+  if [[ -d ${EESSI_TMPDIR}/overlay-upper ]]; then
+    # the overlay-upper directory is only created in a read-write-session, thus
+    # we are resuming from such a session here (otherwise there shouldn't be such
+    # directory yet as it is only created for read-write-sessions a bit further
+    # below); the overlay-upper directory can only exist because it is part of
+    # the ${RESUME} directory or tarball
+    # to be able to see the contents of the read-write session we have to mount
+    # the fuse-overlayfs (in read-only mode) on top of the CernVM-FS repository
 
-  EESSI_FUSE_MOUNTS+=("--fusemount" "${EESSI_READONLY}")
-  export EESSI_FUSE_MOUNTS
+    # make sure the overlay-upper directory exists
+    mkdir -p ${EESSI_TMPDIR}/overlay-upper
+
+    # make the target CernVM-FS repository available under /cvmfs_ro
+    export EESSI_READONLY="container:cvmfs2 ${repo_name} /cvmfs_ro/${repo_name}"
+
+    EESSI_FUSE_MOUNTS+=("--fusemount" "${EESSI_READONLY}")
+
+    # now, put the overlay-upper read-only on top of the repo and make it under the usual prefix /cvmfs available
+    EESSI_READONLY_OVERLAY="container:fuse-overlayfs"
+    # ${EESSI_TMPDIR} is bind mounted to /tmp, hence ${EESSI_TMPDIR}/overlay-upper becomes available as /tmp/overlay-upper
+    # the left-most lower dir is put on top, with no upperdir=... the whole overlayfs is made available read-only
+    EESSI_READONLY_OVERLAY+=" -o lowerdir=/tmp/overlay-upper:/cvmfs_ro/${repo_name}"
+    EESSI_READONLY_OVERLAY+=" ${EESSI_CVMFS_REPO}"
+    export EESSI_READONLY_OVERLAY
+
+    EESSI_FUSE_MOUNTS+=("--fusemount" "${EESSI_READONLY_OVERLAY}")
+    export EESSI_FUSE_MOUNTS
+  else
+    # no overlay-upper directory means we are in a plain read-only session and
+    # don't need any fuse-overlayfs
+    export EESSI_READONLY="container:cvmfs2 ${repo_name} /cvmfs/${repo_name}"
+
+    EESSI_FUSE_MOUNTS+=("--fusemount" "${EESSI_READONLY}")
+    export EESSI_FUSE_MOUNTS
+  fi
 fi
 
 if [[ "${ACCESS}" == "rw" ]]; then
