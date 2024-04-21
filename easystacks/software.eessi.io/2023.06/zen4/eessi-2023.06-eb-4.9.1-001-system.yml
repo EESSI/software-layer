@@ -2,3 +2,4 @@ easyconfigs:
   - EasyBuild-4.9.1.eb:
       options:
         from-pr: 20299
+  - ReFrame-4.3.3.eb
