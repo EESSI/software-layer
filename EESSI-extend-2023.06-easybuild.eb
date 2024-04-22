@@ -110,15 +110,14 @@ else
   end
   user_install = os.getenv("EESSI_USER_INSTALL")
   user_modulepath = nil
-  if (project_install == nil) then
-    if (user_install == nil) then
-      user_install = pathJoin(os.getenv("HOME"), "eessi")
-    else
-      -- Check the folder exists
-      if not isDir(user_install) then
-        LmodError("The location of EESSI_USER_INSTALL (" .. user_install .. ") does not exist or is not a folder")
-      end
+  if (user_install ~= nil) then
+    -- Check the folder exists
+    if not isDir(user_install) then
+      LmodError("The location of EESSI_USER_INSTALL (" .. user_install .. ") does not exist or is not a folder")
     end
+  elseif (user_install == nil) and (project_install == nil) then
+    -- No need to check for existence when we use a HOME subdir
+    user_install = pathJoin(os.getenv("HOME"), "eessi")
   end
   if (user_install ~= nil) then
     if (mode() == "load") then
