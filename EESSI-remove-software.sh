@@ -116,8 +116,9 @@ if [ $EUID -eq 0 ]; then
                     rm -rf ${app_module}
                     # if the parent dir of this application is now empty, remove it too to work around a weird issue with the overlay
                     # see https://github.com/EESSI/software-layer/pull/546#issuecomment-2067018216
-                    if [ ! -n "$(dirname ${app_dir})" ]; then
-                        rmdir "$(dirname ${app_dir})"
+                    app_dir_parent=$(dirname "${app_dir}")
+                    if [ ! -n "$(ls -A ${app_dir_parent})" ]; then
+                        rmdir "${app_dir_parent}"
                     fi
                 done
             else
