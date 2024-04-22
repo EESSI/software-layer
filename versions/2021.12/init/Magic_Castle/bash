@@ -1,0 +1,13 @@
+/cvmfs/pilot.eessi-hpc.org/versions/2021.12/init/print_deprecation_warning.sh
+
+if [ ! -z ${EESSI_FORCE_PILOT} ]; then
+    echo "Setting up the pilot repository, because \$EESSI_FORCE_PILOT is set..."
+    source /cvmfs/pilot.eessi-hpc.org/versions/2021.12/init/bash.force
+elif [ ! -d /cvmfs/software.eessi.io/versions/2023.06 ]; then
+    echo "Setting up the pilot repository, because the production repository (software.eessi.io) is not available on your system..."
+    echo "(see https://www.eessi.io/docs/getting_access/is_eessi_accessible/ for more information)"
+else
+    echo "Automatically switching to version 2023.06 of the production repository (software.eessi.io)..."
+    source /cvmfs/software.eessi.io/versions/2023.06/init/bash
+fi
+source /cvmfs/pilot.eessi-hpc.org/versions/2021.12/init/Magic_Castle/bash
