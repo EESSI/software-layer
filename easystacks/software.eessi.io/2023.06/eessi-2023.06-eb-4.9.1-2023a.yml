@@ -1,2 +1,3 @@
 easyconfigs:
   - ncdu-1.18-GCC-12.3.0.eb
+  - SAMtools-1.18-GCC-12.3.0.eb
