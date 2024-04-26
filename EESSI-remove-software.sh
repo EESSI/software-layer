@@ -114,12 +114,6 @@ if [ $EUID -eq 0 ]; then
                     echo_yellow "Removing ${app_dir} and ${app_module}..."
                     rm -rf ${app_dir}
                     rm -rf ${app_module}
-                    # if the parent dir of this application is now empty, remove it too to work around a weird issue with the overlay
-                    # see https://github.com/EESSI/software-layer/pull/546#issuecomment-2067018216
-                    app_dir_parent=$(dirname "${app_dir}")
-                    if [ ! -n "$(ls -A ${app_dir_parent})" ]; then
-                        rmdir "${app_dir_parent}"
-                    fi
                 done
             else
                 fatal_error "Easystack file ${easystack_file} not found!"
