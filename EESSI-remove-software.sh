@@ -113,8 +113,8 @@ if [ $EUID -eq 0 ]; then
                     app_module=${EASYBUILD_INSTALLPATH}/modules/all/${app}.lua
                     echo_yellow "Removing ${app_dir} and ${app_module}..."
                     #rm -rf ${app_dir}
-                    #rm -rf ${app_module}
-                    chmod -R u+w ${app_dir} ${app_module}
+                    rm -rf ${app_module}
+                    chmod -R u+w ${app_dir}
                 done
             else
                 fatal_error "Easystack file ${easystack_file} not found!"
