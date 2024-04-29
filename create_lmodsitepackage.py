@@ -24,24 +24,20 @@ local function from_eessi_prefix(t)
     -- e.g. /cvmfs/software.eessi.io/versions/2023.06
     local eessi_prefix = os.getenv("EESSI_PREFIX")
 
-    -- NOTE: exact paths for site and user extensions aren't final, so may need to be updated later.
-    -- See https://github.com/EESSI/software-layer/pull/371
-
-    -- eessi_prefix_host_injections is the prefix with site-extensions (i.e. additional modules)
-    -- to the official EESSI modules, e.g. /cvmfs/software.eessi.io/host_injections/2023.06
-    local eessi_prefix_host_injections = string.gsub(eessi_prefix, 'versions', 'host_injections')
-    -- eessi_prefix_user_home is the prefix with user-extensions (i.e. additional modules)
-    -- to the offocial EESSI modules, e.g. $HOME/eessi/versions/2023.06
-    local eessi_prefix_user_home = string.gsub(eessi_prefix, os.getenv("EESSI_CVMFS_REPO"), pathJoin(os.getenv("HOME"), "eessi"))
     -- If EESSI_PREFIX wasn't defined, we cannot check if this module was from the EESSI environment
     -- In that case, we assume it isn't, otherwise EESSI_PREFIX would (probably) have been set
     if eessi_prefix == nil then
         return False
     else
-        -- Check if the full modulepath starts with the eessi_prefix_*
-        return string.find(t.fn, "^" .. eessi_prefix) ~= nil or
-        string.find(t.fn, "^" .. eessi_prefix_host_injections) ~= nil or
-        string.find(t.fn, "^" .. eessi_prefix_user_home) ~= nil
+        -- NOTE: exact paths for site so may need to be updated later.
+        -- See https://github.com/EESSI/software-layer/pull/371
+
+        -- eessi_prefix_host_injections is the prefix with site-extensions (i.e. additional modules)
+        -- to the official EESSI modules, e.g. /cvmfs/software.eessi.io/host_injections/2023.06
+        local eessi_prefix_host_injections = string.gsub(eessi_prefix, 'versions', 'host_injections')
+        
+       -- Check if the full modulepath starts with the eessi_prefix_*
+        return string.find(t.fn, "^" .. eessi_prefix) ~= nil or string.find(t.fn, "^" .. eessi_prefix_host_injections) ~= nil
     end
 end
 
