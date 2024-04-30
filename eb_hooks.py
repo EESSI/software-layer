@@ -335,6 +335,21 @@ def pre_configure_hook(self, *args, **kwargs):
         PRE_CONFIGURE_HOOKS[self.name](self, *args, **kwargs)
 
 
+def pre_configure_hook_gromacs(self, *args, **kwargs):
+    """
+    Pre-configure hook for GROMACS:
+    - avoid building with SVE instructions on Neoverse V1 as workaround for failing tests,
+      see https://gitlab.com/gromacs/gromacs/-/issues/5057 + https://gitlab.com/eessi/support/-/issues/47
+    """
+    if self.name == 'GROMACS':
+        cpu_target = get_eessi_envvar('EESSI_SOFTWARE_SUBDIR')
+        if LooseVersion(self.version) <= LooseVersion('2024.1') and cpu_target == CPU_TARGET_NEOVERSE_V1:
+            self.cfg.update('configopts', '-DGMX_SIMD=ARM_NEON_ASIMD')
+            print_msg("Avoiding use of SVE instructions for GROMACS %s by using ARM_NEON_ASIMD as GMX_SIMD value", self.version)
+    else:
+        raise EasyBuildError("GROMACS-specific hook triggered for non-GROMACS easyconfig?!")
+
+
 def pre_configure_hook_openblas_optarch_generic(self, *args, **kwargs):
     """
     Pre-configure hook for OpenBLAS: add DYNAMIC_ARCH=1 to build/test/install options when using --optarch=GENERIC
@@ -665,6 +680,7 @@ POST_PREPARE_HOOKS = {
 }
 
 PRE_CONFIGURE_HOOKS = {
+    'GROMACS': pre_configure_hook_gromacs,
     'libfabric': pre_configure_hook_libfabric_disable_psm3_x86_64_generic,
     'MetaBAT': pre_configure_hook_metabat_filtered_zlib_dep,
     'OpenBLAS': pre_configure_hook_openblas_optarch_generic,
