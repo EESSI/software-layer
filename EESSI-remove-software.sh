@@ -113,7 +113,8 @@ if [ $EUID -eq 0 ]; then
                     app_module=${EASYBUILD_INSTALLPATH}/modules/all/${app}.lua
                     echo_yellow "Removing ${app_dir} and ${app_module}..."
                     chmod -R u+w ${app_dir}
-                    rm -rf ${app_dir}/*
+                    #rm -rf ${app_dir}/*
+                    mv ${app_dir} ${app_dir}.orig
                     rm -rf ${app_module}
                 done
             else
