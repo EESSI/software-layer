@@ -213,6 +213,9 @@ else
     # this is important, as otherwise the removed software will still be there
     REMOVAL_TMPDIR=$(grep ' as tmp directory ' ${removal_outerr} | cut -d ' ' -f 2)
     BUILD_STEP_ARGS+=("--resume" "${REMOVAL_TMPDIR}")
+
+    # purge cvmfs cache
+    rm -rf /tmp/bot/EESSI/eessi.8Pu3nrRvdR/var-lib-cvmfs/*
 fi
 
 # prepare directory to store tarball of tmp for build step
