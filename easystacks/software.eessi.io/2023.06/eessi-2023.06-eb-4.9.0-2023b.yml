@@ -57,6 +57,3 @@ easyconfigs:
   - Qt5-5.15.13-GCCcore-13.2.0.eb:
       options:
         from-pr: 20201
-  - GROMACS-2024.1-foss-2023b.eb:
-      options:
-        from-pr: 20102
