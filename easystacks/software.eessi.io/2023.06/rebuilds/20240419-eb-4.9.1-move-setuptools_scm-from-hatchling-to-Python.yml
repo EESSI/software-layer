@@ -1,0 +1,13 @@
+# 2024-04-19
+# Move setuptools_scm extension from hatchling to Python by rebuilding
+# all affected modules with EasyBuild 4.9.1.
+# This solves an issue with pyarrow, which is part of the Arrow installation.
+# https://github.com/easybuilders/easybuild-easyconfigs/pull/19777
+# https://github.com/easybuilders/easybuild-easyconfigs/issues/19849
+easyconfigs:
+  - hatchling-1.18.0-GCCcore-12.3.0.eb
+  - hatchling-1.18.0-GCCcore-13.2.0.eb
+  - Python-bundle-PyPI-2023.06-GCCcore-12.3.0.eb
+  - Python-bundle-PyPI-2023.10-GCCcore-13.2.0.eb
+  - Python-3.11.3-GCCcore-12.3.0.eb
+  - Python-3.11.5-GCCcore-13.2.0.eb
