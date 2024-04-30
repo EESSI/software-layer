@@ -1,0 +1,4 @@
+easyconfigs:
+  - R-bundle-Bioconductor-3.16-foss-2022b-R-4.2.2.eb:
+      options:
+        from-pr: 20379
