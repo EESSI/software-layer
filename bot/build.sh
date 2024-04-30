@@ -215,7 +215,7 @@ else
     BUILD_STEP_ARGS+=("--resume" "${REMOVAL_TMPDIR}")
 
     # purge cvmfs cache
-    rm -rf /tmp/bot/EESSI/eessi.8Pu3nrRvdR/var-lib-cvmfs/*
+    # rm -rf /tmp/bot/EESSI/eessi.8Pu3nrRvdR/var-lib-cvmfs/*
 fi
 
 # prepare directory to store tarball of tmp for build step
