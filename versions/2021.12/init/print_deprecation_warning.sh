@@ -20,6 +20,9 @@ echo_yellow_stderr "to prepare your environment for using the EESSI production r
 echo_yellow_stderr
 echo_yellow_stderr "See also https://eessi.github.io/docs/using_eessi/setting_up_environment."
 echo_yellow_stderr
+echo_yellow_stderr "If you have any questions or if you need any help, please open a support ticket:"
+echo_yellow_stderr "https://www.eessi.io/docs/support"
+echo_yellow_stderr
 echo_yellow_stderr "This script will now try to automatically switch to the production repository,"
 echo_yellow_stderr "unless it's not available or if \$EESSI_FORCE_PILOT is set."
 echo_yellow_stderr
