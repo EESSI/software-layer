@@ -1,4 +1,5 @@
 easyconfigs:
   - GROMACS-2024.1-foss-2023b.eb:
       options:
-        from-pr: 20439
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/20439
+        from-commit: 231b705ab06fdc6fc777d2c53667c483cdc6fc79
