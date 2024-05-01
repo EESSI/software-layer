@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+z#!/usr/bin/env python3
 #
 # Create SitePackage.lua configuration file for Lmod.
 #
@@ -150,10 +150,24 @@ local function eessi_cuda_enabled_load_hook(t)
     end
 end
 
+local function eessi_espresso_deprecated_warning(t)
+    local frameStk  = require("FrameStk"):singleton()
+    local mt        = frameStk:mt()
+    local simpleName = string.match(t.modFullName, "(.-)/")
+    local version = string.match(t.modFullName, "%d.%d.%d")
+    if simpleName == 'ESPResSo' and version == '4.2.1'
+        local advice = 'Prefer versions  >= 4.2.2 which include important bugfixes.\\n'
+        advice = advice .. 'For details see https://github.com/espressomd/espresso/issues/4856\\n'
+        advice = advice .. 'Use version 4.2.1 at your own risk!\\nn'
+        LmodWarning("\\nESPReSso v4.2.1 has known issues and has been deprecated. ", advice)
+        end
+end
+
 -- Combine both functions into a single one, as we can only register one function as load hook in lmod
 -- Also: make it non-local, so it can be imported and extended by other lmodrc files if needed
 function eessi_load_hook(t)
     eessi_cuda_enabled_load_hook(t)
+    eessi_espresso_deprecated_warning(t)
 end
 
 
