@@ -6,6 +6,7 @@ if [ ! -z ${EESSI_FORCE_PILOT} ]; then
 elif [ ! -d /cvmfs/software.eessi.io/versions/2023.06 ]; then
     echo "Setting up the pilot repository, because the production repository (software.eessi.io) is not available on your system..."
     echo "(see https://www.eessi.io/docs/getting_access/is_eessi_accessible/ for more information)"
+    source /cvmfs/pilot.eessi-hpc.org/versions/2021.12/init/bash.force
 else
     echo "Automatically switching to version 2023.06 of the production repository (software.eessi.io)..."
     source /cvmfs/software.eessi.io/versions/2023.06/init/bash
