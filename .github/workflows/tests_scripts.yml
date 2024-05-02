@@ -3,9 +3,9 @@ name: Tests for scripts
 on:
   push:
     paths:
-      - build_container.sh
       - create_directory_tarballs.sh
       - create_lmodsitepackage.py
+      - eessi_container.sh
       - EESSI-install-software.sh
       - install_software_layer.sh
       - load_easybuild_module.sh
@@ -15,9 +15,9 @@ on:
 
   pull_request:
     paths:
-      - build_container.sh
       - create_directory_tarballs.sh
       - create_lmodsitepackage.py
+      - eessi_container.sh
       - EESSI-install-software.sh
       - install_software_layer.sh
       - load_easybuild_module.sh
