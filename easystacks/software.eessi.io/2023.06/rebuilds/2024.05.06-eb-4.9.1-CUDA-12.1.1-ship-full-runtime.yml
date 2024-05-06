@@ -2,6 +2,7 @@
 # Original matching of files we could ship was not done correctly. We were
 # matching the basename for files (e.g., libcudart.so from libcudart.so.12)
 # rather than the name stub (libcudart)
+# See https://github.com/EESSI/software-layer/pull/559
 easyconfigs:
   - CUDA-12.1.1.eb:
       options:
