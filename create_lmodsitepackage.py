@@ -1,4 +1,4 @@
-z#!/usr/bin/env python3
+#!/usr/bin/env python3
 #
 # Create SitePackage.lua configuration file for Lmod.
 #
