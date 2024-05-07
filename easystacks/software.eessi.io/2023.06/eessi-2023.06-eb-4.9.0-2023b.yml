@@ -57,3 +57,4 @@ easyconfigs:
   - Qt5-5.15.13-GCCcore-13.2.0.eb:
       options:
         from-pr: 20201
+  - OSU-Micro-Benchmarks-7.2-gompi-2023b.eb
