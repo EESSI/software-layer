@@ -1,4 +1,0 @@
-easyconfigs:
-  - EasyBuild-4.9.1.eb:
-      options:
-        from-pr: 20299
