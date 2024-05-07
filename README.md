@@ -9,14 +9,17 @@ See also https://www.eessi.io/docs/software_layer .
 You can set up your environment by sourcing the init script:
 
 ```
-$ source /cvmfs/software.eessi.io/versions/2023.06/init/bash
-Found EESSI repo @ /cvmfs/software.eessi.io/versions/2023.06!
-Derived subdirectory for software layer: x86_64/intel/haswell
-Using x86_64/intel/haswell subdirectory for software layer
+$ source /cvmfs/riscv.eessi.io/versions/20240402/init/bash
+Found EESSI repo @ /cvmfs/riscv.eessi.io/versions/20240402!
+archdetect says riscv64/generic
+Using riscv64/generic as software subdirectory.
+Found Lmod configuration file at /cvmfs/riscv.eessi.io/versions/20240402/software/linux/riscv64/generic/.lmod/lmodrc.lua
+Found Lmod SitePackage.lua file at /cvmfs/riscv.eessi.io/versions/20240402/software/linux/riscv64/generic/.lmod/SitePackage.lua
+Using /cvmfs/riscv.eessi.io/versions/20240402/software/linux/riscv64/generic/modules/all as the directory to be added to MODULEPATH.
 Initializing Lmod...
-Prepending /cvmfs/software.eessi.io/versions/2023.06/software/x86_64/intel/haswell/modules/all to $MODULEPATH...
-Environment set up to use EESSI (2023.06), have fun!
-[EESSI 2023.06] $
+Prepending /cvmfs/riscv.eessi.io/versions/20240402/software/linux/riscv64/generic/modules/all to $MODULEPATH...
+Environment set up to use EESSI (20240402), have fun!
+{EESSI 20240402} $
 ```
 
 ### Accessing EESSI via a container
