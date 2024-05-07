@@ -26,7 +26,7 @@ if [ $? -eq 0 ]; then
     # prepend location of modules for EESSI software stack to $MODULEPATH
     show_msg "Prepending $EESSI_MODULEPATH to \$MODULEPATH..."
     module use $EESSI_MODULEPATH
-    echo "Prepending site path $EESSI_SITE_MODULEPATH to \$MODULEPATH..." >> $output
+    echo "Prepending site path $EESSI_SITE_MODULEPATH to \$MODULEPATH..."
     module use $EESSI_SITE_MODULEPATH
 
     #show_msg ""
