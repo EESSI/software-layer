@@ -612,8 +612,8 @@ def post_sanitycheck_cuda(self, *args, **kwargs):
                 full_path = os.path.join(dir_path, filename)
                 # we only really care about real files, i.e. not symlinks
                 if not os.path.islink(full_path):
-                    # check if the current file is part of the allowlist
-                    basename = os.path.splitext(filename)[0]
+                    # check if the current file name stub is part of the allowlist
+                    basename = filename.split('.')[0]
                     if basename in allowlist:
                         self.log.debug("%s is found in allowlist, so keeping it: %s", basename, full_path)
                     else:
