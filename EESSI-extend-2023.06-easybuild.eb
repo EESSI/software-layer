@@ -157,7 +157,7 @@ elseif (project_modulepath ~= nil) then
   -- configure MODULEPATH
   prepend_path("MODULEPATH", project_modulepath)
 end
--- Make aure EasyBuild itself is loaded
+-- Make sure EasyBuild itself is loaded
 if not ( isloaded("EasyBuild") ) then
     load("EasyBuild")
 end
