@@ -139,9 +139,11 @@ setenv ("EASYBUILD_SYSROOT", sysroot)
 setenv ("EASYBUILD_PREFIX", pathJoin(working_dir, "easybuild"))
 setenv ("EASYBUILD_INSTALLPATH", easybuild_installpath)
 setenv ("EASYBUILD_HOOKS", pathJoin(os.getenv("EESSI_PREFIX"), "init", "easybuild", "eb_hooks.py"))
+setenv ("EASYBUILD_UMASK", "002")
 
 -- Set all related environment variables if we have project or user installations (including extending MODULEPATH)
 if (user_modulepath ~= nil) then
+  -- Use a more restrictive umask for this case
   setenv ("EASYBUILD_UMASK", "022")
   setenv ("EASYBUILD_STICKY_BIT", "1")
   -- configure MODULEPATH
@@ -152,7 +154,6 @@ if (user_modulepath ~= nil) then
 elseif (project_modulepath ~= nil) then
   setenv ("EASYBUILD_SET_GID_BIT", "1")
   setenv ("EASYBUILD_GROUP_WRITABLE_INSTALLDIR", "1")
-  setenv ("EASYBUILD_UMASK", "002")
   setenv ("EASYBUILD_STICKY_BIT", "0")
   -- configure MODULEPATH
   prepend_path("MODULEPATH", project_modulepath)
