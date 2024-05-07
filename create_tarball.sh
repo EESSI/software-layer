@@ -28,7 +28,7 @@ fi
 
 overlay_upper_dir="${eessi_tmpdir}/overlay-upper"
 
-software_dir_overlay="${overlay_upper_dir}/versions/${eessi_version}/software/${os}/${cpu_arch_subdir}"
+software_dir_overlay="${overlay_upper_dir}/versions/${eessi_version}"
 if [ ! -d ${software_dir_overlay} ]; then
     echo "Software directory overlay ${software_dir_overlay} does not exist?!" >&2
     exit 3
