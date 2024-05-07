@@ -147,6 +147,24 @@ else
   mkdir -p ${EESSI_PREFIX}/software/${EESSI_OS_TYPE}/${EESSI_SOFTWARE_SUBDIR_OVERRIDE}
 fi
 
+# if we run the script for the first time, e.g., to start building for a new
+#   stack, we need to ensure certain files are present in
+#   ${EESSI_PREFIX}/software/${EESSI_OS_TYPE}/${EESSI_SOFTWARE_SUBDIR_OVERRIDE}
+# - .lmod/lmodrc.lua
+# - .lmod/SitePackage.lua
+_eessi_software_path=${EESSI_PREFIX}/software/${EESSI_OS_TYPE}/${EESSI_SOFTWARE_SUBDIR_OVERRIDE}
+_lmod_cfg_dir=${_eessi_software_path}/.lmod
+_lmod_rc_file=${_lmod_cfg_dir}/lmodrc.lua
+if [ ! -f ${_lmod_rc_file} ]; then
+    command -V python3
+    python3 ${TOPDIR}/create_lmodrc.py ${_eessi_software_path}
+fi
+_lmod_sitepackage_file=${_lmod_cfg_dir}/SitePackage.lua
+if [ ! -f ${_lmod_sitepackage_file} ]; then
+    command -V python3
+    python3 ${TOPDIR}/create_lmodsitepackage.py ${_eessi_software_path}
+fi
+
 # Set all the EESSI environment variables (respecting $EESSI_SOFTWARE_SUBDIR_OVERRIDE)
 # $EESSI_SILENT - don't print any messages
 # $EESSI_BASIC_ENV - give a basic set of environment variables
@@ -203,10 +221,21 @@ ${TOPDIR}/install_scripts.sh --prefix ${EESSI_PREFIX}
 # Hardcode this for now, see if it works
 # TODO: We should make a nice yaml and loop over all CUDA versions in that yaml to figure out what to install
 # Allow skipping CUDA SDK install in e.g. CI environments
+# The install_cuda... script uses EasyBuild. So, we need to check if we have EB
+# or skip this step.
+module_avail_out=$TMPDIR/ml.out
+module avail 2>&1 | grep EasyBuild &> ${module_avail_out}
+if [[ $? -eq 0 ]]; then
+    echo_green ">> Found an EasyBuild module"
+else
+    echo_yellow ">> No EasyBuild module found: skipping step to install CUDA (see output in ${module_avail_out})"
+    export skip_cuda_install=True
+fi
+
 if [ -z "${skip_cuda_install}" ] || [ ! "${skip_cuda_install}" ]; then
     ${EESSI_PREFIX}/scripts/gpu_support/nvidia/install_cuda_host_injections.sh -c 12.1.1 --accept-cuda-eula
 else
-    echo "Skipping installation of CUDA SDK in host_injections, since the --skip-cuda-install flag was passed"
+    echo "Skipping installation of CUDA SDK in host_injections, since the --skip-cuda-install flag was passed OR no EasyBuild module was found"
 fi
 
 # Install drivers in host_injections

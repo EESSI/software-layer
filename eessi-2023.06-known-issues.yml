@@ -19,6 +19,9 @@
   - FFTW.MPI-3.3.10-gompi-2023b:
       - issue: https://github.com/EESSI/software-layer/issues/325
       - info: "Flaky FFTW tests, random failures"
+  - GROMACS-2024.1-foss-2023b:
+      - issue: https://github.com/EESSI/software-layer/issues/557
+      - info: "SVE disabled due to known bug which causes test failures"
   - Highway-1.0.3-GCCcore-12.2.0.eb:
     - issue: https://github.com/EESSI/software-layer/issues/469
     - info: "failing SVE test due to wrong expected value"
