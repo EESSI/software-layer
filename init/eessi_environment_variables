@@ -48,6 +48,14 @@ if [ -d $EESSI_PREFIX ]; then
     fi
     if [ ! -z $EESSI_SOFTWARE_SUBDIR ]; then
 
+        # use x86_64/amd/zen3 for now when AMD Genoa (Zen4) CPU is detected,
+        # since optimized software installations for Zen4 are a work-in-progress,
+        # see https://gitlab.com/eessi/support/-/issues/37
+        if [[ "${EESSI_SOFTWARE_SUBDIR}" == "x86_64/amd/zen4" ]]; then
+            export EESSI_SOFTWARE_SUBDIR="x86_64/amd/zen3"
+            echo -e "\e[33mSticking to ${EESSI_SOFTWARE_SUBDIR} for now, since optimized installations for AMD Genoa (Zen4) are a work in progress, see https://gitlab.com/eessi/support/-/issues/37 for more information\e[0m"
+        fi
+
         show_msg "Using ${EESSI_SOFTWARE_SUBDIR} as software subdirectory."
         export EESSI_SOFTWARE_PATH=$EESSI_PREFIX/software/$EESSI_OS_TYPE/$EESSI_SOFTWARE_SUBDIR
 
@@ -89,6 +97,8 @@ if [ -d $EESSI_PREFIX ]; then
           if [ -d $EESSI_MODULEPATH ]; then
             export EESSI_MODULEPATH=$EESSI_MODULEPATH
             show_msg "Using ${EESSI_MODULEPATH} as the directory to be added to MODULEPATH."
+            export EESSI_SITE_MODULEPATH=${EESSI_MODULEPATH/versions/host_injections}
+            show_msg "Using ${EESSI_SITE_MODULEPATH} as the site extension directory to be added to MODULEPATH."
           else
             error "EESSI module path at $EESSI_MODULEPATH not found!"
             false

@@ -2,4 +2,3 @@ easyconfigs:
   - EasyBuild-4.9.1.eb:
       options:
         from-pr: 20299
-  - EESSI-extend-2023.06-easybuild.eb
