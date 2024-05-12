@@ -35,7 +35,6 @@ easyconfigs:
         from-pr: 19996
   - dask-2023.9.2-foss-2023a.eb
   - OSU-Micro-Benchmarks-7.2-gompi-2023a-CUDA-12.1.1.eb
-  - OSU-Micro-Benchmarks-7.2-gompi-2023b.eb
   - JupyterNotebook-7.0.2-GCCcore-12.3.0.eb
   - ImageMagick-7.1.1-15-GCCcore-12.3.0.eb:
       options:
