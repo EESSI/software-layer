@@ -175,7 +175,15 @@ else
 fi
 
 # List the tests we want to run
-export REFRAME_ARGS='--tag CI --tag 1_node --nocolor'
+export REFRAME_FLAGS='--nocolor'
+export REFRAME_TAGS='--tag CI --tag 1_node'
+# Limit test names to relevant tests
+# For now, we limit to OSU.
+# In the future, we should create some mapping between module names of modules that are deployed.
+# E.g. if TensorFlow was deployed, we want to run with `-n TensorFlow`. If OpenMPI was deployed
+# we want to run with `-n OSU`, or maybe even `-n OSU -n GROMACS.*foss` to also test _one_ OpenMPI application
+export REFRAME_INCLUDE_PATTERNS='-n OSU'
+export REFRAME_ARGS="${REFRAME_FLAGS} ${REFRAME_TAGS} ${REFRAME_INCLUDE_PATTERNS}"
 echo "Listing tests: reframe ${REFRAME_ARGS} --list"
 reframe ${REFRAME_ARGS} --list
 if [[ $? -eq 0 ]]; then
