@@ -4,8 +4,13 @@
 # at https://gitlab.com/gromacs/gromacs/-/blob/v2024.1/python_packaging/gmxapi/src/gmxapi/version.py?ref_type=tags#L68,
 # the 2024.1 release includes gmxapi 0.5.0.
 #
+# This also introduced a new build dependency on scikit-build-core for GROMACS
+#
 # See https://github.com/easybuilders/easybuild-easyconfigs/pull/20522
 easyconfigs:
+  - scikit-build-core-0.9.3-GCCcore-13.2.0.eb:
+      options:
+        from-pr: 20526
   - GROMACS-2024.1-foss-2023b.eb:
       options:
         from-pr: 20522
