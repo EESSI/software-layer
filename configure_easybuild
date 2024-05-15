@@ -35,7 +35,7 @@ fi
 # Version 23.06 of EESSI ships PSM2 in the compat layer, so we can filter this out while retaining support for OFA fabric
 # (longer term this is probably not the right move as PSM2 should be configured with accelerator support, hence the restricted version)
 if [[ "$EESSI_VERSION" == "2023.06" ]]; then
-    DEPS_TO_FILTER="${DEPS_TO_FILTER},psm2"
+    DEPS_TO_FILTER="${DEPS_TO_FILTER},PSM2"
 fi
 
 export EASYBUILD_FILTER_DEPS=$DEPS_TO_FILTER
