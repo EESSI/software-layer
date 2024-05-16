@@ -27,7 +27,9 @@
 # stop as soon as something fails
 set -e
 
-SCRIPT_DIR=$(dirname $(realpath $BASH_SOURCE))
+# script_dir is the directory that contains THIS (inspect.sh) script, usually
+# stored in the directory '.../bot'
+script_dir=$(dirname $(realpath $BASH_SOURCE))
 
 display_help() {
   echo "usage: $0 [OPTIONS]"
@@ -83,8 +85,8 @@ done
 set -- "${POSITIONAL_ARGS[@]}"
 
 # source utils.sh and cfg_files.sh
-source ${SCRIPT_DIR}/../scripts/utils.sh
-source ${SCRIPT_DIR}/../scripts/cfg_files.sh
+source ${script_dir}/../scripts/utils.sh
+source ${script_dir}/../scripts/cfg_files.sh
 
 if [[ -z ${resume_tgz} ]]; then
     echo_red "path to tarball for resuming build job is missing"
@@ -257,10 +259,8 @@ CMDLINE_ARGS+=("--storage" "${JOB_STORAGE}")
 
 # make sure some environment settings are available inside the shell started via
 # startprefix
-base_dir=$(dirname $(realpath $0))
-# base_dir of inspect.sh script is '.../bot', 'init' dir is at the same level
 # TODO better use script from tarball???
-source ${base_dir}/../init/eessi_defaults
+source ${script_dir}/../init/eessi_defaults
 
 if [ -z $EESSI_VERSION ]; then
     echo "ERROR: \$EESSI_VERSION must be set!" >&2
@@ -434,14 +434,14 @@ echo "Executing command to start interactive session to inspect build job:"
 # These initializations are combined into a single script that is executed when
 # the shell in startprefix is started. We set the env variable BASH_ENV here.
 if [[ -z ${run_in_prefix} ]]; then
-    echo "${SCRIPT_DIR}/../eessi_container.sh ${CMDLINE_ARGS[@]}"
+    echo "${script_dir}/../eessi_container.sh ${CMDLINE_ARGS[@]}"
     echo "                     -- ${EESSI_COMPAT_LAYER_DIR}/startprefix"
-    ${SCRIPT_DIR}/../eessi_container.sh "${CMDLINE_ARGS[@]}" \
+    ${script_dir}/../eessi_container.sh "${CMDLINE_ARGS[@]}" \
                      -- ${EESSI_COMPAT_LAYER_DIR}/startprefix
 else
-    echo "${SCRIPT_DIR}/../eessi_container.sh ${CMDLINE_ARGS[@]}"
+    echo "${script_dir}/../eessi_container.sh ${CMDLINE_ARGS[@]}"
     echo "                     -- ${EESSI_COMPAT_LAYER_DIR}/startprefix <<< ${run_in_prefix}"
-    ${SCRIPT_DIR}/../eessi_container.sh "${CMDLINE_ARGS[@]}" \
+    ${script_dir}/../eessi_container.sh "${CMDLINE_ARGS[@]}" \
                      -- ${EESSI_COMPAT_LAYER_DIR}/startprefix <<< ${run_in_prefix}
 fi
 
