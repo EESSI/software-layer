@@ -27,6 +27,8 @@
 # stop as soon as something fails
 set -e
 
+SCRIPT_DIR=$(dirname $(realpath $BASH_SOURCE))
+
 display_help() {
   echo "usage: $0 [OPTIONS]"
   echo "  -h | --help            -  display this usage information"
@@ -81,8 +83,8 @@ done
 set -- "${POSITIONAL_ARGS[@]}"
 
 # source utils.sh and cfg_files.sh
-source scripts/utils.sh
-source scripts/cfg_files.sh
+source ${SCRIPT_DIR}/../scripts/utils.sh
+source ${SCRIPT_DIR}/../scripts/cfg_files.sh
 
 if [[ -z ${resume_tgz} ]]; then
     echo_red "path to tarball for resuming build job is missing"
@@ -432,14 +434,14 @@ echo "Executing command to start interactive session to inspect build job:"
 # These initializations are combined into a single script that is executed when
 # the shell in startprefix is started. We set the env variable BASH_ENV here.
 if [[ -z ${run_in_prefix} ]]; then
-    echo "./eessi_container.sh ${CMDLINE_ARGS[@]}"
+    echo "${SCRIPT_DIR}/../eessi_container.sh ${CMDLINE_ARGS[@]}"
     echo "                     -- ${EESSI_COMPAT_LAYER_DIR}/startprefix"
-    ./eessi_container.sh "${CMDLINE_ARGS[@]}" \
+    ${SCRIPT_DIR}/../eessi_container.sh "${CMDLINE_ARGS[@]}" \
                      -- ${EESSI_COMPAT_LAYER_DIR}/startprefix
 else
-    echo "./eessi_container.sh ${CMDLINE_ARGS[@]}"
+    echo "${SCRIPT_DIR}/../eessi_container.sh ${CMDLINE_ARGS[@]}"
     echo "                     -- ${EESSI_COMPAT_LAYER_DIR}/startprefix <<< ${run_in_prefix}"
-    ./eessi_container.sh "${CMDLINE_ARGS[@]}" \
+    ${SCRIPT_DIR}/../eessi_container.sh "${CMDLINE_ARGS[@]}" \
                      -- ${EESSI_COMPAT_LAYER_DIR}/startprefix <<< ${run_in_prefix}
 fi
 
