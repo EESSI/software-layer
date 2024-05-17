@@ -723,7 +723,7 @@ def inject_gpu_property(ec):
         key = 'modluafooter'
         values = [add_gpu_property]
         for package, version in packages_version.items():
-            envvar = "EESSI%sVERSION" %s package.upper()
+            envvar = "EESSI%sVERSION" % package.upper()
             values.append('setenv("%s","%s")' % (envvar, version))
         if not key in ec_dict:
             ec[key] = '\n'.join(values)
