@@ -217,7 +217,7 @@ pr_diff=$(ls [0-9]*.diff | head -1)
 # for now, this just reinstalls all scripts. Note the most elegant, but works
 ${TOPDIR}/install_scripts.sh --prefix ${EESSI_PREFIX}
 
-# Install full CUDA SDK in host_injections
+# Install full CUDA SDK and cu* libraries in host_injections
 # Hardcode this for now, see if it works
 # TODO: We should make a nice yaml and loop over all CUDA versions in that yaml to figure out what to install
 # Allow skipping CUDA SDK install in e.g. CI environments
@@ -234,8 +234,9 @@ fi
 
 if [ -z "${skip_cuda_install}" ] || [ ! "${skip_cuda_install}" ]; then
     ${EESSI_PREFIX}/scripts/gpu_support/nvidia/install_cuda_host_injections.sh -c 12.1.1 --accept-cuda-eula
+    ${EESSI_PREFIX}/scripts/gpu_support/nvidia/install_cudnn_host_injections.sh -c 12.1.1 --accept-cuda-eula
 else
-    echo "Skipping installation of CUDA SDK in host_injections, since the --skip-cuda-install flag was passed OR no EasyBuild module was found"
+    echo "Skipping installation of CUDA SDK and cu* libraries in host_injections, since the --skip-cuda-install flag was passed OR no EasyBuild module was found"
 fi
 
 # Install drivers in host_injections

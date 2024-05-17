@@ -172,13 +172,38 @@ local function eessi_cuda_enabled_load_hook(t)
     end
 end
 
+local function eessi_cudnn_enabled_load_hook(t)
+    local frameStk  = require("FrameStk"):singleton()
+    local mt        = frameStk:mt()
+    local simpleName = string.match(t.modFullName, "(.-)/")
+    -- If we try to load cuDNN itself, check if the full cuDNN package was installed on the host in host_injections. 
+    -- This is required for end users to build additional cuDNN dependent software. If the full SDK isn't present, refuse
+    -- to load the cuDNN module and print an informative message on how to set up GPU support for EESSI
+    local refer_to_docs = "For more information on how to do this, see https://www.eessi.io/docs/gpu/.\\n"
+    if simpleName == 'cuDNN' then
+        -- get the full host_injections path
+        local hostInjections = string.gsub(os.getenv('EESSI_SOFTWARE_PATH') or "", 'versions', 'host_injections')
+        -- build final path where the cuDNN software should be installed
+        local cudnnEasyBuildDir = hostInjections .. "/software/" .. t.modFullName .. "/easybuild"
+        local cudnnDirExists = isDir(cudnnEasyBuildDir)
+        if not cudnnDirExists then
+            local advice = "but while the module file exists, the actual software is not entirely shipped with EESSI "
+            advice = advice .. "due to licencing. You will need to install a full copy of the cuDNN package where EESSI "
+            advice = advice .. "can find it.\\n"
+            advice = advice .. refer_to_docs
+            LmodError("\\nYou requested to load ", simpleName, " ", advice)
+        end
+    end
+end
+
 -- Combine both functions into a single one, as we can only register one function as load hook in lmod
 -- Also: make it non-local, so it can be imported and extended by other lmodrc files if needed
 function eessi_load_hook(t)
-    -- Only apply CUDA hooks if the loaded module is in the EESSI prefix
-    -- This avoids getting an Lmod Error when trying to load a CUDA module from a local software stack
+    -- Only apply CUDA and cuDNN hooks if the loaded module is in the EESSI prefix
+    -- This avoids getting an Lmod Error when trying to load a CUDA and cuDNN module from a local software stack
     if from_eessi_prefix(t) then
         eessi_cuda_enabled_load_hook(t)
+        eessi_cudnn_enabled_load_hook(t)
     end
 end
 
