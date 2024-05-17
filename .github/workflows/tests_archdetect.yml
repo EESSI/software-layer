@@ -13,6 +13,8 @@ jobs:
           - x86_64/intel/skylake_avx512/archspec-linux-6132
           - x86_64/amd/zen2/Azure-CentOS7-7V12
           - x86_64/amd/zen3/Azure-CentOS7-7V73X
+          - x86_64/amd/zen4/Azure-Alma8-9V33X
+          - x86_64/amd/zen4/Shinx-RHEL8-9654
           - aarch64/neoverse_n1/Azure-Ubuntu20-Altra
           - aarch64/neoverse_n1/AWS-awslinux-graviton2
           - aarch64/neoverse_v1/AWS-awslinux-graviton3
