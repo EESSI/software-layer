@@ -660,7 +660,7 @@ def post_sanitycheck_cudnn(self, *args, **kwargs):
         allowlist = sorted(set(allowlist))
         self.log.info("Allowlist for files in cuDNN installation that can be redistributed: " + ', '.join(allowlist))
 
-        # iterate over all files in the CUDA installation directory
+        # iterate over all files in the cuDNN installation directory
         for dir_path, _, files in os.walk(self.installdir):
             for filename in files:
                 full_path = os.path.join(dir_path, filename)
@@ -682,7 +682,7 @@ def post_sanitycheck_cudnn(self, *args, **kwargs):
                         # make sure source and target of symlink are not the same
                         if full_path == host_inj_path:
                             raise EasyBuildError("Source (%s) and target (%s) are the same location, are you sure you "
-                                                 "are using this hook for a NESSI installation?",
+                                                 "are using this hook for a EESSI installation?",
                                                  full_path, host_inj_path)
                         remove_file(full_path)
                         symlink(host_inj_path, full_path)
@@ -692,48 +692,48 @@ def post_sanitycheck_cudnn(self, *args, **kwargs):
 
 def inject_gpu_property(ec):
     """
-    Add 'gpu' property, via modluafooter easyconfig parameter
+    Add 'gpu' property EESSI<PACKAGE>VERSION envvars and drop dependencies to
+    build dependencies, via modluafooter easyconfig parameter
     """
     ec_dict = ec.asdict()
-    # Check if CUDA is in the dependencies, if so add the 'gpu' Lmod property
-    if ('CUDA' in [dep[0] for dep in iter(ec_dict['dependencies'])]):
-        ec.log.info("Injecting gpu as Lmod arch property and envvar with CUDA version")
-        key = 'modluafooter'
-        value = 'add_property("arch","gpu")'
-        cuda_version = 0
-        for dep in iter(ec_dict['dependencies']):
-            # Make CUDA a build dependency only (rpathing saves us from link errors)
-            if 'CUDA' in dep[0]:
-                cuda_version = dep[1]
-                ec_dict['dependencies'].remove(dep)
-                if dep not in ec_dict['builddependencies']:
-                    ec_dict['builddependencies'].append(dep)
-        value = '\n'.join([value, 'setenv("EESSICUDAVERSION","%s")' % cuda_version])
-        if key in ec_dict:
-            if not value in ec_dict[key]:
-                ec[key] = '\n'.join([ec_dict[key], value])
-        else:
-            ec[key] = value
+    # check if CUDA, cuDNN, you-name-it is in the dependencies, if so
+    # - drop dependency to build dependency
+    # - add 'gpu' Lmod property
+    # - add envvar with package version
+    packages_list = ( "CUDA", "cuDNN" )
+    packages_version = { }
+    add_gpu_property = ''
 
-    # Check if cuDNN is in the dependencies, if so add the 'gpu' Lmod property
-    if ('cuDNN' in [dep[0] for dep in iter(ec_dict['dependencies'])]):
-        ec.log.info("Injecting gpu as Lmod arch property and envvar with cuDNN version")
+    for package in packages_list:
+        # Check if package is in the dependencies, if so drop dependency to build
+        # dependency and set variable for later adding the 'gpu' Lmod property
+        if (package in [dep[0] for dep in iter(ec_dict['dependencies'])]):
+            add_gpu_property = 'add_property("arch","gpu")'
+            for dep in iter(ec_dict['dependencies']):
+                if package in dep[0]:
+                    # make package a build dependency only (rpathing saves us from link errors)
+                    ec.log.info("Dropping dependency on %s to build dependency" % package)
+                    ec_dict['dependencies'].remove(dep)
+                    if dep not in ec_dict['builddependencies']:
+                        ec_dict['builddependencies'].append(dep)
+                    # take note of version for creating the modluafooter
+                    packages_version[package] = dep[1]
+    if add_gpu_property:
+        ec.log.info("Injecting gpu as Lmod arch property and envvars for dependencies with their version")
         key = 'modluafooter'
-        value = 'add_property("arch","gpu")'
-        cudnn_version = 0
-        for dep in iter(ec_dict['dependencies']):
-            # Make cuDNN a build dependency only (rpathing saves us from link errors)
-            if 'cuDNN' in dep[0]:
-                cudnn_version = dep[1]
-                ec_dict['dependencies'].remove(dep)
-                if dep not in ec_dict['builddependencies']:
-                    ec_dict['builddependencies'].append(dep)
-        value = '\n'.join([value, 'setenv("EESSICUDNNVERSION","%s")' % cudnn_version])
-        if key in ec_dict:
-            if not value in ec_dict[key]:
-                ec[key] = '\n'.join([ec_dict[key], value])
+        values = [add_gpu_property]
+        for package, version in packages_version.items():
+            envvar = "EESSI%sVERSION" %s package.upper()
+            values.append('setenv("%s","%s")' % (envvar, version))
+        if not key in ec_dict:
+            ec[key] = '\n'.join(values)
         else:
-            ec[key] = value
+            new_value = ec_dict[key]
+            for value in values:
+                if not value in new_value:
+                    new_value = '\n'.join([new_value, value])
+            ec[key] = new_value
+
     return ec
 
 
