@@ -92,7 +92,19 @@ elseif (os.getenv("EESSI_SITE_INSTALL") ~= nil) then
   if ((os.getenv("EESSI_PROJECT_INSTALL") ~= nil) or (os.getenv("EESSI_USER_INSTALL") ~= nil)) then
     LmodError("You cannot use EESSI_SITE_INSTALL in combination with any other EESSI_*_INSTALL environment variables")
   end
-  easybuild_installpath = string.gsub(os.getenv("EESSI_SOFTWARE_PATH"), 'versions', 'host_injections')
+  site_install = os.getenv("EESSI_SITE_INSTALL")
+  site_modulepath = nil
+  if (site_install ~= nil) then
+    -- Check the folder exists
+    if not isDir(site_install) then
+      LmodError("The location of EESSI_SITE_INSTALL (" .. site_install .. ") does not exist or is not a folder")
+    end
+    if (mode() == "load") then
+      LmodMessage("Configuring for use of EESSI_SITE_INSTALL under " .. site_install)
+    end
+    easybuild_installpath = string.gsub(os.getenv("EESSI_SOFTWARE_PATH"), os.getenv("EESSI_CVMFS_REPO"), site_install)
+    site_modulepath = pathJoin(easybuild_installpath, 'modules', 'all')
+  end
 else
   -- Deal with user and project installs
   project_install = os.getenv("EESSI_PROJECT_INSTALL")

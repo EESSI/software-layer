@@ -1,0 +1,5 @@
+# 2024-05-20
+# Rebuild EESSI-extend/2023.06-easybuild
+# The current version does not handle EESSI_SITE_INSTALL correctly.
+easyconfigs:
+  - EESSI-extend-2023.06-easybuild.eb
