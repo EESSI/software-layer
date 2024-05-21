@@ -99,6 +99,9 @@ else
     fi
 fi
 
+# workaround for EasyBuild not being found when loading "extend" module
+module load EasyBuild/4.9.1
+
 # load EESSI-extend/2023.06-easybuild module && verify that it is loaded
 EESSI_EXTEND_MODULE="EESSI-extend/2023.06-easybuild"
 module load ${EESSI_EXTEND_MODULE}
@@ -116,7 +119,7 @@ ret=$?
 
 # Check if CUDA shall be installed
 cuda_install_needed=0
-cat ${eb_dry_run_short_out} | grep "^ \* \[R\]" | grep "\/c\/CUDA\/"
+cat ${eb_dry_run_short_out} | grep "^ \* \[[xR]\]" | grep "module: CUDA/"
 ret=$?
 if [ "${ret}" -eq 0 ]; then
     cuda_install_needed=1
@@ -131,7 +134,8 @@ fi
 
 # determine the number of packages to be installed (assume 5 GB + num_packages *
 # 3GB space needed)
-number_of_packages=$(cat ${eb_dry_run_short_out} | grep "^ \* \[R\]" | wc -l)
+number_of_packages=$(cat ${eb_dry_run_short_out} | grep "^ \* \[[xR]\]" | sed -e 's/^.*module: //' | uniq | wc -l)
+echo "number of packages to be (re-)installed: '${number_of_packages}'"
 base_storage_space=$((5000000 + ${number_of_packages} * 3000000))
 
 required_space_in_tmpdir=${base_storage_space}
@@ -168,7 +172,7 @@ fi
 #        `MODULEPATH` yet. Even if it is, we still want to redo this installation
 #        since it will provide the symlinked targets for the parts of the CUDA
 #        and/or other installation in the `.../versions/...` prefix
-#  - install-path-modules: We install the module in our `tmpdir` since we do not need the modulefile,
+#  - installpath-modules: We install the module in our `tmpdir` since we do not need the modulefile,
 #        we only care about providing the targets for the symlinks.
 #  - ${cuda_arg}: We only set the --accept-eula-for=CUDA option if CUDA will be installed and if
 #        this script was called with the argument --accept-cuda-eula.
@@ -177,14 +181,14 @@ fi
 #  - easystack: Path to easystack file that defines which packages shall be
 #        installed
 cuda_arg=
-if [[ ]]; then
+if [[ ${eula_accepted} -eq 1 ]]; then
     cuda_arg="--accept-eula-for=CUDA"
 fi
 touch "$tmpdir"/none.py
 eb --prefix="$tmpdir" \
    --rebuild \
-   --install-path-modules=${tmpdir} \
-   {cuda_arg} \
+   --installpath-modules=${tmpdir} \
+   "${cuda_arg}" \
    --hooks="$tmpdir"/none.py \
    --easystack ${EASYSTACKFILE}
 ret=$?
