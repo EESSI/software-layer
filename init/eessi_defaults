@@ -8,8 +8,20 @@
 # license: GPLv2
 #
 
-export EESSI_CVMFS_REPO="${EESSI_CVMFS_REPO_OVERRIDE:=/cvmfs/software.eessi.io}"
-export EESSI_VERSION="${EESSI_VERSION_OVERRIDE:=2023.06}"
+# use different defaults for RISC-V, as we want to redirect to the riscv.eessi.io repo
+if [[ $(uname -m) == "riscv64" ]]; then
+    export EESSI_CVMFS_REPO="${EESSI_CVMFS_REPO_OVERRIDE:=/cvmfs/riscv.eessi.io}"
+    export EESSI_VERSION="${EESSI_VERSION_OVERRIDE:=20240402}"
+    if [[ ! -v EESSI_SILENT ]]; then
+        echo "RISC-V architecture detected, but there is no RISC-V support yet in the production repository."
+        echo "Automatically switching to version ${EESSI_VERSION} of the RISC-V development repository ${EESSI_CVMFS_REPO}."
+        echo "For more details about this repository, see https://www.eessi.io/docs/repositories/riscv.eessi.io/."
+        echo ""
+    fi
+else
+    export EESSI_CVMFS_REPO="${EESSI_CVMFS_REPO_OVERRIDE:=/cvmfs/software.eessi.io}"
+    export EESSI_VERSION="${EESSI_VERSION_OVERRIDE:=2023.06}"
+fi
 # use archdetect by default, unless otherwise specified
 export EESSI_USE_ARCHDETECT="${EESSI_USE_ARCHDETECT:=1}"
 export EESSI_USE_ARCHSPEC="${EESSI_USE_ARCHSPEC:=0}"
