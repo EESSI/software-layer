@@ -16,7 +16,7 @@ else
     export EESSI_OS_TYPE='macos'
 fi
 
-# aarch64 (Arm 64-bit), ppc64le (POWER 64-bit), x86_64 (x86 64-bit)
+# aarch64 (Arm 64-bit), riscv64 (RISC-V 64-bit), x86_64 (x86 64-bit)
 export EESSI_CPU_FAMILY=$(uname -m)
 
 # set $EPREFIX since that is basically a standard in Gentoo Prefix
