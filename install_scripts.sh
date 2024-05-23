@@ -113,7 +113,6 @@ nvidia_files=(
     eessi-2023.06-cuda-and-libraries.yml
     install_cuda_and_libraries.sh
     install_cuda_host_injections.sh
-    install_cudnn_host_injections.sh
     link_nvidia_host_libraries.sh
 )
 copy_files_by_list ${TOPDIR}/scripts/gpu_support/nvidia ${INSTALL_PREFIX}/scripts/gpu_support/nvidia "${nvidia_files[@]}"
