@@ -85,6 +85,7 @@ cpupath(){
         "x86_64") local spec_file="eessi_arch_x86.spec";;
         "aarch64") local spec_file="eessi_arch_arm.spec";;
         "ppc64le") local spec_file="eessi_arch_ppc.spec";;
+        "riscv64") local spec_file="eessi_arch_riscv.spec";;
         *) log "ERROR" "cpupath: Unsupported CPU architecture $machine_type"
     esac
     # spec files are located in a subfolder with this script

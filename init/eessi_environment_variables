@@ -52,8 +52,10 @@ if [ -d $EESSI_PREFIX ]; then
         # since optimized software installations for Zen4 are a work-in-progress,
         # see https://gitlab.com/eessi/support/-/issues/37
         if [[ "${EESSI_SOFTWARE_SUBDIR}" == "x86_64/amd/zen4" ]]; then
-            export EESSI_SOFTWARE_SUBDIR="x86_64/amd/zen3"
-            echo -e "\e[33mSticking to ${EESSI_SOFTWARE_SUBDIR} for now, since optimized installations for AMD Genoa (Zen4) are a work in progress, see https://gitlab.com/eessi/support/-/issues/37 for more information\e[0m"
+            if [ -z $EESSI_SOFTWARE_SUBDIR_OVERRIDE ]; then
+                export EESSI_SOFTWARE_SUBDIR="x86_64/amd/zen3"
+                echo -e "\e[33mSticking to ${EESSI_SOFTWARE_SUBDIR} for now, since optimized installations for AMD Genoa (Zen4) are a work in progress, see https://gitlab.com/eessi/support/-/issues/37 for more information\e[0m"
+            fi
         fi
 
         show_msg "Using ${EESSI_SOFTWARE_SUBDIR} as software subdirectory."
