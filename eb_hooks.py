@@ -567,6 +567,47 @@ def post_sanitycheck_hook(self, *args, **kwargs):
         POST_SANITYCHECK_HOOKS[self.name](self, *args, **kwargs)
 
 
+def replace_non_distributable_files_with_symlinks(log, install_dir, package, allowlist):
+    """
+    Replace files that cannot be distributed with symlinks into host_injections
+    """
+    extension_based = { "CUDA": False, "cuDNN": True }
+    if not package in extension_based:
+        raise EasyBuildError("Don't know how to strip non-distributable files from package %s.", package)
+
+    # iterate over all files in the package installation directory
+    for dir_path, _, files in os.walk(install_dir):
+        for filename in files:
+            full_path = os.path.join(dir_path, filename)
+            # we only really care about real files, i.e. not symlinks
+            if not os.path.islink(full_path):
+                # check if the current file name stub is part of the allowlist
+                basename =  filename.split('.')[0]
+                if extension_based[package]:
+                    if '.' in filename:
+                        extension = '.' + filename.split('.')[1]
+                if basename in allowlist:
+                    log.debug("%s is found in allowlist, so keeping it: %s", basename, full_path)
+                elif extension_based[package] and '.' in filename and extension in allowlist:
+                    log.debug("%s is found in allowlist, so keeping it: %s", extension, full_path)
+                else:
+                    if extension_based[package]:
+                        print_name = filename
+                    else:
+                        print_name = basename
+                    log.debug("%s is not found in allowlist, so replacing it with symlink: %s",
+                              print_name, full_path)
+                    # if it is not in the allowlist, delete the file and create a symlink to host_injections
+                    host_inj_path = full_path.replace('versions', 'host_injections')
+                    # make sure source and target of symlink are not the same
+                    if full_path == host_inj_path:
+                        raise EasyBuildError("Source (%s) and target (%s) are the same location, are you sure you "
+                                             "are using this hook for an EESSI installation?",
+                                             full_path, host_inj_path)
+                    remove_file(full_path)
+                    symlink(host_inj_path, full_path)
+
+
 def post_sanitycheck_cuda(self, *args, **kwargs):
     """
     Remove files from CUDA installation that we are not allowed to ship,
@@ -606,28 +647,9 @@ def post_sanitycheck_cuda(self, *args, **kwargs):
         if 'libcudart' not in allowlist:
             raise EasyBuildError("Did not find 'libcudart' in allowlist: %s" % allowlist)
 
-        # iterate over all files in the CUDA installation directory
-        for dir_path, _, files in os.walk(self.installdir):
-            for filename in files:
-                full_path = os.path.join(dir_path, filename)
-                # we only really care about real files, i.e. not symlinks
-                if not os.path.islink(full_path):
-                    # check if the current file name stub is part of the allowlist
-                    basename = filename.split('.')[0]
-                    if basename in allowlist:
-                        self.log.debug("%s is found in allowlist, so keeping it: %s", basename, full_path)
-                    else:
-                        self.log.debug("%s is not found in allowlist, so replacing it with symlink: %s",
-                                       basename, full_path)
-                        # if it is not in the allowlist, delete the file and create a symlink to host_injections
-                        host_inj_path = full_path.replace('versions', 'host_injections')
-                        # make sure source and target of symlink are not the same
-                        if full_path == host_inj_path:
-                            raise EasyBuildError("Source (%s) and target (%s) are the same location, are you sure you "
-                                                 "are using this hook for an EESSI installation?",
-                                                 full_path, host_inj_path)
-                        remove_file(full_path)
-                        symlink(host_inj_path, full_path)
+        # replace files that are not distributable with symlinks into
+        # host_injections
+        replace_non_distributable_files_with_symlinks(self.log, self.installdir, self.name, allowlist)
     else:
         raise EasyBuildError("CUDA-specific hook triggered for non-CUDA easyconfig?!")
 
@@ -643,8 +665,7 @@ def post_sanitycheck_cudnn(self, *args, **kwargs):
 
         allowlist = ['LICENSE']
 
-        # read cuDNN LICENSE, construct allowlist based on section 2. Distribution
-        # that specifies list of files that can be shipped
+        # read cuDNN LICENSE, construct allowlist based on section "2. Distribution" that specifies list of files that can be shipped
         license_path = os.path.join(self.installdir, 'LICENSE')
         search_string = "2. Distribution. The following portions of the SDK are distributable under the Agreement:"
         with open(license_path) as infile:
@@ -660,32 +681,9 @@ def post_sanitycheck_cudnn(self, *args, **kwargs):
         allowlist = sorted(set(allowlist))
         self.log.info("Allowlist for files in cuDNN installation that can be redistributed: " + ', '.join(allowlist))
 
-        # iterate over all files in the cuDNN installation directory
-        for dir_path, _, files in os.walk(self.installdir):
-            for filename in files:
-                full_path = os.path.join(dir_path, filename)
-                # we only really care about real files, i.e. not symlinks
-                if not os.path.islink(full_path):
-                    # check if the current file is part of the allowlist
-                    basename = filename.split('.')[0]
-                    if '.' in filename:
-                        extension = '.' + filename.split('.')[1]
-                    if basename in allowlist:
-                        self.log.debug("%s is found in allowlist, so keeping it: %s", basename, full_path)
-                    elif '.' in filename and extension in allowlist:
-                        self.log.debug("%s is found in allowlist, so keeping it: %s", extension, full_path)
-                    else:
-                        self.log.debug("%s is not found in allowlist, so replacing it with symlink: %s",
-                                       filename, full_path)
-                        # if it is not in the allowlist, delete the file and create a symlink to host_injections
-                        host_inj_path = full_path.replace('versions', 'host_injections')
-                        # make sure source and target of symlink are not the same
-                        if full_path == host_inj_path:
-                            raise EasyBuildError("Source (%s) and target (%s) are the same location, are you sure you "
-                                                 "are using this hook for a EESSI installation?",
-                                                 full_path, host_inj_path)
-                        remove_file(full_path)
-                        symlink(host_inj_path, full_path)
+        # replace files that are not distributable with symlinks into
+        # host_injections
+        replace_non_distributable_files_with_symlinks(self.log, self.installdir, self.name, allowlist)
     else:
         raise EasyBuildError("cuDNN-specific hook triggered for non-cuDNN easyconfig?!")
 

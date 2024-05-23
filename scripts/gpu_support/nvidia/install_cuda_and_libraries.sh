@@ -93,11 +93,13 @@ export EESSI_SITE_INSTALL=${EESSI_SOFTWARE_PATH/versions/host_injections}
 if [[ -z "${TEMP_DIR}" ]]; then
     tmpdir=$(mktemp -d)
 else
-    tmpdir="${TEMP_DIR}"/temp
-    if ! mkdir "$tmpdir" ; then
+    mkdir -p ${TEMP_DIR}
+    tmpdir=$(mktemp -d --tmpdir=${TEMP_DIR} cuda_n_co.XXX)
+    if [[ ! -d "$tmpdir" ]] ; then
         fatal_error "Could not create directory ${tmpdir}"
     fi
 fi
+echo "Created temporary directory '${tmpdir}'"
 
 # workaround for EasyBuild not being found when loading "extend" module
 module load EasyBuild/4.9.1
