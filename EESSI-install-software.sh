@@ -243,9 +243,6 @@ fi
 #       if not, an error is produced, and the bot flags the whole build as failed (even when not installing GPU software)
 # ${EESSI_PREFIX}/scripts/gpu_support/nvidia/link_nvidia_host_libraries.sh
 
-# Don't run the Lmod GPU driver check when doing builds (may not have a GPU, and it's not relevant for vanilla builds anyway)
-export EESSI_OVERRIDE_GPU_CHECK=1 
-
 # use PR patch file to determine in which easystack files stuff was added
 changed_easystacks=$(cat ${pr_diff} | grep '^+++' | cut -f2 -d' ' | sed 's@^[a-z]/@@g' | grep '^easystacks/.*yml$' | egrep -v 'known-issues|missing') 
 if [ -z "${changed_easystacks}" ]; then
