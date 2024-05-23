@@ -6,4 +6,4 @@ easyconfigs:
         from-pr: 20379
   - PyTorch-bundle-2.1.2-foss-2023a.eb:
       options:
-        from-commit: 7124863ed588066e5a988b4073d91381497a7f64
+        from-pr: 20382
