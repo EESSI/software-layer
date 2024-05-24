@@ -136,8 +136,9 @@ local function eessi_cuda_and_libraries_enabled_load_hook(t)
     end
     -- when loading CUDA (and cu*) enabled modules check if the necessary driver libraries are accessible to the EESSI linker,
     -- otherwise, refuse to load the requested module and print error message
-    local haveGpu = mt:haveProperty(simpleName,"arch","gpu")
-    if haveGpu then
+    local checkGpu = mt:haveProperty(simpleName,"arch","gpu")
+    local overrideGpuCheck = os.getenv("EESSI_OVERRIDE_GPU_CHECK")
+    if checkGpu and (overrideGpuCheck == nil) then
         local arch = os.getenv("EESSI_CPU_FAMILY") or ""
         local cvmfs_repo = os.getenv("EESSI_CVMFS_REPO") or ""
         local cudaVersionFile = cvmfs_repo .. "/host_injections/nvidia/" .. arch .. "/latest/cuda_version.txt"
@@ -147,7 +148,9 @@ local function eessi_cuda_and_libraries_enabled_load_hook(t)
         if not (cudaDriverExists or singularityCudaExists)  then
             local advice = "which relies on the CUDA runtime environment and driver libraries. "
             advice = advice .. "In order to be able to use the module, you will need "
-            advice = advice .. "to make sure EESSI can find the GPU driver libraries on your host system.\\n"
+            advice = advice .. "to make sure EESSI can find the GPU driver libraries on your host system. You can "
+            advice = advice .. "override this check by setting the environment variable EESSI_OVERRIDE_GPU_CHECK but "
+            advice = advice .. "the loaded application will not be able to execute on your system.\\n"
             advice = advice .. refer_to_docs
             LmodError("\\nYou requested to load ", simpleName, " ", advice)
         else
