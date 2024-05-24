@@ -157,6 +157,8 @@ fi
 #   ${EESSI_PREFIX}/software/${EESSI_OS_TYPE}/${EESSI_SOFTWARE_SUBDIR_OVERRIDE}
 # - .lmod/lmodrc.lua
 # - .lmod/SitePackage.lua
+# assume there's only one diff file that corresponds to the PR patch file
+pr_diff=$(ls [0-9]*.diff | head -1)
 _eessi_software_path=${EESSI_PREFIX}/software/${EESSI_OS_TYPE}/${EESSI_SOFTWARE_SUBDIR_OVERRIDE}
 _lmod_cfg_dir=${_eessi_software_path}/.lmod
 _lmod_rc_file=${_lmod_cfg_dir}/lmodrc.lua
