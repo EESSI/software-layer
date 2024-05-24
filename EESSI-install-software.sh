@@ -172,11 +172,11 @@ if [ ! -f ${_lmod_sitepackage_file} ]; then
     cat -n ${_lmod_sitepackage_file}
 else
     echo ">> Updating Lmod SitePackage.lua ..."
-    export LMOD_PACKAGE_PATH="${EASYBUILD_INSTALLPATH}/.lmod"
+    export LMOD_PACKAGE_PATH="${_lmod_cfg_dir}"
     lmod_sitepackage_file="$LMOD_PACKAGE_PATH/SitePackage.lua"
     sitepackage_changed=$(cat ${pr_diff} | grep '^+++' | cut -f2 -d' ' | sed 's@^[a-z]/@@g' | grep '^create_lmodsitepackage.py$' > /dev/null; echo $?)
     if [ ! -f "$lmod_sitepackage_file" ] || [ "${sitepackage_changed}" == '0' ]; then
-        python3 $TOPDIR/create_lmodsitepackage.py ${EASYBUILD_INSTALLPATH}
+        python3 $TOPDIR/create_lmodsitepackage.py ${_eessi_software_path}
         check_exit_code $? "$lmod_sitepackage_file created" "Failed to create $lmod_sitepackage_file"
     fi
     echo "just updated '${lmod_sitepackage_file}':"
