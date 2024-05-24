@@ -17,6 +17,11 @@ display_help() {
   echo "  --skip-cuda-install    -  disable installing a full CUDA SDK in the host_injections prefix (e.g. in CI)"
 }
 
+# Function to check if a command exists
+function command_exists() {
+    command -v "$1" >/dev/null 2>&1
+}
+
 function copy_build_log() {
     # copy specified build log to specified directory, with some context added
     build_log=${1}
@@ -238,10 +243,11 @@ else
     echo "Skipping installation of CUDA SDK in host_injections, since the --skip-cuda-install flag was passed OR no EasyBuild module was found"
 fi
 
-# Install drivers in host_injections
-# TODO: this is commented out for now, because the script assumes that nvidia-smi is available and works;
-#       if not, an error is produced, and the bot flags the whole build as failed (even when not installing GPU software)
-# ${EESSI_PREFIX}/scripts/gpu_support/nvidia/link_nvidia_host_libraries.sh
+# Install NVIDIA drivers in host_injections (if they exist)
+if command_exists "nvidia-smi"; then
+    echo "Command 'nvidia-smi' found. Installing NVIDIA drivers for use in prefix shell..."
+    ${EESSI_PREFIX}/scripts/gpu_support/nvidia/link_nvidia_host_libraries.sh
+fi
 
 # use PR patch file to determine in which easystack files stuff was added
 changed_easystacks=$(cat ${pr_diff} | grep '^+++' | cut -f2 -d' ' | sed 's@^[a-z]/@@g' | grep '^easystacks/.*yml$' | egrep -v 'known-issues|missing') 
