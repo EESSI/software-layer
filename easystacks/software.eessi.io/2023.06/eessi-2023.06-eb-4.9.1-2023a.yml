@@ -4,3 +4,6 @@ easyconfigs:
   - R-bundle-Bioconductor-3.18-foss-2023a-R-4.3.2.eb:
       options:
         from-pr: 20379
+  - PyTorch-2.1.2-foss-2023a-CUDA-12.1.1.eb:
+      options:
+        cuda-compute-capabilities: 7.0
