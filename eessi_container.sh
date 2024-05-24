@@ -467,6 +467,11 @@ if [[ ${SETUP_NVIDIA} -eq 1 ]]; then
             # No GPU so we need to "trick" Lmod to allow us to load CUDA modules even without a CUDA driver
             # (this variable means EESSI_OVERRIDE_GPU_CHECK=1 will be set inside the container)
             export SINGULARITYENV_EESSI_OVERRIDE_GPU_CHECK=1
+            # We need to "trick" our LMOD_RC file to allow us to load CUDA modules even without a CUDA driver
+            # (this works because we build within a container and the LMOD_RC recognises that)
+            touch ${EESSI_TMPDIR}/libcuda.so
+            export SINGULARITY_CONTAINLIBS="${EESSI_TMPDIR}/libcuda.so"
+            echo "Applied hacks to trick Lmod to allow us to load CUDA modules"
         fi
     fi
 fi
