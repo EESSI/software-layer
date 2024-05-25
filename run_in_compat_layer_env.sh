@@ -26,6 +26,9 @@ fi
 if [ ! -z ${EESSI_VERSION_OVERRIDE} ]; then
     INPUT="export EESSI_VERSION_OVERRIDE=${EESSI_VERSION_OVERRIDE}; ${INPUT}"
 fi
+if [ ! -z ${EESSI_OVERRIDE_GPU_CHECK} ]; then
+    INPUT="export EESSI_OVERRIDE_GPU_CHECK=${EESSI_OVERRIDE_GPU_CHECK}; ${INPUT}"
+fi
 if [ ! -z ${http_proxy} ]; then
     INPUT="export http_proxy=${http_proxy}; ${INPUT}"
 fi

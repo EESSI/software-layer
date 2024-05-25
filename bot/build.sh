@@ -228,6 +228,11 @@ if [[ ! -z ${SHARED_FS_PATH} ]]; then
     BUILD_STEP_ARGS+=("--host-injections" "${SHARED_FS_PATH}/host-injections")
 fi
 
+# Don't run the Lmod GPU driver check when doing builds (may not have a GPU, and it's not relevant for vanilla builds anyway)
+echo "EESSI_OVERRIDE_GPU_CHECK='${EESSI_OVERRIDE_GPU_CHECK}'"
+export EESSI_OVERRIDE_GPU_CHECK=1
+echo "EESSI_OVERRIDE_GPU_CHECK='${EESSI_OVERRIDE_GPU_CHECK}'"
+
 # create tmp file for output of build step
 build_outerr=$(mktemp build.outerr.XXXX)
 
