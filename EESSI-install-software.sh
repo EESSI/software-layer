@@ -267,10 +267,6 @@ if command_exists "nvidia-smi"; then
     ${EESSI_PREFIX}/scripts/gpu_support/nvidia/link_nvidia_host_libraries.sh
 fi
 
-# Don't run the Lmod GPU driver check when doing builds (may not have a GPU, and it's not relevant for vanilla builds anyway)
-#echo "EESSI_OVERRIDE_GPU_CHECK='${EESSI_OVERRIDE_GPU_CHECK}'"
-#export EESSI_OVERRIDE_GPU_CHECK=1
-
 # use PR patch file to determine in which easystack files stuff was added
 changed_easystacks=$(cat ${pr_diff} | grep '^+++' | cut -f2 -d' ' | sed 's@^[a-z]/@@g' | grep '^easystacks/.*yml$' | egrep -v 'known-issues|missing') 
 if [ -z "${changed_easystacks}" ]; then
