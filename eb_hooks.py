@@ -388,7 +388,7 @@ def pre_configure_hook_pytorch_add_cupti_libdir(self, *args, **kwargs):
             else:
                 env.setvar('LIBRARY_PATH', _cupti_lib_dir)
             print_msg("pre_configure_hook_pytorch_add_cupti_libdir: LIBRARY_PATH: '%s'", os.getenv('LIBRARY_PATH'))
-     else:
+    else:
         raise EasyBuildError("PyTorch-specific hook triggered for non-PyTorch easyconfig?!")
 
 
