@@ -6,4 +6,4 @@ easyconfigs:
         from-pr: 20379
   - PyTorch-2.1.2-foss-2023a-CUDA-12.1.1.eb:
       options:
-        cuda-compute-capabilities: 7.0
+        cuda-compute-capabilities: 6.0,6.1,7.0,7.5,8.0,8.6,8.9,9.0
