@@ -180,7 +180,7 @@ local function eessi_espresso_deprecated_warning(t)
     if simpleName == 'ESPResSo' and version == '4.2.1' then
         local advice = 'Prefer versions  >= 4.2.2 which include important bugfixes.\\n'
         advice = advice .. 'For details see https://github.com/espressomd/espresso/releases/tag/4.2.2\\n'
-        advice = advice .. 'Use version 4.2.1 at your own risk!\\nn'
+        advice = advice .. 'Use version 4.2.1 at your own risk!\\n'
         LmodWarning("\\nESPReSso v4.2.1 has known issues and has been deprecated. ", advice)
     end
 end
