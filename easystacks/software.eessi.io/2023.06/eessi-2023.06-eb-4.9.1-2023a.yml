@@ -12,3 +12,6 @@ easyconfigs:
   - ipympl-0.9.3-gfbf-2023a.eb:
      options:
        from-pr: 18852
+  - ESPResSo-4.2.2-foss-2023a.eb:
+      options:
+        from-pr: 20595
