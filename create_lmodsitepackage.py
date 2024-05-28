@@ -175,9 +175,23 @@ local function eessi_cuda_enabled_load_hook(t)
     end
 end
 
+local function eessi_espresso_deprecated_warning(t)
+    local frameStk  = require("FrameStk"):singleton()
+    local mt        = frameStk:mt()
+    local simpleName = string.match(t.modFullName, "(.-)/")
+    local version = string.match(t.modFullName, "%d.%d.%d")
+    if simpleName == 'ESPResSo' and version == '4.2.1' then
+        local advice = 'Prefer versions  >= 4.2.2 which include important bugfixes.\\n'
+        advice = advice .. 'For details see https://github.com/espressomd/espresso/releases/tag/4.2.2\\n'
+        advice = advice .. 'Use version 4.2.1 at your own risk!\\n'
+        LmodWarning("\\nESPResSo v4.2.1 has known issues and has been deprecated. ", advice)
+    end
+end
+
 -- Combine both functions into a single one, as we can only register one function as load hook in lmod
 -- Also: make it non-local, so it can be imported and extended by other lmodrc files if needed
 function eessi_load_hook(t)
+    eessi_espresso_deprecated_warning(t)
     -- Only apply CUDA hooks if the loaded module is in the EESSI prefix
     -- This avoids getting an Lmod Error when trying to load a CUDA module from a local software stack
     if from_eessi_prefix(t) then
