@@ -48,9 +48,13 @@ easyconfigs:
   - PyOpenGL-3.1.7-GCCcore-12.3.0.eb:
       options:
         from-pr: 20007
-  - ipympl-0.9.3-foss-2023a.eb:
-      options:
-        from-pr: 20126
+  # removed by https://github.com/easybuilders/easybuild-easyconfigs/pull/20586
+  # adding ipympl-0.9.3-gfbf-2023a.eb as a replacement in
+  # easystacks/software.eessi.io/2023.06/eessi-2023.06-eb-4.9.1-2023a.yml
+  # comment the below out here or CI will fail
+  # - ipympl-0.9.3-foss-2023a.eb:
+  #    options:
+  #      from-pr: 20126
   - OpenJPEG-2.5.0-GCCcore-12.3.0.eb
   - OpenFOAM-10-foss-2023a.eb
   - Highway-1.0.4-GCCcore-12.3.0.eb

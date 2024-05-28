@@ -4,3 +4,11 @@ easyconfigs:
   - R-bundle-Bioconductor-3.18-foss-2023a-R-4.3.2.eb:
       options:
         from-pr: 20379
+  # replacement for ipympl-0.9.3-foss-2023a.eb which has been built via
+  # easystacks/software.eessi.io/2023.06/eessi-2023.06-eb-4.9.0-2023a.yml and was
+  # later removed in https://github.com/easybuilders/easybuild-easyconfigs/pull/20586
+  # below we use the replacement ec file which is provided by
+  # https://github.com/easybuilders/easybuild-easyconfigs/pull/18852
+  - ipympl-0.9.3-gfbf-2023a.eb:
+     options:
+       from-pr: 18852
