@@ -3,3 +3,4 @@ easyconfigs:
       options:
         from-pr: 20299
   - EESSI-extend-2023.06-easybuild.eb
+  - cuDNN-8.9.2.26-CUDA-12.1.1.eb
