@@ -193,7 +193,7 @@ end
 -- Combine both functions into a single one, as we can only register one function as load hook in lmod
 -- Also: make it non-local, so it can be imported and extended by other lmodrc files if needed
 function eessi_load_hook(t)
-    eessi_espresso_deprecated_warning(t)
+    eessi_espresso_deprecated_message(t)
     -- Only apply CUDA hooks if the loaded module is in the EESSI prefix
     -- This avoids getting an Lmod Error when trying to load a CUDA module from a local software stack
     if from_eessi_prefix(t) then
