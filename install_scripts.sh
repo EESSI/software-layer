@@ -92,7 +92,7 @@ copy_files_by_list ${TOPDIR}/init ${INSTALL_PREFIX}/init "${init_files[@]}"
 
 # Copy for the init/arch_specs directory
 arch_specs_files=(
-   eessi_arch_arm.spec eessi_arch_ppc.spec eessi_arch_x86.spec
+   eessi_arch_arm.spec eessi_arch_ppc.spec eessi_arch_riscv.spec eessi_arch_x86.spec
 )
 copy_files_by_list ${TOPDIR}/init/arch_specs ${INSTALL_PREFIX}/init/arch_specs "${arch_specs_files[@]}"
 
@@ -113,3 +113,9 @@ nvidia_files=(
     install_cuda_host_injections.sh link_nvidia_host_libraries.sh
 )
 copy_files_by_list ${TOPDIR}/scripts/gpu_support/nvidia ${INSTALL_PREFIX}/scripts/gpu_support/nvidia "${nvidia_files[@]}"
+
+# Copy over EasyBuild hooks file used for installations
+hook_files=(
+    eb_hooks.py
+)
+copy_files_by_list ${TOPDIR} ${INSTALL_PREFIX}/init/easybuild "${hook_files[@]}"
