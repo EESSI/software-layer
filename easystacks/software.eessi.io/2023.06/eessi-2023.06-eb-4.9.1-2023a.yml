@@ -17,7 +17,7 @@ easyconfigs:
         from-pr: 20595
   - GATK-4.5.0.0-GCCcore-12.3.0-Java-17.eb
   - WhatsHap-2.2-foss-2023a.eb
-  - OpenFOAM-v2312-foss-2023a.eb
+  - OpenFOAM-v2312-foss-2023a.eb:
       options:
         include-easyblocks-from-pr: 3328
         from-pr: 20517
