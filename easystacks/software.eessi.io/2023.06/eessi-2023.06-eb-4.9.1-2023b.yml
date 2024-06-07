@@ -2,3 +2,4 @@ easyconfigs:
   - GROMACS-2024.1-foss-2023b.eb:
       options:
         from-pr: 20439
+  - NLTK-3.8.1-foss-2023b.eb
