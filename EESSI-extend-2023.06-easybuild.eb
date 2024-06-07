@@ -143,7 +143,7 @@ setenv ("EASYBUILD_HOOKS", pathJoin(os.getenv("EESSI_PREFIX"), "init", "easybuil
 -- Make sure to use the general umask that allows a global read
 setenv ("EASYBUILD_UMASK", "022")
 
--- All this module to be loaded when running EasyBuild
+-- Allow this module to be loaded when running EasyBuild
 setenv ("EASYBUILD_ALLOW_LOADED_MODULES", "EasyBuild,EESSI-extend")
 
 -- Set all related environment variables if we have project or user installations (including extending MODULEPATH)
