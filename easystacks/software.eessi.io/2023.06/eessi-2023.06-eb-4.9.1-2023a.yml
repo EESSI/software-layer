@@ -19,4 +19,4 @@ easyconfigs:
   - WhatsHap-2.2-foss-2023a.eb
   - BLAST+-2.14.1-gompi-2023a.eb:
       options:     
-        from-pr: 20751
+        from-pr: 20784
