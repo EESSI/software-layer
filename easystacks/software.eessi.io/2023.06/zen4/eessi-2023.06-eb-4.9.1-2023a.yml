@@ -1,3 +1,4 @@
 easyconfigs:
   - foss-2023a.eb
   - SciPy-bundle-2023.07-gfbf-2023a.eb
+  - ESPResSo-4.2.1-foss-2023a.eb
