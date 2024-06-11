@@ -20,3 +20,4 @@ easyconfigs:
   - BLAST+-2.14.1-gompi-2023a.eb:
       options:     
         from-pr: 20784
+  - OrthoFinder-2.5.5-foss-2023a.eb
