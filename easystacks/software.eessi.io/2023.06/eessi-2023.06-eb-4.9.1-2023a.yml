@@ -20,3 +20,4 @@ easyconfigs:
   - BLAST+-2.14.1-gompi-2023a.eb:
       options:     
         from-pr: 20784
+  - Valgrind-3.21.0-gompi-2023a.eb
