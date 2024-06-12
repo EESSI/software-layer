@@ -782,12 +782,12 @@ PARSE_HOOKS = {
     'CGAL': parse_hook_cgal_toolchainopts_precise,
     'fontconfig': parse_hook_fontconfig_add_fonts,
     'LAMMPS': parse_hook_lammps_remove_deps_for_CI_aarch64,
-    'librosa': parse_hook_librosa_custom_ctypes,
+    #'librosa': parse_hook_librosa_custom_ctypes,
     'OpenBLAS': parse_hook_openblas_relax_lapack_tests_num_errors,
     'pybind11': parse_hook_pybind11_replace_catch2,
-    'PyTorch-bundle': parse_hook_pytorch_bundle_torchvision_setenv,
+    #'PyTorch-bundle': parse_hook_pytorch_bundle_torchvision_setenv,
     'Qt5': parse_hook_qt5_check_qtwebengine_disable,
-    'SentencePiece': parse_hook_sentencepiece_disable_tcmalloc_aarch64,
+    #'SentencePiece': parse_hook_sentencepiece_disable_tcmalloc_aarch64,
     'UCX': parse_hook_ucx_eprefix,
 }
 
@@ -833,5 +833,5 @@ POST_SANITYCHECK_HOOKS = {
 }
 
 PRE_MODULE_HOOKS = {
-    'librosa': pre_module_hook_librosa_augment_modluafooter,
+    #'librosa': pre_module_hook_librosa_augment_modluafooter,
 }

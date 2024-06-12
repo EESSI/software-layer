@@ -251,9 +251,9 @@ fi
 
 # Install extra software that is needed (e.g., for providing a custom ctypes
 # library when needed)
-cd ${TOPDIR}/scripts/extra
-./install_extra_packages.sh --temp-dir /tmp/temp --easystack eessi-2023.06-extra-packages.yml
-cd ${TOPDIR}
+#cd ${TOPDIR}/scripts/extra
+#./install_extra_packages.sh --temp-dir /tmp/temp --easystack eessi-2023.06-extra-packages.yml
+#cd ${TOPDIR}
 
 # use PR patch file to determine in which easystack files stuff was added
 changed_easystacks=$(cat ${pr_diff} | grep '^+++' | cut -f2 -d' ' | sed 's@^[a-z]/@@g' | grep '^easystacks/.*yml$' | egrep -v 'known-issues|missing') 
