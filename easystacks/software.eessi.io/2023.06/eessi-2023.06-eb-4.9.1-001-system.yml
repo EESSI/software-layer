@@ -3,3 +3,7 @@ easyconfigs:
       options:
         from-pr: 20299
   - EESSI-extend-2023.06-easybuild.eb
+  - EasyBuild-4.9.2.eb:
+      options:
+        from-pr: 20801
+        include-easyblocks-from-pr: 3358
