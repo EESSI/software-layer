@@ -72,7 +72,7 @@ display_help() {
   echo " OPTIONS:"
   echo "  -a | --access {ro,rw}   - ro (read-only), rw (read & write) [default: ro]"
   echo "  -b | --extra-bind-paths - specify extra paths to be bound into the container."
-  echo "                            To specify multiple bind paths, seperate by comma."
+  echo "                            To specify multiple bind paths, separate by comma."
   echo "                            Example: '/src:/dest:ro,/src2:/dest2:rw'"
   echo "  -c | --container IMG    - image file or URL defining the container to use"
   echo "                            [default: docker://ghcr.io/eessi/build-node:debian11]"
