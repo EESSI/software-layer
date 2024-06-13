@@ -137,6 +137,10 @@ while [[ $# -gt 0 ]]; do
       ACCESS="$2"
       shift 2
       ;;
+    -b|--extra-bind-paths)
+      EXTRA_BIND_PATHS="$2"
+      shift 2
+      ;;
     -c|--container)
       CONTAINER="$2"
       shift 2
@@ -198,10 +202,6 @@ while [[ $# -gt 0 ]]; do
     -y|--https-proxy)
       HTTPS_PROXY="$2"
       export https_proxy=${HTTPS_PROXY}
-      shift 2
-      ;;
-    -b|--extra-bind-paths)
-      EXTRA_BIND_PATHS="$2"
       shift 2
       ;;
     --)
