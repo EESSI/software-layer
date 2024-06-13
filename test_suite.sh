@@ -158,7 +158,7 @@ else
     fatal_error "Failed to get the number of cores per socket for the current test hardware with lscpu."
 fi
 cgroup_mem_bytes=$(cat /sys/fs/cgroup/memory/slurm/uid_${UID}/job_${SLURM_JOB_ID}/memory.limit_in_bytes)
-if [[ $? -eq 0 ]]
+if [[ $? -eq 0 ]]; then
     # Convert to MiB
     cgroup_mem_mib=$((cgroup_mem_bytes/(1024*1024)))
 else
