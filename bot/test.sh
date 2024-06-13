@@ -204,6 +204,9 @@ if [[ -z ${RESUME_DIR} ]]; then
 else
   TEST_STEP_ARGS+=("--resume" "${RESUME_DIR}")
 fi
+# Bind mount /sys/fs/cgroup so that we can determine the amount of memory available in our cgroup for
+# Reframe configuration
+TEST_STEP_ARGS+=("--extra-bind-paths /sys/fs/cgroup:/hostsys/fs/cgroup:ro")
 
 # prepare arguments to test_suite.sh (specific to test step)
 declare -a TEST_SUITE_ARGS=()
