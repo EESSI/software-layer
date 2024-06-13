@@ -2,4 +2,3 @@ easyconfigs:
   - EasyBuild-4.9.2.eb:
       options:
         from-pr: 20801
-        include-easyblocks-from-pr: 3358
