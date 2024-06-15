@@ -1,2 +1,18 @@
 easyconfigs:
   - GROMACS-2024.1-foss-2023b.eb
+  - netCDF-4.9.2-gompi-2023b.eb
+  - matplotlib-3.8.2-gfbf-2023b.eb
+  - DP3-6.0-foss-2023b.eb
+  - WSClean-3.4-foss-2023b.eb
+  - CDO-2.2.2-gompi-2023b.eb
+  - python-casacore-3.5.2-foss-2023b.eb
+  - libspatialindex-1.9.3-GCCcore-13.2.0.eb
+  - LittleCMS-2.15-GCCcore-13.2.0.eb
+  - giflib-5.2.1-GCCcore-13.2.0.eb
+  - OpenJPEG-2.5.0-GCCcore-13.2.0.eb
+  - libwebp-1.3.2-GCCcore-13.2.0.eb
+  - Wayland-1.22.0-GCCcore-13.2.0.eb
+  - Qt5-5.15.13-GCCcore-13.2.0.eb
+  - OSU-Micro-Benchmarks-7.2-gompi-2023b.eb
+  - NLTK-3.8.1-foss-2023b.eb
+  - Valgrind-3.23.0-gompi-2023b.eb
