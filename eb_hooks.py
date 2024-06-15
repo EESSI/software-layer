@@ -333,11 +333,11 @@ def parse_hook_qt5_check_qtwebengine_disable(ec, eprefix):
 
 def parse_hook_sentencepiece_disable_tcmalloc_aarch64(ec, eprefix):
     """
-    Disable using TC_Malloc on 'aarch64/generic'
+    Disable using TC_Malloc on 'aarch64' CPUs
     """
     cpu_target = get_eessi_envvar('EESSI_SOFTWARE_SUBDIR')
     if ec.name == 'SentencePiece' and ec.version in ['0.2.0']:
-        if cpu_target == CPU_TARGET_AARCH64_GENERIC:
+        if cpu_target in [CPU_TARGET_AARCH64_GENERIC, CPU_TARGET_NEOVERSE_N1, CPU_TARGET_NEOVERSE_V1]:
             print_msg("parse_hook for SentencePiece: OLD '%s'", ec['components'])
             new_components = []
             for item in ec['components']:
