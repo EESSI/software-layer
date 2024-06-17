@@ -34,6 +34,11 @@ site_configuration = {
                             'options': ['--mem={size}'],
                         }
                     ],
+                    'extras': {
+                        # Make sure to round down, otherwise a job might ask for more mem than is available
+                        # per node
+                        'mem_per_node': __MEM_PER_NODE__,
+                    },
                     'max_jobs': 1
                     }
                 ]

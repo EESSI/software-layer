@@ -101,7 +101,7 @@ elif [[ ${ERROR} -eq 1 ]]; then
     reason="EESSI test suite was not run, test step itself failed to execute."
     status="FAILURE"
 else
-    summary=":grin: FAILURE"
+    summary=":cry: FAILURE"
     reason="Failed for unknown reason"
     status="FAILURE"
 fi

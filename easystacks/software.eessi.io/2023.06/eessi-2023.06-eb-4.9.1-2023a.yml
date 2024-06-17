@@ -17,6 +17,11 @@ easyconfigs:
         from-pr: 20595
   - GATK-4.5.0.0-GCCcore-12.3.0-Java-17.eb
   - WhatsHap-2.2-foss-2023a.eb
+  - BLAST+-2.14.1-gompi-2023a.eb:
+      options:     
+        from-pr: 20784
+  - Valgrind-3.21.0-gompi-2023a.eb
+  - OrthoFinder-2.5.5-foss-2023a.eb
   - OpenFOAM-v2312-foss-2023a.eb:
       options:
         include-easyblocks-from-pr: 3328
