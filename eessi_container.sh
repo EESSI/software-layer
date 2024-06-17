@@ -48,7 +48,11 @@ HTTPS_PROXY_ERROR_EXITCODE=$((${ANY_ERROR_EXITCODE} << 10))
 RUN_SCRIPT_MISSING_EXITCODE=$((${ANY_ERROR_EXITCODE} << 11))
 NVIDIA_MODE_UNKNOWN_EXITCODE=$((${ANY_ERROR_EXITCODE} << 12))
 
+# we use an associative array for storing sets of settings per CVMFS repository
+declare -A cvmfs_repo_settings
+
 # CernVM-FS settings
+# TODO may need to put them into repository specific map
 CVMFS_VAR_LIB="var-lib-cvmfs"
 CVMFS_VAR_RUN="var-run-cvmfs"
 
@@ -89,8 +93,9 @@ display_help() {
   echo "                            MODE==install for a CUDA installation, MODE==run to"
   echo "                            attach a GPU, MODE==all for both [default: false]"
   echo "  -r | --repository CFG   - configuration file or identifier defining the"
-  echo "                            repository to use [default: EESSI via"
-  echo "                            default container, see --container]"
+  echo "                            repository to use; can be given multiple times"
+  echo "                            [default: software.eessi.io via CVMFS config available"
+  echo "                            via default container, see --container]"
   echo "  -u | --resume DIR/TGZ   - resume a previous run from a directory or tarball,"
   echo "                            where DIR points to a previously used tmp directory"
   echo "                            (check for output 'Using DIR as tmp ...' of a previous"
@@ -123,7 +128,7 @@ STORAGE=
 LIST_REPOS=0
 MODE="shell"
 SETUP_NVIDIA=0
-REPOSITORY="EESSI"
+REPOSITORIES=()
 RESUME=
 SAVE=
 HTTP_PROXY=${http_proxy:-}
@@ -179,7 +184,7 @@ while [[ $# -gt 0 ]]; do
       shift 2
       ;;
     -r|--repository)
-      REPOSITORY="$2"
+      REPOSITORIES+=("$2")
       shift 2
       ;;
     -s|--save)
@@ -221,22 +226,50 @@ done
 
 set -- "${POSITIONAL_ARGS[@]}"
 
+# define a list of CVMFS repositories that are accessible via the
+# CVMFS config repository which is always mounted
+declare -A eessi_cvmfs_repos=(["dev.eessi.io"]="extra", ["riscv.eessi.io"]="extra", ["software.eessi.io"]="default")
+eessi_default_cvmfs_repo="software.eessi.io"
+
+# if REPOSITORIES is empty add default repository given above
+if [[ ${#REPOSITORIES[@]} -eq 0 ]]; then
+    REPOSITORIES+=(${eessi_default_cvmfs_repo})
+fi
+
+# define a list of CVMFS repositories that are accessible via the
+# configuration file provided via $EESSI_REPOS_CFG_FILE
+declare -A cfg_cvmfs_repos=()
+if [[ -r ${EESSI_REPOS_CFG_FILE} ]]; then
+    cfg_load ${EESSI_REPOS_CFG_FILE}
+    sections=$(cfg_sections)
+    while IFS= read -r repo_id
+    do
+        cfg_cvmfs_repos[${repo_id}]=${EESSI_REPOS_CFG_FILE}
+    done <<< "${sections}"
+fi
+
 if [[ ${LIST_REPOS} -eq 1 ]]; then
-    echo "Listing available repositories with format 'name [source]':"
-    echo "    EESSI [default]"
-    if [[ -r ${EESSI_REPOS_CFG_FILE} ]]; then
-        cfg_load ${EESSI_REPOS_CFG_FILE}
-        sections=$(cfg_sections)
-        while IFS= read -r repo_id
-        do
-            echo "    ${repo_id} [${EESSI_REPOS_CFG_FILE}]"
-        done <<< "${sections}"
-    fi
+    echo "Listing available repositories with format 'name [source[, 'default']]'."
+    echo "Note, without argument '--repository' the one labeled 'default' will be mounted."
+    for cvmfs_repo in "${!eessi_cvmfs_repos[@]}"
+    do
+        if [[ ${eessi_cvmfs_repos[${cvmfs_repo}]} == "default" ]] ; then
+            default_label=", default"
+        else
+            default_label=""
+	fi
+        echo "    ${cvmfs_repo} [CVMFS config repo${default_label}]"
+    done
+    for cfg_repo in "${!cfg_cvmfs_repos[@]}"
+    do
+        echo "    ${cfg_repo} [${cfg_cvmfs_repos[$cfg_repo]}]"
+    done
     exit 0
 fi
 
 # 1. check if argument values are valid
 # (arg -a|--access) check if ACCESS is supported
+# TODO use the value as global setting, suffix to --repository can specify an access mode per repository
 if [[ "${ACCESS}" != "ro" && "${ACCESS}" != "rw" ]]; then
     fatal_error "unknown access method '${ACCESS}'" "${ACCESS_UNKNOWN_EXITCODE}"
 fi
@@ -260,10 +293,16 @@ if [[ ${SETUP_NVIDIA} -eq 1 ]]; then
     fi
 fi
 
-# TODO (arg -r|--repository) check if repository is known
+# TODO (arg -r|--repository) check if all explicitly listed repositories are known
 # REPOSITORY_ERROR_EXITCODE
-if [[ ! -z "${REPOSITORY}" && "${REPOSITORY}" != "EESSI" && ! -r ${EESSI_REPOS_CFG_FILE} ]]; then
-    fatal_error "arg '--repository ${REPOSITORY}' requires a cfg file at '${EESSI_REPOS_CFG_FILE}'" "${REPOSITORY_ERROR_EXITCODE}"
+if [[ ${#REPOSITORIES[@]} -ne 0 ]] ; then
+    # iterate over entries in REPOSITORIES and check if they are known
+    for cvmfs_repo in "${REPOSITORIES[@]}"
+    do
+        if [[ ! -n "${eessi_cvmfs_repos[${cvmfs_repo}]}" && ! -n ${cfg_cvmfs_repos[${cvmfs_repo}]} ]]; then
+            fatal_error "The repository '${cvmfs_repo}' is not an EESSI CVMFS repository or it is not known how to mount it (could be due to a typo or missing configuration). Run '$0 -l' to obtain a list of available repositories." "${REPOSITORY_ERROR_EXITCODE}"
+        fi
+    done
 fi
 
 # TODO (arg -u|--resume) check if it exists, if user has read permission,
@@ -337,22 +376,36 @@ if [[ ! -z ${RESUME} && -f ${RESUME} ]]; then
 fi
 
 # 3. set up common vars and directories
+# TODO change to be able to support multiple CVMFS repositories
 #    directory structure should be:
 #      ${EESSI_HOST_STORAGE}
 #      |-singularity_cache
-#      |-${CVMFS_VAR_LIB}
-#      |-${CVMFS_VAR_RUN}
-#      |-overlay-upper
-#      |-overlay-work
 #      |-home
 #      |-repos_cfg
-#      |-opt-eessi (unless otherwise specificed for host_injections)
+#      |-CVMFS_REPO_1
+#      |   |-repo_settings (name, access_mode, host_injections)
+#      |   |-${CVMFS_VAR_LIB}
+#      |   |-${CVMFS_VAR_RUN}
+#      |   |-overlay-upper
+#      |   |-overlay-work
+#      |   |-opt-eessi (unless otherwise specificed for host_injections)
+#      |-CVMFS_REPO_n
+#          |-repo_settings (name, access_mode, host_injections)
+#          |-${CVMFS_VAR_LIB}
+#          |-${CVMFS_VAR_RUN}
+#          |-overlay-upper
+#          |-overlay-work
+#          |-opt-eessi (unless otherwise specificed for host_injections)
 
 # tmp dir for EESSI
 EESSI_TMPDIR=${EESSI_HOST_STORAGE}
 mkdir -p ${EESSI_TMPDIR}
 [[ ${VERBOSE} -eq 1 ]] && echo "EESSI_TMPDIR=${EESSI_TMPDIR}"
 
+# TODO make this specific to repository
+# TODO move this code to when we already know which repositories we want to access
+#      actually we should know this already here, but we should rather move this to
+#      where repository args are being processed
 # Set host_injections directory and ensure it is a writable directory (if user provided)
 if [ -z ${USER_HOST_INJECTIONS+x} ]; then
     # Not set, so use our default
@@ -486,6 +539,8 @@ if [[ ${FAKEROOT} -eq 1 ]]; then
   ADDITIONAL_CONTAINER_OPTIONS+=("--fakeroot")
 fi
 
+exit 0; # CONTINUE HERE
+# TODO iterate over repositories in array REPOSITORIES
 # set up repository config (always create directory repos_cfg and populate it with info when
 # arg -r|--repository is used)
 mkdir -p ${EESSI_TMPDIR}/repos_cfg
