@@ -1,0 +1,6 @@
+easyconfigs:
+  - OpenFOAM-v2312-foss-2023a.eb:
+      options:
+        include-easyblocks-from-pr: 3366
+        from-pr: 20841
+

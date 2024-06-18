@@ -22,7 +22,3 @@ easyconfigs:
         from-pr: 20784
   - Valgrind-3.21.0-gompi-2023a.eb
   - OrthoFinder-2.5.5-foss-2023a.eb
-  - OpenFOAM-v2312-foss-2023a.eb:
-      options:
-        include-easyblocks-from-pr: 3366
-        from-pr: 20841
