@@ -228,16 +228,14 @@ set -- "${POSITIONAL_ARGS[@]}"
 
 # define a list of CVMFS repositories that are accessible via the
 # CVMFS config repository which is always mounted
+# TODO instead of hard-coding the 'extra' and 'default' repositories here one
+#      could have another script in the GitHub and/or CVMFS repository which
+#      provides this "configuration"
 declare -A eessi_cvmfs_repos=(["dev.eessi.io"]="extra", ["riscv.eessi.io"]="extra", ["software.eessi.io"]="default")
-eessi_default_cvmfs_repo="software.eessi.io"
-
-# if REPOSITORIES is empty add default repository given above
-if [[ ${#REPOSITORIES[@]} -eq 0 ]]; then
-    REPOSITORIES+=(${eessi_default_cvmfs_repo})
-fi
+eessi_default_cvmfs_repo="software.eessi.io,access=${ACCESS}"
 
 # define a list of CVMFS repositories that are accessible via the
-# configuration file provided via $EESSI_REPOS_CFG_FILE
+#   configuration file provided via $EESSI_REPOS_CFG_FILE
 declare -A cfg_cvmfs_repos=()
 if [[ -r ${EESSI_REPOS_CFG_FILE} ]]; then
     cfg_load ${EESSI_REPOS_CFG_FILE}
@@ -265,6 +263,11 @@ if [[ ${LIST_REPOS} -eq 1 ]]; then
         echo "    ${cfg_repo} [${cfg_cvmfs_repos[$cfg_repo]}]"
     done
     exit 0
+fi
+
+# if REPOSITORIES is empty add default repository given above
+if [[ ${#REPOSITORIES[@]} -eq 0 ]]; then
+    REPOSITORIES+=(${eessi_default_cvmfs_repo})
 fi
 
 # 1. check if argument values are valid
@@ -295,15 +298,45 @@ fi
 
 # TODO (arg -r|--repository) check if all explicitly listed repositories are known
 # REPOSITORY_ERROR_EXITCODE
-if [[ ${#REPOSITORIES[@]} -ne 0 ]] ; then
-    # iterate over entries in REPOSITORIES and check if they are known
-    for cvmfs_repo in "${REPOSITORIES[@]}"
-    do
-        if [[ ! -n "${eessi_cvmfs_repos[${cvmfs_repo}]}" && ! -n ${cfg_cvmfs_repos[${cvmfs_repo}]} ]]; then
-            fatal_error "The repository '${cvmfs_repo}' is not an EESSI CVMFS repository or it is not known how to mount it (could be due to a typo or missing configuration). Run '$0 -l' to obtain a list of available repositories." "${REPOSITORY_ERROR_EXITCODE}"
+# iterate over entries in REPOSITORIES and check if they are known
+for cvmfs_repo in "${REPOSITORIES[@]}"
+do
+    # split into name and access mode if ',access=' in $cvmfs_repo
+    if [[ ${cvmfs_repo} == *",access="* ]] ; then
+        cvmfs_repo_name=${cvmfs_repo/,access=*/} # remove access mode specification
+    else
+        cvmfs_repo_name="${cvmfs_repo}"
+    fi
+    if [[ ! -n "${eessi_cvmfs_repos[${cvmfs_repo_name}]}" && ! -n ${cfg_cvmfs_repos[${cvmfs_repo_name}]} ]]; then
+        fatal_error "The repository '${cvmfs_repo_name}' is not an EESSI CVMFS repository or it is not known how to mount it (could be due to a typo or missing configuration). Run '$0 -l' to obtain a list of available repositories." "${REPOSITORY_ERROR_EXITCODE}"
+    fi
+done
+
+# make sure each repository is only listed once
+declare -A listed_repos=()
+for cvmfs_repo in "${REPOSITORIES[@]}"
+do
+    cvmfs_repo_name=${cvmfs_repo/,access=*/} # remove access mode
+    echo "checking for duplicates: '${cvmfs_repo}' and '${cvmfs_repo_name}'"
+    # if cvmfs_repo_name is not in eessi_cvmfs_repos, assume it's in cfg_cvmfs_repos
+    #   and obtain actual repo_name from config
+    cfg_repo_id=''
+    if [[ ! -n "${eessi_cvmfs_repos[${cvmfs_repo_name}]}" ]] ; then
+        [[ ${VERBOSE} -eq 1 ]] && echo "repo '${cvmfs_repo_name}' is not an EESSI CVMFS repository..."
+        # cvmfs_repo_name is actually a repository ID, use that to obtain
+	#   the actual name from the EESSI_REPOS_CFG_FILE
+        cfg_repo_id=${cvmfs_repo_name}
+        cvmfs_repo_name=$(cfg_get_value ${cfg_repo_id} "repo_name")
+    fi
+    if [[ -n "${listed_repos[${cvmfs_repo_name}]}" ]] ; then
+        via_cfg=""
+        if [[ -n "${cfg_repo_id}" ]] ; then
+            via_cfg=" (via repository ID '${cfg_repo_id}')"
         fi
-    done
-fi
+        fatal_error "CVMFS repository '${cvmfs_repo_name}'${via_cfg} listed multiple times"
+    fi
+    listed_repos+=([${cvmfs_repo_name}]=true)
+done
 
 # TODO (arg -u|--resume) check if it exists, if user has read permission,
 #      if it contains data from a previous run
@@ -382,17 +415,15 @@ fi
 #      |-singularity_cache
 #      |-home
 #      |-repos_cfg
+#      |-${CVMFS_VAR_LIB}
+#      |-${CVMFS_VAR_RUN}
 #      |-CVMFS_REPO_1
 #      |   |-repo_settings (name, access_mode, host_injections)
-#      |   |-${CVMFS_VAR_LIB}
-#      |   |-${CVMFS_VAR_RUN}
 #      |   |-overlay-upper
 #      |   |-overlay-work
 #      |   |-opt-eessi (unless otherwise specificed for host_injections)
 #      |-CVMFS_REPO_n
 #          |-repo_settings (name, access_mode, host_injections)
-#          |-${CVMFS_VAR_LIB}
-#          |-${CVMFS_VAR_RUN}
 #          |-overlay-upper
 #          |-overlay-work
 #          |-opt-eessi (unless otherwise specificed for host_injections)
@@ -402,7 +433,7 @@ EESSI_TMPDIR=${EESSI_HOST_STORAGE}
 mkdir -p ${EESSI_TMPDIR}
 [[ ${VERBOSE} -eq 1 ]] && echo "EESSI_TMPDIR=${EESSI_TMPDIR}"
 
-# TODO make this specific to repository
+# TODO make this specific to repository?
 # TODO move this code to when we already know which repositories we want to access
 #      actually we should know this already here, but we should rather move this to
 #      where repository args are being processed
@@ -481,6 +512,7 @@ fi
 [[ ${VERBOSE} -eq 1 ]] && echo "CONTAINER=${CONTAINER}"
 
 # set env vars and create directories for CernVM-FS
+# TODO need to use separate values for separate repos?
 EESSI_CVMFS_VAR_LIB=${EESSI_TMPDIR}/${CVMFS_VAR_LIB}
 EESSI_CVMFS_VAR_RUN=${EESSI_TMPDIR}/${CVMFS_VAR_RUN}
 mkdir -p ${EESSI_CVMFS_VAR_LIB}
@@ -539,92 +571,106 @@ if [[ ${FAKEROOT} -eq 1 ]]; then
   ADDITIONAL_CONTAINER_OPTIONS+=("--fakeroot")
 fi
 
-exit 0; # CONTINUE HERE
 # TODO iterate over repositories in array REPOSITORIES
 # set up repository config (always create directory repos_cfg and populate it with info when
 # arg -r|--repository is used)
 mkdir -p ${EESSI_TMPDIR}/repos_cfg
-if [[ "${REPOSITORY}" == "EESSI" ]]; then
-  # need to source defaults as late as possible (see other sourcing below)
-  source ${TOPDIR}/init/eessi_defaults
+[[ ${VERBOSE} -eq 1 ]] && echo
+[[ ${VERBOSE} -eq 1 ]] && echo -e "BIND_PATHS before processing REPOSITORIES\n  BIND_PATHS=${BIND_PATHS}"
+[[ ${VERBOSE} -eq 1 ]] && echo
+for cvmfs_repo in "${REPOSITORIES[@]}"
+do
+    echo "process CVMFS repo spec '${cvmfs_repo}'"
+    # split into name and access mode if ',access=' in $cvmfs_repo
+    if [[ ${cvmfs_repo} == *",access="* ]] ; then
+        cvmfs_repo_name=${cvmfs_repo/,access=*/} # remove access mode specification
+        cvmfs_repo_access=${cvmfs_repo/*,access=/} # remove repo name part
+    else
+        cvmfs_repo_name="${cvmfs_repo}"
+        cvmfs_repo_access="${ACCESS}" # use globally defined access mode
+    fi
+    # if cvmfs_repo_name is in cfg_cvmfs_repos, it is a "repository ID" and was
+    #   derived from information in EESSI_REPOS_CFG_FILE, namely the section
+    #   names in that .ini-type file
+    # in the if-block below, we'll use cfg_repo_id to refer to that ID
+    # we need to process/provide the config from EESSI_REPOS_CFG_FILE, such
+    #   that the necessary information for accessing a CVMFS repository is made
+    #   available inside the container
+    if [[ -n "${cfg_cvmfs_repos[${cvmfs_repo_name}]}" ]] ; then
+	cfg_repo_id=${cvmfs_repo_name}
 
-  # strip "/cvmfs/" from default setting
-  repo_name=${EESSI_CVMFS_REPO/\/cvmfs\//}
-else
-  # TODO implement more flexible specification of repo cfgs
-  #      REPOSITORY => repo-id OR repo-cfg-file (with a single section) OR
-  #                    repo-cfg-file:repo-id (repo-id defined in repo-cfg-file)
-  #
-  # for now, assuming repo-id is defined in config file pointed to
-  #   EESSI_REPOS_CFG_FILE, which is to be copied into the working directory
-  #   (could also become part of the software layer to define multiple
-  #    standard EESSI repositories)
-  cfg_load ${EESSI_REPOS_CFG_FILE}
+	# obtain CVMFS repository name from section for the given ID
+        cfg_repo_name=$(cfg_get_value ${cfg_repo_id} "repo_name")
+	# derive domain part from (cfg_)repo_name (everything after first '.')
+        repo_name_domain=${repo_name#*.}
 
-  # copy repos.cfg to job directory --> makes it easier to inspect the job
-  cp -a ${EESSI_REPOS_CFG_FILE} ${EESSI_TMPDIR}/repos_cfg/.
+        # cfg_cvmfs_repos is populated through reading the file pointed to by
+        #   EESSI_REPOS_CFG_FILE. We need to copy that file and data it needs
+        #   into the job's working directory.
 
-  # cfg file should include: repo_name, repo_version, config_bundle,
-  #   map { local_filepath -> container_filepath }
-  #
-  # repo_name_domain is the domain part of the repo_name, e.g.,
-  #   eessi.io for software.eessi.io
-  #
-  # where config bundle includes the files (-> target location in container)
-  # - default.local -> /etc/cvmfs/default.local
-  #   contains CVMFS settings, e.g., CVMFS_HTTP_PROXY, CVMFS_QUOTA_LIMIT, ...
-  # - ${repo_name_domain}.conf -> /etc/cvmfs/domain.d/${repo_name_domain}.conf
-  #   contains CVMFS settings, e.g., CVMFS_SERVER_URL (Stratum 1s),
-  #   CVMFS_KEYS_DIR, CVMFS_USE_GEOAPI, ...
-  # - ${repo_name_domain}/ -> /etc/cvmfs/keys/${repo_name_domain}
-  #   a directory that contains the public key to access the repository, key
-  #   itself then doesn't need to be BIND mounted
-  # - ${repo_name_domain}/${repo_name}.pub
-  #   (-> /etc/cvmfs/keys/${repo_name_domain}/${repo_name}.pub
-  #   the public key to access the repository, key itself is BIND mounted
-  #   via directory ${repo_name_domain}
-  repo_name=$(cfg_get_value ${REPOSITORY} "repo_name")
-  # derive domain part from repo_name (everything after first '.')
-  repo_name_domain=${repo_name#*.}
-  repo_version=$(cfg_get_value ${REPOSITORY} "repo_version")
-  config_bundle=$(cfg_get_value ${REPOSITORY} "config_bundle")
-  config_map=$(cfg_get_value ${REPOSITORY} "config_map")
+        # copy repos.cfg to job directory --> makes it easier to inspect the job
+        cp -a ${EESSI_REPOS_CFG_FILE} ${EESSI_TMPDIR}/repos_cfg/.
 
-  # convert config_map into associative array cfg_file_map
-  cfg_init_file_map "${config_map}"
-  [[ ${VERBOSE} -eq 1 ]] && cfg_print_map
+	# cfg file should include sections (one per CVMFS repository to be mounted)
+	#   with each section containing the settings:
+	#   - repo_name,
+	#   - repo_version,
+	#   - config_bundle, and
+	#   - a map { filepath_in_bundle -> container_filepath }
+        #
+	# The config_bundle includes the files which are mapped ('->') to a target
+	# location in container:
+        # - default.local -> /etc/cvmfs/default.local
+        #   contains CVMFS settings, e.g., CVMFS_HTTP_PROXY, CVMFS_QUOTA_LIMIT, ...
+        # - ${repo_name_domain}.conf -> /etc/cvmfs/domain.d/${repo_name_domain}.conf
+        #   contains CVMFS settings, e.g., CVMFS_SERVER_URL (Stratum 1s),
+        #   CVMFS_KEYS_DIR, CVMFS_USE_GEOAPI, ...
+        # - ${repo_name_domain}/ -> /etc/cvmfs/keys/${repo_name_domain}
+        #   a directory that contains the public key to access the repository, key
+        #   itself then doesn't need to be BIND mounted
+        # - ${repo_name_domain}/${cfg_repo_name}.pub
+        #   (-> /etc/cvmfs/keys/${repo_name_domain}/${cfg_repo_name}.pub
+        #   the public key to access the repository, key itself is BIND mounted
+        #   via directory ${repo_name_domain}
+        cfg_repo_version=$(cfg_get_value ${cfg_repo_id} "repo_version")
+        cfg_config_bundle=$(cfg_get_value ${cfg_repo_id} "config_bundle")
+        cfg_config_map=$(cfg_get_value ${cfg_repo_id} "config_map")
 
-  # use information to set up dir ${EESSI_TMPDIR}/repos_cfg,
-  #     define BIND mounts and override repo name and version
-  # check if config_bundle exists, if so, unpack it into ${EESSI_TMPDIR}/repos_cfg
-  # if config_bundle is relative path (no '/' at start) prepend it with
-  # EESSI_REPOS_CFG_DIR
-  config_bundle_path=
-  if [[ ! "${config_bundle}" =~ ^/ ]]; then
-      config_bundle_path=${EESSI_REPOS_CFG_DIR}/${config_bundle}
-  else
-      config_bundle_path=${config_bundle}
-  fi
+        # convert cfg_config_map into associative array cfg_file_map
+        cfg_init_file_map "${cfg_config_map}"
+        [[ ${VERBOSE} -eq 1 ]] && cfg_print_map
 
-  if [[ ! -r ${config_bundle_path} ]]; then
-    fatal_error "config bundle '${config_bundle_path}' is not readable" ${REPOSITORY_ERROR_EXITCODE}
-  fi
+        # use information to set up dir ${EESSI_TMPDIR}/repos_cfg and define
+        #   BIND mounts
+        # check if config_bundle exists, if so, unpack it into
+	#   ${EESSI_TMPDIR}/repos_cfg; if it doesn't, exit with an error
+        # if config_bundle is relative path (no '/' at start) prepend it with
+        #   EESSI_REPOS_CFG_DIR
+        config_bundle_path=
+        if [[ ! "${cfg_config_bundle}" =~ ^/ ]]; then
+            config_bundle_path=${EESSI_REPOS_CFG_DIR}/${cfg_config_bundle}
+        else
+            config_bundle_path=${cfg_config_bundle}
+        fi
 
-  # only unpack config_bundle if we're not resuming from a previous run
-  if [[ -z ${RESUME} ]]; then
-    tar xf ${config_bundle_path} -C ${EESSI_TMPDIR}/repos_cfg
-  fi
+        if [[ ! -r ${config_bundle_path} ]]; then
+            fatal_error "config bundle '${config_bundle_path}' is not readable" ${REPOSITORY_ERROR_EXITCODE}
+        fi
 
-  for src in "${!cfg_file_map[@]}"
-  do
-    target=${cfg_file_map[${src}]}
-    BIND_PATHS="${BIND_PATHS},${EESSI_TMPDIR}/repos_cfg/${src}:${target}"
-  done
-  export EESSI_VERSION_OVERRIDE=${repo_version}
-  export EESSI_CVMFS_REPO_OVERRIDE="/cvmfs/${repo_name}"
-  # need to source defaults as late as possible (after *_OVERRIDEs)
-  source ${TOPDIR}/init/eessi_defaults
-fi
+        # only unpack cfg_config_bundle if we're not resuming from a previous run
+        if [[ -z ${RESUME} ]]; then
+            tar xf ${config_bundle_path} -C ${EESSI_TMPDIR}/repos_cfg
+        fi
+
+        for src in "${!cfg_file_map[@]}"
+        do
+            target=${cfg_file_map[${src}]}
+            BIND_PATHS="${BIND_PATHS},${EESSI_TMPDIR}/repos_cfg/${src}:${target}"
+        done
+    fi
+    [[ ${VERBOSE} -eq 1 ]] && echo -e "BIND_PATHS after processing '${cvmfs_repo}'\n  BIND_PATHS=${BIND_PATHS}"
+    [[ ${VERBOSE} -eq 1 ]] && echo
+done
 
 # if http_proxy is not empty, we assume that the machine accesses internet
 # via a proxy. then we need to add CVMFS_HTTP_PROXY to
@@ -650,14 +696,16 @@ if [[ ! -z ${http_proxy} ]]; then
         export BIND_PATHS="${BIND_PATHS},${EESSI_TMPDIR}/repos_cfg/default.local:/etc/cvmfs/default.local"
     fi
 fi
+exit 0; # CONTINUE HERE
 
 # 4. set up vars and dirs specific to a scenario
 
 declare -a EESSI_FUSE_MOUNTS=()
 
-# always mount cvmfs-config repo (to get access to software.eessi.io)
+# always mount cvmfs-config repo (to get access to EESSI repositories such as software.eessi.io)
 EESSI_FUSE_MOUNTS+=("--fusemount" "container:cvmfs2 cvmfs-config.cern.ch /cvmfs/cvmfs-config.cern.ch")
 
+# TODO iterate over REPOSITORIES and either use repository-specific access mode or global setting (possibly a global default)
 if [[ "${ACCESS}" == "ro" ]]; then
   export EESSI_READONLY="container:cvmfs2 ${repo_name} /cvmfs/${repo_name}"
 
