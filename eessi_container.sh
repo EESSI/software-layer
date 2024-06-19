@@ -52,7 +52,6 @@ NVIDIA_MODE_UNKNOWN_EXITCODE=$((${ANY_ERROR_EXITCODE} << 12))
 declare -A cvmfs_repo_settings
 
 # CernVM-FS settings
-# TODO may need to put them into repository specific map
 CVMFS_VAR_LIB="var-lib-cvmfs"
 CVMFS_VAR_RUN="var-run-cvmfs"
 
@@ -272,7 +271,7 @@ fi
 
 # 1. check if argument values are valid
 # (arg -a|--access) check if ACCESS is supported
-# TODO use the value as global setting, suffix to --repository can specify an access mode per repository
+# use the value as global setting, suffix to --repository can specify an access mode per repository
 if [[ "${ACCESS}" != "ro" && "${ACCESS}" != "rw" ]]; then
     fatal_error "unknown access method '${ACCESS}'" "${ACCESS_UNKNOWN_EXITCODE}"
 fi
@@ -317,7 +316,7 @@ declare -A listed_repos=()
 for cvmfs_repo in "${REPOSITORIES[@]}"
 do
     cvmfs_repo_name=${cvmfs_repo/,access=*/} # remove access mode
-    echo "checking for duplicates: '${cvmfs_repo}' and '${cvmfs_repo_name}'"
+    [[ ${VERBOSE} -eq 1 ]] && echo "checking for duplicates: '${cvmfs_repo}' and '${cvmfs_repo_name}'"
     # if cvmfs_repo_name is not in eessi_cvmfs_repos, assume it's in cfg_cvmfs_repos
     #   and obtain actual repo_name from config
     cfg_repo_id=''
@@ -409,7 +408,6 @@ if [[ ! -z ${RESUME} && -f ${RESUME} ]]; then
 fi
 
 # 3. set up common vars and directories
-# TODO change to be able to support multiple CVMFS repositories
 #    directory structure should be:
 #      ${EESSI_HOST_STORAGE}
 #      |-singularity_cache
@@ -528,14 +526,18 @@ fi
 [[ ${VERBOSE} -eq 1 ]] && echo "SINGULARITY_HOME=${SINGULARITY_HOME}"
 
 # define paths to add to SINGULARITY_BIND (added later when all BIND mounts are defined)
-BIND_PATHS="${EESSI_CVMFS_VAR_LIB}:/var/lib/cvmfs,${EESSI_CVMFS_VAR_RUN}:/var/run/cvmfs,${HOST_INJECTIONS}:/opt/eessi"
+if [[ -z ${SINGULARITY_BIND} ]] ; then
+    SINGULARITY_BIND="${EESSI_CVMFS_VAR_LIB}:/var/lib/cvmfs,${EESSI_CVMFS_VAR_RUN}:/var/run/cvmfs,${HOST_INJECTIONS}:/opt/eessi"
+else
+    SINGULARITY_BIND="${EESSI_CVMFS_VAR_LIB}:/var/lib/cvmfs,${EESSI_CVMFS_VAR_RUN}:/var/run/cvmfs,${HOST_INJECTIONS}:/opt/eessi,${SINGULARITY_BIND}"
+fi
 # provide a '/tmp' inside the container
-BIND_PATHS="${BIND_PATHS},${EESSI_TMPDIR}:${TMP_IN_CONTAINER}"
+SINGULARITY_BIND="${SINGULARITY_BIND},${EESSI_TMPDIR}:${TMP_IN_CONTAINER}"
 if [[ ! -z ${EXTRA_BIND_PATHS} ]]; then
-    BIND_PATHS="${BIND_PATHS},${EXTRA_BIND_PATHS}"
+    SINGULARITY_BIND="${SINGULARITY_BIND},${EXTRA_BIND_PATHS}"
 fi
 
-[[ ${VERBOSE} -eq 1 ]] && echo "BIND_PATHS=${BIND_PATHS}"
+[[ ${VERBOSE} -eq 1 ]] && echo "SINGULARITY_BIND=${SINGULARITY_BIND}"
 
 declare -a ADDITIONAL_CONTAINER_OPTIONS=()
 
@@ -556,8 +558,8 @@ if [[ ${SETUP_NVIDIA} -eq 1 ]]; then
         EESSI_USR_LOCAL_CUDA=${EESSI_TMPDIR}/usr-local-cuda
         mkdir -p ${EESSI_VAR_LOG}
         mkdir -p ${EESSI_USR_LOCAL_CUDA}
-        BIND_PATHS="${BIND_PATHS},${EESSI_VAR_LOG}:/var/log,${EESSI_USR_LOCAL_CUDA}:/usr/local/cuda"
-        [[ ${VERBOSE} -eq 1 ]] && echo "BIND_PATHS=${BIND_PATHS}"
+        SINGULARITY_BIND="${SINGULARITY_BIND},${EESSI_VAR_LOG}:/var/log,${EESSI_USR_LOCAL_CUDA}:/usr/local/cuda"
+        [[ ${VERBOSE} -eq 1 ]] && echo "SINGULARITY_BIND=${SINGULARITY_BIND}"
         if [[ "${NVIDIA_MODE}" == "install" ]] ; then
             # No GPU so we need to "trick" Lmod to allow us to load CUDA modules even without a CUDA driver
             # (this variable means EESSI_OVERRIDE_GPU_CHECK=1 will be set inside the container)
@@ -571,16 +573,16 @@ if [[ ${FAKEROOT} -eq 1 ]]; then
   ADDITIONAL_CONTAINER_OPTIONS+=("--fakeroot")
 fi
 
-# TODO iterate over repositories in array REPOSITORIES
 # set up repository config (always create directory repos_cfg and populate it with info when
 # arg -r|--repository is used)
 mkdir -p ${EESSI_TMPDIR}/repos_cfg
 [[ ${VERBOSE} -eq 1 ]] && echo
-[[ ${VERBOSE} -eq 1 ]] && echo -e "BIND_PATHS before processing REPOSITORIES\n  BIND_PATHS=${BIND_PATHS}"
+[[ ${VERBOSE} -eq 1 ]] && echo -e "SINGULARITY_BIND before processing REPOSITORIES\n  SINGULARITY_BIND=${SINGULARITY_BIND}"
 [[ ${VERBOSE} -eq 1 ]] && echo
+# iterate over repositories in array REPOSITORIES
 for cvmfs_repo in "${REPOSITORIES[@]}"
 do
-    echo "process CVMFS repo spec '${cvmfs_repo}'"
+    [[ ${VERBOSE} -eq 1 ]] && echo "process CVMFS repo spec '${cvmfs_repo}'"
     # split into name and access mode if ',access=' in $cvmfs_repo
     if [[ ${cvmfs_repo} == *",access="* ]] ; then
         cvmfs_repo_name=${cvmfs_repo/,access=*/} # remove access mode specification
@@ -665,17 +667,21 @@ do
         for src in "${!cfg_file_map[@]}"
         do
             target=${cfg_file_map[${src}]}
-            BIND_PATHS="${BIND_PATHS},${EESSI_TMPDIR}/repos_cfg/${src}:${target}"
+            # if target is alreay BIND mounted, exit with an error
+            if [[ ${SINGULARITY_BIND} =~ "${target}" ]]; then
+                fatal_error "target '${target}' is already listed in paths to bind mount into the container ('${SINGULARITY_BIND}')" ${REPOSITORY_ERROR_EXITCODE}
+            fi
+            export SINGULARITY_BIND="${SINGULARITY_BIND},${EESSI_TMPDIR}/repos_cfg/${src}:${target}"
         done
     fi
-    [[ ${VERBOSE} -eq 1 ]] && echo -e "BIND_PATHS after processing '${cvmfs_repo}'\n  BIND_PATHS=${BIND_PATHS}"
+    [[ ${VERBOSE} -eq 1 ]] && echo -e "SINGULARITY_BIND after processing '${cvmfs_repo}'\n  SINGULARITY_BIND=${SINGULARITY_BIND}"
     [[ ${VERBOSE} -eq 1 ]] && echo
 done
 
 # if http_proxy is not empty, we assume that the machine accesses internet
 # via a proxy. then we need to add CVMFS_HTTP_PROXY to
-# ${EESSI_TMPDIR}/repos_cfg/default.local on host (and possibly add a BIND
-# MOUNT if it was not yet in BIND_PATHS)
+# ${EESSI_TMPDIR}/repos_cfg/default.local on the host (and possibly add a BIND
+# MOUNT if it was not yet in SINGULARITY_BIND)
 if [[ ! -z ${http_proxy} ]]; then
     # TODO tolerate other formats for proxy URLs, for now assume format is
     # http://SOME_HOSTNAME:SOME_PORT/
@@ -691,12 +697,14 @@ if [[ ! -z ${http_proxy} ]]; then
     [[ ${VERBOSE} -eq 1 ]] && echo "contents of default.local"
     [[ ${VERBOSE} -eq 1 ]] && cat ${EESSI_TMPDIR}/repos_cfg/default.local
 
-    # if default.local is not BIND mounted into container, add it to BIND_PATHS
-    if [[ ! ${BIND_PATHS} =~ "${EESSI_TMPDIR}/repos_cfg/default.local:/etc/cvmfs/default.local" ]]; then
-        export BIND_PATHS="${BIND_PATHS},${EESSI_TMPDIR}/repos_cfg/default.local:/etc/cvmfs/default.local"
+    # if default.local is not BIND mounted into container, add it to SINGULARITY_BIND
+    src=${EESSI_TMPDIR}/repos_cfg/default.local
+    target=/etc/cvmfs/default.local
+    if [[ ${SINGULARITY_BIND} =~ "${target}" ]]; then
+        fatal_error "BIND target in '${src}:${target}' is already in paths to be bind mounted into the container ('${SINGULARITY_BIND}')" ${REPOSITORY_ERROR_EXITCODE}
     fi
+    export SINGULARITY_BIND="${SINGULARITY_BIND},${src}:${target}"
 fi
-exit 0; # CONTINUE HERE
 
 # 4. set up vars and dirs specific to a scenario
 
@@ -705,42 +713,59 @@ declare -a EESSI_FUSE_MOUNTS=()
 # always mount cvmfs-config repo (to get access to EESSI repositories such as software.eessi.io)
 EESSI_FUSE_MOUNTS+=("--fusemount" "container:cvmfs2 cvmfs-config.cern.ch /cvmfs/cvmfs-config.cern.ch")
 
-# TODO iterate over REPOSITORIES and either use repository-specific access mode or global setting (possibly a global default)
-if [[ "${ACCESS}" == "ro" ]]; then
-  export EESSI_READONLY="container:cvmfs2 ${repo_name} /cvmfs/${repo_name}"
+# iterate over REPOSITORIES and either use repository-specific access mode or global setting (possibly a global default)
+for cvmfs_repo in "${REPOSITORIES[@]}"
+do
+    [[ ${VERBOSE} -eq 1 ]] && echo "add fusemount options for CVMFS repo '${cvmfs_repo}'"
+    # split into name and access mode if ',access=' in $cvmfs_repo
+    if [[ ${cvmfs_repo} == *",access="* ]] ; then
+        cvmfs_repo_name=${cvmfs_repo/,access=*/} # remove access mode specification
+        cvmfs_repo_access=${cvmfs_repo/*,access=/} # remove repo name part
+    else
+        cvmfs_repo_name="${cvmfs_repo}"
+        cvmfs_repo_access="${ACCESS}" # use globally defined access mode
+    fi
+    # obtain cvmfs_repo_name from EESSI_REPOS_CFG_FILE if cvmfs_repo is in cfg_cvmfs_repos
+    if [[ ${cfg_cvmfs_repos[${cvmfs_repo_name}]} ]]; then
+        [[ ${VERBOSE} -eq 1 ]] && echo "repo '${cvmfs_repo_name}' is not an EESSI CVMFS repository..."
+        # cvmfs_repo_name is actually a repository ID, use that to obtain
+	#   the actual name from the EESSI_REPOS_CFG_FILE
+        cfg_repo_id=${cvmfs_repo_name}
+        cvmfs_repo_name=$(cfg_get_value ${cfg_repo_id} "repo_name")
+    fi
 
-  EESSI_FUSE_MOUNTS+=("--fusemount" "${EESSI_READONLY}")
-  export EESSI_FUSE_MOUNTS
-fi
+    # add fusemount options depending on requested access mode ('ro' - read-only; 'rw' - read & write)
+    if [[ ${cvmfs_repo_access} == "ro" ]] ; then
+        export EESSI_READONLY="container:cvmfs2 ${cvmfs_repo_name} /cvmfs/${cvmfs_repo_name}"
 
-if [[ "${ACCESS}" == "rw" ]]; then
-  mkdir -p ${EESSI_TMPDIR}/overlay-upper
-  mkdir -p ${EESSI_TMPDIR}/overlay-work
+        EESSI_FUSE_MOUNTS+=("--fusemount" "${EESSI_READONLY}")
+        export EESSI_FUSE_MOUNTS
+    elif [[ ${cvmfs_repo_access} == "rw" ]] ; then
+        # use repo-specific overlay directories
+        mkdir -p ${EESSI_TMPDIR}/${cvmfs_repo_name}/overlay-upper
+        mkdir -p ${EESSI_TMPDIR}/${cvmfs_repo_name}/overlay-work
 
-  # set environment variables for fuse mounts in Singularity container
-  export EESSI_READONLY="container:cvmfs2 ${repo_name} /cvmfs_ro/${repo_name}"
+        # set environment variables for fuse mounts in Singularity container
+        export EESSI_READONLY="container:cvmfs2 ${cvmfs_repo_name} /cvmfs_ro/${cvmfs_repo_name}"
 
-  EESSI_FUSE_MOUNTS+=("--fusemount" "${EESSI_READONLY}")
+        EESSI_FUSE_MOUNTS+=("--fusemount" "${EESSI_READONLY}")
 
-  EESSI_WRITABLE_OVERLAY="container:fuse-overlayfs"
-  EESSI_WRITABLE_OVERLAY+=" -o lowerdir=/cvmfs_ro/${repo_name}"
-  EESSI_WRITABLE_OVERLAY+=" -o upperdir=${TMP_IN_CONTAINER}/overlay-upper"
-  EESSI_WRITABLE_OVERLAY+=" -o workdir=${TMP_IN_CONTAINER}/overlay-work"
-  EESSI_WRITABLE_OVERLAY+=" ${EESSI_CVMFS_REPO}"
-  export EESSI_WRITABLE_OVERLAY
+        EESSI_WRITABLE_OVERLAY="container:fuse-overlayfs"
+        EESSI_WRITABLE_OVERLAY+=" -o lowerdir=/cvmfs_ro/${cvmfs_repo_name}"
+        EESSI_WRITABLE_OVERLAY+=" -o upperdir=${TMP_IN_CONTAINER}/${cvmfs_repo_name}/overlay-upper"
+        EESSI_WRITABLE_OVERLAY+=" -o workdir=${TMP_IN_CONTAINER}/${cvmfs_repo_name}/overlay-work"
+        EESSI_WRITABLE_OVERLAY+=" /cvmfs/${cvmfs_repo_name}"
+        export EESSI_WRITABLE_OVERLAY
 
-  EESSI_FUSE_MOUNTS+=("--fusemount" "${EESSI_WRITABLE_OVERLAY}")
-  export EESSI_FUSE_MOUNTS
-fi
-
+        EESSI_FUSE_MOUNTS+=("--fusemount" "${EESSI_WRITABLE_OVERLAY}")
+        export EESSI_FUSE_MOUNTS
+    else
+        echo -e "ERROR: access mode '${cvmfs_repo_access}' for CVMFS repository\n  '${cvmfs_repo_name}' is not known"
+	exit ${REPOSITORY_ERROR_EXITCODE}
+    fi
+done
 
 # 5. run container
-# final settings
-if [[ -z ${SINGULARITY_BIND} ]]; then
-    export SINGULARITY_BIND="${BIND_PATHS}"
-else
-    export SINGULARITY_BIND="${SINGULARITY_BIND},${BIND_PATHS}"
-fi
 [[ ${VERBOSE} -eq 1 ]] && echo "SINGULARITY_BIND=${SINGULARITY_BIND}"
 
 # pass $EESSI_SOFTWARE_SUBDIR_OVERRIDE into build container (if set)
