@@ -416,12 +416,10 @@ fi
 #      |-${CVMFS_VAR_LIB}
 #      |-${CVMFS_VAR_RUN}
 #      |-CVMFS_REPO_1
-#      |   |-repo_settings (name, access_mode, host_injections)
 #      |   |-overlay-upper
 #      |   |-overlay-work
 #      |   |-opt-eessi (unless otherwise specificed for host_injections)
 #      |-CVMFS_REPO_n
-#          |-repo_settings (name, access_mode, host_injections)
 #          |-overlay-upper
 #          |-overlay-work
 #          |-opt-eessi (unless otherwise specificed for host_injections)
@@ -526,18 +524,15 @@ fi
 [[ ${VERBOSE} -eq 1 ]] && echo "SINGULARITY_HOME=${SINGULARITY_HOME}"
 
 # define paths to add to SINGULARITY_BIND (added later when all BIND mounts are defined)
-if [[ -z ${SINGULARITY_BIND} ]] ; then
-    SINGULARITY_BIND="${EESSI_CVMFS_VAR_LIB}:/var/lib/cvmfs,${EESSI_CVMFS_VAR_RUN}:/var/run/cvmfs,${HOST_INJECTIONS}:/opt/eessi"
-else
-    SINGULARITY_BIND="${EESSI_CVMFS_VAR_LIB}:/var/lib/cvmfs,${EESSI_CVMFS_VAR_RUN}:/var/run/cvmfs,${HOST_INJECTIONS}:/opt/eessi,${SINGULARITY_BIND}"
-fi
+BIND_PATHS="${EESSI_CVMFS_VAR_LIB}:/var/lib/cvmfs,${EESSI_CVMFS_VAR_RUN}:/var/run/cvmfs,${HOST_INJECTIONS}:/opt/eessi"
+
 # provide a '/tmp' inside the container
-SINGULARITY_BIND="${SINGULARITY_BIND},${EESSI_TMPDIR}:${TMP_IN_CONTAINER}"
+BIND_PATHS="${BIND_PATHS},${EESSI_TMPDIR}:${TMP_IN_CONTAINER}"
 if [[ ! -z ${EXTRA_BIND_PATHS} ]]; then
-    SINGULARITY_BIND="${SINGULARITY_BIND},${EXTRA_BIND_PATHS}"
+    BIND_PATHS="${BIND_PATHS},${EXTRA_BIND_PATHS}"
 fi
 
-[[ ${VERBOSE} -eq 1 ]] && echo "SINGULARITY_BIND=${SINGULARITY_BIND}"
+[[ ${VERBOSE} -eq 1 ]] && echo "BIND_PATHS=${BIND_PATHS}"
 
 declare -a ADDITIONAL_CONTAINER_OPTIONS=()
 
@@ -558,8 +553,8 @@ if [[ ${SETUP_NVIDIA} -eq 1 ]]; then
         EESSI_USR_LOCAL_CUDA=${EESSI_TMPDIR}/usr-local-cuda
         mkdir -p ${EESSI_VAR_LOG}
         mkdir -p ${EESSI_USR_LOCAL_CUDA}
-        SINGULARITY_BIND="${SINGULARITY_BIND},${EESSI_VAR_LOG}:/var/log,${EESSI_USR_LOCAL_CUDA}:/usr/local/cuda"
-        [[ ${VERBOSE} -eq 1 ]] && echo "SINGULARITY_BIND=${SINGULARITY_BIND}"
+        BIND_PATHS="${BIND_PATHS},${EESSI_VAR_LOG}:/var/log,${EESSI_USR_LOCAL_CUDA}:/usr/local/cuda"
+        [[ ${VERBOSE} -eq 1 ]] && echo "BIND_PATHS=${BIND_PATHS}"
         if [[ "${NVIDIA_MODE}" == "install" ]] ; then
             # No GPU so we need to "trick" Lmod to allow us to load CUDA modules even without a CUDA driver
             # (this variable means EESSI_OVERRIDE_GPU_CHECK=1 will be set inside the container)
@@ -577,7 +572,7 @@ fi
 # arg -r|--repository is used)
 mkdir -p ${EESSI_TMPDIR}/repos_cfg
 [[ ${VERBOSE} -eq 1 ]] && echo
-[[ ${VERBOSE} -eq 1 ]] && echo -e "SINGULARITY_BIND before processing REPOSITORIES\n  SINGULARITY_BIND=${SINGULARITY_BIND}"
+[[ ${VERBOSE} -eq 1 ]] && echo -e "BIND_PATHS before processing REPOSITORIES\n  BIND_PATHS=${BIND_PATHS}"
 [[ ${VERBOSE} -eq 1 ]] && echo
 # iterate over repositories in array REPOSITORIES
 for cvmfs_repo in "${REPOSITORIES[@]}"
@@ -668,20 +663,20 @@ do
         do
             target=${cfg_file_map[${src}]}
             # if target is alreay BIND mounted, exit with an error
-            if [[ ${SINGULARITY_BIND} =~ "${target}" ]]; then
-                fatal_error "target '${target}' is already listed in paths to bind mount into the container ('${SINGULARITY_BIND}')" ${REPOSITORY_ERROR_EXITCODE}
+            if [[ ${BIND_PATHS} =~ "${target}" ]]; then
+                fatal_error "target '${target}' is already listed in paths to bind mount into the container ('${BIND_PATHS}')" ${REPOSITORY_ERROR_EXITCODE}
             fi
-            export SINGULARITY_BIND="${SINGULARITY_BIND},${EESSI_TMPDIR}/repos_cfg/${src}:${target}"
+            BIND_PATHS="${BIND_PATHS},${EESSI_TMPDIR}/repos_cfg/${src}:${target}"
         done
     fi
-    [[ ${VERBOSE} -eq 1 ]] && echo -e "SINGULARITY_BIND after processing '${cvmfs_repo}'\n  SINGULARITY_BIND=${SINGULARITY_BIND}"
+    [[ ${VERBOSE} -eq 1 ]] && echo -e "BIND_PATHS after processing '${cvmfs_repo}'\n  BIND_PATHS=${BIND_PATHS}"
     [[ ${VERBOSE} -eq 1 ]] && echo
 done
 
 # if http_proxy is not empty, we assume that the machine accesses internet
 # via a proxy. then we need to add CVMFS_HTTP_PROXY to
 # ${EESSI_TMPDIR}/repos_cfg/default.local on the host (and possibly add a BIND
-# MOUNT if it was not yet in SINGULARITY_BIND)
+# MOUNT if it was not yet in BIND_PATHS)
 if [[ ! -z ${http_proxy} ]]; then
     # TODO tolerate other formats for proxy URLs, for now assume format is
     # http://SOME_HOSTNAME:SOME_PORT/
@@ -697,13 +692,13 @@ if [[ ! -z ${http_proxy} ]]; then
     [[ ${VERBOSE} -eq 1 ]] && echo "contents of default.local"
     [[ ${VERBOSE} -eq 1 ]] && cat ${EESSI_TMPDIR}/repos_cfg/default.local
 
-    # if default.local is not BIND mounted into container, add it to SINGULARITY_BIND
+    # if default.local is not BIND mounted into container, add it to BIND_PATHS
     src=${EESSI_TMPDIR}/repos_cfg/default.local
     target=/etc/cvmfs/default.local
-    if [[ ${SINGULARITY_BIND} =~ "${target}" ]]; then
-        fatal_error "BIND target in '${src}:${target}' is already in paths to be bind mounted into the container ('${SINGULARITY_BIND}')" ${REPOSITORY_ERROR_EXITCODE}
+    if [[ ${BIND_PATHS} =~ "${target}" ]]; then
+        fatal_error "BIND target in '${src}:${target}' is already in paths to be bind mounted into the container ('${BIND_PATHS}')" ${REPOSITORY_ERROR_EXITCODE}
     fi
-    export SINGULARITY_BIND="${SINGULARITY_BIND},${src}:${target}"
+    BIND_PATHS="${BIND_PATHS},${src}:${target}"
 fi
 
 # 4. set up vars and dirs specific to a scenario
@@ -744,6 +739,7 @@ do
         # use repo-specific overlay directories
         mkdir -p ${EESSI_TMPDIR}/${cvmfs_repo_name}/overlay-upper
         mkdir -p ${EESSI_TMPDIR}/${cvmfs_repo_name}/overlay-work
+	[[ ${VERBOSE} -eq 1 ]] && echo -e "TMP directory contents:\n$(ls -l ${EESSI_TMPDIR})"
 
         # set environment variables for fuse mounts in Singularity container
         export EESSI_READONLY="container:cvmfs2 ${cvmfs_repo_name} /cvmfs_ro/${cvmfs_repo_name}"
@@ -766,6 +762,12 @@ do
 done
 
 # 5. run container
+# final settings
+if [[ -z ${SINGULARITY_BIND} ]]; then
+    export SINGULARITY_BIND="${BIND_PATHS}"
+else
+    export SINGULARITY_BIND="${SINGULARITY_BIND},${BIND_PATHS}"
+fi
 [[ ${VERBOSE} -eq 1 ]] && echo "SINGULARITY_BIND=${SINGULARITY_BIND}"
 
 # pass $EESSI_SOFTWARE_SUBDIR_OVERRIDE into build container (if set)
