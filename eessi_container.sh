@@ -416,10 +416,12 @@ fi
 #      |-${CVMFS_VAR_LIB}
 #      |-${CVMFS_VAR_RUN}
 #      |-CVMFS_REPO_1
+#      |   |-repo_settings.sh (name, id, access, host_injections)
 #      |   |-overlay-upper
 #      |   |-overlay-work
 #      |   |-opt-eessi (unless otherwise specificed for host_injections)
 #      |-CVMFS_REPO_n
+#          |-repo_settings.sh (name, id, access, host_injections)
 #          |-overlay-upper
 #          |-overlay-work
 #          |-opt-eessi (unless otherwise specificed for host_injections)
@@ -711,6 +713,7 @@ EESSI_FUSE_MOUNTS+=("--fusemount" "container:cvmfs2 cvmfs-config.cern.ch /cvmfs/
 # iterate over REPOSITORIES and either use repository-specific access mode or global setting (possibly a global default)
 for cvmfs_repo in "${REPOSITORIES[@]}"
 do
+    unset cfg_repo_id
     [[ ${VERBOSE} -eq 1 ]] && echo "add fusemount options for CVMFS repo '${cvmfs_repo}'"
     # split into name and access mode if ',access=' in $cvmfs_repo
     if [[ ${cvmfs_repo} == *",access="* ]] ; then
@@ -728,6 +731,9 @@ do
         cfg_repo_id=${cvmfs_repo_name}
         cvmfs_repo_name=$(cfg_get_value ${cfg_repo_id} "repo_name")
     fi
+
+    # always create a directory for the repository (e.g., to store settings, ...)
+    mkdir -p ${EESSI_TMPDIR}/${cvmfs_repo_name}
 
     # add fusemount options depending on requested access mode ('ro' - read-only; 'rw' - read & write)
     if [[ ${cvmfs_repo_access} == "ro" ]] ; then
@@ -759,6 +765,20 @@ do
         echo -e "ERROR: access mode '${cvmfs_repo_access}' for CVMFS repository\n  '${cvmfs_repo_name}' is not known"
 	exit ${REPOSITORY_ERROR_EXITCODE}
     fi
+    # create repo_settings.sh file in ${EESSI_TMPDIR}/${cvmfs_repo_name} to store
+    #   (intention is that the file could be just sourced to obtain the settings)
+    # repo_name = ${cvmfs_repo_name}
+    # repo_id = ${cfg_repo_id} # empty if not an EESSI repo
+    # repo_access = ${cvmfs_repo_access}
+    # repo_host_injections = [ {"src_path":"target_path"}... ] # TODO
+    settings=
+    #[[ -n ${cfg_repo_id} ]] && settings="[${cvmfs_repo_name}]\n" || settings="[${cfg_repo_id}]\n"
+    settings="${settings}repo_name = ${cvmfs_repo_name}\n"
+    settings="${settings}repo_id = ${cfg_repo_id}\n"
+    settings="${settings}repo_access = ${cvmfs_repo_access}\n"
+    # TODO iterate over host_injections (first need means to define them (globally and/or per repository)
+    # settings="${settings}repo_host_injections = ${host_injections}\n"
+    echo -e "${settings}" > ${EESSI_TMPDIR}/${cvmfs_repo_name}/repo_settings.sh
 done
 
 # 5. run container
