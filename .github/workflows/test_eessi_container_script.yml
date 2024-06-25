@@ -5,7 +5,7 @@ permissions:
   contents: read # to fetch code (actions/checkout)
 jobs:
   eessi_container_script:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     strategy:
       fail-fast: false
       matrix:
