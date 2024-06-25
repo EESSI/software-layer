@@ -344,7 +344,12 @@ def pre_configure_hook_BLIS_a64fx(self, *args, **kwargs):
     if self.name == 'BLIS':
         cpu_target = get_eessi_envvar('EESSI_SOFTWARE_SUBDIR')
         if self.version == '0.9.0' and cpu_target == CPU_TARGET_A64FX:
-            self.cfg.update('configopts', 'CFLAGS="$CFLAGS -DCACHE_SECTOR_SIZE_READONLY"')
+            # last argument of BLIS' configure command is configuration target (usually 'auto' for auto-detect),
+            # specifying of variables should be done before that
+            config_opts = self.cfg['configopts'].split(' ')
+            cflags_var = 'CFLAGS="$CFLAGS -DCACHE_SECTOR_SIZE_READONLY"'
+            config_target = config_opts[-1]
+            self.cfg['configopts'] = ' '.join(config_opts[:-1] + [cflags_var, config_target])
     else:
         raise EasyBuildError("BLIS-specific hook triggered for non-BLIS easyconfig?!")
 
