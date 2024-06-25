@@ -23,6 +23,7 @@ except ImportError:
 CPU_TARGET_NEOVERSE_N1 = 'aarch64/neoverse_n1'
 CPU_TARGET_NEOVERSE_V1 = 'aarch64/neoverse_v1'
 CPU_TARGET_AARCH64_GENERIC = 'aarch64/generic'
+CPU_TARGET_A64FX = 'aarch64/a64fx'
 
 EESSI_RPATH_OVERRIDE_ATTR = 'orig_rpath_override_dirs'
 
@@ -333,6 +334,19 @@ def pre_configure_hook(self, *args, **kwargs):
     """Main pre-configure hook: trigger custom functions based on software name."""
     if self.name in PRE_CONFIGURE_HOOKS:
         PRE_CONFIGURE_HOOKS[self.name](self, *args, **kwargs)
+
+
+def pre_configure_hook_BLIS_a64fx(self, *args, **kwargs):
+    """
+    Pre-configure hook for BLIS when building for A64FX:
+    - add -DCACHE_SECTOR_SIZE_READONLY to $CFLAGS for BLIS 0.9.0, cfr. https://github.com/flame/blis/issues/800
+    """
+    if self.name == 'BLIS':
+        cpu_target = get_eessi_envvar('EESSI_SOFTWARE_SUBDIR')
+        if self.version == '0.9.0' and cpu_target == CPU_TARGET_A64FX:
+            self.cfg.update('configopts', 'CFLAGS="$CFLAGS -DCACHE_SECTOR_SIZE_READONLY"')
+    else:
+        raise EasyBuildError("BLIS-specific hook triggered for non-BLIS easyconfig?!")
 
 
 def pre_configure_hook_gromacs(self, *args, **kwargs):
@@ -680,12 +694,13 @@ POST_PREPARE_HOOKS = {
 }
 
 PRE_CONFIGURE_HOOKS = {
+    'at-spi2-core': pre_configure_hook_atspi2core_filter_ld_library_path,
+    'BLIS': pre_configure_hook_BLIS_a64fx,
     'GROMACS': pre_configure_hook_gromacs,
     'libfabric': pre_configure_hook_libfabric_disable_psm3_x86_64_generic,
     'MetaBAT': pre_configure_hook_metabat_filtered_zlib_dep,
     'OpenBLAS': pre_configure_hook_openblas_optarch_generic,
     'WRF': pre_configure_hook_wrf_aarch64,
-    'at-spi2-core': pre_configure_hook_atspi2core_filter_ld_library_path,
 }
 
 PRE_TEST_HOOKS = {
