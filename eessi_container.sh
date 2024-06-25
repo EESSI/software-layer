@@ -48,9 +48,6 @@ HTTPS_PROXY_ERROR_EXITCODE=$((${ANY_ERROR_EXITCODE} << 10))
 RUN_SCRIPT_MISSING_EXITCODE=$((${ANY_ERROR_EXITCODE} << 11))
 NVIDIA_MODE_UNKNOWN_EXITCODE=$((${ANY_ERROR_EXITCODE} << 12))
 
-# we use an associative array for storing sets of settings per CVMFS repository
-declare -A cvmfs_repo_settings
-
 # CernVM-FS settings
 CVMFS_VAR_LIB="var-lib-cvmfs"
 CVMFS_VAR_RUN="var-run-cvmfs"
