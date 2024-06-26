@@ -15,6 +15,20 @@ function show_msg {
   fi
 }
 
+function check_rhel_ca {
+
+  os=$(grep -oP '(?<=^ID_LIKE=).+' /etc/os-release | tr -d '"')
+
+  version_id=$(grep -oP '(?<=^VERSION_ID=).+' /etc/os-release | tr -d '"')
+  version_major=${version_id%\.*}
+
+  if [[ $os =~ "rhel" ]] && [ $version_major -gt 7 ]
+  then
+        export CURL_CA_BUNDLE=/etc/pki/tls/certs/ca-bundle.crt
+  fi
+}
+
+
 # set up minimal environment: $EESSI_PREFIX, $EESSI_VERSION, $EESSI_OS_TYPE, $EESSI_CPU_FAMILY, $EPREFIX
 source $EESSI_INIT_DIR_PATH/minimal_eessi_env
 
@@ -106,6 +120,8 @@ if [ -d $EESSI_PREFIX ]; then
             false
           fi
 
+        # Fix wrong path for RHEL >=8 libcurl 
+	check_rhel_ca
 
         else
           error "EESSI software layer at $EESSI_SOFTWARE_PATH not found!"
