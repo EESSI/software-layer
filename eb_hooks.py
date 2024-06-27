@@ -488,20 +488,30 @@ def pre_test_hook_ignore_failing_tests_FFTWMPI(self, *args, **kwargs):
 def pre_test_hook_ignore_failing_tests_SciPybundle(self, *args, **kwargs):
     """
     Pre-test hook for SciPy-bundle: skip failing tests for selected SciPy-bundle versions
-    In version 2021.10, 2 failing tests in scipy 1.6.3:
+    In version 2021.10 on neoverse_v1, 2 failing tests in scipy 1.6.3:
         FAILED optimize/tests/test_linprog.py::TestLinprogIPSparse::test_bug_6139 - A...
         FAILED optimize/tests/test_linprog.py::TestLinprogIPSparsePresolve::test_bug_6139
         = 2 failed, 30554 passed, 2064 skipped, 10992 deselected, 76 xfailed, 7 xpassed, 40 warnings in 380.27s (0:06:20) =
-    In versions 2023.02, 2023.07, and 2023.11, 2 failing tests in scipy (versions 1.10.1, 1.11.1, 1.11.4):
+    In versions 2023.02 + 2023.07 + 2023.11 on neoverse_v1, 2 failing tests in scipy (versions 1.10.1, 1.11.1, 1.11.4):
         FAILED scipy/spatial/tests/test_distance.py::TestPdist::test_pdist_correlation_iris
         FAILED scipy/spatial/tests/test_distance.py::TestPdist::test_pdist_correlation_iris_float32
         = 2 failed, 54409 passed, 3016 skipped, 223 xfailed, 13 xpassed, 10917 warnings in 892.04s (0:14:52) =
-    In previous versions we were not as strict yet on the numpy/SciPy tests
+    In version 2023.07 on a64fx, 4 failing tests in scipy 1.11.1:
+        FAILED scipy/optimize/tests/test_linprog.py::TestLinprogIPSparse::test_bug_6139
+        FAILED scipy/optimize/tests/test_linprog.py::TestLinprogIPSparsePresolve::test_bug_6139
+        FAILED scipy/spatial/tests/test_distance.py::TestPdist::test_pdist_correlation_iris
+        FAILED scipy/spatial/tests/test_distance.py::TestPdist::test_pdist_correlation_iris_float32
+        = 4 failed, 54407 passed, 3016 skipped, 223 xfailed, 13 xpassed, 10917 warnings in 6068.43s (1:41:08) =
+    (in previous versions we were not as strict yet on the numpy/SciPy tests)
     """
     cpu_target = get_eessi_envvar('EESSI_SOFTWARE_SUBDIR')
-    scipy_bundle_versions = ('2021.10', '2023.02', '2023.07', '2023.11')
-    if self.name == 'SciPy-bundle' and self.version in scipy_bundle_versions and cpu_target == CPU_TARGET_NEOVERSE_V1:
-        self.cfg['testopts'] = "|| echo ignoring failing tests"
+    scipy_bundle_versions_nv1 = ('2021.10', '2023.02', '2023.07', '2023.11')
+    scipy_bundle_versions_a64fx = ('2023.07', '2023.11')
+    if self.name == 'SciPy-bundle':
+        if cpu_target == CPU_TARGET_NEOVERSE_V1 and self.version in scipy_bundle_versions_nv1:
+            self.cfg['testopts'] = "|| echo ignoring failing tests"
+        elif cpu_target == CPU_TARGET_A64FX and self.version in scipy_bundle_versions_a64fx:
+            self.cfg['testopts'] = "|| echo ignoring failing tests"
 
 def pre_test_hook_ignore_failing_tests_netCDF(self, *args, **kwargs):
     """
