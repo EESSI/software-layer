@@ -2,3 +2,4 @@ easyconfigs:
   - OpenMPI-4.1.5-GCC-12.3.0.eb
   - foss-2023a.eb
   - SciPy-bundle-2023.07-gfbf-2023a.eb
+  - ESPResSo-4.2.2-foss-2023a.eb
