@@ -22,7 +22,3 @@ easyconfigs:
         from-pr: 20784
   - Valgrind-3.21.0-gompi-2023a.eb
   - OrthoFinder-2.5.5-foss-2023a.eb
-  - PyTorch-bundle-2.1.2-foss-2023a.eb:
-      # see https://github.com/easybuilders/easybuild-easyconfigs/pull/20382
-      options:
-        from-pr: 20382
