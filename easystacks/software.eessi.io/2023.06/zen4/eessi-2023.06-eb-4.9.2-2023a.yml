@@ -2,7 +2,8 @@ easyconfigs:
   - ESPResSo-4.2.2-foss-2023a.eb
   - TensorFlow-2.13.0-foss-2023a.eb
   - R-4.3.2-gfbf-2023a.eb
-  - Highway-1.0.4-GCCcore-12.3.0.eb:
-      options:
-        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/20942
-        from-pr: 20942
+  - Highway-1.0.4-GCCcore-12.3.0.eb
+  #- Highway-1.0.4-GCCcore-12.3.0.eb:
+  #    options:
+  #      # see https://github.com/easybuilders/easybuild-easyconfigs/pull/20942
+  #      from-pr: 20942
