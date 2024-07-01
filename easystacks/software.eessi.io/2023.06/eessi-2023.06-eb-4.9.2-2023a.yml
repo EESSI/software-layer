@@ -1,2 +1,3 @@
 easyconfigs:
   - BCFtools-1.18-GCC-12.3.0.eb
+  - PyTorch-bundle-2.1.2-foss-2023a.eb
