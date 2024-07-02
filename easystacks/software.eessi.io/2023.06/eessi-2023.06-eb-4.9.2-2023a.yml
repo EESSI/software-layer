@@ -1,3 +1,6 @@
 easyconfigs:
   - BCFtools-1.18-GCC-12.3.0.eb
-  - CP2K-2023.1-foss-2023a.eb
+  - CP2K-2023.1-foss-2023a.eb:
+      # see https://github.com/easybuilders/easybuild-easyconfigs/pull/20951
+      options:
+        from-pr: 20951
