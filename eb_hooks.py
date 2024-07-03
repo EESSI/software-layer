@@ -307,7 +307,7 @@ def parse_hook_CP2K_remove_deps_for_aarch64(ec, *args, **kwargs):
             # on an x86_64 VM in GitHub Actions (so condition based on ARCH in LAMMPS easyconfig is always true)
             ec['dependencies'] = [dep for dep in ec['dependencies'] if dep[0] not in ('libxsmm',)]
     else:
-        raise EasyBuildError("CP2K-specific hook triggered for non-CP2K easyconfig?!")]
+        raise EasyBuildError("CP2K-specific hook triggered for non-CP2K easyconfig?!")
 
 
 def pre_prepare_hook_highway_handle_test_compilation_issues(self, *args, **kwargs):
