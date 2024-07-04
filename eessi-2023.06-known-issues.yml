@@ -1,3 +1,10 @@
+- aarch64/a64x:
+  - SciPy-bundle-2023.07-gfbf-2023a:
+    - issue: https://github.com/EESSI/software-layer/issues/318
+    - info: "4 failing tests (vs 54407 passed) in scipy test suite"
+  - SciPy-bundle-2023.11-gfbf-2023b:
+    - issue: https://github.com/EESSI/software-layer/issues/318
+    - info: "3 failing tests (vs 54875 passed) in scipy test suite"
 - aarch64/generic:
   - PyTorch-2.1.2-foss-2023a:
     - issue: https://github.com/EESSI/software-layer/issues/461
