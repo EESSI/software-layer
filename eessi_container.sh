@@ -91,7 +91,7 @@ display_help() {
   echo "                            attach a GPU, MODE==all for both [default: false]"
   echo "  -r | --repository CFG   - configuration file or identifier defining the"
   echo "                            repository to use; can be given multiple times;"
-  echo "                            CFG may include a suffix ';access={ro,rw}' to"
+  echo "                            CFG may include a suffix ',access={ro,rw}' to"
   echo "                            overwrite the global access mode for this repository"
   echo "                            [default: software.eessi.io via CVMFS config available"
   echo "                            via default container, see --container]"
