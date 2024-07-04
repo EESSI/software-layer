@@ -45,7 +45,8 @@ jobs:
               elif [[ ${{matrix.SCRIPT_TEST}} == 'listrepos_default' ]]; then
                 outfile=out_listrepos.txt
                 ./eessi_container.sh --verbose --list-repos | tee ${outfile}
-                grep "EESSI" ${outfile}
+                # make sure that the default EESSI software repository is available
+                grep "software.eessi.io" ${outfile}
 
               # test use of --list-repos with custom repos.cfg
               elif [[ ${{matrix.SCRIPT_TEST}} == 'listrepos_custom' ]]; then
