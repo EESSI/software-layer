@@ -510,7 +510,6 @@ fi
 [[ ${VERBOSE} -eq 1 ]] && echo "CONTAINER=${CONTAINER}"
 
 # set env vars and create directories for CernVM-FS
-# TODO need to use separate values for separate repos?
 EESSI_CVMFS_VAR_LIB=${EESSI_TMPDIR}/${CVMFS_VAR_LIB}
 EESSI_CVMFS_VAR_RUN=${EESSI_TMPDIR}/${CVMFS_VAR_RUN}
 mkdir -p ${EESSI_CVMFS_VAR_LIB}
