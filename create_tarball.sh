@@ -26,7 +26,7 @@ if [ ! -d ${software_dir} ]; then
     exit 2
 fi
 
-overlay_upper_dir="${eessi_tmpdir}/overlay-upper"
+overlay_upper_dir="${eessi_tmpdir}/${cvmfs_repo}/overlay-upper"
 
 software_dir_overlay="${overlay_upper_dir}/versions/${eessi_version}"
 if [ ! -d ${software_dir_overlay} ]; then
