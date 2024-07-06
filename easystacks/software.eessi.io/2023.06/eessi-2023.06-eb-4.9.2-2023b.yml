@@ -1,3 +1,7 @@
 easyconfigs:
   - IPython-8.17.2-GCCcore-13.2.0.eb
   - dlb-3.4-gompi-2023b.eb
+  - Extrae-4.2.0-gompi-2023b.eb:
+      options:
+        from-pr: 20690
+        include-easyblocks-from-pr: 3339
