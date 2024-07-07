@@ -84,7 +84,8 @@ def post_ready_hook(self, *args, **kwargs):
     # to avoid failing builds/tests due to out-of-memory problems;
     memory_hungry_build = self.name in ['libxc', 'TensorFlow']
     # on A64FX systems, (HBM) memory is typically scarce, so we need to use fewer cores for some builds
-    memory_hungry_build_a64fx = self.name in ['Qt5']
+    cpu_target = get_eessi_envvar('EESSI_SOFTWARE_SUBDIR')
+    memory_hungry_build_a64fx = cpu_target == CPU_TARGET_A64FX and self.name in ['Qt5']
     if memory_hungry_build or memory_hungry_build_a64fx:
         parallel = self.cfg['parallel']
         if parallel > 1:
