@@ -365,7 +365,7 @@ def pre_configure_hook_extrae(self, *args, **kwargs):
         # determine path to Prefix installation in compat layer via $EPREFIX
         eprefix = get_eessi_envvar('EPREFIX')
 
-        binutils_lib_path_glob_pattern = os.path.join(eprefix, 'usr', 'lib*', 'binutils', '*-pc-linux-gnu', '2.*')
+        binutils_lib_path_glob_pattern = os.path.join(eprefix, 'usr', 'lib*', 'binutils', '*-linux-gnu', '2.*')
         binutils_lib_path = glob.glob(binutils_lib_path_glob_pattern)
         if len(binutils_lib_path) == 1:
             self.cfg.update('configopts', '--with-binutils=' + binutils_lib_path[0])
