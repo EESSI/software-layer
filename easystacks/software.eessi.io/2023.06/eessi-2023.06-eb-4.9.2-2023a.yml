@@ -1,7 +1,7 @@
 easyconfigs:
   - OpenFOAM-v2312-foss-2023a.eb:
       options:
-        # https://github.com/easybuilders/easybuild-easyblocks/pull/3366
-        include-easyblocks-from-commit: d1f2231b2de4f8548c75c7367456873a8c33b5f9
+        # https://github.com/easybuilders/easybuild-easyblocks/pull/3388
+        include-easyblocks-from-commit: c8256a36e7062bc09f5ce30552a9de9827054c9e
         # https://github.com/easybuilders/easybuild-easyconfigs/pull/20841
         from-commit: f0e91e6e430ebf902f7788ebb47f0203dee60649
