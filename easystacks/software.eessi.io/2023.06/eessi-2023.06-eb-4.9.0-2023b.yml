@@ -58,3 +58,4 @@ easyconfigs:
       options:
         from-pr: 20201
   - OSU-Micro-Benchmarks-7.2-gompi-2023b.eb
+  - pystencils-1.3.4-gfbf-2023b.eb
