@@ -74,4 +74,3 @@ easyconfigs:
       options:
         # see https://github.com/easybuilders/easybuild-easyconfigs/pull/20238
         from-pr: 20238
-  - MetalWalls-21.06.1-foss-2023a.eb
