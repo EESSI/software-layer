@@ -78,6 +78,11 @@ function create_directory_structure() {
   return $return_code
 }
 
+# Function to check if a command exists
+function command_exists() {
+    command -v "$1" >/dev/null 2>&1
+}
+
 function get_path_for_tool {
     tool_name=$1
     tool_envvar_name=$2

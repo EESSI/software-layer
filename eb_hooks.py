@@ -23,6 +23,7 @@ except ImportError:
 CPU_TARGET_NEOVERSE_N1 = 'aarch64/neoverse_n1'
 CPU_TARGET_NEOVERSE_V1 = 'aarch64/neoverse_v1'
 CPU_TARGET_AARCH64_GENERIC = 'aarch64/generic'
+CPU_TARGET_A64FX = 'aarch64/a64fx'
 
 EESSI_RPATH_OVERRIDE_ATTR = 'orig_rpath_override_dirs'
 
@@ -80,8 +81,12 @@ def post_ready_hook(self, *args, **kwargs):
     """
     # 'parallel' easyconfig parameter is set via EasyBlock.set_parallel in ready step based on available cores.
     # here we reduce parallellism to only use half of that for selected software,
-    # to avoid failing builds/tests due to out-of-memory problems
-    if self.name in ['TensorFlow', 'libxc']:
+    # to avoid failing builds/tests due to out-of-memory problems;
+    memory_hungry_build = self.name in ['libxc', 'TensorFlow']
+    # on A64FX systems, (HBM) memory is typically scarce, so we need to use fewer cores for some builds
+    cpu_target = get_eessi_envvar('EESSI_SOFTWARE_SUBDIR')
+    memory_hungry_build_a64fx = cpu_target == CPU_TARGET_A64FX and self.name in ['Qt5']
+    if memory_hungry_build or memory_hungry_build_a64fx:
         parallel = self.cfg['parallel']
         if parallel > 1:
             self.cfg['parallel'] = parallel // 2
@@ -335,6 +340,39 @@ def pre_configure_hook(self, *args, **kwargs):
         PRE_CONFIGURE_HOOKS[self.name](self, *args, **kwargs)
 
 
+def pre_configure_hook_BLIS_a64fx(self, *args, **kwargs):
+    """
+    Pre-configure hook for BLIS when building for A64FX:
+    - add -DCACHE_SECTOR_SIZE_READONLY to $CFLAGS for BLIS 0.9.0, cfr. https://github.com/flame/blis/issues/800
+    """
+    if self.name == 'BLIS':
+        cpu_target = get_eessi_envvar('EESSI_SOFTWARE_SUBDIR')
+        if self.version == '0.9.0' and cpu_target == CPU_TARGET_A64FX:
+            # last argument of BLIS' configure command is configuration target (usually 'auto' for auto-detect),
+            # specifying of variables should be done before that
+            config_opts = self.cfg['configopts'].split(' ')
+            cflags_var = 'CFLAGS="$CFLAGS -DCACHE_SECTOR_SIZE_READONLY"'
+            config_target = config_opts[-1]
+            self.cfg['configopts'] = ' '.join(config_opts[:-1] + [cflags_var, config_target])
+    else:
+        raise EasyBuildError("BLIS-specific hook triggered for non-BLIS easyconfig?!")
+
+
+def pre_configure_hook_gromacs(self, *args, **kwargs):
+    """
+    Pre-configure hook for GROMACS:
+    - avoid building with SVE instructions on Neoverse V1 as workaround for failing tests,
+      see https://gitlab.com/gromacs/gromacs/-/issues/5057 + https://gitlab.com/eessi/support/-/issues/47
+    """
+    if self.name == 'GROMACS':
+        cpu_target = get_eessi_envvar('EESSI_SOFTWARE_SUBDIR')
+        if LooseVersion(self.version) <= LooseVersion('2024.1') and cpu_target == CPU_TARGET_NEOVERSE_V1:
+            self.cfg.update('configopts', '-DGMX_SIMD=ARM_NEON_ASIMD')
+            print_msg("Avoiding use of SVE instructions for GROMACS %s by using ARM_NEON_ASIMD as GMX_SIMD value", self.version)
+    else:
+        raise EasyBuildError("GROMACS-specific hook triggered for non-GROMACS easyconfig?!")
+
+
 def pre_configure_hook_openblas_optarch_generic(self, *args, **kwargs):
     """
     Pre-configure hook for OpenBLAS: add DYNAMIC_ARCH=1 to build/test/install options when using --optarch=GENERIC
@@ -454,20 +492,30 @@ def pre_test_hook_ignore_failing_tests_FFTWMPI(self, *args, **kwargs):
 def pre_test_hook_ignore_failing_tests_SciPybundle(self, *args, **kwargs):
     """
     Pre-test hook for SciPy-bundle: skip failing tests for selected SciPy-bundle versions
-    In version 2021.10, 2 failing tests in scipy 1.6.3:
+    In version 2021.10 on neoverse_v1, 2 failing tests in scipy 1.6.3:
         FAILED optimize/tests/test_linprog.py::TestLinprogIPSparse::test_bug_6139 - A...
         FAILED optimize/tests/test_linprog.py::TestLinprogIPSparsePresolve::test_bug_6139
         = 2 failed, 30554 passed, 2064 skipped, 10992 deselected, 76 xfailed, 7 xpassed, 40 warnings in 380.27s (0:06:20) =
-    In versions 2023.02, 2023.07, and 2023.11, 2 failing tests in scipy (versions 1.10.1, 1.11.1, 1.11.4):
+    In versions 2023.02 + 2023.07 + 2023.11 on neoverse_v1, 2 failing tests in scipy (versions 1.10.1, 1.11.1, 1.11.4):
         FAILED scipy/spatial/tests/test_distance.py::TestPdist::test_pdist_correlation_iris
         FAILED scipy/spatial/tests/test_distance.py::TestPdist::test_pdist_correlation_iris_float32
         = 2 failed, 54409 passed, 3016 skipped, 223 xfailed, 13 xpassed, 10917 warnings in 892.04s (0:14:52) =
-    In previous versions we were not as strict yet on the numpy/SciPy tests
+    In version 2023.07 on a64fx, 4 failing tests in scipy 1.11.1:
+        FAILED scipy/optimize/tests/test_linprog.py::TestLinprogIPSparse::test_bug_6139
+        FAILED scipy/optimize/tests/test_linprog.py::TestLinprogIPSparsePresolve::test_bug_6139
+        FAILED scipy/spatial/tests/test_distance.py::TestPdist::test_pdist_correlation_iris
+        FAILED scipy/spatial/tests/test_distance.py::TestPdist::test_pdist_correlation_iris_float32
+        = 4 failed, 54407 passed, 3016 skipped, 223 xfailed, 13 xpassed, 10917 warnings in 6068.43s (1:41:08) =
+    (in previous versions we were not as strict yet on the numpy/SciPy tests)
     """
     cpu_target = get_eessi_envvar('EESSI_SOFTWARE_SUBDIR')
-    scipy_bundle_versions = ('2021.10', '2023.02', '2023.07', '2023.11')
-    if self.name == 'SciPy-bundle' and self.version in scipy_bundle_versions and cpu_target == CPU_TARGET_NEOVERSE_V1:
-        self.cfg['testopts'] = "|| echo ignoring failing tests"
+    scipy_bundle_versions_nv1 = ('2021.10', '2023.02', '2023.07', '2023.11')
+    scipy_bundle_versions_a64fx = ('2023.07', '2023.11')
+    if self.name == 'SciPy-bundle':
+        if cpu_target == CPU_TARGET_NEOVERSE_V1 and self.version in scipy_bundle_versions_nv1:
+            self.cfg['testopts'] = "|| echo ignoring failing tests"
+        elif cpu_target == CPU_TARGET_A64FX and self.version in scipy_bundle_versions_a64fx:
+            self.cfg['testopts'] = "|| echo ignoring failing tests"
 
 def pre_test_hook_ignore_failing_tests_netCDF(self, *args, **kwargs):
     """
@@ -597,8 +645,8 @@ def post_sanitycheck_cuda(self, *args, **kwargs):
                 full_path = os.path.join(dir_path, filename)
                 # we only really care about real files, i.e. not symlinks
                 if not os.path.islink(full_path):
-                    # check if the current file is part of the allowlist
-                    basename = os.path.splitext(filename)[0]
+                    # check if the current file name stub is part of the allowlist
+                    basename = filename.split('.')[0]
                     if basename in allowlist:
                         self.log.debug("%s is found in allowlist, so keeping it: %s", basename, full_path)
                     else:
@@ -665,11 +713,13 @@ POST_PREPARE_HOOKS = {
 }
 
 PRE_CONFIGURE_HOOKS = {
+    'at-spi2-core': pre_configure_hook_atspi2core_filter_ld_library_path,
+    'BLIS': pre_configure_hook_BLIS_a64fx,
+    'GROMACS': pre_configure_hook_gromacs,
     'libfabric': pre_configure_hook_libfabric_disable_psm3_x86_64_generic,
     'MetaBAT': pre_configure_hook_metabat_filtered_zlib_dep,
     'OpenBLAS': pre_configure_hook_openblas_optarch_generic,
     'WRF': pre_configure_hook_wrf_aarch64,
-    'at-spi2-core': pre_configure_hook_atspi2core_filter_ld_library_path,
 }
 
 PRE_TEST_HOOKS = {

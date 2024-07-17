@@ -4,6 +4,7 @@
 #
 import os
 import sys
+from stat import S_IREAD, S_IWRITE, S_IRGRP, S_IWGRP, S_IROTH
 
 DOT_LMOD = '.lmod'
 
@@ -17,6 +18,28 @@ local function read_file(path)
     local content = file:read "*a" -- *a or *all reads the whole file
     file:close()
     return content
+end
+
+local function from_eessi_prefix(t)
+    -- eessi_prefix is the prefix with official EESSI modules
+    -- e.g. /cvmfs/software.eessi.io/versions/2023.06
+    local eessi_prefix = os.getenv("EESSI_PREFIX")
+
+    -- If EESSI_PREFIX wasn't defined, we cannot check if this module was from the EESSI environment
+    -- In that case, we assume it isn't, otherwise EESSI_PREFIX would (probably) have been set
+    if eessi_prefix == nil then
+        return False
+    else
+        -- NOTE: exact paths for site so may need to be updated later.
+        -- See https://github.com/EESSI/software-layer/pull/371
+
+        -- eessi_prefix_host_injections is the prefix with site-extensions (i.e. additional modules)
+        -- to the official EESSI modules, e.g. /cvmfs/software.eessi.io/host_injections/2023.06
+        local eessi_prefix_host_injections = string.gsub(eessi_prefix, 'versions', 'host_injections')
+        
+       -- Check if the full modulepath starts with the eessi_prefix_*
+        return string.find(t.fn, "^" .. eessi_prefix) ~= nil or string.find(t.fn, "^" .. eessi_prefix_host_injections) ~= nil
+    end
 end
 
 local function load_site_specific_hooks()
@@ -108,8 +131,9 @@ local function eessi_cuda_enabled_load_hook(t)
     end
     -- when loading CUDA enabled modules check if the necessary driver libraries are accessible to the EESSI linker,
     -- otherwise, refuse to load the requested module and print error message
-    local haveGpu = mt:haveProperty(simpleName,"arch","gpu")
-    if haveGpu then
+    local checkGpu = mt:haveProperty(simpleName,"arch","gpu")
+    local overrideGpuCheck = os.getenv("EESSI_OVERRIDE_GPU_CHECK")
+    if checkGpu and (overrideGpuCheck == nil) then
         local arch = os.getenv("EESSI_CPU_FAMILY") or ""
         local cudaVersionFile = "/cvmfs/software.eessi.io/host_injections/nvidia/" .. arch .. "/latest/cuda_version.txt"
         local cudaDriverFile = "/cvmfs/software.eessi.io/host_injections/nvidia/" .. arch .. "/latest/libcuda.so"
@@ -118,7 +142,9 @@ local function eessi_cuda_enabled_load_hook(t)
         if not (cudaDriverExists or singularityCudaExists)  then
             local advice = "which relies on the CUDA runtime environment and driver libraries. "
             advice = advice .. "In order to be able to use the module, you will need "
-            advice = advice .. "to make sure EESSI can find the GPU driver libraries on your host system.\\n"
+            advice = advice .. "to make sure EESSI can find the GPU driver libraries on your host system. You can "
+            advice = advice .. "override this check by setting the environment variable EESSI_OVERRIDE_GPU_CHECK but "
+            advice = advice .. "the loaded application will not be able to execute on your system.\\n"
             advice = advice .. refer_to_docs
             LmodError("\\nYou requested to load ", simpleName, " ", advice)
         else
@@ -149,12 +175,31 @@ local function eessi_cuda_enabled_load_hook(t)
     end
 end
 
+local function eessi_espresso_deprecated_message(t)
+    local frameStk  = require("FrameStk"):singleton()
+    local mt        = frameStk:mt()
+    local simpleName = string.match(t.modFullName, "(.-)/")
+    local version = string.match(t.modFullName, "%d.%d.%d")
+    if simpleName == 'ESPResSo' and version == '4.2.1' then
+    -- Print a message on loading ESPreSso v <= 4.2.1 recommending using v 4.2.2 and above.
+    -- A message and not a warning as the exit code would break CI runs otherwise.
+        local advice = 'Prefer versions  >= 4.2.2 which include important bugfixes.\\n'
+        advice = advice .. 'For details see https://github.com/espressomd/espresso/releases/tag/4.2.2\\n'
+        advice = advice .. 'Use version 4.2.1 at your own risk!\\n'
+        LmodMessage("\\nESPResSo v4.2.1 has known issues and has been deprecated. ", advice)
+    end
+end
+
 -- Combine both functions into a single one, as we can only register one function as load hook in lmod
 -- Also: make it non-local, so it can be imported and extended by other lmodrc files if needed
 function eessi_load_hook(t)
-    eessi_cuda_enabled_load_hook(t)
+    eessi_espresso_deprecated_message(t)
+    -- Only apply CUDA hooks if the loaded module is in the EESSI prefix
+    -- This avoids getting an Lmod Error when trying to load a CUDA module from a local software stack
+    if from_eessi_prefix(t) then
+        eessi_cuda_enabled_load_hook(t)
+    end
 end
-
 
 hook.register("load", eessi_load_hook)
 
@@ -180,6 +225,8 @@ try:
     os.makedirs(os.path.dirname(sitepackage_path), exist_ok=True)
     with open(sitepackage_path, 'w') as fp:
         fp.write(hook_txt)
+    # Make sure that the created Lmod file has "read/write" for the user/group and "read" permissions for others
+    os.chmod(sitepackage_path, S_IREAD|S_IWRITE|S_IRGRP|S_IWGRP|S_IROTH)
 
 except (IOError, OSError) as err:
     error("Failed to create %s: %s" % (sitepackage_path, err))

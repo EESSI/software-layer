@@ -17,6 +17,11 @@ display_help() {
   echo "  --skip-cuda-install    -  disable installing a full CUDA SDK in the host_injections prefix (e.g. in CI)"
 }
 
+# Function to check if a command exists
+function command_exists() {
+    command -v "$1" >/dev/null 2>&1
+}
+
 function copy_build_log() {
     # copy specified build log to specified directory, with some context added
     build_log=${1}
@@ -143,6 +148,26 @@ if [ -z $EESSI_SOFTWARE_SUBDIR_OVERRIDE ]; then
   echo ">> Determined \$EESSI_SOFTWARE_SUBDIR_OVERRIDE via 'eessi_software_subdir.py $DETECTION_PARAMETERS' script"
 else
   echo ">> Picking up pre-defined \$EESSI_SOFTWARE_SUBDIR_OVERRIDE: ${EESSI_SOFTWARE_SUBDIR_OVERRIDE}"
+  # make sure directory exists (since it's expected by init/eessi_environment_variables when using archdetect)
+  mkdir -p ${EESSI_PREFIX}/software/${EESSI_OS_TYPE}/${EESSI_SOFTWARE_SUBDIR_OVERRIDE}
+fi
+
+# if we run the script for the first time, e.g., to start building for a new
+#   stack, we need to ensure certain files are present in
+#   ${EESSI_PREFIX}/software/${EESSI_OS_TYPE}/${EESSI_SOFTWARE_SUBDIR_OVERRIDE}
+# - .lmod/lmodrc.lua
+# - .lmod/SitePackage.lua
+_eessi_software_path=${EESSI_PREFIX}/software/${EESSI_OS_TYPE}/${EESSI_SOFTWARE_SUBDIR_OVERRIDE}
+_lmod_cfg_dir=${_eessi_software_path}/.lmod
+_lmod_rc_file=${_lmod_cfg_dir}/lmodrc.lua
+if [ ! -f ${_lmod_rc_file} ]; then
+    command -V python3
+    python3 ${TOPDIR}/create_lmodrc.py ${_eessi_software_path}
+fi
+_lmod_sitepackage_file=${_lmod_cfg_dir}/SitePackage.lua
+if [ ! -f ${_lmod_sitepackage_file} ]; then
+    command -V python3
+    python3 ${TOPDIR}/create_lmodsitepackage.py ${_eessi_software_path}
 fi
 
 # Set all the EESSI environment variables (respecting $EESSI_SOFTWARE_SUBDIR_OVERRIDE)
@@ -201,16 +226,28 @@ ${TOPDIR}/install_scripts.sh --prefix ${EESSI_PREFIX}
 # Hardcode this for now, see if it works
 # TODO: We should make a nice yaml and loop over all CUDA versions in that yaml to figure out what to install
 # Allow skipping CUDA SDK install in e.g. CI environments
+# The install_cuda... script uses EasyBuild. So, we need to check if we have EB
+# or skip this step.
+module_avail_out=$TMPDIR/ml.out
+module avail 2>&1 | grep EasyBuild &> ${module_avail_out}
+if [[ $? -eq 0 ]]; then
+    echo_green ">> Found an EasyBuild module"
+else
+    echo_yellow ">> No EasyBuild module found: skipping step to install CUDA (see output in ${module_avail_out})"
+    export skip_cuda_install=True
+fi
+
 if [ -z "${skip_cuda_install}" ] || [ ! "${skip_cuda_install}" ]; then
     ${EESSI_PREFIX}/scripts/gpu_support/nvidia/install_cuda_host_injections.sh -c 12.1.1 --accept-cuda-eula
 else
-    echo "Skipping installation of CUDA SDK in host_injections, since the --skip-cuda-install flag was passed"
+    echo "Skipping installation of CUDA SDK in host_injections, since the --skip-cuda-install flag was passed OR no EasyBuild module was found"
 fi
 
-# Install drivers in host_injections
-# TODO: this is commented out for now, because the script assumes that nvidia-smi is available and works;
-#       if not, an error is produced, and the bot flags the whole build as failed (even when not installing GPU software)
-# ${EESSI_PREFIX}/scripts/gpu_support/nvidia/link_nvidia_host_libraries.sh
+# Install NVIDIA drivers in host_injections (if they exist)
+if command_exists "nvidia-smi"; then
+    echo "Command 'nvidia-smi' found. Installing NVIDIA drivers for use in prefix shell..."
+    ${EESSI_PREFIX}/scripts/gpu_support/nvidia/link_nvidia_host_libraries.sh
+fi
 
 # use PR patch file to determine in which easystack files stuff was added
 changed_easystacks=$(cat ${pr_diff} | grep '^+++' | cut -f2 -d' ' | sed 's@^[a-z]/@@g' | grep '^easystacks/.*yml$' | egrep -v 'known-issues|missing') 
