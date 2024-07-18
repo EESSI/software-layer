@@ -7,5 +7,7 @@ easyconfigs:
         from-commit: c66c4788a17f7e4f55aa23f9fdb782aad97c9ce7
   - Extrae-4.2.0-gompi-2023b.eb:
       options:
-        from-pr: 21017
-        include-easyblocks-from-pr: 3393
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/21017
+        from-commit: 120f4d56efebd2bc61382db4c84a664a339c66cf
+        # see https://github.com/easybuilders/easybuild-easyblocks/pull/3393
+        include-easyblocks-from-commit: c4951c78d62fa5cf8e9f6fe0ead212d2a4d7cb9c
