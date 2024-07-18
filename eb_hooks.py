@@ -362,7 +362,7 @@ def pre_configure_hook_extrae(self, *args, **kwargs):
     """
     Pre-configure hook for Extrae
     - avoid use of 'which' in configure script
-    - specify correct path to binutils (in compat layer)
+    - specify correct path to binutils/zlib (in compat layer)
     """
     if self.name == 'Extrae':
 
@@ -376,6 +376,9 @@ def pre_configure_hook_extrae(self, *args, **kwargs):
         else:
             raise EasyBuildError("Failed to isolate path for binutils libraries using %s, got %s",
                                  binutils_lib_path_glob_pattern, binutils_lib_path)
+
+        # zlib is a filtered dependency, so we need to manually specify it's location to avoid the host version
+        self.cfg.update('configopts', '--with-libz=' + eprefix)
 
         # replace use of 'which' with 'command -v', since 'which' is broken in EESSI build container;
         # this must be done *after* running configure script, because initial configuration re-writes configure script,
