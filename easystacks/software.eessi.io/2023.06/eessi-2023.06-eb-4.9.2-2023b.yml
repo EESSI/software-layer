@@ -1,3 +1,7 @@
 easyconfigs:
   - IPython-8.17.2-GCCcore-13.2.0.eb
   - dlb-3.4-gompi-2023b.eb
+  - pystencils-1.3.4-gfbf-2023b.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/20889
+        from-commit: c66c4788a17f7e4f55aa23f9fdb782aad97c9ce7

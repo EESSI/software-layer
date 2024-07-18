@@ -15,6 +15,7 @@ easyconfigs:
   - LSD2-2.4.1-GCCcore-12.3.0.eb
   - MAFFT-7.520-GCC-12.3.0-with-extensions.eb
   - ncbi-vdb-3.0.10-gompi-2023a.eb
+  - MetalWalls-21.06.1-foss-2023a.eb
   - CP2K-2023.1-foss-2023a.eb:
       # see https://github.com/easybuilders/easybuild-easyconfigs/pull/20951
       options:
