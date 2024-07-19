@@ -486,21 +486,6 @@ def pre_configure_hook_wrf_aarch64(self, *args, **kwargs):
         raise EasyBuildError("WRF-specific hook triggered for non-WRF easyconfig?!")
 
 
-def pre_configure_hook_atspi2core_filter_ld_library_path(self, *args, **kwargs):
-    """
-    pre-configure hook for at-spi2-core:
-    - instruct GObject-Introspection's g-ir-scanner tool to not set $LD_LIBRARY_PATH
-      when EasyBuild is configured to filter it, see:
-      https://github.com/EESSI/software-layer/issues/196
-    """
-    if self.name == 'at-spi2-core':
-        if build_option('filter_env_vars') and 'LD_LIBRARY_PATH' in build_option('filter_env_vars'):
-            sed_cmd = 'sed -i "s/gir_extra_args = \[/gir_extra_args = \[\\n  \'--lib-dirs-envvar=FILTER_LD_LIBRARY_PATH\',/g" %(start_dir)s/atspi/meson.build && '
-            self.cfg.update('preconfigopts', sed_cmd)
-    else:
-        raise EasyBuildError("at-spi2-core-specific hook triggered for non-at-spi2-core easyconfig?!")
-
-
 def pre_test_hook(self,*args, **kwargs):
     """Main pre-test hook: trigger custom functions based on software name."""
     if self.name in PRE_TEST_HOOKS:
@@ -760,7 +745,6 @@ POST_PREPARE_HOOKS = {
 }
 
 PRE_CONFIGURE_HOOKS = {
-    'at-spi2-core': pre_configure_hook_atspi2core_filter_ld_library_path,
     'BLIS': pre_configure_hook_BLIS_a64fx,
     'GObject-Introspection': pre_configure_hook_gobject_introspection,
     'Extrae': pre_configure_hook_extrae,
