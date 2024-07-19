@@ -1,5 +1,6 @@
 # Hooks to customize how EasyBuild installs software in EESSI
 # see https://docs.easybuild.io/en/latest/Hooks.html
+import glob
 import os
 import re
 
@@ -357,6 +358,34 @@ def pre_configure_hook_BLIS_a64fx(self, *args, **kwargs):
     else:
         raise EasyBuildError("BLIS-specific hook triggered for non-BLIS easyconfig?!")
 
+def pre_configure_hook_extrae(self, *args, **kwargs):
+    """
+    Pre-configure hook for Extrae
+    - avoid use of 'which' in configure script
+    - specify correct path to binutils/zlib (in compat layer)
+    """
+    if self.name == 'Extrae':
+
+        # determine path to Prefix installation in compat layer via $EPREFIX
+        eprefix = get_eessi_envvar('EPREFIX')
+
+        binutils_lib_path_glob_pattern = os.path.join(eprefix, 'usr', 'lib*', 'binutils', '*-linux-gnu', '2.*')
+        binutils_lib_path = glob.glob(binutils_lib_path_glob_pattern)
+        if len(binutils_lib_path) == 1:
+            self.cfg.update('configopts', '--with-binutils=' + binutils_lib_path[0])
+        else:
+            raise EasyBuildError("Failed to isolate path for binutils libraries using %s, got %s",
+                                 binutils_lib_path_glob_pattern, binutils_lib_path)
+
+        # zlib is a filtered dependency, so we need to manually specify it's location to avoid the host version
+        self.cfg.update('configopts', '--with-libz=' + eprefix)
+
+        # replace use of 'which' with 'command -v', since 'which' is broken in EESSI build container;
+        # this must be done *after* running configure script, because initial configuration re-writes configure script,
+        # and problem due to use of which only pops up when running make ?!
+        self.cfg.update('prebuildopts', "cp config/mpi-macros.m4 config/mpi-macros.m4.orig && sed -i 's/`which /`command -v /g' config/mpi-macros.m4 && ")
+    else:
+        raise EasyBuildError("Extrae-specific hook triggered for non-Extrae easyconfig?!")
 
 def pre_configure_hook_gromacs(self, *args, **kwargs):
     """
@@ -730,6 +759,7 @@ POST_PREPARE_HOOKS = {
 PRE_CONFIGURE_HOOKS = {
     'at-spi2-core': pre_configure_hook_atspi2core_filter_ld_library_path,
     'BLIS': pre_configure_hook_BLIS_a64fx,
+    'Extrae': pre_configure_hook_extrae,
     'GROMACS': pre_configure_hook_gromacs,
     'libfabric': pre_configure_hook_libfabric_disable_psm3_x86_64_generic,
     'MetaBAT': pre_configure_hook_metabat_filtered_zlib_dep,

@@ -10,7 +10,7 @@ on:
     - cron: '25 15 * * 3'
   push:
     branches:
-      - '2023.06-software.eessi.io'
+      - '*-software.eessi.io'
 
 # Declare default permissions as read only.
 permissions: read-all
