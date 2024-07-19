@@ -439,6 +439,21 @@ def pre_configure_hook_wrf_aarch64(self, *args, **kwargs):
         raise EasyBuildError("WRF-specific hook triggered for non-WRF easyconfig?!")
 
 
+def pre_configure_hook_pango_filter_ld_library_path(self, *args, **kwargs):
+    """
+    pre-configure hook for Pango:
+    - instruct GObject-Introspection's g-ir-scanner tool to not set $LD_LIBRARY_PATH
+      when EasyBuild is configured to filter it, see:
+      https://github.com/EESSI/software-layer/issues/196
+    """
+    if self.name == 'Pango' and self.version in ['1.51.0']:
+        if build_option('filter_env_vars') and 'LD_LIBRARY_PATH' in build_option('filter_env_vars'):
+            sed_cmd = 'sed -i "s/gir_args = \[/gir_args = \[\\n  \'--lib-dirs-envvar=FILTER_LD_LIBRARY_PATH\',/g" %(start_dir)s/pango/meson.build && '
+            self.cfg.update('preconfigopts', sed_cmd)
+    else:
+        raise EasyBuildError("Pango-specific hook triggered for non-Pango easyconfig?!")
+
+
 def pre_configure_hook_atspi2core_filter_ld_library_path(self, *args, **kwargs):
     """
     pre-configure hook for at-spi2-core:
@@ -719,6 +734,7 @@ PRE_CONFIGURE_HOOKS = {
     'libfabric': pre_configure_hook_libfabric_disable_psm3_x86_64_generic,
     'MetaBAT': pre_configure_hook_metabat_filtered_zlib_dep,
     'OpenBLAS': pre_configure_hook_openblas_optarch_generic,
+    'Pango': pre_configure_hook_pango_filter_ld_library_path,
     'WRF': pre_configure_hook_wrf_aarch64,
 }
 
