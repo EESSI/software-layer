@@ -1,11 +1,15 @@
 # documentation: https://help.github.com/en/articles/workflow-syntax-for-github-actions
 name: Check for missing software installations in software.eessi.io
-on: [push, pull_request, workflow_dispatch]
+on:
+  push:
+    branches: [ "*-software.eessi.io" ]
+  pull_request:
+  workflow_dispatch:
 permissions:
   contents: read # to fetch code (actions/checkout)
 jobs:
   check_missing:
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-latest
     strategy:
       fail-fast: false
       matrix:

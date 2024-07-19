@@ -131,8 +131,9 @@ local function eessi_cuda_enabled_load_hook(t)
     end
     -- when loading CUDA enabled modules check if the necessary driver libraries are accessible to the EESSI linker,
     -- otherwise, refuse to load the requested module and print error message
-    local haveGpu = mt:haveProperty(simpleName,"arch","gpu")
-    if haveGpu then
+    local checkGpu = mt:haveProperty(simpleName,"arch","gpu")
+    local overrideGpuCheck = os.getenv("EESSI_OVERRIDE_GPU_CHECK")
+    if checkGpu and (overrideGpuCheck == nil) then
         local arch = os.getenv("EESSI_CPU_FAMILY") or ""
         local cudaVersionFile = "/cvmfs/software.eessi.io/host_injections/nvidia/" .. arch .. "/latest/cuda_version.txt"
         local cudaDriverFile = "/cvmfs/software.eessi.io/host_injections/nvidia/" .. arch .. "/latest/libcuda.so"
@@ -141,7 +142,9 @@ local function eessi_cuda_enabled_load_hook(t)
         if not (cudaDriverExists or singularityCudaExists)  then
             local advice = "which relies on the CUDA runtime environment and driver libraries. "
             advice = advice .. "In order to be able to use the module, you will need "
-            advice = advice .. "to make sure EESSI can find the GPU driver libraries on your host system.\\n"
+            advice = advice .. "to make sure EESSI can find the GPU driver libraries on your host system. You can "
+            advice = advice .. "override this check by setting the environment variable EESSI_OVERRIDE_GPU_CHECK but "
+            advice = advice .. "the loaded application will not be able to execute on your system.\\n"
             advice = advice .. refer_to_docs
             LmodError("\\nYou requested to load ", simpleName, " ", advice)
         else
@@ -172,9 +175,25 @@ local function eessi_cuda_enabled_load_hook(t)
     end
 end
 
+local function eessi_espresso_deprecated_message(t)
+    local frameStk  = require("FrameStk"):singleton()
+    local mt        = frameStk:mt()
+    local simpleName = string.match(t.modFullName, "(.-)/")
+    local version = string.match(t.modFullName, "%d.%d.%d")
+    if simpleName == 'ESPResSo' and version == '4.2.1' then
+    -- Print a message on loading ESPreSso v <= 4.2.1 recommending using v 4.2.2 and above.
+    -- A message and not a warning as the exit code would break CI runs otherwise.
+        local advice = 'Prefer versions  >= 4.2.2 which include important bugfixes.\\n'
+        advice = advice .. 'For details see https://github.com/espressomd/espresso/releases/tag/4.2.2\\n'
+        advice = advice .. 'Use version 4.2.1 at your own risk!\\n'
+        LmodMessage("\\nESPResSo v4.2.1 has known issues and has been deprecated. ", advice)
+    end
+end
+
 -- Combine both functions into a single one, as we can only register one function as load hook in lmod
 -- Also: make it non-local, so it can be imported and extended by other lmodrc files if needed
 function eessi_load_hook(t)
+    eessi_espresso_deprecated_message(t)
     -- Only apply CUDA hooks if the loaded module is in the EESSI prefix
     -- This avoids getting an Lmod Error when trying to load a CUDA module from a local software stack
     if from_eessi_prefix(t) then

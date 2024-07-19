@@ -138,7 +138,7 @@ echo "bot/build.sh: EESSI_VERSION_OVERRIDE='${EESSI_VERSION_OVERRIDE}'"
 # determine CVMFS repo to be used from .repository.repo_name in ${JOB_CFG_FILE}
 # here, just set EESSI_CVMFS_REPO_OVERRIDE, a bit further down
 # "source init/eessi_defaults" via sourcing init/minimal_eessi_env
-export EESSI_CVMFS_REPO_OVERRIDE=$(cfg_get_value "repository" "repo_name")
+export EESSI_CVMFS_REPO_OVERRIDE=/cvmfs/$(cfg_get_value "repository" "repo_name")
 echo "bot/build.sh: EESSI_CVMFS_REPO_OVERRIDE='${EESSI_CVMFS_REPO_OVERRIDE}'"
 
 # determine architecture to be used from entry .architecture in ${JOB_CFG_FILE}
@@ -223,7 +223,15 @@ mkdir -p ${TARBALL_TMP_BUILD_STEP_DIR}
 BUILD_STEP_ARGS+=("--save" "${TARBALL_TMP_BUILD_STEP_DIR}")
 BUILD_STEP_ARGS+=("--storage" "${STORAGE}")
 # add options required to handle NVIDIA support
-BUILD_STEP_ARGS+=("--nvidia" "all")
+if command_exists "nvidia-smi"; then
+    echo "Command 'nvidia-smi' found, using available GPU"
+    BUILD_STEP_ARGS+=("--nvidia" "all")
+else
+    echo "No 'nvidia-smi' found, no available GPU but allowing overriding this check"
+    BUILD_STEP_ARGS+=("--nvidia" "install")
+fi
+# Retain location for host injections so we don't reinstall CUDA
+# (Always need to run the driver installation as available driver may change)
 if [[ ! -z ${SHARED_FS_PATH} ]]; then
     BUILD_STEP_ARGS+=("--host-injections" "${SHARED_FS_PATH}/host-injections")
 fi
