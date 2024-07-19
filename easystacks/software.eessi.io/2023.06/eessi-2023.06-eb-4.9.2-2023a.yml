@@ -22,3 +22,7 @@ easyconfigs:
         from-commit: dbdaacc0739fdee91baa9123864ea4428cf21273
         # see https://github.com/easybuilders/easybuild-easyblocks/pull/3338
         include-easyblocks-from-commit: 32e45bd1f2d916732ca5852d55d17fa4d99e388b
+  - CP2K-2023.1-foss-2023a.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/20951
+        from-commit: a92667fe32396bbd4106243658625f7ff2adcd68
