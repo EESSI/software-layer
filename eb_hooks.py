@@ -391,8 +391,7 @@ def pre_configure_hook_extrae(self, *args, **kwargs):
 def pre_configure_hook_gobject_introspection(self, *args, **kwargs):
     """
     pre-configure hook for GObject-Introspection:
-    - prevent GObject-Introspection from setting $LD_LIBRARY_PATH if Easybuild is configured to filter it
-      that are configured to be filtered by EasyBuild, see:
+    - prevent GObject-Introspection from setting $LD_LIBRARY_PATH if EasyBuild is configured to filter it, see:
       https://github.com/EESSI/software-layer/issues/196
     """
     if self.name == 'GObject-Introspection':
