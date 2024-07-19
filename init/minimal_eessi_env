@@ -2,7 +2,7 @@
 #
 # this script is *sourced*, not executed, so can't rely on $0 to determine path to self
 # $BASH_SOURCE points to correct path, see also http://mywiki.wooledge.org/BashFAQ/028
-EESSI_INIT_DIR_PATH=$(dirname $(realpath $BASH_SOURCE))
+EESSI_INIT_DIR_PATH=$(dirname $(readlink -f $BASH_SOURCE))
 
 # set up defaults: EESSI_CVMFS_REPO, EESSI_VERSION
 #   script takes *_OVERRIDEs into account
