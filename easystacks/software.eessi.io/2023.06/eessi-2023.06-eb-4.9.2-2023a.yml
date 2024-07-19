@@ -16,3 +16,9 @@ easyconfigs:
   - MAFFT-7.520-GCC-12.3.0-with-extensions.eb
   - ncbi-vdb-3.0.10-gompi-2023a.eb
   - MetalWalls-21.06.1-foss-2023a.eb
+  - QuantumESPRESSO-7.3.1-foss-2023a.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/20138
+        from-commit: dbdaacc0739fdee91baa9123864ea4428cf21273
+        # see https://github.com/easybuilders/easybuild-easyblocks/pull/3338
+        include-easyblocks-from-commit: 32e45bd1f2d916732ca5852d55d17fa4d99e388b
