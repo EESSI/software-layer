@@ -14,8 +14,8 @@ easyconfigs:
   - R-4.4.1-gfbf-2023b.eb:
       options:
         # see https://github.com/easybuilders/easybuild-easyconfigs/pull/20898
-        from-commit: 37e673217efbecc359d6008dcf19f8dbf72e777c
+        from-commit: 12ef0f174250928ca9a5ccf47e4f7ca0ce56811f
   - R-bundle-CRAN-2024.06-foss-2023b.eb:
       options:
         # see https://github.com/easybuilders/easybuild-easyconfigs/pull/20898
-        from-commit: 37e673217efbecc359d6008dcf19f8dbf72e777c
+        from-commit: 12ef0f174250928ca9a5ccf47e4f7ca0ce56811f
