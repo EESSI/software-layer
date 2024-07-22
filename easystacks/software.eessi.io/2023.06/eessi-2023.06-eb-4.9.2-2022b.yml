@@ -1,0 +1,4 @@
+easyconfigs:
+  - BLAST+-2.14.0-gompi-2022b.eb:
+      options:
+        from-commit: 1775912a1d36101d560e1355967732b07e82cd24
