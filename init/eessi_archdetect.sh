@@ -2,25 +2,22 @@
 
 # Confirm the current shell is Bash >= 4
 # (works for sh, bash, dash, zsh, ksh, but not fish, tcsh, elvish)
-check_bash() {
-    if [ -n "$BASH_VERSION" ]; then
-        # Extract the major version numbers
-        bash_version=$(echo "$BASH_VERSION" | grep -oP '^\d+\.\d+')
-        major_version=$(echo "$bash_version" | cut -d. -f1)
+if [ -n "$BASH_VERSION" ]; then
+    # Extract the major version numbers
+    bash_version=$(echo "$BASH_VERSION" | grep -oP '^\d+\.\d+')
+    major_version=$(echo "$bash_version" | cut -d. -f1)
 
-        # Check if the major version is 4 or higher
-        if [ "$major_version" -ge 4 ]; then
-            return 0
-        else
-            echo "Error: This script must be run with Bash > 4, you have $BASH_VERSION." >&2
-            exit 1
-        fi
+    # Check if the major version is 4 or higher
+    if [ "$major_version" -ge 4 ]; then
+        return 0
     else
-        echo "Error: This script must be run with Bash." >&2
+        echo "Error: This script must be run with Bash > 4, you have $BASH_VERSION." >&2
         exit 1
     fi
-}
-check_bash
+else
+    echo "Error: This script must be run with Bash." >&2
+    exit 1
+fi
 
 VERSION="1.1.0"
 
