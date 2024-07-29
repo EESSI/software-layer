@@ -18,4 +18,3 @@ easyconfigs:
   - Python/3.11.5-GCCcore-13.2.0:
       options:
         include-easyblocks-from-pr: 3352
-  - librosa-0.10.1-foss-2023a.eb
