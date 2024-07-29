@@ -1,0 +1,21 @@
+# 2024.07.29
+# Python ctypes relies on LD_LIBRARY_PATH and doesn't respect rpath linking. There is a workaround
+# for the EasyBuild context in https://github.com/easybuilders/easybuild-easyblocks/pull/3352.
+#
+# This rebuild ensures this fix is available for all Python versions shipped with EESSI.
+# 
+# See https://gitlab.com/eessi/support/-/issues/77
+easyconfigs:
+  - Python/3.10.8-GCCcore-12.2.0-bare
+      options:
+        include-easyblocks-from-pr: 3352
+  - Python/3.10.8-GCCcore-12.2.0
+      options:
+        include-easyblocks-from-pr: 3352
+  - Python/3.11.3-GCCcore-12.3.0
+      options:
+        include-easyblocks-from-pr: 3352
+  - Python/3.11.5-GCCcore-13.2.0
+      options:
+        include-easyblocks-from-pr: 3352
+  - librosa-0.10.1-foss-2023a.eb
