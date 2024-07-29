@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 
 # Confirm the current shell is Bash >= 4
+# (works for sh, bash, dash, zsh, ksh, but not fish, tcsh, elvish)
 check_bash() {
     if [ -n "$BASH_VERSION" ]; then
         # Extract the major version numbers
