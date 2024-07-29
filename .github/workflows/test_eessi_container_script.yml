@@ -1,11 +1,15 @@
 # documentation: https://help.github.com/en/articles/workflow-syntax-for-github-actions
 name: Tests for eessi_container.sh script
-on: [push, pull_request, workflow_dispatch]
+on:
+  push:
+    branches: [ "*-software.eessi.io" ]
+  pull_request:
+  workflow_dispatch:
 permissions:
   contents: read # to fetch code (actions/checkout)
 jobs:
   eessi_container_script:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     strategy:
       fail-fast: false
       matrix:
@@ -45,7 +49,8 @@ jobs:
               elif [[ ${{matrix.SCRIPT_TEST}} == 'listrepos_default' ]]; then
                 outfile=out_listrepos.txt
                 ./eessi_container.sh --verbose --list-repos | tee ${outfile}
-                grep "EESSI" ${outfile}
+                # make sure that the default EESSI software repository is available
+                grep "software.eessi.io" ${outfile}
 
               # test use of --list-repos with custom repos.cfg
               elif [[ ${{matrix.SCRIPT_TEST}} == 'listrepos_custom' ]]; then
@@ -57,11 +62,12 @@ jobs:
                 echo "[EESSI/20HT.TP]" >> cfg/repos.cfg
                 echo "repo_version = 20HT.TP" >> cfg/repos.cfg
                 ./eessi_container.sh --verbose --list-repos | tee ${outfile}
-                grep "EESSI" ${outfile}
+                # make sure that the default EESSI software repository is available
+                grep "software.eessi.io" ${outfile}
 
                 export EESSI_REPOS_CFG_DIR_OVERRIDE=${PWD}/cfg
                 ./eessi_container.sh --verbose --list-repos | tee ${outfile2}
-                grep "[EESSI/2023.02]" ${outfile2}
+                grep "EESSI/20AB.CD" ${outfile2}
 
               # test use of --mode run
               elif [[ ${{matrix.SCRIPT_TEST}} == 'run' ]]; then

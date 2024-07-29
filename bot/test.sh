@@ -160,7 +160,7 @@ echo "bot/test.sh: EESSI_PILOT_VERSION_OVERRIDE='${EESSI_PILOT_VERSION_OVERRIDE}
 # determine CVMFS repo to be used from .repository.repo_name in ${JOB_CFG_FILE}
 # here, just set EESSI_CVMFS_REPO_OVERRIDE, a bit further down
 # "source init/eessi_defaults" via sourcing init/minimal_eessi_env
-export EESSI_CVMFS_REPO_OVERRIDE=$(cfg_get_value "repository" "repo_name")
+export EESSI_CVMFS_REPO_OVERRIDE=/cvmfs/$(cfg_get_value "repository" "repo_name")
 echo "bot/test.sh: EESSI_CVMFS_REPO_OVERRIDE='${EESSI_CVMFS_REPO_OVERRIDE}'"
 
 # determine architecture to be used from entry .architecture in ${JOB_CFG_FILE}
@@ -204,6 +204,9 @@ if [[ -z ${RESUME_DIR} ]]; then
 else
   TEST_STEP_ARGS+=("--resume" "${RESUME_DIR}")
 fi
+# Bind mount /sys/fs/cgroup so that we can determine the amount of memory available in our cgroup for
+# Reframe configuration
+TEST_STEP_ARGS+=("--extra-bind-paths" "/sys/fs/cgroup:/hostsys/fs/cgroup:ro")
 
 # prepare arguments to test_suite.sh (specific to test step)
 declare -a TEST_SUITE_ARGS=()
