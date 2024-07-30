@@ -34,3 +34,43 @@ easyconfigs:
         # see https://github.com/easybuilders/easybuild-easyconfigs/pull/19996
         from-pr: 19996
   - dask-2023.9.2-foss-2023a.eb
+  - OSU-Micro-Benchmarks-7.2-gompi-2023a-CUDA-12.1.1.eb
+  - JupyterNotebook-7.0.2-GCCcore-12.3.0.eb
+  - ImageMagick-7.1.1-15-GCCcore-12.3.0.eb:
+      options:
+        from-pr: 20086
+  - Z3-4.12.2-GCCcore-12.3.0.eb:
+      options:
+        # The Z3 dependency of PyTorch had it's versionsuffix removed
+        # and we need to workaround the problem this creates,
+        # see https://github.com/EESSI/software-layer/pull/501 for details
+        from-pr: 20050
+  - PyOpenGL-3.1.7-GCCcore-12.3.0.eb:
+      options:
+        from-pr: 20007
+  # removed by https://github.com/easybuilders/easybuild-easyconfigs/pull/20586
+  # adding ipympl-0.9.3-gfbf-2023a.eb as a replacement in
+  # easystacks/software.eessi.io/2023.06/eessi-2023.06-eb-4.9.1-2023a.yml
+  # comment the below out here or CI will fail
+  # - ipympl-0.9.3-foss-2023a.eb:
+  #    options:
+  #      from-pr: 20126
+  - OpenJPEG-2.5.0-GCCcore-12.3.0.eb
+  - OpenFOAM-10-foss-2023a.eb
+  - Highway-1.0.4-GCCcore-12.3.0.eb
+  - ELPA-2023.05.001-foss-2023a.eb
+  - libxc-6.2.2-GCC-12.3.0.eb
+  - SuperLU_DIST-8.1.2-foss-2023a.eb:
+      options:
+        from-pr: 20162
+  - PETSc-3.20.3-foss-2023a.eb:
+      options:
+        include-easyblocks-from-pr: 3086
+        from-pr: 19686
+  - MODFLOW-6.4.4-foss-2023a.eb:
+      options:
+        from-pr: 20142
+  - R-bundle-CRAN-2023.12-foss-2023a.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/20238
+        from-pr: 20238

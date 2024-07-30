@@ -14,6 +14,12 @@ display_help() {
   echo "  -x | --http-proxy URL  -  provides URL for the environment variable http_proxy"
   echo "  -y | --https-proxy URL -  provides URL for the environment variable https_proxy"
   echo "  --shared-fs-path       -  path to directory on shared filesystem that can be used"
+  echo "  --skip-cuda-install    -  disable installing a full CUDA SDK in the host_injections prefix (e.g. in CI)"
+}
+
+# Function to check if a command exists
+function command_exists() {
+    command -v "$1" >/dev/null 2>&1
 }
 
 function copy_build_log() {
@@ -75,6 +81,10 @@ while [[ $# -gt 0 ]]; do
     --shared-fs-path)
       export shared_fs_path="${2}"
       shift 2
+      ;;
+    --skip-cuda-install)
+      export skip_cuda_install=True
+      shift 1
       ;;
     -*|--*)
       echo "Error: Unknown option: $1" >&2
@@ -145,6 +155,26 @@ if [ -z $EESSI_SOFTWARE_SUBDIR_OVERRIDE ]; then
   echo ">> Determined \$EESSI_SOFTWARE_SUBDIR_OVERRIDE via 'archdetect' script ($override_subdir from $possible_subdir_paths)"
 else
   echo ">> Picking up pre-defined \$EESSI_SOFTWARE_SUBDIR_OVERRIDE: ${EESSI_SOFTWARE_SUBDIR_OVERRIDE}"
+  # make sure directory exists (since it's expected by init/eessi_environment_variables when using archdetect)
+  mkdir -p ${EESSI_PREFIX}/software/${EESSI_OS_TYPE}/${EESSI_SOFTWARE_SUBDIR_OVERRIDE}
+fi
+
+# if we run the script for the first time, e.g., to start building for a new
+#   stack, we need to ensure certain files are present in
+#   ${EESSI_PREFIX}/software/${EESSI_OS_TYPE}/${EESSI_SOFTWARE_SUBDIR_OVERRIDE}
+# - .lmod/lmodrc.lua
+# - .lmod/SitePackage.lua
+_eessi_software_path=${EESSI_PREFIX}/software/${EESSI_OS_TYPE}/${EESSI_SOFTWARE_SUBDIR_OVERRIDE}
+_lmod_cfg_dir=${_eessi_software_path}/.lmod
+_lmod_rc_file=${_lmod_cfg_dir}/lmodrc.lua
+if [ ! -f ${_lmod_rc_file} ]; then
+    command -V python3
+    python3 ${TOPDIR}/create_lmodrc.py ${_eessi_software_path}
+fi
+_lmod_sitepackage_file=${_lmod_cfg_dir}/SitePackage.lua
+if [ ! -f ${_lmod_sitepackage_file} ]; then
+    command -V python3
+    python3 ${TOPDIR}/create_lmodsitepackage.py ${_eessi_software_path}
 fi
 
 # Set all the EESSI environment variables (respecting $EESSI_SOFTWARE_SUBDIR_OVERRIDE)
@@ -202,38 +232,60 @@ ${TOPDIR}/install_scripts.sh --prefix ${EESSI_PREFIX}
 # Install full CUDA SDK in host_injections
 # Hardcode this for now, see if it works
 # TODO: We should make a nice yaml and loop over all CUDA versions in that yaml to figure out what to install
-${EESSI_PREFIX}/scripts/gpu_support/nvidia/install_cuda_host_injections.sh -c 12.1.1 --accept-cuda-eula
+# Allow skipping CUDA SDK install in e.g. CI environments
+# The install_cuda... script uses EasyBuild. So, we need to check if we have EB
+# or skip this step.
+module_avail_out=$TMPDIR/ml.out
+module avail 2>&1 | grep EasyBuild &> ${module_avail_out}
+if [[ $? -eq 0 ]]; then
+    echo_green ">> Found an EasyBuild module"
+else
+    echo_yellow ">> No EasyBuild module found: skipping step to install CUDA (see output in ${module_avail_out})"
+    export skip_cuda_install=True
+fi
 
-# Install drivers in host_injections
-# TODO: this is commented out for now, because the script assumes that nvidia-smi is available and works;
-#       if not, an error is produced, and the bot flags the whole build as failed (even when not installing GPU software)
-# ${EESSI_PREFIX}/scripts/gpu_support/nvidia/link_nvidia_host_libraries.sh
+if [ -z "${skip_cuda_install}" ] || [ ! "${skip_cuda_install}" ]; then
+    ${EESSI_PREFIX}/scripts/gpu_support/nvidia/install_cuda_host_injections.sh -c 12.1.1 --accept-cuda-eula
+else
+    echo "Skipping installation of CUDA SDK in host_injections, since the --skip-cuda-install flag was passed OR no EasyBuild module was found"
+fi
+
+# Install NVIDIA drivers in host_injections (if they exist)
+if command_exists "nvidia-smi"; then
+    echo "Command 'nvidia-smi' found. Installing NVIDIA drivers for use in prefix shell..."
+    ${EESSI_PREFIX}/scripts/gpu_support/nvidia/link_nvidia_host_libraries.sh
+fi
 
 # use PR patch file to determine in which easystack files stuff was added
 changed_easystacks=$(cat ${pr_diff} | grep '^+++' | cut -f2 -d' ' | sed 's@^[a-z]/@@g' | grep '^easystacks/.*yml$' | egrep -v 'known-issues|missing') 
-if [ -z ${changed_easystacks} ]; then
+if [ -z "${changed_easystacks}" ]; then
     echo "No missing installations, party time!"  # Ensure the bot report success, as there was nothing to be build here
 else
-    for easystack_file in ${changed_easystacks}; do
-    
+
+    # first process rebuilds, if any, then easystack files for new installations
+    # "|| true" is used to make sure that the grep command always returns success
+    rebuild_easystacks=$(echo "${changed_easystacks}" | (grep "/rebuilds/" || true))
+    new_easystacks=$(echo "${changed_easystacks}" | (grep -v "/rebuilds/" || true))
+    for easystack_file in ${rebuild_easystacks} ${new_easystacks}; do
+
         echo -e "Processing easystack file ${easystack_file}...\n\n"
-    
+
         # determine version of EasyBuild module to load based on EasyBuild version included in name of easystack file
         eb_version=$(echo ${easystack_file} | sed 's/.*eb-\([0-9.]*\).*/\1/g')
-    
+
         # load EasyBuild module (will be installed if it's not available yet)
         source ${TOPDIR}/load_easybuild_module.sh ${eb_version}
-    
+
         ${EB} --show-config
-    
+
         echo_green "All set, let's start installing some software with EasyBuild v${eb_version} in ${EASYBUILD_INSTALLPATH}..."
-    
+
         if [ -f ${easystack_file} ]; then
             echo_green "Feeding easystack file ${easystack_file} to EasyBuild..."
-    
+
             ${EB} --easystack ${TOPDIR}/${easystack_file} --robot
             ec=$?
-    
+
             # copy EasyBuild log file if EasyBuild exited with an error
             if [ ${ec} -ne 0 ]; then
                 eb_last_log=$(unset EB_VERBOSE; eb --last-log)
@@ -244,25 +296,33 @@ else
                 copy_build_log "${eb_last_log}" "${build_logs_dir}"
             fi
     
-            $TOPDIR/check_missing_installations.sh ${TOPDIR}/${easystack_file}
+            $TOPDIR/check_missing_installations.sh ${TOPDIR}/${easystack_file} ${TOPDIR}/${pr_diff}
         else
             fatal_error "Easystack file ${easystack_file} not found!"
         fi
-    
+
     done
 fi
 
 ### add packages here
 
-echo ">> Creating/updating Lmod cache..."
-export LMOD_RC="${EASYBUILD_INSTALLPATH}/.lmod/lmodrc.lua"
+echo ">> Creating/updating Lmod RC file..."
+export LMOD_CONFIG_DIR="${EASYBUILD_INSTALLPATH}/.lmod"
+lmod_rc_file="$LMOD_CONFIG_DIR/lmodrc.lua"
 lmodrc_changed=$(cat ${pr_diff} | grep '^+++' | cut -f2 -d' ' | sed 's@^[a-z]/@@g' | grep '^create_lmodrc.py$' > /dev/null; echo $?)
-if [ ! -f $LMOD_RC ] || [ ${lmodrc_changed} == '0' ]; then
+if [ ! -f $lmod_rc_file ] || [ ${lmodrc_changed} == '0' ]; then
     python3 $TOPDIR/create_lmodrc.py ${EASYBUILD_INSTALLPATH}
-    check_exit_code $? "$LMOD_RC created" "Failed to create $LMOD_RC"
+    check_exit_code $? "$lmod_rc_file created" "Failed to create $lmod_rc_file"
 fi
 
-$TOPDIR/update_lmod_cache.sh ${EPREFIX} ${EASYBUILD_INSTALLPATH}
+echo ">> Creating/updating Lmod SitePackage.lua ..."
+export LMOD_PACKAGE_PATH="${EASYBUILD_INSTALLPATH}/.lmod"
+lmod_sitepackage_file="$LMOD_PACKAGE_PATH/SitePackage.lua"
+sitepackage_changed=$(cat ${pr_diff} | grep '^+++' | cut -f2 -d' ' | sed 's@^[a-z]/@@g' | grep '^create_lmodsitepackage.py$' > /dev/null; echo $?)
+if [ ! -f "$lmod_sitepackage_file" ] || [ "${sitepackage_changed}" == '0' ]; then
+    python3 $TOPDIR/create_lmodsitepackage.py ${EASYBUILD_INSTALLPATH}
+    check_exit_code $? "$lmod_sitepackage_file created" "Failed to create $lmod_sitepackage_file"
+fi
 
 echo ">> Cleaning up ${TMPDIR}..."
 rm -r ${TMPDIR}

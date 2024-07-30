@@ -1,5 +1,6 @@
 # Hooks to customize how EasyBuild installs software in EESSI
 # see https://docs.easybuild.io/en/latest/Hooks.html
+import glob
 import os
 import re
 
@@ -20,8 +21,10 @@ except ImportError:
     from distutils.version import LooseVersion
 
 
+CPU_TARGET_NEOVERSE_N1 = 'aarch64/neoverse_n1'
 CPU_TARGET_NEOVERSE_V1 = 'aarch64/neoverse_v1'
-CPU_TARGET_AARCH64_GENERIC = 'aarch64/generic' 
+CPU_TARGET_AARCH64_GENERIC = 'aarch64/generic'
+CPU_TARGET_A64FX = 'aarch64/a64fx'
 
 EESSI_RPATH_OVERRIDE_ATTR = 'orig_rpath_override_dirs'
 
@@ -79,8 +82,12 @@ def post_ready_hook(self, *args, **kwargs):
     """
     # 'parallel' easyconfig parameter is set via EasyBlock.set_parallel in ready step based on available cores.
     # here we reduce parallellism to only use half of that for selected software,
-    # to avoid failing builds/tests due to out-of-memory problems
-    if self.name in ['TensorFlow', 'libxc']:
+    # to avoid failing builds/tests due to out-of-memory problems;
+    memory_hungry_build = self.name in ['libxc', 'TensorFlow']
+    # on A64FX systems, (HBM) memory is typically scarce, so we need to use fewer cores for some builds
+    cpu_target = get_eessi_envvar('EESSI_SOFTWARE_SUBDIR')
+    memory_hungry_build_a64fx = cpu_target == CPU_TARGET_A64FX and self.name in ['Qt5']
+    if memory_hungry_build or memory_hungry_build_a64fx:
         parallel = self.cfg['parallel']
         if parallel > 1:
             self.cfg['parallel'] = parallel // 2
@@ -114,6 +121,9 @@ def pre_prepare_hook(self, *args, **kwargs):
         update_build_option('rpath_override_dirs', rpath_override_dirs)
         print_msg("Updated rpath_override_dirs (to allow overriding MPI family %s): %s",
                   mpi_family, rpath_override_dirs)
+
+    if self.name in PRE_PREPARE_HOOKS:
+        PRE_PREPARE_HOOKS[self.name](self, *args, **kwargs)
 
 
 def post_prepare_hook_gcc_prefixed_ld_rpath_wrapper(self, *args, **kwargs):
@@ -158,6 +168,32 @@ def post_prepare_hook(self, *args, **kwargs):
 
     if self.name in POST_PREPARE_HOOKS:
         POST_PREPARE_HOOKS[self.name](self, *args, **kwargs)
+
+
+def parse_hook_casacore_disable_vectorize(ec, eprefix):
+    """
+    Disable 'vectorize' toolchain option for casacore 3.5.0 on aarch64/neoverse_v1
+    Compiling casacore 3.5.0 with GCC 13.2.0 (foss-2023b) gives an error when building for aarch64/neoverse_v1.
+    See also, https://github.com/EESSI/software-layer/pull/479
+    """
+    if ec.name == 'casacore':
+        tcname, tcversion = ec['toolchain']['name'], ec['toolchain']['version']
+        if (
+            LooseVersion(ec.version) == LooseVersion('3.5.0') and
+            tcname == 'foss' and tcversion == '2023b'
+        ):
+            cpu_target = get_eessi_envvar('EESSI_SOFTWARE_SUBDIR')
+            if cpu_target == CPU_TARGET_NEOVERSE_V1:
+                if not hasattr(ec, 'toolchainopts'):
+                    ec['toolchainopts'] = {}
+                ec['toolchainopts']['vectorize'] = False
+                print_msg("Changed toochainopts for %s: %s", ec.name, ec['toolchainopts'])
+            else:
+                print_msg("Not changing option vectorize for %s on non-neoverse_v1", ec.name)
+        else:
+            print_msg("Not changing option vectorize for %s %s %s", ec.name, ec.version, ec.toolchain)
+    else:
+        raise EasyBuildError("casacore-specific hook triggered for non-casacore easyconfig?!")
 
 
 def parse_hook_cgal_toolchainopts_precise(ec, eprefix):
@@ -263,10 +299,140 @@ def parse_hook_lammps_remove_deps_for_CI_aarch64(ec, *args, **kwargs):
         raise EasyBuildError("LAMMPS-specific hook triggered for non-LAMMPS easyconfig?!")
 
 
+def parse_hook_CP2K_remove_deps_for_aarch64(ec, *args, **kwargs):
+    """
+    Remove x86_64 specific dependencies for the CI and missing installations to pass on aarch64
+    """
+    if ec.name == 'CP2K' and ec.version in ('2023.1',):
+        if os.getenv('EESSI_CPU_FAMILY') == 'aarch64':
+            # LIBXSMM is not supported on ARM with GCC 12.2.0 and 12.3.0
+            # See https://www.cp2k.org/dev:compiler_support
+            # See https://github.com/easybuilders/easybuild-easyconfigs/pull/20951
+            # we need this hook because we check for missing installations for all CPU targets
+            # on an x86_64 VM in GitHub Actions (so condition based on ARCH in LAMMPS easyconfig is always true)
+            ec['dependencies'] = [dep for dep in ec['dependencies'] if dep[0] not in ('libxsmm',)]
+    else:
+        raise EasyBuildError("CP2K-specific hook triggered for non-CP2K easyconfig?!")
+
+
+def pre_prepare_hook_highway_handle_test_compilation_issues(self, *args, **kwargs):
+    """
+    Solve issues with compiling or running the tests on both
+    neoverse_n1 and neoverse_v1 with Highway 1.0.4 and GCC 12.3.0:
+      - for neoverse_n1 we set optarch to GENERIC
+      - for neoverse_v1 we completely disable the tests
+    cfr. https://github.com/EESSI/software-layer/issues/469
+    """
+    if self.name == 'Highway':
+        tcname, tcversion = self.toolchain.name, self.toolchain.version
+        cpu_target = get_eessi_envvar('EESSI_SOFTWARE_SUBDIR')
+        # note: keep condition in sync with the one used in 
+        # post_prepare_hook_highway_handle_test_compilation_issues
+        if self.version in ['1.0.4'] and tcname == 'GCCcore' and tcversion == '12.3.0':
+            if cpu_target == CPU_TARGET_NEOVERSE_V1:
+                self.cfg.update('configopts', '-DHWY_ENABLE_TESTS=OFF')
+            if cpu_target == CPU_TARGET_NEOVERSE_N1:
+                self.orig_optarch = build_option('optarch')
+                update_build_option('optarch', OPTARCH_GENERIC)
+    else:
+        raise EasyBuildError("Highway-specific hook triggered for non-Highway easyconfig?!")
+
+
+def post_prepare_hook_highway_handle_test_compilation_issues(self, *args, **kwargs):
+    """
+    Post-prepare hook for Highway to reset optarch build option.
+    """
+    if self.name == 'Highway':
+        tcname, tcversion = self.toolchain.name, self.toolchain.version
+        cpu_target = get_eessi_envvar('EESSI_SOFTWARE_SUBDIR')
+        # note: keep condition in sync with the one used in 
+        # pre_prepare_hook_highway_handle_test_compilation_issues
+        if self.version in ['1.0.4'] and tcname == 'GCCcore' and tcversion == '12.3.0':
+            if cpu_target == CPU_TARGET_NEOVERSE_N1:
+                update_build_option('optarch', self.orig_optarch)
+
 def pre_configure_hook(self, *args, **kwargs):
     """Main pre-configure hook: trigger custom functions based on software name."""
     if self.name in PRE_CONFIGURE_HOOKS:
         PRE_CONFIGURE_HOOKS[self.name](self, *args, **kwargs)
+
+
+def pre_configure_hook_BLIS_a64fx(self, *args, **kwargs):
+    """
+    Pre-configure hook for BLIS when building for A64FX:
+    - add -DCACHE_SECTOR_SIZE_READONLY to $CFLAGS for BLIS 0.9.0, cfr. https://github.com/flame/blis/issues/800
+    """
+    if self.name == 'BLIS':
+        cpu_target = get_eessi_envvar('EESSI_SOFTWARE_SUBDIR')
+        if self.version == '0.9.0' and cpu_target == CPU_TARGET_A64FX:
+            # last argument of BLIS' configure command is configuration target (usually 'auto' for auto-detect),
+            # specifying of variables should be done before that
+            config_opts = self.cfg['configopts'].split(' ')
+            cflags_var = 'CFLAGS="$CFLAGS -DCACHE_SECTOR_SIZE_READONLY"'
+            config_target = config_opts[-1]
+            self.cfg['configopts'] = ' '.join(config_opts[:-1] + [cflags_var, config_target])
+    else:
+        raise EasyBuildError("BLIS-specific hook triggered for non-BLIS easyconfig?!")
+
+def pre_configure_hook_extrae(self, *args, **kwargs):
+    """
+    Pre-configure hook for Extrae
+    - avoid use of 'which' in configure script
+    - specify correct path to binutils/zlib (in compat layer)
+    """
+    if self.name == 'Extrae':
+
+        # determine path to Prefix installation in compat layer via $EPREFIX
+        eprefix = get_eessi_envvar('EPREFIX')
+
+        binutils_lib_path_glob_pattern = os.path.join(eprefix, 'usr', 'lib*', 'binutils', '*-linux-gnu', '2.*')
+        binutils_lib_path = glob.glob(binutils_lib_path_glob_pattern)
+        if len(binutils_lib_path) == 1:
+            self.cfg.update('configopts', '--with-binutils=' + binutils_lib_path[0])
+        else:
+            raise EasyBuildError("Failed to isolate path for binutils libraries using %s, got %s",
+                                 binutils_lib_path_glob_pattern, binutils_lib_path)
+
+        # zlib is a filtered dependency, so we need to manually specify it's location to avoid the host version
+        self.cfg.update('configopts', '--with-libz=' + eprefix)
+
+        # replace use of 'which' with 'command -v', since 'which' is broken in EESSI build container;
+        # this must be done *after* running configure script, because initial configuration re-writes configure script,
+        # and problem due to use of which only pops up when running make ?!
+        self.cfg.update('prebuildopts', "cp config/mpi-macros.m4 config/mpi-macros.m4.orig && sed -i 's/`which /`command -v /g' config/mpi-macros.m4 && ")
+    else:
+        raise EasyBuildError("Extrae-specific hook triggered for non-Extrae easyconfig?!")
+
+
+def pre_configure_hook_gobject_introspection(self, *args, **kwargs):
+    """
+    pre-configure hook for GObject-Introspection:
+    - prevent GObject-Introspection from setting $LD_LIBRARY_PATH if EasyBuild is configured to filter it, see:
+      https://github.com/EESSI/software-layer/issues/196
+    """
+    if self.name == 'GObject-Introspection':
+        # inject a line that removes all items from runtime_path_envvar that are in $EASYBUILD_FILTER_ENVVARS
+        sed_cmd = r'sed -i "s@\(^\s*runtime_path_envvar = \)\(.*\)@'
+        sed_cmd += r'\1\2\n\1 [x for x in runtime_path_envvar if not x in os.environ.get(\'EASYBUILD_FILTER_ENV_VARS\', \'\').split(\',\')]@g"'
+        sed_cmd += ' %(start_dir)s/giscanner/ccompiler.py && '
+        self.cfg.update('preconfigopts', sed_cmd)
+    else:
+        raise EasyBuildError("GObject-Introspection-specific hook triggered for non-GObject-Introspection easyconfig?!")
+
+
+def pre_configure_hook_gromacs(self, *args, **kwargs):
+    """
+    Pre-configure hook for GROMACS:
+    - avoid building with SVE instructions on Neoverse V1 as workaround for failing tests,
+      see https://gitlab.com/gromacs/gromacs/-/issues/5057 + https://gitlab.com/eessi/support/-/issues/47
+    """
+    if self.name == 'GROMACS':
+        cpu_target = get_eessi_envvar('EESSI_SOFTWARE_SUBDIR')
+        if LooseVersion(self.version) <= LooseVersion('2024.1') and cpu_target == CPU_TARGET_NEOVERSE_V1:
+            self.cfg.update('configopts', '-DGMX_SIMD=ARM_NEON_ASIMD')
+            print_msg("Avoiding use of SVE instructions for GROMACS %s by using ARM_NEON_ASIMD as GMX_SIMD value", self.version)
+    else:
+        raise EasyBuildError("GROMACS-specific hook triggered for non-GROMACS easyconfig?!")
 
 
 def pre_configure_hook_openblas_optarch_generic(self, *args, **kwargs):
@@ -327,27 +493,12 @@ def pre_configure_hook_wrf_aarch64(self, *args, **kwargs):
             if LooseVersion(self.version) <= LooseVersion('3.9.0'):
                     self.cfg.update('preconfigopts', "sed -i 's/%s/%s/g' arch/configure_new.defaults && " % (pattern, repl))
                     print_msg("Using custom preconfigopts for %s: %s", self.name, self.cfg['preconfigopts'])
-                    
+
             if LooseVersion('4.0.0') <= LooseVersion(self.version) <= LooseVersion('4.2.1'):
                     self.cfg.update('preconfigopts', "sed -i 's/%s/%s/g' arch/configure.defaults && " % (pattern, repl))
                     print_msg("Using custom preconfigopts for %s: %s", self.name, self.cfg['preconfigopts'])
     else:
         raise EasyBuildError("WRF-specific hook triggered for non-WRF easyconfig?!")
-
-
-def pre_configure_hook_atspi2core_filter_ld_library_path(self, *args, **kwargs):
-    """
-    pre-configure hook for at-spi2-core:
-    - instruct GObject-Introspection's g-ir-scanner tool to not set $LD_LIBRARY_PATH
-      when EasyBuild is configured to filter it, see:
-      https://github.com/EESSI/software-layer/issues/196
-    """
-    if self.name == 'at-spi2-core':
-        if build_option('filter_env_vars') and 'LD_LIBRARY_PATH' in build_option('filter_env_vars'):
-            sed_cmd = 'sed -i "s/gir_extra_args = \[/gir_extra_args = \[\\n  \'--lib-dirs-envvar=FILTER_LD_LIBRARY_PATH\',/g" %(start_dir)s/atspi/meson.build && '
-            self.cfg.update('preconfigopts', sed_cmd)
-    else:
-        raise EasyBuildError("at-spi2-core-specific hook triggered for non-at-spi2-core easyconfig?!")
 
 
 def pre_test_hook(self,*args, **kwargs):
@@ -388,20 +539,30 @@ def pre_test_hook_ignore_failing_tests_FFTWMPI(self, *args, **kwargs):
 def pre_test_hook_ignore_failing_tests_SciPybundle(self, *args, **kwargs):
     """
     Pre-test hook for SciPy-bundle: skip failing tests for selected SciPy-bundle versions
-    In version 2021.10, 2 failing tests in scipy 1.6.3:
+    In version 2021.10 on neoverse_v1, 2 failing tests in scipy 1.6.3:
         FAILED optimize/tests/test_linprog.py::TestLinprogIPSparse::test_bug_6139 - A...
         FAILED optimize/tests/test_linprog.py::TestLinprogIPSparsePresolve::test_bug_6139
         = 2 failed, 30554 passed, 2064 skipped, 10992 deselected, 76 xfailed, 7 xpassed, 40 warnings in 380.27s (0:06:20) =
-    In versions 2023.02, 2023.07, and 2023.11, 2 failing tests in scipy (versions 1.10.1, 1.11.1, 1.11.4):
+    In versions 2023.02 + 2023.07 + 2023.11 on neoverse_v1, 2 failing tests in scipy (versions 1.10.1, 1.11.1, 1.11.4):
         FAILED scipy/spatial/tests/test_distance.py::TestPdist::test_pdist_correlation_iris
         FAILED scipy/spatial/tests/test_distance.py::TestPdist::test_pdist_correlation_iris_float32
         = 2 failed, 54409 passed, 3016 skipped, 223 xfailed, 13 xpassed, 10917 warnings in 892.04s (0:14:52) =
-    In previous versions we were not as strict yet on the numpy/SciPy tests
+    In version 2023.07 on a64fx, 4 failing tests in scipy 1.11.1:
+        FAILED scipy/optimize/tests/test_linprog.py::TestLinprogIPSparse::test_bug_6139
+        FAILED scipy/optimize/tests/test_linprog.py::TestLinprogIPSparsePresolve::test_bug_6139
+        FAILED scipy/spatial/tests/test_distance.py::TestPdist::test_pdist_correlation_iris
+        FAILED scipy/spatial/tests/test_distance.py::TestPdist::test_pdist_correlation_iris_float32
+        = 4 failed, 54407 passed, 3016 skipped, 223 xfailed, 13 xpassed, 10917 warnings in 6068.43s (1:41:08) =
+    (in previous versions we were not as strict yet on the numpy/SciPy tests)
     """
     cpu_target = get_eessi_envvar('EESSI_SOFTWARE_SUBDIR')
-    scipy_bundle_versions = ('2021.10', '2023.02', '2023.07', '2023.11')
-    if self.name == 'SciPy-bundle' and self.version in scipy_bundle_versions and cpu_target == CPU_TARGET_NEOVERSE_V1:
-        self.cfg['testopts'] = "|| echo ignoring failing tests"
+    scipy_bundle_versions_nv1 = ('2021.10', '2023.02', '2023.07', '2023.11')
+    scipy_bundle_versions_a64fx = ('2023.07', '2023.11')
+    if self.name == 'SciPy-bundle':
+        if cpu_target == CPU_TARGET_NEOVERSE_V1 and self.version in scipy_bundle_versions_nv1:
+            self.cfg['testopts'] = "|| echo ignoring failing tests"
+        elif cpu_target == CPU_TARGET_A64FX and self.version in scipy_bundle_versions_a64fx:
+            self.cfg['testopts'] = "|| echo ignoring failing tests"
 
 def pre_test_hook_ignore_failing_tests_netCDF(self, *args, **kwargs):
     """
@@ -414,7 +575,7 @@ def pre_test_hook_ignore_failing_tests_netCDF(self, *args, **kwargs):
     """
     cpu_target = get_eessi_envvar('EESSI_SOFTWARE_SUBDIR')
     if self.name == 'netCDF' and self.version == '4.9.2' and cpu_target == CPU_TARGET_NEOVERSE_V1:
-        self.cfg['testopts'] = "|| echo ignoring failing tests" 
+        self.cfg['testopts'] = "|| echo ignoring failing tests"
 
 def pre_test_hook_increase_max_failed_tests_arm_PyTorch(self, *args, **kwargs):
     """
@@ -531,8 +692,8 @@ def post_sanitycheck_cuda(self, *args, **kwargs):
                 full_path = os.path.join(dir_path, filename)
                 # we only really care about real files, i.e. not symlinks
                 if not os.path.islink(full_path):
-                    # check if the current file is part of the allowlist
-                    basename = os.path.splitext(filename)[0]
+                    # check if the current file name stub is part of the allowlist
+                    basename = filename.split('.')[0]
                     if basename in allowlist:
                         self.log.debug("%s is found in allowlist, so keeping it: %s", basename, full_path)
                     else:
@@ -579,25 +740,35 @@ def inject_gpu_property(ec):
 
 
 PARSE_HOOKS = {
+    'casacore': parse_hook_casacore_disable_vectorize,
     'CGAL': parse_hook_cgal_toolchainopts_precise,
     'fontconfig': parse_hook_fontconfig_add_fonts,
+    'LAMMPS': parse_hook_lammps_remove_deps_for_CI_aarch64,
+    'CP2K': parse_hook_CP2K_remove_deps_for_aarch64,
     'OpenBLAS': parse_hook_openblas_relax_lapack_tests_num_errors,
     'pybind11': parse_hook_pybind11_replace_catch2,
     'Qt5': parse_hook_qt5_check_qtwebengine_disable,
     'UCX': parse_hook_ucx_eprefix,
-    'LAMMPS': parse_hook_lammps_remove_deps_for_CI_aarch64,
+}
+
+PRE_PREPARE_HOOKS = {
+    'Highway': pre_prepare_hook_highway_handle_test_compilation_issues,
 }
 
 POST_PREPARE_HOOKS = {
     'GCCcore': post_prepare_hook_gcc_prefixed_ld_rpath_wrapper,
+    'Highway': post_prepare_hook_highway_handle_test_compilation_issues,
 }
 
 PRE_CONFIGURE_HOOKS = {
+    'BLIS': pre_configure_hook_BLIS_a64fx,
+    'GObject-Introspection': pre_configure_hook_gobject_introspection,
+    'Extrae': pre_configure_hook_extrae,
+    'GROMACS': pre_configure_hook_gromacs,
     'libfabric': pre_configure_hook_libfabric_disable_psm3_x86_64_generic,
     'MetaBAT': pre_configure_hook_metabat_filtered_zlib_dep,
     'OpenBLAS': pre_configure_hook_openblas_optarch_generic,
     'WRF': pre_configure_hook_wrf_aarch64,
-    'at-spi2-core': pre_configure_hook_atspi2core_filter_ld_library_path,
 }
 
 PRE_TEST_HOOKS = {

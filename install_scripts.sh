@@ -25,6 +25,35 @@ compare_and_copy() {
     fi
 }
 
+copy_files_by_list() {
+# Compares and copies listed files from a source to a target directory
+    if [ ! "$#" -ge 3 ]; then
+        echo "Usage of function: copy_files_by_list <source_dir> <destination_dir> <file_list>"
+        echo "Here, file_list is an (expanded) bash array"
+        echo "Example:"
+        echo "my_files=(file1 file2)"
+        echo 'copy_files_by_list /my/source /my/target "${my_files[@]}"'
+        return 1
+    fi
+    source_dir="$1"
+    target_dir="$2"
+    # Need to shift all arguments to the left twice. Then, rebuild the array with the rest of the arguments
+    shift
+    shift
+    file_list=("$@")
+
+    # Create target dir
+    mkdir -p ${target_dir}
+
+    # Copy from source to target
+    echo "Copying files: ${file_list[@]}"
+    echo "From directory: ${source_dir}"
+    echo "To directory: ${target_dir}"
+
+    for file in ${file_list[@]}; do
+        compare_and_copy ${source_dir}/${file} ${target_dir}/${file}
+    done
+}
 
 POSITIONAL_ARGS=()
 
@@ -54,28 +83,39 @@ set -- "${POSITIONAL_ARGS[@]}"
 
 TOPDIR=$(dirname $(realpath $0))
 
-# Subdirs for generic scripts
-SCRIPTS_DIR_SOURCE=${TOPDIR}/scripts  # Source dir
-SCRIPTS_DIR_TARGET=${INSTALL_PREFIX}/scripts  # Target dir
+# Copy for init directory
+init_files=(
+    bash eessi_archdetect.sh eessi_defaults eessi_environment_variables eessi_software_subdir_for_host.py
+    minimal_eessi_env README.md test.py
+)
+copy_files_by_list ${TOPDIR}/init ${INSTALL_PREFIX}/init "${init_files[@]}"
 
-# Create target dir
-mkdir -p ${SCRIPTS_DIR_TARGET}
+# Copy for the init/arch_specs directory
+arch_specs_files=(
+   eessi_arch_arm.spec eessi_arch_ppc.spec eessi_arch_riscv.spec eessi_arch_x86.spec
+)
+copy_files_by_list ${TOPDIR}/init/arch_specs ${INSTALL_PREFIX}/init/arch_specs "${arch_specs_files[@]}"
 
-# Copy scripts into this prefix
-echo "copying scripts from ${SCRIPTS_DIR_SOURCE} to ${SCRIPTS_DIR_TARGET}"
-for file in utils.sh; do
-    compare_and_copy ${SCRIPTS_DIR_SOURCE}/${file} ${SCRIPTS_DIR_TARGET}/${file}
-done
-# Subdirs for GPU support
-NVIDIA_GPU_SUPPORT_DIR_SOURCE=${SCRIPTS_DIR_SOURCE}/gpu_support/nvidia  # Source dir
-NVIDIA_GPU_SUPPORT_DIR_TARGET=${SCRIPTS_DIR_TARGET}/gpu_support/nvidia  # Target dir
+# Copy for init/Magic_castle directory
+mc_files=(
+   bash eessi_python3
+)
+copy_files_by_list ${TOPDIR}/init/Magic_Castle ${INSTALL_PREFIX}/init/Magic_Castle "${mc_files[@]}"
 
-# Create target dir
-mkdir -p ${NVIDIA_GPU_SUPPORT_DIR_TARGET}
+# Copy for the scripts directory
+script_files=(
+    utils.sh
+)
+copy_files_by_list ${TOPDIR}/scripts ${INSTALL_PREFIX}/scripts "${script_files[@]}"
 
-# Copy files from this directory into the prefix
-# To be on the safe side, we dont do recursive copies, but we are explicitely copying each individual file we want to add
-echo "copying scripts from ${NVIDIA_GPU_SUPPORT_DIR_SOURCE} to ${NVIDIA_GPU_SUPPORT_DIR_TARGET}"
-for file in install_cuda_host_injections.sh link_nvidia_host_libraries.sh; do
-    compare_and_copy ${NVIDIA_GPU_SUPPORT_DIR_SOURCE}/${file} ${NVIDIA_GPU_SUPPORT_DIR_TARGET}/${file}
-done
+# Copy files for the scripts/gpu_support/nvidia directory
+nvidia_files=(
+    install_cuda_host_injections.sh link_nvidia_host_libraries.sh
+)
+copy_files_by_list ${TOPDIR}/scripts/gpu_support/nvidia ${INSTALL_PREFIX}/scripts/gpu_support/nvidia "${nvidia_files[@]}"
+
+# Copy over EasyBuild hooks file used for installations
+hook_files=(
+    eb_hooks.py
+)
+copy_files_by_list ${TOPDIR} ${INSTALL_PREFIX}/init/easybuild "${hook_files[@]}"

@@ -1,6 +1,6 @@
 # this script is *sourced*, not executed, so can't rely on $0 to determine path to self
 # $BASH_SOURCE points to correct path, see also http://mywiki.wooledge.org/BashFAQ/028
-EESSI_INIT_DIR_PATH=$(dirname $(realpath $BASH_SOURCE))
+EESSI_INIT_DIR_PATH=$(dirname $(readlink -f $BASH_SOURCE))
 
 function error() {
     echo -e "\e[31mERROR: $1\e[0m" >&2
@@ -10,7 +10,7 @@ function error() {
 function show_msg {
   # only echo msg if EESSI_SILENT is unset
   msg=$1
-  if [[ ! -v EESSI_SILENT ]]; then
+  if [[ -z ${EESSI_SILENT+x} ]]; then
     echo "$msg"
   fi
 }
@@ -48,8 +48,36 @@ if [ -d $EESSI_PREFIX ]; then
     fi
     if [ ! -z $EESSI_SOFTWARE_SUBDIR ]; then
 
+        # use x86_64/amd/zen3 for now when AMD Genoa (Zen4) CPU is detected,
+        # since optimized software installations for Zen4 are a work-in-progress,
+        # see https://gitlab.com/eessi/support/-/issues/37
+        if [[ "${EESSI_SOFTWARE_SUBDIR}" == "x86_64/amd/zen4" ]]; then
+            if [ -z $EESSI_SOFTWARE_SUBDIR_OVERRIDE ]; then
+                export EESSI_SOFTWARE_SUBDIR="x86_64/amd/zen3"
+                echo -e "\e[33mSticking to ${EESSI_SOFTWARE_SUBDIR} for now, since optimized installations for AMD Genoa (Zen4) are a work in progress, see https://gitlab.com/eessi/support/-/issues/37 for more information\e[0m"
+            fi
+        fi
+
         show_msg "Using ${EESSI_SOFTWARE_SUBDIR} as software subdirectory."
         export EESSI_SOFTWARE_PATH=$EESSI_PREFIX/software/$EESSI_OS_TYPE/$EESSI_SOFTWARE_SUBDIR
+
+        # Configure our LMOD
+        export LMOD_CONFIG_DIR="$EESSI_SOFTWARE_PATH/.lmod"
+        lmod_rc_file="$LMOD_CONFIG_DIR/lmodrc.lua"
+        if [ -f $lmod_rc_file ]; then
+          show_msg "Found Lmod configuration file at $lmod_rc_file"
+        else
+          error "Lmod configuration file not found at $lmod_rc_file"
+        fi
+
+        export LMOD_PACKAGE_PATH="$EESSI_SOFTWARE_PATH/.lmod"
+        lmod_sitepackage_file="$LMOD_PACKAGE_PATH/SitePackage.lua"
+        if [ -f $lmod_sitepackage_file ]; then
+          show_msg "Found Lmod SitePackage.lua file at $lmod_sitepackage_file"
+        else
+          error "Lmod SitePackage.lua file not found at $lmod_sitepackage_file"
+        fi
+       
         if [ ! -z $EESSI_BASIC_ENV ]; then
           show_msg "Only setting up basic environment, so we're done"
         elif [ -d $EESSI_SOFTWARE_PATH ]; then
@@ -71,16 +99,21 @@ if [ -d $EESSI_PREFIX ]; then
           if [ -d $EESSI_MODULEPATH ]; then
             export EESSI_MODULEPATH=$EESSI_MODULEPATH
             show_msg "Using ${EESSI_MODULEPATH} as the directory to be added to MODULEPATH."
+            export EESSI_SITE_MODULEPATH=${EESSI_MODULEPATH/versions/host_injections}
+            show_msg "Using ${EESSI_SITE_MODULEPATH} as the site extension directory to be added to MODULEPATH."
           else
             error "EESSI module path at $EESSI_MODULEPATH not found!"
             false
           fi
 
-          export LMOD_RC="$EESSI_SOFTWARE_PATH/.lmod/lmodrc.lua"
-          if [ -f $LMOD_RC ]; then
-            show_msg "Found Lmod configuration file at $LMOD_RC"
-          else
-            error "Lmod configuration file not found at $LMOD_RC"
+          # Fix wrong path for RHEL >=8 libcurl 
+	  # This is required here because we ship curl in our compat layer. If we only provided
+	  # curl as a module file we could instead do this via a `modluafooter` in an EasyBuild
+	  # hook (or via an Lmod hook)
+	  rhel_libcurl_file="/etc/pki/tls/certs/ca-bundle.crt"
+          if [ -f $rhel_libcurl_file ]; then
+            show_msg "Found libcurl CAs file at RHEL location, setting CURL_CA_BUNDLE"
+            export CURL_CA_BUNDLE=$rhel_libcurl_file
           fi
 
         else

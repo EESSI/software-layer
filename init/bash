@@ -1,7 +1,7 @@
 function show_msg {
   # only echo msg if EESSI_SILENT is unset
   msg=$1
-  if [[ ! -v EESSI_SILENT ]]; then
+  if [[ -z ${EESSI_SILENT+x} ]]; then
     echo "$msg"
   fi
 }
@@ -26,6 +26,8 @@ if [ $? -eq 0 ]; then
     # prepend location of modules for EESSI software stack to $MODULEPATH
     show_msg "Prepending $EESSI_MODULEPATH to \$MODULEPATH..."
     module use $EESSI_MODULEPATH
+    show_msg "Prepending site path $EESSI_SITE_MODULEPATH to \$MODULEPATH..."
+    module use $EESSI_SITE_MODULEPATH
 
     #show_msg ""
     #show_msg "*** Known problems in the ${EESSI_VERSION} software stack ***"
