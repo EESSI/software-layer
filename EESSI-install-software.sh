@@ -148,7 +148,7 @@ if [ -z $EESSI_SOFTWARE_SUBDIR_OVERRIDE ]; then
       # Last path is the generic case
       override_subdir="${possible_subdir_paths##*:}"
   else
-      # First path is the best option (according to archspec)
+      # First path is the best option (according to archdetect)
       override_subdir="${possible_subdir_paths%%:*}"
   fi
   export EESSI_SOFTWARE_SUBDIR_OVERRIDE="$override_subdir"
