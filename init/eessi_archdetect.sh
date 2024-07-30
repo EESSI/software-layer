@@ -9,7 +9,7 @@ if [ -n "$BASH_VERSION" ]; then
 
     # Check if the major version is 4 or higher
     if [ "$major_version" -lt 4 ]; then
-        echo "Error: This script must be run with Bash > 4, you have $BASH_VERSION." >&2
+        echo "Error: This script must be run with Bash >= 4, you have $BASH_VERSION." >&2
         exit 1
     fi
 else
