@@ -23,7 +23,7 @@ POSITIONAL_ARGS=()
 while [[ $# -gt 0 ]]; do
   case $1 in
     -g|--generic)
-      DETECTION_PARAMETERS="--generic"
+      GENERIC=1
       shift
       ;;
     -h|--help)
@@ -75,7 +75,16 @@ TMPDIR=$(mktemp -d)
 
 echo ">> Setting up environment..."
 module --force purge
-export EESSI_SOFTWARE_SUBDIR_OVERRIDE=$(python3 $TOPDIR/eessi_software_subdir.py $DETECTION_PARAMETERS)
+possible_subdir_paths=$(bash $TOPDIR/init/eessi_archdetect.sh -a cpupath)
+
+if [[ "$GENERIC" -eq 1 ]]; then
+    # Last path is the generic case
+    override_subdir="${possible_subdir_paths##*:}"
+else
+    # First path is the best option (according to archspec)
+    override_subdir="${possible_subdir_paths%%:*}"
+fi
+export EESSI_SOFTWARE_SUBDIR_OVERRIDE="$override_subdir"
 
 source $TOPDIR/init/bash
 
