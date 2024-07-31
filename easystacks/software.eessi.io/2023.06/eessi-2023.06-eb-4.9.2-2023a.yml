@@ -1,2 +1,4 @@
 easyconfigs:
   - BCFtools-1.18-GCC-12.3.0.eb
+  - xarray-2023.9.0-gfbf-2023a.eb
+  - SciTools-Iris-3.9.0-foss-2023a.eb
