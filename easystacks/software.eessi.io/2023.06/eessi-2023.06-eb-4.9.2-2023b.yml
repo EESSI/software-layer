@@ -1,4 +1,3 @@
 easyconfigs:
   - IPython-8.17.2-GCCcore-13.2.0.eb
   - dlb-3.4-gompi-2023b.eb
-  - xarray-2024.5.0-gfbf-2023b.eb
