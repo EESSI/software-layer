@@ -1,7 +1,7 @@
 function show_msg {
   # only echo msg if EESSI_SILENT is unset
   msg=$1
-  if [[ ! -v EESSI_SILENT ]]; then
+  if [[ -z ${EESSI_SILENT+x} ]]; then
     echo "$msg"
   fi
 }

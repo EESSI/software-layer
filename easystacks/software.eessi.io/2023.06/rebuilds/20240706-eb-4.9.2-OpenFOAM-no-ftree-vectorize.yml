@@ -1,8 +1,7 @@
+# 2024.07.06
+# OpenFOAM 10 and 11 built with GCC 11.3.0 or 12.3.0 and -ftree-vectorize yields incorrect results,
+# see https://github.com/easybuilders/easybuild-easyconfigs/issues/20927
 easyconfigs:
-  - ESPResSo-4.2.2-foss-2023a.eb
-  - TensorFlow-2.13.0-foss-2023a.eb
-  - R-4.3.2-gfbf-2023a.eb
-  - ParaView-5.11.2-foss-2023a.eb
   - OpenFOAM-10-foss-2023a.eb:
       options:
         # see https://github.com/easybuilders/easybuild-easyconfigs/pull/20958
