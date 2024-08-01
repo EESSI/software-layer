@@ -15,4 +15,4 @@ easyconfigs:
   - Highway-1.0.4-GCCcore-12.3.0.eb:
       options:
         # see https://github.com/easybuilders/easybuild-easyconfigs/pull/20942
-        from-pr: 20942
+        from-commit: 524da37b903585cea5a9eeb4156d1c8d57636bd8
