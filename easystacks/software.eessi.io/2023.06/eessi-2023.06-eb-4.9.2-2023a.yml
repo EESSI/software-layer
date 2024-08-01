@@ -27,5 +27,6 @@ easyconfigs:
         # see https://github.com/easybuilders/easybuild-easyconfigs/pull/20951
         from-commit: a92667fe32396bbd4106243658625f7ff2adcd68
   - amdahl-0.3.1-gompi-2023a.eb
+  - librosa-0.10.1-foss-2023a.eb
   - xarray-2023.9.0-gfbf-2023a.eb
   - SciTools-Iris-3.9.0-foss-2023a.eb
