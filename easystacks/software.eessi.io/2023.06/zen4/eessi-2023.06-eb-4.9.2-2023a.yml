@@ -11,7 +11,6 @@ easyconfigs:
       options:
         # see https://github.com/easybuilders/easybuild-easyconfigs/pull/20958
         from-commit: dbadb2074464d816740ee0e95595c2cb31b6338f
-  #- Highway-1.0.4-GCCcore-12.3.0.eb
   - Highway-1.0.4-GCCcore-12.3.0.eb:
       options:
         # see https://github.com/easybuilders/easybuild-easyconfigs/pull/20942
