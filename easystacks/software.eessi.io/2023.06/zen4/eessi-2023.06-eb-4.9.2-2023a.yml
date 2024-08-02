@@ -15,3 +15,4 @@ easyconfigs:
       options:
         # see https://github.com/easybuilders/easybuild-easyconfigs/pull/20942
         from-commit: 524da37b903585cea5a9eeb4156d1c8d57636bd8
+  - librosa-0.10.1-foss-2023a.eb
