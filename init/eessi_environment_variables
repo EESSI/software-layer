@@ -1,6 +1,6 @@
 # this script is *sourced*, not executed, so can't rely on $0 to determine path to self
 # $BASH_SOURCE points to correct path, see also http://mywiki.wooledge.org/BashFAQ/028
-EESSI_INIT_DIR_PATH=$(dirname $(realpath $BASH_SOURCE))
+EESSI_INIT_DIR_PATH=$(dirname $(readlink -f $BASH_SOURCE))
 
 function error() {
     echo -e "\e[31mERROR: $1\e[0m" >&2
@@ -10,7 +10,7 @@ function error() {
 function show_msg {
   # only echo msg if EESSI_SILENT is unset
   msg=$1
-  if [[ ! -v EESSI_SILENT ]]; then
+  if [[ -z ${EESSI_SILENT+x} ]]; then
     echo "$msg"
   fi
 }
@@ -106,6 +106,15 @@ if [ -d $EESSI_PREFIX ]; then
             false
           fi
 
+          # Fix wrong path for RHEL >=8 libcurl 
+	  # This is required here because we ship curl in our compat layer. If we only provided
+	  # curl as a module file we could instead do this via a `modluafooter` in an EasyBuild
+	  # hook (or via an Lmod hook)
+	  rhel_libcurl_file="/etc/pki/tls/certs/ca-bundle.crt"
+          if [ -f $rhel_libcurl_file ]; then
+            show_msg "Found libcurl CAs file at RHEL location, setting CURL_CA_BUNDLE"
+            export CURL_CA_BUNDLE=$rhel_libcurl_file
+          fi
 
         else
           error "EESSI software layer at $EESSI_SOFTWARE_PATH not found!"
