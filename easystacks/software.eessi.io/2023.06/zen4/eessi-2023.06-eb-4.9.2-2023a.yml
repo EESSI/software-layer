@@ -2,4 +2,18 @@ easyconfigs:
   - ESPResSo-4.2.2-foss-2023a.eb
   - TensorFlow-2.13.0-foss-2023a.eb
   - R-4.3.2-gfbf-2023a.eb
+  - ParaView-5.11.2-foss-2023a.eb
+  - OpenFOAM-10-foss-2023a.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/20958
+        from-commit: dbadb2074464d816740ee0e95595c2cb31b6338f
+  - OpenFOAM-11-foss-2023a.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/20958
+        from-commit: dbadb2074464d816740ee0e95595c2cb31b6338f
+  - Highway-1.0.4-GCCcore-12.3.0.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/20942
+        from-commit: 524da37b903585cea5a9eeb4156d1c8d57636bd8
+  - librosa-0.10.1-foss-2023a.eb
   - R-bundle-Bioconductor-3.18-foss-2023a-R-4.3.2.eb
