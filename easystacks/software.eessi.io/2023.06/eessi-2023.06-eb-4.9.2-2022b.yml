@@ -1,2 +1,3 @@
 easyconfigs:
   - BLAST+-2.14.0-gompi-2022b.eb
+  - BioPerl-1.7.8-GCCcore-12.2.0.eb 

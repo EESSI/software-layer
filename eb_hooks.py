@@ -647,6 +647,16 @@ def post_sanitycheck_hook(self, *args, **kwargs):
         POST_SANITYCHECK_HOOKS[self.name](self, *args, **kwargs)
 
 
+def post_sanitycheck_bioperl(self, *args, **kwargs):
+    """
+    Allow the copy of easyblock perlmodule.py to /tmp/eb... after sanity check by changing directory permissions 
+    """
+    if self.name == 'BioPerl':
+        print_msg("Adding user write permission for EasyBuild directories under /tmp/eb*...")
+        bioperlcmd = "chmod u+w -R /tmp/eb*"
+        run_cmd(bioperlcmd)
+
+
 def post_sanitycheck_cuda(self, *args, **kwargs):
     """
     Remove files from CUDA installation that we are not allowed to ship,
@@ -791,5 +801,6 @@ POST_SINGLE_EXTENSION_HOOKS = {
 }
 
 POST_SANITYCHECK_HOOKS = {
+    'BioPerl': post_sanitycheck_bioperl,
     'CUDA': post_sanitycheck_cuda,
 }
