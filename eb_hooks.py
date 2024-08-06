@@ -756,6 +756,7 @@ PARSE_HOOKS = {
     'casacore': parse_hook_casacore_disable_vectorize,
     'CGAL': parse_hook_cgal_toolchainopts_precise,
     'fontconfig': parse_hook_fontconfig_add_fonts,
+    'grpcio': parse_hook_grpcio_zlib,
     'LAMMPS': parse_hook_lammps_remove_deps_for_CI_aarch64,
     'CP2K': parse_hook_CP2K_remove_deps_for_aarch64,
     'OpenBLAS': parse_hook_openblas_relax_lapack_tests_num_errors,
