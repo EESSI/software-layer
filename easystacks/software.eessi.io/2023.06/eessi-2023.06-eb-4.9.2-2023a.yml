@@ -30,3 +30,4 @@ easyconfigs:
   - librosa-0.10.1-foss-2023a.eb
   - xarray-2023.9.0-gfbf-2023a.eb
   - SciTools-Iris-3.9.0-foss-2023a.eb
+  - grpcio-1.57.0-GCCcore-12.3.0.eb
