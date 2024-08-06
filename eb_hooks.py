@@ -220,6 +220,19 @@ def parse_hook_fontconfig_add_fonts(ec, eprefix):
         raise EasyBuildError("fontconfig-specific hook triggered for non-fontconfig easyconfig?!")
 
 
+def parse_hook_grpcio_zlib(ec, ecprefix):
+    """Adjust preinstallopts to use ZLIB from compat layer."""
+    if ec.name == 'grpcio' and ec.version in ['1.57.0']:
+        exts_list = ec['exts_list']
+        original_preinstallopts = (exts_list[0][2])['preinstallopts']
+        original_option = "GRPC_PYTHON_BUILD_SYSTEM_ZLIB=True"
+        new_option = "GRPC_PYTHON_BUILD_SYSTEM_ZLIB=False"
+        (exts_list[0][2])['preinstallopts'] = original_preinstallopts.replace(original_option, new_option, 1)
+        print_msg("Modified the easyconfig to use compat ZLIB with GRPC_PYTHON_BUILD_SYSTEM_ZLIB=False")
+    else:
+        raise EasyBuildError("grpcio-specific hook triggered for a non-grpcio easyconfig?!")
+
+
 def parse_hook_openblas_relax_lapack_tests_num_errors(ec, eprefix):
     """Relax number of failing numerical LAPACK tests for aarch64/neoverse_v1 CPU target for OpenBLAS < 0.3.23"""
     cpu_target = get_eessi_envvar('EESSI_SOFTWARE_SUBDIR')
@@ -743,6 +756,7 @@ PARSE_HOOKS = {
     'casacore': parse_hook_casacore_disable_vectorize,
     'CGAL': parse_hook_cgal_toolchainopts_precise,
     'fontconfig': parse_hook_fontconfig_add_fonts,
+    'grpcio': parse_hook_grpcio_zlib,
     'LAMMPS': parse_hook_lammps_remove_deps_for_CI_aarch64,
     'CP2K': parse_hook_CP2K_remove_deps_for_aarch64,
     'OpenBLAS': parse_hook_openblas_relax_lapack_tests_num_errors,
