@@ -3,4 +3,5 @@ easyconfigs:
   - BioPerl-1.7.8-GCCcore-12.2.0.eb:
       options:
         # see https://github.com/easybuilders/easybuild-easyconfigs/pull/21136
-        from-commit: d8076ebaf8cb915762adebf88d385cc672b350dc 
+        from-commit: d8076ebaf8cb915762adebf88d385cc672b350dc
+  - gnuplot-5.4.6-GCCcore-12.2.0.eb 
