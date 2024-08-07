@@ -17,3 +17,7 @@ easyconfigs:
         from-commit: 524da37b903585cea5a9eeb4156d1c8d57636bd8
   - librosa-0.10.1-foss-2023a.eb
   - R-bundle-Bioconductor-3.18-foss-2023a-R-4.3.2.eb
+  - BioPerl-1.7.8-GCCcore-12.3.0.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/21136
+        from-commit: d8076ebaf8cb915762adebf88d385cc672b350dc
