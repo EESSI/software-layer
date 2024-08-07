@@ -30,3 +30,14 @@ easyconfigs:
   - librosa-0.10.1-foss-2023a.eb
   - xarray-2023.9.0-gfbf-2023a.eb
   - SciTools-Iris-3.9.0-foss-2023a.eb
+  - OpenFOAM-v2312-foss-2023a.eb:
+      options:
+        # https://github.com/easybuilders/easybuild-easyblocks/pull/3388
+        include-easyblocks-from-commit: c8256a36e7062bc09f5ce30552a9de9827054c9e
+        # https://github.com/easybuilders/easybuild-easyconfigs/pull/20841
+        from-commit: f0e91e6e430ebf902f7788ebb47f0203dee60649
+  - BioPerl-1.7.8-GCCcore-12.3.0.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/21136
+        from-commit: d8076ebaf8cb915762adebf88d385cc672b350dc
+  - grpcio-1.57.0-GCCcore-12.3.0.eb
