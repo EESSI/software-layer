@@ -6,7 +6,6 @@ import re
 
 import easybuild.tools.environment as env
 from easybuild.easyblocks.generic.configuremake import obtain_config_guess
-from easybuild.easyblocks.python import EXTS_FILTER_PYTHON_PACKAGES
 from easybuild.framework.easyconfig.constants import EASYCONFIG_CONSTANTS
 from easybuild.tools.build_log import EasyBuildError, print_msg
 from easybuild.tools.config import build_option, update_build_option
@@ -221,30 +220,6 @@ def parse_hook_fontconfig_add_fonts(ec, eprefix):
         raise EasyBuildError("fontconfig-specific hook triggered for non-fontconfig easyconfig?!")
 
 
-def parse_hook_librosa_custom_ctypes(ec, *args, **kwargs):
-    """
-    Add exts_filter to soundfile extension in exts_list
-    """
-    if ec.name == 'librosa' and ec.version in ('0.10.1',):
-        ec_dict = ec.asdict()
-        eessi_software_path = get_eessi_envvar('EESSI_SOFTWARE_PATH')
-        custom_ctypes_path = os.path.join(eessi_software_path, "software", "custom_ctypes", "1.2")
-        ebpythonprefixes = "EBPYTHONPREFIXES=%s" % custom_ctypes_path
-        exts_list_new = []
-        for item in ec_dict['exts_list']:
-            if item[0] == 'soundfile':
-                ext_dict = item[2]
-                ext_dict['exts_filter'] = (ebpythonprefixes + ' ' + EXTS_FILTER_PYTHON_PACKAGES[0],
-                                           EXTS_FILTER_PYTHON_PACKAGES[1])
-                exts_list_new.append((item[0], item[1], ext_dict))
-            else:
-                exts_list_new.append(item)
-        ec['exts_list'] = exts_list_new
-        print_msg("New exts_list: '%s'", ec['exts_list'])
-    else:
-        raise EasyBuildError("librosa/0.10.1-specific hook triggered for non-librosa/0.10.1 easyconfig?!")
-
-
 def parse_hook_openblas_relax_lapack_tests_num_errors(ec, eprefix):
     """Relax number of failing numerical LAPACK tests for aarch64/neoverse_v1 CPU target for OpenBLAS < 0.3.23"""
     cpu_target = get_eessi_envvar('EESSI_SOFTWARE_SUBDIR')
@@ -282,46 +257,6 @@ def parse_hook_pybind11_replace_catch2(ec, eprefix):
                 break
         if catch2_build_dep and len(catch2_build_dep) == 4 and catch2_build_dep[3] == SYSTEM:
             build_deps[idx] = (catch2_name, catch2_version)
-
-
-def parse_hook_pytorch_bundle_torchvision_setenv(ec, eprefix):
-    """
-    Set TORCHVISION_{INCLUDE,LIBRARY}, initially for non-CUDA version only
-    """
-    if ec.name == 'PyTorch-bundle' and ec.version in ['2.1.2']:
-        if not hasattr(ec, 'versionsuffix') or (ec.versionsuffix and not 'CUDA' in ec.versionsuffix):
-            print_msg("parse_hook for PyTorch-bundle without CUDA: extslist '%s'", ec['exts_list'])
-            print_msg("New exts_list: '%s'", ec['exts_list'])
-            ec_dict = ec.asdict()
-            cpu_target = get_eessi_envvar('EESSI_SOFTWARE_SUBDIR')
-            eessi_software_path = get_eessi_envvar('EESSI_SOFTWARE_PATH')
-            libpng_root = os.path.join(eessi_software_path, "software", "libpng", "1.6.39-GCCcore-12.3.0")
-            libpng_include = os.path.join(libpng_root, 'include')
-            libpng_lib = os.path.join(libpng_root, 'lib')
-            libjpeg_turbo_root = os.path.join(eessi_software_path, "software", "libjpeg-turbo", "2.1.5.1-GCCcore-12.3.0")
-            libjpeg_turbo_include = os.path.join(libjpeg_turbo_root, 'include')
-            libjpeg_turbo_lib = os.path.join(libjpeg_turbo_root, 'lib')
-            exts_list_new = []
-            torchvision_include = 'export TORCHVISION_INCLUDE=%s:%s' % (libpng_include, libjpeg_turbo_include)
-            torchvision_library = 'export TORCHVISION_LIBRARY=%s:%s' % (libpng_lib, libjpeg_turbo_lib)
-            for item in ec_dict['exts_list']:
-                if item[0] != 'torchvision':
-                    exts_list_new.append(item)
-                else:
-                    ext_dict = item[2]
-                    if 'preinstallopts' in ext_dict:
-                        raise EasyBuildError("found value for 'preinstallopts' for extension 'torchvision',"
-                                             " but expected NONE")
-                    else:
-                        # add preinstallopts
-                        ext_dict['preinstallopts'] = torchvision_include + ' && ' + torchvision_library + ' && '
-                        exts_list_new.append((item[0], item[1], ext_dict))
-            ec['exts_list'] = exts_list_new
-            print_msg("New exts_list: '%s'", ec['exts_list'])
-        else:
-            print_msg("parse_hook for PyTorch-bundle for CUDA -> leaving preinstallopts unchanged")
-    else:
-        raise EasyBuildError("PyTorch-bundle-specific hook triggered for non-PyTorch-bundle easyconfig?!")
 
 
 def parse_hook_qt5_check_qtwebengine_disable(ec, eprefix):
@@ -828,45 +763,14 @@ def inject_gpu_property(ec):
     return ec
 
 
-def pre_module_hook(self, *args, **kwargs):
-    """Main pre-module-check hook: trigger custom functions based on software name."""
-    if self.name in PRE_MODULE_HOOKS:
-        PRE_MODULE_HOOKS[self.name](self, *args, **kwargs)
-
-
-def pre_module_hook_librosa_augment_modluafooter(self, *args, **kwargs):
-    """
-    Add EBPYTHONPREFIXES to modluafooter
-    """
-    if self.name == 'librosa' and self.version == '0.10.1':
-        eessi_software_path = get_eessi_envvar('EESSI_SOFTWARE_PATH')
-        custom_ctypes_path = os.path.join(eessi_software_path, "software", "custom_ctypes", "1.2")
-        key = 'modluafooter'
-        values = ['prepend_path("EBPYTHONPREFIXES","%s")' % (custom_ctypes_path)]
-        print_msg("Adding '%s' to modluafooter", values[0])
-        if not key in self.cfg:
-            self.cfg[key] = '\n'.join(values)
-        else:
-            new_value = self.cfg[key]
-            for value in values:
-                if not value in new_value:
-                    new_value = '\n'.join([new_value, value])
-            self.cfg[key] = new_value
-        print_msg("Full modluafooter is '%s'", self.cfg[key])
-    else:
-        raise EasyBuildError("librosa/0.10.1-specific hook triggered for non-librosa/0.10.1 easyconfig?!")
-
-
 PARSE_HOOKS = {
     'casacore': parse_hook_casacore_disable_vectorize,
     'CGAL': parse_hook_cgal_toolchainopts_precise,
     'fontconfig': parse_hook_fontconfig_add_fonts,
     'LAMMPS': parse_hook_lammps_remove_deps_for_CI_aarch64,
-    #'librosa': parse_hook_librosa_custom_ctypes,
     'CP2K': parse_hook_CP2K_remove_deps_for_aarch64,
     'OpenBLAS': parse_hook_openblas_relax_lapack_tests_num_errors,
     'pybind11': parse_hook_pybind11_replace_catch2,
-    #'PyTorch-bundle': parse_hook_pytorch_bundle_torchvision_setenv,
     'Qt5': parse_hook_qt5_check_qtwebengine_disable,
     'SentencePiece': parse_hook_sentencepiece_disable_tcmalloc_aarch64,
     'UCX': parse_hook_ucx_eprefix,
@@ -913,8 +817,4 @@ POST_SINGLE_EXTENSION_HOOKS = {
 
 POST_SANITYCHECK_HOOKS = {
     'CUDA': post_sanitycheck_cuda,
-}
-
-PRE_MODULE_HOOKS = {
-    #'librosa': pre_module_hook_librosa_augment_modluafooter,
 }
