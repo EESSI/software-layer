@@ -81,7 +81,7 @@ if [[ "$GENERIC" -eq 1 ]]; then
     # Last path is the generic case
     override_subdir="${possible_subdir_paths##*:}"
     if ! echo "$override_subdir" | grep -q "generic" ; then
-        fatal_error "Generic build requested but not found in selected software directory '$override_subdir'"
+        fatal_error "Generic build requested but not found in selected software directory $override_subdir"
     fi
 else
     # First path is the best option (according to archspec)
