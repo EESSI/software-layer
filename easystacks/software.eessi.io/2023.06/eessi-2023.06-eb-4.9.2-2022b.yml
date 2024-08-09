@@ -6,3 +6,4 @@ easyconfigs:
         from-commit: d8076ebaf8cb915762adebf88d385cc672b350dc
   - gnuplot-5.4.6-GCCcore-12.2.0.eb
   - h5py-3.8.0-foss-2022b.eb
+  - MDAnalysis-2.4.2-foss-2022b.eb 
