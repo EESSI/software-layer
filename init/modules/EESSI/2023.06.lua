@@ -21,8 +21,7 @@ function archdetect_cpu()
     local script = pathJoin(eessi_prefix, 'init', 'lmod_eessi_archdetect_wrapper.sh')
     if not os.getenv("EESSI_ARCHDETECT_OPTIONS") then
         if convertToCanonical(LmodVersion()) < convertToCanonical("8.6") then
-            LmodMessage("Loading this modulefile requires using Lmod version > 8.6, but you can export EESSI_ARCHDETECT_OPTIONS to the available cpu architecture in the form of: x86_64/intel/haswell or aarch64/neoverse_v1")
-            os.exit(1)
+            LmodError("Loading this modulefile requires using Lmod version >= 8.6, but you can export EESSI_ARCHDETECT_OPTIONS to the available cpu architecture in the form of: x86_64/intel/haswell:x86_64/generic or aarch64/neoverse_v1:aarch64/generic")
         end
         source_sh("bash", script)
     end
