@@ -39,7 +39,7 @@ local eessi_eprefix = pathJoin(eessi_prefix, "compat", eessi_os_type, eessi_cpu_
 local eessi_software_path = pathJoin(eessi_prefix, "software", eessi_os_type, eessi_software_subdir)
 local eessi_module_path = pathJoin(eessi_software_path, "modules", "all")
 local eessi_site_module_path = string.gsub(eessi_module_path, "versions", "host_injections")
-setenv("EESSI_SITE_MODULEPATH", string.gsub(eessi_module_path, eessi_repo, "host_injections"))
+setenv("EESSI_SITE_MODULEPATH", eessi_site_module_path)
 setenv("EESSI_SOFTWARE_SUBDIR", eessi_software_subdir)
 setenv("EESSI_PREFIX", eessi_prefix)
 setenv("EESSI_EPREFIX", eessi_eprefix)
