@@ -1,0 +1,10 @@
+# Choose an EESSI version
+if (! $?EESSI_VERSION) then; set EESSI_VERSION = "2023.06"; endif
+# Automatically load the module for EESSI version
+if (! $?LMOD_SYSTEM_DEFAULT_MODULES) then; setenv LMOD_SYSTEM_DEFAULT_MODULES "EESSI/$EESSI_VERSION"; endif
+# Path to top-level module tree
+setenv MODULEPATH /cvmfs/software.eessi.io/versions/"$EESSI_VERSION"/init/modules
+source /cvmfs/software.eessi.io/versions/"$EESSI_VERSION"/compat/linux/`uname -m`/usr/share/Lmod/init/csh
+
+module load "$LMOD_SYSTEM_DEFAULT_MODULES"
+
