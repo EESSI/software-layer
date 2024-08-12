@@ -27,6 +27,15 @@ function archdetect_cpu()
     end
     for archdetect_filter_cpu in string.gmatch(os.getenv("EESSI_ARCHDETECT_OPTIONS"), "([^" .. ":" .. "]+)") do
         if isDir(pathJoin(eessi_prefix, "software", eessi_os_type, archdetect_filter_cpu, "software")) then
+            -- use x86_64/amd/zen3 for now when AMD Genoa (Zen4) CPU is detected, 
+            -- since optimized software installations for Zen4 are a work-in-progress, 
+            -- see https://gitlab.com/eessi/support/-/issues/37 
+            if archdetect_filter_cpu == "x86_64/amd/zen4" then
+                archdetect_filter_cpu = "x86_64/amd/zen3"
+                if mode() == "load" then
+                    LmodMessage("Sticking to " .. archdetect_filter_cpu .. " for now, since optimized installations for AMD Genoa (Zen4) are a work in progress.")
+                end
+            end
             return archdetect_filter_cpu
         end
     end
