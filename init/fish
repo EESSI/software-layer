@@ -1,9 +1,9 @@
 # Choose an EESSI version
 set EESSI_VERSION (set -q EESSI_VERSION; and echo "$EESSI_VERSION"; or echo "2023.06")
 # Automatically load the module for EESSI version
-set -x LMOD_SYSTEM_DEFAULT_MODULES (set -q LMOD_SYSTEM_DEFAULT_MODULE; and echo "$LMOD_SYSTEM_DEFAULT_MODULE"; or echo "EESSI/${EESSI_VERSION}")
+set -x LMOD_SYSTEM_DEFAULT_MODULES (set -q LMOD_SYSTEM_DEFAULT_MODULE; and echo "$LMOD_SYSTEM_DEFAULT_MODULE"; or echo "EESSI/$EESSI_VERSION")
 # Path to top-level module tree
-set -x MODULEPATH=/cvmfs/software.eessi.io/versions/"$EESSI_VERSION"/init/modules
-. /cvmfs/software.eessi.io/versions/"$EESSI_VERSION"/compat/linux/$(uname -m)/usr/share/Lmod/init/zsh
+set -x MODULEPATH /cvmfs/software.eessi.io/versions/"$EESSI_VERSION"/init/modules
+. /cvmfs/software.eessi.io/versions/"$EESSI_VERSION"/compat/linux/$(uname -m)/usr/share/Lmod/init/fish
 
 module load $LMOD_SYSTEM_DEFAULT_MODULES
