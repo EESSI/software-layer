@@ -6,5 +6,6 @@ if (! $?LMOD_SYSTEM_DEFAULT_MODULES) then; setenv LMOD_SYSTEM_DEFAULT_MODULES "E
 setenv MODULEPATH /cvmfs/software.eessi.io/versions/"$EESSI_VERSION"/init/modules
 source /cvmfs/software.eessi.io/versions/"$EESSI_VERSION"/compat/linux/`uname -m`/usr/share/Lmod/init/csh
 
+setenv PS1 $PS1
 module load "$LMOD_SYSTEM_DEFAULT_MODULES"
 

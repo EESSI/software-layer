@@ -6,4 +6,5 @@ export LMOD_SYSTEM_DEFAULT_MODULES="${LMOD_SYSTEM_DEFAULT_MODULES:-EESSI/${EESSI
 export MODULEPATH=/cvmfs/software.eessi.io/versions/"$EESSI_VERSION"/init/modules
 . /cvmfs/software.eessi.io/versions/"$EESSI_VERSION"/compat/linux/$(uname -m)/usr/share/Lmod/init/ksh
 
+export PS1=$PS1
 module load "$LMOD_SYSTEM_DEFAULT_MODULES"
