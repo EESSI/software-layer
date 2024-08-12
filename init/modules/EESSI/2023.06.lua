@@ -26,7 +26,7 @@ function archdetect_cpu()
         source_sh("bash", script)
     end
     for archdetect_filter_cpu in string.gmatch(os.getenv("EESSI_ARCHDETECT_OPTIONS"), "([^" .. ":" .. "]+)") do
-        if isDir(pathJoin(string.gsub(script, "init/lmod_eessi_archdetect_wrapper.sh", "software/" .. eessi_os_type), archdetect_filter_cpu)) then
+        if isDir(pathJoin(eessi_prefix, "software", eessi_os_type, archdetect_filter_cpu, "software")) then
             return archdetect_filter_cpu
         end
     end
