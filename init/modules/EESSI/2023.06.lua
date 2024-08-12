@@ -18,7 +18,7 @@ setenv("EESSI_VERSION", eessi_version)
 setenv("EESSI_CVMFS_REPO", eessi_repo)
 setenv("EESSI_OS_TYPE", eessi_os_type)
 function archdetect_cpu()
-    local script = pathJoin(eessi_repo, 'versions', eessi_version, 'init', 'lmod_eessi_archdetect_wrapper.sh')
+    local script = pathJoin(eessi_prefix, 'init', 'lmod_eessi_archdetect_wrapper.sh')
     if not os.getenv("EESSI_ARCHDETECT_OPTIONS") then
         if convertToCanonical(LmodVersion()) < convertToCanonical("8.6") then
             LmodMessage("Loading this modulefile requires using Lmod version > 8.6, but you can export EESSI_ARCHDETECT_OPTIONS to the available cpu architecture in the form of: x86_64/intel/haswell or aarch64/neoverse_v1")
