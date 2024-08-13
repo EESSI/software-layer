@@ -1,11 +1,18 @@
 # Choose an EESSI version
 if (! $?EESSI_VERSION) then; set EESSI_VERSION = "2023.06"; endif
-# Automatically load the module for EESSI version
-if (! $?LMOD_SYSTEM_DEFAULT_MODULES) then; setenv LMOD_SYSTEM_DEFAULT_MODULES "EESSI/$EESSI_VERSION"; endif
 # Path to top-level module tree
 setenv MODULEPATH /cvmfs/software.eessi.io/versions/"$EESSI_VERSION"/init/modules
 source /cvmfs/software.eessi.io/versions/"$EESSI_VERSION"/compat/linux/`uname -m`/usr/share/Lmod/init/csh
 
-setenv PS1 $PS1
-module load "$LMOD_SYSTEM_DEFAULT_MODULES"
+setenv PS1 $prompt
+if (! $?__Init_Default_Modules ) then
+	setenv __Init_Default_Modules 1;
+
+	## ability to predefine elsewhere the default list
+	if (! $?LMOD_SYSTEM_DEFAULT_MODULES) then; setenv LMOD_SYSTEM_DEFAULT_MODULES "StdEnv"; endif
+	module --initial_load --no_redirect restore
+else
+	module refresh
+endif
+#module load "$LMOD_SYSTEM_DEFAULT_MODULES"
 

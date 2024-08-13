@@ -1,10 +1,17 @@
 # Choose an EESSI version
 EESSI_VERSION="${EESSI_VERSION:-2023.06}"
-# Automatically load the module for EESSI version
-export LMOD_SYSTEM_DEFAULT_MODULES="${LMOD_SYSTEM_DEFAULT_MODULES:-EESSI/${EESSI_VERSION}}"
 # Path to top-level module tree
 export MODULEPATH=/cvmfs/software.eessi.io/versions/"$EESSI_VERSION"/init/modules
 . /cvmfs/software.eessi.io/versions/"$EESSI_VERSION"/compat/linux/$(uname -m)/usr/share/Lmod/init/bash
 
-export PS1=$PS1
-module load "$LMOD_SYSTEM_DEFAULT_MODULES"
+export PS1
+if [ -z "$__Init_Default_Modules" ]; then
+   export __Init_Default_Modules=1;
+
+   ## ability to predefine elsewhere the default list
+   LMOD_SYSTEM_DEFAULT_MODULES=${LMOD_SYSTEM_DEFAULT_MODULES:-"StdEnv"}
+   export LMOD_SYSTEM_DEFAULT_MODULES
+   module --initial_load --no_redirect restore
+else
+   module refresh
+fi
