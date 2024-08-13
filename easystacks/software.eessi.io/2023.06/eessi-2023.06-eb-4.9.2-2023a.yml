@@ -41,4 +41,9 @@ easyconfigs:
         # see https://github.com/easybuilders/easybuild-easyconfigs/pull/21136
         from-commit: d8076ebaf8cb915762adebf88d385cc672b350dc
   - grpcio-1.57.0-GCCcore-12.3.0.eb
+  - orjson-3.9.15-GCCcore-12.3.0.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/20880
+        from-commit: bc6e08f89759b8b70166de5bfcb5056b9db8ec90
   - PyTorch-bundle-2.1.2-foss-2023a.eb
+  
