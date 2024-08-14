@@ -161,7 +161,7 @@ cgroup_v1_mem_limit="/sys/fs/cgroup/memory/$(</proc/self/cpuset)/memory.limit_in
 cgroup_v2_mem_limit="/sys/fs/cgroup/$(</proc/self/cpuset)/memory.max"
 if [ -f "$cgroup_v1_mem_limit" ]; then
     cgroup_mem_bytes=$(cat "$cgroup_v1_mem_limit")
-else [ -f "$cgroup_v2_mem_limit" ]; then
+else
     cgroup_mem_bytes=$(cat "$cgroup_v2_mem_limit")
 fi
 if [[ $? -eq 0 ]]; then
