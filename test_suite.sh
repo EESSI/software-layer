@@ -157,7 +157,13 @@ if [[ "${cpuinfo}" =~ (Core\(s\) per socket:[^0-9]*([0-9]+)) ]]; then
 else
     fatal_error "Failed to get the number of cores per socket for the current test hardware with lscpu."
 fi
-cgroup_mem_bytes=$(cat /hostsys/fs/cgroup/memory/slurm/uid_${UID}/job_${SLURM_JOB_ID}/memory.limit_in_bytes)
+cgroup_v1_mem_limit="/sys/fs/cgroup/memory/$(</proc/self/cpuset)/memory.limit_in_bytes"
+cgroup_v2_mem_limit="/sys/fs/cgroup/$(</proc/self/cpuset)/memory.max"
+if [ -f "$cgroup_v1_mem_limit" ]; then
+    cgroup_mem_bytes=$(cat "$cgroup_v1_mem_limit")
+else [ -f "$cgroup_v2_mem_limit" ]; then
+    cgroup_mem_bytes=$(cat "$cgroup_v2_mem_limit")
+fi
 if [[ $? -eq 0 ]]; then
     # Convert to MiB
     cgroup_mem_mib=$((cgroup_mem_bytes/(1024*1024)))
