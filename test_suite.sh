@@ -82,6 +82,14 @@ echo "EESSI_SOFTWARE_SUBDIR_OVERRIDE after calling eessi_software_subdir.py: $EE
 
 source $TOPDIR/init/bash
 
+# DEBUGGING
+echo "Checking if ReFrame module exists:"
+ls -al /cvmfs/software.eessi.io/versions/2023.06/software/linux/x86_64/amd/zen4/modules/all/ReFrame/4.3.3.lua
+echo "Checking available ReFrame modules"
+module av ReFrame
+echo "Checking if we can load ReFrame when ignoring the cache"
+module load --ignore_cache ReFrame
+
 # Load the ReFrame module
 # Currently, we load the default version. Maybe we should somehow make this configurable in the future?
 module load ReFrame
