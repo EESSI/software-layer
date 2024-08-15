@@ -43,7 +43,7 @@ function archdetect_cpu()
 end
 local archdetect = archdetect_cpu()
 local eessi_cpu_family = archdetect:match("([^/]+)")
-local eessi_software_subdir = os.getenv("EESSI_SOFTWARE_SUBDIR_OVERRIDE") or archdetect
+local eessi_software_subdir = archdetect
 local eessi_eprefix = pathJoin(eessi_prefix, "compat", eessi_os_type, eessi_cpu_family)
 local eessi_software_path = pathJoin(eessi_prefix, "software", eessi_os_type, eessi_software_subdir)
 local eessi_module_path = pathJoin(eessi_software_path, "modules", "all")

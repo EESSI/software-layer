@@ -1,0 +1,86 @@
+# documentation: https://help.github.com/en/articles/workflow-syntax-for-github-actions
+name: Check for EESSI module functionality in software.eessi.io
+on:
+  push:
+    branches: [ "*-software.eessi.io" ]
+  pull_request:
+  workflow_dispatch:
+permissions:
+  contents: read # to fetch code (actions/checkout)
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        EESSI_VERSION:
+        - 2023.06
+        EESSI_SOFTWARE_SUBDIR_OVERRIDE:
+        - aarch64/generic
+        - aarch64/neoverse_n1
+        - aarch64/neoverse_v1
+        - x86_64/amd/zen2
+        - x86_64/amd/zen3
+        - x86_64/intel/haswell
+        - x86_64/intel/skylake_avx512
+        - x86_64/generic
+      fail-fast: false
+    steps:
+        - name: Check out software-layer repository
+          uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
+          
+        - name: Mount EESSI CernVM-FS pilot repository
+          uses: cvmfs-contrib/github-action-cvmfs@55899ca74cf78ab874bdf47f5a804e47c198743c # v4.0
+          with:
+              cvmfs_config_package: https://github.com/EESSI/filesystem-layer/releases/download/latest/cvmfs-config-eessi_latest_all.deb
+              cvmfs_http_proxy: DIRECT
+              cvmfs_repositories: software.eessi.io
+              
+         - name: Test for archdetect_cpu functionality with only one valid path
+           run: |
+              export MODULEPATH=/cvmfs/software.eessi.io/versions/${{matrix.EESSI_VERSION}}/init/modules/:$MODULEPATH
+              CPU_ARCH=$(./init/eessi_archdetect.sh cpupath)
+              export EESSI_ARCHDETECT_OPTIONS=dummy/cpu:$CPU_ARCH:dummy1/cpu1
+              if module load EESSI/${{matrix.EESSI_VERSION}}; then
+                  if [[ $CPU_ARCH == "${EESSI_SOFTWARE_SUBDIR}" ]]; then
+                      echo "Test for picking up on \$archdetect_cpu PASSED"
+                  else
+                      echo "Test for picking up on \$archdetdect_cpu FAILED" >&2
+                      exit 1                  
+                  fi
+                  module unload EESSI/${{matrix.EESSI_VERSION}}    
+              fi
+              unset EESSI_ARCHDETECT_OPTIONS 
+              
+         - name: Test for archdetect_cpu functionality with invalid path
+           run: |
+              export MODULEPATH=/cvmfs/software.eessi.io/versions/${{matrix.EESSI_VERSION}}/init/modules/:$MODULEPATH
+              export EESSI_ARCHDETECT_OPTIONS=dummy/cpu
+              outfile=outfile.txt
+              module load EESSI/${{matrix.EESSI_VERSION}} > $outfile 2>&1
+              result=$(grep "Software" $outfile)
+              if [[ "$result" == *"Software directory check for the detected architecture failed"* ]]; then
+                      echo "Test for picking up invalid path on \$archdetect_cpu PASSED"
+              else
+                  echo "Test for picking up invalid path on \$archdetect_cpu FAILED" >&2
+                  exit 1
+              fi
+              rm $outfile              
+              unset EESSI_ARCHDETECT_OPTIONS
+              
+         - name: Test for expected variables after loading EESSI module 
+           run: |
+              export MODULEPATH=/cvmfs/software.eessi.io/versions/${{matrix.EESSI_VERSION}}/init/modules/:$MODULEPATH
+              moduleoutfile=moduleout.txt
+              sourceoutfile=sourceout.txt
+              module load EESSI/${{matrix.EESSI_VERSION}}
+              env | grep -E '^(EESSI_S|EESSI_C)' | sort | > ${moduleoutfile}
+              module unload EESSI/${{matrix.EESSI_VERSION}}
+              source /cvmfs/software.eessi.io/versions/${{matrix.EESSI_VERSION}}/init/bash
+              env | grep -E '^(EESSI_S|EESSI_C)' | sort | > ${sourceoutfile}
+              if (diff ${moduleoutfile} ${sourceoutfile} > /dev/null); then
+                  echo "Test for checking env variables PASSED"
+              else 
+                  echo "Test for checking env variables FAILED"  >&2
+                  exit 1
+              fi
+              rm $moduleoutfile $sourceoutfile
