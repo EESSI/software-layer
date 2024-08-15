@@ -74,10 +74,6 @@ fi
 TMPDIR=$(mktemp -d)
 
 echo ">> Setting up environment..."
-# No module command, we are outside of the compat layer
-# module --force purge
-echo "Current EESSI env:"
-env | grep "EESSI"
 echo "EESSI_SOFTWARE_SUBDIR_OVERRIDE before calling eessi_software_subdir.py: $EESSI_SOFTWARE_SUBDIR_OVERRIDE"
 # For this call to be succesful, it needs to be able to import archspec (which is part of EESSI)
 # Thus, we execute it in a subshell where EESSI is already initialized (a bit like a bootstrap)
