@@ -167,7 +167,7 @@ else
         # In cgroupsv2, the memory.max file may contain 'max', meaning the group can use the full system memory
         # Here, we get the system memory from /proc/meminfo. Units are supposedly always in kb, but lets match them too
         cgroup_mem_kilobytes=$(grep -oP 'MemTotal:\s+\K\d+(?=\s+kB)' /proc/meminfo)
-        if [[ $? -ne 0 ]]; then || [[ -z "$cgroup_mem_kilobytes" ]]; then
+        if [[ $? -ne 0 ]] || [[ -z "$cgroup_mem_kilobytes" ]]; then
             fatal_error "Failed to get memory limit from /proc/meminfo"
         fi
         cgroup_mem_bytes=$(("$cgroup_mem_kilobytes"*1024))
