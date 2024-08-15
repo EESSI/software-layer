@@ -79,7 +79,9 @@ echo ">> Setting up environment..."
 echo "Current EESSI env:"
 env | grep "EESSI"
 echo "EESSI_SOFTWARE_SUBDIR_OVERRIDE before calling eessi_software_subdir.py: $EESSI_SOFTWARE_SUBDIR_OVERRIDE"
-export EESSI_SOFTWARE_SUBDIR_OVERRIDE=$(python3 $TOPDIR/eessi_software_subdir.py $DETECTION_PARAMETERS)
+# For this call to be succesful, it needs to be able to import archspec (which is part of EESSI)
+# Thus, we execute it in a subshell where EESSI is already initialized (a bit like a bootstrap)
+export EESSI_SOFTWARE_SUBDIR_OVERRIDE=$(source $TOPDIR/init/bash; python3 $TOPDIR/eessi_software_subdir.py $DETECTION_PARAMETERS)
 echo "EESSI_SOFTWARE_SUBDIR_OVERRIDE after calling eessi_software_subdir.py: $EESSI_SOFTWARE_SUBDIR_OVERRIDE"
 
 source $TOPDIR/init/bash
@@ -216,7 +218,9 @@ fi
 echo "Running tests: reframe ${REFRAME_ARGS} --run"
 # Exclude TensorFlow, which got stuck on https://github.com/EESSI/software-layer/pull/670#issuecomment-2291084266
 # Let's first make sure the test suite runs on the zen4 prefix...
-reframe ${REFRAME_ARGS} --run --exclude TensorFlow
+#reframe ${REFRAME_ARGS} --run --exclude TensorFlow
+# Limit to listing again, until we are sure we run with zen4...
+reframe ${REFRAME_ARGS} --list
 reframe_exit_code=$?
 if [[ ${reframe_exit_code} -eq 0 ]]; then
     echo_green "ReFrame runtime ran succesfully with command: reframe ${REFRAME_ARGS} --run."
