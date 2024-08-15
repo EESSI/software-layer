@@ -74,8 +74,13 @@ fi
 TMPDIR=$(mktemp -d)
 
 echo ">> Setting up environment..."
-module --force purge
+# No module command, we are outside of the compat layer
+# module --force purge
+echo "Current EESSI env:"
+env | grep "EESSI"
+echo "EESSI_SOFTWARE_SUBDIR_OVERRIDE before calling eessi_software_subdir.py: $EESSI_SOFTWARE_SUBDIR_OVERRIDE"
 export EESSI_SOFTWARE_SUBDIR_OVERRIDE=$(python3 $TOPDIR/eessi_software_subdir.py $DETECTION_PARAMETERS)
+echo "EESSI_SOFTWARE_SUBDIR_OVERRIDE after calling eessi_software_subdir.py: $EESSI_SOFTWARE_SUBDIR_OVERRIDE"
 
 source $TOPDIR/init/bash
 
