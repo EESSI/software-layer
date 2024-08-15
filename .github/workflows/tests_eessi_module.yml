@@ -1,3 +1,11 @@
+# documentation: https://help.github.com/en/articles/workflow-syntax-for-github-actions
+name: Tests for eessi_module_functionality in software.eessi.io
+on:
+  push:
+    branches: [ "*-software.eessi.io" ]
+  pull_request:
+permissions:
+  contents: read # to fetch code (actions/checkout)
 jobs:
   build:
     runs-on: ubuntu-latest
