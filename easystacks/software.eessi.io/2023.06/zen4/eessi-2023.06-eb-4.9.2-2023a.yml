@@ -22,4 +22,3 @@ easyconfigs:
         # see https://github.com/easybuilders/easybuild-easyconfigs/pull/21136
         from-commit: d8076ebaf8cb915762adebf88d385cc672b350dc
   - MODFLOW-6.4.4-foss-2023a.eb
-  - gnuplot-5.4.8-GCCcore-12.3.0.eb
