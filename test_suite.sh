@@ -163,10 +163,19 @@ if [ -f "$cgroup_v1_mem_limit" ]; then
     cgroup_mem_bytes=$(cat "$cgroup_v1_mem_limit")
 else
     cgroup_mem_bytes=$(cat "$cgroup_v2_mem_limit")
+    if [ "$cgroup_mem_bytes" = 'max' ]; then
+        # In cgroupsv2, the memory.max file may contain 'max', meaning the group can use the full system memory
+        # Here, we get the system memory from /proc/meminfo. Units are supposedly always in kb, but lets match them too
+        cgroup_mem_kilobytes=$(grep -oP 'MemTotal:\s+\K\d+(?=\s+kB)' /proc/meminfo)
+        if [[ $? -eq 0 ]] || [[ -z "$cgroup_mem_kilobytes" ]]; then
+            fatal_error "Failed to get memory limit from /proc/meminfo"
+        fi
+        cgroup_mem_bytes=$(("$cgroup_mem_kilobytes"*1024))
+    fi
 fi
 if [[ $? -eq 0 ]]; then
     # Convert to MiB
-    cgroup_mem_mib=$((cgroup_mem_bytes/(1024*1024)))
+    cgroup_mem_mib=$(("$cgroup_mem_bytes"/(1024*1024)))
 else
     fatal_error "Failed to get the memory limit in bytes from the current cgroup"
 fi
