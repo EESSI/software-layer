@@ -81,7 +81,7 @@ env | grep "EESSI"
 echo "EESSI_SOFTWARE_SUBDIR_OVERRIDE before calling eessi_software_subdir.py: $EESSI_SOFTWARE_SUBDIR_OVERRIDE"
 # For this call to be succesful, it needs to be able to import archspec (which is part of EESSI)
 # Thus, we execute it in a subshell where EESSI is already initialized (a bit like a bootstrap)
-export EESSI_SOFTWARE_SUBDIR_OVERRIDE=$(source $TOPDIR/init/bash; python3 $TOPDIR/eessi_software_subdir.py $DETECTION_PARAMETERS)
+export EESSI_SOFTWARE_SUBDIR_OVERRIDE=$(source $TOPDIR/init/bash > /dev/null 2>&1; python3 $TOPDIR/eessi_software_subdir.py $DETECTION_PARAMETERS)
 echo "EESSI_SOFTWARE_SUBDIR_OVERRIDE after calling eessi_software_subdir.py: $EESSI_SOFTWARE_SUBDIR_OVERRIDE"
 
 source $TOPDIR/init/bash
