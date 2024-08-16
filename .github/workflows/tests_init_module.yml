@@ -15,7 +15,7 @@ jobs:
         EESSI_VERSION:
         - 2023.06
         EESSI_SOFTWARE_SUBDIR_OVERRIDE:
-        - x86_64/generic
+        - x86_64/haswell
       fail-fast: false
     steps:
         - name: Check out software-layer repository
