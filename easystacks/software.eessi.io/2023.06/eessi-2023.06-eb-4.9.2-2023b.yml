@@ -16,3 +16,6 @@ easyconfigs:
         # see https://github.com/easybuilders/easybuild-easyconfigs/pull/21034
         from-commit: 76e7fc6657bab64bfbec826540a3a8f0040258f2
   - STAR-2.7.11b-GCC-13.2.0.eb
+      options:
+        #see https://github.com/easybuilders/easybuild-easyconfigs/pull/21200
+        from-commit: cd8b1ce595195f132125d9b25a98a9efe702c72a
