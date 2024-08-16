@@ -33,7 +33,8 @@ jobs:
 
       - name: Install missing shells
         run: |
-          apt install zsh ksh fish
+          sudo apt update
+          sudo apt install zsh ksh fish
           echo "# INIT ZSH" > ~/.zshrc
 
       - name: Prepare PROMPT variables
