@@ -11,34 +11,34 @@ jobs:
   build:
     runs-on: ubuntu-latest
     strategy:
+      fail-fast: false
       matrix:
         EESSI_VERSION:
-        - 2023.06
+          - 2023.06
         EESSI_SOFTWARE_SUBDIR_OVERRIDE:
-        - x86_64/haswell
-      fail-fast: false
+          - x86_64/haswell
     steps:
-        - name: Check out software-layer repository
-          uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
+      - name: Check out software-layer repository
+        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
 
-        - name: Mount EESSI CernVM-FS pilot repository
-          uses: cvmfs-contrib/github-action-cvmfs@55899ca74cf78ab874bdf47f5a804e47c198743c # v4.0
-          with:
-              cvmfs_config_package: https://github.com/EESSI/filesystem-layer/releases/download/latest/cvmfs-config-eessi_latest_all.deb
-              cvmfs_http_proxy: DIRECT
-              cvmfs_repositories: software.eessi.io
+      - name: Mount EESSI CernVM-FS pilot repository
+        uses: cvmfs-contrib/github-action-cvmfs@55899ca74cf78ab874bdf47f5a804e47c198743c # v4.0
+        with:
+          cvmfs_config_package: https://github.com/EESSI/filesystem-layer/releases/download/latest/cvmfs-config-eessi_latest_all.deb
+          cvmfs_http_proxy: DIRECT
+          cvmfs_repositories: software.eessi.io
          
-         - name: Clone assert.sh script
-           run: git clone https://github.com/lehmannro/assert.sh.git
+      - name: Clone assert.sh script
+        run: git clone https://github.com/lehmannro/assert.sh.git
 
-         - name: Prepare PROMPT variables
-           run: |
-              export BASH_PROMPT=$(bash -c 'source init/bash; echo "$PS1"')
-              export ZSH_PROMPT=$(zsh -c 'source init/zsh; echo "$PS1"')
-              export KSH_PROMPT=$(ksh -c 'source init/ksh; echo "$PS1"')
-              export FISH_PROMPT=$(fish -c 'source init/fish; echo "$PS1"')
+      - name: Prepare PROMPT variables
+        run: |
+          export BASH_PROMPT=$(bash -c 'source init/bash; echo "$PS1"')
+          export ZSH_PROMPT=$(zsh -c 'source init/zsh; echo "$PS1"')
+          export KSH_PROMPT=$(ksh -c 'source init/ksh; echo "$PS1"')
+          export FISH_PROMPT=$(fish -c 'source init/fish; echo "$PS1"')
 
-         - name: Run tests for available shells
-           run: |
-              .github/workflows/scripts/test_init_scripts.sh "bash" "zsh" "ksh" "fish"
+      - name: Run tests for available shells
+        run: |
+          .github/workflows/scripts/test_init_scripts.sh "bash" "zsh" "ksh" "fish"
 
