@@ -26,7 +26,7 @@ for shell in ${SHELLS[@]}; do
 	# Test 3: Check module overview
 	MODULE_SECTIONS=($($shell -c "source init/$shell 2>/dev/null; module ov 2>&1 | grep -e '---'"))
 	assert "echo ${MODULE_SECTIONS[1]}" "/cvmfs/software.eessi.io/versions/$EESSI_VERSION/software/linux/x86_64/intel/haswell/modules/all"
-	assert "echo ${MODULE_SECTIONS[4]}" "/home/eessi/EESSI_testing/modules"
+	assert "echo ${MODULE_SECTIONS[4]}" "/cvmfs/software.eessi.io/versions/$EESSI_VERSION/init/modules"
 	# Test 4: Load Python module and check version and path
 	command="$shell -c 'source init/$shell 2>/dev/null; module load Python/3.10.8-GCCcore-12.2.0; python --version'"
 	expected="Python 3.10.8"
@@ -35,22 +35,6 @@ for shell in ${SHELLS[@]}; do
 	expected="/cvmfs/software.eessi.io/versions/$EESSI_VERSION/software/linux/x86_64/intel/haswell/software/Python/3.10.8-GCCcore-12.2.0/bin/python"
 	assert "$command" "$expected"
 done
-
-#ZSH TESTS
-#assert "zsh -c 'source init/zsh' 2>&1 " "EESSI/$EESSI_VERSION loaded successfully"
-#assert "echo $ZSH_PROMPT" "{EESSI $EESSI_VERSION}"
-
-#KSH TESTS
-#assert "ksh -c 'source init/ksh' 2>&1 " "EESSI/$EESSI_VERSION loaded successfully"
-#assert "echo $KSH_PROMPT" "{EESSI $EESSI_VERSION}"
-
-#FISH TESTS
-#assert "fish -c 'source init/fish' 2>&1 " "EESSI/$EESSI_VERSION loaded successfully"
-#assert "echo $FISH_PROMPT" "{EESSI $EESSI_VERSION}"
-
-#CSH TESTS
-#assert "csh -c 'source init/csh' 2>&1 " "EESSI/$EESSI_VERSION loaded successfully"
-#assert "echo $CSH_PROMPT" "{EESSI $EESSI_VERSION}"
 
 assert_end source_eessi
 
