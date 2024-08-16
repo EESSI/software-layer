@@ -15,6 +15,4 @@ easyconfigs:
       options:
         # see https://github.com/easybuilders/easybuild-easyconfigs/pull/21034
         from-commit: 76e7fc6657bab64bfbec826540a3a8f0040258f2
-  - xxd-9.1.0307-GCCcore-13.2.0.eb
-  - HTSlib-1.19.1-GCC-13.2.0.eb
   - STAR-2.7.11b-GCC-13.2.0.eb
