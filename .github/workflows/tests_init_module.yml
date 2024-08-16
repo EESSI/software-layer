@@ -31,6 +31,11 @@ jobs:
       - name: Clone assert.sh script
         run: git clone https://github.com/lehmannro/assert.sh.git
 
+      - name: Install missing shells
+        run: |
+          apt install zsh ksh fish
+          echo "# INIT ZSH" > ~/.zshrc
+
       - name: Prepare PROMPT variables
         run: |
           export BASH_PROMPT=$(bash -c 'source init/bash; echo "$PS1"')
