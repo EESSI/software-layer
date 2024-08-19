@@ -1,0 +1,7 @@
+mappings:
+  gnuplot/*:
+    - EESSI_ESPRESSO
+  Perl/*:
+    - EESSI_GROMACS
+  default_tests:
+    - EESSI_OSU
