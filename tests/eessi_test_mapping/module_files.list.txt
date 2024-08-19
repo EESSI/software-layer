@@ -1,5 +1,0 @@
-Lua/5.4.4-GCCcore-12.2.0
-Perl/5.36.0-GCCcore-12.2.0-minimal
-gnuplot/5.4.6-GCCcore-12.2.0
-libcerf/2.3-GCCcore-12.2.0
-libgd/2.3.3-GCCcore-12.2.0
