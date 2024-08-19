@@ -70,14 +70,14 @@ def main(yaml_file, module_file, debug):
     # Create argument string out of the list of tests to run
     if tests_to_run:
         arg_string = " ".join([f"-n {test_name}" for test_name in tests_to_run])
-        if debug:
-            print(f"Full list of tests to run: {tests_to_run}")
-            print(f"Argument string: {arg_string}")
-        elif debug:
-            print(f"Full list of tests to run: No tests found") 
 
-    # This is the only thing this script should return, unless run with --debug
-    print(f"{arg_string}")
+    # Print final lists & argument string
+    if debug:
+        print(f"Full list of tests to run: {tests_to_run}")
+        print(f"Argument string: {arg_string}")
+    else:
+        # This is the only thing this script should print, unless run with --debug
+        print(f"{arg_string}")
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Map software names to their tests based on a YAML configuration.")
