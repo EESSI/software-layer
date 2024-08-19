@@ -88,6 +88,9 @@ echo "wrote file list to ${files_list}"
 echo "wrote module file list to ${module_files_list}"
 [ -r ${module_files_list} ] && cat ${module_files_list}
 
+# Copy the module files list to current workindg dir for later use in the test step
+cp ${module_files_list} module_files.list.txt
+
 topdir=${cvmfs_repo}/versions/
 
 echo ">> Creating tarball ${target_tgz} from ${topdir}..."
