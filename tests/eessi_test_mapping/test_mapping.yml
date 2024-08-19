@@ -1,5 +1,0 @@
-mappings:
-  - gnuplot/*:
-    - EESSI_ESPRESSO
-  - Perl/*:
-    - EESSI_GROMACS
