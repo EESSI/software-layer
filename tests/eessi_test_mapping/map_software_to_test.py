@@ -56,10 +56,11 @@ def main(yaml_file, module_file, debug):
         elif debug:
             print(f"Software: {software_name} -> No tests found")
 
-        if tests_to_run and debug:
+        if tests_to_run:
             arg_string = " ".join([f"-n {test_name}" for test_name in tests_to_run])
-            print(f"Full list of tests to run: {tests_to_run}")
-            print(f"Argument string: {arg_string}")
+            if debug:
+                print(f"Full list of tests to run: {tests_to_run}")
+                print(f"Argument string: {arg_string}")
         elif debug:
             print(f"Full list of tests to run: No tests found")
 
