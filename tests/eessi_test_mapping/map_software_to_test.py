@@ -68,10 +68,10 @@ def main(yaml_file, module_file, debug):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Map software names to their tests based on a YAML configuration.")
-    parser.add_argument('yaml_file', type=str, help='Path to the YAML file containing the test mappings.')
-    parser.add_argument('module_file', type=str, help='Path to the file containing the list of software names.')
+    parser.add_argument('--mapping-file', type=str, help='Path to the YAML file containing the test mappings.')
+    parser.add_argument('--module-list', type=str, help='Path to the file containing the list of software names.')
     parser.add_argument('--debug', action='store_true', help='Enable debug output.')
     
     args = parser.parse_args()
     
-    main(args.yaml_file, args.module_file, args.debug)
+    main(args.mapping_file, args.module_list, args.debug)
