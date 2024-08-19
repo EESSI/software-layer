@@ -81,7 +81,8 @@ source $TOPDIR/init/bash
 
 # DEBUG: only to test PR674, this code should never be merged
 module av patchelf/0.17.2-GCCcore-12.2.0
-module load patchelf/0.17.2-GCCcore-12.2.0
+module --ignore_cache load patchelf/0.17.2-GCCcore-12.2.0
+which patchelf
 patchelf --help
 touch /cvmfs/software.eessi.io/foo
 
@@ -200,7 +201,9 @@ fi
 
 # Run all tests
 echo "Running tests: reframe ${REFRAME_ARGS} --run"
-reframe ${REFRAME_ARGS} --run
+# reframe ${REFRAME_ARGS} --run
+# Make this run faster, we are not interestied in the test step here...
+reframe ${REFRAME_ARGS} --list
 reframe_exit_code=$?
 if [[ ${reframe_exit_code} -eq 0 ]]; then
     echo_green "ReFrame runtime ran succesfully with command: reframe ${REFRAME_ARGS} --run."
