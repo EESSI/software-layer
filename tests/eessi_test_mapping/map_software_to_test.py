@@ -41,7 +41,7 @@ def main(yaml_file, module_file, debug):
 
     software_names = read_software_names(module_file)
     if debug:
-        print(f"Debug: Read software names from '{module_file}'")
+        print(f"Read software names from '{module_file}'")
 
     tests_to_run = []
     arg_string = ""

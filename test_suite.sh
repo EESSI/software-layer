@@ -208,9 +208,7 @@ fi
 
 # Run all tests
 echo "Running tests: reframe ${REFRAME_ARGS} --run"
-#reframe ${REFRAME_ARGS} --run
-# First, lets make sure test selection works before we run...
-reframe ${REFRAME_ARGS} --list
+reframe ${REFRAME_ARGS} --run
 reframe_exit_code=$?
 if [[ ${reframe_exit_code} -eq 0 ]]; then
     echo_green "ReFrame runtime ran succesfully with command: reframe ${REFRAME_ARGS} --run."
