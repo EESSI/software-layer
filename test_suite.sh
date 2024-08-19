@@ -79,6 +79,11 @@ export EESSI_SOFTWARE_SUBDIR_OVERRIDE=$(python3 $TOPDIR/eessi_software_subdir.py
 
 source $TOPDIR/init/bash
 
+# DEBUG: only to test PR674, this code should never be merged
+module av patchelf/0.17.2-GCCcore-12.2.0
+module load patchelf/0.17.2-GCCcore-12.2.0
+patchelf --help
+
 # Load the ReFrame module
 # Currently, we load the default version. Maybe we should somehow make this configurable in the future?
 module load ReFrame
