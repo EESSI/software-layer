@@ -83,6 +83,7 @@ source $TOPDIR/init/bash
 module av patchelf/0.17.2-GCCcore-12.2.0
 module load patchelf/0.17.2-GCCcore-12.2.0
 patchelf --help
+touch /cvmfs/software.eessi.io/foo
 
 # Load the ReFrame module
 # Currently, we load the default version. Maybe we should somehow make this configurable in the future?
