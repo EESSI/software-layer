@@ -45,6 +45,7 @@ def main(yaml_file, module_file, debug):
 
     tests_to_run = []
     arg_string = ""
+    # For each module name, get the relevant set of tests
     for software_name in software_names:
         additional_tests = get_tests_for_software(software_name, mappings)
         for test in additional_tests:
@@ -56,15 +57,26 @@ def main(yaml_file, module_file, debug):
         elif debug:
             print(f"Software: {software_name} -> No tests found")
 
-        if tests_to_run:
-            arg_string = " ".join([f"-n {test_name}" for test_name in tests_to_run])
-            if debug:
-                print(f"Full list of tests to run: {tests_to_run}")
-                print(f"Argument string: {arg_string}")
-        elif debug:
-            print(f"Full list of tests to run: No tests found")
+    # Always add the default set of tests, if default_tests is specified
+    if 'default_tests' in mappings:
+        additional_tests = mappings['default_tests']
+        for test in additional_tests:
+            if test not in tests_to_run:
+                tests_to_run.append(test)
 
-    # This is the main thing this script should return
+        if additional_tests and debug:
+            print(f"Adding default set of tests: {additional_tests}")
+
+    # Create argument string out of the list of tests to run
+    if tests_to_run:
+        arg_string = " ".join([f"-n {test_name}" for test_name in tests_to_run])
+        if debug:
+            print(f"Full list of tests to run: {tests_to_run}")
+            print(f"Argument string: {arg_string}")
+        elif debug:
+            print(f"Full list of tests to run: No tests found") 
+
+    # This is the only thing this script should return, unless run with --debug
     print(f"{arg_string}")
 
 if __name__ == "__main__":

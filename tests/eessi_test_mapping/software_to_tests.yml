@@ -1,3 +1,14 @@
+# This file creates a mapping between (regular expressions for) module names and test names from the EESSI test suite
+# If a module name matches one of the regular expressions, the listed set of tests will be run in the test step
+# For a given module name, the test list for the first matching regular expression is returned
+# E.g. for
+# mappings:
+#   foo-v1:
+#     - bar
+#   foo-*
+#     - bar2
+# only the bar test will be run for foo-v1 (even though it also matches the pattern (foo-*)
+# If a module name does not match anything, the default_tests will be run
 mappings:
   gnuplot/*:
     - EESSI_ESPRESSO
