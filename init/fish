@@ -2,7 +2,7 @@
 set EESSI_VERSION (set -q EESSI_VERSION; and echo "$EESSI_VERSION"; or echo "2023.06")
 # Path to top-level module tree
 set -x MODULEPATH /cvmfs/software.eessi.io/versions/"$EESSI_VERSION"/init/modules
-. /cvmfs/software.eessi.io/versions/"$EESSI_VERSION"/compat/linux/$(uname -m)/usr/share/Lmod/init/fish
+. /cvmfs/software.eessi.io/versions/"$EESSI_VERSION"/compat/linux/(uname -m)/usr/share/Lmod/init/fish
 
 export PS1
 if test -z "$__Init_Default_Modules"
