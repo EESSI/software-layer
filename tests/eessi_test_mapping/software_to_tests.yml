@@ -10,9 +10,7 @@
 # only the bar test will be run for foo-v1 (even though it also matches the pattern (foo-*)
 # If a module name does not match anything, the default_tests will be run
 mappings:
-  gnuplot/*:
+  patchelf/*:
     - EESSI_ESPRESSO
-  Perl/*:
-    - EESSI_GROMACS
   default_tests:
     - EESSI_OSU
