@@ -183,7 +183,7 @@ else
 fi
 
 # Get the subset of test names based on the test mapping and tags (e.g. CI, 1_node)
-module_list="module_file.list.txt"
+module_list="module_files.list.txt"
 mapping_config="tests/eessi_test_mapping/software_to_tests.yml"
 # Run with --debug for easier debugging in case there are issues:
 python3 tests/eessi_test_mapping/map_software_to_test.py --module-list "${module_list}" --mapping-file "${mapping_config}" --debug
