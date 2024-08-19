@@ -9,8 +9,27 @@
 #     - bar2
 # only the bar test will be run for foo-v1 (even though it also matches the pattern (foo-*)
 # If a module name does not match anything, the default_tests will be run
+# Note that to list all available tests by name, one can do execute
+# reframe -R -c /path/to/eessi/test-suite/ --list | grep -Po "\bEESSI_\S+?(?=[\s'])" | uniq
+# Note that this regular expression is a bit sensitive to changes in the structure of ReFrame's output,
+# but is confirmed to work for ReFrame version 4.6.1
 mappings:
-  patchelf/*:
+  PyTorch-Bundle/*:
+    - EESSI_PyTorch_torchvision
+  QuantumESPRESSO/*:
+    - EESSI_QuantumESPRESSO
+  CP2K/*:
+    - EESSI_CP2K
+  ESPResSo/*:
     - EESSI_ESPRESSO
+  LAMMPS/*:
+    - EESSI_LAMMPS
+  OSU-Micro-Benchmarks/*:
+    - EESSI_OSU_Micro_Benchmarks
+  GROMACS/*:
+    - EESSI_GROMACS
   default_tests:
-    - EESSI_OSU
+    # Low level tests
+    - EESSI_OSU_Micro_Benchmarks
+    # A very quick-to-run high level application test
+    - EESSI_LAMMPS
