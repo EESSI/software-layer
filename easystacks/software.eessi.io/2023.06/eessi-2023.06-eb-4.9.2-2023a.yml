@@ -45,3 +45,4 @@ easyconfigs:
       options:
         # see https://github.com/easybuilders/easybuild-easyconfigs/pull/20880
         from-commit: bc6e08f89759b8b70166de5bfcb5056b9db8ec90
+  - gnuplot-5.4.8-GCCcore-12.3.0.eb
