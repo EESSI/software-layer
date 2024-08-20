@@ -87,8 +87,8 @@ command -v patchelf
 echo "EBROOTPATCHELF: $EBROOTPATCHELF"
 echo "patchelf --help:"
 patchelf --help
-echo "ls -al /cvmfs/software.eessi.io/versions/2023.06/software/linux/x86_64/amd/zen3/modules/all/patchelf/"
-ls -al /cvmfs/software.eessi.io/versions/2023.06/software/linux/x86_64/amd/zen3/modules/all/patchelf/
+echo "ls -al /cvmfs/software.eessi.io/versions/2023.06/software/linux/${EESSI_SOFTWARE_SUBDIR_OVERRIDE}/modules/all/patchelf/"
+ls -al /cvmfs/software.eessi.io/versions/2023.06/software/linux/${EESSI_SOFTWARE_SUBDIR_OVERRIDE}/modules/all/patchelf/
 touch /cvmfs/software.eessi.io/foo
 
 # Load the ReFrame module
