@@ -81,6 +81,18 @@ echo "EESSI_SOFTWARE_SUBDIR_OVERRIDE: $EESSI_SOFTWARE_SUBDIR_OVERRIDE"
 
 source $TOPDIR/init/bash
 
+# Demonstrate the effect of disabling the cache
+echo "Trying to load modules while LMOD cache is used"
+# export LMOD_IGNORE_CACHE=1
+module av patchelf
+module load patchelf/0.17.2-GCCcore-12.2.0.eb
+command -v patchelf
+echo "Trying to load modules while LMOD cache is not used"
+export LMOD_IGNORE_CACHE=1
+module av patchelf
+module load patchelf/0.17.2-GCCcore-12.2.0.eb
+command -v patchelf
+
 # Load the ReFrame module
 # Currently, we load the default version. Maybe we should somehow make this configurable in the future?
 module load ReFrame
