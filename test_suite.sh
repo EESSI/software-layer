@@ -81,6 +81,10 @@ echo "EESSI_SOFTWARE_SUBDIR_OVERRIDE: $EESSI_SOFTWARE_SUBDIR_OVERRIDE"
 
 source $TOPDIR/init/bash
 
+# We have to ignore the LMOD cache, otherwise the software that is built in the build step cannot be found/loaded
+# Reason is that the LMOD cache is normally only updated on the Stratum 0, once everything is ingested
+export LMOD_IGNORE_CACHE=1
+
 # Load the ReFrame module
 # Currently, we load the default version. Maybe we should somehow make this configurable in the future?
 module load ReFrame
