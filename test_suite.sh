@@ -82,7 +82,8 @@ source $TOPDIR/init/bash
 # DEBUG: only to test PR674, this code should never be merged
 module av patchelf/0.17.2-GCCcore-12.2.0
 module --ignore_cache load patchelf/0.17.2-GCCcore-12.2.0
-which patchelf
+command patchelf
+echo $EBROOTPATCHELF
 patchelf --help
 touch /cvmfs/software.eessi.io/foo
 

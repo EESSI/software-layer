@@ -745,6 +745,8 @@ do
             # the ${RESUME} directory or tarball
             # to be able to see the contents of the read-write session we have to mount
             # the fuse-overlayfs (in read-only mode) on top of the CernVM-FS repository
+            echo "Overlay-upper exists, so assuming we are resuming from a previous step."
+            echo "Since repo-access mode 'ro' was requested, we are mounting it as lowerdir to make it read-only."
 
             # make the target CernVM-FS repository available under /cvmfs_ro
             export EESSI_READONLY="container:cvmfs2 ${cvmfs_repo_name} /cvmfs_ro/${cvmfs_repo_name}"
