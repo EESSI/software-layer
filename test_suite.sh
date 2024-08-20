@@ -167,8 +167,10 @@ fi
 cgroup_v1_mem_limit="/sys/fs/cgroup/memory/$(</proc/self/cpuset)/memory.limit_in_bytes"
 cgroup_v2_mem_limit="/sys/fs/cgroup/$(</proc/self/cpuset)/memory.max"
 if [ -f "$cgroup_v1_mem_limit" ]; then
+    echo "Getting memory limit from file $cgroup_v1_mem_limit"
     cgroup_mem_bytes=$(cat "$cgroup_v1_mem_limit")
-else
+elif [ -f "$cgroup_v2_mem_limit" ]; then
+    echo "Getting memory limit from file $cgroup_v2_mem_limit"
     cgroup_mem_bytes=$(cat "$cgroup_v2_mem_limit")
     if [ "$cgroup_mem_bytes" = 'max' ]; then
         # In cgroupsv2, the memory.max file may contain 'max', meaning the group can use the full system memory
@@ -179,6 +181,8 @@ else
         fi
         cgroup_mem_bytes=$(("$cgroup_mem_kilobytes"*1024))
     fi
+else
+    fatal_error "Both files ${cgroup_v1_mem_limit} and ${cgroup_v2_mem_limit} couldn't be found. Failed to get the memory limit from the current cgroup"
 fi
 if [[ $? -eq 0 ]]; then
     # Convert to MiB
