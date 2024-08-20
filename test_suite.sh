@@ -80,13 +80,17 @@ export EESSI_SOFTWARE_SUBDIR_OVERRIDE=$(python3 $TOPDIR/eessi_software_subdir.py
 source $TOPDIR/init/bash
 
 # DEBUG: only to test PR674, this code should never be merged
+echo "module av patchelf/0.17.2-GCCcore-12.2.0"
 module av patchelf/0.17.2-GCCcore-12.2.0
+echo "module load patchelf/0.17.2-GCCcore-12.2.0"
+module load patchelf/0.17.2-GCCcore-12.2.0
+echo "module --ignore_cache load patchelf/0.17.2-GCCcore-12.2.0"
 module --ignore_cache load patchelf/0.17.2-GCCcore-12.2.0
 echo "Command -v patchelf"
 command -v patchelf
 echo "EBROOTPATCHELF: $EBROOTPATCHELF"
-echo "patchelf --help:"
-patchelf --help
+echo "patchelf --version"
+patchelf --version
 echo "ls -al /cvmfs/software.eessi.io/versions/2023.06/software/linux/${EESSI_SOFTWARE_SUBDIR_OVERRIDE}/modules/all/patchelf/"
 ls -al /cvmfs/software.eessi.io/versions/2023.06/software/linux/${EESSI_SOFTWARE_SUBDIR_OVERRIDE}/modules/all/patchelf/
 touch /cvmfs/software.eessi.io/foo
