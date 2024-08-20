@@ -85,12 +85,12 @@ source $TOPDIR/init/bash
 echo "Trying to load modules while LMOD cache is used"
 # export LMOD_IGNORE_CACHE=1
 module av patchelf
-module load patchelf/0.17.2-GCCcore-12.2.0.eb
+module load patchelf/0.17.2-GCCcore-12.2.0
 command -v patchelf
 echo "Trying to load modules while LMOD cache is not used"
 export LMOD_IGNORE_CACHE=1
 module av patchelf
-module load patchelf/0.17.2-GCCcore-12.2.0.eb
+module load patchelf/0.17.2-GCCcore-12.2.0
 command -v patchelf
 
 # Load the ReFrame module
