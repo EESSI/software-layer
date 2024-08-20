@@ -206,7 +206,7 @@ else
 fi
 # Bind mount /sys/fs/cgroup so that we can determine the amount of memory available in our cgroup for
 # Reframe configuration
-TEST_STEP_ARGS+=("--extra-bind-paths" "/sys/fs/cgroup:/hostsys/fs/cgroup:ro,/proc/self:/hostproc/self:ro"")
+TEST_STEP_ARGS+=("--extra-bind-paths" "/sys/fs/cgroup:/hostsys/fs/cgroup:ro,/proc/self:/hostproc/self:ro")
 
 # prepare arguments to test_suite.sh (specific to test step)
 declare -a TEST_SUITE_ARGS=()
