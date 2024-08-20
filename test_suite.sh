@@ -164,8 +164,8 @@ if [[ "${cpuinfo}" =~ (Core\(s\) per socket:[^0-9]*([0-9]+)) ]]; then
 else
     fatal_error "Failed to get the number of cores per socket for the current test hardware with lscpu."
 fi
-cgroup_v1_mem_limit="/hostsys/fs/cgroup/memory/$(</hostproc/self/cpuset)/memory.limit_in_bytes"
-cgroup_v2_mem_limit="/hostsys/fs/cgroup/$(</hostproc/self/cpuset)/memory.max"
+cgroup_v1_mem_limit="/hostsys/fs/cgroup/memory/$(</proc/self/cpuset)/memory.limit_in_bytes"
+cgroup_v2_mem_limit="/hostsys/fs/cgroup/$(</proc/self/cpuset)/memory.max"
 echo "cpuset_file: $(</proc/self/cpuset)"
 echo "ls -al /hostsys/fs/cgroup/memory/$(</proc/self/cpuset)"
 ls -al "/hostsys/fs/cgroup/memory/$(</proc/self/cpuset)"
