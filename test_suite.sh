@@ -82,9 +82,13 @@ source $TOPDIR/init/bash
 # DEBUG: only to test PR674, this code should never be merged
 module av patchelf/0.17.2-GCCcore-12.2.0
 module --ignore_cache load patchelf/0.17.2-GCCcore-12.2.0
-command patchelf
-echo $EBROOTPATCHELF
+echo "Command -v patchelf"
+command -v patchelf
+echo "EBROOTPATCHELF: $EBROOTPATCHELF"
+echo "patchelf --help:"
 patchelf --help
+echo "ls -al /cvmfs/software.eessi.io/versions/2023.06/software/linux/x86_64/amd/zen3/modules/all/patchelf/"
+ls -al /cvmfs/software.eessi.io/versions/2023.06/software/linux/x86_64/amd/zen3/modules/all/patchelf/
 touch /cvmfs/software.eessi.io/foo
 
 # Load the ReFrame module
