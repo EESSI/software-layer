@@ -219,6 +219,9 @@ fi
 # create tmp file for output of build step
 test_outerr=$(mktemp test.outerr.XXXX)
 
+echo "Listing known repos"
+./eessi_container.sh --list-repos
+
 echo "Executing command to test software:"
 echo "./eessi_container.sh ${COMMON_ARGS[@]} ${TEST_STEP_ARGS[@]}"
 echo "                     -- ./run_tests.sh \"${TEST_SUITE_ARGS[@]}\" \"$@\" 2>&1 | tee -a ${test_outerr}"
