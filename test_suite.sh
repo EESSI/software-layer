@@ -166,6 +166,9 @@ else
 fi
 cgroup_v1_mem_limit="/sys/fs/cgroup/memory/$(</proc/self/cpuset)/memory.limit_in_bytes"
 cgroup_v2_mem_limit="/sys/fs/cgroup/$(</proc/self/cpuset)/memory.max"
+echo "cpuset_file: $(</proc/self/cpuset)"
+echo "ls -al /sys/fs/cgroup/memory/$(</proc/self/cpuset)"
+ls -al "/sys/fs/cgroup/memory/$(</proc/self/cpuset)"
 if [ -f "$cgroup_v1_mem_limit" ]; then
     echo "Getting memory limit from file $cgroup_v1_mem_limit"
     cgroup_mem_bytes=$(cat "$cgroup_v1_mem_limit")
