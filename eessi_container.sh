@@ -746,6 +746,10 @@ do
             # to be able to see the contents of the read-write session we have to mount
             # the fuse-overlayfs (in read-only mode) on top of the CernVM-FS repository
 
+            echo "While processing '${cvmfs_repo_name}' to be mounted 'read-only' we detected an overlay-upper"
+            echo "  directory (${EESSI_TMPDIR}/${cvmfs_repo_name}/overlay-upper) likely from a previous"
+            echo "  session. Will use it as left-most directory in 'lowerdir' argument for fuse-overlayfs."
+
             # make the target CernVM-FS repository available under /cvmfs_ro
             export EESSI_READONLY="container:cvmfs2 ${cvmfs_repo_name} /cvmfs_ro/${cvmfs_repo_name}"
 
@@ -766,6 +770,8 @@ do
             export EESSI_FUSE_MOUNTS
         else
             # basic "ro" access that doesn't require any fuseoverlay-fs
+            echo "Mounting '${cvmfs_repo_name}' 'read-only' without fuse-overlayfs."
+
             export EESSI_READONLY="container:cvmfs2 ${cvmfs_repo_name} /cvmfs/${cvmfs_repo_name}"
 
             EESSI_FUSE_MOUNTS+=("--fusemount" "${EESSI_READONLY}")
