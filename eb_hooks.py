@@ -725,6 +725,31 @@ def post_sanitycheck_cuda(self, *args, **kwargs):
         raise EasyBuildError("CUDA-specific hook triggered for non-CUDA easyconfig?!")
 
 
+def pre_module_hook(self,*args, **kwargs):
+    """Main pre-module hook: trigger custom functions based on software name."""
+    if self.name in PRE_MODULE_HOOKS:
+        PRE_MODULE_HOOKS[self.name](self, *args, **kwargs)
+
+
+def pre_module_sentencepiece(self, *args, **kwargs):
+    """
+    LD_PRELOAD `libtcmalloc_minimal.so.4` on AARCH64-based systems
+    Avoids "libtcmalloc_minimal.so.4: cannot allocate memory in static TLS block" error
+    See https://github.com/EESSI/software-layer/pull/585/#issuecomment-2286068465
+    """
+    if self.name == "SentencePiece":
+        # We want to set LD_PRELOAD so that it loads the libtcmalloc_minimal.so library from gperftools
+        # However, if LD_PRELOAD is already set, we need to prepend to it.
+        # An existing LD_PRELOAD can be space or colon separated, both are allowed
+        # So first we make sure it is colon seperated
+        # Colon seperation is allowed for LD_PRELOAD, so the easiest way to prepend to whats there
+        # is to specify it through modextrapaths
+        self.cfg['modluafooter'] = """
+libtcmalloc = pathJoin(os.getenv("EBROOTGPERFTOOLS"), "lib64", "libtcmalloc_minimal.so")
+prepend_path("LD_PRELOAD", libtcmalloc)
+"""
+
+
 def inject_gpu_property(ec):
     """
     Add 'gpu' property, via modluafooter easyconfig parameter
@@ -806,4 +831,8 @@ POST_SINGLE_EXTENSION_HOOKS = {
 
 POST_SANITYCHECK_HOOKS = {
     'CUDA': post_sanitycheck_cuda,
+}
+
+PRE_MODULE_HOOKS = {
+    'SentencePiece': pre_module_sentencepiece,
 }
