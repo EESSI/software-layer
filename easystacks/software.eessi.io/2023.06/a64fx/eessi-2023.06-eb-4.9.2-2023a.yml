@@ -19,3 +19,4 @@ easyconfigs:
         # https://github.com/easybuilders/easybuild-easyconfigs/pull/20841
         from-commit: f0e91e6e430ebf902f7788ebb47f0203dee60649
   - R-4.3.2-gfbf-2023a.eb
+  - R-bundle-CRAN-2023.12-foss-2023a.eb
