@@ -57,8 +57,7 @@ site_configuration = {
         {
             'purge_environment': True,
             'resolve_module_conflicts': False,  # avoid loading the module before submitting the job
-            # disable automatic detection of CPU architecture (since we're using local scheduler)
-            'remote_detect': False,
+            'remote_detect': True,
         }
     ],
     'logging': common_logging_config(),
