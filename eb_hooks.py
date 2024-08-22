@@ -725,18 +725,19 @@ def post_sanitycheck_cuda(self, *args, **kwargs):
         raise EasyBuildError("CUDA-specific hook triggered for non-CUDA easyconfig?!")
 
 
-def pre_module_hook(self,*args, **kwargs):
-    """Main pre-module hook: trigger custom functions based on software name."""
-    if self.name in PRE_MODULE_HOOKS:
-        PRE_MODULE_HOOKS[self.name](self, *args, **kwargs)
+def pre_sanitycheck_hook(self,*args, **kwargs):
+    """Main pre-sanitycheck hook: trigger custom functions based on software name."""
+    if self.name in PRE_SANITYCHECK_HOOKS:
+        PRE_SANITYCHECK_HOOKS[self.name](self, *args, **kwargs)
 
 
-def pre_module_sentencepiece(self, *args, **kwargs):
+def pre_sanitycheck_sentencepiece(self, *args, **kwargs):
     """
     LD_PRELOAD `libtcmalloc_minimal.so.4` on AARCH64-based systems
     Avoids "libtcmalloc_minimal.so.4: cannot allocate memory in static TLS block" error
     See https://github.com/EESSI/software-layer/pull/585/#issuecomment-2286068465
     """
+    print("APPLYING HOOK")
     if self.name == "SentencePiece" and get_cpu_architecture() == AARCH64:
         # We want to set LD_PRELOAD so that it loads the libtcmalloc_minimal.so library from gperftools
         # However, if LD_PRELOAD is already set, we need to prepend to it.
@@ -829,10 +830,10 @@ POST_SINGLE_EXTENSION_HOOKS = {
     'numpy': post_single_extension_numpy,
 }
 
-POST_SANITYCHECK_HOOKS = {
-    'CUDA': post_sanitycheck_cuda,
+PRE_SANITYCHECK_HOOKS = {
+    'SentencePiece': pre_sanitycheck_sentencepiece,
 }
 
-PRE_MODULE_HOOKS = {
-    'SentencePiece': pre_module_sentencepiece,
+POST_SANITYCHECK_HOOKS = {
+    'CUDA': post_sanitycheck_cuda,
 }
