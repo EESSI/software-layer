@@ -252,7 +252,8 @@ echo ">> Cleaning up ${TMPDIR}..."
 rm -r ${TMPDIR}
 
 RFM_SYSTEM=$(python3 -c "import ${RFM_CONFIG_FILES}; site_configuration['systems'][0]['name']")
-RFM_TOPOLOGY_FILE="${HOME}/.reframe/topology/${RFM_SYSTEM}-${RFM_PARTITION}/processor.json"
+RFM_TOPOLOGY_DIR="${HOME}/.reframe/topology/${RFM_SYSTEM}-${RFM_PARTITION}"
 echo ">> Cleaning up ReFrame CPU topology file"
+rm -rf ${RFM_TOPOLOGY_DIR}
 
 exit ${reframe_exit_code}
