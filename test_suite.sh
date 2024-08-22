@@ -210,7 +210,7 @@ cp ${RFM_CONFIG_FILE_TEMPLATE} ${RFM_CONFIG_FILES}
 sed -i "s/__MEM_PER_NODE__/${cgroup_mem_mib}/g" $RFM_CONFIG_FILES
 echo "Replacing partition name in the template ReFrame config file, to trigger CPU autodetection for this job"
 # cp ${RFM_CONFIG_FILE_TEMPLATE} ${RFM_CONFIG_FILES}
-RFM_PARTITION="job-$SLURM_JOB_ID"
+RFM_PARTITION="${SLURM_JOB_PARTITION}"
 sed -i "s/__RFM_PARTITION__/${RFM_PARTITION}/g" $RFM_CONFIG_FILES
 
 # Make debugging easier by printing the final config file:
@@ -250,10 +250,5 @@ fi
 
 echo ">> Cleaning up ${TMPDIR}..."
 rm -r ${TMPDIR}
-
-RFM_SYSTEM=$(python3 -c "import ${RFM_CONFIG_FILES}; site_configuration['systems'][0]['name']")
-RFM_TOPOLOGY_DIR="${HOME}/.reframe/topology/${RFM_SYSTEM}-${RFM_PARTITION}"
-echo ">> Cleaning up ReFrame CPU topology file"
-rm -rf ${RFM_TOPOLOGY_DIR}
 
 exit ${reframe_exit_code}
