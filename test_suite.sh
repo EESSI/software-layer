@@ -201,13 +201,17 @@ else
 fi
 echo "Detected available memory: ${cgroup_mem_mib} MiB"
 
-echo "Replacing detected system information in template ReFrame config file..."
+# echo "Replacing detected system information in template ReFrame config file..."
+# cp ${RFM_CONFIG_FILE_TEMPLATE} ${RFM_CONFIG_FILES}
+# sed -i "s/__NUM_CPUS__/${cpu_count}/g" $RFM_CONFIG_FILES
+# sed -i "s/__NUM_SOCKETS__/${socket_count}/g" $RFM_CONFIG_FILES
+# sed -i "s/__NUM_CPUS_PER_CORE__/${threads_per_core}/g" $RFM_CONFIG_FILES
+# sed -i "s/__NUM_CPUS_PER_SOCKET__/${cores_per_socket}/g" $RFM_CONFIG_FILES
+# sed -i "s/__MEM_PER_NODE__/${cgroup_mem_mib}/g" $RFM_CONFIG_FILES
+echo "Replacing partition name in the template ReFrame config file, to trigger CPU autodetection for this job"
 cp ${RFM_CONFIG_FILE_TEMPLATE} ${RFM_CONFIG_FILES}
-sed -i "s/__NUM_CPUS__/${cpu_count}/g" $RFM_CONFIG_FILES
-sed -i "s/__NUM_SOCKETS__/${socket_count}/g" $RFM_CONFIG_FILES
-sed -i "s/__NUM_CPUS_PER_CORE__/${threads_per_core}/g" $RFM_CONFIG_FILES
-sed -i "s/__NUM_CPUS_PER_SOCKET__/${cores_per_socket}/g" $RFM_CONFIG_FILES
-sed -i "s/__MEM_PER_NODE__/${cgroup_mem_mib}/g" $RFM_CONFIG_FILES
+sed -i "s/__JOBID__/${SLURM_JOB_ID}/g" $RFM_CONFIG_FILES
+
 # Make debugging easier by printing the final config file:
 echo "Final config file (after replacements):"
 cat "${RFM_CONFIG_FILES}"

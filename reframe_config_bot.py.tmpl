@@ -15,19 +15,20 @@ site_configuration = {
             'modules_system': 'lmod',
             'partitions': [
                 {
-                    'name': 'default',
+                    'name': '__JOBID__',
                     'scheduler': 'local',
                     'launcher': 'mpirun',
                     'environs': ['default'],
                     'features': [
                         FEATURES[CPU]
                     ] + list(SCALES.keys()),
-                    'processor': {
-                        'num_cpus': __NUM_CPUS__,
-                        'num_sockets': __NUM_SOCKETS__,
-                        'num_cpus_per_core': __NUM_CPUS_PER_CORE__,
-                        'num_cpus_per_socket': __NUM_CPUS_PER_SOCKET__,
-                    },
+                    # 'processor': {
+                    #     'num_cpus': __NUM_CPUS__,
+                    #     'num_sockets': __NUM_SOCKETS__,
+                    #     'num_cpus_per_core': __NUM_CPUS_PER_CORE__,
+                    #     'num_cpus_per_socket': __NUM_CPUS_PER_SOCKET__,
+                    #     'num_cores_per_numa_node': __NUM_CORES_PER_NUMA_NODE__,
+                    # },
                     'resources': [
                         {
                             'name': 'memory',
