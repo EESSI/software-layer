@@ -210,7 +210,7 @@ cp ${RFM_CONFIG_FILE_TEMPLATE} ${RFM_CONFIG_FILES}
 sed -i "s/__MEM_PER_NODE__/${cgroup_mem_mib}/g" $RFM_CONFIG_FILES
 echo "Replacing partition name in the template ReFrame config file, to trigger CPU autodetection for this job"
 # cp ${RFM_CONFIG_FILE_TEMPLATE} ${RFM_CONFIG_FILES}
-RFM_PARTITION="$SLURM_JOB_ID"
+RFM_PARTITION="job-$SLURM_JOB_ID"
 sed -i "s/__RFM_PARTITION__/${RFM_PARTITION}/g" $RFM_CONFIG_FILES
 
 # Make debugging easier by printing the final config file:
