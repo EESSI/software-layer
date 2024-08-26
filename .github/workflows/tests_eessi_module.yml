@@ -31,6 +31,7 @@ jobs:
           CPU_ARCH=$(./init/eessi_archdetect.sh cpupath)
           export EESSI_ARCHDETECT_OPTIONS=dummy/cpu:$CPU_ARCH:dummy1/cpu1
           . /cvmfs/software.eessi.io/versions/${{matrix.EESSI_VERSION}}/compat/linux/$(uname -m)/usr/share/Lmod/init/bash
+          module avail EESSI
           if module --ignore_cache load EESSI/${{matrix.EESSI_VERSION}}; then
               if [[ $CPU_ARCH == "${EESSI_SOFTWARE_SUBDIR}" ]]; then
                   echo "Test for picking up on \$archdetect_cpu PASSED"
