@@ -30,6 +30,7 @@ jobs:
           export MODULEPATH=/cvmfs/software.eessi.io/versions/${{matrix.EESSI_VERSION}}/init/modules/:$MODULEPATH
           CPU_ARCH=$(./init/eessi_archdetect.sh cpupath)
           export EESSI_ARCHDETECT_OPTIONS=dummy/cpu:$CPU_ARCH:dummy1/cpu1
+          . /cvmfs/software.eessi.io/versions/${{matrix.EESSI_VERSION}}/compat/linux/$(uname -m)/usr/share/Lmod/init/bash
           if module load EESSI/${{matrix.EESSI_VERSION}}; then
               if [[ $CPU_ARCH == "${EESSI_SOFTWARE_SUBDIR}" ]]; then
                   echo "Test for picking up on \$archdetect_cpu PASSED"
@@ -42,8 +43,7 @@ jobs:
           unset EESSI_ARCHDETECT_OPTIONS 
               
       - name: Test for archdetect_cpu functionality with invalid path
-        run: |
-          export MODULEPATH=/cvmfs/software.eessi.io/versions/${{matrix.EESSI_VERSION}}/init/modules/:$MODULEPATH
+        run: |          
           export EESSI_ARCHDETECT_OPTIONS=dummy/cpu
           outfile=outfile.txt
           module load EESSI/${{matrix.EESSI_VERSION}} > $outfile 2>&1
@@ -57,8 +57,7 @@ jobs:
           unset EESSI_ARCHDETECT_OPTIONS
               
       - name: Test for expected variables after loading EESSI module 
-        run: |
-          export MODULEPATH=/cvmfs/software.eessi.io/versions/${{matrix.EESSI_VERSION}}/init/modules/:$MODULEPATH
+        run: |          
           moduleoutfile=moduleout.txt
           sourceoutfile=sourceout.txt
           module load EESSI/${{matrix.EESSI_VERSION}}
