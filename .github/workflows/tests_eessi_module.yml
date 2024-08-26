@@ -31,31 +31,33 @@ jobs:
           . /cvmfs/software.eessi.io/versions/${{matrix.EESSI_VERSION}}/compat/linux/$(uname -m)/usr/share/Lmod/init/bash
       
       - name: Test for archdetect_cpu functionality with invalid path
-        run: |          
+        run: |
+          set +e  # Do not exit immediately if a command exits with a non-zero status          
           export EESSI_ARCHDETECT_OPTIONS="dummy/cpu"
           outfile="outfile.txt"
-          module load EESSI/${{matrix.EESSI_VERSION}} > "$outfile" 2>&1
-          result=$(grep "Software" "$outfile")
-          if [[ "$result" == *"Software directory check for the detected architecture failed"* ]]; then
-              echo "Test for picking up invalid path on \$archdetect_cpu PASSED"
+          module load EESSI/${{matrix.EESSI_VERSION}} > "${outfile}" 2>&1
+          result=$(grep "Software" "${outfile}")
+          if [[ "${result}" == *"Software directory check for the detected architecture failed"* ]]; then
+              echo "Test for picking up invalid path on \${archdetect_cpu} PASSED"
           else
-              echo "Test for picking up invalid path on \$archdetect_cpu FAILED" >&2
+              echo "Test for picking up invalid path on \${archdetect_cpu} FAILED" >&2
               exit 1
           fi
           unset EESSI_ARCHDETECT_OPTIONS
+          set -e  # Re-enable exit on non-zero status
               
-      - name: Test for expected variables after loading EESSI module 
+      - name: Test for expected variables while adding dummy cpu archs and loading EESSI module 
         run: |
           CPU_ARCH=$(./init/eessi_archdetect.sh -a cpupath)
-          export EESSI_ARCHDETECT_OPTIONS="dummy/cpu:$CPU_ARCH:dummy1/cpu1"          
+          export EESSI_ARCHDETECT_OPTIONS="dummy/cpu:${CPU_ARCH}:dummy1/cpu1"          
           moduleoutfile="moduleout.txt"
           sourceoutfile="sourceout.txt"
           module load EESSI/${{matrix.EESSI_VERSION}}
-          env | grep -E '^(EESSI_S|EESSI_C)' | sort | > "$moduleoutfile"
+          env | grep -E '^(EESSI_S|EESSI_C)' | sort | > "${moduleoutfile}"
           module unload EESSI/${{matrix.EESSI_VERSION}}
           source /cvmfs/software.eessi.io/versions/${{matrix.EESSI_VERSION}}/init/bash
-          env | grep -E '^(EESSI_S|EESSI_C)' | sort | > "$sourceoutfile"
-          if (diff "$moduleoutfile" "$sourceoutfile" > /dev/null); then
+          env | grep -E '^(EESSI_S|EESSI_C)' | sort | > "${sourceoutfile}"
+          if (diff "${moduleoutfile}" "${sourceoutfile}" > /dev/null); then
               echo "Test for checking env variables PASSED"
           else 
               echo "Test for checking env variables FAILED"  >&2
