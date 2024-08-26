@@ -45,3 +45,7 @@ easyconfigs:
       options:
         # see https://github.com/easybuilders/easybuild-easyconfigs/pull/20880
         from-commit: bc6e08f89759b8b70166de5bfcb5056b9db8ec90
+  - MBX-1.1.0-foss-2023a.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/21155
+        from-commit: 6929a67401f2a2ec58f91fb306332a77497d73ff
