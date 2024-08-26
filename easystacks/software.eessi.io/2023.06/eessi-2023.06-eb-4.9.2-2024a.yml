@@ -1,0 +1,10 @@
+easyconfigs:
+  - GCC-13.3.0.eb
+  - foss-2024a.eb
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/21100
+        from-commit: 2159744f0d49f9748b839a9c15400ebeb17f8a01
+  - SciPy-bundle-2024.05-gfbf-2024a.eb
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/21100
+        from-commit: 200191648280a8d0581ee8f7d443e6875f2fb133
