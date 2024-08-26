@@ -27,10 +27,10 @@ jobs:
               
       - name: Test for archdetect_cpu functionality with only one valid path
         run: |
-          export MODULEPATH=/cvmfs/software.eessi.io/versions/${{matrix.EESSI_VERSION}}/init/modules/:$MODULEPATH
           CPU_ARCH=$(./init/eessi_archdetect.sh cpupath)
           export EESSI_ARCHDETECT_OPTIONS=dummy/cpu:$CPU_ARCH:dummy1/cpu1
           . /cvmfs/software.eessi.io/versions/${{matrix.EESSI_VERSION}}/compat/linux/$(uname -m)/usr/share/Lmod/init/bash
+          export MODULEPATH=/cvmfs/software.eessi.io/versions/${{matrix.EESSI_VERSION}}/init/modules
           module avail EESSI
           if module --ignore_cache load EESSI/${{matrix.EESSI_VERSION}}; then
               if [[ $CPU_ARCH == "${EESSI_SOFTWARE_SUBDIR}" ]]; then
