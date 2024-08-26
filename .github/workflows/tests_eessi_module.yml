@@ -31,7 +31,7 @@ jobs:
           export EESSI_ARCHDETECT_OPTIONS=dummy/cpu:$CPU_ARCH:dummy1/cpu1
           . /cvmfs/software.eessi.io/versions/${{matrix.EESSI_VERSION}}/compat/linux/$(uname -m)/usr/share/Lmod/init/bash
           export MODULEPATH=/cvmfs/software.eessi.io/versions/${{matrix.EESSI_VERSION}}/init/modules
-          echo $MODULEPATH
+          ls $MODULEPATH/EESSI
           env | grep LMOD
           module avail EESSI
           if module --ignore_cache load EESSI/${{matrix.EESSI_VERSION}}; then
