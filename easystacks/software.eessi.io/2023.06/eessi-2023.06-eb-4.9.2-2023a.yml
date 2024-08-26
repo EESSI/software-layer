@@ -45,3 +45,7 @@ easyconfigs:
       options:
         # see https://github.com/easybuilders/easybuild-easyconfigs/pull/20880
         from-commit: bc6e08f89759b8b70166de5bfcb5056b9db8ec90
+  - wradlib-2.0.3-foss-2023a.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/21094
+        from-commit: 9807cf9f13a9e969b447f136e9e8ad9e5c4548a2
