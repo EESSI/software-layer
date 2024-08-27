@@ -18,3 +18,4 @@ easyconfigs:
         include-easyblocks-from-commit: c8256a36e7062bc09f5ce30552a9de9827054c9e
         # https://github.com/easybuilders/easybuild-easyconfigs/pull/20841
         from-commit: f0e91e6e430ebf902f7788ebb47f0203dee60649
+  - R-4.3.2-gfbf-2023a.eb
