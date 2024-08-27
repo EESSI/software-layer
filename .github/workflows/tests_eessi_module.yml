@@ -27,9 +27,9 @@ jobs:
               
       - name: Initialise Lmod
         run: |
-          export MODULEPATH=/cvmfs/software.eessi.io/versions/${{matrix.EESSI_VERSION}}/init/modules 
           . /cvmfs/software.eessi.io/versions/${{matrix.EESSI_VERSION}}/compat/linux/$(uname -m)/usr/share/Lmod/init/bash
-      
+          module use init/modules
+
       - name: Test for archdetect_cpu functionality with invalid path
         run: |
           set +e  # Do not exit immediately if a command exits with a non-zero status          
