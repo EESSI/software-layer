@@ -28,6 +28,7 @@ jobs:
       - name: Test for archdetect_cpu functionality with invalid path
         run: |
           . /cvmfs/software.eessi.io/versions/${{matrix.EESSI_VERSION}}/compat/linux/$(uname -m)/usr/share/Lmod/init/bash  # Initialise Lmod
+          export MODULEPATH=init/modules
           set +e  # Do not exit immediately if a command exits with a non-zero status          
           export EESSI_ARCHDETECT_OPTIONS="dummy/cpu"
           outfile="outfile.txt"
@@ -45,6 +46,8 @@ jobs:
               
       - name: Test for expected variables while adding dummy cpu archs and loading EESSI module 
         run: |
+          . /cvmfs/software.eessi.io/versions/${{matrix.EESSI_VERSION}}/compat/linux/$(uname -m)/usr/share/Lmod/init/bash  # Initialise Lmod
+          export MODULEPATH=init/modules
           CPU_ARCH=$(./init/eessi_archdetect.sh -a cpupath)
           export EESSI_ARCHDETECT_OPTIONS="dummy/cpu:${CPU_ARCH}:dummy1/cpu1"          
           moduleoutfile="moduleout.txt"
