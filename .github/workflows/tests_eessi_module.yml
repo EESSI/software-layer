@@ -28,6 +28,7 @@ jobs:
       - name: Initialise Lmod
         run: |
           . /cvmfs/software.eessi.io/versions/${{matrix.EESSI_VERSION}}/compat/linux/$(uname -m)/usr/share/Lmod/init/bash
+          module --version
           module use init/modules
 
       - name: Test for archdetect_cpu functionality with invalid path
