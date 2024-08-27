@@ -56,6 +56,8 @@ jobs:
           module unload EESSI/${{matrix.EESSI_VERSION}}
           source /cvmfs/software.eessi.io/versions/${{matrix.EESSI_VERSION}}/init/bash
           env | grep -E '^(EESSI_S|EESSI_C)' | sort | > "${sourceoutfile}"
+          cat "${moduleoutfile}"
+          cat "${sourceoutfile}"
           if (diff "${moduleoutfile}" "${sourceoutfile}" > /dev/null); then
               echo "Test for checking env variables PASSED"
           else 
