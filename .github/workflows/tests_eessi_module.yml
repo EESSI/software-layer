@@ -25,14 +25,9 @@ jobs:
           cvmfs_http_proxy: DIRECT
           cvmfs_repositories: software.eessi.io
               
-      - name: Initialise Lmod
-        run: |
-          . /cvmfs/software.eessi.io/versions/${{matrix.EESSI_VERSION}}/compat/linux/$(uname -m)/usr/share/Lmod/init/bash
-          module --version
-          module use init/modules
-
       - name: Test for archdetect_cpu functionality with invalid path
         run: |
+          . /cvmfs/software.eessi.io/versions/${{matrix.EESSI_VERSION}}/compat/linux/$(uname -m)/usr/share/Lmod/init/bash  # Initialise Lmod
           set +e  # Do not exit immediately if a command exits with a non-zero status          
           export EESSI_ARCHDETECT_OPTIONS="dummy/cpu"
           outfile="outfile.txt"
