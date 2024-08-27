@@ -34,8 +34,7 @@ jobs:
           outfile="outfile.txt"
           module load EESSI/${{matrix.EESSI_VERSION}} > "${outfile}" 2>&1
           cat "${outfile}"
-          result=$(cat "${outfile}")
-          if [[ "${result}" == *"Software directory check for the detected architecture failed"* ]]; then
+          if grep -q  "Software directory check" "${outfile}"; then
               echo "Test for picking up invalid path on \${archdetect_cpu} PASSED"
           else
               echo "Test for picking up invalid path on \${archdetect_cpu} FAILED" >&2
