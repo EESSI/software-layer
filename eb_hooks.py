@@ -737,7 +737,6 @@ def pre_sanitycheck_sentencepiece(self, *args, **kwargs):
     Avoids "libtcmalloc_minimal.so.4: cannot allocate memory in static TLS block" error
     See https://github.com/EESSI/software-layer/pull/585/#issuecomment-2286068465
     """
-    print("APPLYING HOOK")
     if self.name == "SentencePiece" and get_cpu_architecture() == AARCH64:
         # We want to set LD_PRELOAD so that it loads the libtcmalloc_minimal.so library from gperftools
         # However, if LD_PRELOAD is already set, we need to prepend to it.
