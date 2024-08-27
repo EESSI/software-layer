@@ -285,6 +285,26 @@ def parse_hook_qt5_check_qtwebengine_disable(ec, eprefix):
         raise EasyBuildError("Qt5-specific hook triggered for non-Qt5 easyconfig?!")
 
 
+def parse_hook_sentencepiece(ec, eprefix):
+    """
+    LD_PRELOAD `libtcmalloc_minimal.so.4` on AARCH64-based systems
+    Avoids "libtcmalloc_minimal.so.4: cannot allocate memory in static TLS block" error
+    See https://github.com/EESSI/software-layer/pull/585/#issuecomment-2286068465
+    """
+    msg = f"Adding LD_PRELOAD to single sanity check command for {ec.name}"
+    print(msg)
+    if ec.name == "SentencePiece" and get_cpu_architecture() == AARCH64:
+        ec.log.info(msg)
+        # We need to tweak the sanitycheck command 'python -c 'import sentencepiece'" by
+        # adding the LD_PRELOAD. Since shell variables seem not get expanded we use a hardcoded path for now.
+        eessi_software_path = get_eessi_envvar('EESSI_SOFTWARE_PATH')
+        libtcmalloc_path = os.path.join(eessi_software_path, 'software', 'gperftools', '2.12-GCCcore-12.3.0', 'lib64', 'libtcmalloc_minimal.so')
+        scc = ec['sanity_check_commands']
+        scc_add_ld_preload = f"LD_PRELOAD={libtcmalloc_path} {scc[1]}"
+        ec['sanity_check_commands'][1] = scc_add_ld_preload
+    return ec
+
+
 def parse_hook_ucx_eprefix(ec, eprefix):
     """Make UCX aware of compatibility layer via additional configuration options."""
     if ec.name == 'UCX':
@@ -725,18 +745,14 @@ def post_sanitycheck_cuda(self, *args, **kwargs):
         raise EasyBuildError("CUDA-specific hook triggered for non-CUDA easyconfig?!")
 
 
-def pre_sanitycheck_hook(self,*args, **kwargs):
-    """Main pre-sanitycheck hook: trigger custom functions based on software name."""
-    if self.name in PRE_SANITYCHECK_HOOKS:
-        PRE_SANITYCHECK_HOOKS[self.name](self, *args, **kwargs)
-
-
-def pre_sanitycheck_sentencepiece(self, *args, **kwargs):
+def post_sanitycheck_sentencepiece(self, *args, **kwargs):
     """
     LD_PRELOAD `libtcmalloc_minimal.so.4` on AARCH64-based systems
     Avoids "libtcmalloc_minimal.so.4: cannot allocate memory in static TLS block" error
     See https://github.com/EESSI/software-layer/pull/585/#issuecomment-2286068465
     """
+    msg = f"Adding LD_PRELOAD to modluafooter for {self.name}"
+    print(msg)
     if self.name == "SentencePiece" and get_cpu_architecture() == AARCH64:
         # We want to set LD_PRELOAD so that it loads the libtcmalloc_minimal.so library from gperftools
         # However, if LD_PRELOAD is already set, we need to prepend to it.
@@ -744,10 +760,17 @@ def pre_sanitycheck_sentencepiece(self, *args, **kwargs):
         # So first we make sure it is colon seperated
         # Colon seperation is allowed for LD_PRELOAD, so the easiest way to prepend to whats there
         # is to specify it through modextrapaths
+        self.log.info(msg)
         self.cfg['modluafooter'] = """
 libtcmalloc = pathJoin(os.getenv("EBROOTGPERFTOOLS"), "lib64", "libtcmalloc_minimal.so")
 prepend_path("LD_PRELOAD", libtcmalloc)
 """
+
+
+def pre_sanitycheck_hook(self,*args, **kwargs):
+    """Main pre-sanitycheck hook: trigger custom functions based on software name."""
+    if self.name in PRE_SANITYCHECK_HOOKS:
+        PRE_SANITYCHECK_HOOKS[self.name](self, *args, **kwargs)
 
 
 def inject_gpu_property(ec):
@@ -787,6 +810,7 @@ PARSE_HOOKS = {
     'OpenBLAS': parse_hook_openblas_relax_lapack_tests_num_errors,
     'pybind11': parse_hook_pybind11_replace_catch2,
     'Qt5': parse_hook_qt5_check_qtwebengine_disable,
+    'SentencePiece': parse_hook_sentencepiece,
     'UCX': parse_hook_ucx_eprefix,
 }
 
@@ -830,9 +854,9 @@ POST_SINGLE_EXTENSION_HOOKS = {
 }
 
 PRE_SANITYCHECK_HOOKS = {
-    'SentencePiece': pre_sanitycheck_sentencepiece,
 }
 
 POST_SANITYCHECK_HOOKS = {
     'CUDA': post_sanitycheck_cuda,
+    'SentencePiece': post_sanitycheck_sentencepiece,
 }
