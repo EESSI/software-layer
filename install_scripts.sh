@@ -106,7 +106,11 @@ copy_files_by_list ${TOPDIR}/init/Magic_Castle ${INSTALL_PREFIX}/init/Magic_Cast
 mc_files=(
    2023.06.lua
 )
-copy_files_by_list ${TOPDIR}/init/modules/EESSI ${INSTALL_PREFIX}/init/modules/EESSI "${mc_files[@]}"
+if [ -n "$EESSI_CVMFS_REPO" ]; then
+    copy_files_by_list ${TOPDIR}/init/modules/EESSI ${EESSI_CVMFS_REPO}/modules/EESSI "${mc_files[@]}"
+else
+    echo "Error: EESSI_CVMFS_REPO is required for copying the module files." >&2
+fi
 
 # Copy for the scripts directory
 script_files=(
