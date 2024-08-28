@@ -53,14 +53,6 @@ LOCAL_TMP=$(cfg_get_value "site_config" "local_tmp")
 echo "bot/build.sh: LOCAL_TMP='${LOCAL_TMP}'"
 # TODO should local_tmp be mandatory? --> then we check here and exit if it is not provided
 
-# replace /bin/bash with bash from compat layer
-compat_bash="${PWD}/scripts/2023.06/${HOST_ARCH}/bash"
-if [[ -z ${SINGULARITY_BIND} ]]; then
-    export SINGULARITY_BIND="${compat_bash}:/bin/bash"
-else
-    export SINGULARITY_BIND="${SINGULARITY_BIND},${compat_bash}:/bin/bash"
-fi
-
 # check if path to copy build logs to is specified, so we can copy build logs for failing builds there
 BUILD_LOGS_DIR=$(cfg_get_value "site_config" "build_logs_dir")
 echo "bot/build.sh: BUILD_LOGS_DIR='${BUILD_LOGS_DIR}'"
@@ -186,6 +178,26 @@ if [[ ${EESSI_SOFTWARE_SUBDIR_OVERRIDE} =~ .*/generic$ ]]; then
 fi
 [[ ! -z ${BUILD_LOGS_DIR} ]] && INSTALL_SCRIPT_ARGS+=("--build-logs-dir" "${BUILD_LOGS_DIR}")
 [[ ! -z ${SHARED_FS_PATH} ]] && INSTALL_SCRIPT_ARGS+=("--shared-fs-path" "${SHARED_FS_PATH}")
+
+# The following is only a proof-of-concept to replace the containers /bin/bash
+# with the bash from the compat layer.
+#
+# replace /bin/bash with bash from compat layer
+# - first obtain them
+# - then use them
+# EESSI_EPREFIX points to the compat layer
+# CMD='cp ${EESSI_EPREFIX}/bin/bash .'
+CMD="cp /cvmfs/software.eessi.io/versions/2023.06/compat/linux/${HOST_ARCH}/bin/bash ."
+echo "Executing command to obtain bash executable from compat layer:"
+echo "./eessi_container.sh ${COMMON_ARGS[@]} --storage ${STORAGE} ${CMD} 2>&1 | tee -a ${get_bash_outerr}"
+./eessi_container.sh "${COMMON_ARGS[@]}" --storage "${STORAGE}" "${CMD}" 2>&1 | tee -a ${get_bash_outerr}
+
+compat_bash="${PWD}/bash"
+if [[ -z ${SINGULARITY_BIND} ]]; then
+    export SINGULARITY_BIND="${compat_bash}:/bin/bash"
+else
+    export SINGULARITY_BIND="${SINGULARITY_BIND},${compat_bash}:/bin/bash"
+fi
 
 # determine if the removal step has to be run
 # assume there's only one diff file that corresponds to the PR patch file
