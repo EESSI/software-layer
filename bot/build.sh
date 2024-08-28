@@ -188,9 +188,10 @@ fi
 # EESSI_EPREFIX points to the compat layer
 # CMD='cp ${EESSI_EPREFIX}/bin/bash .'
 CMD="/usr/bin/cp /cvmfs/software.eessi.io/versions/2023.06/compat/linux/${HOST_ARCH}/bin/bash ."
+get_bash_outerr=$(mktemp get_bash.outerr.XXXX)
 echo "Executing command to obtain bash executable from compat layer:"
 echo "./eessi_container.sh ${COMMON_ARGS[@]} --storage ${STORAGE} ${CMD} 2>&1 | tee -a ${get_bash_outerr}"
-./eessi_container.sh "${COMMON_ARGS[@]}" --storage "${STORAGE}" "${CMD}" 2>&1 | tee -a ${get_bash_outerr}
+./eessi_container.sh "${COMMON_ARGS[@]}" --storage "${STORAGE}" ${CMD} 2>&1 | tee -a ${get_bash_outerr}
 
 compat_bash="${PWD}/bash"
 if [[ -z ${SINGULARITY_BIND} ]]; then
