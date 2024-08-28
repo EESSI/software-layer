@@ -159,7 +159,6 @@ echo "bot/build.sh: EESSI_OS_TYPE='${EESSI_OS_TYPE}'"
 declare -a COMMON_ARGS=()
 COMMON_ARGS+=("--verbose")
 COMMON_ARGS+=("--access" "rw")
-COMMON_ARGS+=("--mode" "run")
 [[ ! -z ${CONTAINER} ]] && COMMON_ARGS+=("--container" "${CONTAINER}")
 [[ ! -z ${HTTP_PROXY} ]] && COMMON_ARGS+=("--http-proxy" "${HTTP_PROXY}")
 [[ ! -z ${HTTPS_PROXY} ]] && COMMON_ARGS+=("--https-proxy" "${HTTPS_PROXY}")
@@ -190,8 +189,8 @@ fi
 CMD="/usr/bin/cp /cvmfs/software.eessi.io/versions/2023.06/compat/linux/${HOST_ARCH}/bin/bash ."
 get_bash_outerr=$(mktemp get_bash.outerr.XXXX)
 echo "Executing command to obtain bash executable from compat layer:"
-echo "./eessi_container.sh ${COMMON_ARGS[@]} --storage ${STORAGE} ${CMD} 2>&1 | tee -a ${get_bash_outerr}"
-./eessi_container.sh "${COMMON_ARGS[@]}" --storage "${STORAGE}" ${CMD} 2>&1 | tee -a ${get_bash_outerr}
+echo "./eessi_container.sh ${COMMON_ARGS[@]} --mode shell --storage ${STORAGE} <<< ${CMD} 2>&1 | tee -a ${get_bash_outerr}"
+./eessi_container.sh "${COMMON_ARGS[@]}" --mode shell --storage "${STORAGE}" <<< "${CMD}" 2>&1 | tee -a ${get_bash_outerr}
 
 compat_bash="${PWD}/bash"
 if [[ -z ${SINGULARITY_BIND} ]]; then
@@ -200,6 +199,7 @@ else
     export SINGULARITY_BIND="${SINGULARITY_BIND},${compat_bash}:/bin/bash"
 fi
 
+COMMON_ARGS+=("--mode" "run")
 # determine if the removal step has to be run
 # assume there's only one diff file that corresponds to the PR patch file
 pr_diff=$(ls [0-9]*.diff | head -1)
