@@ -53,6 +53,14 @@ LOCAL_TMP=$(cfg_get_value "site_config" "local_tmp")
 echo "bot/build.sh: LOCAL_TMP='${LOCAL_TMP}'"
 # TODO should local_tmp be mandatory? --> then we check here and exit if it is not provided
 
+# replace /bin/bash with bash from compat layer
+compat_bash="${PWD}/scripts/2023.06/${HOST_ARCH}/bash"
+if [[ -z ${SINGULARITY_BIND} ]]; then
+    export SINGULARITY_BIND="${compat_bash}:/bin/bash"
+else
+    export SINGULARITY_BIND="${SINGULARITY_BIND},${compat_bash}:/bin/bash"
+fi
+
 # check if path to copy build logs to is specified, so we can copy build logs for failing builds there
 BUILD_LOGS_DIR=$(cfg_get_value "site_config" "build_logs_dir")
 echo "bot/build.sh: BUILD_LOGS_DIR='${BUILD_LOGS_DIR}'"
