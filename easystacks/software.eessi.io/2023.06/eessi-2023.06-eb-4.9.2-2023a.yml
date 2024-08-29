@@ -45,5 +45,5 @@ easyconfigs:
       options:
         # see https://github.com/easybuilders/easybuild-easyconfigs/pull/20880
         from-commit: bc6e08f89759b8b70166de5bfcb5056b9db8ec90
+  - libmad-0.15.1b-GCCcore-12.3.0.eb
   - PyTorch-bundle-2.1.2-foss-2023a.eb
-  
