@@ -178,10 +178,10 @@ fi
 [[ ! -z ${BUILD_LOGS_DIR} ]] && INSTALL_SCRIPT_ARGS+=("--build-logs-dir" "${BUILD_LOGS_DIR}")
 [[ ! -z ${SHARED_FS_PATH} ]] && INSTALL_SCRIPT_ARGS+=("--shared-fs-path" "${SHARED_FS_PATH}")
 
-# The following is only a proof-of-concept to replace the containers /bin/bash
-# with the bash from the compat layer.
+# The following is only a proof-of-concept to replace the container's /bin/bash
+# and /bin/sh with the bash from the compat layer.
 #
-# replace /bin/bash with bash from compat layer
+# replace /bin/bash and /bin/sh with bash from compat layer
 # - first obtain them
 # - then use them
 # EESSI_EPREFIX points to the compat layer
@@ -194,9 +194,9 @@ echo "./eessi_container.sh ${COMMON_ARGS[@]} --mode shell --storage ${STORAGE} <
 
 compat_bash="${PWD}/bash"
 if [[ -z ${SINGULARITY_BIND} ]]; then
-    export SINGULARITY_BIND="${compat_bash}:/bin/bash"
+    export SINGULARITY_BIND="${compat_bash}:/bin/bash,${compat_bash}:/bin/sh"
 else
-    export SINGULARITY_BIND="${SINGULARITY_BIND},${compat_bash}:/bin/bash"
+    export SINGULARITY_BIND="${SINGULARITY_BIND},${compat_bash}:/bin/bash,${compat_bash}:/bin/sh"
 fi
 
 COMMON_ARGS+=("--mode" "run")
