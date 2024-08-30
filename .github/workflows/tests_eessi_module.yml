@@ -36,6 +36,7 @@ jobs:
               echo "EESSI spider cache is being rebuilt" >&2
               exit 1
           fi
+          env | grep LMOD
           module purge
           unset MODULEPATH
     
