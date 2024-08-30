@@ -24,7 +24,18 @@ jobs:
           cvmfs_config_package: https://github.com/EESSI/filesystem-layer/releases/download/latest/cvmfs-config-eessi_latest_all.deb
           cvmfs_http_proxy: DIRECT
           cvmfs_repositories: software.eessi.io
-              
+
+      - name: Test for making sure spider cache is being used and not being rebuilt
+        run: |
+          . /cvmfs/software.eessi.io/versions/${{matrix.EESSI_VERSION}}/compat/linux/$(uname -m)/usr/share/Lmod/init/bash  # Initialise Lmod
+          export MODULEPATH=init/modules
+          if timeout 10s bash -c "LMOD_PAGER=none module --terse avail"; then
+              echo "EESSI spider cache is being used"
+          else
+              echo "EESSI spider cache is being rebuilt" >&2
+              exit 1
+          fi
+    
       - name: Test for archdetect_cpu functionality with invalid path
         run: |
           . /cvmfs/software.eessi.io/versions/${{matrix.EESSI_VERSION}}/compat/linux/$(uname -m)/usr/share/Lmod/init/bash  # Initialise Lmod
