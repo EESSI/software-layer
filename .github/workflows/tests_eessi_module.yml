@@ -31,7 +31,7 @@ jobs:
           export MODULEPATH=init/modules
           configfile="configfile.txt"
           module load EESSI/${{matrix.EESSI_VERSION}}
-          module --config > "${configfile.txt}" 2>&1
+          module --config > "${configfile}" 2>&1
           grep cache "${configfile}" | grep software | grep -v compat
           if timeout 10s bash -c "LMOD_PAGER=none module --terse avail" && grep cache "${configfile}" | grep software | grep -v compat; then
               echo "EESSI spider cache is being used"
