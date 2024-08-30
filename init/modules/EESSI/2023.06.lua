@@ -58,8 +58,10 @@ prepend_path("PATH", pathJoin(eessi_eprefix, "bin"))
 prepend_path("PATH", pathJoin(eessi_eprefix, "usr/bin"))
 setenv("EESSI_SOFTWARE_PATH", eessi_software_path)
 setenv("EESSI_MODULEPATH", eessi_module_path)
-prepend_path("MODULEPATH", eessi_module_path)
-prepend_path("MODULEPATH", eessi_site_module_path)
+if ( mode() ~= "spider" ) then
+    prepend_path("MODULEPATH", eessi_module_path)
+    prepend_path("MODULEPATH", eessi_site_module_path)
+end
 setenv("LMOD_CONFIG_DIR", pathJoin(eessi_software_path, ".lmod"))
 setenv("LMOD_PACKAGE_PATH", pathJoin(eessi_software_path, ".lmod"))
 if mode() == "load" then
