@@ -29,6 +29,7 @@ jobs:
         run: |
           . /cvmfs/software.eessi.io/versions/${{matrix.EESSI_VERSION}}/compat/linux/$(uname -m)/usr/share/Lmod/init/bash  # Initialise Lmod
           export MODULEPATH=init/modules
+          module load EESSI/${{matrix.EESSI_VERSION}}
           if timeout 10s bash -c "LMOD_PAGER=none module --terse avail"; then
               echo "EESSI spider cache is being used"
           else
