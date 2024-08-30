@@ -36,6 +36,8 @@ jobs:
               echo "EESSI spider cache is being rebuilt" >&2
               exit 1
           fi
+          module purge
+          unset MODULEPATH
     
       - name: Test for archdetect_cpu functionality with invalid path
         run: |
