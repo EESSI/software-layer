@@ -9,7 +9,7 @@ More information
 ]])
 whatis("Description: The European Environment for Scientific Software Installations (EESSI, pronounced as easy) is a collaboration between different European partners in HPC community. The goal of this project is to build a common stack of scientific software installations for HPC systems and beyond, including laptops, personal workstations and cloud infrastructure.")
 whatis("URL: https://www.eessi.io/docs/")
-
+conflict("EESSI")
 local eessi_version = myModuleVersion()
 local eessi_repo = "/cvmfs/software.eessi.io"
 local eessi_prefix = pathJoin(eessi_repo, "versions", eessi_version)
