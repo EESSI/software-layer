@@ -30,7 +30,7 @@ jobs:
           . /cvmfs/software.eessi.io/versions/${{matrix.EESSI_VERSION}}/compat/linux/$(uname -m)/usr/share/Lmod/init/bash  # Initialise Lmod
           export MODULEPATH=init/modules
           configfile="configfile.txt"
-          module load EESSI/${{matrix.EESSI_VERSION}}
+          module -T load EESSI/${{matrix.EESSI_VERSION}}
           module --config > "${configfile}" 2>&1
           grep cache "${configfile}" | grep software | grep -v compat
           if timeout 10s bash -c "LMOD_PAGER=none module --terse avail" && grep cache "${configfile}" | grep software | grep -v compat; then
