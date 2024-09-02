@@ -45,3 +45,7 @@ easyconfigs:
       options:
         # see https://github.com/easybuilders/easybuild-easyconfigs/pull/20880
         from-commit: bc6e08f89759b8b70166de5bfcb5056b9db8ec90
+  - Critic2-1.2-foss-2023a.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/20833
+        from-commit: 78426c2383fc7e4b9b9e77d7a77f336e1bee3843
