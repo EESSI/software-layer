@@ -25,7 +25,8 @@ function archdetect_cpu()
         end
         source_sh("bash", script)
     end
-    for archdetect_filter_cpu in string.gmatch(os.getenv("EESSI_ARCHDETECT_OPTIONS"), "([^" .. ":" .. "]+)") do
+local archdetect_options = os.getenv("EESSI_ARCHDETECT_OPTIONS") or ""
+    for archdetect_filter_cpu in string.gmatch(archdetect_options, "([^" .. ":" .. "]+)") do
         if isDir(pathJoin(eessi_prefix, "software", eessi_os_type, archdetect_filter_cpu, "software")) then
             -- use x86_64/amd/zen3 for now when AMD Genoa (Zen4) CPU is detected, 
             -- since optimized software installations for Zen4 are a work-in-progress, 
