@@ -61,9 +61,9 @@ setenv("EESSI_SOFTWARE_PATH", eessi_software_path)
 setenv("EESSI_MODULEPATH", eessi_module_path)
 if ( mode() ~= "spider" ) then
     prepend_path("MODULEPATH", eessi_module_path)
-    prepend_path("MODULEPATH", eessi_site_module_path)
 end
 prepend_path("LMOD_RC", pathJoin(eessi_software_path, "/.lmod/lmodrc.lua"))
+prepend_path("MODULEPATH", eessi_site_module_path)
 setenv("LMOD_PACKAGE_PATH", pathJoin(eessi_software_path, ".lmod"))
 if mode() == "load" then
     LmodMessage("EESSI/" .. eessi_version .. " loaded successfully")
