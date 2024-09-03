@@ -19,3 +19,4 @@ easyconfigs:
       options:
         # see https://github.com/easybuilders/easybuild-easyconfigs/pull/21200
         from-commit: 765ba900daf5953e306c4dad896febe52fdd6c00
+  - HPL-2.3-foss-2023b.eb
