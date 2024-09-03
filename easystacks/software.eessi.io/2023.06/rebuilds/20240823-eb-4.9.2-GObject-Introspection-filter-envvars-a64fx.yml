@@ -1,0 +1,13 @@
+# 2024.08.23
+# GObject-Introspection sets $LD_LIBRARY_PATH (to many different paths, including $EPREFIX/lib)
+# when calling gcc, and this causes a lot of issues for, especially, scripts using /bin/bash.
+#
+# This rebuild ensures (by using a new EasyBuild hook) that GObject-Introspection will not set
+# environment variables that are configured to be filtered by EasyBuild.
+# This rebuild was not done initially for A64FX. This file is meant to do the same as the
+# previous rebuild of GObject-Introspection-1.76.1-GCCcore-12.3.0 in other architectures, 
+# but for A64FX.
+# 
+# See https://github.com/EESSI/software-layer/issues/196
+easyconfigs:
+  - GObject-Introspection-1.76.1-GCCcore-12.3.0.eb
