@@ -53,3 +53,9 @@ easyconfigs:
       options:
         # see https://github.com/easybuilders/easybuild-easyconfigs/pull/21155
         from-commit: 6929a67401f2a2ec58f91fb306332a77497d73ff
+  - Transrate-1.0.3-GCC-12.3.0.eb:
+      options:
+        # https://github.com/easybuilders/easybuild-easyblocks/pull/3381
+        include-easyblocks-from-commit: bb86f05d4917b29e022023f152efdf0ca5c14ded
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/20964
+        from-commit: 7d539a9e599d8bc5ac2bda6ee9587ef62351ee03
