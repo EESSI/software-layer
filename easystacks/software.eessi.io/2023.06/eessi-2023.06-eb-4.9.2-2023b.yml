@@ -1,5 +1,9 @@
 easyconfigs:
   - IPython-8.17.2-GCCcore-13.2.0.eb
+  - ReFrame-4.6.2-GCCcore-13.2.0.eb:
+      options:
+        # See https://github.com/easybuilders/easybuild-easyconfigs/pull/21269
+        from-commit: 230fae37daf35b286392aba7b9f0592b516517d1
   - dlb-3.4-gompi-2023b.eb
   - pystencils-1.3.4-gfbf-2023b.eb:
       options:
