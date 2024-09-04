@@ -173,7 +173,6 @@ else
 fi
 echo "Detected available memory: ${cgroup_mem_mib} MiB"
 
-# echo "Replacing detected system information in template ReFrame config file..."
 cp ${RFM_CONFIG_FILE_TEMPLATE} ${RFM_CONFIG_FILES}
 echo "Replacing memory limit in the ReFrame config file with the detected CGROUP memory limit: ${cgroup_mem_mib} MiB"
 sed -i "s/__MEM_PER_NODE__/${cgroup_mem_mib}/g" $RFM_CONFIG_FILES
