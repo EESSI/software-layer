@@ -168,11 +168,18 @@ if [[ "${cpuinfo}" =~ (Core\(s\) per socket:[^0-9]*([0-9]+)) ]]; then
 else
     fatal_error "Failed to get the number of cores per socket for the current test hardware with lscpu."
 fi
-cgroup_v1_mem_limit="/sys/fs/cgroup/memory/$(</proc/self/cpuset)/memory.limit_in_bytes"
-cgroup_v2_mem_limit="/sys/fs/cgroup/$(</proc/self/cpuset)/memory.max"
+
+# The /sys inside the container is not the same as the /sys of the host
+# We want to extract the memory limit from the cgroup on the host (which is typically set by SLURM).
+# Thus, bot/test.sh bind-mounts the host's /sys/fs/cgroup into /hostsys/fs/cgroup
+# and that's the prefix we use to extract the memory limit from
+cgroup_v1_mem_limit="/hostsys/fs/cgroup/memory/$(</proc/self/cpuset)/memory.limit_in_bytes"
+cgroup_v2_mem_limit="/hostsys/fs/cgroup/$(</proc/self/cpuset)/memory.max"
 if [ -f "$cgroup_v1_mem_limit" ]; then
+    echo "Getting memory limit from file $cgroup_v1_mem_limit"
     cgroup_mem_bytes=$(cat "$cgroup_v1_mem_limit")
-else
+elif [ -f "$cgroup_v2_mem_limit" ]; then
+    echo "Getting memory limit from file $cgroup_v2_mem_limit"
     cgroup_mem_bytes=$(cat "$cgroup_v2_mem_limit")
     if [ "$cgroup_mem_bytes" = 'max' ]; then
         # In cgroupsv2, the memory.max file may contain 'max', meaning the group can use the full system memory
@@ -183,6 +190,8 @@ else
         fi
         cgroup_mem_bytes=$(("$cgroup_mem_kilobytes"*1024))
     fi
+else
+    fatal_error "Both files ${cgroup_v1_mem_limit} and ${cgroup_v2_mem_limit} couldn't be found. Failed to get the memory limit from the current cgroup"
 fi
 if [[ $? -eq 0 ]]; then
     # Convert to MiB

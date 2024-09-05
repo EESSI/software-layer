@@ -102,6 +102,12 @@ mc_files=(
 )
 copy_files_by_list ${TOPDIR}/init/Magic_Castle ${INSTALL_PREFIX}/init/Magic_Castle "${mc_files[@]}"
 
+# Copy for init/modules/EESSI directory
+mc_files=(
+   2023.06.lua
+)
+copy_files_by_list ${TOPDIR}/init/modules/EESSI ${INSTALL_PREFIX}/init/modules/EESSI "${mc_files[@]}"
+
 # Copy for the scripts directory
 script_files=(
     utils.sh
