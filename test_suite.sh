@@ -141,34 +141,6 @@ export RFM_PREFIX=$PWD/reframe_runs
 echo "Configured reframe with the following environment variables:"
 env | grep "RFM_"
 
-# Inject correct CPU/memory properties into the ReFrame config file
-echo "Collecting system-specific input for the ReFrame configuration file"
-cpuinfo=$(lscpu)
-if [[ "${cpuinfo}" =~ CPU\(s\):[^0-9]*([0-9]+) ]]; then
-    cpu_count=${BASH_REMATCH[1]}
-    echo "Detected CPU count: ${cpu_count}"
-else
-    fatal_error "Failed to get the number of CPUs for the current test hardware with lscpu."
-fi
-if [[ "${cpuinfo}" =~ Socket\(s\):[^0-9]*([0-9]+) ]]; then
-    socket_count=${BASH_REMATCH[1]}
-    echo "Detected socket count: ${socket_count}"
-else
-    fatal_error "Failed to get the number of sockets for the current test hardware with lscpu."
-fi
-if [[ "${cpuinfo}" =~ (Thread\(s\) per core:[^0-9]*([0-9]+)) ]]; then
-    threads_per_core=${BASH_REMATCH[2]}
-    echo "Detected threads per core: ${threads_per_core}"
-else
-    fatal_error "Failed to get the number of threads per core for the current test hardware with lscpu."
-fi
-if [[ "${cpuinfo}" =~ (Core\(s\) per socket:[^0-9]*([0-9]+)) ]]; then
-    cores_per_socket=${BASH_REMATCH[2]}
-    echo "Detected cores per socket: ${cores_per_socket}"
-else
-    fatal_error "Failed to get the number of cores per socket for the current test hardware with lscpu."
-fi
-
 # The /sys inside the container is not the same as the /sys of the host
 # We want to extract the memory limit from the cgroup on the host (which is typically set by SLURM).
 # Thus, bot/test.sh bind-mounts the host's /sys/fs/cgroup into /hostsys/fs/cgroup
@@ -201,13 +173,13 @@ else
 fi
 echo "Detected available memory: ${cgroup_mem_mib} MiB"
 
-echo "Replacing detected system information in template ReFrame config file..."
 cp ${RFM_CONFIG_FILE_TEMPLATE} ${RFM_CONFIG_FILES}
-sed -i "s/__NUM_CPUS__/${cpu_count}/g" $RFM_CONFIG_FILES
-sed -i "s/__NUM_SOCKETS__/${socket_count}/g" $RFM_CONFIG_FILES
-sed -i "s/__NUM_CPUS_PER_CORE__/${threads_per_core}/g" $RFM_CONFIG_FILES
-sed -i "s/__NUM_CPUS_PER_SOCKET__/${cores_per_socket}/g" $RFM_CONFIG_FILES
+echo "Replacing memory limit in the ReFrame config file with the detected CGROUP memory limit: ${cgroup_mem_mib} MiB"
 sed -i "s/__MEM_PER_NODE__/${cgroup_mem_mib}/g" $RFM_CONFIG_FILES
+RFM_PARTITION="${SLURM_JOB_PARTITION}"
+echo "Replacing partition name in the template ReFrame config file: ${RFM_PARTITION}"
+sed -i "s/__RFM_PARTITION__/${RFM_PARTITION}/g" $RFM_CONFIG_FILES
+
 # Make debugging easier by printing the final config file:
 echo "Final config file (after replacements):"
 cat "${RFM_CONFIG_FILES}"
