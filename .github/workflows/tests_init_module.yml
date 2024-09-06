@@ -37,13 +37,6 @@ jobs:
           sudo apt install zsh ksh fish
           echo "# INIT ZSH" > ~/.zshrc
 
-      - name: Prepare PROMPT variables
-        run: |
-          export BASH_PROMPT=$(bash -c 'source init/bash; echo "$PS1"')
-          export ZSH_PROMPT=$(zsh -c 'source init/zsh; echo "$PS1"')
-          export KSH_PROMPT=$(ksh -c 'source init/ksh; echo "$PS1"')
-          export FISH_PROMPT=$(fish -c 'source init/fish; echo "$PS1"')
-
       - name: Run tests for available shells
         run: |
           .github/workflows/scripts/test_init_scripts.sh "bash" "zsh" "ksh" "fish"
