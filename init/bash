@@ -1,17 +1,41 @@
-# Choose an EESSI version
-EESSI_VERSION="${EESSI_VERSION:-2023.06}"
-# Path to top-level module tree
-export MODULEPATH=/cvmfs/software.eessi.io/versions/"$EESSI_VERSION"/init/modules
-. /cvmfs/software.eessi.io/versions/"$EESSI_VERSION"/compat/linux/$(uname -m)/usr/share/Lmod/init/bash
+function show_msg {
+  # only echo msg if EESSI_SILENT is unset
+  msg=$1
+  if [[ -z ${EESSI_SILENT+x} ]]; then
+    echo "$msg"
+  fi
+}
 
-export PS1
-if [ -z "$__Init_Default_Modules" ]; then
-   export __Init_Default_Modules=1;
+# The following method should be safe, but might break if file is a symlink
+# (could switch to $(dirname "$(readlink -f "$BASH_SOURCE")") in that case)
+source $(dirname "$BASH_SOURCE")/eessi_environment_variables
 
-   ## ability to predefine elsewhere the default list
-   LMOD_SYSTEM_DEFAULT_MODULES=${LMOD_SYSTEM_DEFAULT_MODULES:-"StdEnv"}
-   export LMOD_SYSTEM_DEFAULT_MODULES
-   module --initial_load --no_redirect restore
-else
-   module refresh
+# only continue if setting EESSI environment variables worked fine
+if [ $? -eq 0 ]; then
+
+    export PS1="{EESSI $EESSI_VERSION} $PS1"
+
+    # add location of commands provided by compat layer to $PATH;
+    # see https://github.com/EESSI/software-layer/issues/52
+    export PATH=$EPREFIX/usr/bin:$EPREFIX/bin:$PATH
+
+    # init Lmod
+    show_msg "Initializing Lmod..."
+    source $EESSI_EPREFIX/usr/share/Lmod/init/bash
+
+    # prepend location of modules for EESSI software stack to $MODULEPATH
+    show_msg "Prepending $EESSI_MODULEPATH to \$MODULEPATH..."
+    module use $EESSI_MODULEPATH
+    show_msg "Prepending site path $EESSI_SITE_MODULEPATH to \$MODULEPATH..."
+    module use $EESSI_SITE_MODULEPATH
+
+    #show_msg ""
+    #show_msg "*** Known problems in the ${EESSI_VERSION} software stack ***"
+    #show_msg ""
+    #show_msg "1) ..."
+    #show_msg ""
+    #show_msg ""
+
+    echo "Environment set up to use EESSI (${EESSI_VERSION}), have fun!"
+
 fi
