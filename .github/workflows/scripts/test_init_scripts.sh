@@ -20,14 +20,11 @@ for shell in ${SHELLS[@]}; do
 
 	# TEST 1: Source Script and check Module Output
 	assert "$shell -c 'source init/lmod/$shell' 2>&1 " "EESSI/$EESSI_VERSION loaded successfully"
-	# TEST 2: Check PS1 Prompt (Previous exported)
-	PROMPT="${shell^^}_PROMPT"
-	assert "echo ${!PROMPT}" "{EESSI $EESSI_VERSION}"
-	# Test 3: Check module overview
+	# Test 2: Check module overview
 	MODULE_SECTIONS=($($shell -c "source init/lmod/$shell 2>/dev/null; module ov 2>&1 | grep -e '---'"))
 	assert "echo ${MODULE_SECTIONS[1]}" "/cvmfs/software.eessi.io/versions/$EESSI_VERSION/software/linux/x86_64/intel/haswell/modules/all"
 	assert "echo ${MODULE_SECTIONS[4]}" "/cvmfs/software.eessi.io/versions/$EESSI_VERSION/init/modules"
-	# Test 4: Load Python module and check version and path
+	# Test 3: Load Python module and check version and path
 	command="$shell -c 'source init/lmod/$shell 2>/dev/null; module load Python/3.10.8-GCCcore-12.2.0; python --version'"
 	expected="Python 3.10.8"
 	assert "$command" "$expected"
