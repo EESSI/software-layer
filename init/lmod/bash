@@ -4,7 +4,6 @@ EESSI_VERSION="${EESSI_VERSION:-2023.06}"
 export MODULEPATH=/cvmfs/software.eessi.io/versions/"$EESSI_VERSION"/init/modules
 . /cvmfs/software.eessi.io/versions/"$EESSI_VERSION"/compat/linux/$(uname -m)/usr/share/Lmod/init/bash
 
-export PS1
 if [ -z "$__Init_Default_Modules" ]; then
    export __Init_Default_Modules=1;
 

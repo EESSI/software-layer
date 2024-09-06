@@ -4,7 +4,6 @@ if (! $?EESSI_VERSION) then; set EESSI_VERSION = "2023.06"; endif
 setenv MODULEPATH /cvmfs/software.eessi.io/versions/"$EESSI_VERSION"/init/modules
 source /cvmfs/software.eessi.io/versions/"$EESSI_VERSION"/compat/linux/`uname -m`/usr/share/Lmod/init/csh
 
-setenv PS1 $prompt
 if (! $?__Init_Default_Modules ) then
 	setenv __Init_Default_Modules 1;
 
