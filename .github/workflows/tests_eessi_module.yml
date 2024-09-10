@@ -1,0 +1,85 @@
+# documentation: https://help.github.com/en/articles/workflow-syntax-for-github-actions
+name: Tests for eessi_module_functionality in software.eessi.io
+on:
+  push:
+    branches: [ "*-software.eessi.io" ]
+  pull_request:
+permissions:
+  contents: read # to fetch code (actions/checkout)
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        EESSI_VERSION:
+          - 2023.06        
+    steps:
+      - name: Check out software-layer repository
+        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
+          
+      - name: Mount EESSI CernVM-FS pilot repository
+        uses: cvmfs-contrib/github-action-cvmfs@55899ca74cf78ab874bdf47f5a804e47c198743c # v4.0
+        with:
+          cvmfs_config_package: https://github.com/EESSI/filesystem-layer/releases/download/latest/cvmfs-config-eessi_latest_all.deb
+          cvmfs_http_proxy: DIRECT
+          cvmfs_repositories: software.eessi.io
+
+      - name: Test for making sure spider cache is being used and not being rebuilt
+        run: |
+          . /cvmfs/software.eessi.io/versions/${{matrix.EESSI_VERSION}}/compat/linux/$(uname -m)/usr/share/Lmod/init/bash  # Initialise Lmod
+          export MODULEPATH=init/modules
+          configfile="configfile.txt"
+          module -T load EESSI/${{matrix.EESSI_VERSION}}
+          module --config > "${configfile}" 2>&1
+          grep cache "${configfile}" | grep software | grep -v compat
+          if timeout 10s bash -c "LMOD_PAGER=none module --terse avail" && grep cache "${configfile}" | grep software | grep -v compat; then
+              echo "EESSI spider cache is being used"
+          else
+              echo "EESSI spider cache is being rebuilt" >&2
+              exit 1
+          fi
+          env | grep LMOD
+          module purge
+          unset MODULEPATH
+    
+      - name: Test for archdetect_cpu functionality with invalid path
+        run: |
+          . /cvmfs/software.eessi.io/versions/${{matrix.EESSI_VERSION}}/compat/linux/$(uname -m)/usr/share/Lmod/init/bash  # Initialise Lmod
+          export MODULEPATH=init/modules
+          set +e  # Do not exit immediately if a command exits with a non-zero status          
+          export EESSI_ARCHDETECT_OPTIONS="dummy/cpu"
+          outfile="outfile.txt"
+          module load EESSI/${{matrix.EESSI_VERSION}} > "${outfile}" 2>&1
+          cat "${outfile}"
+          if grep -q  "Software directory check" "${outfile}"; then
+              echo "Test for picking up invalid path on \${archdetect_cpu} PASSED"
+          else
+              echo "Test for picking up invalid path on \${archdetect_cpu} FAILED" >&2
+              exit 1
+          fi
+          unset EESSI_ARCHDETECT_OPTIONS
+          set -e  # Re-enable exit on non-zero status
+              
+      - name: Test for expected variables while adding dummy cpu archs and loading EESSI module 
+        run: |
+          . /cvmfs/software.eessi.io/versions/${{matrix.EESSI_VERSION}}/compat/linux/$(uname -m)/usr/share/Lmod/init/bash  # Initialise Lmod
+          export MODULEPATH=init/modules
+          CPU_ARCH=$(./init/eessi_archdetect.sh -a cpupath)
+          export EESSI_ARCHDETECT_OPTIONS="dummy/cpu:${CPU_ARCH}:dummy1/cpu1"          
+          moduleoutfile="moduleout.txt"
+          sourceoutfile="sourceout.txt"
+          module load EESSI/${{matrix.EESSI_VERSION}}
+          env | grep -E '^(EESSI_S|EESSI_C)' | sort > "${moduleoutfile}"
+          module unload EESSI/${{matrix.EESSI_VERSION}}
+          source /cvmfs/software.eessi.io/versions/${{matrix.EESSI_VERSION}}/init/bash
+          env | grep -E '^(EESSI_S|EESSI_C)' | sort > "${sourceoutfile}"
+          cat "${moduleoutfile}"
+          cat "${sourceoutfile}"
+          if (diff "${moduleoutfile}" "${sourceoutfile}" > /dev/null); then
+              echo "Test for checking env variables PASSED"
+          else 
+              echo "Test for checking env variables FAILED"  >&2
+              exit 1
+          fi
+
