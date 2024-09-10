@@ -318,9 +318,6 @@ def pre_prepare_hook_highway_handle_test_compilation_issues(self, *args, **kwarg
             if cpu_target == CPU_TARGET_NEOVERSE_N1:
                 self.orig_optarch = build_option('optarch')
                 update_build_option('optarch', OPTARCH_GENERIC)
-        if self.version in ['1.0.7'] and tcname == 'GCCcore' and tcversion == '13.2.0':
-            if os.getenv('EESSI_CPU_FAMILY') == 'aarch64':
-                self.cfg.update('configopts', '-DHWY_ENABLE_TESTS=OFF')
     else:
         raise EasyBuildError("Highway-specific hook triggered for non-Highway easyconfig?!")
 
