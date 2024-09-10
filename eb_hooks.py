@@ -333,7 +333,7 @@ def pre_prepare_hook_highway_handle_test_compilation_issues(self, *args, **kwarg
     Solve issues with compiling or running the tests on both
     neoverse_n1 and neoverse_v1 with Highway 1.0.4 and GCC 12.3.0:
       - for neoverse_n1 we set optarch to GENERIC
-      - for neoverse_v1 we completely disable the tests
+      - for neoverse_v1 and a64fx we completely disable the tests
     cfr. https://github.com/EESSI/software-layer/issues/469
     """
     if self.name == 'Highway':
@@ -342,7 +342,7 @@ def pre_prepare_hook_highway_handle_test_compilation_issues(self, *args, **kwarg
         # note: keep condition in sync with the one used in 
         # post_prepare_hook_highway_handle_test_compilation_issues
         if self.version in ['1.0.4'] and tcname == 'GCCcore' and tcversion == '12.3.0':
-            if cpu_target == CPU_TARGET_NEOVERSE_V1:
+            if cpu_target in [CPU_TARGET_A64FX, CPU_TARGET_NEOVERSE_V1]:
                 self.cfg.update('configopts', '-DHWY_ENABLE_TESTS=OFF')
             if cpu_target == CPU_TARGET_NEOVERSE_N1:
                 self.orig_optarch = build_option('optarch')
