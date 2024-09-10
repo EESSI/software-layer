@@ -19,3 +19,7 @@ easyconfigs:
         # https://github.com/easybuilders/easybuild-easyconfigs/pull/20841
         from-commit: f0e91e6e430ebf902f7788ebb47f0203dee60649
   - R-4.3.2-gfbf-2023a.eb
+  - Brunsli-0.1-GCCcore-12.3.0.eb:
+      options:
+        # https://github.com/easybuilders/easybuild-easyconfigs/pull/21366
+        from-commit: 1736a123b1685836452587a5c51793257570bb2d
