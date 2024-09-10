@@ -1,4 +1,22 @@
 #!/usr/bin/env bash
+
+# Confirm the current shell is Bash >= 4
+# (works for sh, bash, dash, zsh, ksh, but not fish, tcsh, elvish)
+if [ -n "$BASH_VERSION" ]; then
+    # Extract the major version numbers
+    bash_version=$(echo "$BASH_VERSION" | grep -oP '^\d+\.\d+')
+    major_version=$(echo "$bash_version" | cut -d. -f1)
+
+    # Check if the major version is 4 or higher
+    if [ "$major_version" -lt 4 ]; then
+        echo "Error: This script must be run with Bash >= 4, you have $BASH_VERSION." >&2
+        exit 1
+    fi
+else
+    echo "Error: This script must be run with Bash." >&2
+    exit 1
+fi
+
 VERSION="1.1.0"
 
 # default log level: only emit warnings or errors
@@ -89,7 +107,7 @@ cpupath(){
         *) log "ERROR" "cpupath: Unsupported CPU architecture $machine_type"
     esac
     # spec files are located in a subfolder with this script
-    local base_dir=$(dirname $(realpath $0))
+    local base_dir=$(dirname $(readlink -f $0))
     update_arch_specs "$base_dir/arch_specs/${spec_file}"
   
     # Identify the host CPU vendor
