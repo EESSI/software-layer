@@ -67,3 +67,7 @@ easyconfigs:
       options:
         # see https://github.com/easybuilders/easybuild-easyconfigs/pull/21310
         from-commit: 799d9101df2cf81aabe252f00cc82a7246363f53
+  - Redland-1.0.17-GCC-12.3.0.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/21227
+        from-commit: 4c5e3455dec31e68e8383c7fd86d1f80c434676d
