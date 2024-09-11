@@ -28,7 +28,7 @@ local function from_eessi_prefix(t)
     -- If EESSI_PREFIX wasn't defined, we cannot check if this module was from the EESSI environment
     -- In that case, we assume it isn't, otherwise EESSI_PREFIX would (probably) have been set
     if eessi_prefix == nil then
-        return False
+        return false
     else
         -- NOTE: exact paths for site so may need to be updated later.
         -- See https://github.com/EESSI/software-layer/pull/371
