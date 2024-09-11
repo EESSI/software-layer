@@ -22,7 +22,8 @@ for shell in ${SHELLS[@]}; do
 	assert "$shell -c 'source init/lmod/$shell' 2>&1 " "EESSI/$EESSI_VERSION loaded successfully"
 	# TEST 2: Check if module overviews first section is the loaded EESSI module
 	MODULE_SECTIONS=($($shell -c "source init/lmod/$shell 2>/dev/null; module ov 2>&1 | grep -e '---'"))
-	assert "echo ${MODULE_SECTIONS[1]}" "/cvmfs/software.eessi.io/versions/$EESSI_VERSION/software/linux/x86_64/intel/haswell/modules/all"
+	PATTERN="/cvmfs/software\.eessi\.io/versions/$EESSI_VERSION/software/linux/x86_64/(intel/haswell|amd/zen3)/modules/all"
+	assert_raises 'echo "${MODULE_SECTIONS[1]}" | grep -E "$PATTERN"'
 	# TEST 3: Check if module overviews second section is the EESSI init module
 	assert "echo ${MODULE_SECTIONS[4]}" "/cvmfs/software.eessi.io/versions/$EESSI_VERSION/init/modules"
 	# Test 4: Load Python module and check version
@@ -30,10 +31,11 @@ for shell in ${SHELLS[@]}; do
 	expected="Python 3.10.8"
 	assert "$command" "$expected"
 	# Test 5: Load Python module and check path
-	command="$shell -c 'source init/lmod/$shell 2>/dev/null; module load Python/3.10.8-GCCcore-12.2.0; which python'"
-	expected="/cvmfs/software.eessi.io/versions/$EESSI_VERSION/software/linux/x86_64/intel/haswell/software/Python/3.10.8-GCCcore-12.2.0/bin/python"
-	assert "$command" "$expected"
-
+	PYTHON_PATH=$($shell -c "source init/lmod/$shell 2>/dev/null; module load Python/3.10.8-GCCcore-12.2.0; which python")
+	PATTERN="/cvmfs/software\.eessi\.io/versions/$EESSI_VERSION/software/linux/x86_64/(intel/haswell|amd/zen3)/software/Python/3\.10\.8-GCCcore-12\.2\.0/bin/python"
+	echo "$PYTHON_PATH" | grep -E "$PATTERN"
+	assert_raises 'echo "$PYTHON_PATH" | grep -E "$PATTERN"'
+	
 	#End Test Suite
 	assert_end "source_eessi_$shell"
 done
