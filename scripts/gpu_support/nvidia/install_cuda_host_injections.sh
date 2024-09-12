@@ -123,7 +123,7 @@ else
     tmpdir=$(mktemp -d)
   else
     tmpdir="${CUDA_TEMP_DIR}"/temp
-    if ! mkdir "$tmpdir" ; then
+    if ! mkdir -p "$tmpdir" ; then
       fatal_error "Could not create directory ${tmpdir}"
     fi
   fi
