@@ -40,6 +40,9 @@ for shell in ${SHELLS[@]}; do
 	assert_end "source_eessi_$shell"
 done
 
+### EXCEPTION FOR CSH ###
+echo -e "\033[33mWe don't now how to test csh correctly, PRs are Welcome.\033[0m" 
+
 
 # RESET PAGER
 export LMOD_PAGER=
