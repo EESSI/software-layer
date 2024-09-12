@@ -13,5 +13,4 @@ if (! $?__Init_Default_Modules ) then
 else
 	module refresh
 endif
-#module load "$LMOD_SYSTEM_DEFAULT_MODULES"
 
