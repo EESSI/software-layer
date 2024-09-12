@@ -39,5 +39,5 @@ jobs:
 
       - name: Run tests for available shells
         run: |
-          .github/workflows/scripts/test_init_scripts.sh "bash" "zsh" "ksh" "fish"
+          .github/workflows/scripts/test_init_scripts.sh "bash" "zsh" "ksh" "fish" "csh"
 
