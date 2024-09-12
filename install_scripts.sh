@@ -108,6 +108,12 @@ mc_files=(
 )
 copy_files_by_list ${TOPDIR}/init/modules/EESSI ${INSTALL_PREFIX}/init/modules/EESSI "${mc_files[@]}"
 
+# Copy for init/lmod directory
+init_script_files=(
+    bash zsh ksh fish csh    
+)
+copy_files_by_list ${TOPDIR}/init/lmod ${INSTALL_PREFIX}/init/lmod "${init_script_files[@]}"
+
 # Copy for the scripts directory
 script_files=(
     utils.sh
