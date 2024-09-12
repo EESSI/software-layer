@@ -175,13 +175,13 @@ else
   # Check the exit code
   if [ $? -ne 0 ]; then
     eb_version=$(eb --version)
-    available_cuda_easyconfigs=$(eb --search ^CUDA-*.eb|grep CUDA)
+    available_cuda_easyconfigs=$(eb --search "^CUDA-.*.eb"|grep CUDA)
 
     error="The easyconfig ${cuda_easyconfig} was not found in EasyBuild version:\n"
     error="${error}  ${eb_version}\n"
     error="${error}You either need to give a different version of CUDA to install _or_ \n"
     error="${error}use a different version of EasyBuild for the installation.\n"
-    error="${error}\nThe versions of available with the current eb command are:\n"
+    error="${error}\nThe versions of CUDA available with the current eb command are:\n"
     error="${error}${available_cuda_easyconfigs}"
     fatal_error "${error}"
   fi
