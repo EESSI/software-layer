@@ -3,4 +3,3 @@ easyconfigs:
       options:
         # see https://github.com/easybuilders/easybuild-easyconfigs/pull/21412
         from-commit: https://github.com/easybuilders/easybuild-easyconfigs/pull/21412
-
