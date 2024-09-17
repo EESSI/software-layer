@@ -282,8 +282,8 @@ export TGZ=$(printf "eessi-%s-software-%s-%s-%d.tar.gz" ${EESSI_VERSION} ${EESSI
 TMP_IN_CONTAINER=/tmp
 echo "Executing command to create tarball:"
 echo "./eessi_container.sh ${COMMON_ARGS[@]} ${TARBALL_STEP_ARGS[@]}"
-echo "                     -- ./create_tarball.sh ${TMP_IN_CONTAINER} ${EESSI_VERSION} ${EESSI_SOFTWARE_SUBDIR_OVERRIDE} /eessi_bot_job/${TGZ} 2>&1 | tee -a ${tar_outerr}"
+echo "                     -- ./create_tarball.sh ${TMP_IN_CONTAINER} ${EESSI_VERSION} ${EESSI_SOFTWARE_SUBDIR_OVERRIDE} \"${EESSI_ACCELERATOR_TARGET}\" /eessi_bot_job/${TGZ} 2>&1 | tee -a ${tar_outerr}"
 ./eessi_container.sh "${COMMON_ARGS[@]}" "${TARBALL_STEP_ARGS[@]}" \
-                     -- ./create_tarball.sh ${TMP_IN_CONTAINER} ${EESSI_VERSION} ${EESSI_SOFTWARE_SUBDIR_OVERRIDE} /eessi_bot_job/${TGZ} 2>&1 | tee -a ${tar_outerr}
+                     -- ./create_tarball.sh ${TMP_IN_CONTAINER} ${EESSI_VERSION} ${EESSI_SOFTWARE_SUBDIR_OVERRIDE} "${EESSI_ACCELERATOR_TARGET}" /eessi_bot_job/${TGZ} 2>&1 | tee -a ${tar_outerr}
 
 exit 0
