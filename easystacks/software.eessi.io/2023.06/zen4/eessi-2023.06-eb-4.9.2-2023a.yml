@@ -22,3 +22,4 @@ easyconfigs:
         # see https://github.com/easybuilders/easybuild-easyconfigs/pull/21136
         from-commit: d8076ebaf8cb915762adebf88d385cc672b350dc
   - MODFLOW-6.4.4-foss-2023a.eb
+  - ALL-0.9.2-foss-2023a.eb
