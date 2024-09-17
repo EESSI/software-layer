@@ -6,4 +6,25 @@ easyconfigs:
         from-commit: d8076ebaf8cb915762adebf88d385cc672b350dc
   - gnuplot-5.4.6-GCCcore-12.2.0.eb
   - h5py-3.8.0-foss-2022b.eb
-  - MDAnalysis-2.4.2-foss-2022b.eb 
+  - MDAnalysis-2.4.2-foss-2022b.eb
+  - ncbi-vdb-3.0.5-gompi-2022b.eb
+  - Bio-DB-HTS-3.01-GCC-12.2.0.eb
+  - MAFFT-7.505-GCC-12.2.0-with-extensions.eb
+  - MetaEuk-6-GCC-12.2.0.eb
+  - BamTools-2.5.2-GCC-12.2.0.eb
+  - Bio-SearchIO-hmmer-1.7.3-GCC-12.2.0.eb
+  - Mash-2.3-GCC-12.2.0.eb
+  - CapnProto-0.10.3-GCCcore-12.2.0.eb
+  - WhatsHap-2.1-foss-2022b.eb
+  - SAMtools-1.17-GCC-12.2.0.eb
+  - Bowtie2-2.5.1-GCC-12.2.0.eb
+  - CD-HIT-4.8.1-GCC-12.2.0.eb
+  - VCFtools-0.1.16-GCC-12.2.0.eb
+  - GenomeTools-1.6.2-GCC-12.2.0.eb
+  - Bio-SearchIO-hmmer-1.7.3-GCC-12.2.0.eb
+  - parallel-20230722-GCCcore-12.2.0.eb
+  - BCFtools-1.17-GCC-12.2.0.eb
+  - lpsolve-5.5.2.11-GCC-12.2.0.eb
+  - fastp-0.23.4-GCC-12.2.0.eb
+  - KronaTools-2.8.1-GCCcore-12.2.0.eb
+  - MultiQC-1.14-foss-2022b.eb 
