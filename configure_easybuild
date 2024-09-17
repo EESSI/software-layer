@@ -1,6 +1,25 @@
+# if $WORKDIR is not defined, use a local temporary directory
+if [ -z ${WORKDIR} ]; then
+    WORKDIR=$(mktemp -d)
+fi
+
 export EASYBUILD_PREFIX=${WORKDIR}/easybuild
 export EASYBUILD_INSTALLPATH=${EESSI_PREFIX}/software/${EESSI_OS_TYPE}/${EESSI_SOFTWARE_SUBDIR}
 export EASYBUILD_SOURCEPATH=${WORKDIR}/easybuild/sources:${EESSI_SOURCEPATH}
+
+# take into account accelerator target (if specified via $EESSI_ACCELERATOR_TARGET)
+if [ ! -z ${EESSI_ACCELERATOR_TARGET} ]; then
+    if [[ "${EESSI_ACCELERATOR_TARGET}" =~ ^nvidia/cc[0-9][0-9]$ ]]; then
+        # tweak path to installation directories used by EasyBuild
+        export EASYBUILD_INSTALLPATH=${EASYBUILD_INSTALLPATH}/accel/${EESSI_ACCELERATOR_TARGET}
+        # nvidia/cc80 should result in setting $EASYBUILD_CUDA_COMPUTE_CAPABILITIES to '8.0'
+        export EASYBUILD_CUDA_COMPUTE_CAPABILITIES=$(echo ${EESSI_ACCELERATOR_TARGET} | cut -f2 -d/ | sed 's/^cc\([0-9]\)\([0-9]\)/\1.\2/g')
+    else
+        fatal_error "Incorrect value for \$EESSI_ACCELERATOR_TARGET: ${EESSI_ACCELERATOR_TARGET}"
+    fi
+else
+    echo_yellow "(configure_easybuild) \$EESSI_ACCELERATOR_TARGET not defined"
+fi
 
 # just ignore OS dependencies for now, see https://github.com/easybuilders/easybuild-framework/issues/3430
 export EASYBUILD_IGNORE_OSDEPS=1
