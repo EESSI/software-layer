@@ -1,0 +1,5 @@
+easyconfigs:
+  - EasyBuild-4.9.3.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/21412
+        from-commit: 1cdd81524c974a29825e37bcf8ef3ccc291f5227
