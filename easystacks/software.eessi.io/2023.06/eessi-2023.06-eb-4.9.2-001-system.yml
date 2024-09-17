@@ -3,3 +3,7 @@ easyconfigs:
       options:
         # see https://github.com/easybuilders/easybuild-easyconfigs/pull/21412
         from-commit: 1cdd81524c974a29825e37bcf8ef3ccc291f5227
+  - ReFrame-4.6.2.eb:
+      options:
+        from-commit: 0c4bd5c5a80f571a8932fbc38880d72455406816
+        include-easyblocks-from-commit: efddeb02abe1a679324ac01ef19601dedbe79cc0
