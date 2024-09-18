@@ -120,8 +120,12 @@ if [ $EUID -eq 0 ]; then
                 #  * [R] $CFGS/s/someapp/someapp-someversion.eb (module: someapp/someversion)
                 rebuild_apps=$(eb --allow-use-as-root-and-accept-consequences --dry-run-short --rebuild --easystack ${easystack_file} | grep "^ \* \[R\]" | grep -o "module: .*[^)]" | awk '{print $2}')
                 for app in ${rebuild_apps}; do
-                    app_dir=${EASYBUILD_INSTALLPATH}/software/${app}
-                    app_module=${EASYBUILD_INSTALLPATH}/modules/all/${app}.lua
+                    # Returns e.g. /cvmfs/software.eessi.io/versions/2023.06/software/linux/x86_64/amd/zen2/modules/all:
+                    app_modulepath=$(module --terse av ${app} 2>&1 | head -n 1 | sed 's/://')
+                    # Two dirname invocations, so returns e.g. /cvmfs/software.eessi.io/versions/2023.06/software/linux/x86_64/amd/zen2
+                    app_installprefix=$(dirname $(dirname app_modulpath))
+                    app_dir=${app_installprefix}/software/${app}
+                    app_module=${app_installprefix}/modules/all/${app}.lua
                     echo_yellow "Removing ${app_dir} and ${app_module}..."
                     rm -rf ${app_dir}
                     rm -rf ${app_module}
