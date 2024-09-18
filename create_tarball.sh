@@ -35,6 +35,7 @@ if [ ! -d ${software_dir_overlay} ]; then
     exit 3
 fi
 
+current_workdir=${PWD}
 cd ${overlay_upper_dir}/versions/
 echo ">> Collecting list of files/directories to include in tarball via ${PWD}..."
 
@@ -87,6 +88,9 @@ echo "wrote file list to ${files_list}"
 [ -r ${files_list} ] && cat ${files_list}
 echo "wrote module file list to ${module_files_list}"
 [ -r ${module_files_list} ] && cat ${module_files_list}
+
+# Copy the module files list to current workindg dir for later use in the test step
+cp ${module_files_list} ${current_workdir}/module_files.list.txt
 
 topdir=${cvmfs_repo}/versions/
 
