@@ -123,7 +123,7 @@ if [ $EUID -eq 0 ]; then
                     # Returns e.g. /cvmfs/software.eessi.io/versions/2023.06/software/linux/x86_64/amd/zen2/modules/all:
                     app_modulepath=$(module --terse av ${app} 2>&1 | head -n 1 | sed 's/://')
                     # Two dirname invocations, so returns e.g. /cvmfs/software.eessi.io/versions/2023.06/software/linux/x86_64/amd/zen2
-                    app_installprefix=$(dirname $(dirname app_modulpath))
+                    app_installprefix=$(dirname $(dirname ${app_modulepath}))
                     app_dir=${app_installprefix}/software/${app}
                     app_module=${app_installprefix}/modules/all/${app}.lua
                     echo_yellow "Removing ${app_dir} and ${app_module}..."
