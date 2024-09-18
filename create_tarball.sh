@@ -4,14 +4,15 @@ set -e
 
 base_dir=$(dirname $(realpath $0))
 
-if [ $# -ne 4 ]; then
-    echo "ERROR: Usage: $0 <EESSI tmp dir (example: /tmp/$USER/EESSI)> <version (example: 2023.06)> <CPU arch subdir (example: x86_64/amd/zen2)> <path to tarball>" >&2
+if [ $# -ne 5 ]; then
+    echo "ERROR: Usage: $0 <EESSI tmp dir (example: /tmp/$USER/EESSI)> <version (example: 2023.06)> <CPU arch subdir (example: x86_64/amd/zen2)> <accelerator subdir (example: nvidia/cc80)> <path to tarball>" >&2
     exit 1
 fi
 eessi_tmpdir=$1
 eessi_version=$2
 cpu_arch_subdir=$3
-target_tgz=$4
+accel_subdir=$4
+target_tgz=$5
 
 tmpdir=`mktemp -d`
 echo ">> tmpdir: $tmpdir"
@@ -35,6 +36,7 @@ if [ ! -d ${software_dir_overlay} ]; then
     exit 3
 fi
 
+current_workdir=${PWD}
 cd ${overlay_upper_dir}/versions/
 echo ">> Collecting list of files/directories to include in tarball via ${PWD}..."
 
@@ -57,36 +59,43 @@ if [ -d ${eessi_version}/init ]; then
     find ${eessi_version}/init -type f | grep -v '/\.wh\.' >> ${files_list}
 fi
 
-if [ -d ${eessi_version}/software/${os}/${cpu_arch_subdir}/modules ]; then
-    # module files
-    find ${eessi_version}/software/${os}/${cpu_arch_subdir}/modules -type f | grep -v '/\.wh\.' >> ${files_list}
-    # module symlinks
-    find ${eessi_version}/software/${os}/${cpu_arch_subdir}/modules -type l | grep -v '/\.wh\.' >> ${files_list}
-    # module files and symlinks
-    find ${eessi_version}/software/${os}/${cpu_arch_subdir}/modules/all -type f -o -type l \
-        | grep -v '/\.wh\.' | grep -v '/\.modulerc\.lua' | sed -e 's/.lua$//' | sed -e 's@.*/modules/all/@@g' | sort -u \
-        >> ${module_files_list}
-fi
+# consider both CPU-only and accelerator subdirectories
+for subdir in ${cpu_arch_subdir} ${cpu_arch_subdir}/accel/${accel_subdir}; do
 
-if [ -d ${eessi_version}/software/${os}/${cpu_arch_subdir}/software -a -r ${module_files_list} ]; then
-    # installation directories but only those for which module files were created
-    # Note, we assume that module names (as defined by 'PACKAGE_NAME/VERSION.lua'
-    # using EasyBuild's standard module naming scheme) match the name of the
-    # software installation directory (expected to be 'PACKAGE_NAME/VERSION/').
-    # If either side changes (module naming scheme or naming of software
-    # installation directories), the procedure will likely not work.
-    for package_version in $(cat ${module_files_list}); do
-        echo "handling ${package_version}"
-        ls -d ${eessi_version}/software/${os}/${cpu_arch_subdir}/software/${package_version} \
-            | grep -v '/\.wh\.' >> ${files_list}
-    done
-fi
+    if [ -d ${eessi_version}/software/${os}/${subdir}/modules ]; then
+        # module files
+        find ${eessi_version}/software/${os}/${subdir}/modules -type f | grep -v '/\.wh\.' >> ${files_list}
+        # module symlinks
+        find ${eessi_version}/software/${os}/${subdir}/modules -type l | grep -v '/\.wh\.' >> ${files_list}
+        # module files and symlinks
+        find ${eessi_version}/software/${os}/${subdir}/modules/all -type f -o -type l \
+            | grep -v '/\.wh\.' | grep -v '/\.modulerc\.lua' | sed -e 's/.lua$//' | sed -e 's@.*/modules/all/@@g' | sort -u \
+            >> ${module_files_list}
+    fi
+
+    if [ -d ${eessi_version}/software/${os}/${subdir}/software -a -r ${module_files_list} ]; then
+        # installation directories but only those for which module files were created
+        # Note, we assume that module names (as defined by 'PACKAGE_NAME/VERSION.lua'
+        # using EasyBuild's standard module naming scheme) match the name of the
+        # software installation directory (expected to be 'PACKAGE_NAME/VERSION/').
+        # If either side changes (module naming scheme or naming of software
+        # installation directories), the procedure will likely not work.
+        for package_version in $(cat ${module_files_list}); do
+            echo "handling ${package_version}"
+            ls -d ${eessi_version}/software/${os}/${subdir}/software/${package_version} \
+                | grep -v '/\.wh\.' >> ${files_list}
+        done
+    fi
+done
 
 # add a bit debug output
 echo "wrote file list to ${files_list}"
 [ -r ${files_list} ] && cat ${files_list}
 echo "wrote module file list to ${module_files_list}"
 [ -r ${module_files_list} ] && cat ${module_files_list}
+
+# Copy the module files list to current workindg dir for later use in the test step
+cp ${module_files_list} ${current_workdir}/module_files.list.txt
 
 topdir=${cvmfs_repo}/versions/
 

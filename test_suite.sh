@@ -195,8 +195,22 @@ else
     fatal_error "Failed to run 'reframe --version'"
 fi
 
+# Get the subset of test names based on the test mapping and tags (e.g. CI, 1_node)
+module_list="module_files.list.txt"
+mapping_config="tests/eessi_test_mapping/software_to_tests.yml"
+# Run with --debug for easier debugging in case there are issues:
+python3 tests/eessi_test_mapping/map_software_to_test.py --module-list "${module_list}" --mapping-file "${mapping_config}" --debug
+REFRAME_NAME_ARGS=$(python3 tests/eessi_test_mapping/map_software_to_test.py --module-list "${module_list}" --mapping-file "${mapping_config}")
+test_selection_exit_code=$?
+if [[ ${test_selection_exit_code} -eq 0 ]]; then
+    echo_green "Succesfully extracted names of tests to run: ${REFRAME_NAME_ARGS}"
+else
+    fatal_error "Failed to extract names of tests to run: ${REFRAME_NAME_ARGS}"
+    exit ${test_selection_exit_code}
+fi
+export REFRAME_ARGS="--tag CI --tag 1_node --nocolor ${REFRAME_NAME_ARGS}"
+
 # List the tests we want to run
-export REFRAME_ARGS='--tag CI --tag 1_node --nocolor'
 echo "Listing tests: reframe ${REFRAME_ARGS} --list"
 reframe ${REFRAME_ARGS} --list
 if [[ $? -eq 0 ]]; then

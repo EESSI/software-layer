@@ -524,11 +524,11 @@ def pre_configure_hook_LAMMPS_zen4(self, *args, **kwargs):
 
     cpu_target = get_eessi_envvar('EESSI_SOFTWARE_SUBDIR')
     if self.name == 'LAMMPS':
-        if self.version == '2Aug2023':
+        if self.version == '2Aug2023_update2':
             if get_cpu_architecture() == X86_64:
                 if cpu_target == CPU_TARGET_ZEN4:
                     # There is no support for ZEN4 in LAMMPS yet so falling back to ZEN3
-                    self.cfg['kokkos'] = 'ZEN3'
+                    self.cfg['kokkos_arch'] = 'ZEN3'
     else:
         raise EasyBuildError("LAMMPS-specific hook triggered for non-LAMMPS easyconfig?!")
 
