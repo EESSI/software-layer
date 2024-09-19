@@ -2,4 +2,4 @@ easyconfigs:
   - LAMMPS-29Aug2024-foss-2023b-kokkos.eb:
       # see https://github.com/easybuilders/easybuild-easyconfigs/pull/21436
       options:
-        from-pr: 21436
+        from-commit: 9dc24e57880a8adb06ae10557c5315e66671a533
