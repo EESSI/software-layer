@@ -1,0 +1,5 @@
+easyconfigs:
+  - LAMMPS-29Aug2024-foss-2023b-kokkos.eb:
+      # see https://github.com/easybuilders/easybuild-easyconfigs/pull/21436
+      options:
+        from-pr: 21436
