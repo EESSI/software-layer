@@ -297,9 +297,9 @@ def parse_hook_ucx_eprefix(ec, eprefix):
         raise EasyBuildError("UCX-specific hook triggered for non-UCX easyconfig?!")
 
 
-def parse_hook_lammps_remove_deps_for_CI_aarch64(ec, *args, **kwargs):
+def parse_hook_lammps_remove_deps_for_aarch64(ec, *args, **kwargs):
     """
-    Remove x86_64 specific dependencies for the CI to pass on aarch64
+    Remove x86_64 specific dependencies for the CI and missing installations to pass on aarch64
     """
     if ec.name == 'LAMMPS' and ec.version in ('2Aug2023_update2', '29Aug2024'):
         if os.getenv('EESSI_CPU_FAMILY') == 'aarch64':
@@ -309,7 +309,7 @@ def parse_hook_lammps_remove_deps_for_CI_aarch64(ec, *args, **kwargs):
             # https://github.com/easybuilders/easybuild-easyconfigs/pull/19000;
             # we need this hook because we check for missing installations for all CPU targets
             # on an x86_64 VM in GitHub Actions (so condition based on ARCH in LAMMPS easyconfig is always true)
-            ec['dependencies'] = [dep for dep in ec['dependencies'] if dep[0] not in ('ScaFaCoS', 'tbb')]
+            ec['dependencies'] = [dep for dep in ec['dependencies'] if dep[0] not in ('ScaFaCoS', 'tbb',)]
     else:
         raise EasyBuildError("LAMMPS-specific hook triggered for non-LAMMPS easyconfig?!")
 
@@ -776,7 +776,7 @@ PARSE_HOOKS = {
     'CGAL': parse_hook_cgal_toolchainopts_precise,
     'fontconfig': parse_hook_fontconfig_add_fonts,
     'grpcio': parse_hook_grpcio_zlib,
-    'LAMMPS': parse_hook_lammps_remove_deps_for_CI_aarch64,
+    'LAMMPS': parse_hook_lammps_remove_deps_for_aarch64,
     'CP2K': parse_hook_CP2K_remove_deps_for_aarch64,
     'OpenBLAS': parse_hook_openblas_relax_lapack_tests_num_errors,
     'pybind11': parse_hook_pybind11_replace_catch2,
