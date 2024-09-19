@@ -301,7 +301,7 @@ def parse_hook_lammps_remove_deps_for_CI_aarch64(ec, *args, **kwargs):
     """
     Remove x86_64 specific dependencies for the CI to pass on aarch64
     """
-    if ec.name == 'LAMMPS' and ec.version in ('2Aug2023_update2',):
+    if ec.name == 'LAMMPS' and ec.version in ('2Aug2023_update2', '29Aug2024'):
         if os.getenv('EESSI_CPU_FAMILY') == 'aarch64':
             # ScaFaCoS and tbb are not compatible with aarch64/* CPU targets,
             # so remove them as dependencies for LAMMPS (they're optional);
