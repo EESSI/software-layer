@@ -141,7 +141,7 @@ echo "bot/build.sh: EESSI_VERSION_OVERRIDE='${EESSI_VERSION_OVERRIDE}'"
 export EESSI_CVMFS_REPO_OVERRIDE=/cvmfs/$(cfg_get_value "repository" "repo_name")
 echo "bot/build.sh: EESSI_CVMFS_REPO_OVERRIDE='${EESSI_CVMFS_REPO_OVERRIDE}'"
 
-# determine architecture to be used from entry .architecture in ${JOB_CFG_FILE}
+# determine CPU architecture to be used from entry .architecture in ${JOB_CFG_FILE}
 # fallbacks:
 #  - ${CPU_TARGET} handed over from bot
 #  - left empty to let downstream script(s) determine subdir to be used
@@ -149,6 +149,10 @@ EESSI_SOFTWARE_SUBDIR_OVERRIDE=$(cfg_get_value "architecture" "software_subdir")
 EESSI_SOFTWARE_SUBDIR_OVERRIDE=${EESSI_SOFTWARE_SUBDIR_OVERRIDE:-${CPU_TARGET}}
 export EESSI_SOFTWARE_SUBDIR_OVERRIDE
 echo "bot/build.sh: EESSI_SOFTWARE_SUBDIR_OVERRIDE='${EESSI_SOFTWARE_SUBDIR_OVERRIDE}'"
+
+# determine accelerator target (if any) from .architecture in ${JOB_CFG_FILE}
+export EESSI_ACCELERATOR_TARGET=$(cfg_get_value "architecture" "accelerator")
+echo "bot/build.sh: EESSI_ACCELERATOR_TARGET='${EESSI_ACCELERATOR_TARGET}'"
 
 # get EESSI_OS_TYPE from .architecture.os_type in ${JOB_CFG_FILE} (default: linux)
 EESSI_OS_TYPE=$(cfg_get_value "architecture" "os_type")
@@ -278,8 +282,8 @@ export TGZ=$(printf "eessi-%s-software-%s-%s-%d.tar.gz" ${EESSI_VERSION} ${EESSI
 TMP_IN_CONTAINER=/tmp
 echo "Executing command to create tarball:"
 echo "./eessi_container.sh ${COMMON_ARGS[@]} ${TARBALL_STEP_ARGS[@]}"
-echo "                     -- ./create_tarball.sh ${TMP_IN_CONTAINER} ${EESSI_VERSION} ${EESSI_SOFTWARE_SUBDIR_OVERRIDE} /eessi_bot_job/${TGZ} 2>&1 | tee -a ${tar_outerr}"
+echo "                     -- ./create_tarball.sh ${TMP_IN_CONTAINER} ${EESSI_VERSION} ${EESSI_SOFTWARE_SUBDIR_OVERRIDE} \"${EESSI_ACCELERATOR_TARGET}\" /eessi_bot_job/${TGZ} 2>&1 | tee -a ${tar_outerr}"
 ./eessi_container.sh "${COMMON_ARGS[@]}" "${TARBALL_STEP_ARGS[@]}" \
-                     -- ./create_tarball.sh ${TMP_IN_CONTAINER} ${EESSI_VERSION} ${EESSI_SOFTWARE_SUBDIR_OVERRIDE} /eessi_bot_job/${TGZ} 2>&1 | tee -a ${tar_outerr}
+                     -- ./create_tarball.sh ${TMP_IN_CONTAINER} ${EESSI_VERSION} ${EESSI_SOFTWARE_SUBDIR_OVERRIDE} "${EESSI_ACCELERATOR_TARGET}" /eessi_bot_job/${TGZ} 2>&1 | tee -a ${tar_outerr}
 
 exit 0

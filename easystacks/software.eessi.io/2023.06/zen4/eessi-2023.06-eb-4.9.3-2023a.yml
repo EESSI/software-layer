@@ -1,0 +1,3 @@
+easyconfigs:
+  - LAMMPS-2Aug2023_update2-foss-2023a-kokkos.eb
+  - JupyterNotebook-7.0.2-GCCcore-12.3.0.eb
