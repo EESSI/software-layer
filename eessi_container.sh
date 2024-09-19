@@ -846,14 +846,14 @@ if [[ ! -z ${SAVE} ]]; then
   #   of these aspects to where the script is used
   if [[ -d ${SAVE} ]]; then
     # assume SAVE is name of a directory to which tarball shall be written to
-    #   name format: {REPO_ID}-{TIMESTAMP}.tgz
+    #   name format: tmp_storage-{TIMESTAMP}.tgz
     ts=$(date +%s)
-    TGZ=${SAVE}/${REPOSITORY}-${ts}.tgz
+    TGZ=${SAVE}/tmp_storage-${ts}.tgz
   else
     # assume SAVE is the full path to a tarball's name
     TGZ=${SAVE}
   fi
-  tar cf ${TGZ} -C ${EESSI_TMPDIR} .
+  tar czf ${TGZ} -C ${EESSI_TMPDIR} .
   echo "Saved contents of tmp directory '${EESSI_TMPDIR}' to tarball '${TGZ}' (to resume session add '--resume ${TGZ}')"
 fi
 
