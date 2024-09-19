@@ -64,9 +64,9 @@ for subdir in ${cpu_arch_subdir} ${cpu_arch_subdir}/accel/${accel_subdir}; do
 
     if [ -d ${eessi_version}/software/${os}/${subdir}/modules ]; then
         # module files
-        find ${eessi_version}/software/${os}/${subdir}/modules -type f | grep -v '/\.wh\.' >> ${files_list}
+        find ${eessi_version}/software/${os}/${subdir}/modules -type f | grep -v '/\.wh\.' >> ${files_list} || true  # Make sure we don't exit because of set -e if grep doesn't return a match
         # module symlinks
-        find ${eessi_version}/software/${os}/${subdir}/modules -type l | grep -v '/\.wh\.' >> ${files_list}
+        find ${eessi_version}/software/${os}/${subdir}/modules -type l | grep -v '/\.wh\.' >> ${files_list} || true  # Make sure we don't exit because of set -e if grep doesn't return a match
         # module files and symlinks
         find ${eessi_version}/software/${os}/${subdir}/modules/all -type f -o -type l \
             | grep -v '/\.wh\.' | grep -v '/\.modulerc\.lua' | sed -e 's/.lua$//' | sed -e 's@.*/modules/all/@@g' | sort -u \
@@ -83,7 +83,7 @@ for subdir in ${cpu_arch_subdir} ${cpu_arch_subdir}/accel/${accel_subdir}; do
         for package_version in $(cat ${module_files_list}); do
             echo "handling ${package_version}"
             ls -d ${eessi_version}/software/${os}/${subdir}/software/${package_version} \
-                | grep -v '/\.wh\.' >> ${files_list}
+                | grep -v '/\.wh\.' >> ${files_list} || true  # Make sure we don't exit because of set -e if grep doesn't return a match
         done
     fi
 done
