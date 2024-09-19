@@ -1,7 +1,0 @@
-# 2024.09.18
-# We need to reinstall CUDA in the accelerator prefixes
-# See https://github.com/EESSI/software-layer/pull/720
-easyconfigs:
-  - CUDA-12.1.1.eb:
-      options:
-        accept-eula-for: CUDA
