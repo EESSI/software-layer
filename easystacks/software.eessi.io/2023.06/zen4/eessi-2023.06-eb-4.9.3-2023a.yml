@@ -2,3 +2,4 @@ easyconfigs:
   - LAMMPS-2Aug2023_update2-foss-2023a-kokkos.eb
   - JupyterNotebook-7.0.2-GCCcore-12.3.0.eb
   - PyQt5-5.15.10-GCCcore-12.3.0.eb
+  - OrthoFinder-2.5.5-foss-2023a.eb
