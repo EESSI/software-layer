@@ -3,3 +3,4 @@ easyconfigs:
   - JupyterNotebook-7.0.2-GCCcore-12.3.0.eb
   - PyQt5-5.15.10-GCCcore-12.3.0.eb
   - OrthoFinder-2.5.5-foss-2023a.eb
+  - snakemake-8.4.2-foss-2023a.eb
