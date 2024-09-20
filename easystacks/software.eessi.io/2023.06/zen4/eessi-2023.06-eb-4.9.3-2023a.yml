@@ -5,3 +5,4 @@ easyconfigs:
   - OrthoFinder-2.5.5-foss-2023a.eb
   - snakemake-8.4.2-foss-2023a.eb
   - Rivet-3.1.9-gompi-2023a-HepMC3-3.2.6.eb
+  - GATK-4.5.0.0-GCCcore-12.3.0-Java-17.eb
