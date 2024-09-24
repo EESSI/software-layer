@@ -736,7 +736,9 @@ def post_sanitycheck_cuda(self, *args, **kwargs):
                         host_inj_path = full_path.replace('versions', 'host_injections')
                         # CUDA itself doesn't care about compute capability so remove this duplication from
                         # under host_injections
-                        host_inj_path = re.sub(r"accel/nvidia/cc\d+/", '', host_inj_path)
+                        accel_subdir = os.getenv("EESSI_ACCELERATOR_TARGET")
+                        if accel_subdir:
+                            host_inj_path = host_inj_path.replace('/accel/%s' % accel_subdir, 'host_injections')
                         # make sure source and target of symlink are not the same
                         if full_path == host_inj_path:
                             raise EasyBuildError("Source (%s) and target (%s) are the same location, are you sure you "
