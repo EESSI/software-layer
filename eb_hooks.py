@@ -684,7 +684,8 @@ def post_sanitycheck_cuda(self, *args, **kwargs):
     Remove files from CUDA installation that we are not allowed to ship,
     and replace them with a symlink to a corresponding installation under host_injections.
     """
-    if self.name == 'CUDA':
+    # Make sure we only do this for CUDA and only if we are doing a CVMFS installation
+    if self.name == 'CUDA' and self.installdir.startswith('/cvmfs/software.eessi.io/versions'):
         print_msg("Replacing files in CUDA installation that we can not ship with symlinks to host_injections...")
 
         # read CUDA EULA, construct allowlist based on section 2.6 that specifies list of files that can be shipped
@@ -733,6 +734,9 @@ def post_sanitycheck_cuda(self, *args, **kwargs):
                                        basename, full_path)
                         # if it is not in the allowlist, delete the file and create a symlink to host_injections
                         host_inj_path = full_path.replace('versions', 'host_injections')
+                        # CUDA itself doesn't care about compute capability so remove this duplication from
+                        # under host_injections
+                        host_inj_path = re.sub(r"accel/nvidia/cc\d+/", '', host_inj_path)
                         # make sure source and target of symlink are not the same
                         if full_path == host_inj_path:
                             raise EasyBuildError("Source (%s) and target (%s) are the same location, are you sure you "
