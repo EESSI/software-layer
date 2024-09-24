@@ -757,7 +757,7 @@ def post_postproc_cuda(self, *args, **kwargs):
                         # under host_injections
                         accel_subdir = os.getenv("EESSI_ACCELERATOR_TARGET")
                         if accel_subdir:
-                            host_inj_path = host_inj_path.replace('/accel/%s' % accel_subdir, '')
+                            host_inj_path = host_inj_path.replace("/accel/%s" % accel_subdir, '')
                         # make sure source and target of symlink are not the same
                         if full_path == host_inj_path:
                             raise EasyBuildError("Source (%s) and target (%s) are the same location, are you sure you "
