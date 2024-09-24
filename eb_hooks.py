@@ -685,7 +685,12 @@ def post_sanitycheck_cuda(self, *args, **kwargs):
     and replace them with a symlink to a corresponding installation under host_injections.
     """
     # Make sure we only do this for CUDA and only if we are doing a CVMFS installation
-    if self.name == 'CUDA' and self.installdir.startswith('/cvmfs/software.eessi.io/versions'):
+    is_eessi_install = (
+        self.installdir.startswith("/cvmfs/software.eessi.io/versions")
+        and not build_option("sanity_check_only")
+        and not build_option("module_only")
+    )
+    if self.name == 'CUDA' and is_eessi_install:
         print_msg("Replacing files in CUDA installation that we can not ship with symlinks to host_injections...")
 
         # read CUDA EULA, construct allowlist based on section 2.6 that specifies list of files that can be shipped
