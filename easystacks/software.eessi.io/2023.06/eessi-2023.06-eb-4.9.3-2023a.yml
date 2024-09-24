@@ -1,0 +1,6 @@
+easyconfigs:
+  - ccache-4.9-GCCcore-12.3.0.eb
+  - GDB-13.2-GCCcore-12.3.0.eb
+  - mold-1.11.0-GCCcore-12.3.0.eb
+  - tmux-3.3a-GCCcore-12.3.0.eb
+  - Vim-9.1.0004-GCCcore-12.3.0.eb
