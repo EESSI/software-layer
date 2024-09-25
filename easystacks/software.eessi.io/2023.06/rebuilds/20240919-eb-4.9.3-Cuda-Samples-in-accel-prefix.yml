@@ -1,0 +1,5 @@
+# 2024.09.19
+# We need to reinstall CUDA-Samples in the accelerator prefixes
+# See https://github.com/EESSI/software-layer/pull/715
+easyconfigs:
+  - CUDA-Samples-12.1-GCC-12.3.0-CUDA-12.1.1.eb
