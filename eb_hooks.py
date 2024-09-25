@@ -307,7 +307,7 @@ def parse_hook_freeimage_aarch64(ec, *args, **kwargs):
             if 'toolchainopts' not in ec:
                 ec['toolchainopts'] = {}
             ec['toolchainopts']['pic'] = True
-            ec['toolchainopts']['extracflags'] = '-DPNG_ARM_NEON_OPT=0'
+            ec['toolchainopts']['extra_cflags'] = '-DPNG_ARM_NEON_OPT=0'
             print_msg("Changed toolchainopts for %s: %s", ec.name, ec['toolchainopts']) 
 
 
