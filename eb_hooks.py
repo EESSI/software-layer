@@ -186,7 +186,7 @@ def parse_hook_casacore_disable_vectorize(ec, eprefix):
         ):
             cpu_target = get_eessi_envvar('EESSI_SOFTWARE_SUBDIR')
             if cpu_target == CPU_TARGET_NEOVERSE_V1:
-                if not hasattr(ec, 'toolchainopts'):
+                if 'toolchainopts' not in ec:
                     ec['toolchainopts'] = {}
                 ec['toolchainopts']['vectorize'] = False
                 print_msg("Changed toochainopts for %s: %s", ec.name, ec['toolchainopts'])
@@ -307,7 +307,9 @@ def parse_hook_freeimage_aarch64(ec, *args, **kwargs):
             if 'toolchainopts' not in ec:
                 ec['toolchainopts'] = {}
             ec['toolchainopts']['pic'] = True
+            ec['toolchainopts']['extracflags'] = '-DPNG_ARM_NEON_OPT=0'
             print_msg("Changed toolchainopts for %s: %s", ec.name, ec['toolchainopts']) 
+
 
 def parse_hook_lammps_remove_deps_for_CI_aarch64(ec, *args, **kwargs):
     """
