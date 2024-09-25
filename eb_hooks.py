@@ -306,7 +306,7 @@ def parse_hook_freeimage_aarch64(ec, *args, **kwargs):
         if os.getenv('EESSI_CPU_FAMILY') == 'aarch64':
             if not hasattr(ec, 'toolchainopts'):
                 ec['toolchainopts'] = {}
-            ec['toolchainopts']['fPIC'] = True
+            ec['toolchainopts']['pic'] = True
             print_msg("Changed toochainopts for %s: %s", ec.name, ec['toolchainopts']) 
 
 def parse_hook_lammps_remove_deps_for_CI_aarch64(ec, *args, **kwargs):
