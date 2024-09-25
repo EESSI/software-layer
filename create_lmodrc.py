@@ -33,8 +33,8 @@ if not os.path.exists(prefix):
     error("Prefix directory %s does not exist!" % prefix)
 
 lmodrc_path = os.path.join(prefix, DOT_LMOD, 'lmodrc.lua')
-# Lmod itself doesn't care about compute capability so remove this duplication from
-# the install path (if it exists)
+# Lmod itself doesn't care about the accelerator subdir so remove this duplication from
+# the target path (if it exists)
 accel_subdir = os.getenv("EESSI_ACCELERATOR_TARGET")
 if accel_subdir:
     lmodrc_path = lmodrc_path.replace("/accel/%s" % accel_subdir, '')
