@@ -297,6 +297,18 @@ def parse_hook_ucx_eprefix(ec, eprefix):
         raise EasyBuildError("UCX-specific hook triggered for non-UCX easyconfig?!")
 
 
+def parse_hook_freeimage_aarch64(ec, *args, **kwargs):
+    """
+    Make sure to build with -fPIC on ARM to avoid
+    https://github.com/EESSI/software-layer/pull/736#issuecomment-2373261889
+    """
+    if ec.name == 'FreeImage' and ec.version in ('3.18.0',):
+        if os.getenv('EESSI_CPU_FAMILY') == 'aarch64':
+            if not hasattr(ec, 'toolchainopts'):
+                ec['toolchainopts'] = {}
+            ec['toolchainopts']['fPIC'] = True
+            print_msg("Changed toochainopts for %s: %s", ec.name, ec['toolchainopts']) 
+
 def parse_hook_lammps_remove_deps_for_CI_aarch64(ec, *args, **kwargs):
     """
     Remove x86_64 specific dependencies for the CI to pass on aarch64
