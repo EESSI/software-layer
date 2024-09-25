@@ -9,3 +9,4 @@ easyconfigs:
   - ipympl-0.9.3-gfbf-2023a.eb
   - LHAPDF-6.5.4-GCC-12.3.0.eb
   - LoopTools-2.15-GCC-12.3.0.eb
+  - ncdu-1.18-GCC-12.3.0.eb
