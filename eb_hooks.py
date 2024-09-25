@@ -32,6 +32,9 @@ EESSI_RPATH_OVERRIDE_ATTR = 'orig_rpath_override_dirs'
 
 SYSTEM = EASYCONFIG_CONSTANTS['SYSTEM'][0]
 
+EESSI_INSTALLATION_REGEX = r"^/cvmfs/[^/]*.eessi.io/versions/"
+HOST_INJECTIONS_LOCATION = "/cvmfs/software.eessi.io/host_injections/"
+
 
 def get_eessi_envvar(eessi_envvar):
     """Get an EESSI environment variable from the environment"""
@@ -419,7 +422,7 @@ def pre_configure_hook_extrae(self, *args, **kwargs):
         # and problem due to use of which only pops up when running make ?!
         self.cfg.update(
             'prebuildopts',
-            "cp config/mpi-macros.m4 config/mpi-macros.m4.orig &&"
+            "cp config/mpi-macros.m4 config/mpi-macros.m4.orig && "
             "sed -i 's/`which /`command -v /g' config/mpi-macros.m4 && "
             )
     else:
@@ -698,9 +701,7 @@ def post_postproc_cuda(self, *args, **kwargs):
     """
 
     # We need to check if we are doing an EESSI-distributed installation
-    eessi_pattern = r"^/cvmfs/[^/]*.eessi.io/versions/"
-    host_injections_location = "/cvmfs/software.eessi.io/host_injections/"
-    eessi_installation = bool(re.search(eessi_pattern, self.installdir))
+    eessi_installation = bool(re.search(EESSI_INSTALLATION_REGEX, self.installdir))
 
     if self.name == 'CUDA' and eessi_installation:
         print_msg("Replacing files in CUDA installation that we can not ship with symlinks to host_injections...")
@@ -752,12 +753,12 @@ def post_postproc_cuda(self, *args, **kwargs):
                         # if it is not in the allowlist, delete the file and create a symlink to host_injections
 
                         # the host_injections path is under a fixed repo/location for CUDA
-                        host_inj_path = re.sub(eessi_pattern, host_injections_location, full_path)
+                        host_inj_path = re.sub(EESSI_INSTALLATION_REGEX, HOST_INJECTIONS_LOCATION, full_path)
                         # CUDA itself doesn't care about compute capability so remove this duplication from
-                        # under host_injections
+                        # under host_injections (symlink to a single CUDA installation for all compute
+                        # capabilities)
                         accel_subdir = os.getenv("EESSI_ACCELERATOR_TARGET")
                         if accel_subdir:
-                            host_inj_path = host_inj_path.replace('/accel/%s' % accel_subdir, '')
                             host_inj_path = host_inj_path.replace("/accel/%s" % accel_subdir, '')
                         # make sure source and target of symlink are not the same
                         if full_path == host_inj_path:
