@@ -1,0 +1,5 @@
+# 2024.09.25
+# We need to reinstall NCCL in the accelerator prefixes
+# See https://github.com/EESSI/software-layer/pull/487
+easyconfigs:
+  - NCCL-2.18.3-GCCcore-12.3.0-CUDA-12.1.1.eb 

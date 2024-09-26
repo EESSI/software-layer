@@ -7,3 +7,7 @@ easyconfigs:
   - Rivet-3.1.9-gompi-2023a-HepMC3-3.2.6.eb
   - GATK-4.5.0.0-GCCcore-12.3.0-Java-17.eb
   - ipympl-0.9.3-gfbf-2023a.eb
+  - LHAPDF-6.5.4-GCC-12.3.0.eb
+  - LoopTools-2.15-GCC-12.3.0.eb
+  - ncdu-1.18-GCC-12.3.0.eb
+  - WhatsHap-2.2-foss-2023a.eb
