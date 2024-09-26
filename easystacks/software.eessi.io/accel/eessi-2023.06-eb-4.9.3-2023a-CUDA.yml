@@ -1,5 +1,5 @@
 easyconfigs:
   - ESPResSo-4.2.2-foss-2023a-CUDA-12.1.1.eb:
       options:
-        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/21465
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/21440
         from-commit: 5525968921d7b5eae54f7d16391201e17ffae13c
