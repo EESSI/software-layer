@@ -15,15 +15,17 @@ jobs:
       matrix:
         EESSI_VERSION:
         - 2023.06
-        EESSI_SOFTWARE_SUBDIR_OVERRIDE:
-        - aarch64/generic
-        - aarch64/neoverse_n1
-        - aarch64/neoverse_v1
-        - x86_64/amd/zen2
-        - x86_64/amd/zen3
-        - x86_64/intel/haswell
-        - x86_64/intel/skylake_avx512
-        - x86_64/generic
+        EESSI_TARGETS:
+        - EESSI_SOFTWARE_SUBDIR_OVERRIDE: aarch64/generic
+        - EESSI_SOFTWARE_SUBDIR_OVERRIDE: aarch64/neoverse_n1
+        - EESSI_SOFTWARE_SUBDIR_OVERRIDE: aarch64/neoverse_v1
+        - EESSI_SOFTWARE_SUBDIR_OVERRIDE: x86_64/amd/zen2
+          EESSI_ACCELERATOR_TARGET: nvidia/cc80
+        - EESSI_SOFTWARE_SUBDIR_OVERRIDE: x86_64/amd/zen3
+          EESSI_ACCELERATOR_TARGET: nvidia/cc80
+        - EESSI_SOFTWARE_SUBDIR_OVERRIDE: x86_64/intel/haswell
+        - EESSI_SOFTWARE_SUBDIR_OVERRIDE: x86_64/intel/skylake_avx512
+        - EESSI_SOFTWARE_SUBDIR_OVERRIDE: x86_64/generic
     steps:
         - name: Check out software-layer repository
           uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
@@ -37,8 +39,11 @@ jobs:
 
         - name: Test check_missing_installations.sh script
           run: |
-              export EESSI_SOFTWARE_SUBDIR_OVERRIDE=${{matrix.EESSI_SOFTWARE_SUBDIR_OVERRIDE}}
+              export EESSI_SOFTWARE_SUBDIR_OVERRIDE=${{matrix.EESSI_TARGETS.EESSI_SOFTWARE_SUBDIR_OVERRIDE}}
               source /cvmfs/software.eessi.io/versions/${{matrix.EESSI_VERSION}}/init/bash
+              # add modules directory of accelerator target to $MODULEPATH
+              export EESSI_ACCELERATOR_TARGET=${{matrix.EESSI_TARGETS.EESSI_ACCELERATOR_TARGET}}
+              if [ ! -z ${EESSI_ACCELERATOR_TARGET} ]; then module use ${EESSI_SOFTWARE_PATH}/accel/${EESSI_ACCELERATOR_TARGET}/modules/all; fi
               # set $EESSI_CPU_FAMILY to the CPU architecture that corresponds to $EESSI_SOFTWARE_SUBDIR_OVERRIDE (part before the first slash),
               # to prevent issues with checks in the Easybuild configuration that use this variable
               export EESSI_CPU_FAMILY=${EESSI_SOFTWARE_SUBDIR_OVERRIDE%%/*}
@@ -58,7 +63,7 @@ jobs:
 
         - name: Test check_missing_installations.sh with missing package (GCC/8.3.0)
           run: |
-              export EESSI_SOFTWARE_SUBDIR_OVERRIDE=${{matrix.EESSI_SOFTWARE_SUBDIR_OVERRIDE}}
+              export EESSI_SOFTWARE_SUBDIR_OVERRIDE=${{matrix.EESSI_TARGETS.EESSI_SOFTWARE_SUBDIR_OVERRIDE}}
               source /cvmfs/software.eessi.io/versions/${{matrix.EESSI_VERSION}}/init/bash
               # set $EESSI_CPU_FAMILY to the CPU architecture that corresponds to $EESSI_SOFTWARE_SUBDIR_OVERRIDE (part before the first slash),
               # to prevent issues with checks in the Easybuild configuration that use this variable
