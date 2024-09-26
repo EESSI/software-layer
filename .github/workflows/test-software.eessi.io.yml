@@ -65,6 +65,9 @@ jobs:
           run: |
               export EESSI_SOFTWARE_SUBDIR_OVERRIDE=${{matrix.EESSI_TARGETS.EESSI_SOFTWARE_SUBDIR_OVERRIDE}}
               source /cvmfs/software.eessi.io/versions/${{matrix.EESSI_VERSION}}/init/bash
+              # add modules directory of accelerator target to $MODULEPATH
+              export EESSI_ACCELERATOR_TARGET=${{matrix.EESSI_TARGETS.EESSI_ACCELERATOR_TARGET}}
+              if [ ! -z ${EESSI_ACCELERATOR_TARGET} ]; then module use ${EESSI_SOFTWARE_PATH}/accel/${EESSI_ACCELERATOR_TARGET}/modules/all; fi
               # set $EESSI_CPU_FAMILY to the CPU architecture that corresponds to $EESSI_SOFTWARE_SUBDIR_OVERRIDE (part before the first slash),
               # to prevent issues with checks in the Easybuild configuration that use this variable
               export EESSI_CPU_FAMILY=${EESSI_SOFTWARE_SUBDIR_OVERRIDE%%/*}
