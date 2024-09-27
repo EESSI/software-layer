@@ -94,8 +94,13 @@ get_nvlib_list() {
         "tls_test_.so"
     )
 
+        # Check if the function was called with the "default" argument
+    if [[ "$1" == "default" ]]; then
+        printf "%s\n" "${default_nvlib_list[@]}"
+        return 0
+    fi
+
     # Try to download the nvliblist.conf file with curl
-    echo_yellow "Downloading latest version of nvliblist.conf from Apptainer"
     nvliblist_content=$(curl --silent "$nvliblist_url")
 
     # Check if curl failed (i.e., the content is empty)
@@ -115,11 +120,13 @@ command -v nvidia-smi >/dev/null 2>&1 || echo_yellow "nvidia-smi not found, this
 
 # Variables
 LD_PRELOAD_MODE=0
+DOWNLOAD=""
 
 # Parse command-line options
 while [[ "$#" -gt 0 ]]; do
   case $1 in
     --ld-preload) LD_PRELOAD_MODE=1 ;;  # Enable LD_PRELOAD mode
+    --no-download) DOWNLOAD="default" ;;  # Download latest list of CUDA libraries
     *) fatal_error "Unknown option: $1";;
   esac
   shift
@@ -152,7 +159,7 @@ host_libraries=$($host_ldconfig -p | awk '{print $NF}')
 singularity_libs=$(ls /.singularity.d/libs/* 2>/dev/null)
 
 # Now gather the list of possible CUDA libraries
-cuda_candidate_libraries=$(get_nvlib_list)
+cuda_candidate_libraries=$(get_nvlib_list "${DOWNLOAD}")
 # Check if the function returned an error (e.g., curl failed)
 if [ $? -ne 0 ]; then
     echo "Using default list of libraries"
