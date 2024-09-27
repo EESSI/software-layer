@@ -97,7 +97,7 @@ get_nvlib_list() {
         # Check if the function was called with the "default" argument
     if [[ "$1" == "default" ]]; then
         printf "%s\n" "${default_nvlib_list[@]}"
-        return 0
+        return 1
     fi
 
     # Try to download the nvliblist.conf file with curl
@@ -112,6 +112,8 @@ get_nvlib_list() {
 
     # If curl succeeded, filter and return the libraries from the downloaded content
     echo "$nvliblist_content" | grep '.so$'
+
+    return 0
 }
 
 # Function to check if umask allows global read
