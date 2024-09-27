@@ -214,7 +214,7 @@ if [ "$LD_PRELOAD_MODE" -eq 1 ]; then
     else
       echo "No libraries matched, LD_PRELOAD not set."
     fi
-    return 0
+    [[ "${BASH_SOURCE[0]}" != "${0}" ]] && return 1 || exit 1
 fi
 
 # If we haven't already exited, we may need to create the symlinks
