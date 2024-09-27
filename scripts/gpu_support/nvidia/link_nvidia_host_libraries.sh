@@ -197,9 +197,8 @@ for library in "${cuda_candidate_libraries[@]}"; do
     fi
 done
 
-# Output the matched libraries
-echo "Matched CUDA Libraries:"
-printf "%s\n" "${matched_libraries[@]}"
+# Output the number of matched libraries
+echo "Matched ${#matched_libraries[@]} CUDA Libraries"
 
 # LD_PRELOAD Mode
 if [ "$LD_PRELOAD_MODE" -eq 1 ]; then
