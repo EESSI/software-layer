@@ -264,6 +264,8 @@ if [ "$LD_PRELOAD_MODE" -eq 1 ]; then
       echo
       echo_yellow "Then you can set LD_PRELOAD only when you want to run a GPU application, e.g.,"
       echo_yellow "    LD_PRELOAD=\"\$EESSI_GPU_LD_PRELOAD\" device_query"
+    else
+      echo "No libraries matched, LD_PRELOAD not set."
     fi
     [[ "${BASH_SOURCE[0]}" != "${0}" ]] && return 1 || exit 1
 fi
