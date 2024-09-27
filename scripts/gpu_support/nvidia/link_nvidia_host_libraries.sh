@@ -157,7 +157,7 @@ if $nvidia_smi_driver_command > /dev/null 2>&1; then
   echo_green "Found NVIDIA GPU driver version ${host_driver_version}"
   
   # If the first worked, this should work too
-  host_cuda_version=$(nvidia-smi -q --display=COMPUTE | grep CUDA | awk 'NF>1{print $NF}')
+  host_cuda_version=$(nvidia-smi -q --display=COMPUTE | grep CUDA | awk '{NF>1; print $NF}')
   echo_green "Found host CUDA version ${host_cuda_version}"
 else
   fatal_error "Failed to execute $nvidia_smi_driver_command"
