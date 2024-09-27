@@ -7,7 +7,13 @@ if [ -z $EESSI_VERSION ]; then
     echo "ERROR: \$EESSI_VERSION must be set!" >&2
     exit 1
 fi
-EESSI_COMPAT_LAYER_DIR="${EESSI_CVMFS_REPO}/versions/${EESSI_VERSION}/compat/linux/$(uname -m)"
+
+if [ -z ${EESSI_COMPAT_LAYER_DIR_OVERRIDE} ]; then
+    EESSI_COMPAT_LAYER_DIR=${EESSI_COMPAT_LAYER_DIR_OVERRIDE}
+else 
+    EESSI_COMPAT_LAYER_DIR="${EESSI_CVMFS_REPO}/versions/${EESSI_VERSION}/compat/linux/$(uname -m)"
+fi
+
 if [ ! -d ${EESSI_COMPAT_LAYER_DIR} ]; then
     echo "ERROR: ${EESSI_COMPAT_LAYER_DIR} does not exist!" >&2
     exit 1
