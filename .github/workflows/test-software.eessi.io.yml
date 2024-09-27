@@ -2,8 +2,7 @@
 name: Check for missing software installations in software.eessi.io
 on:
   push:
-#    branches: [ "*-software.eessi.io" ]
-    branches: "*"
+    branches: [ "*-software.eessi.io" ]
   pull_request:
   workflow_dispatch:
 permissions:
