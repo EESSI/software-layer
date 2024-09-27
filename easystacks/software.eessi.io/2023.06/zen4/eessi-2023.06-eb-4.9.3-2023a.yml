@@ -13,3 +13,4 @@ easyconfigs:
   - WhatsHap-2.2-foss-2023a.eb
   - PyOpenGL-3.1.7-GCCcore-12.3.0.eb
   - SAMtools-1.18-GCC-12.3.0.eb
+  - OSU-Micro-Benchmarks-7.1-1-gompi-2023a.eb
