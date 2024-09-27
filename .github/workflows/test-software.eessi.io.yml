@@ -10,17 +10,10 @@ permissions:
   contents: read # to fetch code (actions/checkout)
 env:
   EESSI_ACCELERATOR_TARGETS: |
-    aarch64/generic:
-    aarch64/neoverse_n1:
-    aarch64/neoverse_v1:
-    x86_64/generic:
     x86_64/amd/zen2:
       - nvidia/cc80
     x86_64/amd/zen3:
       - nvidia/cc80
-    x86_64/amd/zen4:
-    x86_64/intel/haswell:
-    x86_64/intel/skylake_avx512:
 jobs:
   check_missing:
     runs-on: ubuntu-latest
