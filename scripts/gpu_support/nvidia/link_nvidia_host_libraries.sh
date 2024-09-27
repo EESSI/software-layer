@@ -86,7 +86,7 @@ get_nvlib_list() {
         "libnvidia-rtcore.so"
         "libnvidia-tls.so"
         "libnvidia-wfb.so"
-        "libnvoptix.so.1"
+        "libnvoptix.so"
         "libOpenCL.so"
         "libOpenGL.so"
         "libvdpau_nvidia.so"
