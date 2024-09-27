@@ -15,3 +15,4 @@ easyconfigs:
   - SAMtools-1.18-GCC-12.3.0.eb
   - CDO-2.2.2-gompi-2023a.eb
   - OSU-Micro-Benchmarks-7.1-1-gompi-2023a.eb
+  - BWA-0.7.17-20220923-GCCcore-12.3.0.eb
