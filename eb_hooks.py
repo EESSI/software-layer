@@ -525,7 +525,7 @@ def pre_configure_hook_LAMMPS_zen4(self, *args, **kwargs):
 
     cpu_target = get_eessi_envvar('EESSI_SOFTWARE_SUBDIR')
     if self.name == 'LAMMPS':
-        if ec.version in ('2Aug2023_update2', '29Aug2024'):
+        if self.version in ('2Aug2023_update2', '29Aug2024'):
             if get_cpu_architecture() == X86_64:
                 if cpu_target == CPU_TARGET_ZEN4:
                     # There is no support for ZEN4 in LAMMPS yet so falling back to ZEN3
