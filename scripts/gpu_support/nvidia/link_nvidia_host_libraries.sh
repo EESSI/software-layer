@@ -135,13 +135,13 @@ command -v nvidia-smi >/dev/null 2>&1 || { echo_yellow "nvidia-smi not found, th
 
 # Variables
 LD_PRELOAD_MODE=0
-DOWNLOAD=""
+LIBS_LIST=""
 
 # Parse command-line options
 while [[ "$#" -gt 0 ]]; do
   case $1 in
     --ld-preload) LD_PRELOAD_MODE=1 ;;  # Enable LD_PRELOAD mode
-    --no-download) DOWNLOAD="default" ;;  # Download latest list of CUDA libraries
+    --no-download) LIBS_LIST="default" ;;  # Download latest list of CUDA libraries
     *) fatal_error "Unknown option: $1";;
   esac
   shift
@@ -174,7 +174,7 @@ host_libraries=$($host_ldconfig -p | awk '{print $NF}')
 singularity_libs=$(ls /.singularity.d/libs/* 2>/dev/null)
 
 # Now gather the list of possible CUDA libraries
-cuda_candidate_libraries=$(get_nvlib_list "${DOWNLOAD}")
+cuda_candidate_libraries=$(get_nvlib_list "${LIBS_LIST}")
 # Check if the function returned an error (e.g., curl failed)
 if [ $? -ne 0 ]; then
     echo "Using default list of libraries"
