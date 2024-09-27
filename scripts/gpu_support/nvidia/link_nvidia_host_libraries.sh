@@ -120,15 +120,13 @@ get_nvlib_list() {
 check_global_read() {
     # Get the current umask value
     local current_umask=$(umask)
-    
+
     # Convert umask to decimal to analyze
-    local umask_decimal=$((8#$current_umask))
+    local umask_octal=$(printf '%03o\n' "$current_umask")
 
     # Check if umask allows global read
-    if [[ $umask_decimal -eq 0 || $umask_decimal -eq 22 ]]; then
-        echo "The current umask ($current_umask) allows global read permissions."
-    else
-        fatal_error "The current umask ($current_umask) does not allow global read permissions."
+    if [ "$umask_octal" -gt 022 ]; then
+        fatal_error "The current umask ($current_umask) does not allow global read permissions, you'll want everyone to be able to read the created directory."
     fi
 }
 
@@ -157,7 +155,7 @@ nvidia_smi_driver_command="nvidia-smi --query-gpu=driver_version --format=csv,no
 if $nvidia_smi_driver_command > /dev/null 2>&1; then
   host_driver_version=$($nvidia_smi_driver_command | tail -n1)
   echo_green "Found NVIDIA GPU driver version ${host_driver_version}"
-  
+
   # If the first worked, this should work too
   host_cuda_version=$(nvidia-smi -q --display=COMPUTE | grep CUDA | awk '{NF>1; print $NF}')
   echo_green "Found host CUDA version ${host_cuda_version}"
@@ -193,7 +191,7 @@ for library in "${cuda_candidate_libraries[@]}"; do
     # Search for the library in libs.txt and add it to the matched_libraries array
     matched=$(echo "$host_libraries $singularity_libs" | grep "$library")
     if [ -n "$matched" ]; then
-        matched_libraries+=("$matched")  # Add matched library to the array
+        matched_libraries+=( $matched )  # Add matched library to the array
     fi
 done
 
@@ -307,18 +305,11 @@ if [ "$link_drivers" -eq 1 ]; then
   # Make symlinks to all the interesting libraries
   # Loop over each matched library
   for library in "${matched_libraries[@]}"; do
-      # Check if the library file exists
-      if [ -e "$library" ]; then
-          # Create a symlink in the current directory
-          ln -s "$library" . 
-          # Check if the symlink was created successfully
-          if [ $? -eq 0 ]; then
-              echo "Successfully created symlink for library $library in $PWD"
-          else
-              fatal_error "Error: Failed to create symlink for library $library in $PWD"
-          fi
-      else
-          echo "Warning: Library not found: $library"
+      # Create a symlink in the current directory
+      ln -s "$library" .
+      # Check if the symlink was created successfully
+      if [ $? -ne 0 ]; then
+          fatal_error "Error: Failed to create symlink for library $library in $PWD"
       fi
   done
 
