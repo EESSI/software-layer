@@ -214,6 +214,7 @@ if [ "$LD_PRELOAD_MODE" -eq 1 ]; then
       echo "Allowing overriding GPU checks in EESSI via EESSI_OVERRIDE_GPU_CHECK"
     else
       echo "No libraries matched, LD_PRELOAD not set."
+    fi
     exit 0
 fi
 
