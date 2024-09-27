@@ -187,7 +187,7 @@ fi
 matched_libraries=()
 
 # Process each library and check for matches in libs.txt
-echo "$nvlib_list" | while read -r library; do
+for library in "${cuda_candidate_libraries[@]}"; do
     # Search for the library in libs.txt and add it to the matched_libraries array
     matched=$(echo "$ldconfig_output $singularity_libs" | grep "$library")
     if [ -n "$matched" ]; then
