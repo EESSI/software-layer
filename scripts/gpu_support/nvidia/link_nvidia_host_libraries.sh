@@ -114,6 +114,21 @@ get_nvlib_list() {
     echo "$nvliblist_content" | grep '.so$'
 }
 
+# Function to check if umask allows global read
+check_global_read() {
+    # Get the current umask value
+    local current_umask=$(umask)
+    
+    # Convert umask to decimal to analyze
+    local umask_decimal=$((8#$current_umask))
+
+    # Check if umask allows global read
+    if [[ $umask_decimal -eq 0 || $umask_decimal -eq 22 ]]; then
+        echo "The current umask ($current_umask) allows global read permissions."
+    else
+        fatal_error "The current umask ($current_umask) does not allow global read permissions."
+    fi
+}
 
 # Check for required commands
 command -v nvidia-smi >/dev/null 2>&1 || echo_yellow "nvidia-smi not found, this script won't do anything useful"; exit
@@ -208,6 +223,7 @@ link_drivers=1
 # Make sure that target of host_injections variant symlink is an existing directory
 host_injections_target=$(realpath -m "${EESSI_CVMFS_REPO}/host_injections")
 if [ ! -d "$host_injections_target" ]; then
+    check_global_read
     create_directory_structure "$host_injections_target"
 fi
 
@@ -227,6 +243,7 @@ fi
 
 drivers_linked=0
 if [ "$link_drivers" -eq 1 ]; then
+  check_global_read
   if ! create_directory_structure "${host_injection_driver_dir}" ; then
     fatal_error "No write permissions to directory ${host_injection_driver_dir}"
   fi
@@ -291,6 +308,7 @@ if [ -L "$host_injection_linker_dir/lib" ]; then
     fi
   fi
 else
+  check_global_read
   create_directory_structure "$host_injection_linker_dir"
   cd "$host_injection_linker_dir" || fatal_error "Failed to cd to $host_injection_linker_dir"
   ln -s "$host_injections_nvidia_dir/latest" lib
