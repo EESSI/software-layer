@@ -131,7 +131,7 @@ check_global_read() {
 }
 
 # Check for required commands
-command -v nvidia-smi >/dev/null 2>&1 || echo_yellow "nvidia-smi not found, this script won't do anything useful"; exit
+command -v nvidia-smi >/dev/null 2>&1 || { echo_yellow "nvidia-smi not found, this script won't do anything useful"; exit 1; }
 
 # Variables
 LD_PRELOAD_MODE=0
