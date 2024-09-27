@@ -175,8 +175,8 @@ host_ldconfig=$(get_host_ldconfig)
 host_libraries=$($host_ldconfig -p | awk '{print $NF}')
 singularity_libs=$(ls /.singularity.d/libs/* 2>/dev/null)
 
-# Now gather the list of possible CUDA libraries
-cuda_candidate_libraries=$(get_nvlib_list "${LIBS_LIST}")
+# Now gather the list of possible CUDA libraries and make them into an array
+cuda_candidate_libraries=($(get_nvlib_list "${LIBS_LIST}"))
 # Check if the function returned an error (e.g., curl failed)
 if [ $? -ne 0 ]; then
     echo "Using default list of libraries"
@@ -191,7 +191,7 @@ matched_libraries=()
 # Process each library and check for matches in libs.txt
 for library in "${cuda_candidate_libraries[@]}"; do
     # Search for the library in libs.txt and add it to the matched_libraries array
-    matched=$(echo "$ldconfig_output $singularity_libs" | grep "$library")
+    matched=$(echo "$host_libraries $singularity_libs" | grep "$library")
     if [ -n "$matched" ]; then
         matched_libraries+=("$matched")  # Add matched library to the array
     fi
