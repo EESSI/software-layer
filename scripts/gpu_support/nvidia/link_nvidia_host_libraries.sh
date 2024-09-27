@@ -133,7 +133,7 @@ check_global_read() {
 }
 
 # Check for required commands
-command -v nvidia-smi >/dev/null 2>&1 || { echo_yellow "nvidia-smi not found, this script won't do anything useful"; exit 1; }
+command -v nvidia-smi >/dev/null 2>&1 || { echo_yellow "nvidia-smi not found, this script won't do anything useful"; return 1; }
 
 # Variables
 LD_PRELOAD_MODE=0
@@ -214,7 +214,7 @@ if [ "$LD_PRELOAD_MODE" -eq 1 ]; then
     else
       echo "No libraries matched, LD_PRELOAD not set."
     fi
-    exit 0
+    return 0
 fi
 
 # If we haven't already exited, we may need to create the symlinks
