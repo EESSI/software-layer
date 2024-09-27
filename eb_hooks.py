@@ -301,15 +301,16 @@ def parse_hook_lammps_remove_deps_for_aarch64(ec, *args, **kwargs):
     """
     Remove x86_64 specific dependencies for the CI and missing installations to pass on aarch64
     """
-    if ec.name == 'LAMMPS' and ec.version in ('2Aug2023_update2', '29Aug2024'):
-        if os.getenv('EESSI_CPU_FAMILY') == 'aarch64':
-            # ScaFaCoS and tbb are not compatible with aarch64/* CPU targets,
-            # so remove them as dependencies for LAMMPS (they're optional);
-            # see also https://github.com/easybuilders/easybuild-easyconfigs/pull/19164 +
-            # https://github.com/easybuilders/easybuild-easyconfigs/pull/19000;
-            # we need this hook because we check for missing installations for all CPU targets
-            # on an x86_64 VM in GitHub Actions (so condition based on ARCH in LAMMPS easyconfig is always true)
-            ec['dependencies'] = [dep for dep in ec['dependencies'] if dep[0] not in ('ScaFaCoS', 'tbb',)]
+    if ec.name == 'LAMMPS':
+        if ec.version in ('2Aug2023_update2', '29Aug2024'):
+            if os.getenv('EESSI_CPU_FAMILY') == 'aarch64':
+                # ScaFaCoS and tbb are not compatible with aarch64/* CPU targets,
+                # so remove them as dependencies for LAMMPS (they're optional);
+                # see also https://github.com/easybuilders/easybuild-easyconfigs/pull/19164 +
+                # https://github.com/easybuilders/easybuild-easyconfigs/pull/19000;
+                # we need this hook because we check for missing installations for all CPU targets
+                # on an x86_64 VM in GitHub Actions (so condition based on ARCH in LAMMPS easyconfig is always true)
+                ec['dependencies'] = [dep for dep in ec['dependencies'] if dep[0] not in ('ScaFaCoS', 'tbb',)]
     else:
         raise EasyBuildError("LAMMPS-specific hook triggered for non-LAMMPS easyconfig?!")
 
