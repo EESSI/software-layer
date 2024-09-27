@@ -202,17 +202,68 @@ echo "Matched ${#matched_libraries[@]} CUDA Libraries"
 
 # LD_PRELOAD Mode
 if [ "$LD_PRELOAD_MODE" -eq 1 ]; then
-    # Set LD_PRELOAD with the matched libraries
-    if [ ${#matched_libraries[@]} -gt 0 ]; then
-      LD_PRELOAD=$(printf "%s\n" "${matched_libraries[@]}" | tr '\n' ':')
+    echo
+    echo_yellow "When attempting to use LD_PRELOAD we exclude anything related to graphics"
+
+    # Filter out all libraries that have missing library dependencies under EESSI
+    filtered_libraries=()
+    for library in "${matched_libraries[@]}"; do
+        # Run ldd on the given binary and filter for "not found" libraries
+        NOT_FOUND_LIBS=$(ldd "$library" 2>/dev/null | grep "not found" | awk '{print $1}')
+        # Check if it is missing an so dep under EESSI
+        if [[ -z "$NOT_FOUND_LIBS" ]]; then
+            # Anything graphics is out, as is libnvidia-fbc*
+            if [[ "$library" != *"GL"* ]]; then
+                if [[ "$library" != *"libnvidia-fbc"* ]]; then
+                    filtered_libraries+=("$library")
+                fi
+            fi
+        else
+            # Iterate over "not found" libraries and check if they are in the array
+            all_found=true
+            for lib in $NOT_FOUND_LIBS; do
+                found=false
+                for listed_lib in "${matched_libraries[@]}"; do
+                    if [[ "$lib" == "$listed_lib" ]]; then
+                        found=true
+                        break
+                    fi
+                done
+
+                if [[ "$found" == false ]]; then
+                    echo "$lib is NOT in the provided  preload list, filtering $library."
+                    all_found=false
+                    break
+                fi
+            done
+
+            # If we find all the missing libs in our list include it
+            if [[ "$all_found" == true ]]; then
+                # Anything graphics is out, as is libnvidia-fbc*
+                if [[ "$library" != *"GL"* ]]; then
+                    if [[ "$library" != *"libnvidia-fbc"* ]]; then
+                        filtered_libraries+=("$library")
+                    fi
+                fi
+            fi
+        fi
+    done
+
+    # Set EESSI_GPU_LD_PRELOAD with the matched libraries
+    if [ ${#filtered_libraries[@]} -gt 0 ]; then
+      echo
+      echo_yellow "The recommended way to use LD_PRELOAD is to only use it when you need to:"
+      echo
+      EESSI_GPU_LD_PRELOAD=$(printf "%s\n" "${filtered_libraries[@]}" | tr '\n' ':')
       # Remove the trailing colon from LD_PRELOAD if it exists
-      LD_PRELOAD=${LD_PRELOAD%:}
-      export LD_PRELOAD
-      echo "LD_PRELOAD set to: $LD_PRELOAD"
+      EESSI_GPU_LD_PRELOAD=${EESSI_GPU_LD_PRELOAD%:}
+      export EESSI_GPU_LD_PRELOAD
+      echo_green "export EESSI_GPU_LD_PRELOAD=\"$EESSI_GPU_LD_PRELOAD\""
       export EESSI_OVERRIDE_GPU_CHECK=1
-      echo "Allowing overriding GPU checks in EESSI via EESSI_OVERRIDE_GPU_CHECK"
-    else
-      echo "No libraries matched, LD_PRELOAD not set."
+      echo_green "export EESSI_OVERRIDE_GPU_CHECK=\"$EESSI_OVERRIDE_GPU_CHECK\""
+      echo
+      echo_yellow "Then you can set LD_PRELOAD only when you want to run a GPU application, e.g.,"
+      echo_yellow "    LD_PRELOAD=\"\$EESSI_GPU_LD_PRELOAD\" device_query"
     fi
     [[ "${BASH_SOURCE[0]}" != "${0}" ]] && return 1 || exit 1
 fi
