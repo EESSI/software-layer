@@ -1,0 +1,9 @@
+easyconfigs:
+  - CUDA-Samples-12.1-GCC-12.3.0-CUDA-12.1.1.eb:
+      # use easyconfig that only install subset of CUDA samples,
+      # to circumvent problem with nvcc linking to glibc of host OS,
+      # see https://github.com/easybuilders/easybuild-easyconfigs/pull/19189;
+      # and where additional samples are excluded because they fail to build on aarch64,
+      # see https://github.com/easybuilders/easybuild-easyconfigs/pull/19451;
+      options:
+        from-pr: 19451
