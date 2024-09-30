@@ -35,3 +35,9 @@ easyconfigs:
   - GL2PS-1.4.2-GCCcore-12.2.0.eb
   - GST-plugins-base-1.22.1-GCC-12.2.0.eb
   - wxWidgets-3.2.2.1-GCC-12.2.0.eb
+  - Archive-Zip-1.68-GCCcore-12.2.0.eb
+  - jemalloc-5.3.0-GCCcore-12.2.0.eb
+  - Judy-1.0.5-GCCcore-12.2.0.eb
+  - libaio-0.3.113-GCCcore-12.2.0.eb
+  - Z3-4.12.2-GCCcore-12.2.0.eb
+  - tbb-2021.10.0-GCCcore-12.2.0.eb
