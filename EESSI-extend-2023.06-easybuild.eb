@@ -166,7 +166,7 @@ elseif (project_modulepath ~= nil) then
 end
 -- Make sure EasyBuild itself is loaded
 if not ( isloaded("EasyBuild") ) then
-    load("EasyBuild")
+    load(latest("EasyBuild"))
 end
 """
 
