@@ -61,8 +61,10 @@ jobs:
               for easystack_file in $(ls easystacks/software.eessi.io/${{matrix.EESSI_VERSION}}/eessi-${{matrix.EESSI_VERSION}}-eb-*.yml); do
                   if [ ${{matrix.EESSI_SOFTWARE_SUBDIR_OVERRIDE}} = "x86_64/amd/zen4" ]; then
                       if grep -q 2022b <<<"${easystack_file}"; then
+                          # skip the check of installed software on zen4 for foss/2022b builds
                           continue
                       elif grep -q CUDA <<<"${easystack_file}"; then
+                          # skip the check of install CUDA software in the CPU path for zen4
                           continue
                       fi
                   fi
