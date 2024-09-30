@@ -169,6 +169,12 @@ COMMON_ARGS+=("--mode" "run")
 [[ ! -z ${HTTPS_PROXY} ]] && COMMON_ARGS+=("--https-proxy" "${HTTPS_PROXY}")
 [[ ! -z ${REPOSITORY} ]] && COMMON_ARGS+=("--repository" "${REPOSITORY}")
 
+# Also expose software.eessi.io when configured for dev.eessi.io
+# Need software.eessi.io for the compat layer
+if [[ "${REPOSITORY}" == dev.eessi.io ]] then
+    COMMON_ARGS+=("--repository" "software.eessi.io,access=ro")
+fi
+
 # make sure to use the same parent dir for storing tarballs of tmp
 PREVIOUS_TMP_DIR=${PWD}/previous_tmp
 
