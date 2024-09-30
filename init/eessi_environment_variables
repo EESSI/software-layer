@@ -38,6 +38,14 @@ if [ -d $EESSI_PREFIX ]; then
           break
         fi
       done
+      export EESSI_ACCEL_PATH=$(${EESSI_INIT_DIR_PATH}/eessi_archdetect.sh accelpath)
+      if [ -z ${EESSI_ACCEL_PATH} ]; then
+          show_msg "archdetect could not find any accelerators"
+      else
+          if [ -d ${EESSI_PREFIX}/software/${EESSI_OS_TYPE}/${EESSI_SOFTWARE_SUBDIR}/${EESSI_ACCEL_PATH} ]; then
+              show_msg "archdetect found accelerator: ${EESSI_ACCEL_PATH}"
+          fi
+      fi
     elif [ "$EESSI_USE_ARCHSPEC" == "1" ]; then
       # note: eessi_software_subdir_for_host.py will pick up value from $EESSI_SOFTWARE_SUBDIR_OVERRIDE if it's defined!
       export EESSI_EPREFIX_PYTHON=$EESSI_EPREFIX/usr/bin/python3
@@ -104,6 +112,12 @@ if [ -d $EESSI_PREFIX ]; then
           else
             error "EESSI module path at $EESSI_MODULEPATH not found!"
             false
+          fi
+
+          EESSI_MODULEPATH_ACCEL=${EESSI_SOFTWARE_PATH}/${EESSI_ACCEL_PATH}/${EESSI_MODULE_SUBDIR}
+          if [ -d ${EESSI_MODULEPATH_ACCEL} ]; then
+             export EESSI_MODULEPATH_ACCEL=${EESSI_MODULEPATH_ACCEL}
+              show_msg "Using ${EESSI_MODULEPATH_ACCEL} as additional directory (for accelerators) to be added to MODULEPATH."
           fi
 
           # Fix wrong path for RHEL >=8 libcurl 

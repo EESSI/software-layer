@@ -150,8 +150,25 @@ cpupath(){
     fi
 }
 
+accelpath() {
+    # If EESSI_ACCELERATOR_TARGET_OVERRIDE is set, use it
+    log "DEBUG" "accelpath: Override variable set as '$EESSI_ACCELERATOR_TARGET_OVERRIDE' "
+    [ $EESSI_ACCELERATOR_TARGET_OVERRIDE ] && echo ${EESSI_ACCELERATOR_TARGET_OVERRIDE} && exit
+
+    # check for NVIDIA GPUs via nvidia-smi command
+    nvidia_smi=$(command -v nvidia-smi)
+    if [[ $? -eq 0 ]]; then
+        log "DEBUG" "accelpath: nvidia-smi command found @ ${nvidia_smi}"
+	gpu_info=$(nvidia-smi --query-gpu=gpu_name,count,driver_version,compute_cap --format=csv,noheader | head -1)
+	cuda_cc=$(echo $gpu_info | sed 's/, /,/g' | cut -f4 -d, | sed 's/\.//g')
+	echo "accel/nvidia/cc${cuda_cc}"
+    else
+        log "DEBUG" "accelpath: nvidia-smi command not found"
+    fi
+}
+
 # Parse command line arguments
-USAGE="Usage: eessi_archdetect.sh [-h][-d][-a] <action>"
+USAGE="Usage: eessi_archdetect.sh [-h][-d][-a] <action: cpupath or accelpath>"
 
 while getopts 'hdva' OPTION; do
     case "$OPTION" in
@@ -168,5 +185,6 @@ ARGUMENT=${1:-none}
 
 case "$ARGUMENT" in
     "cpupath") cpupath; exit;;
-    *) echo "$USAGE"; log "ERROR" "Missing <action> argument (possible actions: 'cpupath')";;
+    "accelpath") accelpath; exit;;
+    *) echo "$USAGE"; log "ERROR" "Missing <action> argument (possible actions: 'cpupath', 'accelpath')";;
 esac
