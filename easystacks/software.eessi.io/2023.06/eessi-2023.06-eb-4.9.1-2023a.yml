@@ -22,3 +22,4 @@ easyconfigs:
         from-pr: 20784
   - Valgrind-3.21.0-gompi-2023a.eb
   - OrthoFinder-2.5.5-foss-2023a.eb
+  - ROOT-6.30.06-foss-2023a.eb
