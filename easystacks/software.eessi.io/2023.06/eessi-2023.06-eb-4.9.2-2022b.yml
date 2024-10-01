@@ -41,3 +41,6 @@ easyconfigs:
   - libaio-0.3.113-GCCcore-12.2.0.eb
   - Z3-4.12.2-GCCcore-12.2.0.eb
   - tbb-2021.10.0-GCCcore-12.2.0.eb
+  - dask-2023.7.1-foss-2022b.eb
+  - netcdf4-python-1.6.3-foss-2022b.eb
+  - Ruby-3.2.2-GCCcore-12.2.0.eb
