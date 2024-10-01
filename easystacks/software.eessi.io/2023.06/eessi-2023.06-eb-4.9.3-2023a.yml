@@ -1,8 +1,8 @@
 easyconfigs:
-  - gmsh-4.12.2-foss-2023a.eb
-  - basemap-1.3.9-foss-2023a.eb
-  - geopandas-0.14.2-foss-2023a.eb
   - ccache-4.9-GCCcore-12.3.0.eb
   - GDB-13.2-GCCcore-12.3.0.eb
   - tmux-3.3a-GCCcore-12.3.0.eb
   - Vim-9.1.0004-GCCcore-12.3.0.eb
+  - gmsh-4.12.2-foss-2023a.eb
+  - basemap-1.3.9-foss-2023a.eb
+  - geopandas-0.14.2-foss-2023a.eb
