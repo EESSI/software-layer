@@ -237,7 +237,11 @@ pr_diff=$(ls [0-9]*.diff | head -1)
 # install any additional required scripts
 # order is important: these are needed to install a full CUDA SDK in host_injections
 # for now, this just reinstalls all scripts. Note the most elegant, but works
-${TOPDIR}/install_scripts.sh --prefix ${EESSI_PREFIX}
+
+# Only run install_scripts.sh if not dev.eessi.io for security
+if [[ "${EESSI_CVMFS_REPO}" != /cvmfs/dev.eessi.io ]]; then
+    ${TOPDIR}/install_scripts.sh --prefix ${EESSI_PREFIX}
+fi
 
 # Install full CUDA SDK in host_injections
 # Hardcode this for now, see if it works
