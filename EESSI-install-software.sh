@@ -123,9 +123,7 @@ else
 fi
 
 # make sure we're in Prefix environment by checking $SHELL
-if [[ ${SHELL} = ${EESSI_COMPAT_LAYER_OVERRIDE}/bin/bash ]]; then
-    echo_green ">> It looks like we're in an overriden Gentoo Prefix environment, good!"
-elif [[ ${SHELL} = ${EPREFIX}/bin/bash ]]; then
+if [[ ${SHELL} = ${EPREFIX}/bin/bash ]]; then
     echo_green ">> It looks like we're in a Gentoo Prefix environment, good!"
 else
     fatal_error "Not running in Gentoo Prefix environment, run '${EPREFIX}/startprefix' first!"
