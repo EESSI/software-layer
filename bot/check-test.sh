@@ -65,7 +65,7 @@ SUCCESS=-1
 # Grep for the success pattern, so we can report the amount of tests run
 if [[ ${SLURM_OUTPUT_FOUND} -eq 1 ]]; then
   GP_success='\[\s*PASSED\s*\].*Ran .* test case'
-  grep_reframe_success=$(grep -v "^>> searching for " ${job_dir}/${job_out} | grep -Pzo "${GP_success}")
+  grep_reframe_success=$(grep -v "^>> searching for " ${job_dir}/${job_out} | grep "${GP_success}")
   [[ $? -eq 0 ]] && SUCCESS=1 || SUCCESS=0
   # have to be careful to not add searched for pattern into slurm out file
   [[ ${VERBOSE} -ne 0 ]] && echo ">> searching for '"${GP_success}"'"
