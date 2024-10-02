@@ -190,7 +190,9 @@ def parse_hook_casacore_disable_vectorize(ec, eprefix):
         ):
             cpu_target = get_eessi_envvar('EESSI_SOFTWARE_SUBDIR')
             if cpu_target == CPU_TARGET_NEOVERSE_V1:
-                if 'toolchainopts' not in ec:
+                # Make sure the toolchainopts key exists, and the value is a dict,
+                # before we add the option to disable vectorization
+                if 'toolchainopts' not in ec or ec['toolchainopts'] is None:
                     ec['toolchainopts'] = {}
                 ec['toolchainopts']['vectorize'] = False
                 print_msg("Changed toochainopts for %s: %s", ec.name, ec['toolchainopts'])
@@ -308,7 +310,9 @@ def parse_hook_freeimage_aarch64(ec, *args, **kwargs):
     """
     if ec.name == 'FreeImage' and ec.version in ('3.18.0',):
         if os.getenv('EESSI_CPU_FAMILY') == 'aarch64':
-            if 'toolchainopts' not in ec:
+            # Make sure the toolchainopts key exists, and the value is a dict,
+            # before we add the option to enable PIC and disable PNG_ARM_NEON_OPT
+            if 'toolchainopts' not in ec or ec['toolchainopts'] is None:
                 ec['toolchainopts'] = {}
             ec['toolchainopts']['pic'] = True
             ec['toolchainopts']['extra_cflags'] = '-DPNG_ARM_NEON_OPT=0'
