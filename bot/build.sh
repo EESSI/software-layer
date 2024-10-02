@@ -22,7 +22,7 @@
 set -e
 
 # Make sure we are referring to software-layer as working directory
-topdir=$(dirname $(realpath $0))
+topdir=$(dirname $(dirname $(realpath $0)))
 # source utils.sh and cfg_files.sh
 source $topdir/scripts/utils.sh
 source $topdir/scripts/cfg_files.sh
