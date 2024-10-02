@@ -190,7 +190,9 @@ def parse_hook_casacore_disable_vectorize(ec, eprefix):
         ):
             cpu_target = get_eessi_envvar('EESSI_SOFTWARE_SUBDIR')
             if cpu_target == CPU_TARGET_NEOVERSE_V1:
-                if not hasattr(ec, 'toolchainopts'):
+                # Make sure the toolchainopts key exists, and the value is a dict,
+                # before we add the option to disable vectorization
+                if 'toolchainopts' not in ec or ec['toolchainopts'] is None:
                     ec['toolchainopts'] = {}
                 ec['toolchainopts']['vectorize'] = False
                 print_msg("Changed toochainopts for %s: %s", ec.name, ec['toolchainopts'])
@@ -299,6 +301,22 @@ def parse_hook_ucx_eprefix(ec, eprefix):
         print_msg("Using custom configure options for %s: %s", ec.name, ec['configopts'])
     else:
         raise EasyBuildError("UCX-specific hook triggered for non-UCX easyconfig?!")
+
+
+def parse_hook_freeimage_aarch64(ec, *args, **kwargs):
+    """
+    Make sure to build with -fPIC on ARM to avoid
+    https://github.com/EESSI/software-layer/pull/736#issuecomment-2373261889
+    """
+    if ec.name == 'FreeImage' and ec.version in ('3.18.0',):
+        if os.getenv('EESSI_CPU_FAMILY') == 'aarch64':
+            # Make sure the toolchainopts key exists, and the value is a dict,
+            # before we add the option to enable PIC and disable PNG_ARM_NEON_OPT
+            if 'toolchainopts' not in ec or ec['toolchainopts'] is None:
+                ec['toolchainopts'] = {}
+            ec['toolchainopts']['pic'] = True
+            ec['toolchainopts']['extra_cflags'] = '-DPNG_ARM_NEON_OPT=0'
+            print_msg("Changed toolchainopts for %s: %s", ec.name, ec['toolchainopts']) 
 
 
 def parse_hook_lammps_remove_deps_for_aarch64(ec, *args, **kwargs):
@@ -803,6 +821,7 @@ PARSE_HOOKS = {
     'casacore': parse_hook_casacore_disable_vectorize,
     'CGAL': parse_hook_cgal_toolchainopts_precise,
     'fontconfig': parse_hook_fontconfig_add_fonts,
+    'FreeImage': parse_hook_freeimage_aarch64,
     'grpcio': parse_hook_grpcio_zlib,
     'LAMMPS': parse_hook_lammps_remove_deps_for_aarch64,
     'CP2K': parse_hook_CP2K_remove_deps_for_aarch64,

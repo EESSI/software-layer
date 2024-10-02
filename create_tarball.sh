@@ -89,13 +89,17 @@ for subdir in ${cpu_arch_subdir} ${cpu_arch_subdir}/accel/${accel_subdir}; do
 done
 
 # add a bit debug output
-echo "wrote file list to ${files_list}"
-[ -r ${files_list} ] && cat ${files_list}
-echo "wrote module file list to ${module_files_list}"
-[ -r ${module_files_list} ] && cat ${module_files_list}
+if [ -r ${files_list} ]; then
+    echo "wrote file list to ${files_list}"
+    cat ${files_list}
+fi
+if [ -r ${module_files_list} ]; then
+    echo "wrote module file list to ${module_files_list}"
+    cat ${module_files_list}
 
-# Copy the module files list to current workindg dir for later use in the test step
-cp ${module_files_list} ${current_workdir}/module_files.list.txt
+    # Copy the module files list to current workindg dir for later use in the test step
+    cp ${module_files_list} ${current_workdir}/module_files.list.txt
+fi
 
 topdir=${cvmfs_repo}/versions/
 
