@@ -297,7 +297,7 @@ else
         if [ -f ${easystack_file} ]; then
             echo_green "Feeding easystack file ${easystack_file} to EasyBuild..."
 
-            ${EB} --easystack ${TOPDIR}/${easystack_file} --robot
+            ${EB} --easystack ${easystack_file} --robot
             ec=$?
 
             # copy EasyBuild log file if EasyBuild exited with an error
@@ -310,7 +310,7 @@ else
                 copy_build_log "${eb_last_log}" "${build_logs_dir}"
             fi
     
-            $TOPDIR/check_missing_installations.sh ${TOPDIR}/${easystack_file} ${TOPDIR}/${pr_diff}
+            $TOPDIR/check_missing_installations.sh ${easystack_file} ${pr_diff}
         else
             fatal_error "Easystack file ${easystack_file} not found!"
         fi
