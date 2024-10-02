@@ -28,7 +28,7 @@ source $topdir/scripts/utils.sh
 source $topdir/scripts/cfg_files.sh
 
 # defaults
-export JOB_CFG_FILE="${JOB_CFG_FILE_OVERRIDE:=/cfg/job.cfg}"
+export JOB_CFG_FILE="${JOB_CFG_FILE_OVERRIDE:=cfg/job.cfg}"
 HOST_ARCH=$(uname -m)
 
 # check if ${JOB_CFG_FILE} exists
