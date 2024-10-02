@@ -23,7 +23,6 @@ else
     [[ ${VERBOSE} -ne 0 ]] && echo "   Slurm output file '"${job_out}"' NOT found"
 fi
 
-
 # ReFrame prints e.g.
 #[----------] start processing checks
 #[ RUN      ] GROMACS_EESSI %benchmark_info=HECBioSim/Crambin %nb_impl=cpu %scale=2_nodes %module_name=GROMACS/2021.3-foss-2021a /d597cff4 @snellius:rome+default
@@ -76,7 +75,10 @@ fi
 if [[ ! -z ${grep_reframe_failed} ]]; then
     grep_reframe_result=${grep_reframe_failed}
 else
-    grep_reframe_result=${grep_reframe_success}
+    # Grep the entire output of ReFrame, so that we can report it in the foldable section of the test report
+    GP_success_full='(?s)\[----------\] start processing checks.*?\[==========\] Finished on [a-zA-Z0-9 ]*'
+    grep_reframe_success_full=$(grep -v "^>> searching for " ${job_dir}/${job_out} | grep -Pzo "${GP_success}")
+    grep_reframe_result=${grep_reframe_success_full}
 fi
 
 echo "[TEST]" > ${job_test_result_file}
