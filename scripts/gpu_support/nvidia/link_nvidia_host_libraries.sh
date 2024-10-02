@@ -229,7 +229,7 @@ if [ "$LD_PRELOAD_MODE" -eq 1 ]; then
                 done
 
                 if [[ "$found" == false ]]; then
-                    echo "$lib is NOT in the provided  preload list, filtering $library."
+                    echo "$lib is NOT in the provided preload list, filtering $library"
                     all_found=false
                     break
                 fi
