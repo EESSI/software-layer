@@ -80,6 +80,7 @@ else
     grep_reframe_success_full=$(grep -v "^>> searching for " ${job_dir}/${job_out} | grep -Pzo "${GP_success}")
     grep_reframe_result=${grep_reframe_success_full}
 fi
+echo "grep_reframe_result: ${grep_reframe_result}"
 
 echo "[TEST]" > ${job_test_result_file}
 if [[ ${SLURM_OUTPUT_FOUND} -eq 0 ]]; then
