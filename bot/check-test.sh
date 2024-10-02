@@ -23,6 +23,16 @@ else
     [[ ${VERBOSE} -ne 0 ]] && echo "   Slurm output file '"${job_out}"' NOT found"
 fi
 
+# First, account for the scenario where we skipped the ReFrame test suite
+SKIPPED=-1
+if [[ ${SLURM_OUTPUT_FOUND} -eq 1 ]]; then
+  GP_skipped='Skipping EESSI test site run'
+  grep_reframe_skipped=$(grep -v "^>> searching for " ${job_dir}/${job_out} | grep "${GP_skipped}")
+  [[ $? -eq 0 ]] && SKIPPED=1 || SKIPPED=0
+  # have to be careful to not add searched for pattern into slurm out file
+  [[ ${VERBOSE} -ne 0 ]] && echo ">> searching for '"${GP_skipped}"'"
+  [[ ${VERBOSE} -ne 0 ]] && echo "${grep_reframe_skipped}"
+fi
 
 # ReFrame prints e.g.
 #[----------] start processing checks
@@ -89,6 +99,10 @@ if [[ ${SLURM_OUTPUT_FOUND} -eq 0 ]]; then
 elif [[ ${SUCCESS} -eq 1 ]]; then
     summary=":grin: SUCCESS"
     reason=""
+    status="SUCCESS"
+elif [[ ${SKIPPED} -eq 1]]; then
+    summary="SKIPPED"
+    reason="The EESSI test suite was skipped. If this PR only deploys scripts, that's expected behavior."
     status="SUCCESS"
 # Should come before general errors: if FAILED==1, it indicates the test suite ran
 # otherwise the pattern wouldn't have been there
