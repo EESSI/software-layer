@@ -79,6 +79,7 @@ else
     GP_success_full='(?s)\[----------\] start processing checks.*?\[==========\] Finished on [a-zA-Z0-9 ]*'
     grep_reframe_success_full=$(grep -v "^>> searching for " ${job_dir}/${job_out} | grep -Pzo "${GP_success}")
     grep_reframe_result=${grep_reframe_success_full}
+    echo "grep_reframe_success_full: ${grep_reframe_success_full}"
 fi
 echo "grep_reframe_result: ${grep_reframe_result}"
 
