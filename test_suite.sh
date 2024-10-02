@@ -198,14 +198,19 @@ fi
 # Get the subset of test names based on the test mapping and tags (e.g. CI, 1_node)
 module_list="module_files.list.txt"
 mapping_config="tests/eessi_test_mapping/software_to_tests.yml"
-if [[ ! -f "$module_list" || ! -f "$mapping_config" ]]; then
-    fatal_error "No new module files were found. Skipping EESSI test site run."
+if [[ ! -f "$module_list" ]]; then
+    echo_green "File ${module_list} not found, so only running the default set of tests from ${mapping_config}"
+    # Run with --debug for easier debugging in case there are issues:
+    python3 tests/eessi_test_mapping/map_software_to_test.py --mapping-file "${mapping_config}" --debug --defaults-only
+    REFRAME_NAME_ARGS=$(python3 tests/eessi_test_mapping/map_software_to_test.py --mapping-file "${mapping_config}" --defaults-only)
+    test_selection_exit_code=$?
+else
+    # Run with --debug for easier debugging in case there are issues:
+    python3 tests/eessi_test_mapping/map_software_to_test.py --module-list "${module_list}" --mapping-file "${mapping_config}" --debug
+    REFRAME_NAME_ARGS=$(python3 tests/eessi_test_mapping/map_software_to_test.py --module-list "${module_list}" --mapping-file "${mapping_config}")
+    test_selection_exit_code=$?
 fi
-
-# Run with --debug for easier debugging in case there are issues:
-python3 tests/eessi_test_mapping/map_software_to_test.py --module-list "${module_list}" --mapping-file "${mapping_config}" --debug
-REFRAME_NAME_ARGS=$(python3 tests/eessi_test_mapping/map_software_to_test.py --module-list "${module_list}" --mapping-file "${mapping_config}")
-test_selection_exit_code=$?
+# Check exit status
 if [[ ${test_selection_exit_code} -eq 0 ]]; then
     echo_green "Succesfully extracted names of tests to run: ${REFRAME_NAME_ARGS}"
 else
