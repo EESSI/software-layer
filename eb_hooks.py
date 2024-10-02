@@ -763,7 +763,13 @@ def post_postproc_cuda(self, *args, **kwargs):
         raise EasyBuildError("CUDA-specific hook triggered for non-CUDA easyconfig?!")
 
 
-def post_postproc_cudnn(self, *args, **kwargs):
+def post_sanitycheck_hook(self, *args, **kwargs):
+    """Main post-sanitycheck hook: trigger custom functions based on software name."""
+    if self.name in POST_SANITYCHECK_HOOKS:
+        POST_SANITYCHECK_HOOKS[self.name](self, *args, **kwargs)
+
+
+def post_sanitycheck_cudnn(self, *args, **kwargs):
     """
     Remove files from cuDNN installation that we are not allowed to ship,
     and replace them with a symlink to a corresponding installation under host_injections.
@@ -950,5 +956,8 @@ POST_SINGLE_EXTENSION_HOOKS = {
 
 POST_POSTPROC_HOOKS = {
     'CUDA': post_postproc_cuda,
-    'cuDNN': post_postproc_cudnn,
+}
+
+POST_SANITYCHECK_HOOKS = {
+    'cuDNN': post_sanitycheck_cudnn,
 }
