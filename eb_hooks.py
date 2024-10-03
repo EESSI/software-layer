@@ -800,7 +800,7 @@ def post_postproc_cudnn(self, *args, **kwargs):
         raise EasyBuildError("cuDNN-specific hook triggered for non-cuDNN easyconfig?!")
 
 
-def replace_non_distributable_files_with_symlinks(log, install_dir, package, allowlist):
+def replace_non_distributable_files_with_symlinks(log, install_dir, pkg_name, allowlist):
     """
     Replace files that cannot be distributed with symlinks into host_injections
     """
@@ -817,8 +817,8 @@ def replace_non_distributable_files_with_symlinks(log, install_dir, package, all
         "CUDA": False,
         "cuDNN": True,
     }
-    if not package in extension_based:
-        raise EasyBuildError("Don't know how to strip non-distributable files from package %s.", package)
+    if not pkg_name in extension_based:
+        raise EasyBuildError("Don't know how to strip non-distributable files from package %s.", pkg_name)
 
     # iterate over all files in the package installation directory
     for dir_path, _, files in os.walk(install_dir):
@@ -826,7 +826,7 @@ def replace_non_distributable_files_with_symlinks(log, install_dir, package, all
             full_path = os.path.join(dir_path, filename)
             # we only really care about real files, i.e. not symlinks
             if not os.path.islink(full_path):
-                check_by_extension = extension_based[package] and '.' in filename
+                check_by_extension = extension_based[pkg_name] and '.' in filename
                 if check_by_extension:
                     # if the allowlist only contains extensions, we have to
                     # determine that from filename. we assume the extension is
@@ -841,7 +841,7 @@ def replace_non_distributable_files_with_symlinks(log, install_dir, package, all
                 elif check_by_extension and extension in allowlist:
                     log.debug("%s is found in allowlist, so keeping it: %s", extension, full_path)
                 else:
-                    print_name = filename if extension_based[package] else basename
+                    print_name = filename if extension_based[pkg_name] else basename
                     log.debug("%s is not found in allowlist, so replacing it with symlink: %s",
                               print_name, full_path)
                     # the host_injections path is under a fixed repo/location for CUDA or cuDNN
