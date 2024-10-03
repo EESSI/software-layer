@@ -841,10 +841,7 @@ def replace_non_distributable_files_with_symlinks(log, install_dir, package, all
                 elif check_by_extension and extension in allowlist:
                     log.debug("%s is found in allowlist, so keeping it: %s", extension, full_path)
                 else:
-                    if extension_based[package]:
-                        print_name = filename
-                    else:
-                        print_name = basename
+                    print_name = filename if extension_based[package] else basename
                     log.debug("%s is not found in allowlist, so replacing it with symlink: %s",
                               print_name, full_path)
                     # the host_injections path is under a fixed repo/location for CUDA or cuDNN
