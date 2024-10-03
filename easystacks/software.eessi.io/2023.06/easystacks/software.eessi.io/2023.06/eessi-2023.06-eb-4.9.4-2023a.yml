@@ -2,6 +2,6 @@ easyconfigs:
   - ROOT-6.30.06-foss-2023a.eb:
       options:
         # see https://github.com/easybuilders/easybuild-easyconfigs/pull/21526
-        from-commit: 0707601ccd7dd497a419ed39b1b5527ddd0450f4
+        from-commit: 6cbfbd7d7a55dc7243f46d0beea510278f4718df
         # see https://github.com/easybuilders/easybuild-easyblocks/pull/3467
         include-easyblocks-from-commit: c3aebe1f133d064a228c5d6c282e898b83d74601
