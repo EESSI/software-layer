@@ -17,7 +17,7 @@ else
     exit 1
 fi
 
-VERSION="1.1.0"
+VERSION="1.2.0"
 
 # default log level: only emit warnings or errors
 LOG_LEVEL="WARN"
@@ -159,11 +159,22 @@ accelpath() {
     nvidia_smi=$(command -v nvidia-smi)
     if [[ $? -eq 0 ]]; then
         log "DEBUG" "accelpath: nvidia-smi command found @ ${nvidia_smi}"
-	gpu_info=$(nvidia-smi --query-gpu=gpu_name,count,driver_version,compute_cap --format=csv,noheader | head -1)
-	cuda_cc=$(echo $gpu_info | sed 's/, /,/g' | cut -f4 -d, | sed 's/\.//g')
-	echo "accel/nvidia/cc${cuda_cc}"
+        nvidia_smi_out=$(mktemp -p /tmp nvidia_smi_out.XXXXX)
+        nvidia-smi --query-gpu=gpu_name,count,driver_version,compute_cap --format=csv,noheader 2>&1 > $nvidia_smi_out
+        if [[ $? -eq 0 ]]; then
+            nvidia_smi_info=$(head -1 $nvidia_smi_out)
+            cuda_cc=$(echo $nvidia_smi_info | sed 's/, /,/g' | cut -f4 -d, | sed 's/\.//g')
+            log "DEBUG" "accelpath: CUDA compute capability '${cuda_cc}' derived from nvidia-smi output '${nvidia_smi_info}'"
+            res="accel/nvidia/cc${cuda_cc}"
+            log "DEBUG" "accelpath: result: ${res}"
+            echo $res
+            rm -f $nvidia_smi_out
+        else
+            log "ERROR" "accelpath: nvidia-smi command failed, see output in $nvidia_smi_out"
+        fi
     else
         log "DEBUG" "accelpath: nvidia-smi command not found"
+        exit 2
     fi
 }
 

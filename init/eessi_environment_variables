@@ -38,15 +38,29 @@ if [ -d $EESSI_PREFIX ]; then
           break
         fi
       done
-      export EESSI_ACCEL_PATH=$(${EESSI_INIT_DIR_PATH}/eessi_archdetect.sh accelpath)
-      if [ -z ${EESSI_ACCEL_PATH} ]; then
-          show_msg "archdetect could not find any accelerators"
-      else
-          EESSI_GPU_SOFTWARE_SUBDIR=${$EESSI_GPU_SOFTWARE_SUBDIR_OVERRIDE:-${EESSI_SOFTWARE_SUBDIR}}
-          EESSI_GPU_SOFTWARE_PATH=${EESSI_PREFIX}/software/${EESSI_OS_TYPE}/${EESSI_GPU_SOFTWARE_SUBDIR}
-          if [ -d ${EESSI_GPU_SOFTWARE_PATH}/${EESSI_ACCEL_PATH} ]; then
-              show_msg "archdetect found accelerator: ${EESSI_ACCEL_PATH}"
+      # to be able to grab exit code of archdetect trying to detect accelerators,
+      # we can not run it via $(...), so we have to redirect the output to a temporary file
+      tmpout=$(mktemp)
+      ${EESSI_INIT_DIR_PATH}/eessi_archdetect.sh accelpath 2>&1 > $tmpout
+      ec=$?
+      if [[ $ec -eq 0 ]]; then
+          export EESSI_ACCEL_SUBDIR=$(tail -1 $tmpout && rm -f $tmpout)
+          if [ -z ${EESSI_ACCEL_SUBDIR} ]; then
+              error "accelerator detection with archdetect worked, but no result was returned?!"
+          else
+              # allow specifying different parent directory for accel/* subdirectory via $EESSI_ACCEL_SOFTWARE_SUBDIR_OVERRIDE
+              EESSI_ACCEL_SOFTWARE_SUBDIR=${EESSI_ACCEL_SOFTWARE_SUBDIR_OVERRIDE:-$EESSI_SOFTWARE_SUBDIR}
+              # path to where accel/* subdirectory is located
+              EESSI_ACCEL_SOFTWARE_PATH=${EESSI_PREFIX}/software/${EESSI_OS_TYPE}/${EESSI_ACCEL_SOFTWARE_SUBDIR}
+              if [ -d $EESSI_ACCEL_SOFTWARE_PATH/${EESSI_ACCEL_SUBDIR} ]; then
+                  show_msg "archdetect found supported accelerator for CPU target ${EESSI_ACCEL_SOFTWARE_SUBDIR}: ${EESSI_ACCEL_SUBDIR}"
+              else
+                  show_msg "No matching path found in ${EESSI_ACCEL_SOFTWARE_SUBDIR} for accelerator detected by archdetect (${EESSI_ACCEL_SUBDIR})"
+              fi
           fi
+      else
+          show_msg "archdetect could not detect any accelerators"
+          rm -f $tmpout
       fi
     elif [ "$EESSI_USE_ARCHSPEC" == "1" ]; then
       # note: eessi_software_subdir_for_host.py will pick up value from $EESSI_SOFTWARE_SUBDIR_OVERRIDE if it's defined!
@@ -116,7 +130,7 @@ if [ -d $EESSI_PREFIX ]; then
             false
           fi
 
-          EESSI_MODULEPATH_ACCEL=${EESSI_GPU_SOFTWARE_PATH}/${EESSI_ACCEL_PATH}/${EESSI_MODULE_SUBDIR}
+          EESSI_MODULEPATH_ACCEL=${EESSI_ACCEL_SOFTWARE_PATH}/${EESSI_ACCEL_SUBDIR}/${EESSI_MODULE_SUBDIR}
           if [ -d ${EESSI_MODULEPATH_ACCEL} ]; then
              export EESSI_MODULEPATH_ACCEL=${EESSI_MODULEPATH_ACCEL}
               show_msg "Using ${EESSI_MODULEPATH_ACCEL} as additional directory (for accelerators) to be added to MODULEPATH."
