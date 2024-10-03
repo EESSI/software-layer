@@ -122,7 +122,10 @@ copy_files_by_list ${TOPDIR}/scripts ${INSTALL_PREFIX}/scripts "${script_files[@
 
 # Copy files for the scripts/gpu_support/nvidia directory
 nvidia_files=(
-    install_cuda_host_injections.sh link_nvidia_host_libraries.sh
+    eessi-2023.06-cuda-and-libraries.yml
+    install_cuda_and_libraries.sh
+    install_cuda_host_injections.sh
+    link_nvidia_host_libraries.sh
 )
 copy_files_by_list ${TOPDIR}/scripts/gpu_support/nvidia ${INSTALL_PREFIX}/scripts/gpu_support/nvidia "${nvidia_files[@]}"
 
