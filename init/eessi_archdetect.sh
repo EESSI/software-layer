@@ -178,7 +178,8 @@ accelpath() {
             echo $res
             rm -f $nvidia_smi_out
         else
-            log "ERROR" "accelpath: nvidia-smi command failed, see output in $nvidia_smi_out"
+            log "DEBUG" "accelpath: nvidia-smi command failed, see output in $nvidia_smi_out"
+            exit 3
         fi
     else
         log "DEBUG" "accelpath: nvidia-smi command not found"
