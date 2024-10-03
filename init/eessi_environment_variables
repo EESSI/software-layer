@@ -130,9 +130,8 @@ if [ -d $EESSI_PREFIX ]; then
             false
           fi
 
-          EESSI_MODULEPATH_ACCEL=${EESSI_ACCEL_SOFTWARE_PATH}/${EESSI_ACCEL_SUBDIR}/${EESSI_MODULE_SUBDIR}
-          if [ -d ${EESSI_MODULEPATH_ACCEL} ]; then
-             export EESSI_MODULEPATH_ACCEL=${EESSI_MODULEPATH_ACCEL}
+          if [ -d ${EESSI_ACCEL_SOFTWARE_PATH}/${EESSI_ACCEL_SUBDIR}/${EESSI_MODULE_SUBDIR} ]; then
+              export EESSI_MODULEPATH_ACCEL=${EESSI_ACCEL_SOFTWARE_PATH}/${EESSI_ACCEL_SUBDIR}/${EESSI_MODULE_SUBDIR}
               show_msg "Using ${EESSI_MODULEPATH_ACCEL} as additional directory (for accelerators) to be added to MODULEPATH."
           fi
 
