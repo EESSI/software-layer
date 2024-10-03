@@ -873,8 +873,8 @@ def replace_non_distributable_files_with_symlinks(log, install_dir, pkg_name, al
 
 def inject_gpu_property(ec):
     """
-    Add 'gpu' property EESSI<PACKAGE>VERSION envvars and drop dependencies to
-    build dependencies, via modluafooter easyconfig parameter
+    Add 'gpu' property and EESSI<PACKAGE>VERSION envvars via modluafooter
+    easyconfig parameter, and drop dependencies to build dependencies
     """
     ec_dict = ec.asdict()
     # Check if CUDA, cuDNN, you-name-it is in the dependencies, if so
