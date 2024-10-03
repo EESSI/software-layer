@@ -190,7 +190,9 @@ def parse_hook_casacore_disable_vectorize(ec, eprefix):
         ):
             cpu_target = get_eessi_envvar('EESSI_SOFTWARE_SUBDIR')
             if cpu_target == CPU_TARGET_NEOVERSE_V1:
-                if not hasattr(ec, 'toolchainopts'):
+                # Make sure the toolchainopts key exists, and the value is a dict,
+                # before we add the option to disable vectorization
+                if 'toolchainopts' not in ec or ec['toolchainopts'] is None:
                     ec['toolchainopts'] = {}
                 ec['toolchainopts']['vectorize'] = False
                 print_msg("Changed toochainopts for %s: %s", ec.name, ec['toolchainopts'])
@@ -301,19 +303,36 @@ def parse_hook_ucx_eprefix(ec, eprefix):
         raise EasyBuildError("UCX-specific hook triggered for non-UCX easyconfig?!")
 
 
-def parse_hook_lammps_remove_deps_for_CI_aarch64(ec, *args, **kwargs):
+def parse_hook_freeimage_aarch64(ec, *args, **kwargs):
     """
-    Remove x86_64 specific dependencies for the CI to pass on aarch64
+    Make sure to build with -fPIC on ARM to avoid
+    https://github.com/EESSI/software-layer/pull/736#issuecomment-2373261889
     """
-    if ec.name == 'LAMMPS' and ec.version in ('2Aug2023_update2',):
+    if ec.name == 'FreeImage' and ec.version in ('3.18.0',):
         if os.getenv('EESSI_CPU_FAMILY') == 'aarch64':
-            # ScaFaCoS and tbb are not compatible with aarch64/* CPU targets,
-            # so remove them as dependencies for LAMMPS (they're optional);
-            # see also https://github.com/easybuilders/easybuild-easyconfigs/pull/19164 +
-            # https://github.com/easybuilders/easybuild-easyconfigs/pull/19000;
-            # we need this hook because we check for missing installations for all CPU targets
-            # on an x86_64 VM in GitHub Actions (so condition based on ARCH in LAMMPS easyconfig is always true)
-            ec['dependencies'] = [dep for dep in ec['dependencies'] if dep[0] not in ('ScaFaCoS', 'tbb')]
+            # Make sure the toolchainopts key exists, and the value is a dict,
+            # before we add the option to enable PIC and disable PNG_ARM_NEON_OPT
+            if 'toolchainopts' not in ec or ec['toolchainopts'] is None:
+                ec['toolchainopts'] = {}
+            ec['toolchainopts']['pic'] = True
+            ec['toolchainopts']['extra_cflags'] = '-DPNG_ARM_NEON_OPT=0'
+            print_msg("Changed toolchainopts for %s: %s", ec.name, ec['toolchainopts']) 
+
+
+def parse_hook_lammps_remove_deps_for_aarch64(ec, *args, **kwargs):
+    """
+    Remove x86_64 specific dependencies for the CI and missing installations to pass on aarch64
+    """
+    if ec.name == 'LAMMPS':
+        if ec.version in ('2Aug2023_update2', '29Aug2024'):
+            if os.getenv('EESSI_CPU_FAMILY') == 'aarch64':
+                # ScaFaCoS and tbb are not compatible with aarch64/* CPU targets,
+                # so remove them as dependencies for LAMMPS (they're optional);
+                # see also https://github.com/easybuilders/easybuild-easyconfigs/pull/19164 +
+                # https://github.com/easybuilders/easybuild-easyconfigs/pull/19000;
+                # we need this hook because we check for missing installations for all CPU targets
+                # on an x86_64 VM in GitHub Actions (so condition based on ARCH in LAMMPS easyconfig is always true)
+                ec['dependencies'] = [dep for dep in ec['dependencies'] if dep[0] not in ('ScaFaCoS', 'tbb',)]
     else:
         raise EasyBuildError("LAMMPS-specific hook triggered for non-LAMMPS easyconfig?!")
 
@@ -537,7 +556,7 @@ def pre_configure_hook_LAMMPS_zen4(self, *args, **kwargs):
 
     cpu_target = get_eessi_envvar('EESSI_SOFTWARE_SUBDIR')
     if self.name == 'LAMMPS':
-        if self.version == '2Aug2023_update2':
+        if self.version in ('2Aug2023_update2', '29Aug2024'):
             if get_cpu_architecture() == X86_64:
                 if cpu_target == CPU_TARGET_ZEN4:
                     # There is no support for ZEN4 in LAMMPS yet so falling back to ZEN3
@@ -802,8 +821,9 @@ PARSE_HOOKS = {
     'casacore': parse_hook_casacore_disable_vectorize,
     'CGAL': parse_hook_cgal_toolchainopts_precise,
     'fontconfig': parse_hook_fontconfig_add_fonts,
+    'FreeImage': parse_hook_freeimage_aarch64,
     'grpcio': parse_hook_grpcio_zlib,
-    'LAMMPS': parse_hook_lammps_remove_deps_for_CI_aarch64,
+    'LAMMPS': parse_hook_lammps_remove_deps_for_aarch64,
     'CP2K': parse_hook_CP2K_remove_deps_for_aarch64,
     'OpenBLAS': parse_hook_openblas_relax_lapack_tests_num_errors,
     'pybind11': parse_hook_pybind11_replace_catch2,
