@@ -804,7 +804,19 @@ def replace_non_distributable_files_with_symlinks(log, install_dir, package, all
     """
     Replace files that cannot be distributed with symlinks into host_injections
     """
-    extension_based = { "CUDA": False, "cuDNN": True }
+    # Different packages use different ways to specify which files or file
+    # 'types' may be redistributed. For CUDA, the 'EULA.txt' lists full file
+    # names. For cuDNN, the 'LICENSE' lists file endings/suffixes (e.g., '.so')
+    # that can be redistributed.
+    # The map 'extension_based' defines which of these two ways are employed. If
+    # full file names are used it maps a package name (key) to False (value). If
+    # endings/suffixes are used, it maps a package name to True. Later we can
+    # easily use this data structure to employ the correct method for
+    # postprocessing an installation.
+    extension_based = {
+        "CUDA": False,
+        "cuDNN": True,
+    }
     if not package in extension_based:
         raise EasyBuildError("Don't know how to strip non-distributable files from package %s.", package)
 
