@@ -780,9 +780,11 @@ def post_postproc_cudnn(self, *args, **kwargs):
         # read cuDNN LICENSE, construct allowlist based on section "2. Distribution" that specifies list of files that can be shipped
         license_path = os.path.join(self.installdir, 'LICENSE')
         search_string = "2. Distribution. The following portions of the SDK are distributable under the Agreement:"
+        found_search_string = False
         with open(license_path) as infile:
             for line in infile:
                 if line.strip().startswith(search_string):
+                    found_search_string = True
                     # remove search string, split into words, remove trailing
                     # dots '.' and only retain words starting with a dot '.'
                     distributable = line[len(search_string):]
@@ -792,6 +794,11 @@ def post_postproc_cudnn(self, *args, **kwargs):
                         if word[0] == '.':
                             # rstrip is used to remove the '.' after '.dll'
                             allowlist.append(word.rstrip('.'))
+        if not found_search_string:
+            # search string wasn't found in LICENSE file
+            raise EasyBuildError("search string '%s' was not found in license file '%s';"
+                                 "hence installation may be replaced by symlinks only",
+                                 search_string, license_path)
 
         allowlist = sorted(set(allowlist))
         self.log.info("Allowlist for files in cuDNN installation that can be redistributed: " + ', '.join(allowlist))
