@@ -828,9 +828,13 @@ def replace_non_distributable_files_with_symlinks(log, install_dir, package, all
             if not os.path.islink(full_path):
                 # check if the current file name stub is part of the allowlist
                 basename =  filename.split('.')[0]
-                if extension_based[package]:
-                    if '.' in filename:
-                        extension = '.' + filename.split('.')[1]
+                if extension_based[package] and '.' in filename:
+                    # if the allowlist only contains extensions, we have to
+                    # determine that from filename. we assume the extension is
+                    # the second element when splitting the filename at dots
+                    # (e.g., for 'libcudnn_adv_infer.so.8.9.2' the extension
+                    # would be '.so')
+                    extension = '.' + filename.split('.')[1]
                 if basename in allowlist:
                     log.debug("%s is found in allowlist, so keeping it: %s", basename, full_path)
                 elif extension_based[package] and '.' in filename and extension in allowlist:
