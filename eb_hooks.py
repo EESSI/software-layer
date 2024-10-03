@@ -846,9 +846,9 @@ def replace_non_distributable_files_with_symlinks(log, install_dir, package, all
                               print_name, full_path)
                     # the host_injections path is under a fixed repo/location for CUDA or cuDNN
                     host_inj_path = re.sub(EESSI_INSTALLATION_REGEX, HOST_INJECTIONS_LOCATION, full_path)
-                    # CUDA and cuDNN itself don't care about compute capability so remove this duplication from
-                    # under host_injections (symlink to a single CUDA or cuDNN installation for all compute
-                    # capabilities)
+                    # CUDA and cu* libraries themselves don't care about compute capability so remove this
+                    # duplication from under host_injections (symlink to a single CUDA or cu* library
+                    # installation for all compute capabilities)
                     accel_subdir = os.getenv("EESSI_ACCELERATOR_TARGET")
                     if accel_subdir:
                         host_inj_path = host_inj_path.replace("/accel/%s" % accel_subdir, '')
