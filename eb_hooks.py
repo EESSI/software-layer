@@ -786,8 +786,11 @@ def post_postproc_cudnn(self, *args, **kwargs):
                     # remove search string, split into words, remove trailing
                     # dots '.' and only retain words starting with a dot '.'
                     distributable = line[len(search_string):]
+                    # distributable looks like ' the runtime files .so and .dll.'
+                    # note the '.' after '.dll'
                     for word in distributable.split():
                         if word[0] == '.':
+                            # rstrip is used to remove the '.' after '.dll'
                             allowlist.append(word.rstrip('.'))
 
         allowlist = sorted(set(allowlist))
