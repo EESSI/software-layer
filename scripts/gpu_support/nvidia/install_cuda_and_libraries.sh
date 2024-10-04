@@ -119,7 +119,7 @@ module avail CUDA
 
 # use install_path/modules/all as MODULEPATH
 SAVE_MODULEPATH=${MODULEPATH}
-MODULEPATH=${EASYBUILD_INSTALLPATH}/modules/all
+MODULEPATH=${EASYBUILD_INSTALLPATH}/.modules/all
 echo "set MODULEPATH=${MODULEPATH}"
 
 # show EasyBuild configuration
@@ -150,7 +150,7 @@ fi
 
 # determine the number of packages to be installed (assume 5 GB + num_packages *
 # 3GB space needed)
-number_of_packages=$(cat ${eb_dry_run_short_out} | grep "^ \* \[[xR]\]" | sed -e 's/^.*module: //' | sort -u | wc -l)
+number_of_packages=$(cat ${eb_dry_run_short_out} | grep "^ \* \[[ ]\]" | sed -e 's/^.*module: //' | sort -u | wc -l)
 echo "number of packages to be (re-)installed: '${number_of_packages}'"
 base_storage_space=$((5000000 + ${number_of_packages} * 3000000))
 
@@ -203,7 +203,7 @@ fi
 touch "$tmpdir"/none.py
 eb --prefix="$tmpdir" \
    --rebuild \
-   --installpath-modules=${tmpdir}/modules \
+   --installpath-modules=${EASYBUILD_INSTALLPATH}/.modules \
    "${accept_eula_opt}" \
    --hooks="$tmpdir"/none.py \
    --easystack ${EASYSTACK_FILE}
