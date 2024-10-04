@@ -33,29 +33,32 @@ def get_tests_for_software(software_name, mappings):
 
     return []
 
-def main(yaml_file, module_file, debug):
+def main(yaml_file, module_file, debug, defaults_only):
     """Main function to process software names and their tests."""
     mappings = load_mappings(yaml_file)
     if debug:
         print(f"Loaded mappings from '{yaml_file}'")
 
-    software_names = read_software_names(module_file)
-    if debug:
-        print(f"Read software names from '{module_file}'")
+    if not defaults_only:
+        software_names = read_software_names(module_file)
+        if debug:
+            print(f"Read software names from '{module_file}'")
 
     tests_to_run = []
     arg_string = ""
-    # For each module name, get the relevant set of tests
-    for software_name in software_names:
-        additional_tests = get_tests_for_software(software_name, mappings)
-        for test in additional_tests:
-            if test not in tests_to_run:
-                tests_to_run.append(test)
-        
-        if additional_tests and debug:
-            print(f"Software: {software_name} -> Tests: {additional_tests}")
-        elif debug:
-            print(f"Software: {software_name} -> No tests found")
+
+    if not defaults_only:
+        # For each module name, get the relevant set of tests
+        for software_name in software_names:
+            additional_tests = get_tests_for_software(software_name, mappings)
+            for test in additional_tests:
+                if test not in tests_to_run:
+                    tests_to_run.append(test)
+            
+            if additional_tests and debug:
+                print(f"Software: {software_name} -> Tests: {additional_tests}")
+            elif debug:
+                print(f"Software: {software_name} -> No tests found")
 
     # Always add the default set of tests, if default_tests is specified
     if 'default_tests' in mappings:
@@ -83,8 +86,10 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Map software names to their tests based on a YAML configuration.")
     parser.add_argument('--mapping-file', type=str, help='Path to the YAML file containing the test mappings.')
     parser.add_argument('--module-list', type=str, help='Path to the file containing the list of software names.')
-    parser.add_argument('--debug', action='store_true', help='Enable debug output.')
+    defaults_help = "Don't consider the module-list file, only return the default tests from the mapping file"
+    parser.add_argument('--defaults-only', action='store_true', default=False, help=defaults_help)
+    parser.add_argument('--debug', action='store_true', default=False, help='Enable debug output.')
     
     args = parser.parse_args()
     
-    main(args.mapping_file, args.module_list, args.debug)
+    main(args.mapping_file, args.module_list, args.debug, args.defaults_only)

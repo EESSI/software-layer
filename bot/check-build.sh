@@ -457,7 +457,13 @@ if [[ ! -z ${TARBALL} ]]; then
     repo_version=$(cfg_get_value "repository" "repo_version")
     os_type=$(cfg_get_value "architecture" "os_type")
     software_subdir=$(cfg_get_value "architecture" "software_subdir")
+    accelerator=$(cfg_get_value "architecture" "accelerator")
     prefix="${repo_version}/software/${os_type}/${software_subdir}"
+
+    # if we build for an accelerator, the prefix is different
+    if [[ ! -z ${accelerator} ]]; then
+      prefix="${prefix}/accel/${accelerator}"
+    fi
 
     # extract directories/entries from tarball content
     modules_entries=$(grep "${prefix}/modules" ${tmpfile})

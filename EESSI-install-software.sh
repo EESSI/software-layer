@@ -207,7 +207,19 @@ echo ">> Setting up \$MODULEPATH..."
 module --force purge
 # ignore current $MODULEPATH entirely
 module unuse $MODULEPATH
+
+# if an accelerator target is specified, we need to make sure that the CPU-only modules are also still available
+if [ ! -z ${EESSI_ACCELERATOR_TARGET} ]; then
+    CPU_ONLY_MODULES_PATH=$(echo $EASYBUILD_INSTALLPATH | sed "s@/accel/${EESSI_ACCELERATOR_TARGET}@@g")/modules/all
+    if [ -d ${CPU_ONLY_MODULES_PATH} ]; then
+        module use ${CPU_ONLY_MODULES_PATH}
+    else
+        fatal_error "Derived path to CPU-only modules does not exist: ${CPU_ONLY_MODULES_PATH}"
+    fi
+fi
+
 module use $EASYBUILD_INSTALLPATH/modules/all
+
 if [[ -z ${MODULEPATH} ]]; then
     fatal_error "Failed to set up \$MODULEPATH?!"
 else
@@ -296,8 +308,6 @@ else
 
     done
 fi
-
-### add packages here
 
 echo ">> Creating/updating Lmod RC file..."
 export LMOD_CONFIG_DIR="${EASYBUILD_INSTALLPATH}/.lmod"
