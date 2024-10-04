@@ -27,7 +27,7 @@ show_help() {
     echo "  --accept-cuda-eula               You _must_ accept the CUDA EULA to install"
     echo "                                   CUDA, see the EULA at"
     echo "                                   https://docs.nvidia.com/cuda/eula/index.html"
-    echo "  -e, --easystack EASYSTACKFILE    Path to easystack file that defines which"
+    echo "  -e, --easystack EASYSTACK_FILE   Path to easystack file that defines which"
     echo "                                   packages shall be installed"
     echo "  -t, --temp-dir /path/to/tmpdir   Specify a location to use for temporary"
     echo "                                   storage during the installation of CUDA"
@@ -37,7 +37,7 @@ show_help() {
 
 # Initialize variables
 eula_accepted=0
-EASYSTACKFILE=
+EASYSTACK_FILE=
 TEMP_DIR=
 
 # Parse command-line options
@@ -53,7 +53,7 @@ while [[ $# -gt 0 ]]; do
             ;;
         -e|--easystack)
             if [ -n "$2" ]; then
-                EASYSTACKFILE="$2"
+                EASYSTACK_FILE="$2"
                 shift 2
             else
                 echo "Error: Argument required for $1"
@@ -78,7 +78,7 @@ while [[ $# -gt 0 ]]; do
     esac
 done
 
-if [[ -z "${EASYSTACKFILE}" ]]; then
+if [[ -z "${EASYSTACK_FILE}" ]]; then
     fatal_error "Need the name/path to an easystack file. See command line options\n"
 fi
 
@@ -102,21 +102,24 @@ fi
 echo "Created temporary directory '${tmpdir}'"
 
 # workaround for EasyBuild not being found when loading "extend" module
-module load EasyBuild/4.9.4
+# module load EasyBuild/4.9.4
 
 # load EESSI-extend/2023.06-easybuild module && verify that it is loaded
-EESSI_EXTEND_MODULE="EESSI-extend/2023.06-easybuild"
+EESSI_EXTEND_MODULE="EESSI-extend/${EESSI_VERSION}-easybuild"
 module load ${EESSI_EXTEND_MODULE}
 ret=$?
 if [ "${ret}" -ne 0 ]; then
     fatal_error "An error occured while trying to load ${EESSI_EXTEND_MODULE}\n"
 fi
 
-# do a 'eb --dry-run-short' with the EASYSTACKFILE and determine list of packages
+# show EasyBuild configuration
+eb --show-config
+
+# do a 'eb --dry-run-short' with the EASYSTACK_FILE and determine list of packages
 # to be installed
-echo ">> Determining if packages specified in ${EASYSTACKFILE} are missing under ${EESSI_SITE_INSTALL}"
+echo ">> Determining if packages specified in ${EASYSTACK_FILE} are missing under ${EESSI_SITE_INSTALL}"
 eb_dry_run_short_out=${tmpdir}/eb_dry_run_short.out
-eb --dry-run-short --rebuild --easystack ${EASYSTACKFILE} 2>&1 | tee ${eb_dry_run_short_out}
+eb --dry-run-short --rebuild --easystack ${EASYSTACK_FILE} 2>&1 | tee ${eb_dry_run_short_out}
 ret=$?
 
 # Check if CUDA shall be installed
@@ -136,7 +139,7 @@ fi
 
 # determine the number of packages to be installed (assume 5 GB + num_packages *
 # 3GB space needed)
-number_of_packages=$(cat ${eb_dry_run_short_out} | grep "^ \* \[[xR]\]" | sed -e 's/^.*module: //' | uniq | wc -l)
+number_of_packages=$(cat ${eb_dry_run_short_out} | grep "^ \* \[[xR]\]" | sed -e 's/^.*module: //' | sort -u | wc -l)
 echo "number of packages to be (re-)installed: '${number_of_packages}'"
 base_storage_space=$((5000000 + ${number_of_packages} * 3000000))
 
@@ -176,28 +179,28 @@ fi
 #        and/or other installation in the `.../versions/...` prefix
 #  - installpath-modules: We install the module in our `tmpdir` since we do not need the modulefile,
 #        we only care about providing the targets for the symlinks.
-#  - ${cuda_arg}: We only set the --accept-eula-for=CUDA option if CUDA will be installed and if
+#  - ${accept_eula_opt}: We only set the --accept-eula-for=CUDA option if CUDA will be installed and if
 #        this script was called with the argument --accept-cuda-eula.
 #  - hooks: We don't want hooks used in this install, we need vanilla
 #        installations of CUDA and/or other libraries
 #  - easystack: Path to easystack file that defines which packages shall be
 #        installed
-cuda_arg=
+accept_eula_opt=
 if [[ ${eula_accepted} -eq 1 ]]; then
-    cuda_arg="--accept-eula-for=CUDA"
+    accept_eula_opt="--accept-eula-for=CUDA"
 fi
 touch "$tmpdir"/none.py
 eb --prefix="$tmpdir" \
    --rebuild \
-   --installpath-modules=${tmpdir} \
-   "${cuda_arg}" \
+   --installpath-modules=${tmpdir}/modules \
+   "${accept_eula_opt}" \
    --hooks="$tmpdir"/none.py \
-   --easystack ${EASYSTACKFILE}
+   --easystack ${EASYSTACK_FILE}
 ret=$?
 if [ $ret -ne 0 ]; then
   eb_last_log=$(unset EB_VERBOSE; eb --last-log)
   cp -a ${eb_last_log} .
-  fatal_error "some installation failed, please check EasyBuild logs $(basename ${eb_last_log})..."
+  fatal_error "some installation failed, please check EasyBuild logs ${PWD}/$(basename ${eb_last_log})..."
 else
   echo_green "all installations at ${EESSI_SITE_INSTALL}/software/... succeeded!"
 fi
