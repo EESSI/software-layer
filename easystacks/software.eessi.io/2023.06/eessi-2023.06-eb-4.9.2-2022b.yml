@@ -44,3 +44,9 @@ easyconfigs:
   - dask-2023.7.1-foss-2022b.eb
   - netcdf4-python-1.6.3-foss-2022b.eb
   - Ruby-3.2.2-GCCcore-12.2.0.eb
+  - ROOT-6.26.10-foss-2022b.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/21526
+        from-commit: 6cbfbd7d7a55dc7243f46d0beea510278f4718df
+        # see https://github.com/easybuilders/easybuild-easyblocks/pull/3467
+        include-easyblocks-from-commit: c3aebe1f133d064a228c5d6c282e898b83d74601
