@@ -249,10 +249,12 @@ else
     export skip_cuda_install=True
 fi
 
+temp_install_storage=${TMPDIR}/temp_install_storage
+mkdir -p ${temp_install_storage}
 if [ -z "${skip_cuda_install}" ] || [ ! "${skip_cuda_install}" ]; then
     ${EESSI_PREFIX}/scripts/gpu_support/nvidia/install_cuda_and_libraries.sh \
         -e ${EESSI_PREFIX}/scripts/gpu_support/nvidia/eessi-2023.06-cuda-and-libraries.yml \
-        -t /tmp/temp \
+        -t ${temp_install_storage} \
         --accept-cuda-eula
 else
     echo "Skipping installation of CUDA SDK and cu* libraries in host_injections, since the --skip-cuda-install flag was passed OR no EasyBuild module was found"
