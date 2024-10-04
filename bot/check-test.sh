@@ -77,7 +77,8 @@ if [[ ! -z ${grep_reframe_failed} ]]; then
 else
     # Grep the entire output of ReFrame, so that we can report it in the foldable section of the test report
     GP_success_full='(?s)\[----------\] start processing checks.*?\[==========\] Finished on [a-zA-Z0-9 ]*'
-    grep_reframe_success_full=$(grep -v "^>> searching for " ${job_dir}/${job_out} | grep -Pzo "${GP_success_full} | tr -d '\0'")
+    # tr '\0' '\n' places back the newline characters that the -z option of grep turned into null characters
+    grep_reframe_success_full=$(grep -v "^>> searching for " ${job_dir}/${job_out} | grep -Pzo "${GP_success_full}" | tr '\0' '\n')
     grep_reframe_result=${grep_reframe_success_full}
     echo "grep_reframe_success_full: ${grep_reframe_success_full}"
 fi
