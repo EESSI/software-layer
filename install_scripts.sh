@@ -122,12 +122,22 @@ copy_files_by_list ${TOPDIR}/scripts ${INSTALL_PREFIX}/scripts "${script_files[@
 
 # Copy files for the scripts/gpu_support/nvidia directory
 nvidia_files=(
-    eessi-2023.06-cuda-and-libraries.yml
     install_cuda_and_libraries.sh
     install_cuda_host_injections.sh
     link_nvidia_host_libraries.sh
 )
 copy_files_by_list ${TOPDIR}/scripts/gpu_support/nvidia ${INSTALL_PREFIX}/scripts/gpu_support/nvidia "${nvidia_files[@]}"
+
+# special treatment for the easystack file(s) that lists CUDA and cu* libraries
+# To be picked up by a build job they have to be stored under
+# easystacks/software.eessi.io/2023.06/accel/nvidia/ on GitHub.
+# To avoid keeping that file and the one that we distribute via CernVM-FS so
+# users/sites can install the full CUDA SDK and cu* libraries under
+# 'host_injections' we copy the above file to the right location under /cvmfs.
+nvidia_host_injections_files=(
+    eessi-2023.06-eb-4.9.4-2023a-CUDA.yml
+)
+copy_files_by_list ${TOPDIR}/easystacks/software.eessi.io/2023.06/accel/nvidia ${INSTALL_PREFIX}/scripts/gpu_support/nvidia "${nvidia_host_injections_files[@]}"
 
 # Copy over EasyBuild hooks file used for installations
 hook_files=(
