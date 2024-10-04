@@ -101,8 +101,8 @@ else
 fi
 echo "Created temporary directory '${tmpdir}'"
 
-# workaround for EasyBuild not being found when loading "extend" module
-# module load EasyBuild/4.9.4
+echo "List available *CUDA* modules before loading EESSI-extend/${EESSI_VERSION}-easybuild"
+module avail CUDA
 
 # load EESSI-extend/2023.06-easybuild module && verify that it is loaded
 EESSI_EXTEND_MODULE="EESSI-extend/${EESSI_VERSION}-easybuild"
@@ -112,7 +112,11 @@ if [ "${ret}" -ne 0 ]; then
     fatal_error "An error occured while trying to load ${EESSI_EXTEND_MODULE}\n"
 fi
 
+echo "List available *CUDA* modules after loading EESSI-extend/${EESSI_VERSION}-easybuild"
+module avail CUDA
+
 # show EasyBuild configuration
+echo "Show EasyBuild configuration"
 eb --show-config
 
 # do a 'eb --dry-run-short' with the EASYSTACK_FILE and determine list of packages
