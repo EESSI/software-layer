@@ -101,6 +101,7 @@ else
 fi
 echo "Created temporary directory '${tmpdir}'"
 
+echo "MODULEPATH=${MODULEPATH}"
 echo "List available *CUDA* modules before loading EESSI-extend/${EESSI_VERSION}-easybuild"
 module avail CUDA
 
@@ -112,8 +113,14 @@ if [ "${ret}" -ne 0 ]; then
     fatal_error "An error occured while trying to load ${EESSI_EXTEND_MODULE}\n"
 fi
 
+echo "MODULEPATH=${MODULEPATH}"
 echo "List available *CUDA* modules after loading EESSI-extend/${EESSI_VERSION}-easybuild"
 module avail CUDA
+
+# use install_path/modules/all as MODULEPATH
+SAVE_MODULEPATH=${MODULEPATH}
+MODULEPATH=${EASYBUILD_INSTALLPATH}/modules/all
+echo "set MODULEPATH=${MODULEPATH}"
 
 # show EasyBuild configuration
 echo "Show EasyBuild configuration"
