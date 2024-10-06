@@ -38,12 +38,27 @@ if [ -d $EESSI_PREFIX ]; then
           break
         fi
       done
+
+      # we need to make sure that errexit shell option (set -e) is not enabled,
+      # since archdetect will produce non-zero exit code if no accelerator was found
+      if [[ "$-" =~ e ]]; then
+        errexit_shell_option_set='yes'
+        set +e
+      else
+        errexit_shell_option_set='no'
+      fi
+
       # to be able to grab exit code of archdetect trying to detect accelerators,
       # we can not run it via $(...), so we have to redirect the output to a temporary file
       tmpout=$(mktemp)
       ${EESSI_INIT_DIR_PATH}/eessi_archdetect.sh accelpath 2>&1 > $tmpout
-      ec=$?
-      if [[ $ec -eq 0 ]]; then
+      accelpath_exit_code=$?
+
+      if [[ "$errexit_shell_option_set" == "yes" ]]; then
+        set -e
+      fi
+
+      if [[ $accelpath_exit_code -eq 0 ]]; then
           export EESSI_ACCEL_SUBDIR=$(tail -1 $tmpout && rm -f $tmpout)
           if [ -z ${EESSI_ACCEL_SUBDIR} ]; then
               error "accelerator detection with archdetect worked, but no result was returned?!"

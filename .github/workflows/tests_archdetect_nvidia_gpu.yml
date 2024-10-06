@@ -52,14 +52,6 @@ jobs:
 
               echo "Test for '${{matrix.fake_nvidia_smi_script}}' PASSED: '$out'"
 
-              # by default the 'errexit' option is enabled (set -e),
-              # which causes trouble when 'eessi_archdetect.sh accelpath'
-              # fails to detect an accelerator and produces a non-zero exit code,
-              # so we have to unset it using 'set +e'
-              echo "set flags: $-"
-              set +e
-              echo "set flags after unsetting errexit option: $-"
-
               # run full EESSI init script, which pick up on the accelerator (if available)
               echo
               . init/bash 2>&1 | tee init.out
@@ -95,7 +87,7 @@ jobs:
               else
                   echo ">>> checking for 'accel/nvidia/cc80' in init output..."
                   grep "archdetect found supported accelerator for CPU target x86_64/amd/zen2: accel/nvidia/cc80" init.out || (echo "FAILED 2" && exit 1)
-                  grep "Prepending /cvmfs/software.eessi.io/versions/2023.06/software/linux x86_64/amd/zen2/accel/nvidia/cc80/modules/all to \$MODULEPATH" init.out || (echo "FAILED 3" && exit 1)
+                  grep "Prepending /cvmfs/software.eessi.io/versions/2023.06/software/linux/x86_64/amd/zen2/accel/nvidia/cc80/modules/all to \$MODULEPATH" init.out || (echo "FAILED 3" && exit 1)
               fi
 
               echo ">>> checking last line of init output..."
