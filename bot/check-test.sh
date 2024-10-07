@@ -77,13 +77,15 @@ if [[ ! -z ${grep_reframe_failed} ]]; then
 else
     # Grep the entire output of ReFrame, so that we can report it in the foldable section of the test report
     GP_success_full='(?s)\[----------\] start processing checks.*?\[==========\] Finished on [a-zA-Z0-9 ]*'
-    # tr '\0' '\n' places back the newline characters that the -z option of grep turned into null characters
+    # Replace null character with <br/>
+    # Replace new line characters with <br/>
+    # Replace % with \%. Use \\% to interpret \ as character, instead of escape character
     grep_reframe_success_full=$( \
         grep -v "^>> searching for " ${job_dir}/${job_out} | \
         grep -Pzo "${GP_success_full}" | \
-        sed 's/\x00/<br\/>/g' |  # Replace null character with <br/>
-        sed ':a;N;$!ba;s/\n/<br\/>/g' |  # Replace new line characters with <br/>
-        sed 's/%/\\%/g' \  # Replace % with \%. Use \\% to interpret \ as character, instead of escape character
+        sed 's/\x00/<br\/>/g' |
+        sed ':a;N;$!ba;s/\n/<br\/>/g' |
+        sed 's/\%/\\%/g' \
     )
     grep_reframe_result=${grep_reframe_success_full}
     echo "grep_reframe_success_full: ${grep_reframe_success_full}"
