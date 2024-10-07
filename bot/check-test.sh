@@ -81,9 +81,9 @@ else
     grep_reframe_success_full=$( \
         grep -v "^>> searching for " ${job_dir}/${job_out} | \
         grep -Pzo "${GP_success_full}" | \
-        sed 's/\x00/<br\/>/g' | 
-        sed ':a;N;$!ba;s/\n/<br\/>/g' |
-        sed 's/%/\%/g' \
+        sed 's/\x00/<br\/>/g' |  # Replace null character with <br/>
+        sed ':a;N;$!ba;s/\n/<br\/>/g' |  # Replace new line characters with <br/>
+        sed 's/%/\\%/g' \  # Replace % with \%. Use \\% to interpret \ as character, instead of escape character
     )
     grep_reframe_result=${grep_reframe_success_full}
     echo "grep_reframe_success_full: ${grep_reframe_success_full}"
