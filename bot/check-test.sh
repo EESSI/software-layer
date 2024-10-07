@@ -79,13 +79,13 @@ else
     GP_success_full='(?s)\[----------\] start processing checks.*?\[==========\] Finished on [a-zA-Z0-9 ]*'
     # Replace null character with <br/>
     # Replace new line characters with <br/>
-    # Replace % with \%. Use \\% to interpret \ as character, instead of escape character
+    # Replace % with %%. Use \%\% to interpret both %% as (non-special) characters
     grep_reframe_success_full=$( \
         grep -v "^>> searching for " ${job_dir}/${job_out} | \
         grep -Pzo "${GP_success_full}" | \
         sed 's/\x00/<br\/>/g' |
         sed ':a;N;$!ba;s/\n/<br\/>/g' |
-        sed 's/\%/\\%/g' \
+        sed 's/\%/\%\%/g' \
     )
     grep_reframe_result=${grep_reframe_success_full}
     echo "grep_reframe_success_full: ${grep_reframe_success_full}"
