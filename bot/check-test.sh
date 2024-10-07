@@ -82,7 +82,8 @@ else
         grep -v "^>> searching for " ${job_dir}/${job_out} | \
         grep -Pzo "${GP_success_full}" | \
         sed 's/\x00/<br\/>/g' | 
-        sed ':a;N;$!ba;s/\n/<br\/>/g' \
+        sed ':a;N;$!ba;s/\n/<br\/>/g' |
+        sed 's/%/\%/g \
     )
     grep_reframe_result=${grep_reframe_success_full}
     echo "grep_reframe_success_full: ${grep_reframe_success_full}"
