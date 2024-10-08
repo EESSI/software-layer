@@ -77,16 +77,25 @@ if [[ ! -z ${grep_reframe_failed} ]]; then
 else
     # Grep the entire output of ReFrame, so that we can report it in the foldable section of the test report
     GP_success_full='(?s)\[----------\] start processing checks.*?\[==========\] Finished on [a-zA-Z0-9 ]*'
-    # Replace null character with <br/>
-    # Replace new line characters with <br/>
-    # Replace % with %%. Use \%\% to interpret both %% as (non-special) characters
+    # Grab the full ReFrame report, than cut the irrelevant parts
+    # Note that the character limit for messages in github is around 65k, so cutting is important
     grep_reframe_success_full=$( \
         grep -v "^>> searching for " ${job_dir}/${job_out} | \
-        grep -Pzo "${GP_success_full}" | \
-        sed 's/\x00/<br\/>/g' |
-        sed ':a;N;$!ba;s/\n/<br\/>/g' |
-        sed 's/\%/\%\%/g' \
+        grep -Pzo "${GP_success_full}" | \  # Use -z
+        sed 's/\x00/\n/g' | \  # Replace null character with newline, to undo the -z option
+        grep -v -P '\[\s*RUN\s*]' | \  # Remove the [ RUN     ] lines from reframe, they are not very informative
+        grep -v '\[-*\]' | \  # Remove the line '[----------] all spawned checks have finished'
+        grep -v '\[=*\]' | \  # Remove the line '[==========] Finished on Mon Oct  7 21'
+        grep -v '^$' | \  # Remove blank line(s) from the report
+        sed ':a;N;$!ba;s/\n/<br\/>/g' | \  # Replace all newline characters with <br/>
+        sed 's/\%/\%\%/g' \  # Replace % with %%. Use \%\% to interpret both %% as (non-special) characters
     )
+    # TODO (optional): we could impose a character limit here, and truncate if too long
+    # (though we should do that before inserting the <br/> statements).
+    # If we do, we should probably re-append the final summary, e.g.
+    # [  PASSED  ] Ran 10/10 test case(s) from 10 check(s) (0 failure(s), 0 skipped, 0 aborted)
+    # so that that is always displayed
+    # However, that's not implemented yet - let's see if this ever even becomes an issue
     grep_reframe_result=${grep_reframe_success_full}
     echo "grep_reframe_success_full: ${grep_reframe_success_full}"
 fi
