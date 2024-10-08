@@ -87,6 +87,7 @@ else
         grep -v '\[-*\]' | \  # Remove the line '[----------] all spawned checks have finished'
         grep -v '\[=*\]' | \  # Remove the line '[==========] Finished on Mon Oct  7 21'
         grep -v '^$' | \  # Remove blank line(s) from the report
+        sed 's/\x1B\[[0-9;]*m//g' | \  # Strip color coding characters
         sed ':a;N;$!ba;s/\n/<br\/>/g' | \  # Replace all newline characters with <br/>
         sed 's/\%/\%\%/g' \  # Replace % with %%. Use \%\% to interpret both %% as (non-special) characters
     )
