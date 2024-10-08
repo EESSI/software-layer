@@ -81,15 +81,24 @@ else
     # Note that the character limit for messages in github is around 65k, so cutting is important
     grep_reframe_success_full=$( \
         grep -v "^>> searching for " ${job_dir}/${job_out} | \
-        grep -Pzo "${GP_success_full}" | \  # Use -z
-        sed 's/\x00/\n/g' | \  # Replace null character with newline, to undo the -z option
-        grep -v -P '\[\s*RUN\s*]' | \  # Remove the [ RUN     ] lines from reframe, they are not very informative
-        grep -v '\[-*\]' | \  # Remove the line '[----------] all spawned checks have finished'
-        grep -v '\[=*\]' | \  # Remove the line '[==========] Finished on Mon Oct  7 21'
-        grep -v '^$' | \  # Remove blank line(s) from the report
-        sed 's/\x1B\[[0-9;]*m//g' | \  # Strip color coding characters
-        sed ':a;N;$!ba;s/\n/<br\/>/g' | \  # Replace all newline characters with <br/>
-        sed 's/\%/\%\%/g' \  # Replace % with %%. Use \%\% to interpret both %% as (non-special) characters
+        # Use -z
+        grep -Pzo "${GP_success_full}" | \
+        # Replace null character with newline, to undo the -z option
+        sed 's/\x00/\n/g' | \
+        # Remove the [ RUN     ] lines from reframe, they are not very informative
+        grep -v -P '\[\s*RUN\s*]' | \
+        # Remove the line '[----------] all spawned checks have finished'
+        grep -v '\[-*\]' | \
+        # Remove the line '[==========] Finished on Mon Oct  7 21'
+        grep -v '\[=*\]' | \
+        # Remove blank line(s) from the report
+        grep -v '^$' | \
+        # Strip color coding characters
+        sed 's/\x1B\[[0-9;]*m//g' | \
+        # Replace all newline characters with <br/>
+        sed ':a;N;$!ba;s/\n/<br\/>/g' | \
+        # Replace % with %%. Use \%\% to interpret both %% as (non-special) characters
+        sed 's/\%/\%\%/g' \
     )
     # TODO (optional): we could impose a character limit here, and truncate if too long
     # (though we should do that before inserting the <br/> statements).
