@@ -83,15 +83,15 @@ if [ -d $EESSI_PREFIX ]; then
         elif [ -d $EESSI_SOFTWARE_PATH ]; then
           EESSI_SITE_SOFTWARE_PATH=${EESSI_SOFTWARE_PATH/versions/host_injections}
           show_msg "Using ${EESSI_SITE_SOFTWARE_PATH} as the site extension directory for installations."
+          # Allow for use of alternative module tree shipped with EESSI
+          if [ -z ${EESSI_MODULE_SUBDIR+x} ]; then
+            # EESSI_MODULE_SUBDIR not set
+            EESSI_MODULE_SUBDIR="modules/all"
+          fi
           # Allow for the use of a custom MNS
           if [ -z ${EESSI_CUSTOM_MODULEPATH+x} ]; then
             # EESSI_CUSTOM_MODULEPATH not set so we use our defaults
 
-            # Allow for use of alternative module tree shipped with EESSI
-            if [ -z ${EESSI_MODULE_SUBDIR+x} ]; then
-              # EESSI_MODULE_SUBDIR not set
-              EESSI_MODULE_SUBDIR="modules/all"
-            fi
             EESSI_MODULEPATH=$EESSI_SOFTWARE_PATH/$EESSI_MODULE_SUBDIR
           else
             show_msg "Using defined environment variable \$EESSI_CUSTOM_MODULEPATH to set EESSI_MODULEPATH."
@@ -101,7 +101,7 @@ if [ -d $EESSI_PREFIX ]; then
           if [ -d $EESSI_MODULEPATH ]; then
             export EESSI_MODULEPATH=$EESSI_MODULEPATH
             show_msg "Using ${EESSI_MODULEPATH} as the directory to be added to MODULEPATH."
-            export EESSI_SITE_MODULEPATH=${EESSI_MODULEPATH/versions/host_injections}
+            export EESSI_SITE_MODULEPATH=$EESSI_SITE_SOFTWARE_PATH/$EESSI_MODULE_SUBDIR
             show_msg "Using ${EESSI_SITE_MODULEPATH} as the site extension directory to be added to MODULEPATH."
           else
             error "EESSI module path at $EESSI_MODULEPATH not found!"
