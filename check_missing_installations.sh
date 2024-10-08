@@ -27,7 +27,7 @@ LOCAL_TMPDIR=$(mktemp -d)
 
 # Clone the develop branch of EasyBuild and use that to search for easyconfigs
 
-if [[ -z ${EASYBUILD_ROBOT_PATHS} ]]
+if [[ -z ${EASYBUILD_ROBOT_PATHS} ]]; then
     git clone -b develop https://github.com/easybuilders/easybuild-easyconfigs.git $LOCAL_TMPDIR/easyconfigs
     export EASYBUILD_ROBOT_PATHS=$LOCAL_TMPDIR/easyconfigs/easybuild/easyconfigs
 fi
