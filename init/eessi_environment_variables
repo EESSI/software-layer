@@ -82,7 +82,7 @@ if [ -d $EESSI_PREFIX ]; then
           show_msg "Only setting up basic environment, so we're done"
         elif [ -d $EESSI_SOFTWARE_PATH ]; then
           EESSI_SITE_SOFTWARE_PATH=${EESSI_SOFTWARE_PATH/versions/host_injections}
-          show_msg "Using ${EESSI_SITE_INSTALLPATH} as the site extension directory for installations."
+          show_msg "Using ${EESSI_SITE_SOFTWARE_PATH} as the site extension directory for installations."
           # Allow for the use of a custom MNS
           if [ -z ${EESSI_CUSTOM_MODULEPATH+x} ]; then
             # EESSI_CUSTOM_MODULEPATH not set so we use our defaults
