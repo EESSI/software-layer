@@ -157,7 +157,7 @@ if [[ $? -eq 0 ]]; then
     nvidia-smi --query-gpu=gpu_name,count,driver_version,compute_cap --format=csv,noheader 2>&1 > $nvidia_smi_out
     if [[ $? -eq 0 ]]; then
         nvidia_smi_info=$(head -1 $nvidia_smi_out)
-        host_cuda_version=$(echo $nvidia_smi_info | sed 's/, /,/g' | cut -f4 -d, | sed 's/\.//g')
+        host_cuda_version=$(echo $nvidia_smi_info | sed 's/, /,/g' | cut -f4 -d,)
         host_driver_version=$(echo $nvidia_smi_info | sed 's/, /,/g' | cut -f3 -d,)
         echo_green "Found host CUDA version ${host_cuda_version}"
         echo_green "Found NVIDIA GPU driver version ${host_driver_version}"
