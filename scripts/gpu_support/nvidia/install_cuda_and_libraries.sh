@@ -199,21 +199,25 @@ for EASYSTACK_FILE in ${TOPDIR}/easystacks/eessi-*.yml; do
     #        installed
     accept_eula_opt=
     if [[ ${cuda_eula_accepted} -eq 1 ]]; then
-        accept_eula_opt="--accept-eula-for=CUDA"
+        accept_eula_opt="CUDA"
     fi
     if [[ ${cudnn_eula_accepted} -eq 1 ]]; then
         if [[ -z ${accept_eula_opt} ]]; then
-            accept_eula_opt="--accept-eula-for=cuDNN"
+            accept_eula_opt="cuDNN"
         else
-            accept_eula_opt="$accept_eula_opt,cuDNN"
+            accept_eula_opt="${accept_eula_opt},cuDNN"
         fi
     fi
     touch "$tmpdir"/none.py
-    eb --prefix="$tmpdir" \
-       --installpath-modules=${EASYBUILD_INSTALLPATH}/.modules \
-       "${accept_cuda_eula_opt}" \
-       --hooks="$tmpdir"/none.py \
-       --easystack ${EASYSTACK_FILE}
+    eb_args="--prefix=$tmpdir"
+    eb_args="$eb_args --installpath-modules=${EASYBUILD_INSTALLPATH}/.modules"
+    eb_args="$eb_args --hooks="$tmpdir"/none.py"
+    eb_args="$eb_args --easystack ${EASYSTACK_FILE}"
+    if [[ ! -z ${accept_eula_opt} ]]; then
+        eb_args="$eb_args --accept-eula-for=$accept_eula_opt"
+    fi
+    echo "Running eb $eb_args"
+    eb $eb_args
     ret=$?
     if [ $ret -ne 0 ]; then
       eb_last_log=$(unset EB_VERBOSE; eb --last-log)
