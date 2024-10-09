@@ -94,7 +94,7 @@ echo "Created temporary directory '${tmpdir}'"
 # use install_path/modules/all as MODULEPATH
 SAVE_MODULEPATH=${MODULEPATH}
 
-for EASYSTACK_FILE in ${TOPDIR}/easystacks/eessi-*.yml; do
+for EASYSTACK_FILE in ${TOPDIR}/easystacks/eessi-*CUDA*.yml; do
     echo -e "Processing easystack file ${easystack_file}...\n\n"
 
     # determine version of EasyBuild module to load based on EasyBuild version included in name of easystack file
