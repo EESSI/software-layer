@@ -80,6 +80,7 @@ jobs:
               echo "Test for checking env variables PASSED"
           else 
               echo "Test for checking env variables FAILED"  >&2
+              diff "${moduleoutfile}" "${sourceoutfile}" 
               exit 1
           fi
 
