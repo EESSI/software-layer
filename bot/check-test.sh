@@ -107,7 +107,6 @@ else
     # so that that is always displayed
     # However, that's not implemented yet - let's see if this ever even becomes an issue
     grep_reframe_result=${grep_reframe_success_full}
-    echo "grep_reframe_success_full: ${grep_reframe_success_full}"
 fi
 echo "grep_reframe_result: ${grep_reframe_result}"
 
