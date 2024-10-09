@@ -150,17 +150,24 @@ done
 # Gather information about NVIDIA drivers (even if we are inside a Gentoo Prefix in a container)
 export LD_LIBRARY_PATH=/.singularity.d/libs:$LD_LIBRARY_PATH
 
-# Command to give to get the CUDA driver version
-nvidia_smi_driver_command="nvidia-smi --query-gpu=driver_version --format=csv,noheader"
-if $nvidia_smi_driver_command > /dev/null 2>&1; then
-  host_driver_version=$($nvidia_smi_driver_command | tail -n1)
-  echo_green "Found NVIDIA GPU driver version ${host_driver_version}"
-
-  # If the first worked, this should work too
-  host_cuda_version=$(nvidia-smi -q --display=COMPUTE | grep CUDA | awk '{NF>1; print $NF}')
-  echo_green "Found host CUDA version ${host_cuda_version}"
+# Check for NVIDIA GPUs via nvidia-smi command
+nvidia_smi=$(command -v nvidia-smi)
+if [[ $? -eq 0 ]]; then
+    nvidia_smi_out=$(mktemp -p /tmp nvidia_smi_out.XXXXX)
+    nvidia-smi --query-gpu=gpu_name,count,driver_version,compute_cap --format=csv,noheader 2>&1 > $nvidia_smi_out
+    if [[ $? -eq 0 ]]; then
+        nvidia_smi_info=$(head -1 $nvidia_smi_out)
+        host_cuda_version=$(echo $nvidia_smi_info | sed 's/, /,/g' | cut -f4 -d, | sed 's/\.//g')
+        host_driver_version=$(echo $nvidia_smi_info | sed 's/, /,/g' | cut -f3 -d,)
+        echo_green "Found host CUDA version ${host_cuda_version}"
+        echo_green "Found NVIDIA GPU driver version ${host_driver_version}"
+        rm -f $nvidia_smi_out
+    else
+        fatal_error "nvidia-smi command failed, see output in $nvidia_smi_out"
+    fi
 else
-  fatal_error "Failed to execute $nvidia_smi_driver_command"
+    fatal_error "nvidia-smi command not found"
+    exit 2
 fi
 
 # Gather any CUDA related driver libraries from the host
