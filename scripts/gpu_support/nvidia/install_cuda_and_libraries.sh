@@ -121,7 +121,7 @@ for EASYSTACK_FILE in ${TOPDIR}/easystacks/eessi-*.yml; do
 
     # Check if CUDA shall be installed
     cuda_install_needed=0
-    cat ${eb_dry_run_short_out} | grep "^ \* \[[ ]\]" | grep "module: CUDA/"
+    cat ${eb_dry_run_short_out} | grep "^ \* \[[ ]\]" | grep "module: CUDA/" > /dev/null
     ret=$?
     if [ "${ret}" -eq 0 ]; then
         cuda_install_needed=1
@@ -136,7 +136,7 @@ for EASYSTACK_FILE in ${TOPDIR}/easystacks/eessi-*.yml; do
 
     # Check if cdDNN shall be installed
     cudnn_install_needed=0
-    cat ${eb_dry_run_short_out} | grep "^ \* \[[ ]\]" | grep "module: cuDNN/"
+    cat ${eb_dry_run_short_out} | grep "^ \* \[[ ]\]" | grep "module: cuDNN/" > /dev/null
     ret=$?
     if [ "${ret}" -eq 0 ]; then
         cudnn_install_needed=1
@@ -205,7 +205,7 @@ for EASYSTACK_FILE in ${TOPDIR}/easystacks/eessi-*.yml; do
         if [[ -z ${accept_eula_opt} ]]; then
             accept_eula_opt="--accept-eula-for=cuDNN"
         else
-            accept_eula_opt="${accept_eula_opt},cuDNN"
+            accept_eula_opt="$accept_eula_opt,cuDNN"
         fi
     fi
     touch "$tmpdir"/none.py
