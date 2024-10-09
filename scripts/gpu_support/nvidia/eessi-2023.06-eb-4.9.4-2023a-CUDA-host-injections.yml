@@ -1,5 +1,5 @@
-# This EasyStack provides a list of all the EasyConfigs that should be installed in host_injections
-# because they cannot (fully) be shipped as part of EESSI due to license constraints
+# This EasyStack provides a list of all the EasyConfigs that should be installed in host_injections 
+# for nvidia GPU support, because they cannot (fully) be shipped as part of EESSI due to license constraints
 easyconfigs:
   - CUDA-12.1.1.eb
   - cuDNN-8.9.2.26-CUDA-12.1.1.eb
