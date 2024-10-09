@@ -85,9 +85,8 @@ fi
 # Make sure EESSI is initialised
 check_eessi_initialised
 
-# As an installation location just use $EESSI_SOFTWARE_PATH but replacing `versions` with `host_injections`
-# (CUDA is a binary installation so no need to worry too much about the EasyBuild setup)
-export EESSI_SITE_INSTALL=${EESSI_SOFTWARE_PATH/versions/host_injections}
+# Make sure that `EESSI-extend` will install in the site installation path EESSI_SITE_SOFTWARE_PATH
+export EESSI_SITE_INSTALL=1
 
 # we need a directory we can use for temporary storage
 if [[ -z "${TEMP_DIR}" ]]; then
@@ -128,7 +127,7 @@ eb --show-config
 
 # do a 'eb --dry-run-short' with the EASYSTACK_FILE and determine list of packages
 # to be installed
-echo ">> Determining if packages specified in ${EASYSTACK_FILE} are missing under ${EESSI_SITE_INSTALL}"
+echo ">> Determining if packages specified in ${EASYSTACK_FILE} are missing under ${EESSI_SITE_SOFTWARE_PATH}"
 eb_dry_run_short_out=${tmpdir}/eb_dry_run_short.out
 eb --dry-run-short --rebuild --easystack ${EASYSTACK_FILE} 2>&1 | tee ${eb_dry_run_short_out}
 ret=$?
@@ -168,10 +167,10 @@ fi
 # The install is pretty fat, you need lots of space for download/unpack/install
 # (~3*${base_storage_space}*1000 Bytes),
 # need to do a space check before we proceed
-avail_space=$(df --output=avail "${EESSI_SITE_INSTALL}"/ | tail -n 1 | awk '{print $1}')
+avail_space=$(df --output=avail "${EESSI_SITE_SOFTWARE_PATH}"/ | tail -n 1 | awk '{print $1}')
 min_disk_storage=$((3 * ${base_storage_space}))
 if (( avail_space < ${min_disk_storage} )); then
-  fatal_error "Need at least $(echo "${min_disk_storage} / 1000000" | bc) GB disk space to install CUDA and other libraries under ${EESSI_SITE_INSTALL}, exiting now..."
+  fatal_error "Need at least $(echo "${min_disk_storage} / 1000000" | bc) GB disk space to install CUDA and other libraries under ${EESSI_SITE_SOFTWARE_PATH}, exiting now..."
 fi
 avail_space=$(df --output=avail "${tmpdir}"/ | tail -n 1 | awk '{print $1}')
 if (( avail_space < required_space_in_tmpdir )); then
@@ -213,7 +212,7 @@ if [ $ret -ne 0 ]; then
   cp -a ${eb_last_log} .
   fatal_error "some installation failed, please check EasyBuild logs ${PWD}/$(basename ${eb_last_log})..."
 else
-  echo_green "all installations at ${EESSI_SITE_INSTALL}/software/... succeeded!"
+  echo_green "all installations at ${EESSI_SITE_SOFTWARE_PATH}/software/... succeeded!"
 fi
 # clean up tmpdir
 rm -rf "${tmpdir}"
