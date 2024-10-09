@@ -213,7 +213,6 @@ if [ "$LD_PRELOAD_MODE" -eq 1 ]; then
     # Filter out all symlinks and libraries that have missing library dependencies under EESSI
     filtered_libraries=()
     for library in "${matched_libraries[@]}"; do
-        library=$(realpath "$library")
         # Run ldd on the given binary and filter for "not found" libraries
         NOT_FOUND_LIBS=$(ldd "$library" 2>/dev/null | grep "not found" | awk '{print $1}')
         # Check if it is missing an so dep under EESSI
@@ -221,6 +220,8 @@ if [ "$LD_PRELOAD_MODE" -eq 1 ]; then
             # Anything graphics is out, as is libnvidia-fbc*
             if [[ "$library" != *"GL"* ]]; then
                 if [[ "$library" != *"libnvidia-fbc"* ]]; then
+                    # Resolve any symlink
+                    library=$(realpath "$library")
                     if [[ ! " ${filtered_libraries[@]} " =~ " $library " ]]; then
                         filtered_libraries+=("$library")
                     fi
@@ -250,6 +251,8 @@ if [ "$LD_PRELOAD_MODE" -eq 1 ]; then
                 # Anything graphics is out, as is libnvidia-fbc*
                 if [[ "$library" != *"GL"* ]]; then
                     if [[ "$library" != *"libnvidia-fbc"* ]]; then
+                        # Resolve any symlink
+                        library=$(realpath "$library")
                         if [[ ! " ${filtered_libraries[@]} " =~ " $library " ]]; then
                             filtered_libraries+=("$library")
                         fi
