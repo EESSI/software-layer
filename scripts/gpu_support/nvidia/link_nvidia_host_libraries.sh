@@ -233,7 +233,8 @@ if [ "$LD_PRELOAD_MODE" -eq 1 ]; then
             for lib in $NOT_FOUND_LIBS; do
                 found=false
                 for listed_lib in "${matched_libraries[@]}"; do
-                    if [[ "$lib" == "$listed_lib" ]]; then
+                    # Matching to the .so is enough
+                    if [[ "$lib" == "$listed_lib"* ]]; then
                         found=true
                         break
                     fi
