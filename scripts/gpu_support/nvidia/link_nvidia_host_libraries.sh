@@ -210,44 +210,47 @@ if [ "$LD_PRELOAD_MODE" -eq 1 ]; then
     echo
     echo_yellow "When attempting to use LD_PRELOAD we exclude anything related to graphics"
 
-    # Filter out all libraries that have missing library dependencies under EESSI
+    # Filter out all symlinks and libraries that have missing library dependencies under EESSI
     filtered_libraries=()
     for library in "${matched_libraries[@]}"; do
-        # Run ldd on the given binary and filter for "not found" libraries
-        NOT_FOUND_LIBS=$(ldd "$library" 2>/dev/null | grep "not found" | awk '{print $1}')
-        # Check if it is missing an so dep under EESSI
-        if [[ -z "$NOT_FOUND_LIBS" ]]; then
-            # Anything graphics is out, as is libnvidia-fbc*
-            if [[ "$library" != *"GL"* ]]; then
-                if [[ "$library" != *"libnvidia-fbc"* ]]; then
-                    filtered_libraries+=("$library")
-                fi
-            fi
-        else
-            # Iterate over "not found" libraries and check if they are in the array
-            all_found=true
-            for lib in $NOT_FOUND_LIBS; do
-                found=false
-                for listed_lib in "${matched_libraries[@]}"; do
-                    if [[ "$lib" == "$listed_lib" ]]; then
-                        found=true
-                        break
-                    fi
-                done
-
-                if [[ "$found" == false ]]; then
-                    echo "$lib is NOT in the provided preload list, filtering $library"
-                    all_found=false
-                    break
-                fi
-            done
-
-            # If we find all the missing libs in our list include it
-            if [[ "$all_found" == true ]]; then
+        if [ ! -L "$library" ]; then
+            # $library is not a symlink
+            # Run ldd on the given binary and filter for "not found" libraries
+            NOT_FOUND_LIBS=$(ldd "$library" 2>/dev/null | grep "not found" | awk '{print $1}')
+            # Check if it is missing an so dep under EESSI
+            if [[ -z "$NOT_FOUND_LIBS" ]]; then
                 # Anything graphics is out, as is libnvidia-fbc*
                 if [[ "$library" != *"GL"* ]]; then
                     if [[ "$library" != *"libnvidia-fbc"* ]]; then
                         filtered_libraries+=("$library")
+                    fi
+                fi
+            else
+                # Iterate over "not found" libraries and check if they are in the array
+                all_found=true
+                for lib in $NOT_FOUND_LIBS; do
+                    found=false
+                    for listed_lib in "${matched_libraries[@]}"; do
+                        if [[ "$lib" == "$listed_lib" ]]; then
+                            found=true
+                            break
+                        fi
+                    done
+
+                    if [[ "$found" == false ]]; then
+                        echo "$lib is NOT in the provided preload list, filtering $library"
+                        all_found=false
+                        break
+                    fi
+                done
+
+                # If we find all the missing libs in our list include it
+                if [[ "$all_found" == true ]]; then
+                    # Anything graphics is out, as is libnvidia-fbc*
+                    if [[ "$library" != *"GL"* ]]; then
+                        if [[ "$library" != *"libnvidia-fbc"* ]]; then
+                            filtered_libraries+=("$library")
+                        fi
                     fi
                 fi
             fi
