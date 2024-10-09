@@ -116,7 +116,7 @@ for EASYSTACK_FILE in ${TOPDIR}/easystacks/eessi-*.yml; do
     # to be installed
     echo ">> Determining if packages specified in ${EASYSTACK_FILE} are missing under ${EESSI_SITE_SOFTWARE_PATH}"
     eb_dry_run_short_out=${tmpdir}/eb_dry_run_short.out
-    eb --dry-run-short --rebuild --easystack ${EASYSTACK_FILE} 2>&1 | tee ${eb_dry_run_short_out}
+    eb --dry-run-short --easystack ${EASYSTACK_FILE} 2>&1 | tee ${eb_dry_run_short_out}
     ret=$?
 
     # Check if CUDA shall be installed
@@ -185,12 +185,8 @@ for EASYSTACK_FILE in ${TOPDIR}/easystacks/eessi-*.yml; do
 
     # Brief explanation of parameters:
     #  - prefix: using $tmpdir as default base directory for several EB settings
-    #  - rebuild: we need the --rebuild option, as the CUDA module may or may not be on the
-    #        `MODULEPATH` yet. Even if it is, we still want to redo this installation
-    #        since it will provide the symlinked targets for the parts of the CUDA
-    #        and/or other installation in the `.../versions/...` prefix
-    #  - installpath-modules: We install the module in our `tmpdir` since we do not need the modulefile,
-    #        we only care about providing the targets for the symlinks.
+    #  - installpath-modules: We install the module in a hidden .modules, so that next time this script
+    #        is run, it is not reinstalled.
     #  - ${accept_eula_opt}: We only set the --accept-eula-for=CUDA option if CUDA will be installed and if
     #        this script was called with the argument --accept-cuda-eula.
     #  - hooks: We don't want hooks used in this install, we need vanilla
