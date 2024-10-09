@@ -81,7 +81,7 @@ if [ -d $EESSI_PREFIX ]; then
         if [ ! -z $EESSI_BASIC_ENV ]; then
           show_msg "Only setting up basic environment, so we're done"
         elif [ -d $EESSI_SOFTWARE_PATH ]; then
-          EESSI_SITE_SOFTWARE_PATH=${EESSI_SOFTWARE_PATH/versions/host_injections}
+          export EESSI_SITE_SOFTWARE_PATH=${EESSI_SOFTWARE_PATH/versions/host_injections}
           show_msg "Using ${EESSI_SITE_SOFTWARE_PATH} as the site extension directory for installations."
           # Allow for use of alternative module tree shipped with EESSI
           if [ -z ${EESSI_MODULE_SUBDIR+x} ]; then
