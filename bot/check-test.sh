@@ -93,6 +93,8 @@ else
         grep -v '\[=*\]' | \
         # Remove blank line(s) from the report
         grep -v '^$' | \
+        # Remove warnings about the local spawner not supporting memory requests
+        grep -v 'WARNING\: hooks\.req_memory_per_node does not support the scheduler you configured .local.*$' | \
         # Strip color coding characters
         sed 's/\x1B\[[0-9;]*m//g' | \
         # Replace all newline characters with <br/>
