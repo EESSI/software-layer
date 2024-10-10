@@ -209,32 +209,45 @@ echo "Matched ${#matched_libraries[@]} CUDA Libraries"
 if [ "$LD_PRELOAD_MODE" -eq 1 ]; then
     echo
     echo_yellow "When attempting to use LD_PRELOAD we exclude anything related to graphics"
-
+    local cuda_compat_nvlib_list=(
+        "libcuda.so"
+        "libcudadebugger.so"
+        "libnvidia-nvvm.so"
+        "libnvidia-ptxjitcompiler.so"
+    )
     # Filter out all symlinks and libraries that have missing library dependencies under EESSI
     filtered_libraries=()
+    compat_filtered_libraries=()
     for library in "${matched_libraries[@]}"; do
         # Run ldd on the given binary and filter for "not found" libraries
-        NOT_FOUND_LIBS=$(ldd "$library" 2>/dev/null | grep "not found" | awk '{print $1}')
+        not_found_libs=$(ldd "$library" 2>/dev/null | grep "not found" | awk '{print $1}')
         # Check if it is missing an so dep under EESSI
-        if [[ -z "$NOT_FOUND_LIBS" ]]; then
-            # Anything graphics is out, as is libnvidia-fbc*
-            if [[ "$library" != *"GL"* ]]; then
-                if [[ "$library" != *"libnvidia-fbc"* ]]; then
-                    # Resolve any symlink
-                    library=$(realpath "$library")
-                    if [[ ! " ${filtered_libraries[@]} " =~ " $library " ]]; then
-                        filtered_libraries+=("$library")
+        if [[ -z "$not_found_libs" ]]; then
+            # Resolve any symlink
+            realpath_library=$(realpath "$library")
+            if [[ ! " ${filtered_libraries[@]} " =~ " $realpath_library " ]]; then
+                filtered_libraries+=("$realpath_library")
+                # Also prepare compat only libraries for the short list
+                for item in "${cuda_compat_nvlib_list[@]}"; do
+                    # Check if the current item is a substring of $library
+                    if [[ "$realpath_library" == "$item"* ]]; then
+                        echo "Match found for $item for CUDA compat libraries"
+                        if [[ ! " ${compat_filtered_libraries[@]} " =~ " $realpath_library " ]]; then
+                            compat_filtered_libraries+=("$realpath_library")
+                        fi
+                        break
                     fi
-                fi
-            fi
+                done
+           fi
         else
             # Iterate over "not found" libraries and check if they are in the array
             all_found=true
-            for lib in $NOT_FOUND_LIBS; do
+            for lib in $not_found_libs; do
                 found=false
                 for listed_lib in "${matched_libraries[@]}"; do
-                    # Matching to the .so is enough
-                    if [[ "$lib" == "$listed_lib"* ]]; then
+                    # Matching to the .so or a symlink target is enough
+                    realpath_lib=$(realpath "$listed_lib")
+                    if [[ "$lib" == "$listed_lib"* || "$lib" == "$realpath_lib" ]]; then
                         found=true
                         break
                     fi
@@ -249,15 +262,21 @@ if [ "$LD_PRELOAD_MODE" -eq 1 ]; then
 
             # If we find all the missing libs in our list include it
             if [[ "$all_found" == true ]]; then
-                # Anything graphics is out, as is libnvidia-fbc*
-                if [[ "$library" != *"GL"* ]]; then
-                    if [[ "$library" != *"libnvidia-fbc"* ]]; then
-                        # Resolve any symlink
-                        library=$(realpath "$library")
-                        if [[ ! " ${filtered_libraries[@]} " =~ " $library " ]]; then
-                            filtered_libraries+=("$library")
+                # Resolve any symlink
+                realpath_library=$(realpath "$library")
+                if [[ ! " ${filtered_libraries[@]} " =~ " $realpath_library " ]]; then
+                    filtered_libraries+=("$realpath_library")
+                    # Also prepare compat only libraries for the short list
+                    for item in "${cuda_compat_nvlib_list[@]}"; do
+                        # Check if the current item is a substring of $library
+                        if [[ "$realpath_library" == "$item"* ]]; then
+                            echo "Match found for $item for CUDA compat libraries"
+                            if [[ ! " ${compat_filtered_libraries[@]} " =~ " $realpath_library " ]]; then
+                                compat_filtered_libraries+=("$realpath_library")
+                            fi
+                            break
                         fi
-                    fi
+                    done
                 fi
             fi
         fi
@@ -266,18 +285,28 @@ if [ "$LD_PRELOAD_MODE" -eq 1 ]; then
     # Set EESSI_GPU_LD_PRELOAD with the matched libraries
     if [ ${#filtered_libraries[@]} -gt 0 ]; then
       echo
-      echo_yellow "The recommended way to use LD_PRELOAD is to only use it when you need to:"
+      echo_yellow "The recommended way to use LD_PRELOAD is to only use it when you need to."
       echo
+      EESSI_GPU_COMPAT_LD_PRELOAD=$(printf "%s\n" "${compat_filtered_libraries[@]}" | tr '\n' ':')
+      # Remove the trailing colon from LD_PRELOAD if it exists
+      EESSI_GPU_COMPAT_LD_PRELOAD=${EESSI_GPU_COMPAT_LD_PRELOAD%:}
+      export EESSI_GPU_COMPAT_LD_PRELOAD
+      echo_yellow "A minimal preload which should work in most cases:"
+      echo_green "export EESSI_GPU_COMPAT_LD_PRELOAD=\"$EESSI_GPU_LD_PRELOAD\""
+      echo
+
       EESSI_GPU_LD_PRELOAD=$(printf "%s\n" "${filtered_libraries[@]}" | tr '\n' ':')
       # Remove the trailing colon from LD_PRELOAD if it exists
       EESSI_GPU_LD_PRELOAD=${EESSI_GPU_LD_PRELOAD%:}
       export EESSI_GPU_LD_PRELOAD
+      echo_yellow "A corner-case full preload (which is hard on memory) for exceptional use:"
+
       echo_green "export EESSI_GPU_LD_PRELOAD=\"$EESSI_GPU_LD_PRELOAD\""
       export EESSI_OVERRIDE_GPU_CHECK=1
       echo_green "export EESSI_OVERRIDE_GPU_CHECK=\"$EESSI_OVERRIDE_GPU_CHECK\""
       echo
       echo_yellow "Then you can set LD_PRELOAD only when you want to run a GPU application, e.g.,"
-      echo_yellow "    LD_PRELOAD=\"\$EESSI_GPU_LD_PRELOAD\" device_query"
+      echo_yellow "    LD_PRELOAD=\"\$EESSI_GPU_COMPAT_LD_PRELOAD\" device_query"
     else
       echo "No libraries matched, LD_PRELOAD not set."
     fi
