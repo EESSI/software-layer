@@ -250,7 +250,7 @@ if [ "$LD_PRELOAD_MODE" -eq 1 ]; then
                 for listed_lib in "${matched_libraries[@]}"; do
                     # Matching to the .so or a symlink target is enough
                     realpath_lib=$(realpath "$listed_lib")
-                    if [[ "$lib" == "$listed_lib"* || "$lib" == "$realpath_lib" ]]; then
+                    if [[ "$lib" == "$listed_lib"* || "$realpath_lib" == *"$lib" ]]; then
                         found=true
                         break
                     fi
