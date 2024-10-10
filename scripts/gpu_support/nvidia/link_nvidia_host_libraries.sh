@@ -130,6 +130,9 @@ check_global_read() {
     fi
 }
 
+# Make sure EESSI is initialised (doesn't matter what version)
+check_eessi_initialised
+
 # Check for required commands
 command -v nvidia-smi >/dev/null 2>&1 || { echo_yellow "nvidia-smi not found, this script won't do anything useful"; return 1; }
 
