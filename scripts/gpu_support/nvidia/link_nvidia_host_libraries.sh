@@ -212,7 +212,7 @@ echo "Matched ${#matched_libraries[@]} CUDA Libraries"
 if [ "$LD_PRELOAD_MODE" -eq 1 ]; then
     echo
     echo_yellow "When attempting to use LD_PRELOAD we exclude anything related to graphics"
-    local cuda_compat_nvlib_list=(
+    cuda_compat_nvlib_list=(
         "libcuda.so"
         "libcudadebugger.so"
         "libnvidia-nvvm.so"
