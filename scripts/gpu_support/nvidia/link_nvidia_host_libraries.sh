@@ -233,7 +233,7 @@ if [ "$LD_PRELOAD_MODE" -eq 1 ]; then
                 # Also prepare compat only libraries for the short list
                 for item in "${cuda_compat_nvlib_list[@]}"; do
                     # Check if the current item is a substring of $library
-                    if [[ "$realpath_library" == "$item"* ]]; then
+                    if [[ "$library" == "$item"* ]]; then
                         echo "Match found for $item for CUDA compat libraries"
                         if [[ ! " ${compat_filtered_libraries[@]} " =~ " $realpath_library " ]]; then
                             compat_filtered_libraries+=("$realpath_library")
@@ -272,7 +272,7 @@ if [ "$LD_PRELOAD_MODE" -eq 1 ]; then
                     # Also prepare compat only libraries for the short list
                     for item in "${cuda_compat_nvlib_list[@]}"; do
                         # Check if the current item is a substring of $library
-                        if [[ "$realpath_library" == "$item"* ]]; then
+                        if [[ "$library" == "$item"* ]]; then
                             echo "Match found for $item for CUDA compat libraries"
                             if [[ ! " ${compat_filtered_libraries[@]} " =~ " $realpath_library " ]]; then
                                 compat_filtered_libraries+=("$realpath_library")
