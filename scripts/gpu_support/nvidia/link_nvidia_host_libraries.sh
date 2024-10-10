@@ -295,7 +295,7 @@ if [ "$LD_PRELOAD_MODE" -eq 1 ]; then
       EESSI_GPU_COMPAT_LD_PRELOAD=${EESSI_GPU_COMPAT_LD_PRELOAD%:}
       export EESSI_GPU_COMPAT_LD_PRELOAD
       echo_yellow "A minimal preload which should work in most cases:"
-      echo_green "export EESSI_GPU_COMPAT_LD_PRELOAD=\"$EESSI_GPU_LD_PRELOAD\""
+      echo_green "export EESSI_GPU_COMPAT_LD_PRELOAD=\"$EESSI_GPU_COMPAT_LD_PRELOAD\""
       echo
 
       EESSI_GPU_LD_PRELOAD=$(printf "%s\n" "${filtered_libraries[@]}" | tr '\n' ':')
