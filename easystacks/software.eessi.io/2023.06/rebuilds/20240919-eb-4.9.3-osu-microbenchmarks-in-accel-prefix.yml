@@ -1,0 +1,5 @@
+# 2024.09.19
+# We need to reinstall OSU-Micro-Benchmarks in the accelerator prefixes
+# See https://github.com/EESSI/software-layer/pull/716
+easyconfigs:
+  - OSU-Micro-Benchmarks-7.2-gompi-2023a-CUDA-12.1.1.eb

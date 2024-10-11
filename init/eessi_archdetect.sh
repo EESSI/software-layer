@@ -17,7 +17,7 @@ else
     exit 1
 fi
 
-VERSION="1.1.0"
+VERSION="1.2.0"
 
 # default log level: only emit warnings or errors
 LOG_LEVEL="WARN"
@@ -150,8 +150,45 @@ cpupath(){
     fi
 }
 
+accelpath() {
+    # If EESSI_ACCELERATOR_TARGET_OVERRIDE is set, use it
+    log "DEBUG" "accelpath: Override variable set as '$EESSI_ACCELERATOR_TARGET_OVERRIDE' "
+    if [ ! -z $EESSI_ACCELERATOR_TARGET_OVERRIDE ]; then
+        if [[ "$EESSI_ACCELERATOR_TARGET_OVERRIDE" =~ ^accel/nvidia/cc[0-9][0-9]$ ]]; then
+            echo ${EESSI_ACCELERATOR_TARGET_OVERRIDE}
+            return 0
+        else
+            log "ERROR" "Value of \$EESSI_ACCELERATOR_TARGET_OVERRIDE should match 'accel/nvidia/cc[0-9[0-9]', but it does not: '$EESSI_ACCELERATOR_TARGET_OVERRIDE'"
+        fi
+        return 0
+    fi
+
+    # check for NVIDIA GPUs via nvidia-smi command
+    nvidia_smi=$(command -v nvidia-smi)
+    if [[ $? -eq 0 ]]; then
+        log "DEBUG" "accelpath: nvidia-smi command found @ ${nvidia_smi}"
+        nvidia_smi_out=$(mktemp -p /tmp nvidia_smi_out.XXXXX)
+        nvidia-smi --query-gpu=gpu_name,count,driver_version,compute_cap --format=csv,noheader 2>&1 > $nvidia_smi_out
+        if [[ $? -eq 0 ]]; then
+            nvidia_smi_info=$(head -1 $nvidia_smi_out)
+            cuda_cc=$(echo $nvidia_smi_info | sed 's/, /,/g' | cut -f4 -d, | sed 's/\.//g')
+            log "DEBUG" "accelpath: CUDA compute capability '${cuda_cc}' derived from nvidia-smi output '${nvidia_smi_info}'"
+            res="accel/nvidia/cc${cuda_cc}"
+            log "DEBUG" "accelpath: result: ${res}"
+            echo $res
+            rm -f $nvidia_smi_out
+        else
+            log "DEBUG" "accelpath: nvidia-smi command failed, see output in $nvidia_smi_out"
+            exit 3
+        fi
+    else
+        log "DEBUG" "accelpath: nvidia-smi command not found"
+        exit 2
+    fi
+}
+
 # Parse command line arguments
-USAGE="Usage: eessi_archdetect.sh [-h][-d][-a] <action>"
+USAGE="Usage: eessi_archdetect.sh [-h][-d][-a] <action: cpupath or accelpath>"
 
 while getopts 'hdva' OPTION; do
     case "$OPTION" in
@@ -168,5 +205,6 @@ ARGUMENT=${1:-none}
 
 case "$ARGUMENT" in
     "cpupath") cpupath; exit;;
-    *) echo "$USAGE"; log "ERROR" "Missing <action> argument (possible actions: 'cpupath')";;
+    "accelpath") accelpath; exit;;
+    *) echo "$USAGE"; log "ERROR" "Missing <action> argument (possible actions: 'cpupath', 'accelpath')";;
 esac
