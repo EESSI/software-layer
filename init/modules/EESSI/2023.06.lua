@@ -42,14 +42,27 @@ function archdetect_cpu()
     end
     LmodError("Software directory check for the detected architecture failed")
 end
+function archdetect_accel()
+    local script = pathJoin(eessi_prefix, 'init', 'lmod_eessi_archdetect_wrapper_accel.sh')
+    if not os.getenv("EESSI_ACCEL_SUBDIR") then
+        if convertToCanonical(LmodVersion()) < convertToCanonical("8.6") then
+            LmodError("Loading this modulefile requires using Lmod version >= 8.6, but you can export EESSI_ACCEL_SUBDIR to the available accelerator architecture in the form of: accel/nvidia/cc80")
+        end
+        source_sh("bash", script)
+    end
+    local archdetect_accel = os.getenv("EESSI_ACCEL_SUBDIR") or ""
+    return archdetect_accel
+end
 local archdetect = archdetect_cpu()
+local archdetect_accel = archdetect_accel()
 local eessi_cpu_family = archdetect:match("([^/]+)")
 local eessi_software_subdir = archdetect
 local eessi_eprefix = pathJoin(eessi_prefix, "compat", eessi_os_type, eessi_cpu_family)
 local eessi_software_path = pathJoin(eessi_prefix, "software", eessi_os_type, eessi_software_subdir)
-local eessi_module_path = pathJoin(eessi_software_path, "modules", "all")
+local eessi_modules_subdir = pathJoin("modules", "all")
+local eessi_module_path = pathJoin(eessi_software_path, eessi_modules_subdir)
 local eessi_site_software_path = string.gsub(eessi_software_path, "versions", "host_injections")
-local eessi_site_module_path = pathJoin(eessi_site_software_path, "modules", "all")
+local eessi_site_module_path = pathJoin(eessi_site_software_path, eessi_modules_subdir)
 setenv("EPREFIX",  eessi_eprefix)
 setenv("EESSI_CPU_FAMILY", eessi_cpu_family)
 setenv("EESSI_SITE_SOFTWARE_PATH", eessi_site_software_path)
@@ -65,8 +78,24 @@ if ( mode() ~= "spider" ) then
     prepend_path("MODULEPATH", eessi_module_path)
 end
 prepend_path("LMOD_RC", pathJoin(eessi_software_path, "/.lmod/lmodrc.lua"))
-prepend_path("MODULEPATH", eessi_site_module_path)
 setenv("LMOD_PACKAGE_PATH", pathJoin(eessi_software_path, ".lmod"))
+
+-- the accelerator may have an empty value and we need to give some flexibility
+-- * construct the path we expect to find
+-- * then check it exists
+-- * then update the modulepath
+if not (archdetect_accel == nil or archdetect_accel == '') then
+    eessi_accel_software_subdir = os.getenv("EESSI_ACCEL_SOFTWARE_SUBDIR_OVERRIDE") or eessi_software_subdir
+    eessi_accel_software_path = pathJoin(eessi_prefix, "software", eessi_os_type, eessi_accel_software_subdir)
+    eessi_module_path_accel = pathJoin(eessi_accel_software_path, eessi_accel_software_subdir, eessi_modules_subdir)
+    if isDir(eessi_modulepath_accel) then
+        setenv("EESSI_MODULEPATH_ACCEL", eessi_module_path_accel)
+        prepend_path("MODULEPATH", eessi_module_path_accel)
+    end
+end
+
+-- prepend the site module path last so it has priority
+prepend_path("MODULEPATH", eessi_site_module_path)
 if mode() == "load" then
     LmodMessage("EESSI/" .. eessi_version .. " loaded successfully")
 end
