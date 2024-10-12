@@ -1,0 +1,5 @@
+easyconfigs:
+  - waLBerla-6.1-foss-2023a.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/21600
+        from-commit: 9b12318bcff1749781d9eb71c23e21bc3a79ed01
