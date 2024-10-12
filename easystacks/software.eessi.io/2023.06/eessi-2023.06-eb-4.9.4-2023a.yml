@@ -9,12 +9,7 @@ easyconfigs:
       options:
         # see https://github.com/easybuilders/easybuild-easyconfigs/pull/21600
         from-commit: 9b12318bcff1749781d9eb71c23e21bc3a79ed01
-  - Kalign-3.4.0-GCCcore-12.3.0.eb
-  - absl-py-2.1.0-GCCcore-12.3.0.eb
-  - dm-tree-0.1.8-GCCcore-12.3.0.eb
-  - HH-suite-3.3.0-gompi-2023a.eb
-  - pytest-xdist-3.3.1-GCCcore-12.3.0.eb
-  - tensorstore-0.1.65-foss-2023a.eb:
+  - AlphaFold-2.3.2-foss-2023a.eb:
       options:
-        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/19942
-        from-commit: 5c938cfad23f545a726f05e2e276fd699c981267
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/21628
+        from-commit: 4204600998712ff595841c34d3f6a26192ec2eb4
