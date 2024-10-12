@@ -22,10 +22,10 @@
 set -e
 
 # Make sure we are referring to software-layer as working directory
-topdir=$(dirname $(dirname $(realpath $0)))
+software_layer_dir=$(dirname $(dirname $(realpath $0)))
 # source utils.sh and cfg_files.sh
-source $topdir/scripts/utils.sh
-source $topdir/scripts/cfg_files.sh
+source $software_layer_dir/scripts/utils.sh
+source $software_layer_dir/scripts/cfg_files.sh
 
 # defaults
 export JOB_CFG_FILE="${JOB_CFG_FILE_OVERRIDE:=cfg/job.cfg}"
@@ -216,10 +216,10 @@ else
     removal_outerr=$(mktemp remove.outerr.XXXX)
 
     echo "Executing command to remove software:"
-    echo "$topdir/eessi_container.sh ${COMMON_ARGS[@]} ${REMOVAL_STEP_ARGS[@]}"
-    echo "                     -- $topdir/EESSI-remove-software.sh \"${REMOVAL_SCRIPT_ARGS[@]}\" \"$@\" 2>&1 | tee -a ${removal_outerr}"
-    $topdir/eessi_container.sh "${COMMON_ARGS[@]}" "${REMOVAL_STEP_ARGS[@]}" \
-                         -- $topdir/EESSI-remove-software.sh "${REMOVAL_SCRIPT_ARGS[@]}" "$@" 2>&1 | tee -a ${removal_outerr}
+    echo "$software_layer_dir/eessi_container.sh ${COMMON_ARGS[@]} ${REMOVAL_STEP_ARGS[@]}"
+    echo "                     -- $software_layer_dir/EESSI-remove-software.sh \"${REMOVAL_SCRIPT_ARGS[@]}\" \"$@\" 2>&1 | tee -a ${removal_outerr}"
+    $software_layer_dir/eessi_container.sh "${COMMON_ARGS[@]}" "${REMOVAL_STEP_ARGS[@]}" \
+                         -- $software_layer_dir/EESSI-remove-software.sh "${REMOVAL_SCRIPT_ARGS[@]}" "$@" 2>&1 | tee -a ${removal_outerr}
 
     # make sure that the build step resumes from the same temporary directory
     # this is important, as otherwise the removed software will still be there
@@ -252,10 +252,10 @@ fi
 build_outerr=$(mktemp build.outerr.XXXX)
 
 echo "Executing command to build software:"
-echo "$topdir/eessi_container.sh ${COMMON_ARGS[@]} ${BUILD_STEP_ARGS[@]}"
-echo "                     -- $topdir/install_software_layer.sh \"${INSTALL_SCRIPT_ARGS[@]}\" \"$@\" 2>&1 | tee -a ${build_outerr}"
-$topdir/eessi_container.sh "${COMMON_ARGS[@]}" "${BUILD_STEP_ARGS[@]}" \
-                     -- $topdir/install_software_layer.sh "${INSTALL_SCRIPT_ARGS[@]}" "$@" 2>&1 | tee -a ${build_outerr}
+echo "$software_layer_dir/eessi_container.sh ${COMMON_ARGS[@]} ${BUILD_STEP_ARGS[@]}"
+echo "                     -- $software_layer_dir/install_software_layer.sh \"${INSTALL_SCRIPT_ARGS[@]}\" \"$@\" 2>&1 | tee -a ${build_outerr}"
+$software_layer_dir/eessi_container.sh "${COMMON_ARGS[@]}" "${BUILD_STEP_ARGS[@]}" \
+                     -- $software_layer_dir/install_software_layer.sh "${INSTALL_SCRIPT_ARGS[@]}" "$@" 2>&1 | tee -a ${build_outerr}
 
 # prepare directory to store tarball of tmp for tarball step
 TARBALL_TMP_TARBALL_STEP_DIR=${PREVIOUS_TMP_DIR}/tarball_step
@@ -280,7 +280,7 @@ fi
 
 timestamp=$(date +%s)
 # to set EESSI_VERSION we need to source init/eessi_defaults now
-source $topdir/init/eessi_defaults
+source $software_layer_dir/init/eessi_defaults
 export TGZ=$(printf "eessi-%s-software-%s-%s-%d.tar.gz" ${EESSI_VERSION} ${EESSI_OS_TYPE} ${EESSI_SOFTWARE_SUBDIR_OVERRIDE//\//-} ${timestamp})
 
 # value of first parameter to create_tarball.sh - TMP_IN_CONTAINER - needs to be
@@ -289,9 +289,9 @@ export TGZ=$(printf "eessi-%s-software-%s-%s-%d.tar.gz" ${EESSI_VERSION} ${EESSI
 # /tmp as default?
 TMP_IN_CONTAINER=/tmp
 echo "Executing command to create tarball:"
-echo "$topdir/eessi_container.sh ${COMMON_ARGS[@]} ${TARBALL_STEP_ARGS[@]}"
-echo "                     -- $topdir/create_tarball.sh ${TMP_IN_CONTAINER} ${EESSI_VERSION} ${EESSI_SOFTWARE_SUBDIR_OVERRIDE} \"${EESSI_ACCELERATOR_TARGET}\" /eessi_bot_job/${TGZ} 2>&1 | tee -a ${tar_outerr}"
-$topdir/eessi_container.sh "${COMMON_ARGS[@]}" "${TARBALL_STEP_ARGS[@]}" \
-                     -- $topdir/create_tarball.sh ${TMP_IN_CONTAINER} ${EESSI_VERSION} ${EESSI_SOFTWARE_SUBDIR_OVERRIDE} "${EESSI_ACCELERATOR_TARGET}" /eessi_bot_job/${TGZ} 2>&1 | tee -a ${tar_outerr}
+echo "$software_layer_dir/eessi_container.sh ${COMMON_ARGS[@]} ${TARBALL_STEP_ARGS[@]}"
+echo "                     -- $software_layer_dir/create_tarball.sh ${TMP_IN_CONTAINER} ${EESSI_VERSION} ${EESSI_SOFTWARE_SUBDIR_OVERRIDE} \"${EESSI_ACCELERATOR_TARGET}\" /eessi_bot_job/${TGZ} 2>&1 | tee -a ${tar_outerr}"
+$software_layer_dir/eessi_container.sh "${COMMON_ARGS[@]}" "${TARBALL_STEP_ARGS[@]}" \
+                     -- $software_layer_dir/create_tarball.sh ${TMP_IN_CONTAINER} ${EESSI_VERSION} ${EESSI_SOFTWARE_SUBDIR_OVERRIDE} "${EESSI_ACCELERATOR_TARGET}" /eessi_bot_job/${TGZ} 2>&1 | tee -a ${tar_outerr}
 
 exit 0
