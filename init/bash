@@ -29,6 +29,11 @@ if [ $? -eq 0 ]; then
     show_msg "Prepending site path $EESSI_SITE_MODULEPATH to \$MODULEPATH..."
     module use $EESSI_SITE_MODULEPATH
 
+    if [ ! -z ${EESSI_MODULEPATH_ACCEL} ]; then
+        show_msg "Prepending $EESSI_MODULEPATH_ACCEL to \$MODULEPATH..."
+        module use $EESSI_MODULEPATH_ACCEL
+    fi
+
     #show_msg ""
     #show_msg "*** Known problems in the ${EESSI_VERSION} software stack ***"
     #show_msg ""
