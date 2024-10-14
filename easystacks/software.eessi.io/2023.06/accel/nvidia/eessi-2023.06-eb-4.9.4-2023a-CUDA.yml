@@ -1,0 +1,5 @@
+easyconfigs:
+  - waLBerla-6.1-foss-2023a-CUDA-12.1.1.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/21601
+        from-commit: b2295ce4b662851c3b387f945e4b5ac80cb00d42
