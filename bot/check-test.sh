@@ -77,9 +77,40 @@ if [[ ! -z ${grep_reframe_failed} ]]; then
 else
     # Grep the entire output of ReFrame, so that we can report it in the foldable section of the test report
     GP_success_full='(?s)\[----------\] start processing checks.*?\[==========\] Finished on [a-zA-Z0-9 ]*'
-    grep_reframe_success_full=$(grep -v "^>> searching for " ${job_dir}/${job_out} | grep -Pzo "${GP_success}")
+    # Grab the full ReFrame report, than cut the irrelevant parts
+    # Note that the character limit for messages in github is around 65k, so cutting is important
+    grep_reframe_success_full=$( \
+        grep -v "^>> searching for " ${job_dir}/${job_out} | \
+        # Use -z
+        grep -Pzo "${GP_success_full}" | \
+        # Replace null character with newline, to undo the -z option
+        sed 's/\x00/\n/g' | \
+        # Remove the [ RUN     ] lines from reframe, they are not very informative
+        grep -v -P '\[\s*RUN\s*]' | \
+        # Remove the line '[----------] all spawned checks have finished'
+        grep -v '\[-*\]' | \
+        # Remove the line '[==========] Finished on Mon Oct  7 21'
+        grep -v '\[=*\]' | \
+        # Remove blank line(s) from the report
+        grep -v '^$' | \
+        # Remove warnings about the local spawner not supporting memory requests
+        grep -v 'WARNING\: hooks\.req_memory_per_node does not support the scheduler you configured .local.*$' | \
+        # Strip color coding characters
+        sed 's/\x1B\[[0-9;]*m//g' | \
+        # Replace all newline characters with <br/>
+        sed ':a;N;$!ba;s/\n/<br\/>/g' | \
+        # Replace % with %%. Use \%\% to interpret both %% as (non-special) characters
+        sed 's/\%/\%\%/g' \
+    )
+    # TODO (optional): we could impose a character limit here, and truncate if too long
+    # (though we should do that before inserting the <br/> statements).
+    # If we do, we should probably re-append the final summary, e.g.
+    # [  PASSED  ] Ran 10/10 test case(s) from 10 check(s) (0 failure(s), 0 skipped, 0 aborted)
+    # so that that is always displayed
+    # However, that's not implemented yet - let's see if this ever even becomes an issue
     grep_reframe_result=${grep_reframe_success_full}
 fi
+echo "grep_reframe_result: ${grep_reframe_result}"
 
 echo "[TEST]" > ${job_test_result_file}
 if [[ ${SLURM_OUTPUT_FOUND} -eq 0 ]]; then

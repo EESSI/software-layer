@@ -102,7 +102,7 @@ pr_diff=$(ls [0-9]*.diff | head -1)
 
 # if this script is run as root, use PR patch file to determine if software needs to be removed first
 if [ $EUID -eq 0 ]; then
-    changed_easystacks_rebuilds=$(cat ${pr_diff} | grep '^+++' | cut -f2 -d' ' | sed 's@^[a-z]/@@g' | grep '^easystacks/.*yml$' | egrep -v 'known-issues|missing' | grep "/rebuilds/")
+    changed_easystacks_rebuilds=$(cat ${pr_diff} | grep '^+++' | cut -f2 -d' ' | sed 's@^[a-z]/@@g' | grep 'easystacks/.*yml$' | egrep -v 'known-issues|missing' | grep "/rebuilds/")
     if [ -z ${changed_easystacks_rebuilds} ]; then
         echo "No software needs to be removed."
     else

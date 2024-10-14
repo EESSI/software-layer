@@ -218,6 +218,11 @@ if [ ! -z ${EESSI_ACCELERATOR_TARGET} ]; then
     fi
 fi
 
+# If in dev.eessi.io, allow building on top of softw
+if [[ "${EESSI_CVMFS_REPO}" == /cvmfs/dev.eessi.io ]]; then
+    module use /cvmfs/software.eessi.io/versions/$EESSI_VERSION/software/${EESSI_OS_TYPE}/${EESSI_SOFTWARE_SUBDIR_OVERRIDE}/modules/all
+fi
+
 module use $EASYBUILD_INSTALLPATH/modules/all
 
 if [[ -z ${MODULEPATH} ]]; then
@@ -232,7 +237,11 @@ pr_diff=$(ls [0-9]*.diff | head -1)
 # install any additional required scripts
 # order is important: these are needed to install a full CUDA SDK in host_injections
 # for now, this just reinstalls all scripts. Note the most elegant, but works
-${TOPDIR}/install_scripts.sh --prefix ${EESSI_PREFIX}
+
+# Only run install_scripts.sh if not dev.eessi.io for security
+if [[ "${EESSI_CVMFS_REPO}" != /cvmfs/dev.eessi.io ]]; then
+    ${TOPDIR}/install_scripts.sh --prefix ${EESSI_PREFIX}
+fi
 
 # Install full CUDA SDK and cu* libraries in host_injections
 # Hardcode this for now, see if it works
@@ -272,7 +281,7 @@ if command_exists "nvidia-smi"; then
 fi
 
 # use PR patch file to determine in which easystack files stuff was added
-changed_easystacks=$(cat ${pr_diff} | grep '^+++' | cut -f2 -d' ' | sed 's@^[a-z]/@@g' | grep '^easystacks/.*yml$' | egrep -v 'known-issues|missing') 
+changed_easystacks=$(cat ${pr_diff} | grep '^+++' | cut -f2 -d' ' | sed 's@^[a-z]/@@g' | grep 'easystacks/.*yml$' | egrep -v 'known-issues|missing') 
 if [ -z "${changed_easystacks}" ]; then
     echo "No missing installations, party time!"  # Ensure the bot report success, as there was nothing to be build here
 else
@@ -298,7 +307,7 @@ else
         if [ -f ${easystack_file} ]; then
             echo_green "Feeding easystack file ${easystack_file} to EasyBuild..."
 
-            ${EB} --easystack ${TOPDIR}/${easystack_file} --robot
+            ${EB} --easystack ${easystack_file} --robot
             ec=$?
 
             # copy EasyBuild log file if EasyBuild exited with an error
@@ -311,7 +320,7 @@ else
                 copy_build_log "${eb_last_log}" "${build_logs_dir}"
             fi
     
-            $TOPDIR/check_missing_installations.sh ${TOPDIR}/${easystack_file} ${TOPDIR}/${pr_diff}
+            $TOPDIR/check_missing_installations.sh ${easystack_file} ${pr_diff}
         else
             fatal_error "Easystack file ${easystack_file} not found!"
         fi
