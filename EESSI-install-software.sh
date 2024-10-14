@@ -260,16 +260,11 @@ fi
 
 temp_install_storage=${TMPDIR}/temp_install_storage
 mkdir -p ${temp_install_storage}
-# Note the eessi...CUDA.yml file(s) is(are) copied by 'install_scripts.sh' from
-# the EESSI/software-layer easystacks/software.eessi.io/2023.06/accel/nvidia
-# directory to /cvmfs to avoid keeping them in sync manually. If more than one
-# such file is used (e.g., because different EasyBuild versions were used), the
-# install script 'install_cuda_and_libraries.sh' has to be run multiple times.
 if [ -z "${skip_cuda_install}" ] || [ ! "${skip_cuda_install}" ]; then
     ${EESSI_PREFIX}/scripts/gpu_support/nvidia/install_cuda_and_libraries.sh \
-        -e ${EESSI_PREFIX}/scripts/gpu_support/nvidia/eessi-2023.06-eb-4.9.4-2023a-CUDA.yml \
         -t ${temp_install_storage} \
-        --accept-cuda-eula
+        --accept-cuda-eula \
+        --accept-cudnn-eula
 else
     echo "Skipping installation of CUDA SDK and cu* libraries in host_injections, since the --skip-cuda-install flag was passed OR no EasyBuild module was found"
 fi
