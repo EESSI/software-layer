@@ -127,7 +127,8 @@ if [ $EUID -eq 0 ]; then
                     app_dir=${app_installprefix}/software/${app}
                     app_module=${app_installprefix}/modules/all/${app}.lua
                     echo_yellow "Removing ${app_dir} and ${app_module}..."
-                    find ${app_dir} -exec rm -rf {} \;
+                    find ${app_dir} -type f -exec rm -f {} \;
+                    rm -rf ${app_dir}
                     rm -rf ${app_module}
                 done
             else
