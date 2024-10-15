@@ -21,12 +21,14 @@
 # stop as soon as something fails
 set -e
 
+# Make sure we are referring to software-layer as working directory
+software_layer_dir=$(dirname $(dirname $(realpath $0)))
 # source utils.sh and cfg_files.sh
-source scripts/utils.sh
-source scripts/cfg_files.sh
+source $software_layer_dir/scripts/utils.sh
+source $software_layer_dir/scripts/cfg_files.sh
 
 # defaults
-export JOB_CFG_FILE="${JOB_CFG_FILE_OVERRIDE:=./cfg/job.cfg}"
+export JOB_CFG_FILE="${JOB_CFG_FILE_OVERRIDE:=cfg/job.cfg}"
 HOST_ARCH=$(uname -m)
 
 # check if ${JOB_CFG_FILE} exists
@@ -169,6 +171,12 @@ COMMON_ARGS+=("--mode" "run")
 [[ ! -z ${HTTPS_PROXY} ]] && COMMON_ARGS+=("--https-proxy" "${HTTPS_PROXY}")
 [[ ! -z ${REPOSITORY} ]] && COMMON_ARGS+=("--repository" "${REPOSITORY}")
 
+# Also expose software.eessi.io when configured for dev.eessi.io
+# Need software.eessi.io for the compat layer
+if [[ "${REPOSITORY}" == dev.eessi.io ]]; then
+    COMMON_ARGS+=("--repository" "software.eessi.io,access=ro")
+fi
+
 # make sure to use the same parent dir for storing tarballs of tmp
 PREVIOUS_TMP_DIR=${PWD}/previous_tmp
 
@@ -188,7 +196,7 @@ fi
 pr_diff=$(ls [0-9]*.diff | head -1)
 # the true at the end of the next command is important: grep will expectedly return 1 if there is no easystack file being added under rebuilds,
 # but due to "set -e" the entire script would otherwise fail
-changed_easystacks_rebuilds=$(cat ${pr_diff} | grep '^+++' | cut -f2 -d' ' | sed 's@^[a-z]/@@g' | grep '^easystacks/.*yml$' | (grep "/rebuilds/" || true))
+changed_easystacks_rebuilds=$(cat ${pr_diff} | grep '^+++' | cut -f2 -d' ' | sed 's@^[a-z]/@@g' | grep 'easystacks/.*yml$' | (grep "/rebuilds/" || true))
 if [[ -z "${changed_easystacks_rebuilds}" ]]; then
     echo "This PR does not add any easystack files in a rebuilds subdirectory, so let's skip the removal step."
 else
@@ -208,10 +216,10 @@ else
     removal_outerr=$(mktemp remove.outerr.XXXX)
 
     echo "Executing command to remove software:"
-    echo "./eessi_container.sh ${COMMON_ARGS[@]} ${REMOVAL_STEP_ARGS[@]}"
-    echo "                     -- ./EESSI-remove-software.sh \"${REMOVAL_SCRIPT_ARGS[@]}\" \"$@\" 2>&1 | tee -a ${removal_outerr}"
-    ./eessi_container.sh "${COMMON_ARGS[@]}" "${REMOVAL_STEP_ARGS[@]}" \
-                         -- ./EESSI-remove-software.sh "${REMOVAL_SCRIPT_ARGS[@]}" "$@" 2>&1 | tee -a ${removal_outerr}
+    echo "$software_layer_dir/eessi_container.sh ${COMMON_ARGS[@]} ${REMOVAL_STEP_ARGS[@]}"
+    echo "                     -- $software_layer_dir/EESSI-remove-software.sh \"${REMOVAL_SCRIPT_ARGS[@]}\" \"$@\" 2>&1 | tee -a ${removal_outerr}"
+    $software_layer_dir/eessi_container.sh "${COMMON_ARGS[@]}" "${REMOVAL_STEP_ARGS[@]}" \
+                         -- $software_layer_dir/EESSI-remove-software.sh "${REMOVAL_SCRIPT_ARGS[@]}" "$@" 2>&1 | tee -a ${removal_outerr}
 
     # make sure that the build step resumes from the same temporary directory
     # this is important, as otherwise the removed software will still be there
@@ -244,10 +252,10 @@ fi
 build_outerr=$(mktemp build.outerr.XXXX)
 
 echo "Executing command to build software:"
-echo "./eessi_container.sh ${COMMON_ARGS[@]} ${BUILD_STEP_ARGS[@]}"
-echo "                     -- ./install_software_layer.sh \"${INSTALL_SCRIPT_ARGS[@]}\" \"$@\" 2>&1 | tee -a ${build_outerr}"
-./eessi_container.sh "${COMMON_ARGS[@]}" "${BUILD_STEP_ARGS[@]}" \
-                     -- ./install_software_layer.sh "${INSTALL_SCRIPT_ARGS[@]}" "$@" 2>&1 | tee -a ${build_outerr}
+echo "$software_layer_dir/eessi_container.sh ${COMMON_ARGS[@]} ${BUILD_STEP_ARGS[@]}"
+echo "                     -- $software_layer_dir/install_software_layer.sh \"${INSTALL_SCRIPT_ARGS[@]}\" \"$@\" 2>&1 | tee -a ${build_outerr}"
+$software_layer_dir/eessi_container.sh "${COMMON_ARGS[@]}" "${BUILD_STEP_ARGS[@]}" \
+                     -- $software_layer_dir/install_software_layer.sh "${INSTALL_SCRIPT_ARGS[@]}" "$@" 2>&1 | tee -a ${build_outerr}
 
 # prepare directory to store tarball of tmp for tarball step
 TARBALL_TMP_TARBALL_STEP_DIR=${PREVIOUS_TMP_DIR}/tarball_step
@@ -272,7 +280,7 @@ fi
 
 timestamp=$(date +%s)
 # to set EESSI_VERSION we need to source init/eessi_defaults now
-source init/eessi_defaults
+source $software_layer_dir/init/eessi_defaults
 export TGZ=$(printf "eessi-%s-software-%s-%s-%d.tar.gz" ${EESSI_VERSION} ${EESSI_OS_TYPE} ${EESSI_SOFTWARE_SUBDIR_OVERRIDE//\//-} ${timestamp})
 
 # value of first parameter to create_tarball.sh - TMP_IN_CONTAINER - needs to be
@@ -281,9 +289,9 @@ export TGZ=$(printf "eessi-%s-software-%s-%s-%d.tar.gz" ${EESSI_VERSION} ${EESSI
 # /tmp as default?
 TMP_IN_CONTAINER=/tmp
 echo "Executing command to create tarball:"
-echo "./eessi_container.sh ${COMMON_ARGS[@]} ${TARBALL_STEP_ARGS[@]}"
-echo "                     -- ./create_tarball.sh ${TMP_IN_CONTAINER} ${EESSI_VERSION} ${EESSI_SOFTWARE_SUBDIR_OVERRIDE} \"${EESSI_ACCELERATOR_TARGET}\" /eessi_bot_job/${TGZ} 2>&1 | tee -a ${tar_outerr}"
-./eessi_container.sh "${COMMON_ARGS[@]}" "${TARBALL_STEP_ARGS[@]}" \
-                     -- ./create_tarball.sh ${TMP_IN_CONTAINER} ${EESSI_VERSION} ${EESSI_SOFTWARE_SUBDIR_OVERRIDE} "${EESSI_ACCELERATOR_TARGET}" /eessi_bot_job/${TGZ} 2>&1 | tee -a ${tar_outerr}
+echo "$software_layer_dir/eessi_container.sh ${COMMON_ARGS[@]} ${TARBALL_STEP_ARGS[@]}"
+echo "                     -- $software_layer_dir/create_tarball.sh ${TMP_IN_CONTAINER} ${EESSI_VERSION} ${EESSI_SOFTWARE_SUBDIR_OVERRIDE} \"${EESSI_ACCELERATOR_TARGET}\" /eessi_bot_job/${TGZ} 2>&1 | tee -a ${tar_outerr}"
+$software_layer_dir/eessi_container.sh "${COMMON_ARGS[@]}" "${TARBALL_STEP_ARGS[@]}" \
+                     -- $software_layer_dir/create_tarball.sh ${TMP_IN_CONTAINER} ${EESSI_VERSION} ${EESSI_SOFTWARE_SUBDIR_OVERRIDE} "${EESSI_ACCELERATOR_TARGET}" /eessi_bot_job/${TGZ} 2>&1 | tee -a ${tar_outerr}
 
 exit 0
