@@ -69,7 +69,7 @@ jobs:
         EESSI_VERSION:
           - 2023.06
         EESSI_SOFTWARE_SUBDIR_OVERRIDE:
-          - x86_64/amd/zen2
+          - x86_64/amd/zen3
         EESSI_ACCEL_SOFTWARE_SUBDIR_OVERRIDE:
           - none
           - accel/nvidia/cc80        
@@ -101,9 +101,13 @@ jobs:
           sourceoutfile="sourceout.txt"
           module load EESSI/${{matrix.EESSI_VERSION}}
           unset EESSI_ARCHDETECT_OPTIONS
+          # module version uses archdetect (ignore this)
+          unset EESSI_USE_ARCHDETECT
           env | grep -E '^EESSI_' | sort > "${moduleoutfile}"
           module unload EESSI/${{matrix.EESSI_VERSION}}
           source ./init/bash
+          # source script version uses archspec (ignore this)
+          unset EESSI_USE_ARCHSPEC
           env | grep -E '^EESSI_' | sort > "${sourceoutfile}"
           cat "${moduleoutfile}"
           cat "${sourceoutfile}"
