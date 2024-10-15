@@ -48,7 +48,7 @@ jobs:
           . /cvmfs/software.eessi.io/versions/${{matrix.EESSI_VERSION}}/compat/linux/$(uname -m)/usr/share/Lmod/init/bash  # Initialise Lmod
           export MODULEPATH=init/modules
           set +e  # Do not exit immediately if a command exits with a non-zero status          
-          export EESSI_ARCHDETECT_OPTIONS="dummy/cpu"
+          export EESSI_ARCHDETECT_OPTIONS_OVERRIDE="dummy/cpu"
           outfile="outfile.txt"
           module load EESSI/${{matrix.EESSI_VERSION}} > "${outfile}" 2>&1
           cat "${outfile}"
@@ -58,7 +58,7 @@ jobs:
               echo "Test for picking up invalid path on \${archdetect_cpu} FAILED" >&2
               exit 1
           fi
-          unset EESSI_ARCHDETECT_OPTIONS
+          unset EESSI_ARCHDETECT_OPTIONS_OVERRIDE
           set -e  # Re-enable exit on non-zero status
 
   lmod_and_init_script_comparison:
@@ -97,10 +97,10 @@ jobs:
           # First do (and undo) the Lmod initialisation
           export MODULEPATH=init/modules
           CPU_ARCH=$(./init/eessi_archdetect.sh -a cpupath)
-          export EESSI_ARCHDETECT_OPTIONS="dummy/cpu:${CPU_ARCH}:dummy1/cpu1"          
+          export EESSI_ARCHDETECT_OPTIONS_OVERRIDE="dummy/cpu:${CPU_ARCH}:dummy1/cpu1"          
           module load EESSI/${{matrix.EESSI_VERSION}}
-          # EESSI_ARCHDETECT_OPTIONS only relevant for Lmod init
-          unset EESSI_ARCHDETECT_OPTIONS
+          # EESSI_ARCHDETECT_OPTIONS_OVERRIDE only relevant for Lmod init
+          unset EESSI_ARCHDETECT_OPTIONS_OVERRIDE
           # Store all relevant environment variables
           env | grep -E '^EESSI_' | sort > "${moduleoutfile}"
           module unload EESSI/${{matrix.EESSI_VERSION}}
