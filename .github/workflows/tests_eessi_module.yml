@@ -100,10 +100,11 @@ jobs:
           moduleoutfile="moduleout.txt"
           sourceoutfile="sourceout.txt"
           module load EESSI/${{matrix.EESSI_VERSION}}
-          env | grep -E '^(EESSI_S|EESSI_C)' | sort > "${moduleoutfile}"
+          unset EESSI_ARCHDETECT_OPTIONS
+          env | grep -E '^EESSI_' | sort > "${moduleoutfile}"
           module unload EESSI/${{matrix.EESSI_VERSION}}
           source ./init/bash
-          env | grep -E '^(EESSI_S|EESSI_C)' | sort > "${sourceoutfile}"
+          env | grep -E '^EESSI_' | sort > "${sourceoutfile}"
           cat "${moduleoutfile}"
           cat "${sourceoutfile}"
           if (diff "${moduleoutfile}" "${sourceoutfile}" > /dev/null); then
