@@ -71,7 +71,6 @@ jobs:
         EESSI_SOFTWARE_SUBDIR_OVERRIDE:
           - x86_64/amd/zen3
         EESSI_ACCELERATOR_TARGET_OVERRIDE:
-          - none
           - accel/nvidia/cc80        
     steps:
       - name: Check out software-layer repository
@@ -90,9 +89,7 @@ jobs:
           
           # Set our path overrides according to our matrix
           export EESSI_SOFTWARE_SUBDIR_OVERRIDE=${{matrix.EESSI_SOFTWARE_SUBDIR_OVERRIDE}}
-          if [[ "${{matrix.EESSI_ACCELERATOR_TARGET_OVERRIDE}}" != "none" ]]; then
-            export EESSI_ACCELERATOR_TARGET_OVERRIDE=${{matrix.EESSI_ACCELERATOR_TARGET_OVERRIDE}}
-          fi
+          export EESSI_ACCELERATOR_TARGET_OVERRIDE=${{matrix.EESSI_ACCELERATOR_TARGET_OVERRIDE}}
           
           moduleoutfile="moduleout.txt"
           sourceoutfile="sourceout.txt"
@@ -129,5 +126,64 @@ jobs:
           else 
               echo "Test for checking env variables FAILED"  >&2
               diff --unified=0 "${moduleoutfile}" "${sourceoutfile}" 
+              exit 1
+          fi
+
+  make_sure_load_and_unload_work:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        EESSI_VERSION:
+          - 2023.06
+        EESSI_SOFTWARE_SUBDIR_OVERRIDE:
+          - x86_64/amd/zen2
+          - x86_64/amd/zen3
+    steps:
+      - name: Check out software-layer repository
+        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
+          
+      - name: Mount EESSI CernVM-FS pilot repository
+        uses: cvmfs-contrib/github-action-cvmfs@55899ca74cf78ab874bdf47f5a804e47c198743c # v4.0
+        with:
+          cvmfs_config_package: https://github.com/EESSI/filesystem-layer/releases/download/latest/cvmfs-config-eessi_latest_all.deb
+          cvmfs_http_proxy: DIRECT
+          cvmfs_repositories: software.eessi.io
+              
+      - name: Test for expected variables while adding dummy cpu archs and loading EESSI module 
+        run: |
+          . /cvmfs/software.eessi.io/versions/${{matrix.EESSI_VERSION}}/compat/linux/$(uname -m)/usr/share/Lmod/init/bash  # Initialise Lmod
+          
+          # Set our path overrides according to our matrix
+          export EESSI_SOFTWARE_SUBDIR_OVERRIDE=${{matrix.EESSI_SOFTWARE_SUBDIR_OVERRIDE}}
+
+          initial_env_file="initial_env.txt"
+          module_cycled_file="load_unload_cycle.txt"
+          
+          # Store the initial environment
+          env | grep -E '^EESSI_' | sort > "${initial_env_file}"
+
+          # Do (and undo) loading the EESSI module
+          export MODULEPATH=init/modules
+          CPU_ARCH=$(./init/eessi_archdetect.sh -a cpupath)
+          export EESSI_ARCHDETECT_OPTIONS="dummy/cpu:${CPU_ARCH}:dummy1/cpu1"          
+          module load EESSI/${{matrix.EESSI_VERSION}}
+          module unload EESSI/${{matrix.EESSI_VERSION}}
+          env | grep -E '^EESSI_' | sort > "${module_cycled_file}"
+          
+          # Now compare the two results
+          echo ""
+          echo "Initial environment:"
+          cat "${initial_env_file}"
+          echo ""
+          echo "Environment after load/unload cycle of EESSI:"
+          cat "${module_cycled_file}"
+          echo ""
+          echo ""
+          if (diff "${initial_env_file}" "${module_cycled_file}" > /dev/null); then
+              echo "Test for checking env variables PASSED"
+          else 
+              echo "Test for checking env variables FAILED"  >&2
+              diff --unified=0 "${initial_env_file}" "${module_cycled_file}" 
               exit 1
           fi
