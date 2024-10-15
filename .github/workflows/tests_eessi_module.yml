@@ -101,13 +101,12 @@ jobs:
           sourceoutfile="sourceout.txt"
           module load EESSI/${{matrix.EESSI_VERSION}}
           unset EESSI_ARCHDETECT_OPTIONS
-          # module version uses archdetect (ignore this)
-          unset EESSI_USE_ARCHDETECT
           env | grep -E '^EESSI_' | sort > "${moduleoutfile}"
           module unload EESSI/${{matrix.EESSI_VERSION}}
           source ./init/bash
-          # source script version uses archspec (ignore this)
+          # source script version sets environment variables to force archdetect, ignore these
           unset EESSI_USE_ARCHSPEC
+          unset EESSI_USE_ARCHDETECT
           env | grep -E '^EESSI_' | sort > "${sourceoutfile}"
           cat "${moduleoutfile}"
           cat "${sourceoutfile}"
