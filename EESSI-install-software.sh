@@ -249,6 +249,7 @@ fi
 # Allow skipping CUDA SDK install in e.g. CI environments
 # The install_cuda... script uses EasyBuild. So, we need to check if we have EB
 # or skip this step.
+echo "Going to install full CUDA SDK and cu* libraries under host_injections if necessary"
 module_avail_out=$TMPDIR/ml.out
 module avail 2>&1 | grep EasyBuild &> ${module_avail_out}
 if [[ $? -eq 0 ]]; then

@@ -38,6 +38,7 @@ show_help() {
 
 # Initialize variables
 cuda_eula_accepted=0
+cudnn_eula_accepted=0
 EASYSTACK_FILE=
 TEMP_DIR=
 
@@ -91,7 +92,7 @@ else
 fi
 echo "Created temporary directory '${tmpdir}'"
 
-# use install_path/modules/all as MODULEPATH
+# use EESSI_SITE_SOFTWARE_PATH/.modules/all as MODULEPATH
 SAVE_MODULEPATH=${MODULEPATH}
 
 for EASYSTACK_FILE in ${TOPDIR}/easystacks/eessi-*CUDA*.yml; do
@@ -101,11 +102,12 @@ for EASYSTACK_FILE in ${TOPDIR}/easystacks/eessi-*CUDA*.yml; do
     eb_version=$(echo ${EASYSTACK_FILE} | sed 's/.*eb-\([0-9.]*\).*/\1/g')
 
     # Load EasyBuild version for this easystack file _before_ loading EESSI-extend
+    module avail EasyBuild
     module load EasyBuild/${eb_version}
     module load EESSI-extend/${EESSI_VERSION}-easybuild
 
     # Install modules in hidden .modules dir to keep track of what was installed before
-    MODULEPATH=${EASYBUILD_INSTALLPATH}/.modules/all
+    MODULEPATH=${EESSI_SITE_SOFTWARE_PATH}/.modules/all
     echo "set MODULEPATH=${MODULEPATH}"
 
     # show EasyBuild configuration
@@ -145,7 +147,7 @@ for EASYSTACK_FILE in ${TOPDIR}/easystacks/eessi-*CUDA*.yml; do
     # Make sure the cuDNN EULA is accepted if it shall be installed
     if [ "${cudnn_install_needed}" -eq 1 ] && [ "${cudnn_eula_accepted}" -ne 1 ]; then
       show_help
-      error="\ncuDNN shall be installed. However, the cuDNNDA EULA has not been accepted\nYou _must_ accept the cuDNN EULA via the appropriate command line option.\n"
+      error="\ncuDNN shall be installed. However, the cuDNN EULA has not been accepted\nYou _must_ accept the cuDNN EULA via the appropriate command line option.\n"
       fatal_error "${error}"
     fi
 
