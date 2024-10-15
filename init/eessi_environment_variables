@@ -10,7 +10,7 @@ function error() {
 function show_msg {
   # only echo msg if EESSI_SILENT is unset
   msg=$1
-  if [[ -z ${EESSI_SILENT+x} ]]; then
+  if [[ -z ${EESSI_SILENT:+x} ]]; then
     echo "$msg"
   fi
 }
