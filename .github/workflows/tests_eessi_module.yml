@@ -83,7 +83,7 @@ jobs:
           cvmfs_http_proxy: DIRECT
           cvmfs_repositories: software.eessi.io
               
-      - name: Test for expected variables while adding dummy cpu archs and loading EESSI module 
+      - name: Test for expected variables match between Lmod init script and original bash script
         run: |
           . /cvmfs/software.eessi.io/versions/${{matrix.EESSI_VERSION}}/compat/linux/$(uname -m)/usr/share/Lmod/init/bash  # Initialise Lmod
           
@@ -137,6 +137,7 @@ jobs:
         EESSI_VERSION:
           - 2023.06
         EESSI_SOFTWARE_SUBDIR_OVERRIDE:
+          - none
           - x86_64/amd/zen2
           - x86_64/amd/zen3
     steps:
@@ -155,7 +156,9 @@ jobs:
           . /cvmfs/software.eessi.io/versions/${{matrix.EESSI_VERSION}}/compat/linux/$(uname -m)/usr/share/Lmod/init/bash  # Initialise Lmod
           
           # Set our path overrides according to our matrix
-          export EESSI_SOFTWARE_SUBDIR_OVERRIDE=${{matrix.EESSI_SOFTWARE_SUBDIR_OVERRIDE}}
+          if [[ "${{matrix.EESSI_SOFTWARE_SUBDIR_OVERRIDE}}" != "none" ]]; then
+              export EESSI_SOFTWARE_SUBDIR_OVERRIDE=${{matrix.EESSI_SOFTWARE_SUBDIR_OVERRIDE}}
+          fi
 
           initial_env_file="initial_env.txt"
           module_cycled_file="load_unload_cycle.txt"
