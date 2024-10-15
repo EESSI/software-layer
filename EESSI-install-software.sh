@@ -161,11 +161,13 @@ _eessi_software_path=${EESSI_PREFIX}/software/${EESSI_OS_TYPE}/${EESSI_SOFTWARE_
 _lmod_cfg_dir=${_eessi_software_path}/.lmod
 _lmod_rc_file=${_lmod_cfg_dir}/lmodrc.lua
 if [ ! -f ${_lmod_rc_file} ]; then
+    echo "Lmod file '${_lmod_rc_file}' does not exist yet; creating it..."
     command -V python3
     python3 ${TOPDIR}/create_lmodrc.py ${_eessi_software_path}
 fi
 _lmod_sitepackage_file=${_lmod_cfg_dir}/SitePackage.lua
 if [ ! -f ${_lmod_sitepackage_file} ]; then
+    echo "Lmod file '${_lmod_sitepackage_file}' does not exist yet; creating it..."
     command -V python3
     python3 ${TOPDIR}/create_lmodsitepackage.py ${_eessi_software_path}
 fi
