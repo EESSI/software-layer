@@ -166,7 +166,6 @@ jobs:
           # Do (and undo) loading the EESSI module
           export MODULEPATH=init/modules
           CPU_ARCH=$(./init/eessi_archdetect.sh -a cpupath)
-          export EESSI_ARCHDETECT_OPTIONS="dummy/cpu:${CPU_ARCH}:dummy1/cpu1"          
           module load EESSI/${{matrix.EESSI_VERSION}}
           module unload EESSI/${{matrix.EESSI_VERSION}}
           env | grep -E '^EESSI_' | sort > "${module_cycled_file}"

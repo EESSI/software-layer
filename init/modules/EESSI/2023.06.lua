@@ -17,40 +17,54 @@ local eessi_os_type = "linux"
 setenv("EESSI_VERSION", eessi_version)
 setenv("EESSI_CVMFS_REPO", eessi_repo)
 setenv("EESSI_OS_TYPE", eessi_os_type)
+function eessiDebug(text)
+    if os.getenv("EESSI_DEBUG_INIT") then
+        LmodMessage(text)
+    end
+end
 function archdetect_cpu()
     local script = pathJoin(eessi_prefix, 'init', 'lmod_eessi_archdetect_wrapper.sh')
-    if not os.getenv("EESSI_ARCHDETECT_OPTIONS") then
+    if not os.getenv("EESSI_ARCHDETECT_OPTIONS_OVERRIDE") then
         if convertToCanonical(LmodVersion()) < convertToCanonical("8.6") then
-            LmodError("Loading this modulefile requires using Lmod version >= 8.6, but you can export EESSI_ARCHDETECT_OPTIONS to the available cpu architecture in the form of: x86_64/intel/haswell:x86_64/generic or aarch64/neoverse_v1:aarch64/generic")
+            LmodError("Loading this modulefile requires using Lmod version >= 8.6, but you can export EESSI_ARCHDETECT_OPTIONS_OVERRIDE to the available cpu architecture in the form of: x86_64/intel/haswell:x86_64/generic or aarch64/neoverse_v1:aarch64/generic")
         end
         source_sh("bash", script)
     end
-    local archdetect_options = os.getenv("EESSI_ARCHDETECT_OPTIONS") or ""
-    for archdetect_filter_cpu in string.gmatch(archdetect_options, "([^" .. ":" .. "]+)") do
-        if isDir(pathJoin(eessi_prefix, "software", eessi_os_type, archdetect_filter_cpu, "software")) then
-            -- use x86_64/amd/zen3 for now when AMD Genoa (Zen4) CPU is detected, 
-            -- since optimized software installations for Zen4 are a work-in-progress, 
-            -- see https://gitlab.com/eessi/support/-/issues/37 
-            if archdetect_filter_cpu == "x86_64/amd/zen4" then
-                archdetect_filter_cpu = "x86_64/amd/zen3"
-                if mode() == "load" then
-                    LmodMessage("Sticking to " .. archdetect_filter_cpu .. " for now, since optimized installations for AMD Genoa (Zen4) are a work in progress.")
+    -- EESSI_ARCHDETECT_OPTIONS is set by the script (_if_ it was called)
+    local archdetect_options = os.getenv("EESSI_ARCHDETECT_OPTIONS") or (os.getenv("EESSI_ARCHDETECT_OPTIONS_OVERRIDE") or "")
+    if archdetect_options then
+        eessiDebug("Got archdetect CPU options: " .. archdetect_options)
+        for archdetect_filter_cpu in string.gmatch(archdetect_options, "([^" .. ":" .. "]+)") do
+            if isDir(pathJoin(eessi_prefix, "software", eessi_os_type, archdetect_filter_cpu, "software")) then
+                -- use x86_64/amd/zen3 for now when AMD Genoa (Zen4) CPU is detected,
+                -- since optimized software installations for Zen4 are a work-in-progress,
+                -- see https://gitlab.com/eessi/support/-/issues/37
+                if archdetect_filter_cpu == "x86_64/amd/zen4" then
+                    archdetect_filter_cpu = "x86_64/amd/zen3"
+                    if mode() == "load" then
+                        LmodMessage("Sticking to " .. archdetect_filter_cpu .. " for now, since optimized installations for AMD Genoa (Zen4) are a work in progress.")
+                    end
                 end
+                eessiDebug("Selected archdetect CPU: " .. archdetect_filter_cpu)
+                return archdetect_filter_cpu
             end
-            return archdetect_filter_cpu
         end
+        LmodError("Software directory check for the detected architecture failed")
+    else
+        -- Still need to return something
+        return nil
     end
-    LmodError("Software directory check for the detected architecture failed")
 end
 function archdetect_accel()
     local script = pathJoin(eessi_prefix, 'init', 'lmod_eessi_archdetect_wrapper_accel.sh')
-    if not os.getenv("EESSI_ACCEL_SUBDIR") then
+    if not os.getenv("EESSI_ACCELERATOR_TARGET_OVERRIDE ") then
         if convertToCanonical(LmodVersion()) < convertToCanonical("8.6") then
-            LmodError("Loading this modulefile requires using Lmod version >= 8.6, but you can export EESSI_ACCEL_SUBDIR to the available accelerator architecture in the form of: accel/nvidia/cc80")
+            LmodError("Loading this modulefile requires using Lmod version >= 8.6, but you can export EESSI_ACCELERATOR_TARGET_OVERRIDE to the available accelerator architecture in the form of: accel/nvidia/cc80")
         end
         source_sh("bash", script)
     end
     local archdetect_accel = os.getenv("EESSI_ACCEL_SUBDIR") or ""
+    eessiDebug("Got archdetect accel option: " .. archdetect_accel)
     return archdetect_accel
 end
 local archdetect = archdetect_cpu()
