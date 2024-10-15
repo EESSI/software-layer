@@ -70,7 +70,7 @@ jobs:
           - 2023.06
         EESSI_SOFTWARE_SUBDIR_OVERRIDE:
           - x86_64/amd/zen3
-        EESSI_ACCEL_SOFTWARE_SUBDIR_OVERRIDE:
+        EESSI_ACCELERATOR_TARGET_OVERRIDE:
           - none
           - accel/nvidia/cc80        
     steps:
@@ -90,30 +90,44 @@ jobs:
           
           # Set our path overrides according to our matrix
           export EESSI_SOFTWARE_SUBDIR_OVERRIDE=${{matrix.EESSI_SOFTWARE_SUBDIR_OVERRIDE}}
-          if [[ "${{matrix.EESSI_ACCEL_SOFTWARE_SUBDIR_OVERRIDE}}" != "none" ]]; then
-            export EESSI_ACCEL_SOFTWARE_SUBDIR_OVERRIDE=${{matrix.EESSI_ACCEL_SOFTWARE_SUBDIR_OVERRIDE}}
+          if [[ "${{matrix.EESSI_ACCELERATOR_TARGET_OVERRIDE}}" != "none" ]]; then
+            export EESSI_ACCELERATOR_TARGET_OVERRIDE=${{matrix.EESSI_ACCELERATOR_TARGET_OVERRIDE}}
           fi
-
+          
+          moduleoutfile="moduleout.txt"
+          sourceoutfile="sourceout.txt"
+          
+          # First do (and undo) the Lmod initialisation
           export MODULEPATH=init/modules
           CPU_ARCH=$(./init/eessi_archdetect.sh -a cpupath)
           export EESSI_ARCHDETECT_OPTIONS="dummy/cpu:${CPU_ARCH}:dummy1/cpu1"          
-          moduleoutfile="moduleout.txt"
-          sourceoutfile="sourceout.txt"
           module load EESSI/${{matrix.EESSI_VERSION}}
+          # EESSI_ARCHDETECT_OPTIONS only relevant for Lmod init
           unset EESSI_ARCHDETECT_OPTIONS
+          # Store all relevant environment variables
           env | grep -E '^EESSI_' | sort > "${moduleoutfile}"
           module unload EESSI/${{matrix.EESSI_VERSION}}
+          
+          # Now do the init script initialisation
           source ./init/bash
           # source script version sets environment variables to force archdetect, ignore these
           unset EESSI_USE_ARCHSPEC
           unset EESSI_USE_ARCHDETECT
           env | grep -E '^EESSI_' | sort > "${sourceoutfile}"
+          
+          # Now compare the two results
+          echo ""
+          echo "Lmod initialisation:"
           cat "${moduleoutfile}"
+          echo ""
+          echo "Source script initialisation:"
           cat "${sourceoutfile}"
+          echo ""
+          echo ""
           if (diff "${moduleoutfile}" "${sourceoutfile}" > /dev/null); then
               echo "Test for checking env variables PASSED"
           else 
               echo "Test for checking env variables FAILED"  >&2
-              diff "${moduleoutfile}" "${sourceoutfile}" 
+              diff --unified=0 "${moduleoutfile}" "${sourceoutfile}" 
               exit 1
           fi
