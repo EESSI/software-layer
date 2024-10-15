@@ -5,3 +5,4 @@
 "x86_64/amd/zen2"		"AuthenticAMD"	"avx2 fma"						# AMD Rome
 "x86_64/amd/zen3"		"AuthenticAMD"	"avx2 fma vaes"						# AMD Milan, Milan-X
 "x86_64/amd/zen4"		"AuthenticAMD"	"avx2 fma vaes avx512f avx512ifma"			# AMD Genoa, Genoa-X
+"x86_64/amd/zen5"		"AuthenticAMD"	"avx2 fma vaes avx512f avx512ifma avx512_vp2intersect avx_vnni"			# AMD Turin
