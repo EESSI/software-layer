@@ -173,7 +173,9 @@ fi
 # Set all the EESSI environment variables (respecting $EESSI_SOFTWARE_SUBDIR_OVERRIDE)
 # $EESSI_SILENT - don't print any messages
 # $EESSI_BASIC_ENV - give a basic set of environment variables
-EESSI_SILENT= EESSI_BASIC_ENV= source $TOPDIR/init/eessi_environment_variables
+unset EESSI_SILENT
+unset EESSI_BASIC_ENV
+source $TOPDIR/init/eessi_environment_variables
 
 if [[ -z ${EESSI_SOFTWARE_SUBDIR} ]]; then
     fatal_error "Failed to determine software subdirectory?!"
