@@ -86,7 +86,8 @@ TOPDIR=$(dirname $(realpath $0))
 # Copy for init directory
 init_files=(
     bash eessi_archdetect.sh eessi_defaults eessi_environment_variables eessi_software_subdir_for_host.py
-    minimal_eessi_env README.md test.py lmod_eessi_archdetect_wrapper.sh
+    minimal_eessi_env README.md test.py lmod_eessi_archdetect_wrapper.sh lmod_eessi_archdetect_wrapper_accel.sh
+
 )
 copy_files_by_list ${TOPDIR}/init ${INSTALL_PREFIX}/init "${init_files[@]}"
 
