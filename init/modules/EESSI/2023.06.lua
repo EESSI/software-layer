@@ -109,6 +109,7 @@ if not (archdetect_accel == nil or archdetect_accel == '') then
     if isDir(eessi_module_path_accel) then
         setenv("EESSI_MODULEPATH_ACCEL", eessi_module_path_accel)
         prepend_path("MODULEPATH", eessi_module_path_accel)
+        eessiDebug("Using acclerator modules at: " .. eessi_module_path_accel)
     end
 end
 
