@@ -330,6 +330,11 @@ fi
 
 export LMOD_CONFIG_DIR="${EASYBUILD_INSTALLPATH}/.lmod"
 lmod_rc_file="$LMOD_CONFIG_DIR/lmodrc.lua"
+if [[ ! -z ${EESSI_ACCELERATOR_TARGET} ]]; then
+    # EESSI_ACCELERATOR_TARGET is set, so let's remove the accelerator path from $lmod_rc_file
+    lmod_rc_file=$(echo ${lmod_rc_file} | sed "s@/accel/${EESSI_ACCELERATOR_TARGET}@@")
+    echo "Path to lmodrc.lua changed to '${lmod_rc_file}'"
+fi
 lmodrc_changed=$(cat ${pr_diff} | grep '^+++' | cut -f2 -d' ' | sed 's@^[a-z]/@@g' | grep '^create_lmodrc.py$' > /dev/null; echo $?)
 if [ ! -f $lmod_rc_file ] || [ ${lmodrc_changed} == '0' ]; then
     echo ">> Creating/updating Lmod RC file (${lmod_rc_file})..."
@@ -339,6 +344,11 @@ fi
 
 export LMOD_PACKAGE_PATH="${EASYBUILD_INSTALLPATH}/.lmod"
 lmod_sitepackage_file="$LMOD_PACKAGE_PATH/SitePackage.lua"
+if [[ ! -z ${EESSI_ACCELERATOR_TARGET} ]]; then
+    # EESSI_ACCELERATOR_TARGET is set, so let's remove the accelerator path from $lmod_sitepackage_file
+    lmod_sitepackage_file=$(echo ${lmod_sitepackage_file} | sed "s@/accel/${EESSI_ACCELERATOR_TARGET}@@")
+    echo "Path to SitePackage.lua changed to '${lmod_sitepackage_file}'"
+fi
 sitepackage_changed=$(cat ${pr_diff} | grep '^+++' | cut -f2 -d' ' | sed 's@^[a-z]/@@g' | grep '^create_lmodsitepackage.py$' > /dev/null; echo $?)
 if [ ! -f "$lmod_sitepackage_file" ] || [ "${sitepackage_changed}" == '0' ]; then
     echo ">> Creating/updating Lmod SitePackage.lua (${lmod_sitepackage_file})..."
