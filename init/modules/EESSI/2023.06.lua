@@ -24,6 +24,8 @@ function eessiDebug(text)
 end
 function archdetect_cpu()
     local script = pathJoin(eessi_prefix, 'init', 'lmod_eessi_archdetect_wrapper.sh')
+    -- make sure that we grab the value for architecture before the module unsets the environment variable (in unload mode)
+    local archdetect_options = os.getenv("EESSI_ARCHDETECT_OPTIONS") or (os.getenv("EESSI_ARCHDETECT_OPTIONS_OVERRIDE") or "")
     if not os.getenv("EESSI_ARCHDETECT_OPTIONS_OVERRIDE") then
         if convertToCanonical(LmodVersion()) < convertToCanonical("8.6") then
             LmodError("Loading this modulefile requires using Lmod version >= 8.6, but you can export EESSI_ARCHDETECT_OPTIONS_OVERRIDE to the available cpu architecture in the form of: x86_64/intel/haswell:x86_64/generic or aarch64/neoverse_v1:aarch64/generic")
@@ -31,7 +33,7 @@ function archdetect_cpu()
         source_sh("bash", script)
     end
     -- EESSI_ARCHDETECT_OPTIONS is set by the script (_if_ it was called)
-    local archdetect_options = os.getenv("EESSI_ARCHDETECT_OPTIONS") or (os.getenv("EESSI_ARCHDETECT_OPTIONS_OVERRIDE") or "")
+    archdetect_options = os.getenv("EESSI_ARCHDETECT_OPTIONS") or archdetect_options
     if archdetect_options then
         eessiDebug("Got archdetect CPU options: " .. archdetect_options)
         for archdetect_filter_cpu in string.gmatch(archdetect_options, "([^" .. ":" .. "]+)") do
@@ -57,13 +59,15 @@ function archdetect_cpu()
 end
 function archdetect_accel()
     local script = pathJoin(eessi_prefix, 'init', 'lmod_eessi_archdetect_wrapper_accel.sh')
+    -- for unload mode, we need to grab the value before it is unset
+    local archdetect_accel = os.getenv("EESSI_ACCEL_SUBDIR") or (os.getenv("EESSI_ACCELERATOR_TARGET_OVERRIDE") or "")
     if not os.getenv("EESSI_ACCELERATOR_TARGET_OVERRIDE ") then
         if convertToCanonical(LmodVersion()) < convertToCanonical("8.6") then
             LmodError("Loading this modulefile requires using Lmod version >= 8.6, but you can export EESSI_ACCELERATOR_TARGET_OVERRIDE to the available accelerator architecture in the form of: accel/nvidia/cc80")
         end
         source_sh("bash", script)
     end
-    local archdetect_accel = os.getenv("EESSI_ACCEL_SUBDIR") or ""
+    archdetect_accel = os.getenv("EESSI_ACCEL_SUBDIR") or archdetect_accel
     eessiDebug("Got archdetect accel option: " .. archdetect_accel)
     return archdetect_accel
 end
@@ -101,8 +105,8 @@ setenv("LMOD_PACKAGE_PATH", pathJoin(eessi_software_path, ".lmod"))
 if not (archdetect_accel == nil or archdetect_accel == '') then
     eessi_accel_software_subdir = os.getenv("EESSI_ACCEL_SOFTWARE_SUBDIR_OVERRIDE") or eessi_software_subdir
     eessi_accel_software_path = pathJoin(eessi_prefix, "software", eessi_os_type, eessi_accel_software_subdir)
-    eessi_module_path_accel = pathJoin(eessi_accel_software_path, eessi_accel_software_subdir, eessi_modules_subdir)
-    if isDir(eessi_modulepath_accel) then
+    eessi_module_path_accel = pathJoin(eessi_accel_software_path, archdetect_accel, eessi_modules_subdir)
+    if isDir(eessi_module_path_accel) then
         setenv("EESSI_MODULEPATH_ACCEL", eessi_module_path_accel)
         prepend_path("MODULEPATH", eessi_module_path_accel)
     end
