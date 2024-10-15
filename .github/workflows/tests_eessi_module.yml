@@ -151,7 +151,7 @@ jobs:
           cvmfs_http_proxy: DIRECT
           cvmfs_repositories: software.eessi.io
               
-      - name: Test for expected variables while adding dummy cpu archs and loading EESSI module 
+      - name: Test for identical environment after loading and unloading the EESSI module
         run: |
           . /cvmfs/software.eessi.io/versions/${{matrix.EESSI_VERSION}}/compat/linux/$(uname -m)/usr/share/Lmod/init/bash  # Initialise Lmod
           
