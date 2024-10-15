@@ -7,13 +7,13 @@ on:
 permissions:
   contents: read # to fetch code (actions/checkout)
 jobs:
-  build:
+  basic_checks:
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
       matrix:
         EESSI_VERSION:
-          - 2023.06        
+          - 2023.06
     steps:
       - name: Check out software-layer repository
         uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
@@ -60,10 +60,40 @@ jobs:
           fi
           unset EESSI_ARCHDETECT_OPTIONS
           set -e  # Re-enable exit on non-zero status
+
+  lmod_and_init_script_comparison:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        EESSI_VERSION:
+          - 2023.06
+        EESSI_SOFTWARE_SUBDIR_OVERRIDE:
+          - x86_64/amd/zen2
+        EESSI_ACCEL_SOFTWARE_SUBDIR_OVERRIDE:
+          - none
+          - accel/nvidia/cc80        
+    steps:
+      - name: Check out software-layer repository
+        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
+          
+      - name: Mount EESSI CernVM-FS pilot repository
+        uses: cvmfs-contrib/github-action-cvmfs@55899ca74cf78ab874bdf47f5a804e47c198743c # v4.0
+        with:
+          cvmfs_config_package: https://github.com/EESSI/filesystem-layer/releases/download/latest/cvmfs-config-eessi_latest_all.deb
+          cvmfs_http_proxy: DIRECT
+          cvmfs_repositories: software.eessi.io
               
       - name: Test for expected variables while adding dummy cpu archs and loading EESSI module 
         run: |
           . /cvmfs/software.eessi.io/versions/${{matrix.EESSI_VERSION}}/compat/linux/$(uname -m)/usr/share/Lmod/init/bash  # Initialise Lmod
+          
+          # Set our path overrides according to our matrix
+          export EESSI_SOFTWARE_SUBDIR_OVERRIDE=${{matrix.EESSI_SOFTWARE_SUBDIR_OVERRIDE}}
+          if [[ "${{matrix.EESSI_ACCEL_SOFTWARE_SUBDIR_OVERRIDE}}" != "none" ]]; then
+            export EESSI_ACCEL_SOFTWARE_SUBDIR_OVERRIDE=${{matrix.EESSI_ACCEL_SOFTWARE_SUBDIR_OVERRIDE}}
+          fi
+
           export MODULEPATH=init/modules
           CPU_ARCH=$(./init/eessi_archdetect.sh -a cpupath)
           export EESSI_ARCHDETECT_OPTIONS="dummy/cpu:${CPU_ARCH}:dummy1/cpu1"          
@@ -83,4 +113,3 @@ jobs:
               diff "${moduleoutfile}" "${sourceoutfile}" 
               exit 1
           fi
-
