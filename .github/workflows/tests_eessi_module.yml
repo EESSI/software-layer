@@ -183,8 +183,8 @@ jobs:
           
           # prepare Lmod, including resetting it (even though this will likely return an error since we have no defaults)
           export MODULEPATH=init/modules
-          module reset || true
-          module list
+          module purge
+          module avail
 
           # Store the initial environment
           env | sort > "${initial_env_file}"
