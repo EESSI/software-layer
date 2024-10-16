@@ -217,7 +217,8 @@ if [ ! -f ${_lmod_sitepackage_file} ]; then
 fi
 
 echo ">> Configuring EasyBuild..."
-source $TOPDIR/configure_easybuild
+export EESSI_CVMFS_INSTALL=1
+module load EESSI-extend/${EESSI_VERSION}-easybuild
 
 if [ ! -z "${shared_fs_path}" ]; then
     shared_eb_sourcepath=${shared_fs_path}/easybuild/sources
