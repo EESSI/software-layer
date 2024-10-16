@@ -183,6 +183,7 @@ jobs:
           
           # prepare Lmod
           export MODULEPATH=init/modules
+          module reset
           module list
 
           # Store the initial environment
