@@ -221,6 +221,9 @@ if [ ! -f ${_lmod_sitepackage_file} ]; then
 fi
 
 echo ">> Configuring EasyBuild..."
+unset EESSI_USER_INSTALL
+unset EESSI_PROJECT_INSTALL
+unset EESSI_SITE_INSTALL
 export EESSI_CVMFS_INSTALL=1
 module load EESSI-extend/${EESSI_VERSION}-easybuild
 
