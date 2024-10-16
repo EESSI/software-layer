@@ -194,15 +194,7 @@ jobs:
           module unload EESSI/${{matrix.EESSI_VERSION}}
           env | sort > "${module_cycled_file}"
           
-          # Now compare the two results
-          echo ""
-          echo "Initial environment:"
-          cat "${initial_env_file}"
-          echo ""
-          echo "Environment after load/unload cycle of EESSI:"
-          cat "${module_cycled_file}"
-          echo ""
-          echo ""
+          # Now compare the two results (do not expose the files, as they contain the full environment!)
           if (diff "${initial_env_file}" "${module_cycled_file}" > /dev/null); then
               echo "Test for checking env variables PASSED"
           else 
