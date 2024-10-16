@@ -18,7 +18,7 @@ setenv("EESSI_VERSION", eessi_version)
 setenv("EESSI_CVMFS_REPO", eessi_repo)
 setenv("EESSI_OS_TYPE", eessi_os_type)
 function eessiDebug(text)
-    if os.getenv("EESSI_DEBUG_INIT") then
+    if (mode() == "load" and os.getenv("EESSI_DEBUG_INIT")) then
         LmodMessage(text)
     end
 end
@@ -82,21 +82,35 @@ local eessi_module_path = pathJoin(eessi_software_path, eessi_modules_subdir)
 local eessi_site_software_path = string.gsub(eessi_software_path, "versions", "host_injections")
 local eessi_site_module_path = pathJoin(eessi_site_software_path, eessi_modules_subdir)
 setenv("EPREFIX",  eessi_eprefix)
+eessiDebug("Setting EPREFIX to " .. eessi_eprefix)
 setenv("EESSI_CPU_FAMILY", eessi_cpu_family)
+eessiDebug("Setting EESSI_CPU_FAMILY to " .. eessi_cpu_family)
 setenv("EESSI_SITE_SOFTWARE_PATH", eessi_site_software_path)
+eessiDebug("Setting EESSI_SITE_SOFTWARE_PATH to " .. eessi_site_software_path)
 setenv("EESSI_SITE_MODULEPATH", eessi_site_module_path)
+eessiDebug("Setting EESSI_SITE_MODULEPATH to " .. eessi_site_module_path)
 setenv("EESSI_SOFTWARE_SUBDIR", eessi_software_subdir)
+eessiDebug("Setting EESSI_SOFTWARE_SUBDIR to " .. eessi_software_subdir)
 setenv("EESSI_PREFIX", eessi_prefix)
+eessiDebug("Setting EESSI_PREFIX to " .. eessi_prefix)
 setenv("EESSI_EPREFIX", eessi_eprefix)
+eessiDebug("Setting EPREFIX to " .. eessi_eprefix)
 prepend_path("PATH", pathJoin(eessi_eprefix, "bin"))
-prepend_path("PATH", pathJoin(eessi_eprefix, "usr/bin"))
+eessiDebug("Adding " .. pathJoin(eessi_eprefix, "bin") .. " to PATH")
+prepend_path("PATH", pathJoin(eessi_eprefix, "usr", "bin"))
+eessiDebug("Adding " .. pathJoin(eessi_eprefix, "usr", "bin") .. " to PATH")
 setenv("EESSI_SOFTWARE_PATH", eessi_software_path)
+eessiDebug("Setting EESSI_SOFTWARE_PATH to " .. eessi_software_path)
 setenv("EESSI_MODULEPATH", eessi_module_path)
+eessiDebug("Setting EESSI_MODULEPATH to " .. eessi_module_path)
 if ( mode() ~= "spider" ) then
     prepend_path("MODULEPATH", eessi_module_path)
+    eessiDebug("Adding " .. eessi_module_path .. " to MODULEPATH")
 end
-prepend_path("LMOD_RC", pathJoin(eessi_software_path, "/.lmod/lmodrc.lua"))
+prepend_path("LMOD_RC", pathJoin(eessi_software_path, ".lmod", "lmodrc.lua"))
+eessiDebug("Adding " .. pathJoin(eessi_software_path, ".lmod", "lmodrc.lua") .. " to LMOD_RC")
 setenv("LMOD_PACKAGE_PATH", pathJoin(eessi_software_path, ".lmod"))
+eessiDebug("Setting LMOD_PACKAGE_PATH to " .. pathJoin(eessi_software_path, ".lmod"))
 
 -- the accelerator may have an empty value and we need to give some flexibility
 -- * construct the path we expect to find
@@ -106,6 +120,7 @@ if not (archdetect_accel == nil or archdetect_accel == '') then
     eessi_accel_software_subdir = os.getenv("EESSI_ACCEL_SOFTWARE_SUBDIR_OVERRIDE") or eessi_software_subdir
     eessi_accel_software_path = pathJoin(eessi_prefix, "software", eessi_os_type, eessi_accel_software_subdir)
     eessi_module_path_accel = pathJoin(eessi_accel_software_path, archdetect_accel, eessi_modules_subdir)
+    eessiDebug("Checking if " .. eessi_module_path_accel .. " exists")
     if isDir(eessi_module_path_accel) then
         setenv("EESSI_MODULEPATH_ACCEL", eessi_module_path_accel)
         prepend_path("MODULEPATH", eessi_module_path_accel)
@@ -115,6 +130,7 @@ end
 
 -- prepend the site module path last so it has priority
 prepend_path("MODULEPATH", eessi_site_module_path)
+eessiDebug("Adding " .. eessi_site_module_path .. " to MODULEPATH")
 if mode() == "load" then
     LmodMessage("EESSI/" .. eessi_version .. " loaded successfully")
 end
