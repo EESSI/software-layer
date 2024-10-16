@@ -234,5 +234,5 @@ for EASYSTACK_FILE in ${TOPDIR}/easystacks/eessi-*CUDA*.yml; do
     rm -rf "${tmpdir}"
 
     # Restore MODULEPATH for next loop iteration
-    MODUELPATH=${SAVE_MODULEPATH}
+    MODULEPATH=${SAVE_MODULEPATH}
 done
