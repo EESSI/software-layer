@@ -105,7 +105,7 @@ jobs:
           unset EESSI_ARCHDETECT_OPTIONS_OVERRIDE
           unset EESSI_DEBUG_INIT
           # Store all relevant environment variables
-          env | grep -E '^EESSI_' | sort > "${moduleoutfile}"
+          env | grep -E '(^EESSI_|^LMOD_RC|^LMOD_PACKAGE_PATH)' | sort > "${moduleoutfile}"
           module unload EESSI/${{matrix.EESSI_VERSION}}
           
           # Now do the init script initialisation
