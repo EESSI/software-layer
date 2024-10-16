@@ -173,11 +173,9 @@ if [ ! -f ${_lmod_sitepackage_file} ]; then
 fi
 
 # Set all the EESSI environment variables (respecting $EESSI_SOFTWARE_SUBDIR_OVERRIDE)
-# $EESSI_SILENT - don't print any messages
-# $EESSI_BASIC_ENV - give a basic set of environment variables
-unset EESSI_SILENT
-unset EESSI_BASIC_ENV
-source $TOPDIR/init/eessi_environment_variables
+# $EESSI_SILENT - don't print any messages if set (use 'unset EESSI_SILENT' to let script show messages)
+# $EESSI_BASIC_ENV - give a basic set of environment variables if set (use 'EESSI_BASIC_ENV=' to let script initialise a full environment)
+EESSI_SILENT=1 EESSI_BASIC_ENV= source $TOPDIR/init/eessi_environment_variables
 
 if [[ -z ${EESSI_SOFTWARE_SUBDIR} ]]; then
     fatal_error "Failed to determine software subdirectory?!"
