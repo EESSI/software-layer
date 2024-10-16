@@ -181,9 +181,11 @@ jobs:
           initial_env_file="initial_env.txt"
           module_cycled_file="load_unload_cycle.txt"
           
-          # prepare Lmod, including resetting it (even though this will likely return an error since we have no defaults)
-          export MODULEPATH=init/modules
+          # prepare Lmod, resetting it in a roundabout way
+          export MODULEPATH=init/modules:.github/workflows/modules
+          module load fake_module
           module purge
+          module unuse .github/workflows/modules
           module avail
 
           # Store the initial environment
