@@ -96,11 +96,14 @@ jobs:
           
           # First do (and undo) the Lmod initialisation
           export MODULEPATH=init/modules
+          # Turn on debug output in case we want to take a look
+          export EESSI_DEBUG_INIT=true
           CPU_ARCH=$(./init/eessi_archdetect.sh -a cpupath)
           export EESSI_ARCHDETECT_OPTIONS_OVERRIDE="dummy/cpu:${CPU_ARCH}:dummy1/cpu1"          
           module load EESSI/${{matrix.EESSI_VERSION}}
-          # EESSI_ARCHDETECT_OPTIONS_OVERRIDE only relevant for Lmod init
+          # EESSI_ARCHDETECT_OPTIONS_OVERRIDE/EESSI_DEBUG_INIT only relevant for Lmod init
           unset EESSI_ARCHDETECT_OPTIONS_OVERRIDE
+          unset EESSI_DEBUG_INIT
           # Store all relevant environment variables
           env | grep -E '^EESSI_' | sort > "${moduleoutfile}"
           module unload EESSI/${{matrix.EESSI_VERSION}}
@@ -139,7 +142,7 @@ jobs:
         EESSI_SOFTWARE_SUBDIR_OVERRIDE:
           - none
           - x86_64/amd/zen2
-          - x86_64/amd/zen3
+          - x86_64/amd/zen4
     steps:
       - name: Check out software-layer repository
         uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
@@ -159,6 +162,9 @@ jobs:
           if [[ "${{matrix.EESSI_SOFTWARE_SUBDIR_OVERRIDE}}" != "none" ]]; then
               export EESSI_SOFTWARE_SUBDIR_OVERRIDE=${{matrix.EESSI_SOFTWARE_SUBDIR_OVERRIDE}}
           fi
+
+          # Turn on debug output in case we want to take a look
+          export EESSI_DEBUG_INIT=true
 
           initial_env_file="initial_env.txt"
           module_cycled_file="load_unload_cycle.txt"
