@@ -112,12 +112,6 @@ fi
 
 TMPDIR=$(mktemp -d)
 
-# make sure we're in Prefix environment by checking $SHELL
-if [[ ${SHELL} = ${EPREFIX}/bin/bash ]]; then
-    echo_green ">> It looks like we're in a Gentoo Prefix environment, good!"
-else
-    fatal_error "Not running in Gentoo Prefix environment, run '${EPREFIX}/startprefix' first!"
-fi
 
 # Get override subdir
 DETECTION_PARAMETERS=''
@@ -179,6 +173,14 @@ module unuse $MODULEPATH
 # Initialize the EESSI environment
 module use $TOPDIR/init/modules
 module load EESSI/$EESSI_VERSION
+
+# make sure we're in Prefix environment by checking $SHELL
+# We can only do this after loading the EESSI module, as we need ${EPREFIX}
+if [[ ${SHELL} = ${EPREFIX}/bin/bash ]]; then
+    echo_green ">> It looks like we're in a Gentoo Prefix environment, good!"
+else
+    fatal_error "Not running in Gentoo Prefix environment, run '${EPREFIX}/startprefix' first!"
+fi
 
 if [ -d $EESSI_CVMFS_REPO ]; then
     echo_green "$EESSI_CVMFS_REPO available, OK!"
