@@ -181,9 +181,9 @@ jobs:
           initial_env_file="initial_env.txt"
           module_cycled_file="load_unload_cycle.txt"
           
-          # prepare Lmod
+          # prepare Lmod, including resetting it (even though this will likely return an error since we have no defaults)
           export MODULEPATH=init/modules
-          module reset
+          module reset || true
           module list
 
           # Store the initial environment
