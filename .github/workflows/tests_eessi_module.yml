@@ -113,7 +113,7 @@ jobs:
           # source script version sets environment variables to force archdetect, ignore these
           unset EESSI_USE_ARCHSPEC
           unset EESSI_USE_ARCHDETECT
-          env | grep -E '^EESSI_' | sort > "${sourceoutfile}"
+          env | grep -E '(^EESSI_|^LMOD_RC|^LMOD_PACKAGE_PATH)' | sort > "${sourceoutfile}"
           
           # Now compare the two results
           echo ""
@@ -170,14 +170,14 @@ jobs:
           module_cycled_file="load_unload_cycle.txt"
           
           # Store the initial environment
-          env | grep -E '^EESSI_' | sort > "${initial_env_file}"
+          env | grep -E '(^EESSI_|^LMOD_RC|^LMOD_PACKAGE_PATH)' | sort > "${initial_env_file}"
 
           # Do (and undo) loading the EESSI module
           export MODULEPATH=init/modules
           CPU_ARCH=$(./init/eessi_archdetect.sh -a cpupath)
           module load EESSI/${{matrix.EESSI_VERSION}}
           module unload EESSI/${{matrix.EESSI_VERSION}}
-          env | grep -E '^EESSI_' | sort > "${module_cycled_file}"
+          env | grep -E '(^EESSI_|^LMOD_RC|^LMOD_PACKAGE_PATH)' | sort > "${module_cycled_file}"
           
           # Now compare the two results
           echo ""
