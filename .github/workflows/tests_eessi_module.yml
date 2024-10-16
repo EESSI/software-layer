@@ -181,21 +181,21 @@ jobs:
           initial_env_file="initial_env.txt"
           module_cycled_file="load_unload_cycle.txt"
           
-          # prepare Lmod, resetting it in a roundabout way
+          # prepare Lmod, resetting it in a roundabout given we don't want defaults set
           export MODULEPATH=init/modules:.github/workflows/modules
           module load fake_module
           module purge
           module unuse .github/workflows/modules
           module avail
 
-          # Store the initial environment
-          env | sort > "${initial_env_file}"
+          # Store the initial environment (ignoring Lmod tables)
+          env | grep -v _ModuleTable | sort > "${initial_env_file}"
 
           # Do (and undo) loading the EESSI module
           CPU_ARCH=$(./init/eessi_archdetect.sh -a cpupath)
           module load EESSI/${{matrix.EESSI_VERSION}}
           module unload EESSI/${{matrix.EESSI_VERSION}}
-          env | sort > "${module_cycled_file}"
+          env | grep -v _ModuleTable | sort > "${module_cycled_file}"
           
           # Now compare the two results (do not expose the files, as they contain the full environment!)
           if (diff "${initial_env_file}" "${module_cycled_file}" > /dev/null); then
