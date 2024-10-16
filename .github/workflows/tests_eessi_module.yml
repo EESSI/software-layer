@@ -144,6 +144,9 @@ jobs:
           - none
           - x86_64/amd/zen2
           - x86_64/amd/zen4
+        EESSI_ACCELERATOR_TARGET_OVERRIDE:
+          - none
+          - accel/nvidia/cc80
     steps:
       - name: Check out software-layer repository
         uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
@@ -159,9 +162,14 @@ jobs:
         run: |
           . /cvmfs/software.eessi.io/versions/${{matrix.EESSI_VERSION}}/compat/linux/$(uname -m)/usr/share/Lmod/init/bash  # Initialise Lmod
           
-          # Set our path overrides according to our matrix
+          # Set our cpu path overrides according to our matrix
           if [[ "${{matrix.EESSI_SOFTWARE_SUBDIR_OVERRIDE}}" != "none" ]]; then
               export EESSI_SOFTWARE_SUBDIR_OVERRIDE=${{matrix.EESSI_SOFTWARE_SUBDIR_OVERRIDE}}
+          fi
+
+          # Set our accelerator path overrides according to our matrix
+          if [[ "${{matrix.EESSI_ACCELERATOR_TARGET_OVERRIDE}}" != "none" ]]; then
+              export EESSI_ACCELERATOR_TARGET_OVERRIDE=${{matrix.EESSI_ACCELERATOR_TARGET_OVERRIDE}}
           fi
 
           # Turn on debug output in case we want to take a look
@@ -171,14 +179,14 @@ jobs:
           module_cycled_file="load_unload_cycle.txt"
           
           # Store the initial environment
-          env | grep -E '(^EESSI_|^LMOD_RC|^LMOD_PACKAGE_PATH)' | sort > "${initial_env_file}"
+          env | sort > "${initial_env_file}"
 
           # Do (and undo) loading the EESSI module
           export MODULEPATH=init/modules
           CPU_ARCH=$(./init/eessi_archdetect.sh -a cpupath)
           module load EESSI/${{matrix.EESSI_VERSION}}
           module unload EESSI/${{matrix.EESSI_VERSION}}
-          env | grep -E '(^EESSI_|^LMOD_RC|^LMOD_PACKAGE_PATH)' | sort > "${module_cycled_file}"
+          env | sort > "${module_cycled_file}"
           
           # Now compare the two results
           echo ""
