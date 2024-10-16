@@ -45,7 +45,8 @@ jobs:
     
       - name: Test for archdetect_cpu functionality with invalid path
         run: |
-          . /cvmfs/software.eessi.io/versions/${{matrix.EESSI_VERSION}}/compat/linux/$(uname -m)/usr/share/Lmod/init/bash  # Initialise Lmod
+          # Initialise Lmod
+          . /cvmfs/software.eessi.io/versions/${{matrix.EESSI_VERSION}}/compat/linux/$(uname -m)/usr/share/Lmod/init/bash
           export MODULEPATH=init/modules
           set +e  # Do not exit immediately if a command exits with a non-zero status          
           export EESSI_ARCHDETECT_OPTIONS_OVERRIDE="dummy/cpu"
@@ -86,7 +87,8 @@ jobs:
               
       - name: Test for expected variables match between Lmod init script and original bash script
         run: |
-          . /cvmfs/software.eessi.io/versions/${{matrix.EESSI_VERSION}}/compat/linux/$(uname -m)/usr/share/Lmod/init/bash  # Initialise Lmod
+          # Initialise Lmod
+          . /cvmfs/software.eessi.io/versions/${{matrix.EESSI_VERSION}}/compat/linux/$(uname -m)/usr/share/Lmod/init/bash
           
           # Set our path overrides according to our matrix
           export EESSI_SOFTWARE_SUBDIR_OVERRIDE=${{matrix.EESSI_SOFTWARE_SUBDIR_OVERRIDE}}
@@ -160,7 +162,8 @@ jobs:
               
       - name: Test for identical environment after loading and unloading the EESSI module
         run: |
-          . /cvmfs/software.eessi.io/versions/${{matrix.EESSI_VERSION}}/compat/linux/$(uname -m)/usr/share/Lmod/init/bash  # Initialise Lmod
+          # Initialise Lmod
+          . /cvmfs/software.eessi.io/versions/${{matrix.EESSI_VERSION}}/compat/linux/$(uname -m)/usr/share/Lmod/init/bash
           
           # Set our cpu path overrides according to our matrix
           if [[ "${{matrix.EESSI_SOFTWARE_SUBDIR_OVERRIDE}}" != "none" ]]; then
@@ -178,11 +181,14 @@ jobs:
           initial_env_file="initial_env.txt"
           module_cycled_file="load_unload_cycle.txt"
           
+          # prepare Lmod
+          export MODULEPATH=init/modules
+          module list
+
           # Store the initial environment
           env | sort > "${initial_env_file}"
 
           # Do (and undo) loading the EESSI module
-          export MODULEPATH=init/modules
           CPU_ARCH=$(./init/eessi_archdetect.sh -a cpupath)
           module load EESSI/${{matrix.EESSI_VERSION}}
           module unload EESSI/${{matrix.EESSI_VERSION}}
