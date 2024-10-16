@@ -209,11 +209,13 @@ _eessi_software_path=${EESSI_PREFIX}/software/${EESSI_OS_TYPE}/${EESSI_SOFTWARE_
 _lmod_cfg_dir=${_eessi_software_path}/.lmod
 _lmod_rc_file=${_lmod_cfg_dir}/lmodrc.lua
 if [ ! -f ${_lmod_rc_file} ]; then
+    echo "Lmod file '${_lmod_rc_file}' does not exist yet; creating it..."
     command -V python3
     python3 ${TOPDIR}/create_lmodrc.py ${_eessi_software_path}
 fi
 _lmod_sitepackage_file=${_lmod_cfg_dir}/SitePackage.lua
 if [ ! -f ${_lmod_sitepackage_file} ]; then
+    echo "Lmod file '${_lmod_sitepackage_file}' does not exist yet; creating it..."
     command -V python3
     python3 ${TOPDIR}/create_lmodsitepackage.py ${_eessi_software_path}
 fi
@@ -263,12 +265,13 @@ if [[ "${EESSI_CVMFS_REPO}" != /cvmfs/dev.eessi.io ]]; then
     ${TOPDIR}/install_scripts.sh --prefix ${EESSI_PREFIX}
 fi
 
-# Install full CUDA SDK in host_injections
+# Install full CUDA SDK and cu* libraries in host_injections
 # Hardcode this for now, see if it works
 # TODO: We should make a nice yaml and loop over all CUDA versions in that yaml to figure out what to install
 # Allow skipping CUDA SDK install in e.g. CI environments
 # The install_cuda... script uses EasyBuild. So, we need to check if we have EB
 # or skip this step.
+echo "Going to install full CUDA SDK and cu* libraries under host_injections if necessary"
 module_avail_out=$TMPDIR/ml.out
 module avail 2>&1 | grep EasyBuild &> ${module_avail_out}
 if [[ $? -eq 0 ]]; then
@@ -278,10 +281,15 @@ else
     export skip_cuda_install=True
 fi
 
+temp_install_storage=${TMPDIR}/temp_install_storage
+mkdir -p ${temp_install_storage}
 if [ -z "${skip_cuda_install}" ] || [ ! "${skip_cuda_install}" ]; then
-    ${EESSI_PREFIX}/scripts/gpu_support/nvidia/install_cuda_host_injections.sh -c 12.1.1 --accept-cuda-eula
+    ${EESSI_PREFIX}/scripts/gpu_support/nvidia/install_cuda_and_libraries.sh \
+        -t ${temp_install_storage} \
+        --accept-cuda-eula \
+        --accept-cudnn-eula
 else
-    echo "Skipping installation of CUDA SDK in host_injections, since the --skip-cuda-install flag was passed OR no EasyBuild module was found"
+    echo "Skipping installation of CUDA SDK and cu* libraries in host_injections, since the --skip-cuda-install flag was passed OR no EasyBuild module was found"
 fi
 
 # Install NVIDIA drivers in host_injections (if they exist)
@@ -338,20 +346,30 @@ else
     done
 fi
 
-echo ">> Creating/updating Lmod RC file..."
 export LMOD_CONFIG_DIR="${EASYBUILD_INSTALLPATH}/.lmod"
 lmod_rc_file="$LMOD_CONFIG_DIR/lmodrc.lua"
+if [[ ! -z ${EESSI_ACCELERATOR_TARGET} ]]; then
+    # EESSI_ACCELERATOR_TARGET is set, so let's remove the accelerator path from $lmod_rc_file
+    lmod_rc_file=$(echo ${lmod_rc_file} | sed "s@/accel/${EESSI_ACCELERATOR_TARGET}@@")
+    echo "Path to lmodrc.lua changed to '${lmod_rc_file}'"
+fi
 lmodrc_changed=$(cat ${pr_diff} | grep '^+++' | cut -f2 -d' ' | sed 's@^[a-z]/@@g' | grep '^create_lmodrc.py$' > /dev/null; echo $?)
 if [ ! -f $lmod_rc_file ] || [ ${lmodrc_changed} == '0' ]; then
+    echo ">> Creating/updating Lmod RC file (${lmod_rc_file})..."
     python3 $TOPDIR/create_lmodrc.py ${EASYBUILD_INSTALLPATH}
     check_exit_code $? "$lmod_rc_file created" "Failed to create $lmod_rc_file"
 fi
 
-echo ">> Creating/updating Lmod SitePackage.lua ..."
 export LMOD_PACKAGE_PATH="${EASYBUILD_INSTALLPATH}/.lmod"
 lmod_sitepackage_file="$LMOD_PACKAGE_PATH/SitePackage.lua"
+if [[ ! -z ${EESSI_ACCELERATOR_TARGET} ]]; then
+    # EESSI_ACCELERATOR_TARGET is set, so let's remove the accelerator path from $lmod_sitepackage_file
+    lmod_sitepackage_file=$(echo ${lmod_sitepackage_file} | sed "s@/accel/${EESSI_ACCELERATOR_TARGET}@@")
+    echo "Path to SitePackage.lua changed to '${lmod_sitepackage_file}'"
+fi
 sitepackage_changed=$(cat ${pr_diff} | grep '^+++' | cut -f2 -d' ' | sed 's@^[a-z]/@@g' | grep '^create_lmodsitepackage.py$' > /dev/null; echo $?)
 if [ ! -f "$lmod_sitepackage_file" ] || [ "${sitepackage_changed}" == '0' ]; then
+    echo ">> Creating/updating Lmod SitePackage.lua (${lmod_sitepackage_file})..."
     python3 $TOPDIR/create_lmodsitepackage.py ${EASYBUILD_INSTALLPATH}
     check_exit_code $? "$lmod_sitepackage_file created" "Failed to create $lmod_sitepackage_file"
 fi
