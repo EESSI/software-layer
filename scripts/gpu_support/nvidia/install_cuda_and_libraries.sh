@@ -112,6 +112,8 @@ for EASYSTACK_FILE in ${TOPDIR}/easystacks/eessi-*CUDA*.yml; do
     module load EESSI-extend/${EESSI_VERSION}-easybuild
 
     # Install modules in hidden .modules dir to keep track of what was installed before
+    # (this action is temporary, and we do not call Lmod again within the current shell context, but in EasyBuild
+    # subshells, so loaded modules are not automatically unloaded)
     MODULEPATH=${EESSI_SITE_SOFTWARE_PATH}/.modules/all
     echo "set MODULEPATH=${MODULEPATH}"
 
