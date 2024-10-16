@@ -132,6 +132,8 @@ eessiDebug("Setting LMOD_PACKAGE_PATH to " .. pathJoin(eessi_software_path, ".lm
 if not (archdetect_accel == nil or archdetect_accel == '') then
     -- The CPU subdirectory of the accelerator installations is _usually_ the same as host CPU, but this can be overridden
     eessi_accel_software_subdir = os.getenv("EESSI_ACCEL_SOFTWARE_SUBDIR_OVERRIDE") or eessi_software_subdir
+    -- CPU location of the accelerator installations, e.g.,
+    -- /cvmfs/software.eessi.io/versions/2023.06/software/linux/x86_64/amd/zen3
     eessi_accel_software_path = pathJoin(eessi_prefix, "software", eessi_os_type, eessi_accel_software_subdir)
     -- location of the accelerator modules, e.g.,
     -- /cvmfs/software.eessi.io/versions/2023.06/software/linux/x86_64/amd/zen3/accel/nvidia/cc80/modules/all
