@@ -36,6 +36,9 @@ function archdetect_cpu()
     archdetect_options = os.getenv("EESSI_ARCHDETECT_OPTIONS") or archdetect_options
     if archdetect_options then
         eessiDebug("Got archdetect CPU options: " .. archdetect_options)
+        -- archdetect_options is a colon-separated list of CPU architectures that are compatible with
+        -- the host CPU and ordered from most specific to least specific, e.g.,
+        -- x86_64/intel/skylake_avx512:x86_64/intel/haswell:x86_64/generic
         for archdetect_filter_cpu in string.gmatch(archdetect_options, "([^" .. ":" .. "]+)") do
             if isDir(pathJoin(eessi_prefix, "software", eessi_os_type, archdetect_filter_cpu, "software")) then
                 -- use x86_64/amd/zen3 for now when AMD Genoa (Zen4) CPU is detected,
