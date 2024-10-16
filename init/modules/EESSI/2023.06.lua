@@ -38,7 +38,8 @@ function archdetect_cpu()
         eessiDebug("Got archdetect CPU options: " .. archdetect_options)
         -- archdetect_options is a colon-separated list of CPU architectures that are compatible with
         -- the host CPU and ordered from most specific to least specific, e.g.,
-        -- x86_64/intel/skylake_avx512:x86_64/intel/haswell:x86_64/generic
+        --     x86_64/intel/skylake_avx512:x86_64/intel/haswell:x86_64/generic
+        -- We loop over the list, and return the highest matching arch for which a directory exists for this EESSI version
         for archdetect_filter_cpu in string.gmatch(archdetect_options, "([^" .. ":" .. "]+)") do
             if isDir(pathJoin(eessi_prefix, "software", eessi_os_type, archdetect_filter_cpu, "software")) then
                 -- use x86_64/amd/zen3 for now when AMD Genoa (Zen4) CPU is detected,
@@ -74,15 +75,23 @@ function archdetect_accel()
     eessiDebug("Got archdetect accel option: " .. archdetect_accel)
     return archdetect_accel
 end
+-- archdetect finds the best compatible architecture, e.g., x86_64/amd/zen3
 local archdetect = archdetect_cpu()
+-- archdetect_accel() attempts to identify an accelerator, e.g., accel/nvidia/cc80
 local archdetect_accel = archdetect_accel()
+-- eessi_cpu_family is derived from  the archdetect match, e.g., x86_64
 local eessi_cpu_family = archdetect:match("([^/]+)")
 local eessi_software_subdir = archdetect
+-- eessi_eprefix is the base location of the compat layer, e.g., /cvmfs/software.eessi.io/versions/2023.06/compat/linux/x86_64
 local eessi_eprefix = pathJoin(eessi_prefix, "compat", eessi_os_type, eessi_cpu_family)
+-- eessi_software_path is the location of the software installations, e.g.,
+-- /cvmfs/software.eessi.io/versions/2023.06/software/linux/x86_64/amd/zen3
 local eessi_software_path = pathJoin(eessi_prefix, "software", eessi_os_type, eessi_software_subdir)
 local eessi_modules_subdir = pathJoin("modules", "all")
 local eessi_module_path = pathJoin(eessi_software_path, eessi_modules_subdir)
 local eessi_site_software_path = string.gsub(eessi_software_path, "versions", "host_injections")
+-- Site module path is the same as the EESSI one, but with `versions` changed to `host_injections`, e.g.,
+--  /cvmfs/software.eessi.io/host_injections/2023.06/software/linux/x86_64/amd/zen3/modules/all
 local eessi_site_module_path = pathJoin(eessi_site_software_path, eessi_modules_subdir)
 setenv("EPREFIX",  eessi_eprefix)
 eessiDebug("Setting EPREFIX to " .. eessi_eprefix)
@@ -106,6 +115,7 @@ setenv("EESSI_SOFTWARE_PATH", eessi_software_path)
 eessiDebug("Setting EESSI_SOFTWARE_PATH to " .. eessi_software_path)
 setenv("EESSI_MODULEPATH", eessi_module_path)
 eessiDebug("Setting EESSI_MODULEPATH to " .. eessi_module_path)
+-- We ship our spider cache, so this location does not need to be spider-ed
 if ( mode() ~= "spider" ) then
     prepend_path("MODULEPATH", eessi_module_path)
     eessiDebug("Adding " .. eessi_module_path .. " to MODULEPATH")
@@ -120,8 +130,11 @@ eessiDebug("Setting LMOD_PACKAGE_PATH to " .. pathJoin(eessi_software_path, ".lm
 -- * then check it exists
 -- * then update the modulepath
 if not (archdetect_accel == nil or archdetect_accel == '') then
+    -- The CPU subdirectory of the accelerator installations is _usually_ the same as host CPU, but this can be overridden
     eessi_accel_software_subdir = os.getenv("EESSI_ACCEL_SOFTWARE_SUBDIR_OVERRIDE") or eessi_software_subdir
     eessi_accel_software_path = pathJoin(eessi_prefix, "software", eessi_os_type, eessi_accel_software_subdir)
+    -- location of the accelerator modules, e.g.,
+    -- /cvmfs/software.eessi.io/versions/2023.06/software/linux/x86_64/amd/zen3/accel/nvidia/cc80/modules/all
     eessi_module_path_accel = pathJoin(eessi_accel_software_path, archdetect_accel, eessi_modules_subdir)
     eessiDebug("Checking if " .. eessi_module_path_accel .. " exists")
     if isDir(eessi_module_path_accel) then
