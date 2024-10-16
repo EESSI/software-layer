@@ -88,6 +88,8 @@ local eessi_eprefix = pathJoin(eessi_prefix, "compat", eessi_os_type, eessi_cpu_
 -- /cvmfs/software.eessi.io/versions/2023.06/software/linux/x86_64/amd/zen3
 local eessi_software_path = pathJoin(eessi_prefix, "software", eessi_os_type, eessi_software_subdir)
 local eessi_modules_subdir = pathJoin("modules", "all")
+-- eessi_module_path is the location of the _CPU_ module files, e.g.,
+-- /cvmfs/software.eessi.io/versions/2023.06/software/linux/x86_64/amd/zen3/modules/all
 local eessi_module_path = pathJoin(eessi_software_path, eessi_modules_subdir)
 local eessi_site_software_path = string.gsub(eessi_software_path, "versions", "host_injections")
 -- Site module path is the same as the EESSI one, but with `versions` changed to `host_injections`, e.g.,
