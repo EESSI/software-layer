@@ -124,7 +124,8 @@ if ( mode() ~= "spider" ) then
 end
 prepend_path("LMOD_RC", pathJoin(eessi_software_path, ".lmod", "lmodrc.lua"))
 eessiDebug("Adding " .. pathJoin(eessi_software_path, ".lmod", "lmodrc.lua") .. " to LMOD_RC")
-setenv("LMOD_PACKAGE_PATH", pathJoin(eessi_software_path, ".lmod"))
+-- Use pushenv for LMOD_PACKAGE_PATH as this may be set locally by the site
+pushenv("LMOD_PACKAGE_PATH", pathJoin(eessi_software_path, ".lmod"))
 eessiDebug("Setting LMOD_PACKAGE_PATH to " .. pathJoin(eessi_software_path, ".lmod"))
 
 -- the accelerator may have an empty value and we need to give some flexibility
