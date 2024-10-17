@@ -13,3 +13,11 @@ easyconfigs:
       options:
         # see https://github.com/easybuilders/easybuild-easyconfigs/pull/21679
         from-commit: 7106f63160b1418d605882dd02ba151d099300bd
+  - jax-0.4.25-gfbf-2023a.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyblocks/pull/3486
+        include-easyblocks-from-commit: 59fd120c0e5330ff7266ca7aacd105d09be4389a
+  - AlphaFold-2.3.2-foss-2023a.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/21628
+        from-commit: 4204600998712ff595841c34d3f6a26192ec2eb4
