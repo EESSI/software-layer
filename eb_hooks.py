@@ -486,25 +486,33 @@ def pre_configure_hook_openblas_optarch_generic(self, *args, **kwargs):
     """
     Pre-configure hook for OpenBLAS: add DYNAMIC_ARCH=1 to build/test/install options when using --optarch=GENERIC
     """
+    # note: OpenBLAS easyblock was updated in https://github.com/easybuilders/easybuild-easyblocks/pull/3492
+    # to take care of this already, so at some point this hook can be removed...
     if self.name == 'OpenBLAS':
         if build_option('optarch') == OPTARCH_GENERIC:
+            dynamic_arch = 'DYNAMIC_ARCH=1'
             for step in ('build', 'test', 'install'):
-                self.cfg.update(f'{step}opts', "DYNAMIC_ARCH=1")
+                if dynamic_arch not in self.cfg[f'{step}opts']:
+                    self.cfg.update(f'{step}opts', dynamic_arch)
 
             if get_cpu_architecture() == AARCH64:
                 # when building for aarch64/generic, we also need to set TARGET=ARMV8 to make sure
                 # that the driver parts of OpenBLAS are compiled generically;
                 # see also https://github.com/OpenMathLib/OpenBLAS/issues/4945
+                target_armv8 = 'TARGET=ARMV8'
                 for step in ('build', 'test', 'install'):
-                    self.cfg.update(f'{step}opts', "TARGET=ARMV8")
+                    if target_armv8 not in self.cfg[f'{step}opts']:
+                        self.cfg.update(f'{step}opts', target_armv8)
 
                 # use -mtune=generic rather than -mcpu=generic in $CFLAGS for aarch64/generic,
                 # because -mcpu=generic implies a particular -march=armv* which clashes with those used by OpenBLAS
                 # when building with DYNAMIC_ARCH=1
-                cflags = os.getenv('CFLAGS').replace('-mcpu=generic', '-mtune=generic')
-                self.log.info("Replaced -mcpu=generic with -mtune=generic in $CFLAGS")
-                self.log.info("Updating $CFLAGS to: %s", cflags)
-                env.setvar('CFLAGS', cflags)
+                mcpu_generic = '-mcpu=generic'
+                cflags = os.getenv('CFLAGS')
+                if mcpu_generic in cflags:
+                    cflags = cflags.replace(mcpu_generic, '-mtune=generic')
+                    self.log.info("Replaced -mcpu=generic with -mtune=generic in $CFLAGS")
+                    env.setvar('CFLAGS', cflags)
     else:
         raise EasyBuildError("OpenBLAS-specific hook triggered for non-OpenBLAS easyconfig?!")
 
