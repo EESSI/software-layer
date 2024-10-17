@@ -26,8 +26,11 @@ easystack=$1
 LOCAL_TMPDIR=$(mktemp -d)
 
 # Clone the develop branch of EasyBuild and use that to search for easyconfigs
-git clone -b develop https://github.com/easybuilders/easybuild-easyconfigs.git $LOCAL_TMPDIR/easyconfigs
-export EASYBUILD_ROBOT_PATHS=$LOCAL_TMPDIR/easyconfigs/easybuild/easyconfigs
+
+if [[ -z ${EASYBUILD_ROBOT_PATHS} ]]; then
+    git clone -b develop https://github.com/easybuilders/easybuild-easyconfigs.git $LOCAL_TMPDIR/easyconfigs
+    export EASYBUILD_ROBOT_PATHS=$LOCAL_TMPDIR/easyconfigs/easybuild/easyconfigs
+fi
 
 # All PRs used in EESSI are supposed to be merged, so we can strip out all cases of from-pr
 tmp_easystack=${LOCAL_TMPDIR}/$(basename ${easystack})

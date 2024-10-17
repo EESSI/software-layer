@@ -91,7 +91,7 @@ def post_ready_hook(self, *args, **kwargs):
     memory_hungry_build = self.name in ['libxc', 'MBX', 'TensorFlow']
     # on A64FX systems, (HBM) memory is typically scarce, so we need to use fewer cores for some builds
     cpu_target = get_eessi_envvar('EESSI_SOFTWARE_SUBDIR')
-    memory_hungry_build_a64fx = cpu_target == CPU_TARGET_A64FX and self.name in ['Qt5']
+    memory_hungry_build_a64fx = cpu_target == CPU_TARGET_A64FX and self.name in ['Qt5', 'ROOT']
     if memory_hungry_build or memory_hungry_build_a64fx:
         parallel = self.cfg['parallel']
         if parallel > 1:
@@ -756,64 +756,170 @@ def post_postproc_cuda(self, *args, **kwargs):
         if 'libcudart' not in allowlist:
             raise EasyBuildError("Did not find 'libcudart' in allowlist: %s" % allowlist)
 
-        # iterate over all files in the CUDA installation directory
-        for dir_path, _, files in os.walk(self.installdir):
-            for filename in files:
-                full_path = os.path.join(dir_path, filename)
-                # we only really care about real files, i.e. not symlinks
-                if not os.path.islink(full_path):
-                    # check if the current file name stub is part of the allowlist
-                    basename = filename.split('.')[0]
-                    if basename in allowlist:
-                        self.log.debug("%s is found in allowlist, so keeping it: %s", basename, full_path)
-                    else:
-                        self.log.debug("%s is not found in allowlist, so replacing it with symlink: %s",
-                                       basename, full_path)
-                        # if it is not in the allowlist, delete the file and create a symlink to host_injections
-
-                        # the host_injections path is under a fixed repo/location for CUDA
-                        host_inj_path = re.sub(EESSI_INSTALLATION_REGEX, HOST_INJECTIONS_LOCATION, full_path)
-                        # CUDA itself doesn't care about compute capability so remove this duplication from
-                        # under host_injections (symlink to a single CUDA installation for all compute
-                        # capabilities)
-                        accel_subdir = os.getenv("EESSI_ACCELERATOR_TARGET")
-                        if accel_subdir:
-                            host_inj_path = host_inj_path.replace("/accel/%s" % accel_subdir, '')
-                        # make sure source and target of symlink are not the same
-                        if full_path == host_inj_path:
-                            raise EasyBuildError("Source (%s) and target (%s) are the same location, are you sure you "
-                                                 "are using this hook for an EESSI installation?",
-                                                 full_path, host_inj_path)
-                        remove_file(full_path)
-                        symlink(host_inj_path, full_path)
+        # replace files that are not distributable with symlinks into
+        # host_injections
+        replace_non_distributable_files_with_symlinks(self.log, self.installdir, self.name, allowlist)
     else:
         raise EasyBuildError("CUDA-specific hook triggered for non-CUDA easyconfig?!")
 
 
+def post_postproc_cudnn(self, *args, **kwargs):
+    """
+    Remove files from cuDNN installation that we are not allowed to ship,
+    and replace them with a symlink to a corresponding installation under host_injections.
+    """
+
+    # We need to check if we are doing an EESSI-distributed installation
+    eessi_installation = bool(re.search(EESSI_INSTALLATION_REGEX, self.installdir))
+
+    if self.name == 'cuDNN' and eessi_installation:
+        print_msg("Replacing files in cuDNN installation that we can not ship with symlinks to host_injections...")
+
+        allowlist = ['LICENSE']
+
+        # read cuDNN LICENSE, construct allowlist based on section "2. Distribution" that specifies list of files that can be shipped
+        license_path = os.path.join(self.installdir, 'LICENSE')
+        search_string = "2. Distribution. The following portions of the SDK are distributable under the Agreement:"
+        found_search_string = False
+        with open(license_path) as infile:
+            for line in infile:
+                if line.strip().startswith(search_string):
+                    found_search_string = True
+                    # remove search string, split into words, remove trailing
+                    # dots '.' and only retain words starting with a dot '.'
+                    distributable = line[len(search_string):]
+                    # distributable looks like ' the runtime files .so and .dll.'
+                    # note the '.' after '.dll'
+                    for word in distributable.split():
+                        if word[0] == '.':
+                            # rstrip is used to remove the '.' after '.dll'
+                            allowlist.append(word.rstrip('.'))
+        if not found_search_string:
+            # search string wasn't found in LICENSE file
+            raise EasyBuildError("search string '%s' was not found in license file '%s';"
+                                 "hence installation may be replaced by symlinks only",
+                                 search_string, license_path)
+
+        allowlist = sorted(set(allowlist))
+        self.log.info("Allowlist for files in cuDNN installation that can be redistributed: " + ', '.join(allowlist))
+
+        # replace files that are not distributable with symlinks into
+        # host_injections
+        replace_non_distributable_files_with_symlinks(self.log, self.installdir, self.name, allowlist)
+    else:
+        raise EasyBuildError("cuDNN-specific hook triggered for non-cuDNN easyconfig?!")
+
+
+def replace_non_distributable_files_with_symlinks(log, install_dir, pkg_name, allowlist):
+    """
+    Replace files that cannot be distributed with symlinks into host_injections
+    """
+    # Different packages use different ways to specify which files or file
+    # 'types' may be redistributed. For CUDA, the 'EULA.txt' lists full file
+    # names. For cuDNN, the 'LICENSE' lists file endings/suffixes (e.g., '.so')
+    # that can be redistributed.
+    # The map 'extension_based' defines which of these two ways are employed. If
+    # full file names are used it maps a package name (key) to False (value). If
+    # endings/suffixes are used, it maps a package name to True. Later we can
+    # easily use this data structure to employ the correct method for
+    # postprocessing an installation.
+    extension_based = {
+        "CUDA": False,
+        "cuDNN": True,
+    }
+    if not pkg_name in extension_based:
+        raise EasyBuildError("Don't know how to strip non-distributable files from package %s.", pkg_name)
+
+    # iterate over all files in the package installation directory
+    for dir_path, _, files in os.walk(install_dir):
+        for filename in files:
+            full_path = os.path.join(dir_path, filename)
+            # we only really care about real files, i.e. not symlinks
+            if not os.path.islink(full_path):
+                check_by_extension = extension_based[pkg_name] and '.' in filename
+                if check_by_extension:
+                    # if the allowlist only contains extensions, we have to
+                    # determine that from filename. we assume the extension is
+                    # the second element when splitting the filename at dots
+                    # (e.g., for 'libcudnn_adv_infer.so.8.9.2' the extension
+                    # would be '.so')
+                    extension = '.' + filename.split('.')[1]
+                # check if the current file name stub or its extension is part of the allowlist
+                basename =  filename.split('.')[0]
+                if basename in allowlist:
+                    log.debug("%s is found in allowlist, so keeping it: %s", basename, full_path)
+                elif check_by_extension and extension in allowlist:
+                    log.debug("%s is found in allowlist, so keeping it: %s", extension, full_path)
+                else:
+                    print_name = filename if extension_based[pkg_name] else basename
+                    log.debug("%s is not found in allowlist, so replacing it with symlink: %s",
+                              print_name, full_path)
+                    # the host_injections path is under a fixed repo/location for CUDA or cuDNN
+                    host_inj_path = re.sub(EESSI_INSTALLATION_REGEX, HOST_INJECTIONS_LOCATION, full_path)
+                    # CUDA and cu* libraries themselves don't care about compute capability so remove this
+                    # duplication from under host_injections (symlink to a single CUDA or cu* library
+                    # installation for all compute capabilities)
+                    accel_subdir = os.getenv("EESSI_ACCELERATOR_TARGET")
+                    if accel_subdir:
+                        host_inj_path = host_inj_path.replace("/accel/%s" % accel_subdir, '')
+                    # make sure source and target of symlink are not the same
+                    if full_path == host_inj_path:
+                        raise EasyBuildError("Source (%s) and target (%s) are the same location, are you sure you "
+                                             "are using this hook for an EESSI installation?",
+                                             full_path, host_inj_path)
+                    remove_file(full_path)
+                    symlink(host_inj_path, full_path)
+
+
 def inject_gpu_property(ec):
     """
-    Add 'gpu' property, via modluafooter easyconfig parameter
+    Add 'gpu' property and EESSI<PACKAGE>VERSION envvars via modluafooter
+    easyconfig parameter, and drop dependencies to build dependencies
     """
     ec_dict = ec.asdict()
-    # Check if CUDA is in the dependencies, if so add the 'gpu' Lmod property
-    if ('CUDA' in [dep[0] for dep in iter(ec_dict['dependencies'])]):
-        ec.log.info("Injecting gpu as Lmod arch property and envvar with CUDA version")
-        key = 'modluafooter'
-        value = 'add_property("arch","gpu")'
-        cuda_version = 0
-        for dep in iter(ec_dict['dependencies']):
-            # Make CUDA a build dependency only (rpathing saves us from link errors)
-            if 'CUDA' in dep[0]:
-                cuda_version = dep[1]
-                ec_dict['dependencies'].remove(dep)
-                if dep not in ec_dict['builddependencies']:
-                    ec_dict['builddependencies'].append(dep)
-        value = '\n'.join([value, 'setenv("EESSICUDAVERSION","%s")' % cuda_version])
-        if key in ec_dict:
-            if value not in ec_dict[key]:
-                ec[key] = '\n'.join([ec_dict[key], value])
+    # Check if CUDA, cuDNN, you-name-it is in the dependencies, if so
+    # - drop dependency to build dependency
+    # - add 'gpu' Lmod property
+    # - add envvar with package version
+    pkg_names = ( "CUDA", "cuDNN" )
+    pkg_versions = { }
+    add_gpu_property = ''
+
+    for pkg_name in pkg_names:
+        # Check if pkg_name is in the dependencies, if so drop dependency to build
+        # dependency and set variable for later adding the 'gpu' Lmod property
+        # to '.remove' dependencies from ec_dict['dependencies'] we make a copy,
+        # iterate over the copy and can then savely use '.remove' on the original
+        # ec_dict['dependencies'].
+        deps = ec_dict['dependencies'][:]
+        if (pkg_name in [dep[0] for dep in deps]):
+            add_gpu_property = 'add_property("arch","gpu")'
+            for dep in deps:
+                if pkg_name == dep[0]:
+                    # make pkg_name a build dependency only (rpathing saves us from link errors)
+                    ec.log.info("Dropping dependency on %s to build dependency" % pkg_name)
+                    ec_dict['dependencies'].remove(dep)
+                    if dep not in ec_dict['builddependencies']:
+                        ec_dict['builddependencies'].append(dep)
+                    # take note of version for creating the modluafooter
+                    pkg_versions[pkg_name] = dep[1]
+    if add_gpu_property:
+        ec.log.info("Injecting gpu as Lmod arch property and envvars for dependencies with their version")
+        modluafooter = 'modluafooter'
+        extra_mod_footer_lines = [add_gpu_property]
+        for pkg_name, version in pkg_versions.items():
+            envvar = "EESSI%sVERSION" % pkg_name.upper()
+            extra_mod_footer_lines.append('setenv("%s","%s")' % (envvar, version))
+        # take into account that modluafooter may already be set
+        if modluafooter in ec_dict:
+            value = ec_dict[modluafooter]
+            for line in extra_mod_footer_lines:
+                if not line in value:
+                    value = '\n'.join([value, line])
+            ec[modluafooter] = value
         else:
-            ec[key] = value
+            ec[modluafooter] = '\n'.join(extra_mod_footer_lines)
+
     return ec
 
 
@@ -873,4 +979,5 @@ POST_SINGLE_EXTENSION_HOOKS = {
 
 POST_POSTPROC_HOOKS = {
     'CUDA': post_postproc_cuda,
+    'cuDNN': post_postproc_cudnn,
 }
