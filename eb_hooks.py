@@ -491,11 +491,19 @@ def pre_configure_hook_openblas_optarch_generic(self, *args, **kwargs):
             for step in ('build', 'test', 'install'):
                 self.cfg.update(f'{step}opts', "DYNAMIC_ARCH=1")
 
-            # use -mtune=generic rather than -mcpu=generic in $CFLAGS on aarch64,
-            # because -mcpu=generic implies a particular -march=armv* which clashes with those used by OpenBLAS
-            # when building with DYNAMIC_ARCH=1
             if get_cpu_architecture() == AARCH64:
+                # when building for aarch64/generic, we also need to set TARGET=ARMV8 to make sure
+                # that the driver parts of OpenBLAS are compiled generically;
+                # see also https://github.com/OpenMathLib/OpenBLAS/issues/4945
+                for step in ('build', 'test', 'install'):
+                    self.cfg.update(f'{step}opts', "TARGET=ARMV8")
+
+                # use -mtune=generic rather than -mcpu=generic in $CFLAGS for aarch64/generic,
+                # because -mcpu=generic implies a particular -march=armv* which clashes with those used by OpenBLAS
+                # when building with DYNAMIC_ARCH=1
                 cflags = os.getenv('CFLAGS').replace('-mcpu=generic', '-mtune=generic')
+                self.log.info("Replaced -mcpu=generic with -mtune=generic in $CFLAGS")
+                self.log.info("Updating $CFLAGS to: %s", cflags)
                 env.setvar('CFLAGS', cflags)
     else:
         raise EasyBuildError("OpenBLAS-specific hook triggered for non-OpenBLAS easyconfig?!")

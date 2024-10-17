@@ -1,0 +1,9 @@
+# 2024.10.17
+# TARGET=ARMV8 must be used when building OpenBLAS for aarch64/generic,
+# since otherwise "Illegal instruction" errors may happen in the driver part of OpenBLAS
+# on systems that only support a minimal instruction set like Arm v8 (like Raspberry Pi SBCs);
+# see also https://github.com/OpenMathLib/OpenBLAS/issues/4945
+easyconfigs:
+  - OpenBLAS-0.3.21-GCC-12.2.0.eb
+  - OpenBLAS-0.3.23-GCC-12.3.0.eb
+  - OpenBLAS-0.3.24-GCC-13.2.0.eb
