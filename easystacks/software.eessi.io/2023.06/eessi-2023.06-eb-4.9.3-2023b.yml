@@ -7,3 +7,4 @@ easyconfigs:
       options:
         # see https://github.com/easybuilders/easybuild-easyconfigs/pull/21430
         from-commit: 8b509882d03402e2998ff9b22c154a6957e36d6b
+  - patchelf-0.18.0-GCCcore-13.2.0.eb:
