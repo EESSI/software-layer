@@ -25,16 +25,17 @@ easystack=$1
 
 LOCAL_TMPDIR=$(mktemp -d)
 
+# ~~No longer required as we use from-commit as of EB 4.9.something~~
 # Clone the develop branch of EasyBuild and use that to search for easyconfigs
-
-if [[ -z ${EASYBUILD_ROBOT_PATHS} ]]; then
-    git clone -b develop https://github.com/easybuilders/easybuild-easyconfigs.git $LOCAL_TMPDIR/easyconfigs
-    export EASYBUILD_ROBOT_PATHS=$LOCAL_TMPDIR/easyconfigs/easybuild/easyconfigs
-fi
-
+#
+#if [[ -z ${EASYBUILD_ROBOT_PATHS} ]]; then
+#    git clone -b develop https://github.com/easybuilders/easybuild-easyconfigs.git $LOCAL_TMPDIR/easyconfigs
+#    export EASYBUILD_ROBOT_PATHS=$LOCAL_TMPDIR/easyconfigs/easybuild/easyconfigs
+#fi
+#
 # All PRs used in EESSI are supposed to be merged, so we can strip out all cases of from-pr
-tmp_easystack=${LOCAL_TMPDIR}/$(basename ${easystack})
-grep -v from-pr ${easystack} > ${tmp_easystack}
+# tmp_easystack=${LOCAL_TMPDIR}/$(basename ${easystack})
+# grep -v from-pr ${easystack} > ${tmp_easystack}
 
 source $TOPDIR/scripts/utils.sh
 
