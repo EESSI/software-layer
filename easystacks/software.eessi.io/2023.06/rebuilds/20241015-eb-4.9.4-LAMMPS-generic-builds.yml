@@ -1,0 +1,16 @@
+# 2024.10.15
+# Generic build of LAMMPS have optimizations for the build host CPU,
+# this is fixed in https://github.com/easybuilders/easybuild-easyblocks/pull/3484
+easyconfigs:
+  - LAMMPS-2Aug2023_update2-foss-2023a-kokkos.eb:
+      options:
+        # see: https://github.com/easybuilders/easybuild-easyblocks/pull/3484/commits/64060fa9b6a4d444406cc403ae00fbbc3f36c416
+        include-easyblocks-from-commit: 64060fa9b6a4d444406cc403ae00fbbc3f36c416
+  - LAMMPS-29Aug2024-foss-2023b-kokkos.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/21436
+        from-commit: 9dc24e57880a8adb06ae10557c5315e66671a533
+        # see: https://github.com/easybuilders/easybuild-easyblocks/pull/3484/commits/64060fa9b6a4d444406cc403ae00fbbc3f36c416
+        include-easyblocks-from-commit: 64060fa9b6a4d444406cc403ae00fbbc3f36c416
+
+
