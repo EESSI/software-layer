@@ -64,6 +64,7 @@ jobs:
                       new_easystack=$(mktemp pruned_easystackXXX --suffix=.yml)
                       # first clean out the options then clean out the .eb name
                       sed '/2022b\|12\.2\.0/,/\.eb/{/\.eb/!d}' "${easystack_file}" | sed '/2022b\|12\.2\.0/d' > $new_easystack
+                      diff --unified=0 "$easystack_file" "$new_easystack" || :
                       easystack_file="$new_easystack"
                   fi
                   echo "check missing installations for ${easystack_file}..."
