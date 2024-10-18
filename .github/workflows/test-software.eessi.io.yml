@@ -83,6 +83,11 @@ jobs:
                       module use ${EESSI_SOFTWARE_PATH}/accel/${accel}/modules/all
                       echo "checking missing installations for accelerator ${accel} using modulepath: ${MODULEPATH}"
                       for easystack_file in $(EESSI_VERSION=${{matrix.EESSI_VERSION}} ACCEL_EASYSTACKS=1 .github/workflows/scripts/only_latest_easystacks.sh); do
+                          if [ ${{matrix.EESSI_SOFTWARE_SUBDIR_OVERRIDE}} = "x86_64/amd/zen4" ]; then
+                            if grep -q CUDA <<<"${easystack_file}"; then
+                            # skip the check of install CUDA software in the CPU path for zen4
+                            continue
+                          fi
                           echo "check missing installations for ${easystack_file}..."
                           ./check_missing_installations.sh ${easystack_file}
                           ec=$?
