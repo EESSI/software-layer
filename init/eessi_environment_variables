@@ -116,7 +116,11 @@ if [ -d $EESSI_PREFIX ]; then
         else
           error "Lmod SitePackage.lua file not found at $lmod_sitepackage_file"
         fi
-       
+
+        # set time until user cache is created to 1 day (86400 seconds),
+        # to prevent that Lmod ever creates one (since it will quickly go stale)
+        export LMOD_SHORT_TIME=86400
+
         if [ ! -z $EESSI_BASIC_ENV ]; then
           show_msg "Only setting up basic environment, so we're done"
         elif [ -d $EESSI_SOFTWARE_PATH ]; then
