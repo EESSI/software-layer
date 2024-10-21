@@ -109,6 +109,13 @@ for EASYSTACK_FILE in ${TOPDIR}/easystacks/eessi-*CUDA*.yml; do
     # Load EasyBuild version for this easystack file _before_ loading EESSI-extend
     module avail EasyBuild
     module load EasyBuild/${eb_version}
+    # Make sure EESSI-extend does a site install here
+    # We need to reload it with the current environment variables set
+    unset EESSI_CVMFS_INSTALL
+    unset EESSI_PROJECT_INSTALL
+    unset EESSI_USER_INSTALL
+    export EESSI_SITE_INSTALL=1
+    module unload EESSI-extend
     module load EESSI-extend/${EESSI_VERSION}-easybuild
 
     # Install modules in hidden .modules dir to keep track of what was installed before
