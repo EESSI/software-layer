@@ -220,45 +220,6 @@ if [ ! -f ${_lmod_sitepackage_file} ]; then
     python3 ${TOPDIR}/create_lmodsitepackage.py ${_eessi_software_path}
 fi
 
-echo ">> Configuring EasyBuild..."
-unset EESSI_USER_INSTALL
-unset EESSI_PROJECT_INSTALL
-unset EESSI_SITE_INSTALL
-export EESSI_CVMFS_INSTALL=1
-module load EESSI-extend/${EESSI_VERSION}-easybuild
-
-if [ ! -z "${shared_fs_path}" ]; then
-    shared_eb_sourcepath=${shared_fs_path}/easybuild/sources
-    echo ">> Using ${shared_eb_sourcepath} as shared EasyBuild source path"
-    export EASYBUILD_SOURCEPATH=${shared_eb_sourcepath}:${EASYBUILD_SOURCEPATH}
-fi
-
-# if an accelerator target is specified, we need to make sure that the CPU-only modules are also still available
-if [ ! -z ${EESSI_ACCELERATOR_TARGET} ]; then
-    CPU_ONLY_MODULES_PATH=$(echo $EASYBUILD_INSTALLPATH | sed "s@/accel/${EESSI_ACCELERATOR_TARGET}@@g")/modules/all
-    if [ -d ${CPU_ONLY_MODULES_PATH} ]; then
-        module use ${CPU_ONLY_MODULES_PATH}
-    else
-        fatal_error "Derived path to CPU-only modules does not exist: ${CPU_ONLY_MODULES_PATH}"
-    fi
-fi
-
-# If in dev.eessi.io, allow building on top of softw
-if [[ "${EESSI_CVMFS_REPO}" == /cvmfs/dev.eessi.io ]]; then
-    module use /cvmfs/software.eessi.io/versions/$EESSI_VERSION/software/${EESSI_OS_TYPE}/${EESSI_SOFTWARE_SUBDIR_OVERRIDE}/modules/all
-fi
-
-module use $EASYBUILD_INSTALLPATH/modules/all
-
-if [[ -z ${MODULEPATH} ]]; then
-    fatal_error "Failed to set up \$MODULEPATH?!"
-else
-    echo_green ">> MODULEPATH set up: ${MODULEPATH}"
-fi
-
-# assume there's only one diff file that corresponds to the PR patch file
-pr_diff=$(ls [0-9]*.diff | head -1)
-
 # install any additional required scripts
 # order is important: these are needed to install a full CUDA SDK in host_injections
 # for now, this just reinstalls all scripts. Note the most elegant, but works
@@ -300,6 +261,52 @@ if command_exists "nvidia-smi"; then
     echo "Command 'nvidia-smi' found. Installing NVIDIA drivers for use in prefix shell..."
     ${EESSI_PREFIX}/scripts/gpu_support/nvidia/link_nvidia_host_libraries.sh
 fi
+
+
+echo ">> Configuring EasyBuild..."
+
+# Make sure that we use the EESSI_CVMFS_INSTALL
+# Since the path is set when loading EESSI-extend, we reload it to make sure it works - even if it is already loaded
+# Note we need to do this after running install_cuda_and_libraries, since that does installations in the EESSI_SITE_INSTALL 
+unset EESSI_USER_INSTALL
+unset EESSI_PROJECT_INSTALL
+unset EESSI_SITE_INSTALL
+export EESSI_CVMFS_INSTALL=1
+module unload EESSI-extend
+module load EESSI-extend/${EESSI_VERSION}-easybuild
+
+if [ ! -z "${shared_fs_path}" ]; then
+    shared_eb_sourcepath=${shared_fs_path}/easybuild/sources
+    echo ">> Using ${shared_eb_sourcepath} as shared EasyBuild source path"
+    export EASYBUILD_SOURCEPATH=${shared_eb_sourcepath}:${EASYBUILD_SOURCEPATH}
+fi
+
+# if an accelerator target is specified, we need to make sure that the CPU-only modules are also still available
+if [ ! -z ${EESSI_ACCELERATOR_TARGET} ]; then
+    CPU_ONLY_MODULES_PATH=$(echo $EASYBUILD_INSTALLPATH | sed "s@/accel/${EESSI_ACCELERATOR_TARGET}@@g")/modules/all
+    if [ -d ${CPU_ONLY_MODULES_PATH} ]; then
+        module use ${CPU_ONLY_MODULES_PATH}
+    else
+        fatal_error "Derived path to CPU-only modules does not exist: ${CPU_ONLY_MODULES_PATH}"
+    fi
+fi
+
+# If in dev.eessi.io, allow building on top of softw
+if [[ "${EESSI_CVMFS_REPO}" == /cvmfs/dev.eessi.io ]]; then
+    module use /cvmfs/software.eessi.io/versions/$EESSI_VERSION/software/${EESSI_OS_TYPE}/${EESSI_SOFTWARE_SUBDIR_OVERRIDE}/modules/all
+fi
+
+module use $EASYBUILD_INSTALLPATH/modules/all
+
+if [[ -z ${MODULEPATH} ]]; then
+    fatal_error "Failed to set up \$MODULEPATH?!"
+else
+    echo_green ">> MODULEPATH set up: ${MODULEPATH}"
+fi
+
+# assume there's only one diff file that corresponds to the PR patch file
+pr_diff=$(ls [0-9]*.diff | head -1)
+
 
 # use PR patch file to determine in which easystack files stuff was added
 changed_easystacks=$(cat ${pr_diff} | grep '^+++' | cut -f2 -d' ' | sed 's@^[a-z]/@@g' | grep 'easystacks/.*yml$' | egrep -v 'known-issues|missing') 
