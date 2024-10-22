@@ -9,4 +9,12 @@ easyconfigs:
       options:
         # see https://github.com/easybuilders/easybuild-easyconfigs/pull/21600
         from-commit: 9b12318bcff1749781d9eb71c23e21bc3a79ed01
+  - mpl-ascii-0.10.0-gfbf-2023a.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/21679
+        from-commit: 7106f63160b1418d605882dd02ba151d099300bd
+  - jedi-0.19.0-GCCcore-12.3.0.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/21650
+        from-commit: 109998f6adcda7efb4174b1e5f73b41ee82d1f13
   - util-linux-2.39-GCCcore-13.2.0.eb:
