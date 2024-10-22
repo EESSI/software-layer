@@ -291,7 +291,7 @@ if [ ! -z ${EESSI_ACCELERATOR_TARGET} ]; then
     fi
 fi
 
-# If in dev.eessi.io, allow building on top of softw
+# If in dev.eessi.io, allow building on top of software.eessi.io
 if [[ "${EESSI_CVMFS_REPO}" == /cvmfs/dev.eessi.io ]]; then
     module use /cvmfs/software.eessi.io/versions/$EESSI_VERSION/software/${EESSI_OS_TYPE}/${EESSI_SOFTWARE_SUBDIR_OVERRIDE}/modules/all
 fi
