@@ -9,3 +9,4 @@ easyconfigs:
       options:
         # see https://github.com/easybuilders/easybuild-easyconfigs/pull/21600
         from-commit: 9b12318bcff1749781d9eb71c23e21bc3a79ed01
+  - util-linux-2.39-GCCcore-13.2.0.eb:
