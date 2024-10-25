@@ -414,6 +414,29 @@ def pre_configure_hook_BLIS_a64fx(self, *args, **kwargs):
         raise EasyBuildError("BLIS-specific hook triggered for non-BLIS easyconfig?!")
 
 
+def pre_configure_hook_score_p(self, *args, **kwargs):
+    """
+    Pre-configure hook for Score-p
+    - specify correct path to binutils (in compat layer)
+    """
+    if self.name == 'Score-P':
+
+        # determine path to Prefix installation in compat layer via $EPREFIX
+        eprefix = get_eessi_envvar('EPREFIX')
+
+        binutils_lib_path_glob_pattern = os.path.join(eprefix, 'usr', 'lib*', 'binutils', '*-linux-gnu', '2.*')
+        binutils_lib_path = glob.glob(binutils_lib_path_glob_pattern)
+        if len(binutils_lib_path) == 1:
+            self.cfg.update('configopts', '--with-libbfd-lib=' + binutils_lib_path[0])
+            self.cfg.update('configopts', '--with-libbfd-include=' + os.path.join(binutils_lib_path[0], 'include'))
+        else:
+            raise EasyBuildError("Failed to isolate path for binutils libraries using %s, got %s",
+                                 binutils_lib_path_glob_pattern, binutils_lib_path)
+
+    else:
+        raise EasyBuildError("Score-P-specific hook triggered for non-Score-P easyconfig?!")
+
+
 def pre_configure_hook_extrae(self, *args, **kwargs):
     """
     Pre-configure hook for Extrae
@@ -972,6 +995,7 @@ PRE_CONFIGURE_HOOKS = {
     'OpenBLAS': pre_configure_hook_openblas_optarch_generic,
     'WRF': pre_configure_hook_wrf_aarch64,
     'LAMMPS': pre_configure_hook_LAMMPS_zen4,
+    'Score-P': pre_configure_hook_score_p,
 }
 
 PRE_TEST_HOOKS = {
