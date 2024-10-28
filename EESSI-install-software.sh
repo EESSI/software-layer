@@ -112,26 +112,8 @@ fi
 
 TMPDIR=$(mktemp -d)
 
-echo ">> Setting up environment..."
 
-source $TOPDIR/init/minimal_eessi_env
-
-if [ -d $EESSI_CVMFS_REPO ]; then
-    echo_green "$EESSI_CVMFS_REPO available, OK!"
-else
-    fatal_error "$EESSI_CVMFS_REPO is not available!"
-fi
-
-# make sure we're in Prefix environment by checking $SHELL
-if [[ ${SHELL} = ${EPREFIX}/bin/bash ]]; then
-    echo_green ">> It looks like we're in a Gentoo Prefix environment, good!"
-else
-    fatal_error "Not running in Gentoo Prefix environment, run '${EPREFIX}/startprefix' first!"
-fi
-
-# avoid that pyc files for EasyBuild are stored in EasyBuild installation directory
-export PYTHONPYCACHEPREFIX=$TMPDIR/pycache
-
+# Get override subdir
 DETECTION_PARAMETERS=''
 GENERIC=0
 EB='eb'
@@ -148,9 +130,75 @@ if [ -z $EESSI_SOFTWARE_SUBDIR_OVERRIDE ]; then
   echo ">> Determined \$EESSI_SOFTWARE_SUBDIR_OVERRIDE via 'eessi_software_subdir.py $DETECTION_PARAMETERS' script"
 else
   echo ">> Picking up pre-defined \$EESSI_SOFTWARE_SUBDIR_OVERRIDE: ${EESSI_SOFTWARE_SUBDIR_OVERRIDE}"
-  # make sure directory exists (since it's expected by init/eessi_environment_variables when using archdetect)
-  mkdir -p ${EESSI_PREFIX}/software/${EESSI_OS_TYPE}/${EESSI_SOFTWARE_SUBDIR_OVERRIDE}
+  # Run in a subshell, so that minimal_eessi_env doesn't change the shell environment for the rest of this script
+  (
+      # Make sure EESSI_PREFIX and EESSI_OS_TYPE are set
+      source $TOPDIR/init/minimal_eessi_env
+
+      # make sure directory exists (since it's expected by init/eessi_environment_variables when using archdetect)
+      mkdir -p ${EESSI_PREFIX}/software/${EESSI_OS_TYPE}/${EESSI_SOFTWARE_SUBDIR_OVERRIDE}
+  )
 fi
+
+echo ">> Setting up environment..."
+
+# If EESSI_VERSION is not set, source the defaults script to set it
+if [ -z ${EESSI_VERSION} ]; then
+    source $TOPDIR/init/eessi_defaults
+fi
+
+# If module command does not exist, use the one from the compat layer
+command -v module
+module_cmd_exists=$?
+if [[ "$module_cmd_exists" -ne 0 ]]; then
+    echo_green "No module command found, initializing lmod from the compatibility layer"
+    # Minimal initalization of the lmod from the compat layer
+    source $TOPDIR/init/lmod/bash
+else
+    echo_green "Module command found"
+fi
+ml_version_out=$TMPDIR/ml.out
+ml --version &> $ml_version_out
+if [[ $? -eq 0 ]]; then
+    echo_green ">> Found Lmod ${LMOD_VERSION}"
+else
+    fatal_error "Failed to initialize Lmod?! (see output in ${ml_version_out}"
+fi
+
+# Make sure we start with no modules and clean $MODULEPATH
+echo ">> Setting up \$MODULEPATH..."
+module --force purge
+module unuse $MODULEPATH
+
+# Initialize the EESSI environment
+module use $TOPDIR/init/modules
+module load EESSI/$EESSI_VERSION
+
+# make sure we're in Prefix environment by checking $SHELL
+# We can only do this after loading the EESSI module, as we need ${EPREFIX}
+if [[ ${SHELL} = ${EPREFIX}/bin/bash ]]; then
+    echo_green ">> It looks like we're in a Gentoo Prefix environment, good!"
+else
+    fatal_error "Not running in Gentoo Prefix environment, run '${EPREFIX}/startprefix' first!"
+fi
+
+if [ -d $EESSI_CVMFS_REPO ]; then
+    echo_green "$EESSI_CVMFS_REPO available, OK!"
+else
+    fatal_error "$EESSI_CVMFS_REPO is not available!"
+fi
+
+# Check that EESSI_SOFTWARE_SUBDIR now matches EESSI_SOFTWARE_SUBDIR_OVERRIDE
+if [[ -z ${EESSI_SOFTWARE_SUBDIR} ]]; then
+    fatal_error "Failed to determine software subdirectory?!"
+elif [[ "${EESSI_SOFTWARE_SUBDIR}" != "${EESSI_SOFTWARE_SUBDIR_OVERRIDE}" ]]; then
+    fatal_error "Values for EESSI_SOFTWARE_SUBDIR_OVERRIDE (${EESSI_SOFTWARE_SUBDIR_OVERRIDE}) and EESSI_SOFTWARE_SUBDIR (${EESSI_SOFTWARE_SUBDIR}) differ!"
+else
+    echo_green ">> Using ${EESSI_SOFTWARE_SUBDIR} as software subdirectory!"
+fi
+
+# avoid that pyc files for EasyBuild are stored in EasyBuild installation directory
+export PYTHONPYCACHEPREFIX=$TMPDIR/pycache
 
 # if we run the script for the first time, e.g., to start building for a new
 #   stack, we need to ensure certain files are present in
@@ -171,70 +219,6 @@ if [ ! -f ${_lmod_sitepackage_file} ]; then
     command -V python3
     python3 ${TOPDIR}/create_lmodsitepackage.py ${_eessi_software_path}
 fi
-
-# Set all the EESSI environment variables (respecting $EESSI_SOFTWARE_SUBDIR_OVERRIDE)
-# $EESSI_SILENT - don't print any messages if set (use 'unset EESSI_SILENT' to let script show messages)
-# $EESSI_BASIC_ENV - give a basic set of environment variables if set (use 'EESSI_BASIC_ENV=' to let script initialise a full environment)
-EESSI_SILENT=1 EESSI_BASIC_ENV= source $TOPDIR/init/eessi_environment_variables
-
-if [[ -z ${EESSI_SOFTWARE_SUBDIR} ]]; then
-    fatal_error "Failed to determine software subdirectory?!"
-elif [[ "${EESSI_SOFTWARE_SUBDIR}" != "${EESSI_SOFTWARE_SUBDIR_OVERRIDE}" ]]; then
-    fatal_error "Values for EESSI_SOFTWARE_SUBDIR_OVERRIDE (${EESSI_SOFTWARE_SUBDIR_OVERRIDE}) and EESSI_SOFTWARE_SUBDIR (${EESSI_SOFTWARE_SUBDIR}) differ!"
-else
-    echo_green ">> Using ${EESSI_SOFTWARE_SUBDIR} as software subdirectory!"
-fi
-
-echo ">> Initializing Lmod..."
-source $EPREFIX/usr/share/Lmod/init/bash
-ml_version_out=$TMPDIR/ml.out
-ml --version &> $ml_version_out
-if [[ $? -eq 0 ]]; then
-    echo_green ">> Found Lmod ${LMOD_VERSION}"
-else
-    fatal_error "Failed to initialize Lmod?! (see output in ${ml_version_out}"
-fi
-
-echo ">> Configuring EasyBuild..."
-source $TOPDIR/configure_easybuild
-
-if [ ! -z "${shared_fs_path}" ]; then
-    shared_eb_sourcepath=${shared_fs_path}/easybuild/sources
-    echo ">> Using ${shared_eb_sourcepath} as shared EasyBuild source path"
-    export EASYBUILD_SOURCEPATH=${shared_eb_sourcepath}:${EASYBUILD_SOURCEPATH}
-fi
-
-echo ">> Setting up \$MODULEPATH..."
-# make sure no modules are loaded
-module --force purge
-# ignore current $MODULEPATH entirely
-module unuse $MODULEPATH
-
-# if an accelerator target is specified, we need to make sure that the CPU-only modules are also still available
-if [ ! -z ${EESSI_ACCELERATOR_TARGET} ]; then
-    CPU_ONLY_MODULES_PATH=$(echo $EASYBUILD_INSTALLPATH | sed "s@/accel/${EESSI_ACCELERATOR_TARGET}@@g")/modules/all
-    if [ -d ${CPU_ONLY_MODULES_PATH} ]; then
-        module use ${CPU_ONLY_MODULES_PATH}
-    else
-        fatal_error "Derived path to CPU-only modules does not exist: ${CPU_ONLY_MODULES_PATH}"
-    fi
-fi
-
-# If in dev.eessi.io, allow building on top of softw
-if [[ "${EESSI_CVMFS_REPO}" == /cvmfs/dev.eessi.io ]]; then
-    module use /cvmfs/software.eessi.io/versions/$EESSI_VERSION/software/${EESSI_OS_TYPE}/${EESSI_SOFTWARE_SUBDIR_OVERRIDE}/modules/all
-fi
-
-module use $EASYBUILD_INSTALLPATH/modules/all
-
-if [[ -z ${MODULEPATH} ]]; then
-    fatal_error "Failed to set up \$MODULEPATH?!"
-else
-    echo_green ">> MODULEPATH set up: ${MODULEPATH}"
-fi
-
-# assume there's only one diff file that corresponds to the PR patch file
-pr_diff=$(ls [0-9]*.diff | head -1)
 
 # install any additional required scripts
 # order is important: these are needed to install a full CUDA SDK in host_injections
@@ -277,6 +261,52 @@ if command_exists "nvidia-smi"; then
     echo "Command 'nvidia-smi' found. Installing NVIDIA drivers for use in prefix shell..."
     ${EESSI_PREFIX}/scripts/gpu_support/nvidia/link_nvidia_host_libraries.sh
 fi
+
+
+echo ">> Configuring EasyBuild..."
+
+# Make sure that we use the EESSI_CVMFS_INSTALL
+# Since the path is set when loading EESSI-extend, we reload it to make sure it works - even if it is already loaded
+# Note we need to do this after running install_cuda_and_libraries, since that does installations in the EESSI_SITE_INSTALL 
+unset EESSI_USER_INSTALL
+unset EESSI_PROJECT_INSTALL
+unset EESSI_SITE_INSTALL
+export EESSI_CVMFS_INSTALL=1
+module unload EESSI-extend
+module load EESSI-extend/${EESSI_VERSION}-easybuild
+
+if [ ! -z "${shared_fs_path}" ]; then
+    shared_eb_sourcepath=${shared_fs_path}/easybuild/sources
+    echo ">> Using ${shared_eb_sourcepath} as shared EasyBuild source path"
+    export EASYBUILD_SOURCEPATH=${shared_eb_sourcepath}:${EASYBUILD_SOURCEPATH}
+fi
+
+# if an accelerator target is specified, we need to make sure that the CPU-only modules are also still available
+if [ ! -z ${EESSI_ACCELERATOR_TARGET} ]; then
+    CPU_ONLY_MODULES_PATH=$(echo $EASYBUILD_INSTALLPATH | sed "s@/accel/${EESSI_ACCELERATOR_TARGET}@@g")/modules/all
+    if [ -d ${CPU_ONLY_MODULES_PATH} ]; then
+        module use ${CPU_ONLY_MODULES_PATH}
+    else
+        fatal_error "Derived path to CPU-only modules does not exist: ${CPU_ONLY_MODULES_PATH}"
+    fi
+fi
+
+# If in dev.eessi.io, allow building on top of software.eessi.io
+if [[ "${EESSI_CVMFS_REPO}" == /cvmfs/dev.eessi.io ]]; then
+    module use /cvmfs/software.eessi.io/versions/$EESSI_VERSION/software/${EESSI_OS_TYPE}/${EESSI_SOFTWARE_SUBDIR_OVERRIDE}/modules/all
+fi
+
+module use $EASYBUILD_INSTALLPATH/modules/all
+
+if [[ -z ${MODULEPATH} ]]; then
+    fatal_error "Failed to set up \$MODULEPATH?!"
+else
+    echo_green ">> MODULEPATH set up: ${MODULEPATH}"
+fi
+
+# assume there's only one diff file that corresponds to the PR patch file
+pr_diff=$(ls [0-9]*.diff | head -1)
+
 
 # use PR patch file to determine in which easystack files stuff was added
 changed_easystacks=$(cat ${pr_diff} | grep '^+++' | cut -f2 -d' ' | sed 's@^[a-z]/@@g' | grep 'easystacks/.*yml$' | egrep -v 'known-issues|missing') 
