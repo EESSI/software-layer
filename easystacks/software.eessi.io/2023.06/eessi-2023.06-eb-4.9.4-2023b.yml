@@ -3,4 +3,7 @@ easyconfigs:
       options:
         # see https://github.com/easybuilders/easybuild-easyconfigs/pull/21752
         from-commit: 6b8b53493a1188a5baa56a133574daac239730e7
-  - Score-P-8.4-gompi-2023b.eb
+  - Score-P-8.4-gompi-2023b.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyblocks/pull/3496
+        include-easyblocks-from-commit: 6b7efa90f35a71c6be2ccc37096915f8a1f57225
