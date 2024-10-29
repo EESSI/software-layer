@@ -6,4 +6,4 @@ easyconfigs:
   - Score-P-8.4-gompi-2023b.eb:
       options:
         # see https://github.com/easybuilders/easybuild-easyblocks/pull/3496
-        include-easyblocks-from-commit: 6b7efa90f35a71c6be2ccc37096915f8a1f57225
+        include-easyblocks-from-commit: f23d154eb75b72767557f78a178eb31ae9ac9d9c
