@@ -9,6 +9,7 @@
 display_help() {
   echo "usage: $0 [OPTIONS]"
   echo "  --build-logs-dir       -  location to copy EasyBuild logs to for failed builds"
+  echo "  --easystacks           -  comma-separated list of easystack files"
   echo "  -g | --generic         -  instructs script to build for generic architecture target"
   echo "  -h | --help            -  display this usage information"
   echo "  -x | --http-proxy URL  -  provides URL for the environment variable http_proxy"
@@ -57,6 +58,10 @@ POSITIONAL_ARGS=()
 
 while [[ $# -gt 0 ]]; do
   case $1 in
+    --easystacks)
+      export arg_easystacks="${2}"
+      shift 2
+      ;;
     -g|--generic)
       EASYBUILD_OPTARCH="GENERIC"
       shift
@@ -136,7 +141,8 @@ else
       source $TOPDIR/init/minimal_eessi_env
 
       # make sure directory exists (since it's expected by init/eessi_environment_variables when using archdetect)
-      mkdir -p ${EESSI_PREFIX}/software/${EESSI_OS_TYPE}/${EESSI_SOFTWARE_SUBDIR_OVERRIDE}
+      echo "  Creating software directory at '${EESSI_PREFIX}/software/${EESSI_OS_TYPE}/${EESSI_SOFTWARE_SUBDIR_OVERRIDE}/software'"
+      mkdir -p ${EESSI_PREFIX}/software/${EESSI_OS_TYPE}/${EESSI_SOFTWARE_SUBDIR_OVERRIDE}/software
   )
 fi
 
@@ -273,7 +279,16 @@ unset EESSI_PROJECT_INSTALL
 unset EESSI_SITE_INSTALL
 export EESSI_CVMFS_INSTALL=1
 module unload EESSI-extend
-module load EESSI-extend/${EESSI_VERSION}-easybuild
+eessi_extend_module=EESSI-extend/${EESSI_VERSION}-easybuild
+module avail ${eessi_extend_module} 2>&1 | grep "${eessi_extend_module}"
+ec=$?
+if [ ${ec} -eq 0 ]; then
+    module load ${eessi_extend_module}
+else
+    echo "Did not find ${eessi_extend_module} module; setting EASYBUILD_INSTALLPATH and EASYBUILD_EXPERIMENTAL manually"
+    export EASYBUILD_INSTALLPATH=${EESSI_PREFIX}/software/${EESSI_OS_TYPE}/${EESSI_SOFTWARE_SUBDIR_OVERRIDE}
+    export EASYBUILD_EXPERIMENTAL=1
+fi
 
 if [ ! -z "${shared_fs_path}" ]; then
     shared_eb_sourcepath=${shared_fs_path}/easybuild/sources
@@ -304,12 +319,17 @@ else
     echo_green ">> MODULEPATH set up: ${MODULEPATH}"
 fi
 
-# assume there's only one diff file that corresponds to the PR patch file
-pr_diff=$(ls [0-9]*.diff | head -1)
+if [ -z ${arg_easystacks} ]; then
+    # assume there's only one diff file that corresponds to the PR patch file
+    pr_diff=$(ls [0-9]*.diff | head -1)
 
 
-# use PR patch file to determine in which easystack files stuff was added
-changed_easystacks=$(cat ${pr_diff} | grep '^+++' | cut -f2 -d' ' | sed 's@^[a-z]/@@g' | grep 'easystacks/.*yml$' | egrep -v 'known-issues|missing') 
+    # use PR patch file to determine in which easystack files stuff was added
+    changed_easystacks=$(cat ${pr_diff} | grep '^+++' | cut -f2 -d' ' | sed 's@^[a-z]/@@g' | grep 'easystacks/.*yml$' | egrep -v 'known-issues|missing')
+else
+    changed_easystacks=$(echo "${arg_easystacks}" | tr ',' '\n')
+fi
+
 if [ -z "${changed_easystacks}" ]; then
     echo "No missing installations, party time!"  # Ensure the bot report success, as there was nothing to be build here
 else
