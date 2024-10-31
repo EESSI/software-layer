@@ -1,9 +1,21 @@
 #!/bin/bash
+#
+# This script figures out the latest version of EasyBuild being used for the installation of easystack
+# files.
+#
+# This file is part of the EESSI software layer, see
+# https://github.com/EESSI/software-layer.git
+#
+# author: Alan O'Cais (CECAM)
+#
+# license: GPLv2
+#
+
 EESSI_VERSION=${EESSI_VERSION:-"2023.06"}
 
 directory="easystacks/software.eessi.io/${EESSI_VERSION}"
 # List of example filenames
-files=($(ls "$directory"/*.yml))
+files=($(find "$directory" -name "*.yml" | grep -e '-eb-'))
 [ -n "$DEBUG" ] && echo "${files[@]}"
 
 versions=()
@@ -39,4 +51,8 @@ for item in "${all_latest_easystacks[@]}"; do
 done
 
 # Output the results
-[ -n "$ACCEL_EASYSTACKS" ] && echo "${accel_latest_easystacks[@]}" || echo "${cpu_latest_easystacks[@]}"
+if [ -n "$ACCEL_EASYSTACKS" ]; then
+    echo "${accel_latest_easystacks[@]}"
+else
+    echo "${cpu_latest_easystacks[@]}"
+fi
