@@ -225,6 +225,7 @@ fi
 # for now, this just reinstalls all scripts. Note the most elegant, but works
 
 # Only run install_scripts.sh if not dev.eessi.io for security
+echo "EESSI_CVMFS_REPO: '${EESSI_CVMFS_REPO}'"
 if [[ "${EESSI_CVMFS_REPO}" != /cvmfs/dev.eessi.io ]]; then
     ${TOPDIR}/install_scripts.sh --prefix ${EESSI_PREFIX}
 fi
