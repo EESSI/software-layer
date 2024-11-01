@@ -1,0 +1,9 @@
+easyconfigs:
+  - SIONlib-1.7.7-GCCcore-13.2.0-tools.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/21752
+        from-commit: 6b8b53493a1188a5baa56a133574daac239730e7
+  - Score-P-8.4-gompi-2023b.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyblocks/pull/3496
+        include-easyblocks-from-commit: 60633b0acfd41a0732992d9e16800dae71a056eb
