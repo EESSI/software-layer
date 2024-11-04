@@ -10,7 +10,7 @@ source ${EESSI_INIT_DIR_PATH}/eessi_defaults
 
 # If $EESSI_DEV_PROJECT is defined, then we are building for dev.eessi.io
 # and add a subdirectory to $EESSI_PREFIX
-if [ ! -z ${EESSI_DEV_PROJECT} ]; then
+if [ -z ${EESSI_DEV_PROJECT} ]; then
     export EESSI_PREFIX=$EESSI_CVMFS_REPO/versions/$EESSI_VERSION/
 else
     export EESSI_PREFIX=$EESSI_CVMFS_REPO/versions/$EESSI_VERSION/$EESSI_DEV_PROJECT/
