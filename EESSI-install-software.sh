@@ -131,13 +131,14 @@ if [ -z $EESSI_SOFTWARE_SUBDIR_OVERRIDE ]; then
 else
   echo ">> Picking up pre-defined \$EESSI_SOFTWARE_SUBDIR_OVERRIDE: ${EESSI_SOFTWARE_SUBDIR_OVERRIDE}"
   # Run in a subshell, so that minimal_eessi_env doesn't change the shell environment for the rest of this script
-  
+  (
       # Make sure EESSI_PREFIX and EESSI_OS_TYPE are set
       source $TOPDIR/init/minimal_eessi_env
-
+      
+      echo ">> Creating directory for software subdirectory override: ${EESSI_PREFIX}/software/${EESSI_OS_TYPE}/${EESSI_SOFTWARE_SUBDIR_OVERRIDE}"
       # make sure directory exists (since it's expected by init/eessi_environment_variables when using archdetect)
       mkdir -p ${EESSI_PREFIX}/software/${EESSI_OS_TYPE}/${EESSI_SOFTWARE_SUBDIR_OVERRIDE}
-  
+  )
 fi
 
 echo ">> Setting up environment..."
