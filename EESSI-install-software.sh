@@ -226,7 +226,7 @@ fi
 # for now, this just reinstalls all scripts. Note the most elegant, but works
 
 # Only run install_scripts.sh if not dev.eessi.io for security
-echo "EESSI_CVMFS_REPO_post: '${EESSI_CVMFS_REPO}'"
+echo "EESSI_CVMFS_REPO_pre: '${EESSI_CVMFS_REPO}'"
 if [[ "${EESSI_CVMFS_REPO}" != /cvmfs/dev.eessi.io ]]; then
     ${TOPDIR}/install_scripts.sh --prefix ${EESSI_PREFIX}
 fi
@@ -266,7 +266,7 @@ fi
 
 
 echo ">> Configuring EasyBuild..."
-echo "EESSI_CVMFS_REPO_pre: '${EESSI_CVMFS_REPO}'"
+echo "EESSI_CVMFS_REPO_post: '${EESSI_CVMFS_REPO}'"
 
 # Make sure that we use the EESSI_CVMFS_INSTALL
 # Since the path is set when loading EESSI-extend, we reload it to make sure it works - even if it is already loaded
