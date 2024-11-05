@@ -207,6 +207,7 @@ export PYTHONPYCACHEPREFIX=$TMPDIR/pycache
 # - .lmod/lmodrc.lua
 # - .lmod/SitePackage.lua
 _eessi_software_path=${EESSI_PREFIX}/software/${EESSI_OS_TYPE}/${EESSI_SOFTWARE_SUBDIR_OVERRIDE}
+echo "_eessi_software_path: ${_eessi_software_path}"  
 _lmod_cfg_dir=${_eessi_software_path}/.lmod
 _lmod_rc_file=${_lmod_cfg_dir}/lmodrc.lua
 if [ ! -f ${_lmod_rc_file} ]; then
@@ -297,9 +298,11 @@ fi
 # If in dev.eessi.io, allow building on top of software.eessi.io
 if [[ "${EESSI_CVMFS_REPO}" == /cvmfs/dev.eessi.io ]]; then
     module use /cvmfs/software.eessi.io/versions/$EESSI_VERSION/software/${EESSI_OS_TYPE}/${EESSI_SOFTWARE_SUBDIR_OVERRIDE}/modules/all
+    # Overwrite EASYBUILD_INSTALLPATH to point to dev.eessi.io
+    EASYBUILD_INSTALLPATH=$EESSI_CVMFS_REPO_OVERRIDE/versions/$EESSI_VERSION/$EESSI_DEV_PROJECT/
+else
+    module use $EASYBUILD_INSTALLPATH/modules/all
 fi
-
-module use $EASYBUILD_INSTALLPATH/modules/all
 
 if [[ -z ${MODULEPATH} ]]; then
     fatal_error "Failed to set up \$MODULEPATH?!"
