@@ -296,7 +296,7 @@ if [ ! -z ${EESSI_ACCELERATOR_TARGET} ]; then
 fi
 
 # If in dev.eessi.io, allow building on top of software.eessi.io
-if [[ "${EESSI_CVMFS_REPO}" == /cvmfs/dev.eessi.io ]]; then
+if [[ ! -z ${EESSI_DEV_PROJECT} ]]; then
     module use /cvmfs/software.eessi.io/versions/$EESSI_VERSION/software/${EESSI_OS_TYPE}/${EESSI_SOFTWARE_SUBDIR_OVERRIDE}/modules/all
     # Overwrite EASYBUILD_INSTALLPATH to point to dev.eessi.io
     EASYBUILD_INSTALLPATH=$EESSI_CVMFS_REPO_OVERRIDE/versions/$EESSI_VERSION/$EESSI_DEV_PROJECT/
