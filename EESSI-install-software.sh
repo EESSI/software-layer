@@ -300,7 +300,7 @@ if [[ "${EESSI_CVMFS_REPO}" == /cvmfs/dev.eessi.io ]]; then
     module use /cvmfs/software.eessi.io/versions/$EESSI_VERSION/software/${EESSI_OS_TYPE}/${EESSI_SOFTWARE_SUBDIR_OVERRIDE}/modules/all
     # Overwrite EASYBUILD_INSTALLPATH to point to dev.eessi.io
     EASYBUILD_INSTALLPATH=$EESSI_CVMFS_REPO_OVERRIDE/versions/$EESSI_VERSION/$EESSI_DEV_PROJECT/
-else
+    echo "\$EASYBUILD_INSTALLPATH overwritten to ${EASYBUILD_INSTALLPATH}"
     module use $EASYBUILD_INSTALLPATH/modules/all
 fi
 
