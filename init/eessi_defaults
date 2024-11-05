@@ -25,6 +25,7 @@ else
     export EESSI_VERSION="${EESSI_VERSION_OVERRIDE:=2023.06}"
     echo "eessi_defaults cvmfs override post ${EESSI_CVMFS_REPO_OVERRIDE}"
     echo "eessi_defaults version override post${EESSI_VERSION_OVERRIDE}"
+    echo "eessi_defaults cvmfs repo post ${EESSI_CVMFS_REPO}"
 fi
 # use archdetect by default, unless otherwise specified
 export EESSI_USE_ARCHDETECT="${EESSI_USE_ARCHDETECT:=1}"
