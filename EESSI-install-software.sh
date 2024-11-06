@@ -226,9 +226,8 @@ fi
 # order is important: these are needed to install a full CUDA SDK in host_injections
 # for now, this just reinstalls all scripts. Note the most elegant, but works
 
-# Only run install_scripts.sh if not dev.eessi.io for security
-echo "EESSI_CVMFS_REPO_pre: '${EESSI_CVMFS_REPO}'"
-if [[ "${EESSI_CVMFS_REPO}" != /cvmfs/dev.eessi.io ]]; then
+# Only run install_scripts.sh if not in dev.eessi.io for security
+if [[ -z ${EESSI_DEV_PROJECT} ]]; then
     ${TOPDIR}/install_scripts.sh --prefix ${EESSI_PREFIX}
 fi
 
@@ -267,7 +266,6 @@ fi
 
 
 echo ">> Configuring EasyBuild..."
-echo "EESSI_CVMFS_REPO_post: '${EESSI_CVMFS_REPO}'"
 
 # Make sure that we use the EESSI_CVMFS_INSTALL
 # Since the path is set when loading EESSI-extend, we reload it to make sure it works - even if it is already loaded
@@ -300,7 +298,7 @@ if [[ ! -z ${EESSI_DEV_PROJECT} ]]; then
     module use /cvmfs/software.eessi.io/versions/$EESSI_VERSION/software/${EESSI_OS_TYPE}/${EESSI_SOFTWARE_SUBDIR_OVERRIDE}/modules/all
     # Overwrite EASYBUILD_INSTALLPATH to point to dev.eessi.io
     EASYBUILD_INSTALLPATH=$EESSI_CVMFS_REPO_OVERRIDE/versions/$EESSI_VERSION/$EESSI_DEV_PROJECT/
-    echo "\$EASYBUILD_INSTALLPATH overwritten to ${EASYBUILD_INSTALLPATH}"
+    echo ">> \$EASYBUILD_INSTALLPATH overwritten to ${EASYBUILD_INSTALLPATH}"
     module use $EASYBUILD_INSTALLPATH/modules/all
 fi
 
