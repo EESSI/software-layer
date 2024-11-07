@@ -17,3 +17,7 @@ easyconfigs:
       options:
         # see https://github.com/easybuilders/easybuild-easyconfigs/pull/21650
         from-commit: 109998f6adcda7efb4174b1e5f73b41ee82d1f13
+  - Cassiopeia-2.0.0-foss-2023a.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/21657
+        from-commit: 7f1f0e60487e7e1fcb5c4e6bc4fbc4f89994e3fd
