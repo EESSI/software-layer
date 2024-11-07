@@ -15,8 +15,8 @@ get_host_ldconfig() {
     local found_paths=()           # Initialize an array to store found paths
 
     # Always attempt to use /sbin/ldconfig
-    if [ -x "/sbin/$command_name" ]; then
-        found_paths+=("/sbin/$command_name")
+    if [ -x "/sbin/${command_name}" ]; then
+        found_paths+=("/sbin/${command_name}")
     fi
 
     # Split the $PATH and iterate over each directory
@@ -28,8 +28,8 @@ get_host_ldconfig() {
 
         # Check if directory does not start with the exclude prefix
         if [[ ! "$dir" =~ ^$exclude_prefix ]]; then
-            if [ -x "$dir/$command_name" ]; then
-                found_paths+=("$dir/$command_name")
+            if [ -x "${dir}/${command_name}" ]; then
+                found_paths+=("${dir}/${command_name}")
             fi
         fi
     done
@@ -142,7 +142,7 @@ LIBS_LIST=""
 
 # Parse command-line options
 while [[ "$#" -gt 0 ]]; do
-  case $1 in
+  case "$1" in
     --ld-preload) LD_PRELOAD_MODE=1 ;;  # Enable LD_PRELOAD mode
     --no-download) LIBS_LIST="default" ;;  # Download latest list of CUDA libraries
     *) fatal_error "Unknown option: $1";;
@@ -151,7 +151,7 @@ while [[ "$#" -gt 0 ]]; do
 done
 
 # Gather information about NVIDIA drivers (even if we are inside a Gentoo Prefix in a container)
-export LD_LIBRARY_PATH=/.singularity.d/libs:$LD_LIBRARY_PATH
+export LD_LIBRARY_PATH="/.singularity.d/libs:${LD_LIBRARY_PATH}"
 
 # Check for NVIDIA GPUs via nvidia-smi command
 nvidia_smi=$(command -v nvidia-smi)
@@ -159,9 +159,9 @@ if [[ $? -eq 0 ]]; then
     nvidia_smi_out=$(mktemp -p /tmp nvidia_smi_out.XXXXX)
     nvidia-smi --query-gpu=gpu_name,count,driver_version,compute_cap --format=csv,noheader 2>&1 > $nvidia_smi_out
     if [[ $? -eq 0 ]]; then
-        nvidia_smi_info=$(head -1 $nvidia_smi_out)
-        host_cuda_version=$(echo $nvidia_smi_info | sed 's/, /,/g' | cut -f4 -d,)
-        host_driver_version=$(echo $nvidia_smi_info | sed 's/, /,/g' | cut -f3 -d,)
+        nvidia_smi_info=$(head -1 "${nvidia_smi_out}")
+        host_cuda_version=$(echo "${nvidia_smi_info}" | sed 's/, /,/g' | cut -f4 -d,)
+        host_driver_version=$(echo "${nvidia_smi_info}" | sed 's/, /,/g' | cut -f3 -d,)
         echo_green "Found host CUDA version ${host_cuda_version}"
         echo_green "Found NVIDIA GPU driver version ${host_driver_version}"
         rm -f $nvidia_smi_out
@@ -180,7 +180,7 @@ fi
 # Find the host ldconfig
 host_ldconfig=$(get_host_ldconfig)
 # Gather libraries on the host (_must_ be host ldconfig)
-host_libraries=$($host_ldconfig -p | awk '{print $NF}')
+host_libraries=$("${host_ldconfig}" -p | awk '{print $NF}')
 singularity_libs=$(ls /.singularity.d/libs/* 2>/dev/null)
 
 # Now gather the list of possible CUDA libraries and make them into an array
@@ -223,13 +223,13 @@ if [ "$LD_PRELOAD_MODE" -eq 1 ]; then
     compat_filtered_libraries=()
     for library in "${matched_libraries[@]}"; do
         # Run ldd on the given binary and filter for "not found" libraries
-        not_found_libs=$(ldd "$library" 2>/dev/null | grep "not found" | awk '{print $1}')
+        not_found_libs=$(ldd "${library}" 2>/dev/null | grep "not found" | awk '{print $1}')
         # Check if it is missing an so dep under EESSI
         if [[ -z "$not_found_libs" ]]; then
             # Resolve any symlink
             realpath_library=$(realpath "$library")
             if [[ ! " ${filtered_libraries[@]} " =~ " $realpath_library " ]]; then
-                filtered_libraries+=("$realpath_library")
+                filtered_libraries+=("${realpath_library}")
                 # Also prepare compat only libraries for the short list
                 for item in "${cuda_compat_nvlib_list[@]}"; do
                     # Check if the current item is a substring of $library
@@ -249,7 +249,7 @@ if [ "$LD_PRELOAD_MODE" -eq 1 ]; then
                 found=false
                 for listed_lib in "${matched_libraries[@]}"; do
                     # Matching to the .so or a symlink target is enough
-                    realpath_lib=$(realpath "$listed_lib")
+                    realpath_lib=$(realpath "${listed_lib}")
                     if [[ "$lib" == "$listed_lib"* || "$realpath_lib" == *"$lib" ]]; then
                         found=true
                         break
@@ -266,16 +266,16 @@ if [ "$LD_PRELOAD_MODE" -eq 1 ]; then
             # If we find all the missing libs in our list include it
             if [[ "$all_found" == true ]]; then
                 # Resolve any symlink
-                realpath_library=$(realpath "$library")
+                realpath_library=$(realpath "${library}")
                 if [[ ! " ${filtered_libraries[@]} " =~ " $realpath_library " ]]; then
-                    filtered_libraries+=("$realpath_library")
+                    filtered_libraries+=("${realpath_library}")
                     # Also prepare compat only libraries for the short list
                     for item in "${cuda_compat_nvlib_list[@]}"; do
                         # Check if the current item is a substring of $library
                         if [[ "$realpath_library" == *"$item"* ]]; then
                             echo "Match found for $item for CUDA compat libraries"
                             if [[ ! " ${compat_filtered_libraries[@]} " =~ " $realpath_library " ]]; then
-                                compat_filtered_libraries+=("$realpath_library")
+                                compat_filtered_libraries+=("${realpath_library}")
                             fi
                             break
                         fi
