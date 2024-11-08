@@ -4,15 +4,16 @@ set -e
 
 base_dir=$(dirname $(realpath $0))
 
-if [ $# -ne 5 ]; then
-    echo "ERROR: Usage: $0 <EESSI tmp dir (example: /tmp/$USER/EESSI)> <version (example: 2023.06)> <CPU arch subdir (example: x86_64/amd/zen2)> <accelerator subdir (example: nvidia/cc80)> <path to tarball>" >&2
+if [ $# -ne 6 ]; then
+    echo "ERROR: Usage: $0 <EESSI tmp dir (example: /tmp/$USER/EESSI)> <version (example: 2023.06)> <CPU arch subdir (example: x86_64/amd/zen2)> <accelerator subdir (example: nvidia/cc80)> <dev project> (example: ESPREsSo)" >&2
     exit 1
 fi
 eessi_tmpdir=$1
 eessi_version=$2
 cpu_arch_subdir=$3
 accel_subdir=$4
-target_tgz=$5
+eessi_dev_project=$5
+target_tgz=$6
 
 tmpdir=`mktemp -d`
 echo ">> tmpdir: $tmpdir"
@@ -20,11 +21,11 @@ echo ">> tmpdir: $tmpdir"
 os="linux"
 source ${base_dir}/init/eessi_defaults
 cvmfs_repo=${EESSI_CVMFS_REPO}
-eessi_dev_project=${EESSI_DEV_PROJECT}
 
 # install to $eessi_version/$eessi_dev_project if defined, otherwise install
 # to $eessi_version
-echo "Setting $install_prefix_dir to: ${install_prefix_dir}"
+install_prefix_dir=${eessi_version}${eessi_dev_project:+/$eessi_dev_project}/
+echo "Setting Install prefix directory to: ${install_prefix_dir}"
 
 if [ ! -d ${install_prefix_dir} ]; then
     echo "Install prefix directory ${install_prefix_dir} does not exist?!" >&2
