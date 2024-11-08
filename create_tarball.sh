@@ -20,6 +20,16 @@ echo ">> tmpdir: $tmpdir"
 os="linux"
 source ${base_dir}/init/eessi_defaults
 cvmfs_repo=${EESSI_CVMFS_REPO}
+eessi_dev_project=${EESSI_DEV_PROJECT}
+
+# install to $eessi_version/$eessi_dev_project if defined, otherwise install
+# to $eessi_version
+echo "Setting $install_prefix_dir to: ${install_prefix_dir}"
+
+if [ ! -d ${install_prefix_dir} ]; then
+    echo "Install prefix directory ${install_prefix_dir} does not exist?!" >&2
+    exit 2
+fi
 
 software_dir="${cvmfs_repo}/versions/${eessi_version}/software/${os}/${cpu_arch_subdir}"
 if [ ! -d ${software_dir} ]; then
@@ -62,18 +72,18 @@ fi
 # consider both CPU-only and accelerator subdirectories
 for subdir in ${cpu_arch_subdir} ${cpu_arch_subdir}/accel/${accel_subdir}; do
 
-    if [ -d ${eessi_version}/software/${os}/${subdir}/modules ]; then
+    if [ -d ${install_prefix_dir}/software/${os}/${subdir}/modules ]; then
         # module files
-        find ${eessi_version}/software/${os}/${subdir}/modules -type f | grep -v '/\.wh\.' >> ${files_list} || true  # Make sure we don't exit because of set -e if grep doesn't return a match
+        find ${install_prefix_dir}/software/${os}/${subdir}/modules -type f | grep -v '/\.wh\.' >> ${files_list} || true  # Make sure we don't exit because of set -e if grep doesn't return a match
         # module symlinks
-        find ${eessi_version}/software/${os}/${subdir}/modules -type l | grep -v '/\.wh\.' >> ${files_list} || true  # Make sure we don't exit because of set -e if grep doesn't return a match
+        find ${install_prefix_dir}/software/${os}/${subdir}/modules -type l | grep -v '/\.wh\.' >> ${files_list} || true  # Make sure we don't exit because of set -e if grep doesn't return a match
         # module files and symlinks
-        find ${eessi_version}/software/${os}/${subdir}/modules/all -type f -o -type l \
+        find ${install_prefix_dir}/software/${os}/${subdir}/modules/all -type f -o -type l \
             | grep -v '/\.wh\.' | grep -v '/\.modulerc\.lua' | sed -e 's/.lua$//' | sed -e 's@.*/modules/all/@@g' | sort -u \
             >> ${module_files_list}
     fi
 
-    if [ -d ${eessi_version}/software/${os}/${subdir}/software -a -r ${module_files_list} ]; then
+    if [ -d ${install_prefix_dir}/software/${os}/${subdir}/software -a -r ${module_files_list} ]; then
         # installation directories but only those for which module files were created
         # Note, we assume that module names (as defined by 'PACKAGE_NAME/VERSION.lua'
         # using EasyBuild's standard module naming scheme) match the name of the
