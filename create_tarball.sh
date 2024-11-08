@@ -27,8 +27,8 @@ cvmfs_repo=${EESSI_CVMFS_REPO}
 install_prefix_dir=${eessi_version}${eessi_dev_project:+/$eessi_dev_project}/
 echo "Setting Install prefix directory to: ${install_prefix_dir}"
 
-if [ ! -d ${install_prefix_dir} ]; then
-    echo "Install prefix directory ${install_prefix_dir} does not exist?!" >&2
+if [ -z ${install_prefix_dir} ]; then
+    echo "\${install_prefix_dir} is empty?!" >&2
     exit 2
 fi
 
