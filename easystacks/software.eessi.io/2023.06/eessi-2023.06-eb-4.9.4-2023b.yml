@@ -7,3 +7,4 @@ easyconfigs:
       options:
         # see https://github.com/easybuilders/easybuild-easyblocks/pull/3496
         include-easyblocks-from-commit: 60633b0acfd41a0732992d9e16800dae71a056eb
+  - Cython-3.0.10-GCCcore-13.2.0.eb

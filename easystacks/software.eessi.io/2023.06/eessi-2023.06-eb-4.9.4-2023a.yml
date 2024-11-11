@@ -17,6 +17,10 @@ easyconfigs:
       options:
         # see https://github.com/easybuilders/easybuild-easyconfigs/pull/21650
         from-commit: 109998f6adcda7efb4174b1e5f73b41ee82d1f13
+  - Solids4foam-2.1-foss-2023a.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/21606
+        from-commit: 63562c58acf1be64407192b6862c3bd80253d2e0
   - Cassiopeia-2.0.0-foss-2023a.eb:
       options:
         # see https://github.com/easybuilders/easybuild-easyconfigs/pull/21657
