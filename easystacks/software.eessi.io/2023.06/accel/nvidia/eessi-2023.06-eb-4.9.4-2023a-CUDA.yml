@@ -6,4 +6,4 @@ easyconfigs:
         # need to use updated tensorflow easyblock to work around ImportError not
         # finding libnccl.so.2
         # see https://github.com/easybuilders/easybuild-easyblocks/pull/3497
-        include-easyblock-from-commit: 68d89b954b9a67ac157e8030f2ad670ff9374964
+        include-easyblocks-from-commit: 68d89b954b9a67ac157e8030f2ad670ff9374964
