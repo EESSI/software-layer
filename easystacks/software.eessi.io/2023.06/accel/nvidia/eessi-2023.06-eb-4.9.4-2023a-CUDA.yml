@@ -1,3 +1,9 @@
 easyconfigs:
   - CUDA-12.1.1.eb
   - cuDNN-8.9.2.26-CUDA-12.1.1.eb
+  - TensorFlow-2.15.1-foss-2023a-CUDA-12.1.1.eb:
+      options:
+        # need to use updated tensorflow easyblock to work around ImportError not
+        # finding libnccl.so.2
+        # see https://github.com/easybuilders/easybuild-easyblocks/pull/3497
+        include-easyblock-from-commit: 68d89b954b9a67ac157e8030f2ad670ff9374964
