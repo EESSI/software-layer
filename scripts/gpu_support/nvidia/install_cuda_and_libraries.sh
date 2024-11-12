@@ -99,10 +99,6 @@ SAVE_MODULEPATH=${MODULEPATH}
 for EASYSTACK_FILE in ${TOPDIR}/easystacks/eessi-*CUDA*.yml; do
     echo -e "Processing easystack file ${easystack_file}...\n\n"
 
-    # We don't want hooks used in this install, we need vanilla installations
-    touch "${tmpdir}"/none.py
-    export EASYBUILD_HOOKS="${tmpdir}/none.py"
-
     # determine version of EasyBuild module to load based on EasyBuild version included in name of easystack file
     eb_version=$(echo ${EASYSTACK_FILE} | sed 's/.*eb-\([0-9.]*\).*/\1/g')
 
@@ -124,6 +120,10 @@ for EASYSTACK_FILE in ${TOPDIR}/easystacks/eessi-*CUDA*.yml; do
     MODULEPATH=${EESSI_SITE_SOFTWARE_PATH}/.modules/all
     echo "set MODULEPATH=${MODULEPATH}"
 
+    # We don't want hooks used in this install, we need vanilla installations
+    touch "${tmpdir}"/none.py
+    export EASYBUILD_HOOKS="${tmpdir}/none.py"
+    
     # show EasyBuild configuration
     echo "Show EasyBuild configuration"
     eb --show-config
