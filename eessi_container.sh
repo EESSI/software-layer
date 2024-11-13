@@ -89,6 +89,11 @@ display_help() {
   echo "  -n | --nvidia MODE      - configure the container to work with NVIDIA GPUs,"
   echo "                            MODE==install for a CUDA installation, MODE==run to"
   echo "                            attach a GPU, MODE==all for both [default: false]"
+  echo "  -o | --lower-dirs DIRS  - list of ':' separated directories that are used"
+  echo "                            in front of the default lower dir (CVMFS repo);"
+  echo "                            fuse-overlayfs will merge all lower directories;"
+  echo "                            the option can be used to make certain directories"
+  echo "                            in the CVMFS repo writable [default: none]"
   echo "  -r | --repository CFG   - configuration file or identifier defining the"
   echo "                            repository to use; can be given multiple times;"
   echo "                            CFG may include a suffix ',access={ro,rw}' to"
@@ -125,6 +130,7 @@ FAKEROOT=0
 VERBOSE=0
 STORAGE=
 LIST_REPOS=0
+LOWER_DIRS=
 MODE="shell"
 SETUP_NVIDIA=0
 REPOSITORIES=()
@@ -180,6 +186,10 @@ while [[ $# -gt 0 ]]; do
     -n|--nvidia)
       SETUP_NVIDIA=1
       NVIDIA_MODE="$2"
+      shift 2
+      ;;
+    -o|--lower-dirs)
+      LOWER_DIRS="$2"
       shift 2
       ;;
     -r|--repository)
@@ -753,10 +763,10 @@ do
             echo "   left-most directory in 'lowerdir' argument for fuse-overlayfs."
 
             lowerdirs=/cvmfs_ro/${cvmfs_repo_name}
-            # check if there are more overlay-upper directories, e.g., with three digit suffix
-            for dir in $(ls ${EESSI_TMPDIR}/${cvmfs_repo_name} | grep -E "overlay-upper-[0-9]{3}" | cut -f3 -d- | sort -n); do
-                lowerdirs=${TMP_IN_CONTAINER}/${cvmfs_repo_name}/overlay-upper-${dir}:${lowerdirs}
-            done
+            # # check if there are more overlay-upper directories, e.g., with three digit suffix
+            # for dir in $(ls ${EESSI_TMPDIR}/${cvmfs_repo_name} | grep -E "overlay-upper-[0-9]{3}" | cut -f3 -d- | sort -n); do
+            #     lowerdirs=${TMP_IN_CONTAINER}/${cvmfs_repo_name}/overlay-upper-${dir}:${lowerdirs}
+            # done
             # finally add most recent overlay-upper to lowerdirs
             lowerdirs=${TMP_IN_CONTAINER}/${cvmfs_repo_name}/overlay-upper:${lowerdirs}
             [[ ${VERBOSE} -eq 1 ]] && ls ${EESSI_TMPDIR}/${cvmfs_repo_name}
@@ -791,21 +801,21 @@ do
         # starting with the lowest number first and preprending it to the lowerdir
         # setting
         lowerdirs=/cvmfs_ro/${cvmfs_repo_name}
-        if [ -d ${EESSI_TMPDIR}/${cvmfs_repo_name}/overlay-upper ]; then
-            # determine next sequence number
-            last_seq_num=$(ls ${EESSI_TMPDIR}/${cvmfs_repo_name} | grep -E "overlay-upper-[0-9]{3}" | cut -f3 -d- | sort -n | tail -n 1 | sed -e 's/^0*//')
-            if [ -n ${last_seq_num} ]; then
-                last_seq_num=0
-            fi
-            next_seq_num=$(($last_seq_num + 1))
-            next_ovl_upper=$(printf "overlay-upper-%03d" ${next_seq_num})
-            mv ${EESSI_TMPDIR}/${cvmfs_repo_name}/overlay-upper ${EESSI_TMPDIR}/${cvmfs_repo_name}/${next_ovl_upper}
-            for dir in $(ls ${EESSI_TMPDIR}/${cvmfs_repo_name} | grep -E "overlay-upper-[0-9]{3}" | cut -f3 -d- | sort -n); do
-                lowerdirs=${TMP_IN_CONTAINER}/${cvmfs_repo_name}/overlay-upper-${dir}:${lowerdirs}
-            done
-            [[ ${VERBOSE} -eq 1 ]] && ls ${EESSI_TMPDIR}/${cvmfs_repo_name}
-            [[ ${VERBOSE} -eq 1 ]] && echo ${lowerdirs}
-        fi
+        # if [ -d ${EESSI_TMPDIR}/${cvmfs_repo_name}/overlay-upper ]; then
+        #     # determine next sequence number
+        #     last_seq_num=$(ls ${EESSI_TMPDIR}/${cvmfs_repo_name} | grep -E "overlay-upper-[0-9]{3}" | cut -f3 -d- | sort -n | tail -n 1 | sed -e 's/^0*//')
+        #     if [ -n ${last_seq_num} ]; then
+        #         last_seq_num=0
+        #     fi
+        #     next_seq_num=$(($last_seq_num + 1))
+        #     next_ovl_upper=$(printf "overlay-upper-%03d" ${next_seq_num})
+        #     mv ${EESSI_TMPDIR}/${cvmfs_repo_name}/overlay-upper ${EESSI_TMPDIR}/${cvmfs_repo_name}/${next_ovl_upper}
+        #     for dir in $(ls ${EESSI_TMPDIR}/${cvmfs_repo_name} | grep -E "overlay-upper-[0-9]{3}" | cut -f3 -d- | sort -n); do
+        #         lowerdirs=${TMP_IN_CONTAINER}/${cvmfs_repo_name}/overlay-upper-${dir}:${lowerdirs}
+        #     done
+        #     [[ ${VERBOSE} -eq 1 ]] && ls ${EESSI_TMPDIR}/${cvmfs_repo_name}
+        #     [[ ${VERBOSE} -eq 1 ]] && echo ${lowerdirs}
+        # fi
         mkdir -p ${EESSI_TMPDIR}/${cvmfs_repo_name}/overlay-upper
         mkdir -p ${EESSI_TMPDIR}/${cvmfs_repo_name}/overlay-work
         [[ ${VERBOSE} -eq 1 ]] && echo -e "TMP directory contents:\n$(ls -l ${EESSI_TMPDIR})"
@@ -816,6 +826,12 @@ do
         EESSI_FUSE_MOUNTS+=("--fusemount" "${EESSI_READONLY}")
 
         EESSI_WRITABLE_OVERLAY="container:fuse-overlayfs"
+        if [[ ! -z ${LOWER_DIRS} ]]; then
+            # need to convert ':' in LOWER_DIRS to ',' because bind mounts use ',' as
+            # separator while the lowerdir overlayfs option uses ':'
+            export BIND_PATHS="${BIND_PATHS},${LOWER_DIRS/:/,}"
+            lowerdirs=${LOWER_DIRS}:${lowerdirs}"
+        fi
         EESSI_WRITABLE_OVERLAY+=" -o lowerdir=${lowerdirs}"
         EESSI_WRITABLE_OVERLAY+=" -o upperdir=${TMP_IN_CONTAINER}/${cvmfs_repo_name}/overlay-upper"
         EESSI_WRITABLE_OVERLAY+=" -o workdir=${TMP_IN_CONTAINER}/${cvmfs_repo_name}/overlay-work"
