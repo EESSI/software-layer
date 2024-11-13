@@ -8,9 +8,9 @@
 # - TMPDIR is set
 # - EB is set
 # - EASYBUILD_INSTALLPATH needs to be set
-# - function check_exit_code is defined
-#   cfg/utils.sh in EESSI/software-layer repository defines this function, hence
-#   cfg/utils.sh shall be sourced before this script is run
+# - Function check_exit_code is defined;
+#   scripts/utils.sh in EESSI/software-layer repository defines this function, hence
+#   scripts/utils.sh shall be sourced before this script is run
 #
 # This script is part of the EESSI software layer, see
 # https://github.com/EESSI/software-layer.git
