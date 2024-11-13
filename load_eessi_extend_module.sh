@@ -80,20 +80,20 @@ else
     ORIG_PATH=${PATH}
     ORIG_PYTHONPATH=${PYTHONPATH}
 
-    echo ">> Final installation in ${EASYBUILD_INSTALLPATH}..."
-    ls -lisa ${EASYBUILD_INSTALLPATH}
-    ls -lisaR ${EASYBUILD_INSTALLPATH}/software/EESSI-extend
-    whoami
+    # source configure_easybuild to use correct eb settings
+    (
+        EESSI_MAIN_DIR=$(dirname $(readlink -f $BASH_SOURCE))
+        source ${EESSI_MAIN_DIR}/configure_easybuild
 
-    export PATH=${EB_TMPDIR}/bin:${PATH}
-    export PYTHONPATH=$(ls -d ${EB_TMPDIR}/lib/python*/site-packages):${PYTHONPATH}
-    eb_install_out=${TMPDIR}/eb_install.out
-    ok_msg="EESSI-extend/${EESSI_EXTEND_VERSION} installed, let's go!"
-    fail_msg="Installing EESSI-extend/${EESSI_EXTEND_VERSION} failed, that's not good... (output: ${eb_install_out})"
-    ${EB} "EESSI-extend-${EESSI_EXTEND_VERSION}.eb" 2>&1 | tee ${eb_install_out}
-    ec=$?
-    ls -lisaR ${EASYBUILD_INSTALLPATH}/software/EESSI-extend
-    check_exit_code $ec "${ok_msg}" "${fail_msg}"
+        echo ">> Final installation in ${EASYBUILD_INSTALLPATH}..."
+        export PATH=${EB_TMPDIR}/bin:${PATH}
+        export PYTHONPATH=$(ls -d ${EB_TMPDIR}/lib/python*/site-packages):${PYTHONPATH}
+        eb_install_out=${TMPDIR}/eb_install.out
+        ok_msg="EESSI-extend/${EESSI_EXTEND_VERSION} installed, let's go!"
+        fail_msg="Installing EESSI-extend/${EESSI_EXTEND_VERSION} failed, that's not good... (output: ${eb_install_out})"
+        ${EB} "EESSI-extend-${EESSI_EXTEND_VERSION}.eb" 2>&1 | tee ${eb_install_out}
+        check_exit_code $? "${ok_msg}" "${fail_msg}"
+    )
 
     # restore origin $PATH and $PYTHONPATH values, and clean up environment variables that are no longer needed
     export PATH=${ORIG_PATH}
