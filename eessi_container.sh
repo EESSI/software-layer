@@ -746,9 +746,21 @@ do
             # to be able to see the contents of the read-write session we have to mount
             # the fuse-overlayfs (in read-only mode) on top of the CernVM-FS repository
 
-            echo "While processing '${cvmfs_repo_name}' to be mounted 'read-only' we detected an overlay-upper"
-            echo "  directory (${EESSI_TMPDIR}/${cvmfs_repo_name}/overlay-upper) likely from a previous"
-            echo "  session. Will use it as left-most directory in 'lowerdir' argument for fuse-overlayfs."
+            echo "While processing '${cvmfs_repo_name}' to be mounted 'read-only'"
+            echo "   we detected one or more overlay-upper* directories"
+            echo "   (${EESSI_TMPDIR}/${cvmfs_repo_name}/overlay-upper*)"
+            echo "   likely originating from a previous session. Will use then as"
+            echo "   left-most directory in 'lowerdir' argument for fuse-overlayfs."
+
+            lowerdirs=/cvmfs_ro/${cvmfs_repo_name}
+            # check if there are more overlay-upper directories, e.g., with three digit suffix
+            for dir in $(ls ${EESSI_TMPDIR}/${cvmfs_repo_name} | grep -E "overlay-upper-[0-9]{3}" | cut -f3 -d- | sort -n); do
+                lowerdirs=${TMP_IN_CONTAINER}/${cvmfs_repo_name}/overlay-upper-${dir}:${lowerdirs}
+            done
+            # finally add most recent overlay-upper to lowerdirs
+            lowerdirs=${TMP_IN_CONTAINER}/${cvmfs_repo_name}/overlay-upper:${lowerdirs}
+            [[ ${VERBOSE} -eq 1 ]] && ls ${EESSI_TMPDIR}/${cvmfs_repo_name}
+            [[ ${VERBOSE} -eq 1 ]] && echo ${lowerdirs}
 
             # make the target CernVM-FS repository available under /cvmfs_ro
             export EESSI_READONLY="container:cvmfs2 ${cvmfs_repo_name} /cvmfs_ro/${cvmfs_repo_name}"
@@ -757,12 +769,7 @@ do
 
             # now, put the overlay-upper read-only on top of the repo and make it available under the usual prefix /cvmfs
             EESSI_READONLY_OVERLAY="container:fuse-overlayfs"
-            # The contents of the previous session are available under
-            #   ${EESSI_TMPDIR} which is bind mounted to ${TMP_IN_CONTAINER}.
-            #   Hence, we have to use ${TMP_IN_CONTAINER}/${cvmfs_repo_name}/overlay-upper
-            # the left-most directory given for the lowerdir argument is put on top,
-            #   and with no upperdir=... the whole overlayfs is made available read-only
-            EESSI_READONLY_OVERLAY+=" -o lowerdir=${TMP_IN_CONTAINER}/${cvmfs_repo_name}/overlay-upper:/cvmfs_ro/${cvmfs_repo_name}"
+            EESSI_READONLY_OVERLAY+=" -o lowerdir=${lowerdirs}"
             EESSI_READONLY_OVERLAY+=" /cvmfs/${cvmfs_repo_name}"
             export EESSI_READONLY_OVERLAY
 
@@ -778,7 +785,27 @@ do
             export EESSI_FUSE_MOUNTS
         fi
     elif [[ ${cvmfs_repo_access} == "rw" ]] ; then
-        # use repo-specific overlay directories
+        # use repo-specific overlay directories; if there is already an
+        # overlay-upper (e.g., from a previous run) move it to overlay-upper-SEQ
+        # and create a new one; all overlay-upper-SEQs must be added to lowerdir
+        # starting with the lowest number first and preprending it to the lowerdir
+        # setting
+        lowerdirs=/cvmfs_ro/${cvmfs_repo_name}
+        if [ -d ${EESSI_TMPDIR}/${cvmfs_repo_name}/overlay-upper ]; then
+            # determine next sequence number
+            last_seq_num=$(ls ${EESSI_TMPDIR}/${cvmfs_repo_name} | grep -E "overlay-upper-[0-9]{3}" | cut -f3 -d- | sort -n | tail -n 1 | sed -e 's/^0*//')
+            if [ -n ${last_seq_num} ]; then
+                last_seq_num=0
+            fi
+            next_seq_num=$(($last_seq_num + 1))
+            next_ovl_upper=$(printf "overlay-upper-%03d" ${next_seq_num})
+            mv ${EESSI_TMPDIR}/${cvmfs_repo_name}/overlay-upper ${EESSI_TMPDIR}/${cvmfs_repo_name}/${next_ovl_upper}
+            for dir in $(ls ${EESSI_TMPDIR}/${cvmfs_repo_name} | grep -E "overlay-upper-[0-9]{3}" | cut -f3 -d- | sort -n); do
+                lowerdirs=${TMP_IN_CONTAINER}/${cvmfs_repo_name}/overlay-upper-${dir}:${lowerdirs}
+            done
+            [[ ${VERBOSE} -eq 1 ]] && ls ${EESSI_TMPDIR}/${cvmfs_repo_name}
+            [[ ${VERBOSE} -eq 1 ]] && echo ${lowerdirs}
+        fi
         mkdir -p ${EESSI_TMPDIR}/${cvmfs_repo_name}/overlay-upper
         mkdir -p ${EESSI_TMPDIR}/${cvmfs_repo_name}/overlay-work
         [[ ${VERBOSE} -eq 1 ]] && echo -e "TMP directory contents:\n$(ls -l ${EESSI_TMPDIR})"
@@ -789,7 +816,7 @@ do
         EESSI_FUSE_MOUNTS+=("--fusemount" "${EESSI_READONLY}")
 
         EESSI_WRITABLE_OVERLAY="container:fuse-overlayfs"
-        EESSI_WRITABLE_OVERLAY+=" -o lowerdir=/cvmfs_ro/${cvmfs_repo_name}"
+        EESSI_WRITABLE_OVERLAY+=" -o lowerdir=${lowerdirs}"
         EESSI_WRITABLE_OVERLAY+=" -o upperdir=${TMP_IN_CONTAINER}/${cvmfs_repo_name}/overlay-upper"
         EESSI_WRITABLE_OVERLAY+=" -o workdir=${TMP_IN_CONTAINER}/${cvmfs_repo_name}/overlay-work"
         EESSI_WRITABLE_OVERLAY+=" /cvmfs/${cvmfs_repo_name}"
