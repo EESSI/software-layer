@@ -62,7 +62,9 @@ fi
 echo ">> Checking for EESSI-extend module..."
 
 ml_av_eessi_extend_out=${TMPDIR}/ml_av_eessi_extend.out
-module avail 2>&1 | grep -i EESSI-extend/${EESSI_EXTEND_VERSION} &> ${ml_av_eessi_extend_out}
+# need to use --ignore_cache to avoid the case that the module was removed (to be
+# rebuilt) but it is still in the cache
+module --ignore_cache avail 2>&1 | grep -i EESSI-extend/${EESSI_EXTEND_VERSION} &> ${ml_av_eessi_extend_out}
 
 if [[ $? -eq 0 ]]; then
     echo_green ">> Module for EESSI-extend/${EESSI_EXTEND_VERSION} found!"
