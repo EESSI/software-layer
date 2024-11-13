@@ -273,7 +273,14 @@ unset EESSI_PROJECT_INSTALL
 unset EESSI_SITE_INSTALL
 export EESSI_CVMFS_INSTALL=1
 module unload EESSI-extend
-module load EESSI-extend/${EESSI_VERSION}-easybuild
+
+# The EESSI-extend module is being loaded (or installed if it doesn't exist yet).
+# The script requires the EESSI_VERSION given as argument, a couple of
+# environment variables set (TMPDIR, EB and EASYBUILD_INSTALLPATH) and the
+# function check_exit_code defined.
+# NOTE, the script exits if those variables/functions are undefined.
+export EASYBUILD_INSTALLPATH=${EESSI_PREFIX}/software/${EESSI_OS_TYPE}/${EESSI_SOFTWARE_SUBDIR_OVERRIDE}
+source load_eessi_extend_module.sh ${EESSI_VERSION}
 
 if [ ! -z "${shared_fs_path}" ]; then
     shared_eb_sourcepath=${shared_fs_path}/easybuild/sources
