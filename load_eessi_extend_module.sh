@@ -103,4 +103,7 @@ fi
 echo ">> Loading EESSI-extend/${EESSI_EXTEND_VERSION} module..."
 module --ignore-cache load EESSI-extend/${EESSI_EXTEND_VERSION}
 
+echo ">> Determining how to load EESSI-extend/${EESSI_EXTEND_VERSION} module..."
+module --ignore-cache spider EESSI-extend/${EESSI_EXTEND_VERSION}
+
 unset EESSI_EXTEND_VERSION
