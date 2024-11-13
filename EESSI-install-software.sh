@@ -248,6 +248,10 @@ fi
 temp_install_storage=${TMPDIR}/temp_install_storage
 mkdir -p ${temp_install_storage}
 if [ -z "${skip_cuda_install}" ] || [ ! "${skip_cuda_install}" ]; then
+    # need to ensure that some variables will be available to the script
+    #   TMPDIR, EB, EESSI_VERSION, for EASYBUILD_INSTALLPATH (EESSI_PREFIX,
+    #   EESSI_OS_TYPE, EESSI_SOFTWARE_SUBDIR_OVERRIDE)
+    export TMPDIR EB EESSI_VERSION EESSI_PREFIX EESSI_OS_TYPE EESSI_SOFTWARE_SUBDIR_OVERRIDE
     ${EESSI_PREFIX}/scripts/gpu_support/nvidia/install_cuda_and_libraries.sh \
         -t ${temp_install_storage} \
         --accept-cuda-eula \
