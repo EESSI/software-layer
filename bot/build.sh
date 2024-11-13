@@ -234,13 +234,13 @@ else
     grep ^REMOVE_DIRECTORY ${determine_outerr} | cut -f4- -d'/' > ${determine_outerr}.rm_dirs
     cat ${determine_outerr}.rm_dirs | while read remove_dir; do
         mkdir -p ${STORAGE}/lower_dirs/${remove_dir}
-        chmod ugo+rwx ${STORAGE}/lower_dirs/${remove_dir}
+        chmod u+rwx ${STORAGE}/lower_dirs/${remove_dir}
     done
 
     grep ^REMOVE_FILE ${determine_outerr} | cut -f4- -d'/' > ${determine_outerr}.rm_files
     cat ${determine_outerr}.rm_files | while read remove_file; do
         touch ${STORAGE}/lower_dirs/${remove_file}
-        chmod ugo+rw ${STORAGE}/lower_dirs/${remove_file}
+        chmod u+rw ${STORAGE}/lower_dirs/${remove_file}
     done
 
     # prepare directory to store tarball of tmp for removal and build steps
