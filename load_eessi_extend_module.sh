@@ -91,7 +91,9 @@ else
     ok_msg="EESSI-extend/${EESSI_EXTEND_VERSION} installed, let's go!"
     fail_msg="Installing EESSI-extend/${EESSI_EXTEND_VERSION} failed, that's not good... (output: ${eb_install_out})"
     ${EB} "EESSI-extend-${EESSI_EXTEND_VERSION}.eb" 2>&1 | tee ${eb_install_out}
-    check_exit_code $? "${ok_msg}" "${fail_msg}"
+    ec=$?
+    ls -lisaR ${EASYBUILD_INSTALLPATH}/software/EESSI-extend
+    check_exit_code $ec "${ok_msg}" "${fail_msg}"
 
     # restore origin $PATH and $PYTHONPATH values, and clean up environment variables that are no longer needed
     export PATH=${ORIG_PATH}
