@@ -81,6 +81,10 @@ else
     ORIG_PYTHONPATH=${PYTHONPATH}
 
     echo ">> Final installation in ${EASYBUILD_INSTALLPATH}..."
+    ls -l ${EASYBUILD_INSTALLPATH}
+    ls -lR ${EASYBUILD_INSTALLPATH}/software/EESSI-extend
+    whoami
+
     export PATH=${EB_TMPDIR}/bin:${PATH}
     export PYTHONPATH=$(ls -d ${EB_TMPDIR}/lib/python*/site-packages):${PYTHONPATH}
     eb_install_out=${TMPDIR}/eb_install.out
