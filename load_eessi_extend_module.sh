@@ -92,7 +92,7 @@ else
     export PYTHONPATH=${ORIG_PYTHONPATH}
     unset EB_TMPDIR ORIG_PATH ORIG_PYTHONPATH
 
-    module --ignore-cache avail EESSI-extend/${EESSI_EXTEND_VERSION} &> ${ml_av_eessi_extend_out}
+    module --ignore_cache avail EESSI-extend/${EESSI_EXTEND_VERSION} &> ${ml_av_eessi_extend_out}
     if [[ $? -eq 0 ]]; then
         echo_green ">> EESSI-extend/${EESSI_EXTEND_VERSION} module installed!"
     else
@@ -101,9 +101,6 @@ else
 fi
 
 echo ">> Loading EESSI-extend/${EESSI_EXTEND_VERSION} module..."
-module --ignore-cache load EESSI-extend/${EESSI_EXTEND_VERSION}
-
-echo ">> Determining how to load EESSI-extend/${EESSI_EXTEND_VERSION} module..."
-module --ignore-cache spider EESSI-extend/${EESSI_EXTEND_VERSION}
+module --ignore_cache load EESSI-extend/${EESSI_EXTEND_VERSION}
 
 unset EESSI_EXTEND_VERSION
