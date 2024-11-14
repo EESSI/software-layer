@@ -136,7 +136,9 @@ if [ $EUID -ne 0 ]; then
                     #   directory only (${app_dir}/easybuild)
                     rm -rdfv ${app_dir}
                     rm -rdfv ${app_module}
-                    ls ${app_dir}/easybuild || true
+                    # ls didn't change the result (permission denied)
+                    # ls ${app_dir}/easybuild || true
+                    mkdir -p ${app_dir}/easybuild
 
                     ## 1st remove files in depth-first order
                     #for filepath in $(find ${app_dir} -depth -type f); do
