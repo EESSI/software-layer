@@ -3,6 +3,7 @@
 import glob
 import os
 import re
+import stat
 
 import easybuild.tools.environment as env
 from easybuild.easyblocks.generic.configuremake import obtain_config_guess
@@ -982,7 +983,7 @@ def pre_package_eessi_extend(self, *args, **kwargs):
                 dir_tree.append(os.path.join(root, f))
         for entry in dir_tree:
             print(entry)
-            os.stat(entry)
+            print(stat.S_IMODE(os.lstat(entry).st_mode))
 
 
 PARSE_HOOKS = {
