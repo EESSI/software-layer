@@ -132,8 +132,21 @@ if [ $EUID -ne 0 ]; then
                     # app_dir=${EASYBUILD_INSTALLPATH}/software/${app}
                     # app_module=${EASYBUILD_INSTALLPATH}/modules/all/${app}.lua
                     echo_yellow "Removing ${app_dir} and ${app_module}..."
-                    rm -rdfv ${app_dir}
-                    rm -rdfv ${app_module}
+                    # rm -rdfv ${app_dir}
+                    # rm -rdfv ${app_module}
+                    # 1st remove files in depth-first order
+                    for filepath in $(find ${app_dir} -depth -type f); do
+                        echo "  removing file ${filepath}"
+                        rm -fv ${filepath}
+                    done
+                    # 2nd remove directories in depth-first order
+                    for dirpath in $(find ${app_dir} -depth -type d); do
+                        echo "  removing directory ${dirpath}"
+                        rmdir -v ${dirpath}
+                    done
+                    # 3rd remove module file
+                    echo "  removing module file ${app_module}"
+                    rm -fv ${app_module}
                 done
             else
                 fatal_error "Easystack file ${easystack_file} not found!"
