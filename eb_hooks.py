@@ -4,6 +4,7 @@ import glob
 import os
 import re
 import stat
+import time
 
 import easybuild.tools.environment as env
 from easybuild.easyblocks.generic.configuremake import obtain_config_guess
@@ -983,7 +984,8 @@ def pre_package_eessi_extend(self, *args, **kwargs):
                 dir_tree.append(os.path.join(root, f))
         for entry in dir_tree:
             print(entry)
-            print(oct(stat.S_IMODE(os.lstat(entry).st_mode)))
+            statinfo = os.lstat(entry)
+            print(f"file: {entry}\nperms: {oct(stat.S_IMODE(statinfo.st_mode))}\ncreated: {time.ctime(statinfo.st_ctime)}\n")
 
 
 PARSE_HOOKS = {
