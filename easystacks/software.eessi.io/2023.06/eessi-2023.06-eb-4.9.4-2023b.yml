@@ -10,5 +10,5 @@ easyconfigs:
   - Cython-3.0.10-GCCcore-13.2.0.eb
   - Mustache-1.3.3-foss-2023b.eb:
       options:
-        # see https://github.com/easybuilders/easybuild-easyblocks/pull/21783
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/21783
         from-commit: 5fa3db9eb36f91cba3fbf351549f8ba2849abc33 
