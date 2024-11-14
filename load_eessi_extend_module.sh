@@ -91,7 +91,7 @@ else
         eb_install_out=${TMPDIR}/eb_install.out
         ok_msg="EESSI-extend/${EESSI_EXTEND_VERSION} installed, let's go!"
         fail_msg="Installing EESSI-extend/${EESSI_EXTEND_VERSION} failed, that's not good... (output: ${eb_install_out})"
-        ${EB} --keeppreviousinstall True "EESSI-extend-${EESSI_EXTEND_VERSION}.eb" 2>&1 | tee ${eb_install_out}
+        ${EB} "EESSI-extend-${EESSI_EXTEND_VERSION}.eb" 2>&1 | tee ${eb_install_out}
         check_exit_code $? "${ok_msg}" "${fail_msg}"
     )
 
