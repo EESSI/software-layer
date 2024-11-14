@@ -1043,6 +1043,7 @@ POST_SINGLE_EXTENSION_HOOKS = {
 POST_POSTPROC_HOOKS = {
     'CUDA': post_postproc_cuda,
     'cuDNN': post_postproc_cudnn,
+}
 
 PRE_PACKAGE_HOOKS = {
     'EESSI-extend': pre_package_eessi_extend,
