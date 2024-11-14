@@ -1049,5 +1049,5 @@ POST_POSTPROC_HOOKS = {
 }
 
 PRE_PACKAGE_HOOKS = {
-    'EESSI-extend': pre_package_eessi_extend,
+    #    'EESSI-extend': pre_package_eessi_extend,
 }
