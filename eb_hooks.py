@@ -979,7 +979,7 @@ def pre_package_eessi_extend(self, *args, **kwargs):
         for root, _, files in os.walk(self.installdir):
             dir_tree.append(root)
             for f in files:
-                tree.append(os.path.join(root, f))
+                dir_tree.append(os.path.join(root, f))
         for entry in dir_tree:
             print(entry)
             os.stat(entry)
