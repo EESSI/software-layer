@@ -3,6 +3,8 @@
 # EESSI-extend should adjust EASYBUILD_INSTALLPATH and set
 # EASYBUILD_CUDA_COMPUTE_CAPABILITIES
 easyconfigs:
-  - EESSI-extend-2023.06-easybuild.eb:
-      options:
-        try-amend: keeppreviousinstall=True
+  - EESSI-extend-2023.06-easybuild.eb
+# the options are added to load_eessi_extend_module.sh
+#  - EESSI-extend-2023.06-easybuild.eb:
+#      options:
+#        try-amend: keeppreviousinstall=True
