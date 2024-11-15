@@ -3,8 +3,6 @@
 import glob
 import os
 import re
-import stat
-import time
 
 import easybuild.tools.environment as env
 from easybuild.easyblocks.generic.configuremake import obtain_config_guess
@@ -964,30 +962,6 @@ def inject_gpu_property(ec):
     return ec
 
 
-def pre_package_hook(self, *args, **kwargs):
-    """Main pre-package hook: trigger custom functions based on software name."""
-    if self.name in PRE_PACKAGE_HOOKS:
-        PRE_PACKAGE_HOOKS[self.name](self, *args, **kwargs)
-
-
-def pre_package_eessi_extend(self, *args, **kwargs):
-    """
-    Pre-package hook for EESSI-extend: ls/stat all files/directories to work around
-    'permission denied' issue when package got removed (and this hook is run when
-    the package is being rebuilt)
-    """
-    if self.name == 'EESSI-extend':
-        dir_tree = []
-        for root, _, files in os.walk(self.installdir):
-            dir_tree.append(root)
-            for f in files:
-                dir_tree.append(os.path.join(root, f))
-        for entry in dir_tree:
-            print(entry)
-            statinfo = os.lstat(entry)
-            print(f"file: {entry}\nperms: {oct(stat.S_IMODE(statinfo.st_mode))}\ncreated: {time.ctime(statinfo.st_ctime)}\n")
-
-
 PARSE_HOOKS = {
     'casacore': parse_hook_casacore_disable_vectorize,
     'CGAL': parse_hook_cgal_toolchainopts_precise,
@@ -1046,8 +1020,4 @@ POST_SINGLE_EXTENSION_HOOKS = {
 POST_POSTPROC_HOOKS = {
     'CUDA': post_postproc_cuda,
     'cuDNN': post_postproc_cudnn,
-}
-
-PRE_PACKAGE_HOOKS = {
-    #    'EESSI-extend': pre_package_eessi_extend,
 }
