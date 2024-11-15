@@ -223,7 +223,11 @@ else
     #     create a new directory ${STORAGE}/lower_dirs/some_path_stripped
     #       where the prefix /cvmfs/repo_name is removed from some_path
     #     set permission of the directory to ug+rwx
-    #   for each line containing 'REMOVE_FILE some_file_path'
+    # SKIP  for each line containing 'REMOVE_FILE some_file_path'
+    # SKIP    touch a new file ${STORAGE}/lower_dirs/some_file_path_stripped
+    # SKIP      where the prefix /cvmfs/repo_name is removed from some_file_path
+    # SKIP    set permission of the file to ug+rw
+    #   for each line containing 'REMOVE_MODULE some_file_path'
     #     touch a new file ${STORAGE}/lower_dirs/some_file_path_stripped
     #       where the prefix /cvmfs/repo_name is removed from some_file_path
     #     set permission of the file to ug+rw
@@ -237,10 +241,16 @@ else
         chmod ug+rwx ${STORAGE}/lower_dirs/${remove_dir}
     done
 
-    grep ^REMOVE_FILE ${determine_outerr} | cut -f4- -d'/' > ${determine_outerr}.rm_files
-    cat ${determine_outerr}.rm_files | while read remove_file; do
-        touch ${STORAGE}/lower_dirs/${remove_file}
-        chmod ug+rw ${STORAGE}/lower_dirs/${remove_file}
+    # grep ^REMOVE_FILE ${determine_outerr} | cut -f4- -d'/' > ${determine_outerr}.rm_files
+    # cat ${determine_outerr}.rm_files | while read remove_file; do
+    #     touch ${STORAGE}/lower_dirs/${remove_file}
+    #     chmod ug+rw ${STORAGE}/lower_dirs/${remove_file}
+    # done
+
+    grep ^REMOVE_MODULE ${determine_outerr} | cut -f4- -d'/' > ${determine_outerr}.rm_modules
+    cat ${determine_outerr}.rm_modules | while read remove_module; do
+        touch ${STORAGE}/lower_dirs/${remove_module}
+        chmod ug+rw ${STORAGE}/lower_dirs/${remove_module}
     done
 
     # prepare directory to store tarball of tmp for removal and build steps
