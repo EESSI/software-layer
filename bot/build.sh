@@ -249,6 +249,9 @@ else
 
     grep ^REMOVE_MODULE ${determine_outerr} | cut -f4- -d'/' > ${determine_outerr}.rm_modules
     cat ${determine_outerr}.rm_modules | while read remove_module; do
+        module_parent_dir=$(dirname ${STORAGE}/lower_dirs/${remove_module})
+        mkdir -p ${module_parent_dir}
+        chmod ug+rw ${module_parent_dir}
         touch ${STORAGE}/lower_dirs/${remove_module}
         chmod ug+rw ${STORAGE}/lower_dirs/${remove_module}
     done
