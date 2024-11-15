@@ -229,6 +229,27 @@ if [[ "${EESSI_CVMFS_REPO}" != /cvmfs/dev.eessi.io ]]; then
     ${TOPDIR}/install_scripts.sh --prefix ${EESSI_PREFIX}
 fi
 
+echo ">> Configuring EasyBuild..."
+
+# Make sure that we use the EESSI_CVMFS_INSTALL
+# Since the path is set when loading EESSI-extend, we reload it to make sure it works - even if it is already loaded
+# Note we need to do this after running install_cuda_and_libraries, since that does installations in the EESSI_SITE_INSTALL 
+unset EESSI_USER_INSTALL
+unset EESSI_PROJECT_INSTALL
+unset EESSI_SITE_INSTALL
+export EESSI_CVMFS_INSTALL=1
+module unload EESSI-extend
+
+# The EESSI-extend module is being loaded (or installed if it doesn't exist yet).
+# The script requires the EESSI_VERSION given as argument, a couple of
+# environment variables set (TMPDIR, EB and EASYBUILD_INSTALLPATH) and the
+# function check_exit_code defined.
+# NOTE, the script exits if those variables/functions are undefined.
+export EASYBUILD_INSTALLPATH=${EESSI_PREFIX}/software/${EESSI_OS_TYPE}/${EESSI_SOFTWARE_SUBDIR_OVERRIDE}
+# Loading the EESSI-extend module may adjust the value of EASYBUILD_INSTALLPATH,
+# e.g., to point to the installation directory for accelerators.
+source load_eessi_extend_module.sh ${EESSI_VERSION}
+
 # Install full CUDA SDK and cu* libraries in host_injections
 # Hardcode this for now, see if it works
 # TODO: We should make a nice yaml and loop over all CUDA versions in that yaml to figure out what to install
@@ -266,25 +287,6 @@ if command_exists "nvidia-smi"; then
     ${EESSI_PREFIX}/scripts/gpu_support/nvidia/link_nvidia_host_libraries.sh
 fi
 
-
-echo ">> Configuring EasyBuild..."
-
-# Make sure that we use the EESSI_CVMFS_INSTALL
-# Since the path is set when loading EESSI-extend, we reload it to make sure it works - even if it is already loaded
-# Note we need to do this after running install_cuda_and_libraries, since that does installations in the EESSI_SITE_INSTALL 
-unset EESSI_USER_INSTALL
-unset EESSI_PROJECT_INSTALL
-unset EESSI_SITE_INSTALL
-export EESSI_CVMFS_INSTALL=1
-module unload EESSI-extend
-
-# The EESSI-extend module is being loaded (or installed if it doesn't exist yet).
-# The script requires the EESSI_VERSION given as argument, a couple of
-# environment variables set (TMPDIR, EB and EASYBUILD_INSTALLPATH) and the
-# function check_exit_code defined.
-# NOTE, the script exits if those variables/functions are undefined.
-export EASYBUILD_INSTALLPATH=${EESSI_PREFIX}/software/${EESSI_OS_TYPE}/${EESSI_SOFTWARE_SUBDIR_OVERRIDE}
-source load_eessi_extend_module.sh ${EESSI_VERSION}
 
 if [ ! -z "${shared_fs_path}" ]; then
     shared_eb_sourcepath=${shared_fs_path}/easybuild/sources
