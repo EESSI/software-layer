@@ -136,9 +136,14 @@ if [ $EUID -ne 0 ]; then
                     #   directory only (${app_dir}/easybuild)
                     rm -rdfv ${app_dir}
                     rm -rdfv ${app_module}
+                    echo_yellow "Contents of ${app_dir}/easybuild (should not exist)"
+                    ls -l ${app_dir}/easybuild || true
                     # ls didn't change the result (permission denied)
                     # ls ${app_dir}/easybuild || true
+                    # 2nd idea: recreate some directory
                     mkdir -p ${app_dir}/easybuild
+                    echo_yellow "Contents of ${app_dir}/easybuild after it got recreated with 'mkdir -p' (should be empty)"
+                    ls -l ${app_dir}/easybuild || true
 
                     ## 1st remove files in depth-first order
                     #for filepath in $(find ${app_dir} -depth -type f); do
