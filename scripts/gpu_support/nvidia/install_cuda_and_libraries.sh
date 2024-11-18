@@ -239,9 +239,9 @@ for EASYSTACK_FILE in ${TOPDIR}/easystacks/eessi-*CUDA*.yml; do
       echo_green "all installations at ${EESSI_SITE_SOFTWARE_PATH}/software/... succeeded!"
     fi
 
+    # clean up tmpdir content
+    rm -rf "${tmpdir}"/*
+
     # Restore MODULEPATH for next loop iteration
     MODULEPATH=${SAVE_MODULEPATH}
 done
-
-# clean up tmpdir
-rm -rf "${tmpdir}"
