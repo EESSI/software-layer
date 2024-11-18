@@ -112,14 +112,19 @@ for EASYSTACK_FILE in ${TOPDIR}/easystacks/eessi-*CUDA*.yml; do
     unset EESSI_USER_INSTALL
     export EESSI_SITE_INSTALL=1
     module unload EESSI-extend
-
-    # The EESSI-extend module is being loaded (or installed if it doesn't exist yet).
-    # The script requires the EESSI_VERSION given as argument, a couple of
-    # environment variables set (TMPDIR, EB and EASYBUILD_INSTALLPATH) and the
-    # function check_exit_code defined.
-    # NOTE, the script exits if those variables/functions are undefined.
-    export EASYBUILD_INSTALLPATH=${EESSI_PREFIX}/software/${EESSI_OS_TYPE}/${EESSI_SOFTWARE_SUBDIR_OVERRIDE}
-    source load_eessi_extend_module.sh ${EESSI_VERSION}
+    ml_av_eessi_extend_out=${tmpdir}/ml_av_eessi_extend.out
+    # need to use --ignore_cache to avoid the case that the module was removed (to be
+    # rebuilt) but it is still in the cache and the rebuild failed
+    EESSI_EXTEND_VERSION=${EESSI_VERSION}-easybuild
+    module --ignore_cache avail 2>&1 | grep -i EESSI-extend/${EESSI_EXTEND_VERSION} &> ${ml_av_eessi_extend_out}
+    if [[ $? -eq 0 ]]; then
+        echo_green ">> Module for EESSI-extend/${EESSI_EXTEND_VERSION} found!"
+    else
+        error="\nNo module for EESSI-extend/${EESSI_EXTEND_VERSION} found\nwhile EESSI has been initialised to use software under ${EESSI_SOFTWARE_PATH}\n"
+        fatal_error "${error}"
+    fi
+    module --ignore_cache load EESSI-extend/${EESSI_EXTEND_VERSION}
+    unset EESSI_EXTEND_VERSION
 
     # Install modules in hidden .modules dir to keep track of what was installed before
     # (this action is temporary, and we do not call Lmod again within the current shell context, but in EasyBuild
