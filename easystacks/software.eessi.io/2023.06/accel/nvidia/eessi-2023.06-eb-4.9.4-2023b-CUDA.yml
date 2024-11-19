@@ -1,0 +1,3 @@
+easyconfigs:
+  - CUDA-12.4.0.eb
+  - UCX-CUDA-1.15.0.eb
