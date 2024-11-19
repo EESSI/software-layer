@@ -245,3 +245,5 @@ for EASYSTACK_FILE in ${TOPDIR}/easystacks/eessi-*CUDA*.yml; do
     # Restore MODULEPATH for next loop iteration
     MODULEPATH=${SAVE_MODULEPATH}
 done
+# Remove the temporary directory
+rm -rf "${tmpdir}"
