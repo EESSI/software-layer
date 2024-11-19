@@ -1,3 +1,5 @@
 easyconfigs:
   - CUDA-12.4.0.eb
+      options:
+        accept-eula-for: CUDA
   - UCX-CUDA-1.15.0.eb
