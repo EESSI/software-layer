@@ -5,7 +5,7 @@ set -e
 base_dir=$(dirname $(realpath $0))
 
 if [ $# -ne 6 ]; then
-    echo "ERROR: Usage: $0 <EESSI tmp dir (example: /tmp/$USER/EESSI)> <version (example: 2023.06)> <CPU arch subdir (example: x86_64/amd/zen2)> <accelerator subdir (example: nvidia/cc80)> <dev project> (example: ESPREsSo)" >&2
+    echo "ERROR: Usage: $0 <EESSI tmp dir (example: /tmp/$USER/EESSI)> <version (example: 2023.06)> <CPU arch subdir (example: x86_64/amd/zen2)> <accelerator subdir (example: nvidia/cc80)> <dev project> (example: ESPREsSo) <path to tarball>" >&2
     exit 1
 fi
 eessi_tmpdir=$1
