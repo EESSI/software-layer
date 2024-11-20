@@ -77,10 +77,6 @@ done
 # Make sure EESSI is initialised
 check_eessi_initialised
 
-# Make sure that `EESSI-extend` will install in the site installation path EESSI_SITE_SOFTWARE_PATH
-export EESSI_SITE_INSTALL=1
-echo "EESSI_SITE_SOFTWARE_PATH=${EESSI_SITE_SOFTWARE_PATH}"
-
 # we need a directory we can use for temporary storage
 if [[ -z "${TEMP_DIR}" ]]; then
     tmpdir=$(mktemp -d)
@@ -93,7 +89,7 @@ else
 fi
 echo "Created temporary directory '${tmpdir}'"
 
-# use EESSI_SITE_SOFTWARE_PATH/.modules/all as MODULEPATH
+# Store MODULEPATH so it can be restored at the end of each loop iteration
 SAVE_MODULEPATH=${MODULEPATH}
 
 for EASYSTACK_FILE in ${TOPDIR}/easystacks/eessi-*CUDA*.yml; do
@@ -103,8 +99,16 @@ for EASYSTACK_FILE in ${TOPDIR}/easystacks/eessi-*CUDA*.yml; do
     eb_version=$(echo ${EASYSTACK_FILE} | sed 's/.*eb-\([0-9.]*\).*/\1/g')
 
     # Load EasyBuild version for this easystack file _before_ loading EESSI-extend
-    module avail EasyBuild
+    module_avail_out=${tmpdir}/ml.out
+    module avail 2>&1 | grep EasyBuild/${eb_version} &> ${module_avail_out}
+    if [[ $? -eq 0 ]]; then
+        echo_green ">> Found an EasyBuild/${eb_version} module"
+    else
+        echo_yellow ">> No EasyBuild/${eb_version} module found: skipping step to install easystack file ${easystack_file} (see output in ${module_avail_out})"
+        continue
+    fi
     module load EasyBuild/${eb_version}
+
     # Make sure EESSI-extend does a site install here
     # We need to reload it with the current environment variables set
     unset EESSI_CVMFS_INSTALL

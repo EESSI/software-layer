@@ -231,54 +231,41 @@ fi
 
 echo ">> Configuring EasyBuild..."
 
-# Make sure that we use the EESSI_CVMFS_INSTALL
-# Since the path is set when loading EESSI-extend, we reload it to make sure it works - even if it is already loaded
-# Note we need to do this after running install_cuda_and_libraries, since that does installations in the EESSI_SITE_INSTALL 
+# Make sure EESSI-extend is not loaded, and configure location variables for a
+#   CVMFS installation
+module unload EESSI-extend
 unset EESSI_USER_INSTALL
 unset EESSI_PROJECT_INSTALL
 unset EESSI_SITE_INSTALL
 export EESSI_CVMFS_INSTALL=1
-module unload EESSI-extend
 
-# The EESSI-extend module is being loaded (or installed if it doesn't exist yet).
+# We now run 'source load_eessi_extend_module.sh' to load or install and load the
+#   EESSI-extend module which sets up all build environment settings.
 # The script requires the EESSI_VERSION given as argument, a couple of
-# environment variables set (TMPDIR, EB and EASYBUILD_INSTALLPATH) and the
-# function check_exit_code defined.
-# NOTE, the script exits if those variables/functions are undefined.
+#   environment variables set (TMPDIR, EB and EASYBUILD_INSTALLPATH) and the
+#   function check_exit_code defined.
+# NOTE 1, the script exits if those variables/functions are undefined.
+# NOTE 2, loading the EESSI-extend module may adjust the value of EASYBUILD_INSTALLPATH,
+#   e.g., to point to the installation directory for accelerators.
+# NOTE 3, we have to set a default for EASYBUILD_INSTALLPATH here in cases the
+#   EESSI-extend module itself needs to be installed.
 export EASYBUILD_INSTALLPATH=${EESSI_PREFIX}/software/${EESSI_OS_TYPE}/${EESSI_SOFTWARE_SUBDIR_OVERRIDE}
-# Loading the EESSI-extend module may adjust the value of EASYBUILD_INSTALLPATH,
-# e.g., to point to the installation directory for accelerators.
 source load_eessi_extend_module.sh ${EESSI_VERSION}
 
 # Install full CUDA SDK and cu* libraries in host_injections
 # Hardcode this for now, see if it works
 # TODO: We should make a nice yaml and loop over all CUDA versions in that yaml to figure out what to install
 # Allow skipping CUDA SDK install in e.g. CI environments
-# The install_cuda... script uses EasyBuild. So, we need to check if we have EB
-# or skip this step.
 echo "Going to install full CUDA SDK and cu* libraries under host_injections if necessary"
-module_avail_out=$TMPDIR/ml.out
-module avail 2>&1 | grep EasyBuild &> ${module_avail_out}
-if [[ $? -eq 0 ]]; then
-    echo_green ">> Found an EasyBuild module"
-else
-    echo_yellow ">> No EasyBuild module found: skipping step to install CUDA (see output in ${module_avail_out})"
-    export skip_cuda_install=True
-fi
-
 temp_install_storage=${TMPDIR}/temp_install_storage
 mkdir -p ${temp_install_storage}
 if [ -z "${skip_cuda_install}" ] || [ ! "${skip_cuda_install}" ]; then
-    # need to ensure that some variables will be available to the script
-    #   TMPDIR, EB, EESSI_VERSION, for EASYBUILD_INSTALLPATH (EESSI_PREFIX,
-    #   EESSI_OS_TYPE, EESSI_SOFTWARE_SUBDIR_OVERRIDE)
-    export TMPDIR EB EESSI_VERSION EESSI_PREFIX EESSI_OS_TYPE EESSI_SOFTWARE_SUBDIR_OVERRIDE
     ${EESSI_PREFIX}/scripts/gpu_support/nvidia/install_cuda_and_libraries.sh \
         -t ${temp_install_storage} \
         --accept-cuda-eula \
         --accept-cudnn-eula
 else
-    echo "Skipping installation of CUDA SDK and cu* libraries in host_injections, since the --skip-cuda-install flag was passed OR no EasyBuild module was found"
+    echo "Skipping installation of CUDA SDK and cu* libraries in host_injections, since the --skip-cuda-install flag was passed"
 fi
 
 # Install NVIDIA drivers in host_injections (if they exist)

@@ -82,8 +82,8 @@ else
 
     # source configure_easybuild to use correct eb settings
     (
-        EESSI_MAIN_DIR=$(dirname $(readlink -f $BASH_SOURCE))
-        source ${EESSI_MAIN_DIR}/configure_easybuild
+        export EASYBUILD_PREFIX=${TMPDIR}/easybuild
+        export EASYBUILD_READ_ONLY_INSTALLDIR=1
 
         echo ">> Final installation in ${EASYBUILD_INSTALLPATH}..."
         export PATH=${EB_TMPDIR}/bin:${PATH}
