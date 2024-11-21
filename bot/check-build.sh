@@ -17,6 +17,7 @@
 #  - SUCCESS (all of)
 #    - working directory contains slurm-JOBID.out file
 #    - working directory contains eessi*tar.gz
+#    - no message FATAL
 #    - no message ERROR
 #    - no message FAILED
 #    - no message ' required modules missing:'
@@ -25,6 +26,7 @@
 #  - FAILED (one of ... implemented as NOT SUCCESS)
 #    - no slurm-JOBID.out file
 #    - no tarball
+#    - message with FATAL
 #    - message with ERROR
 #    - message with FAILED
 #    - message with ' required modules missing:'
@@ -105,6 +107,16 @@ else
     [[ ${VERBOSE} -ne 0 ]] && echo "   Slurm output file '"${job_out}"' NOT found"
 fi
 
+FATAL=-1
+if [[ ${SLURM_OUTPUT_FOUND} -eq 1 ]]; then
+  GP_fatal='FATAL: '
+  grep_out=$(grep -v "^>> searching for " ${job_dir}/${job_out} | grep "${GP_fatal}")
+  [[ $? -eq 0 ]] && FATAL=1 || FATAL=0
+  # have to be careful to not add searched for pattern into slurm out file
+  [[ ${VERBOSE} -ne 0 ]] && echo ">> searching for '"${GP_fatal}"'"
+  [[ ${VERBOSE} -ne 0 ]] && echo "${grep_out}"
+fi
+
 ERROR=-1
 if [[ ${SLURM_OUTPUT_FOUND} -eq 1 ]]; then
   GP_error='ERROR: '
@@ -163,6 +175,7 @@ fi
 
 [[ ${VERBOSE} -ne 0 ]] && echo "SUMMARY: ${job_dir}/${job_out}"
 [[ ${VERBOSE} -ne 0 ]] && echo "  <test name>: <actual result> (<expected result>)"
+[[ ${VERBOSE} -ne 0 ]] && echo "  FATAL......: $([[ $FATAL -eq 1 ]] && echo 'yes' || echo 'no') (no)"
 [[ ${VERBOSE} -ne 0 ]] && echo "  ERROR......: $([[ $ERROR -eq 1 ]] && echo 'yes' || echo 'no') (no)"
 [[ ${VERBOSE} -ne 0 ]] && echo "  FAILED.....: $([[ $FAILED -eq 1 ]] && echo 'yes' || echo 'no') (no)"
 [[ ${VERBOSE} -ne 0 ]] && echo "  REQ_MISSING: $([[ $MISSING -eq 1 ]] && echo 'yes' || echo 'no') (no)"
@@ -190,6 +203,7 @@ job_result_file=_bot_job${SLURM_JOB_ID}.result
 
 # Default reason:
 if [[ ${SLURM_OUTPUT_FOUND} -eq 1 ]] && \
+   [[ ${FATAL} -eq 0 ]] && \
    [[ ${ERROR} -eq 0 ]] && \
    [[ ${FAILED} -eq 0 ]] && \
    [[ ${MISSING} -eq 0 ]] && \
@@ -223,6 +237,7 @@ fi
 #     <dt>_Details_</dt>
 #     <dd>
 #       :white_check_mark: job output file <code>slurm-4682.out</code><br/>
+#       :white_check_mark: no message matching <code>FATAL: </code><br/>
 #       :white_check_mark: no message matching <code>ERROR: </code><br/>
 #       :white_check_mark: no message matching <code>FAILED: </code><br/>
 #       :white_check_mark: no message matching <code> required modules missing:</code><br/>
@@ -264,6 +279,7 @@ fi
 #     <dt>_Details_</dt>
 #     <dd>
 #       :white_check_mark: job output file <code>slurm-4682.out</code><br/>
+#       :x: no message matching <code>FATAL: </code><br/>
 #       :x: no message matching <code>ERROR: </code><br/>
 #       :white_check_mark: no message matching <code>FAILED: </code><br/>
 #       :x: no message matching <code> required modules missing:</code><br/>
@@ -380,6 +396,10 @@ comment_details_list=""
 success_msg="job output file <code>${job_out}</code>"
 failure_msg="no job output file <code>${job_out}</code>"
 comment_details_list=${comment_details_list}$(add_detail ${SLURM_OUTPUT_FOUND} 1 "${success_msg}" "${failure_msg}")
+
+success_msg="no message matching <code>${GP_fatal}</code>"
+failure_msg="found message matching <code>${GP_fatal}</code>"
+comment_details_list=${comment_details_list}$(add_detail ${FATAL} 0 "${success_msg}" "${failure_msg}")
 
 success_msg="no message matching <code>${GP_error}</code>"
 failure_msg="found message matching <code>${GP_error}</code>"
