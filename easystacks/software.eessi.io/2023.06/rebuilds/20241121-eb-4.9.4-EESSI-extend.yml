@@ -1,0 +1,4 @@
+# 2024.11.21
+# test PR for #820, DO NOT MERGE
+easyconfigs:
+  - EESSI-extend-2023.06-easybuild.eb
