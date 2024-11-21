@@ -25,3 +25,7 @@ easyconfigs:
       options:
         # see https://github.com/easybuilders/easybuild-easyconfigs/pull/21657
         from-commit: 7f1f0e60487e7e1fcb5c4e6bc4fbc4f89994e3fd
+  - mosdepth-0.3.9-GCC-12.3.0.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/21782
+        from-commit: e5d5c5d03da0ffb41c6bc66e1f911c2caad279df
