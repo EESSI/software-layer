@@ -293,6 +293,29 @@ def parse_hook_qt5_check_qtwebengine_disable(ec, eprefix):
         raise EasyBuildError("Qt5-specific hook triggered for non-Qt5 easyconfig?!")
 
 
+def parse_hook_tensorflow_replace_bazel(ec, eprefix):
+    """
+    Replace Bazel/6.1.0 build dependency in TensorFlow/2.15.1 easyconfigs with
+    Bazel/6.3.1.
+    """
+    # This is an attempt to work around some build errors. TensorFlow/2.13.0 was
+    # built with Bazel/6.3.1, hence using that version may just work.
+    if ec.name == 'TensorFlow' and ec.version in ['2.15.1']:
+        print_msg("Trying to replace Bazel/6.1.0 build dependency with Bazel/6.3.1 for TensorFlow/2.15.1 easyconfig")
+        build_deps = ec['builddependencies']
+        bazel_build_dep = None
+        bazel_name, bazel_version = ('Bazel', '6.1.0')
+        for idx, build_dep in enumerate(build_deps):
+            if build_dep[0] == bazel_name and build_dep[1] == bazel_version:
+                bazel_build_dep = build_dep
+                break
+        if bazel_build_dep:
+            build_deps[idx] = (bazel_name, '6.3.1')
+            print_msg(f"Replaced build dependency {idx} with ({build_deps[idx][0]}, {build_deps[idx][1]})")
+    else:
+        raise EasyBuildError("TensorFlow-specific parse_hook triggered for non-TensorFlow easyconfig?!")
+
+
 def parse_hook_ucx_eprefix(ec, eprefix):
     """Make UCX aware of compatibility layer via additional configuration options."""
     if ec.name == 'UCX':
@@ -973,6 +996,7 @@ PARSE_HOOKS = {
     'OpenBLAS': parse_hook_openblas_relax_lapack_tests_num_errors,
     'pybind11': parse_hook_pybind11_replace_catch2,
     'Qt5': parse_hook_qt5_check_qtwebengine_disable,
+    'TensorFlow': parse_hook_tensorflow_replace_bazel,
     'UCX': parse_hook_ucx_eprefix,
 }
 
