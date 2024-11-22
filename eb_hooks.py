@@ -604,6 +604,32 @@ def pre_configure_hook_LAMMPS_zen4(self, *args, **kwargs):
         raise EasyBuildError("LAMMPS-specific hook triggered for non-LAMMPS easyconfig?!")
 
 
+
+def pre_configure_hook_pytorch_add_cupti_libdir(self, *args, **kwargs):
+    """
+    Pre-configure hook for PyTorch: add directory $EESSI_SOFTWARE_PATH/software/CUDA/12.1.1/extras/CUPTI/lib64 to LIBRARY_PATH
+    """
+    if self.name == 'PyTorch' and self.version == '2.1.2':
+        if 'cudaver' in self.cfg.template_values and self.cfg.template_values['cudaver'] == '12.1.1':
+            _cudaver = self.cfg.template_values['cudaver']
+            print_msg("pre_configure_hook_pytorch_add_cupti_libdir: CUDA version: '%s'" % _cudaver)
+            _library_path = os.getenv('LIBRARY_PATH')
+            print_msg("pre_configure_hook_pytorch_add_cupti_libdir: library_path: '%s'", _library_path)
+            _eessi_software_path = os.getenv('EESSI_SOFTWARE_PATH')
+            print_msg("pre_configure_hook_pytorch_add_cupti_libdir: eessi_software_path: '%s'", _eessi_software_path)
+            _cupti_lib_dir = os.path.join(_eessi_software_path, 'software', 'CUDA', _cudaver, 'extras', 'CUPTI', 'lib64')
+            print_msg("pre_configure_hook_pytorch_add_cupti_libdir: cupti_lib_dir: '%s'", _cupti_lib_dir)
+            if _library_path:
+                env.setvar('LIBRARY_PATH', ':'.join([_library_path, _cupti_lib_dir]))
+            else:
+                env.setvar('LIBRARY_PATH', _cupti_lib_dir)
+            print_msg("pre_configure_hook_pytorch_add_cupti_libdir: LIBRARY_PATH: '%s'", os.getenv('LIBRARY_PATH'))
+        else:
+            print_msg("PyTorch/2.1.2-specific pre_configure hook triggered for non-CUDA or non-CUDA/12.1.1 easyconfig triggered; NOT adding CUPTI lib64 dir to LIBRARY_PATH")
+    else:
+        raise EasyBuildError("PyTorch/2.1.2-specific pre_configure hook triggered for non-PyTorch/2.1.2 easyconfig?!")
+
+
 def pre_test_hook(self, *args, **kwargs):
     """Main pre-test hook: trigger custom functions based on software name."""
     if self.name in PRE_TEST_HOOKS:
@@ -995,6 +1021,7 @@ PRE_CONFIGURE_HOOKS = {
     'OpenBLAS': pre_configure_hook_openblas_optarch_generic,
     'WRF': pre_configure_hook_wrf_aarch64,
     'LAMMPS': pre_configure_hook_LAMMPS_zen4,
+    'PyTorch': pre_configure_hook_pytorch_add_cupti_libdir,
     'Score-P': pre_configure_hook_score_p,
 }
 
