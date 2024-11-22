@@ -117,7 +117,7 @@ local function eessi_cuda_and_libraries_enabled_load_hook(t)
     -- This is required for end users to build additional software that depends
     -- on the package. If the full SDK isn't present, refuse
     -- to load the module and print an informative message on how to set up GPU support for EESSI
-    local refer_to_docs = "For more information on how to do this, see https://www.eessi.io/docs/gpu/.\\n"
+    local refer_to_docs = "For more information on how to do this, see https://www.eessi.io/docs/site_specific_config/gpu/.\\n"
     if packagesList[simpleName] then
         -- simpleName is a module in packagesList
         -- get the full host_injections path
