@@ -223,7 +223,7 @@ def parse_hook_cuda_prepend_path_cupti(ec, eprefix):
         ec_dict = ec.asdict()
         modluafooter = 'modluafooter'
         cupti_lib_dir = os.path.join("extras", "CUPTI", "lib64")
-        extra_mod_footer_lines = [f'prepend_path("LIBRARY_PATH", pathJoin(root, {cupti_lib_dir}))']
+        extra_mod_footer_lines = [f'prepend_path("LIBRARY_PATH", pathJoin(root, "{cupti_lib_dir}"))']
         if modluafooter in ec_dict:
             print_msg("parse_hook_cuda...: old modluafooter = '%s'", ec_dict[modluafooter])
             value = ec_dict[modluafooter]
