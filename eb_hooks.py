@@ -217,6 +217,27 @@ def parse_hook_cgal_toolchainopts_precise(ec, eprefix):
         raise EasyBuildError("CGAL-specific hook triggered for non-CGAL easyconfig?!")
 
 
+def parse_hook_cuda_prepend_path_cupti(ec, eprefix):
+    """Add prepend_path(LIBRARY_PATH, CUPTI lib dir) to modluafooter."""
+    if ec.name == 'CUDA':
+        ec_dict = ec.asdict()
+        modluafooter = 'modluafooter'
+        cupti_lib_dir = os.path.join("extras", "CUPTI", "lib64")
+        extra_mod_footer_lines = [f'prepend_path("LIBRARY_PATH", pathJoin(root, {cupti_lib_dir}))']
+        if modluafooter in ec_dict:
+            print_msg("parse_hook_cuda...: old modluafooter = '%s'", ec_dict[modluafooter])
+            value = ec_dict[modluafooter]
+            for line in extra_mod_footer_lines:
+                if not line in value:
+                    value = '\n'.join([value, line])
+            ec[modluafooter] = value
+        else:
+            ec[modluafooter] = '\n'.join(extra_mod_footer_lines)
+        print_msg("parse_hook_cuda...: new modluafooter = '%s'", ec[modluafooter])
+    else:
+        raise EasyBuildError("CUDA-specific hook triggered for non-CUDA easyconfig?!")
+
+
 def parse_hook_fontconfig_add_fonts(ec, eprefix):
     """Inject --with-add-fonts configure option for fontconfig."""
     if ec.name == 'fontconfig':
@@ -756,7 +777,6 @@ def post_postproc_cuda(self, *args, **kwargs):
     """
     Remove files from CUDA installation that we are not allowed to ship,
     and replace them with a symlink to a corresponding installation under host_injections.
-    Also prepend path for CUPTI lib64 dir to LIBRARY_PATH.
     """
 
     # We need to check if we are doing an EESSI-distributed installation
@@ -799,17 +819,6 @@ def post_postproc_cuda(self, *args, **kwargs):
         # replace files that are not distributable with symlinks into
         # host_injections
         replace_non_distributable_files_with_symlinks(self.log, self.installdir, self.name, allowlist)
-
-        # prepend CUPTI/lib64 dir to LIBRARY_PATH
-        if 'modluafooter' in self.cfg:
-            modluafooter = self.cfg['modluafooter'] + '\n'
-        else:
-            modluafooter = ''
-        print_msg("post_postproc_cuda hook: old modluafooter = '%s'", modluafooter)
-        cupti_lib_dir = os.path.join(self.installdir, "extras", "CUPTI", "lib64")
-        modluafooter = modluafooter + f'prepend_path("LIBRARY_PATH", {cupti_lib_dir})\n'
-        self.cfg['modluafooter'] = modluafooter
-        print_msg("post_postproc_cuda hook: new modluafooter = '%s'", self.cfg['modluafooter'])
     else:
         raise EasyBuildError("CUDA-specific hook triggered for non-CUDA easyconfig?!")
 
@@ -977,6 +986,7 @@ def inject_gpu_property(ec):
 PARSE_HOOKS = {
     'casacore': parse_hook_casacore_disable_vectorize,
     'CGAL': parse_hook_cgal_toolchainopts_precise,
+    'CUDA': parse_hook_cuda_prepend_path_cupti,
     'fontconfig': parse_hook_fontconfig_add_fonts,
     'FreeImage': parse_hook_freeimage_aarch64,
     'grpcio': parse_hook_grpcio_zlib,
