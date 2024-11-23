@@ -3,5 +3,9 @@
 # directory to the RPATH search path and executables/libraries depending on it
 # may not find libraries in it.
 easyconfigs:
-  - CUDA-12.1.1.eb
+  - CUDA-12.1.1.eb:
+      # we need to force the rebuild because we still have CUDA under a non-accel
+      #   directory available
+      options:
+        force: True
 
