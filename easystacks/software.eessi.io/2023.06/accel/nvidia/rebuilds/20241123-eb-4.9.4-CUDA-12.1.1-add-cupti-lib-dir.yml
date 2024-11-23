@@ -8,4 +8,4 @@ easyconfigs:
       #   directory available
       options:
         force: True
-
+        accept-eula-for: CUDA
