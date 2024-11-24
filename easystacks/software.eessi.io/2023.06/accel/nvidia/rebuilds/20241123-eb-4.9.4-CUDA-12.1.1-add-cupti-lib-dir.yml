@@ -6,6 +6,8 @@ easyconfigs:
   - CUDA-12.1.1.eb:
       # we need to force the rebuild because we still have CUDA under a non-accel
       #   directory available
+      # see https://github.com/easybuilders/easybuild-easyblocks/pull/3516
       options:
         force: True
         accept-eula-for: CUDA
+        include-easyblocks-from-commit: dd3f00a5db62e44729b6193ee52edf556698a56f

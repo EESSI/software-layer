@@ -986,7 +986,7 @@ def inject_gpu_property(ec):
 PARSE_HOOKS = {
     'casacore': parse_hook_casacore_disable_vectorize,
     'CGAL': parse_hook_cgal_toolchainopts_precise,
-    'CUDA': parse_hook_cuda_prepend_path_cupti,
+    # 'CUDA': parse_hook_cuda_prepend_path_cupti,
     'fontconfig': parse_hook_fontconfig_add_fonts,
     'FreeImage': parse_hook_freeimage_aarch64,
     'grpcio': parse_hook_grpcio_zlib,
