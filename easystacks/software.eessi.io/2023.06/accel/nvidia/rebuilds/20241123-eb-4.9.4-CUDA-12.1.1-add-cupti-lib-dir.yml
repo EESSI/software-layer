@@ -10,4 +10,4 @@ easyconfigs:
       options:
         force: True
         accept-eula-for: CUDA
-        include-easyblocks-from-commit: dd3f00a5db62e44729b6193ee52edf556698a56f
+        include-easyblocks-from-commit: 5077104baf2e0c80d035ba65e5bca3e4d7ce30d1
