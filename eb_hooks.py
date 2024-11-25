@@ -242,7 +242,7 @@ def parse_hook_grpcio_zlib(ec, ecprefix):
 
 
 def parse_hook_Nim_add_XDG_CACHE_HOME(ec, ecprefix):
-    """Add XDG_CACHE_HOME to modextravars in the easyconfig to avoid The :File name too long """
+    """Add XDG_CACHE_HOME to modextravars in the easyconfig to avoid:File name too long """
     tmpdir = '/tmp'
     if ec.name == 'Nim':
         ec['modextravars']['XDG_CACHE_HOME'] = tmpdir
