@@ -241,6 +241,16 @@ def parse_hook_grpcio_zlib(ec, ecprefix):
         raise EasyBuildError("grpcio-specific hook triggered for a non-grpcio easyconfig?!")
 
 
+def parse_hook_Nim_add_XDG_CACHE_HOME(ec, ecprefix):
+    """Add XDG_CACHE_HOME to modextravars in the easyconfig to avoid The :File name too long """
+    tmpdir = '/tmp'
+    if ec.name == 'Nim':
+        ec['modextravars']['XDG_CACHE_HOME'] = tmpdir
+        print_msg("Added XDG_CACHE_HOME='%s' in modextravars.", tmpdir)
+    else:
+        raise EasyBuildError("Nim-specific hook triggered for non-Nim easyconfig?!")
+
+
 def parse_hook_openblas_relax_lapack_tests_num_errors(ec, eprefix):
     """Relax number of failing numerical LAPACK tests for aarch64/neoverse_v1 CPU target for OpenBLAS < 0.3.23"""
     cpu_target = get_eessi_envvar('EESSI_SOFTWARE_SUBDIR')
@@ -970,6 +980,7 @@ PARSE_HOOKS = {
     'grpcio': parse_hook_grpcio_zlib,
     'LAMMPS': parse_hook_lammps_remove_deps_for_aarch64,
     'CP2K': parse_hook_CP2K_remove_deps_for_aarch64,
+    'Nim':  parse_hook_Nim_add_XDG_CACHE_HOME,
     'OpenBLAS': parse_hook_openblas_relax_lapack_tests_num_errors,
     'pybind11': parse_hook_pybind11_replace_catch2,
     'Qt5': parse_hook_qt5_check_qtwebengine_disable,
