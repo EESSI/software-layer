@@ -786,6 +786,11 @@ def post_postproc_cuda(self, *args, **kwargs):
             for word in line.split():
                 if any(ext in word for ext in file_extensions):
                     allowlist.append(os.path.splitext(word)[0])
+        # The EULA of CUDA 12.4 introduced a typo (confirmed by NVIDIA):
+        # libnvrtx-builtins_static.so should be libnvrtc-builtins_static.so
+        if 'libnvrtx-builtins_static' in allowlist:
+            allowlist.remove('libnvrtx-builtins_static')
+            allowlist.append('libnvrtc-builtins_static')
         allowlist = sorted(set(allowlist))
         self.log.info("Allowlist for files in CUDA installation that can be redistributed: " + ', '.join(allowlist))
 
