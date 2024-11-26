@@ -20,4 +20,9 @@ fi
 export EESSI_CPU_FAMILY=$(uname -m)
 
 # set $EPREFIX since that is basically a standard in Gentoo Prefix
-export EPREFIX=$EESSI_PREFIX/compat/$EESSI_OS_TYPE/$EESSI_CPU_FAMILY
+# if $EESSI_COMPAT_LAYER_DIR is defined (for example by run_in_compat_layer_env.sh script), we use that value
+if [ ! -z ${EESSI_COMPAT_LAYER_DIR} ]; then
+    export EPREFIX=$EESSI_COMPAT_LAYER_DIR
+else
+    export EPREFIX=$EESSI_PREFIX/compat/$EESSI_OS_TYPE/$EESSI_CPU_FAMILY
+fi

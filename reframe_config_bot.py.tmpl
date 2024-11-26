@@ -15,19 +15,13 @@ site_configuration = {
             'modules_system': 'lmod',
             'partitions': [
                 {
-                    'name': 'default',
+                    'name': '__RFM_PARTITION__',
                     'scheduler': 'local',
                     'launcher': 'mpirun',
                     'environs': ['default'],
                     'features': [
                         FEATURES[CPU]
                     ] + list(SCALES.keys()),
-                    'processor': {
-                        'num_cpus': __NUM_CPUS__,
-                        'num_sockets': __NUM_SOCKETS__,
-                        'num_cpus_per_core': __NUM_CPUS_PER_CORE__,
-                        'num_cpus_per_socket': __NUM_CPUS_PER_SOCKET__,
-                    },
                     'resources': [
                         {
                             'name': 'memory',
@@ -56,8 +50,7 @@ site_configuration = {
         {
             'purge_environment': True,
             'resolve_module_conflicts': False,  # avoid loading the module before submitting the job
-            # disable automatic detection of CPU architecture (since we're using local scheduler)
-            'remote_detect': False,
+            'remote_detect': True,
         }
     ],
     'logging': common_logging_config(),

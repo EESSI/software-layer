@@ -86,7 +86,8 @@ TOPDIR=$(dirname $(realpath $0))
 # Copy for init directory
 init_files=(
     bash eessi_archdetect.sh eessi_defaults eessi_environment_variables eessi_software_subdir_for_host.py
-    minimal_eessi_env README.md test.py
+    minimal_eessi_env README.md test.py lmod_eessi_archdetect_wrapper.sh lmod_eessi_archdetect_wrapper_accel.sh
+
 )
 copy_files_by_list ${TOPDIR}/init ${INSTALL_PREFIX}/init "${init_files[@]}"
 
@@ -102,6 +103,18 @@ mc_files=(
 )
 copy_files_by_list ${TOPDIR}/init/Magic_Castle ${INSTALL_PREFIX}/init/Magic_Castle "${mc_files[@]}"
 
+# Copy for init/modules/EESSI directory
+mc_files=(
+   2023.06.lua
+)
+copy_files_by_list ${TOPDIR}/init/modules/EESSI ${INSTALL_PREFIX}/init/modules/EESSI "${mc_files[@]}"
+
+# Copy for init/lmod directory
+init_script_files=(
+    bash zsh ksh fish csh    
+)
+copy_files_by_list ${TOPDIR}/init/lmod ${INSTALL_PREFIX}/init/lmod "${init_script_files[@]}"
+
 # Copy for the scripts directory
 script_files=(
     utils.sh
@@ -110,9 +123,19 @@ copy_files_by_list ${TOPDIR}/scripts ${INSTALL_PREFIX}/scripts "${script_files[@
 
 # Copy files for the scripts/gpu_support/nvidia directory
 nvidia_files=(
-    install_cuda_host_injections.sh link_nvidia_host_libraries.sh
+    install_cuda_and_libraries.sh
+    install_cuda_host_injections.sh
+    link_nvidia_host_libraries.sh
 )
 copy_files_by_list ${TOPDIR}/scripts/gpu_support/nvidia ${INSTALL_PREFIX}/scripts/gpu_support/nvidia "${nvidia_files[@]}"
+
+# Easystacks to be used to install software in host injections
+host_injections_easystacks=(
+    eessi-2023.06-eb-4.9.4-2023a-CUDA-host-injections.yml
+    eessi-2023.06-eb-4.9.4-2023b-CUDA-host-injections.yml
+)
+copy_files_by_list ${TOPDIR}/scripts/gpu_support/nvidia/easystacks \
+${INSTALL_PREFIX}/scripts/gpu_support/nvidia/easystacks "${host_injections_easystacks[@]}"
 
 # Copy over EasyBuild hooks file used for installations
 hook_files=(

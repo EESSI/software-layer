@@ -74,10 +74,16 @@ fi
 TMPDIR=$(mktemp -d)
 
 echo ">> Setting up environment..."
-module --force purge
-export EESSI_SOFTWARE_SUBDIR_OVERRIDE=$(python3 $TOPDIR/eessi_software_subdir.py $DETECTION_PARAMETERS)
+# For this call to be succesful, it needs to be able to import archspec (which is part of EESSI)
+# Thus, we execute it in a subshell where EESSI is already initialized (a bit like a bootstrap)
+export EESSI_SOFTWARE_SUBDIR_OVERRIDE=$(source $TOPDIR/init/bash > /dev/null 2>&1; python3 $TOPDIR/eessi_software_subdir.py $DETECTION_PARAMETERS)
+echo "EESSI_SOFTWARE_SUBDIR_OVERRIDE: $EESSI_SOFTWARE_SUBDIR_OVERRIDE"
 
 source $TOPDIR/init/bash
+
+# We have to ignore the LMOD cache, otherwise the software that is built in the build step cannot be found/loaded
+# Reason is that the LMOD cache is normally only updated on the Stratum 0, once everything is ingested
+export LMOD_IGNORE_CACHE=1
 
 # Load the ReFrame module
 # Currently, we load the default version. Maybe we should somehow make this configurable in the future?
@@ -135,41 +141,48 @@ export RFM_PREFIX=$PWD/reframe_runs
 echo "Configured reframe with the following environment variables:"
 env | grep "RFM_"
 
-# Inject correct CPU/memory properties into the ReFrame config file
-cpuinfo=$(lscpu)
-if [[ "${cpuinfo}" =~ CPU\(s\):[^0-9]*([0-9]+) ]]; then
-    cpu_count=${BASH_REMATCH[1]}
+# The /sys inside the container is not the same as the /sys of the host
+# We want to extract the memory limit from the cgroup on the host (which is typically set by SLURM).
+# Thus, bot/test.sh bind-mounts the host's /sys/fs/cgroup into /hostsys/fs/cgroup
+# and that's the prefix we use to extract the memory limit from
+cgroup_v1_mem_limit="/hostsys/fs/cgroup/memory/$(</proc/self/cpuset)/memory.limit_in_bytes"
+cgroup_v2_mem_limit="/hostsys/fs/cgroup/$(</proc/self/cpuset)/memory.max"
+if [ -f "$cgroup_v1_mem_limit" ]; then
+    echo "Getting memory limit from file $cgroup_v1_mem_limit"
+    cgroup_mem_bytes=$(cat "$cgroup_v1_mem_limit")
+elif [ -f "$cgroup_v2_mem_limit" ]; then
+    echo "Getting memory limit from file $cgroup_v2_mem_limit"
+    cgroup_mem_bytes=$(cat "$cgroup_v2_mem_limit")
+    if [ "$cgroup_mem_bytes" = 'max' ]; then
+        # In cgroupsv2, the memory.max file may contain 'max', meaning the group can use the full system memory
+        # Here, we get the system memory from /proc/meminfo. Units are supposedly always in kb, but lets match them too
+        cgroup_mem_kilobytes=$(grep -oP 'MemTotal:\s+\K\d+(?=\s+kB)' /proc/meminfo)
+        if [[ $? -ne 0 ]] || [[ -z "$cgroup_mem_kilobytes" ]]; then
+            fatal_error "Failed to get memory limit from /proc/meminfo"
+        fi
+        cgroup_mem_bytes=$(("$cgroup_mem_kilobytes"*1024))
+    fi
 else
-    fatal_error "Failed to get the number of CPUs for the current test hardware with lscpu."
+    fatal_error "Both files ${cgroup_v1_mem_limit} and ${cgroup_v2_mem_limit} couldn't be found. Failed to get the memory limit from the current cgroup"
 fi
-if [[ "${cpuinfo}" =~ Socket\(s\):[^0-9]*([0-9]+) ]]; then
-    socket_count=${BASH_REMATCH[1]}
-else
-    fatal_error "Failed to get the number of sockets for the current test hardware with lscpu."
-fi
-if [[ "${cpuinfo}" =~ (Thread\(s\) per core:[^0-9]*([0-9]+)) ]]; then
-    threads_per_core=${BASH_REMATCH[2]}
-else
-    fatal_error "Failed to get the number of threads per core for the current test hardware with lscpu."
-fi
-if [[ "${cpuinfo}" =~ (Core\(s\) per socket:[^0-9]*([0-9]+)) ]]; then
-    cores_per_socket=${BASH_REMATCH[2]}
-else
-    fatal_error "Failed to get the number of cores per socket for the current test hardware with lscpu."
-fi
-cgroup_mem_bytes=$(cat /hostsys/fs/cgroup/memory/slurm/uid_${UID}/job_${SLURM_JOB_ID}/memory.limit_in_bytes)
 if [[ $? -eq 0 ]]; then
     # Convert to MiB
-    cgroup_mem_mib=$((cgroup_mem_bytes/(1024*1024)))
+    cgroup_mem_mib=$(("$cgroup_mem_bytes"/(1024*1024)))
 else
     fatal_error "Failed to get the memory limit in bytes from the current cgroup"
 fi
+echo "Detected available memory: ${cgroup_mem_mib} MiB"
+
 cp ${RFM_CONFIG_FILE_TEMPLATE} ${RFM_CONFIG_FILES}
-sed -i "s/__NUM_CPUS__/${cpu_count}/g" $RFM_CONFIG_FILES
-sed -i "s/__NUM_SOCKETS__/${socket_count}/g" $RFM_CONFIG_FILES
-sed -i "s/__NUM_CPUS_PER_CORE__/${threads_per_core}/g" $RFM_CONFIG_FILES
-sed -i "s/__NUM_CPUS_PER_SOCKET__/${cores_per_socket}/g" $RFM_CONFIG_FILES
+echo "Replacing memory limit in the ReFrame config file with the detected CGROUP memory limit: ${cgroup_mem_mib} MiB"
 sed -i "s/__MEM_PER_NODE__/${cgroup_mem_mib}/g" $RFM_CONFIG_FILES
+RFM_PARTITION="${SLURM_JOB_PARTITION}"
+echo "Replacing partition name in the template ReFrame config file: ${RFM_PARTITION}"
+sed -i "s/__RFM_PARTITION__/${RFM_PARTITION}/g" $RFM_CONFIG_FILES
+
+# Make debugging easier by printing the final config file:
+echo "Final config file (after replacements):"
+cat "${RFM_CONFIG_FILES}"
 
 # Workaround for https://github.com/EESSI/software-layer/pull/467#issuecomment-1973341966
 export PSM3_DEVICES='self,shm'  # this is enough, since we only run single node for now
@@ -182,8 +195,31 @@ else
     fatal_error "Failed to run 'reframe --version'"
 fi
 
+# Get the subset of test names based on the test mapping and tags (e.g. CI, 1_node)
+module_list="module_files.list.txt"
+mapping_config="tests/eessi_test_mapping/software_to_tests.yml"
+if [[ ! -f "$module_list" ]]; then
+    echo_green "File ${module_list} not found, so only running the default set of tests from ${mapping_config}"
+    # Run with --debug for easier debugging in case there are issues:
+    python3 tests/eessi_test_mapping/map_software_to_test.py --mapping-file "${mapping_config}" --debug --defaults-only
+    REFRAME_NAME_ARGS=$(python3 tests/eessi_test_mapping/map_software_to_test.py --mapping-file "${mapping_config}" --defaults-only)
+    test_selection_exit_code=$?
+else
+    # Run with --debug for easier debugging in case there are issues:
+    python3 tests/eessi_test_mapping/map_software_to_test.py --module-list "${module_list}" --mapping-file "${mapping_config}" --debug
+    REFRAME_NAME_ARGS=$(python3 tests/eessi_test_mapping/map_software_to_test.py --module-list "${module_list}" --mapping-file "${mapping_config}")
+    test_selection_exit_code=$?
+fi
+# Check exit status
+if [[ ${test_selection_exit_code} -eq 0 ]]; then
+    echo_green "Succesfully extracted names of tests to run: ${REFRAME_NAME_ARGS}"
+else
+    fatal_error "Failed to extract names of tests to run: ${REFRAME_NAME_ARGS}"
+    exit ${test_selection_exit_code}
+fi
+export REFRAME_ARGS="--tag CI --tag 1_node --nocolor ${REFRAME_NAME_ARGS}"
+
 # List the tests we want to run
-export REFRAME_ARGS='--tag CI --tag 1_node --nocolor'
 echo "Listing tests: reframe ${REFRAME_ARGS} --list"
 reframe ${REFRAME_ARGS} --list
 if [[ $? -eq 0 ]]; then
