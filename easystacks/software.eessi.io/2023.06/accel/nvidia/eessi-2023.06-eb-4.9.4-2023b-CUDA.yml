@@ -3,3 +3,7 @@ easyconfigs:
       options:
         accept-eula-for: CUDA
   - UCX-CUDA-1.15.0-GCCcore-13.2.0-CUDA-12.4.0.eb
+  - GROMACS-2024.4-foss-2023b-CUDA-12.4.0.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/21549
+        from-commit: 12b53341343967ce5a402fe8190a3c85bce7d49b
