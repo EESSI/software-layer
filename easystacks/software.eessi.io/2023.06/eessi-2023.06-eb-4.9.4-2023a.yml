@@ -25,6 +25,10 @@ easyconfigs:
       options:
         # see https://github.com/easybuilders/easybuild-easyconfigs/pull/21657
         from-commit: 7f1f0e60487e7e1fcb5c4e6bc4fbc4f89994e3fd
+  - LightGBM-4.5.0-foss-2023a.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/21699
+        from-commit: e3407bd127d248c08960f6b09c973da0fdecc2c3
   - OpenFOAM-v2406-foss-2023a.eb:
       options:
         # see https://github.com/easybuilders/easybuild-easyblocks/pull/3519
