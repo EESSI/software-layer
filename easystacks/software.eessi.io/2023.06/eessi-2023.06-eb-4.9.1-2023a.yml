@@ -22,6 +22,6 @@ easyconfigs:
         from-pr: 20784
   - Valgrind-3.21.0-gompi-2023a.eb
   - OrthoFinder-2.5.5-foss-2023a.eb
-  - Paraver-4.11.4-foss-2023a.eb:
+  - Paraver-4.11.4-GCC-12.3.0.eb:
       options:
-        from-pr: 20515
+        from-pr: 20230
