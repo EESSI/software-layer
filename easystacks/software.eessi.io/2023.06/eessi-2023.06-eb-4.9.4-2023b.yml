@@ -13,6 +13,10 @@ easyconfigs:
         # see https://github.com/easybuilders/easybuild-easyconfigs/pull/21783
         from-commit: 5fa3db9eb36f91cba3fbf351549f8ba2849abc33 
   - GDRCopy-2.4-GCCcore-13.2.0.eb
+  - GROMACS-2024.4-foss-2023b.eb:
+      options:
+        # https://github.com/easybuilders/easybuild-easyconfigs/pull/21851
+        from-commit: f0fa64b440deaf5fb0a6d26ff1bb3e9f36626c8a
   - SlurmViewer-1.0.1-GCCcore-13.2.0.eb:
       options:
         # see https://github.com/easybuilders/easybuild-easyconfigs/pull/21899

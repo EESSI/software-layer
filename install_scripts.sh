@@ -132,6 +132,7 @@ copy_files_by_list ${TOPDIR}/scripts/gpu_support/nvidia ${INSTALL_PREFIX}/script
 # Easystacks to be used to install software in host injections
 host_injections_easystacks=(
     eessi-2023.06-eb-4.9.4-2023a-CUDA-host-injections.yml
+    eessi-2023.06-eb-4.9.4-2023b-CUDA-host-injections.yml
 )
 copy_files_by_list ${TOPDIR}/scripts/gpu_support/nvidia/easystacks \
 ${INSTALL_PREFIX}/scripts/gpu_support/nvidia/easystacks "${host_injections_easystacks[@]}"
