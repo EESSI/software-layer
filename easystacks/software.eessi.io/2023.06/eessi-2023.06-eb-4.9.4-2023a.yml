@@ -35,4 +35,5 @@ easyconfigs:
         include-easyblocks-from-commit: e4a3ff1932350d575dffc7597435609fad6dd691
   - Paraver-4.11.4-GCC-12.3.0.eb:
       options:
-        from-pr: 20230
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/20230
+        from-commit: 91c8df6b4c0810061e9f325427c9c79e961bc4b0
