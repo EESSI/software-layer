@@ -3,3 +3,13 @@ easyconfigs:
       options:
         accept-eula-for: CUDA
   - UCX-CUDA-1.15.0-GCCcore-13.2.0-CUDA-12.4.0.eb
+  - UCC-CUDA-1.2.0-GCCcore-13.2.0-CUDA-12.4.0.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/21565
+        from-commit: 46141a3f40e699433fac03af2d3ed81bd5a62da7
+  - OSU-Micro-Benchmarks-7.5-gompi-2023b-CUDA-12.4.0.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/21926
+        from-commit: 3ac794d3d2a6e2bebc498976b98e2c61cefaf735
+
+
