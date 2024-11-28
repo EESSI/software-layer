@@ -25,3 +25,6 @@ easyconfigs:
       options:
         # see https://github.com/easybuilders/easybuild-easyconfigs/pull/21657
         from-commit: 7f1f0e60487e7e1fcb5c4e6bc4fbc4f89994e3fd
+  - Paraver-4.11.4-GCC-12.3.0.eb:
+      options:
+        from-pr: 20230
