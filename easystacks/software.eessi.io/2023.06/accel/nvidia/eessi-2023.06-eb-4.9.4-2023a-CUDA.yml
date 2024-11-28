@@ -1,3 +1,4 @@
 easyconfigs:
   - CUDA-12.1.1.eb
   - cuDNN-8.9.2.26-CUDA-12.1.1.eb
+  - PyTorch-2.1.2-foss-2023a-CUDA-12.1.1.eb
