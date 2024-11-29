@@ -252,9 +252,7 @@ export EESSI_CVMFS_INSTALL=1
 # NOTE 3, we have to set a default for EASYBUILD_INSTALLPATH here in cases the
 #   EESSI-extend module itself needs to be installed.
 export EASYBUILD_INSTALLPATH=${EESSI_PREFIX}/software/${EESSI_OS_TYPE}/${EESSI_SOFTWARE_SUBDIR_OVERRIDE}
-source load_eessi_extend_module.sh ${EESSI_VERSION}
-echo ">> Loaded load_eessi_extend_module.sh ${EESSI_VERSION}"
-echo ">> \$EASYBUILD_EXPERIMENTAL: ${EASYBUILD_EXPERIMENTAL}"
+source $TOPDIR/load_eessi_extend_module.sh ${EESSI_VERSION}
 
 # Install full CUDA SDK and cu* libraries in host_injections
 # Hardcode this for now, see if it works
