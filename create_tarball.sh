@@ -24,7 +24,7 @@ cvmfs_repo=${EESSI_CVMFS_REPO}
 
 # install to $eessi_version/$eessi_dev_project if defined, otherwise install
 # to $eessi_version
-install_prefix_dir=${eessi_version}${eessi_dev_project:+/$eessi_dev_project}/
+install_prefix_dir=${eessi_version}${eessi_dev_project:+/$eessi_dev_project}
 echo "Setting Install prefix directory to: ${install_prefix_dir}"
 
 if [ -z ${install_prefix_dir} ]; then
