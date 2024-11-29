@@ -10,6 +10,4 @@ easyconfigs:
   - OSU-Micro-Benchmarks-7.5-gompi-2023b-CUDA-12.4.0.eb:
       options:
         # see https://github.com/easybuilders/easybuild-easyconfigs/pull/21926
-        from-commit: 3ac794d3d2a6e2bebc498976b98e2c61cefaf735
-
-
+        from-commit: de79ec74eb076e1aceda5e21235a73c05ed6764c
