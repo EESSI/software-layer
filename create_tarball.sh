@@ -32,7 +32,8 @@ if [ -z ${install_prefix_dir} ]; then
     exit 2
 fi
 
-software_dir="${cvmfs_repo}/versions/${eessi_version}/software/${os}/${cpu_arch_subdir}"
+# software_dir includes $eessi_dev_project if defined, otherwise install omit
+software_dir="${cvmfs_repo}/versions/${eessi_version}${eessi_dev_project:+/$eessi_dev_project}/software/${os}/${cpu_arch_subdir}"
 if [ ! -d ${software_dir} ]; then
     echo "Software directory ${software_dir} does not exist?!" >&2
     exit 2
