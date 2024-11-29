@@ -7,3 +7,13 @@ easyconfigs:
       options:
         # see https://github.com/easybuilders/easybuild-easyblocks/pull/3496
         include-easyblocks-from-commit: 60633b0acfd41a0732992d9e16800dae71a056eb
+  - Cython-3.0.10-GCCcore-13.2.0.eb
+  - Mustache-1.3.3-foss-2023b.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/21783
+        from-commit: 5fa3db9eb36f91cba3fbf351549f8ba2849abc33 
+  - GDRCopy-2.4-GCCcore-13.2.0.eb
+  - GROMACS-2024.4-foss-2023b.eb:
+      options:
+        # https://github.com/easybuilders/easybuild-easyconfigs/pull/21851
+        from-commit: f0fa64b440deaf5fb0a6d26ff1bb3e9f36626c8a
