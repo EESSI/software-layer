@@ -1,0 +1,189 @@
+easyblock = 'Bundle'
+
+name = 'EESSI-extend'
+import os
+version = os.getenv('EESSI_VERSION', '2023.06')
+# May have different ways to extend EESSI in future (manually, other tools,...)
+versionsuffix = '-easybuild'
+
+homepage = 'https://eessi.io/docs/'
+
+description = """
+ The goal of the European Environment for Scientific Software Installations
+ (EESSI, pronounced as "easy") is to build a common stack of scientific
+ software installations for HPC systems and beyond, including laptops,
+ personal workstations and cloud infrastructure.
+
+ This module allows you to extend EESSI using the same configuration for
+ EasyBuild as EESSI itself uses. A number of environment variables control the
+ behaviour of the module:
+ - EESSI_USER_INSTALL can be set to a location to install modules for use by
+   the user only. The location must already exist on the filesystem.
+ - EESSI_PROJECT_INSTALL can be set to a location to install modules for use by
+   a project. The location must already exist on the filesystem and you should
+   ensure that the location has the correct Linux group and the SGID permission
+   is set on that directory (`chmod g+s $EESSI_PROJECT_INSTALL`) so that all
+   members of the group have permission to read and write installations.
+ - EESSI_SITE_INSTALL is either defined or not and cannot be used with another
+   environment variable. A site installation is done in a defined location and
+   any installations there are (by default) world readable.
+ - EESSI_CVMFS_INSTALL is either defined or not and cannot be used with another
+   environment variable. A CVMFS installation targets a defined location which
+   will be ingested into CVMFS and is only useful for CVMFS administrators.
+ - If none of the environment variables above are defined, an EESSI_USER_INSTALL
+   is assumed with a value of $HOME/EESSI
+ If both EESSI_USER_INSTALL and EESSI_PROJECT_INSTALL are defined, both sets of
+ installations are exposed, but new installations are created as user
+ installations.
+"""
+
+toolchain = SYSTEM
+
+# All the dependencies we filter in EESSI
+local_deps_to_filter = "Autoconf,Automake,Autotools,binutils,bzip2,DBus,flex,gettext,gperf,help2man,intltool,libreadline,libtool,M4,makeinfo,ncurses,util-linux,XZ,zlib"
+local_arch_specific_deps_to_filter = {'aarch64': ',yasm', 'x86_64': ''}
+local_deps_to_filter += local_arch_specific_deps_to_filter[ARCH]
+
+# Set the universal EasyBuild variables
+modextravars = {
+    'EASYBUILD_FILTER_DEPS': local_deps_to_filter,
+    'EASYBUILD_IGNORE_OSDEPS': '1',
+    'EASYBUILD_DEBUG': '1',
+    'EASYBUILD_TRACE': '1',
+    'EASYBUILD_ZIP_LOGS': 'bzip2',
+    'EASYBUILD_RPATH': '1',
+    'EASYBUILD_FILTER_ENV_VARS': 'LD_LIBRARY_PATH',
+    'EASYBUILD_READ_ONLY_INSTALLDIR': '1',
+    'EASYBUILD_MODULE_EXTENSIONS': '1',
+    'EASYBUILD_EXPERIMENTAL': '1',
+}
+
+# Need a few other variables, but they are more dynamic
+# EASYBUILD_SYSROOT=${EPREFIX}
+# EASYBUILD_PREFIX=${WORKDIR}/easybuild
+# EASYBUILD_HOOKS=${EESSI_PREFIX}/init/easybuild/eb_hooks.py
+# EASYBUILD_INSTALLPATH=${EESSI_PREFIX}/software/${EESSI_OS_TYPE}/${EESSI_SOFTWARE_SUBDIR}
+# EASYBUILD_SOURCEPATH=${WORKDIR}/easybuild/sources:${EESSI_SOURCEPATH}
+#
+# And also some optional ones based on the kind of installation
+# EASYBUILD_SET_GID_BIT
+# EASYBUILD_GROUP_WRITABLE_INSTALLDIR
+# EASYBUILD_UMASK
+# EASYBUILD_STICKY_BIT
+modluafooter = """
+if (mode() == "load") then
+  -- Use a working directory for temporary build files
+  if (os.getenv("WORKING_DIR") == nil) then
+    LmodMessage("-- Using /tmp/$USER as a temporary working directory for installations, you can override this by setting the environment variable WORKING_DIR and reloading the module (e.g., /dev/shm is a common option)")
+  end
+end
+working_dir = os.getenv("WORKING_DIR") or pathJoin("/tmp", os.getenv("USER"))
+-- Gather the EPREFIX to use as a sysroot
+sysroot = os.getenv("EESSI_EPREFIX")
+-- Use an installation prefix that we _should_ have write access to
+if (os.getenv("EESSI_CVMFS_INSTALL") ~= nil) then
+  -- Make sure no other EESSI install environment variables are set
+  if ((os.getenv("EESSI_SITE_INSTALL") ~= nil) or (os.getenv("EESSI_PROJECT_INSTALL") ~= nil) or (os.getenv("EESSI_USER_INSTALL") ~= nil)) then
+    LmodError("You cannot use EESSI_CVMFS_INSTALL in combination with any other EESSI_*_INSTALL environment variables")
+  end
+  eessi_cvmfs_install = true
+  easybuild_installpath = os.getenv("EESSI_SOFTWARE_PATH")
+  eessi_accelerator_target = os.getenv("EESSI_ACCELERATOR_TARGET")
+  if (eessi_accelerator_target ~= nil) then
+    cuda_compute_capability = string.match(eessi_accelerator_target, "^nvidia/cc([0-9][0-9])$")
+    if (cuda_compute_capability ~= nil) then
+      easybuild_installpath = pathJoin(easybuild_installpath, 'accel', eessi_accelerator_target)
+      easybuild_cuda_compute_capabilities = cuda_compute_capability:sub(1, 1) ..  "." .. cuda_compute_capability:sub(2, 2)
+    else
+      LmodError("Incorrect value for $EESSI_ACCELERATOR_TARGET: " .. eessi_accelerator_target)
+    end
+  end
+elseif (os.getenv("EESSI_SITE_INSTALL") ~= nil) then
+  -- Make sure no other EESSI install environment variables are set
+  if ((os.getenv("EESSI_PROJECT_INSTALL") ~= nil) or (os.getenv("EESSI_USER_INSTALL") ~= nil)) then
+    LmodError("You cannot use EESSI_SITE_INSTALL in combination with any other EESSI_*_INSTALL environment variables")
+  end
+  easybuild_installpath = os.getenv("EESSI_SITE_SOFTWARE_PATH")
+else
+  -- Deal with user and project installs
+  project_install = os.getenv("EESSI_PROJECT_INSTALL")
+  project_modulepath = nil
+  if (project_install ~= nil) then
+    -- Check the folder exists
+    if not isDir(project_install) then
+      LmodError("The location of EESSI_PROJECT_INSTALL (" .. project_install .. ") does not exist or is not a folder")
+    end
+    if (mode() == "load") then
+      LmodMessage("Configuring for use of EESSI_PROJECT_INSTALL under " .. project_install)
+    end
+    easybuild_installpath = string.gsub(os.getenv("EESSI_SOFTWARE_PATH"), os.getenv("EESSI_CVMFS_REPO"), project_install)
+    project_modulepath = pathJoin(easybuild_installpath, 'modules', 'all')
+  end
+  user_install = os.getenv("EESSI_USER_INSTALL")
+  user_modulepath = nil
+  if (user_install ~= nil) then
+    -- Check the folder exists
+    if not isDir(user_install) then
+      LmodError("The location of EESSI_USER_INSTALL (" .. user_install .. ") does not exist or is not a folder")
+    end
+  elseif (user_install == nil) and (project_install == nil) then
+    -- No need to check for existence when we use a HOME subdir
+    user_install = pathJoin(os.getenv("HOME"), "eessi")
+  end
+  if (user_install ~= nil) then
+    if (mode() == "load") then
+      LmodMessage("Configuring for use of EESSI_USER_INSTALL under " .. user_install)
+    end
+    easybuild_installpath = string.gsub(os.getenv("EESSI_SOFTWARE_PATH"), os.getenv("EESSI_CVMFS_REPO"), user_install)
+    user_modulepath = pathJoin(easybuild_installpath, 'modules', 'all')
+  end
+end
+if (mode() == "load") then
+  LmodMessage("-- To create installations for EESSI, you _must_ have write permissions to " .. easybuild_installpath)
+  -- Advise them to reuse sources
+  if (os.getenv("EASYBUILD_SOURCEPATH") == nil) then
+    LmodMessage("-- You may wish to configure a sources directory for EasyBuild (for example, via setting the environment variable EASYBUILD_SOURCEPATH) to allow you to reuse existing sources for packages.")
+  end
+end
+-- Set the relevant universal environment variables for EasyBuild
+setenv ("EASYBUILD_SYSROOT", sysroot)
+setenv ("EASYBUILD_PREFIX", pathJoin(working_dir, "easybuild"))
+setenv ("EASYBUILD_INSTALLPATH", easybuild_installpath)
+setenv ("EASYBUILD_HOOKS", pathJoin(os.getenv("EESSI_PREFIX"), "init", "easybuild", "eb_hooks.py"))
+
+-- Make sure to use the general umask that allows a global read
+setenv ("EASYBUILD_UMASK", "022")
+
+-- Allow this module to be loaded when running EasyBuild
+setenv ("EASYBUILD_ALLOW_LOADED_MODULES", "EasyBuild,EESSI-extend")
+
+-- Set environment variables if building for CUDA compute capabilities
+if (easybuild_cuda_compute_capabilities ~= nil) then
+  setenv ("EASYBUILD_CUDA_COMPUTE_CAPABILITIES", easybuild_cuda_compute_capabilities)
+end
+
+-- Set all related environment variables if we have project or user installations (including extending MODULEPATH)
+if (user_modulepath ~= nil) then
+  -- Use a more restrictive umask for this case
+  setenv ("EASYBUILD_UMASK", "077")
+  setenv ("EASYBUILD_STICKY_BIT", "1")
+  -- configure MODULEPATH
+  if (project_modulepath ~= nil) then
+    prepend_path("MODULEPATH", project_modulepath)
+  end
+  prepend_path("MODULEPATH", user_modulepath)
+elseif (project_modulepath ~= nil) then
+  setenv ("EASYBUILD_SET_GID_BIT", "1")
+  setenv ("EASYBUILD_GROUP_WRITABLE_INSTALLDIR", "1")
+  setenv ("EASYBUILD_STICKY_BIT", "0")
+  setenv ("EASYBUILD_UMASK", "002")
+  -- configure MODULEPATH
+  prepend_path("MODULEPATH", project_modulepath)
+end
+-- Make sure EasyBuild itself is loaded
+if not ( isloaded("EasyBuild") ) then
+    load(latest("EasyBuild"))
+end
+"""
+
+moduleclass = 'devel'
