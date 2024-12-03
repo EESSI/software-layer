@@ -1,7 +1,8 @@
 easyblock = 'Bundle'
 
 name = 'EESSI-extend'
-version = '2023.06'
+import os
+version = os.getenv('EESSI_VERSION', '2023.06')
 # May have different ways to extend EESSI in future (manually, other tools,...)
 versionsuffix = '-easybuild'
 
