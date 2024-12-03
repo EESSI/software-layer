@@ -208,6 +208,7 @@ else
     declare -a REMOVAL_STEP_ARGS=()
     REMOVAL_STEP_ARGS+=("--save" "${TARBALL_TMP_REMOVAL_STEP_DIR}")
     REMOVAL_STEP_ARGS+=("--storage" "${STORAGE}")
+
     # add fakeroot option in order to be able to remove software, see:
     # https://github.com/EESSI/software-layer/issues/312
     REMOVAL_STEP_ARGS+=("--fakeroot")

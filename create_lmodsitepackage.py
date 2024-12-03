@@ -114,7 +114,7 @@ local function eessi_cuda_enabled_load_hook(t)
     -- If we try to load CUDA itself, check if the full CUDA SDK was installed on the host in host_injections.
     -- This is required for end users to build additional CUDA software. If the full SDK isn't present, refuse
     -- to load the CUDA module and print an informative message on how to set up GPU support for EESSI
-    local refer_to_docs = "For more information on how to do this, see https://www.eessi.io/docs/gpu/.\\n"
+    local refer_to_docs = "For more information on how to do this, see https://www.eessi.io/docs/site_specific_config/gpu/.\\n"
     if simpleName == 'CUDA' then
         -- get the full host_injections path
         local hostInjections = string.gsub(os.getenv('EESSI_SOFTWARE_PATH') or "", 'versions', 'host_injections')

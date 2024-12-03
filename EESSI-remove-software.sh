@@ -129,6 +129,9 @@ if [ $EUID -eq 0 ]; then
                     echo_yellow "Removing ${app_dir} and ${app_module}..."
                     rm -rf ${app_dir}
                     rm -rf ${app_module}
+                    # recreate some directory to work around permission denied
+                    # issues when rebuilding the package
+                    mkdir -p ${app_dir}/easybuild
                 done
             else
                 fatal_error "Easystack file ${easystack_file} not found!"

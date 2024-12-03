@@ -595,7 +595,7 @@ def pre_configure_hook_LAMMPS_zen4(self, *args, **kwargs):
 
     cpu_target = get_eessi_envvar('EESSI_SOFTWARE_SUBDIR')
     if self.name == 'LAMMPS':
-        if self.version in ('2Aug2023_update2', '29Aug2024'):
+        if self.version in ('2Aug2023_update2', '2Aug2023_update4', '29Aug2024'):
             if get_cpu_architecture() == X86_64:
                 if cpu_target == CPU_TARGET_ZEN4:
                     # There is no support for ZEN4 in LAMMPS yet so falling back to ZEN3
@@ -786,6 +786,11 @@ def post_postproc_cuda(self, *args, **kwargs):
             for word in line.split():
                 if any(ext in word for ext in file_extensions):
                     allowlist.append(os.path.splitext(word)[0])
+        # The EULA of CUDA 12.4 introduced a typo (confirmed by NVIDIA):
+        # libnvrtx-builtins_static.so should be libnvrtc-builtins_static.so
+        if 'libnvrtx-builtins_static' in allowlist:
+            allowlist.remove('libnvrtx-builtins_static')
+            allowlist.append('libnvrtc-builtins_static')
         allowlist = sorted(set(allowlist))
         self.log.info("Allowlist for files in CUDA installation that can be redistributed: " + ', '.join(allowlist))
 
