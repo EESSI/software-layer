@@ -37,3 +37,4 @@ easyconfigs:
       options:
         # see https://github.com/easybuilders/easybuild-easyconfigs/pull/20230
         from-commit: 91c8df6b4c0810061e9f325427c9c79e961bc4b0
+  - NAMD-2.14-foss-2023a-mpi.eb
