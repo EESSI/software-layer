@@ -177,13 +177,6 @@ if [[ "${REPOSITORY}" == dev.eessi.io ]]; then
     COMMON_ARGS+=("--repository" "software.eessi.io,access=ro")
 fi
 
-# Skip CUDA installation for riscv.eessi.io
-if [[ "${REPOSITORY}" == riscv.eessi.io* ]]; then
-    echo "bot/build.sh: disabling CUDA installation for RISC-V repository ${REPOSITORY}"
-    INSTALL_SCRIPT_ARGS+=("--skip-cuda-install")
-fi
-echo "DEBUG: repo: ${REPOSITORY}, ${INSTALL_SCRIPTS_ARGS[@]}"
-
 # make sure to use the same parent dir for storing tarballs of tmp
 PREVIOUS_TMP_DIR=${PWD}/previous_tmp
 
@@ -197,6 +190,13 @@ if [[ ${EESSI_SOFTWARE_SUBDIR_OVERRIDE} =~ .*/generic$ ]]; then
 fi
 [[ ! -z ${BUILD_LOGS_DIR} ]] && INSTALL_SCRIPT_ARGS+=("--build-logs-dir" "${BUILD_LOGS_DIR}")
 [[ ! -z ${SHARED_FS_PATH} ]] && INSTALL_SCRIPT_ARGS+=("--shared-fs-path" "${SHARED_FS_PATH}")
+
+# Skip CUDA installation for riscv.eessi.io
+if [[ "${REPOSITORY}" == riscv.eessi.io* ]]; then
+    echo "bot/build.sh: disabling CUDA installation for RISC-V repository ${REPOSITORY}"
+    INSTALL_SCRIPT_ARGS+=("--skip-cuda-install")
+fi
+echo "DEBUG: repo: ${REPOSITORY}, ${INSTALL_SCRIPTS_ARGS[@]}"
 
 # determine if the removal step has to be run
 # assume there's only one diff file that corresponds to the PR patch file
