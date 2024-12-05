@@ -179,6 +179,7 @@ fi
 
 # Skip CUDA installation for riscv.eessi.io
 if [[ "${REPOSITORY}" == riscv.eessi.io* ]]; then
+    echo "bot/build.sh: disabling CUDA installation for RISC-V repository ${REPOSITORY}"
     INSTALL_SCRIPT_ARGS+=("--skip-cuda-install")
 fi
 echo "DEBUG: repo: ${REPOSITORY}, ${INSTALL_SCRIPTS_ARGS[@]}"
