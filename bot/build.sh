@@ -173,12 +173,12 @@ COMMON_ARGS+=("--mode" "run")
 
 # Also expose software.eessi.io when configured for dev.eessi.io
 # Need software.eessi.io for the compat layer
-if [[ "${REPOSITORY}" == "dev.eessi.io" ]]; then
+if [[ "${REPOSITORY}" == dev.eessi.io ]]; then
     COMMON_ARGS+=("--repository" "software.eessi.io,access=ro")
 fi
 
 # Skip CUDA installation for riscv.eessi.io
-if [[ "${REPOSITORY}" == "riscv.eessi.io" ]]; then
+if [[ "${REPOSITORY}" == riscv.eessi.io* ]]; then
     INSTALL_SCRIPT_ARGS+=("--skip-cuda-install")
 fi
 echo "DEBUG: repo: ${REPOSITORY}, ${INSTALL_SCRIPTS_ARGS[@]}"
