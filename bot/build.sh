@@ -181,6 +181,7 @@ fi
 if [[ "${REPOSITORY}" == "riscv.eessi.io" ]]; then
     INSTALL_SCRIPT_ARGS+=("--skip-cuda-install")
 fi
+echo "DEBUG: repo: ${REPOSITORY}, ${INSTALL_SCRIPTS_ARGS[@]}"
 
 # make sure to use the same parent dir for storing tarballs of tmp
 PREVIOUS_TMP_DIR=${PWD}/previous_tmp
