@@ -101,8 +101,14 @@ fi
 
 # try to determine tmp directory from build job
 RESUME_DIR=$(grep 'Using .* as tmp directory' slurm-${SLURM_JOBID}.out | head -1 | awk '{print $2}')
-
 if [[ -z ${RESUME_DIR} ]]; then
+  RESUME_TGZ=${PWD}/previous_tmp/build_step/$(ls previous_tmp/build_step)
+  if [[ -z ${RESUME_TGZ} ]]; then
+    echo "bot/test.sh: no information about tmp directory and tarball of build step; --> giving up"
+    exit 2
+  fi
+fi
+
   echo -n "setting \$STORAGE by replacing any var in '${LOCAL_TMP}' -> "
   # replace any env variable in ${LOCAL_TMP} with its
   #   current value (e.g., a value that is local to the job)
@@ -115,13 +121,6 @@ if [[ -z ${RESUME_DIR} ]]; then
   # make sure the base tmp storage is unique
   JOB_STORAGE=$(mktemp --directory --tmpdir=${STORAGE} bot_job_tmp_XXX)
   echo "bot/test.sh: created unique base tmp storage directory at ${JOB_STORAGE}"
-
-  RESUME_TGZ=${PWD}/previous_tmp/build_step/$(ls previous_tmp/build_step)
-  if [[ -z ${RESUME_TGZ} ]]; then
-    echo "bot/test.sh: no information about tmp directory and tarball of build step; --> giving up"
-    exit 2
-  fi
-fi
 
 # obtain list of modules to be loaded
 LOAD_MODULES=$(cfg_get_value "site_config" "load_modules")
