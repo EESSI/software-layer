@@ -131,7 +131,7 @@ echo "bot/test.sh: LOAD_MODULES='${LOAD_MODULES}'"
 CONTAINER=$(cfg_get_value "repository" "container")
 export SINGULARITY_HOME="${PWD}:/eessi_bot_job"
 export SINGULARITY_TMPDIR="${JOB_STORAGE:-${PWD}}/singularity_tmpdir"
-echo "DEBUG: job storage: ${JOB_STORAGE}, sing tmpdir: ${SINGULARITY_TMPDIR}"
+echo "DEBUG: storage: ${STORAGE}, job storage: ${JOB_STORAGE}, tmpdir: ${TMPDIR}, sing tmpdir: ${SINGULARITY_TMPDIR}, resumedir: ${RESUME_DIR}"
 mkdir -p ${SINGULARITY_TMPDIR}
 
 # load modules if LOAD_MODULES is not empty
