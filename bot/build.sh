@@ -193,6 +193,12 @@ fi
 [[ ! -z ${BUILD_LOGS_DIR} ]] && INSTALL_SCRIPT_ARGS+=("--build-logs-dir" "${BUILD_LOGS_DIR}")
 [[ ! -z ${SHARED_FS_PATH} ]] && INSTALL_SCRIPT_ARGS+=("--shared-fs-path" "${SHARED_FS_PATH}")
 
+# Skip CUDA installation for riscv.eessi.io
+if [[ "${REPOSITORY_NAME}" == "riscv.eessi.io" ]]; then
+    echo "bot/build.sh: disabling CUDA installation for RISC-V repository (${REPOSITORY_NAME})"
+    INSTALL_SCRIPT_ARGS+=("--skip-cuda-install")
+fi
+
 # determine if the removal step has to be run
 # assume there's only one diff file that corresponds to the PR patch file
 pr_diff=$(ls [0-9]*.diff | head -1)
