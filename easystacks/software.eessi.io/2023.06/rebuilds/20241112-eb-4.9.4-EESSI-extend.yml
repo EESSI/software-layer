@@ -3,4 +3,4 @@
 # EESSI-extend should adjust EASYBUILD_INSTALLPATH and set
 # EASYBUILD_CUDA_COMPUTE_CAPABILITIES
 easyconfigs:
-  - EESSI-extend-2023.06-easybuild.eb
+  - EESSI-extend-easybuild.eb
