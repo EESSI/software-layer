@@ -41,7 +41,7 @@ toolchain = SYSTEM
 
 # All the dependencies we filter in EESSI
 local_deps_to_filter = "Autoconf,Automake,Autotools,binutils,bzip2,DBus,flex,gettext,gperf,help2man,intltool,libreadline,libtool,M4,makeinfo,ncurses,util-linux,XZ,zlib"
-local_arch_specific_deps_to_filter = {'aarch64': ',yasm', 'x86_64': '', 'riscv64': ''}
+local_arch_specific_deps_to_filter = {'aarch64': ',Yasm', 'riscv64': ',Yasm', 'x86_64': ''}
 local_deps_to_filter += local_arch_specific_deps_to_filter[ARCH]
 
 # Set the universal EasyBuild variables

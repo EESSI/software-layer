@@ -109,18 +109,18 @@ if [[ -z ${RESUME_DIR} ]]; then
   fi
 fi
 
-  echo -n "setting \$STORAGE by replacing any var in '${LOCAL_TMP}' -> "
-  # replace any env variable in ${LOCAL_TMP} with its
-  #   current value (e.g., a value that is local to the job)
-  STORAGE=$(envsubst <<< ${LOCAL_TMP})
-  echo "'${STORAGE}'"
+echo -n "setting \$STORAGE by replacing any var in '${LOCAL_TMP}' -> "
+# replace any env variable in ${LOCAL_TMP} with its
+#   current value (e.g., a value that is local to the job)
+STORAGE=$(envsubst <<< ${LOCAL_TMP})
+echo "'${STORAGE}'"
 
-  # make sure ${STORAGE} exists
-  mkdir -p ${STORAGE}
+# make sure ${STORAGE} exists
+mkdir -p ${STORAGE}
 
-  # make sure the base tmp storage is unique
-  JOB_STORAGE=$(mktemp --directory --tmpdir=${STORAGE} bot_job_tmp_XXX)
-  echo "bot/test.sh: created unique base tmp storage directory at ${JOB_STORAGE}"
+# make sure the base tmp storage is unique
+JOB_STORAGE=$(mktemp --directory --tmpdir=${STORAGE} bot_job_tmp_XXX)
+echo "bot/test.sh: created unique base tmp storage directory at ${JOB_STORAGE}"
 
 # obtain list of modules to be loaded
 LOAD_MODULES=$(cfg_get_value "site_config" "load_modules")
@@ -130,7 +130,6 @@ echo "bot/test.sh: LOAD_MODULES='${LOAD_MODULES}'"
 CONTAINER=$(cfg_get_value "repository" "container")
 export SINGULARITY_HOME="${PWD}:/eessi_bot_job"
 export SINGULARITY_TMPDIR="${JOB_STORAGE:-${PWD}}/singularity_tmpdir"
-echo "DEBUG: storage: ${STORAGE}, job storage: ${JOB_STORAGE}, tmpdir: ${TMPDIR}, sing tmpdir: ${SINGULARITY_TMPDIR}, resumedir: ${RESUME_DIR}"
 mkdir -p ${SINGULARITY_TMPDIR}
 
 # load modules if LOAD_MODULES is not empty

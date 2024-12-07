@@ -195,10 +195,9 @@ fi
 
 # Skip CUDA installation for riscv.eessi.io
 if [[ "${REPOSITORY_NAME}" == "riscv.eessi.io" ]]; then
-    echo "bot/build.sh: disabling CUDA installation for RISC-V repository ${REPOSITORY_NAME}"
+    echo "bot/build.sh: disabling CUDA installation for RISC-V repository (${REPOSITORY_NAME})"
     INSTALL_SCRIPT_ARGS+=("--skip-cuda-install")
 fi
-echo "DEBUG: repo: ${REPOSITORY_NAME}, ${INSTALL_SCRIPT_ARGS[@]}"
 
 # determine if the removal step has to be run
 # assume there's only one diff file that corresponds to the PR patch file
