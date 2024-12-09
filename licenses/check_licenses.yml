@@ -2,26 +2,27 @@ name: Check and update licenses
 
 on:
   push:
-    branches:
-      - main
+    branches: [ "*-software.eessi.io" ]
   pull_request:
-    branches:
-      - main
+    branches:  [ "*-software.eessi.io" ]
+permissions:
+  contents: write # set permissions for writing 
 
 jobs:
   license_update:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3
+      - name: Checkout out software-layer repository
+        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 
 
       - name: Set up Python
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@0a5c61591373683505ea898e09a3ea4f39ef2b9c
         with:
-          python-version: '3.X' 
+          python-version: '3.9' 
 
       - name: Run license script and generate patch
+        id: check_licenses
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
@@ -33,17 +34,18 @@ jobs:
           fi 
 
       - name: Create a PR (if changes detected)
-        uses: peter-evans/create-pull-request@v5
+        id: create_pull_request
+        uses: peter-evans/create-pull-request@5e914681df9dc83aa4e4905692ca88beb2f9e91f # v7.0.5
         if: steps.check_licenses.outputs.patch != ''
         with: 
-        commit-message: "Auto PR: Update licenses"
-        title: "Auto PR: Update licenses"
-         body: ${{ steps.check_licenses.outputs.patch }}
-         branch: main #fork branch
-         base: main #specify right brancg here
+          commit-message: "Auto PR: Update licenses"
+          title: "Auto PR: Update licenses"
+          body: ${{ steps.check_licenses.outputs.patch }}
+          branch: update-licenses-${{ github.run_number }}
+          base: [ "*-software.eessi.io" ]
 
       - name: Apply patch (if no PR created)
-        if: steps.create_pull_request.outputs.pull-request-number == '' && steps.check_licenses.outputs.patch != ''        
+        if: steps.create_pull_request.outputs.number == '' && steps.check_licenses.outputs.patch != ''        
         run: |
           if [ -f license_update.patch ] && [ -s license_update.patch ]; then
             git apply license_update.patch
