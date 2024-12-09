@@ -171,13 +171,13 @@ module --force purge
 module unuse $MODULEPATH
 
 # Initialize the EESSI environment
-if [[ ${EESSI_CVMFS_REPO} == "/cvmfs/riscv.eessi.io" ]]; then
-    # For the RISC-V repository we don't have a module file, so stick to the bash init script
-    source $TOPDIR/init/bash
-else
+#if [[ ${EESSI_CVMFS_REPO} == "/cvmfs/riscv.eessi.io" ]]; then
+#    # For the RISC-V repository we don't have a module file, so stick to the bash init script
+#    source $TOPDIR/init/bash
+#else
     module use $TOPDIR/init/modules
     module load EESSI/$EESSI_VERSION
-fi
+#fi
 
 # make sure we're in Prefix environment by checking $SHELL
 # We can only do this after loading the EESSI module, as we need ${EPREFIX}
