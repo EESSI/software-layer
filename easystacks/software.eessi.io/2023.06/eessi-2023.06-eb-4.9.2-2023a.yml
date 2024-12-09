@@ -71,7 +71,3 @@ easyconfigs:
       options:
         # see https://github.com/easybuilders/easybuild-easyconfigs/pull/21227
         from-commit: 4c5e3455dec31e68e8383c7fd86d1f80c434676d
-  - Tombo-1.5.1-foss-2023a.eb:
-      options:
-        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/21925
-        from-commit: 522ca010ab11949ab9594037f72b975cf1cd0d33
