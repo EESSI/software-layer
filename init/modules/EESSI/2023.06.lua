@@ -12,6 +12,13 @@ whatis("URL: https://www.eessi.io/docs/")
 conflict("EESSI")
 local eessi_version = myModuleVersion()
 local eessi_repo = "/cvmfs/software.eessi.io"
+if (capture("uname -m"):gsub("\n$","") == "x86_64") then
+    eessi_version = "20240402"
+    eessi_repo = "/cvmfs/riscv.eessi.io"
+    LmodMessage("RISC-V architecture detected, but there is no RISC-V support yet in the production repository.\n" ..
+                "Automatically switching to version " .. eessi_version .. " of the RISC-V development repository " .. eessi_repo .. ".\n" ..
+                "For more details about this repository, see https://www.eessi.io/docs/repositories/riscv.eessi.io/.")
+end
 local eessi_prefix = pathJoin(eessi_repo, "versions", eessi_version)
 local eessi_os_type = "linux"
 setenv("EESSI_VERSION", eessi_version)
