@@ -77,6 +77,10 @@ def parse_hook(ec, *args, **kwargs):
     if ec.name in PARSE_HOOKS:
         PARSE_HOOKS[ec.name](ec, eprefix)
 
+    # Always trigger this one, regardless of ec.name
+    # TODO: limit to only zen4 in the future
+    parse_hook_zen4_module_only(ec, eprefix)
+
     # inject the GPU property (if required)
     ec = inject_gpu_property(ec)
 
@@ -352,6 +356,28 @@ def parse_hook_CP2K_remove_deps_for_aarch64(ec, *args, **kwargs):
     else:
         raise EasyBuildError("CP2K-specific hook triggered for non-CP2K easyconfig?!")
 
+
+def parse_hook_zen4_module_only(ec, eprefix):
+    """
+    Use --force --module-only if building a foss-2022b-based EasyConfig for Zen4.
+    This toolchain will not be supported on Zen4, so we will generate a modulefile
+    and have it print an LmodError.
+    """
+    ecname, ecversion = ec['name'], ec['version']
+    tcname, tcversion = ec['toolchain']['name'], ec['toolchain']['version']
+    if (
+        (tcname in ['foss', 'gompi'] and tcversion == '2022b') or
+        (tcname in ['GCC', 'GCCcore'] and LooseVersion(tcversion) == LooseVersion('12.2.0')) or
+        (ecname in ['foss', 'gompi'] and ecversion == '2022b') or
+        (ecname in ['GCC', 'GCCcore'] and LooseVersion(ecversion) == LooseVersion('12.2.0'))
+    ):
+        update_build_option('force', 'True')
+        update_build_option('module_only', 'True')
+        # TODO: create a docs page to which we can refer for more info here
+        # TODO: then update the link to the known issues page to the _specific_ issue
+        errmsg = "Toolchains based on GCCcore-12.2.0 are not supported for the Zen4 architecture."
+        errmsg += " See https://www.eessi.io/docs/known_issues/eessi-2023.06/"
+        ec['modluafooter'] = 'LmodError(%s)' % errmsg
 
 def pre_prepare_hook_highway_handle_test_compilation_issues(self, *args, **kwargs):
     """
