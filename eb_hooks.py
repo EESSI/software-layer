@@ -401,18 +401,6 @@ def parse_hook_zen4_module_only(ec, eprefix):
         ec['modluafooter'] = 'if (not os.getenv("%s")) then LmodError("%s") end' % (env_varname, errmsg)
 
 
-def pre_fetch_hook(ec, *args, **kwargs):
-    """Main parse hook: trigger custom functions based on software name."""
-
-    if ec.name in PRE_FETCH_HOOKS:
-        PRE_FETCH_HOOKS[ec.name](ec, *args, **kwargs)
-
-    # Always trigger this one, regardless of ec.name
-    cpu_target = get_eessi_envvar('EESSI_SOFTWARE_SUBDIR')
-    if cpu_target == CPU_TARGET_ZEN4:
-        pre_fetch_hook_ignore_zen4_gcccore1220_error(ec, *args, **kwargs)
-
-
 # We do this as early as possible - and remove it all the way in the last step hook (post_testcases_hook)
 def pre_prepare_hook_ignore_zen4_gcccore1220_error(self, *args, **kwargs):
     """Set environment variable to ignore the LmodError from parse_hook_zen4_module_only during build phase"""
