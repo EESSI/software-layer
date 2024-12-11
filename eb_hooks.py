@@ -29,6 +29,8 @@ CPU_TARGET_A64FX = 'aarch64/a64fx'
 CPU_TARGET_ZEN4 = 'x86_64/amd/zen4'
 
 EESSI_RPATH_OVERRIDE_ATTR = 'orig_rpath_override_dirs'
+EESSI_MODULE_ONLY_ATTR = 'orig_module_only'
+EESSI_FORCE_ATTR = 'orig_force'
 
 SYSTEM = EASYCONFIG_CONSTANTS['SYSTEM'][0]
 
@@ -389,9 +391,9 @@ def parse_hook_zen4_module_only(ec, eprefix):
     and have it print an LmodError.
     """
     if is_gcccore_1220_based(ec['name'], ec['version'], ec['toolchain']['name'], ec['toolchain']['version']):
-        env_varname=EESSI_IGNORE_ZEN4_GCC1220_ENVVAR
-        update_build_option('force', 'True')
-        update_build_option('module_only', 'True')
+        env_varname = EESSI_IGNORE_ZEN4_GCC1220_ENVVAR
+        # update_build_option('force', 'True')
+        # update_build_option('module_only', 'True')
         # TODO: create a docs page to which we can refer for more info here
         # TODO: then update the link to the known issues page to the _specific_ issue
         # Need to escape newline character so that the newline character actually ends up in the module file
@@ -399,6 +401,56 @@ def parse_hook_zen4_module_only(ec, eprefix):
         errmsg = "EasyConfigs using toolchains based on GCCcore-12.2.0 are not supported for the Zen4 architecture.\\n"
         errmsg += "See https://www.eessi.io/docs/known_issues/eessi-2023.06/"
         ec['modluafooter'] = 'if (not os.getenv("%s")) then LmodError("%s") end' % (env_varname, errmsg)
+
+
+def pre_fetch_hook(self, *args, **kwargs):
+    """Main pre fetch hook: trigger custom functions based on software name."""
+    if self.name in PRE_FETCH_HOOKS:
+        PRE_FETCH_HOOKS[ec.name](self, *args, **kwargs)
+
+    # Always trigger this one, regardless of self.name
+    cpu_target = get_eessi_envvar('EESSI_SOFTWARE_SUBDIR')
+    if cpu_target == CPU_TARGET_ZEN4:
+        pre_fetch_hook_ignore_zen4_gcccore1220_error(self, *args, **kwargs)
+
+
+def pre_fetch_hook_ignore_zen4_gcccore1220_error(self, *args, **kwargs):
+    """Use --force --module-only if building a foss-2022b-based EasyConfig for Zen4.
+    This toolchain will not be supported on Zen4, so we will generate a modulefile
+    and have it print an LmodError.
+    """
+    if is_gcccore_1220_based(self.name, self.version, self.toolchain.name, self.toolchain.version):
+        if hasattr(self, EESSI_MODULE_ONLY_ATTR):
+            raise EasyBuildError("'self' already has attribute %s! Can't use pre_fetch hook.",
+                                 EESSI_MODULE_ONLY_ATTR)
+        setattr(self, EESSI_MODULE_ONLY_ATTR, build_option('module_only'))
+        update_build_option('module_only', 'True')
+        print_msg("Updated build option 'module-only' to 'True'")
+
+        if hasattr(self, EESSI_FORCE_ATTR):
+            raise EasyBuildError("'self' already has attribute %s! Can't use pre_fetch hook.",
+                                 EESSI_FORCE_ATTR)
+        setattr(self, EESSI_FORCE_ATTR, build_option('force'))
+        update_build_option('force', 'True')
+        print_msg("Updated build option 'force' to 'True'")
+
+
+def post_module_hook_ignore_zen4_gcccore1220_error(self, *args, **kwargs):
+    """Revert changes from pre_fetch_hook_ignore_zen4_gcccore1220_error"""
+    if is_gcccore_1220_based(self.name, self.version, self.toolchain.name, self.toolchain.version):
+        if hasattr(self, EESSI_MODULE_ONLY_ATTR):
+            update_build_option('module_only', getattr(self, EESSI_MODULE_ONLY_ATTR))
+            print_msg("Restored original build option 'module_only' to %s" % getattr(self, EESSI_MODULE_ONLY_ATTR))
+        else:
+            raise EasyBuildError("Cannot restore module_only to it's original value: 'self' is missing attribute %s.",
+                                 EESSI_MODULE_ONLY_ATTR)
+
+        if hasattr(self, EESSI_FORCE_ATTR):
+            update_build_option('force', getattr(self, EESSI_FORCE_ATTR))
+            print_msg("Restored original build option 'force' to %s" % getattr(self, EESSI_FORCE_ATTR))
+        else:
+            raise EasyBuildError("Cannot restore force to it's original value: 'self' is misisng attribute %s.",
+                                 EESSI_FORCE_ATTR)
 
 
 # We do this as early as possible - and remove it all the way in the last step hook (post_testcases_hook)
@@ -1028,6 +1080,17 @@ def inject_gpu_property(ec):
     return ec
 
 
+def post_module_hook(self, *args, **kwargs):
+    """Main post module hook: trigger custom functions based on software name."""
+    if self.name in POST_MODULE_HOOKS:
+        POST_MODULE_HOOKS[ec.name](self, *args, **kwargs)
+
+    # Always trigger this one, regardless of self.name
+    cpu_target = get_eessi_envvar('EESSI_SOFTWARE_SUBDIR')
+    if cpu_target == CPU_TARGET_ZEN4:
+        post_module_hook_ignore_zen4_gcccore1220_error(self, *args, **kwargs)
+
+
 PARSE_HOOKS = {
     'casacore': parse_hook_casacore_disable_vectorize,
     'CGAL': parse_hook_cgal_toolchainopts_precise,
@@ -1041,6 +1104,8 @@ PARSE_HOOKS = {
     'Qt5': parse_hook_qt5_check_qtwebengine_disable,
     'UCX': parse_hook_ucx_eprefix,
 }
+
+PRE_FETCH_HOOKS = {}
 
 PRE_PREPARE_HOOKS = {
     'Highway': pre_prepare_hook_highway_handle_test_compilation_issues,
@@ -1087,3 +1152,5 @@ POST_POSTPROC_HOOKS = {
     'CUDA': post_postproc_cuda,
     'cuDNN': post_postproc_cudnn,
 }
+
+POST_MODULE_HOOKS = {}
