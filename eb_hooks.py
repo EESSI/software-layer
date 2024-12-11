@@ -371,13 +371,17 @@ def parse_hook_zen4_module_only(ec, eprefix):
         (ecname in ['foss', 'gompi'] and ecversion == '2022b') or
         (ecname in ['GCC', 'GCCcore'] and LooseVersion(ecversion) == LooseVersion('12.2.0'))
     ):
+        env_varname="EESSI_IGNORE_LMOD_ERROR_ZEN4_GCC1220"
+        # TODO: I need to think about how to unset this, at the end of the build for this module
+        # Maybe I shouldn't do it in the parse hook, but set it in a step hook, and unset it in a another step hook?
+        os.environ[env_varname] = "1"
         update_build_option('force', 'True')
         update_build_option('module_only', 'True')
         # TODO: create a docs page to which we can refer for more info here
         # TODO: then update the link to the known issues page to the _specific_ issue
         errmsg = "Toolchains based on GCCcore-12.2.0 are not supported for the Zen4 architecture."
         errmsg += " See https://www.eessi.io/docs/known_issues/eessi-2023.06/"
-        ec['modluafooter'] = 'LmodError(%s)' % errmsg
+        ec['modluafooter'] = 'if (not os.getenv("%s")) then LmodError("%s") end' % (env_varname, errmsg)
 
 def pre_prepare_hook_highway_handle_test_compilation_issues(self, *args, **kwargs):
     """
