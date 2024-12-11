@@ -35,6 +35,20 @@ SYSTEM = EASYCONFIG_CONSTANTS['SYSTEM'][0]
 EESSI_INSTALLATION_REGEX = r"^/cvmfs/[^/]*.eessi.io/versions/"
 HOST_INJECTIONS_LOCATION = "/cvmfs/software.eessi.io/host_injections/"
 
+# Make sure a single environment variable name is used for this throughout the hooks
+EESSI_IGNORE_ZEN4_GCC1220_ENVVAR="EESSI_IGNORE_LMOD_ERROR_ZEN4_GCC1220"
+
+def is_gcccore_1220_based(ecname, ecversion, tcname, tcversion):
+    """Checks if this easyconfig either _is_ or _uses_ a GCCcore-12.2.2 based toolchain"""
+    gcccore_based_names = ['GCCcore', 'GCC']
+    foss_based_names = ['gfbf', 'gompi', 'foss']
+    return (
+        (tcname in foss_based_names and tcversion == '2022b') or
+        (tcname in gcccore_based_names and LooseVersion(tcversion) == LooseVersion('12.2.0')) or
+        (ecname in foss_based_names and ecversion == '2022b') or
+        (ecname in gcccore_based_names and LooseVersion(ecversion) == LooseVersion('12.2.0'))
+    )
+
 
 def get_eessi_envvar(eessi_envvar):
     """Get an EESSI environment variable from the environment"""
@@ -78,8 +92,9 @@ def parse_hook(ec, *args, **kwargs):
         PARSE_HOOKS[ec.name](ec, eprefix)
 
     # Always trigger this one, regardless of ec.name
-    # TODO: limit to only zen4 in the future
-    parse_hook_zen4_module_only(ec, eprefix)
+    cpu_target = get_eessi_envvar('EESSI_SOFTWARE_SUBDIR')
+    if cpu_target == CPU_TARGET_ZEN4:
+        parse_hook_zen4_module_only(ec, eprefix)
 
     # inject the GPU property (if required)
     ec = inject_gpu_property(ec)
@@ -134,6 +149,11 @@ def pre_prepare_hook(self, *args, **kwargs):
     if self.name in PRE_PREPARE_HOOKS:
         PRE_PREPARE_HOOKS[self.name](self, *args, **kwargs)
 
+    # Always trigger this one, regardless of ec.name
+    cpu_target = get_eessi_envvar('EESSI_SOFTWARE_SUBDIR')
+    if cpu_target == CPU_TARGET_ZEN4:
+        pre_prepare_hook_ignore_zen4_gcccore1220_error(self, *args, **kwargs)
+
 
 def post_prepare_hook_gcc_prefixed_ld_rpath_wrapper(self, *args, **kwargs):
     """
@@ -178,6 +198,11 @@ def post_prepare_hook(self, *args, **kwargs):
 
     if self.name in POST_PREPARE_HOOKS:
         POST_PREPARE_HOOKS[self.name](self, *args, **kwargs)
+
+    # Always trigger this one, regardless of ec.name
+    cpu_target = get_eessi_envvar('EESSI_SOFTWARE_SUBDIR')
+    if cpu_target == CPU_TARGET_ZEN4:
+        post_prepare_hook_ignore_zen4_gcccore1220_error(self, *args, **kwargs)
 
 
 def parse_hook_casacore_disable_vectorize(ec, eprefix):
@@ -363,25 +388,43 @@ def parse_hook_zen4_module_only(ec, eprefix):
     This toolchain will not be supported on Zen4, so we will generate a modulefile
     and have it print an LmodError.
     """
-    ecname, ecversion = ec['name'], ec['version']
-    tcname, tcversion = ec['toolchain']['name'], ec['toolchain']['version']
-    if (
-        (tcname in ['foss', 'gompi'] and tcversion == '2022b') or
-        (tcname in ['GCC', 'GCCcore'] and LooseVersion(tcversion) == LooseVersion('12.2.0')) or
-        (ecname in ['foss', 'gompi'] and ecversion == '2022b') or
-        (ecname in ['GCC', 'GCCcore'] and LooseVersion(ecversion) == LooseVersion('12.2.0'))
-    ):
-        env_varname="EESSI_IGNORE_LMOD_ERROR_ZEN4_GCC1220"
-        # TODO: I need to think about how to unset this, at the end of the build for this module
-        # Maybe I shouldn't do it in the parse hook, but set it in a step hook, and unset it in a another step hook?
-        os.environ[env_varname] = "1"
+    if is_gcccore_1220_based(ec['name'], ec['version'], ec['toolchain']['name'], ec['toolchain']['version']):
+        env_varname=EESSI_IGNORE_ZEN4_GCC1220_ENVVAR
         update_build_option('force', 'True')
         update_build_option('module_only', 'True')
         # TODO: create a docs page to which we can refer for more info here
         # TODO: then update the link to the known issues page to the _specific_ issue
-        errmsg = "Toolchains based on GCCcore-12.2.0 are not supported for the Zen4 architecture."
-        errmsg += " See https://www.eessi.io/docs/known_issues/eessi-2023.06/"
+        # Need to escape newline character so that the newline character actually ends up in the module file
+        # (otherwise, it splits the string, and a 2-line string ends up in the modulefile, resulting in syntax error)
+        errmsg = "EasyConfigs using toolchains based on GCCcore-12.2.0 are not supported for the Zen4 architecture.\\n"
+        errmsg += "See https://www.eessi.io/docs/known_issues/eessi-2023.06/"
         ec['modluafooter'] = 'if (not os.getenv("%s")) then LmodError("%s") end' % (env_varname, errmsg)
+
+
+def pre_fetch_hook(ec, *args, **kwargs):
+    """Main parse hook: trigger custom functions based on software name."""
+
+    if ec.name in PRE_FETCH_HOOKS:
+        PRE_FETCH_HOOKS[ec.name](ec, *args, **kwargs)
+
+    # Always trigger this one, regardless of ec.name
+    cpu_target = get_eessi_envvar('EESSI_SOFTWARE_SUBDIR')
+    if cpu_target == CPU_TARGET_ZEN4:
+        pre_fetch_hook_ignore_zen4_gcccore1220_error(ec, *args, **kwargs)
+
+
+# We do this as early as possible - and remove it all the way in the last step hook (post_testcases_hook)
+def pre_prepare_hook_ignore_zen4_gcccore1220_error(self, *args, **kwargs):
+    """Set environment variable to ignore the LmodError from parse_hook_zen4_module_only during build phase"""
+    if is_gcccore_1220_based(self.name, self.version, self.toolchain.name, self.toolchain.version):
+        os.environ[EESSI_IGNORE_ZEN4_GCC1220_ENVVAR] = "1"
+
+
+def post_prepare_hook_ignore_zen4_gcccore1220_error(self, *args, **kwargs):
+    """Unset environment variable to ignore the LmodError from parse_hook_zen4_module_only during build phase"""
+    if is_gcccore_1220_based(self.name, self.version, self.toolchain.name, self.toolchain.version):
+        del os.environ[EESSI_IGNORE_ZEN4_GCC1220_ENVVAR]
+
 
 def pre_prepare_hook_highway_handle_test_compilation_issues(self, *args, **kwargs):
     """
