@@ -392,8 +392,6 @@ def parse_hook_zen4_module_only(ec, eprefix):
     """
     if is_gcccore_1220_based(ec['name'], ec['version'], ec['toolchain']['name'], ec['toolchain']['version']):
         env_varname = EESSI_IGNORE_ZEN4_GCC1220_ENVVAR
-        # update_build_option('force', 'True')
-        # update_build_option('module_only', 'True')
         # TODO: create a docs page to which we can refer for more info here
         # TODO: then update the link to the known issues page to the _specific_ issue
         # Need to escape newline character so that the newline character actually ends up in the module file
@@ -411,10 +409,10 @@ def pre_fetch_hook(self, *args, **kwargs):
     # Always trigger this one, regardless of self.name
     cpu_target = get_eessi_envvar('EESSI_SOFTWARE_SUBDIR')
     if cpu_target == CPU_TARGET_ZEN4:
-        pre_fetch_hook_ignore_zen4_gcccore1220_error(self, *args, **kwargs)
+        pre_fetch_hook_zen4_gcccore1220(self, *args, **kwargs)
 
 
-def pre_fetch_hook_ignore_zen4_gcccore1220_error(self, *args, **kwargs):
+def pre_fetch_hook_zen4_gcccore1220(self, *args, **kwargs):
     """Use --force --module-only if building a foss-2022b-based EasyConfig for Zen4.
     This toolchain will not be supported on Zen4, so we will generate a modulefile
     and have it print an LmodError.
@@ -435,8 +433,8 @@ def pre_fetch_hook_ignore_zen4_gcccore1220_error(self, *args, **kwargs):
         print_msg("Updated build option 'force' to 'True'")
 
 
-def post_module_hook_ignore_zen4_gcccore1220_error(self, *args, **kwargs):
-    """Revert changes from pre_fetch_hook_ignore_zen4_gcccore1220_error"""
+def post_module_hook_zen4_gcccore1220(self, *args, **kwargs):
+    """Revert changes from pre_fetch_hook_zen4_gcccore1220"""
     if is_gcccore_1220_based(self.name, self.version, self.toolchain.name, self.toolchain.version):
         if hasattr(self, EESSI_MODULE_ONLY_ATTR):
             update_build_option('module_only', getattr(self, EESSI_MODULE_ONLY_ATTR))
@@ -1088,7 +1086,7 @@ def post_module_hook(self, *args, **kwargs):
     # Always trigger this one, regardless of self.name
     cpu_target = get_eessi_envvar('EESSI_SOFTWARE_SUBDIR')
     if cpu_target == CPU_TARGET_ZEN4:
-        post_module_hook_ignore_zen4_gcccore1220_error(self, *args, **kwargs)
+        post_module_hook_zen4_gcccore1220(self, *args, **kwargs)
 
 
 PARSE_HOOKS = {
