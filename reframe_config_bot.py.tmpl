@@ -20,7 +20,7 @@ site_configuration = {
                     'launcher': 'mpirun',
                     'environs': ['default'],
                     'features': [
-                        FEATURES[CPU]
+                        FEATURES[GPU]
                     ] + list(SCALES.keys()),
                     'resources': [
                         {
@@ -32,6 +32,7 @@ site_configuration = {
                         # Make sure to round down, otherwise a job might ask for more mem than is available
                         # per node
                         'mem_per_node': __MEM_PER_NODE__,
+                        GPU_VENDOR: GPU_VENDORS[NVIDIA],
                     },
                     'max_jobs': 1
                     }
