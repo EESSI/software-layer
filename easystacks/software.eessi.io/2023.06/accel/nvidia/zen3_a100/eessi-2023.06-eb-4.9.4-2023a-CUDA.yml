@@ -1,2 +1,2 @@
 easyconfigs:
-  - CUDA-12.1.1.eb
+  - pmt-1.2.0-GCCcore-12.3.0-CUDA-12.1.1.eb
