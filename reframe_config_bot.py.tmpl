@@ -24,6 +24,10 @@ site_configuration = {
                     ] + list(SCALES.keys()),
                     'resources': [
                         {
+                            'name': '_rfm_gpu',
+                            'options': ['--gpus-per-node={num_gpus_per_node}'],
+                        },
+                        {
                             'name': 'memory',
                             'options': ['--mem={size}'],
                         }
@@ -34,6 +38,12 @@ site_configuration = {
                         'mem_per_node': __MEM_PER_NODE__,
                         GPU_VENDOR: GPU_VENDORS[NVIDIA],
                     },
+                    'devices': [
+                        {
+                            'type': DEVICE_TYPES[GPU],
+                            'num_devices': 4,
+                        }
+                    ],
                     'max_jobs': 1
                     }
                 ]
