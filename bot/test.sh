@@ -124,9 +124,10 @@ JOB_STORAGE=$(mktemp --directory --tmpdir=${STORAGE} bot_job_tmp_XXX)
 echo "bot/test.sh: created unique base tmp storage directory at ${JOB_STORAGE}"
 
 echo "bot/test.sh: MODULEPATH='${MODULEPATH}'"
-echo "bot/test.sh: does it know that it is on a UGent cluster? HPCUGENT_FAMILY_CLUSTER='${HPCUGENT_FAMILY_CLUSTER}'"
-module --force purge 
-# should be ok to this because won't cause trouble on mc clusters and if modules need to be loaded it is part of the bot script which happens after this
+# Checking if it is running at Gent because than the modules need to be unloaded
+if [ '$HPCUGENT_FAMILY_CLUSTER' ]; then
+    module --force purge
+fi
 echo "bot/test.sh: MODULEPATH='${MODULEPATH}'"
 # obtain list of modules to be loaded
 LOAD_MODULES=$(cfg_get_value "site_config" "load_modules")
