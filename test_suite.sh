@@ -85,6 +85,7 @@ source $TOPDIR/init/bash
 # Reason is that the LMOD cache is normally only updated on the Stratum 0, once everything is ingested
 export LMOD_IGNORE_CACHE=1
 
+echo "test_suite.sh: MODULEPATH='${MODULEPATH}'"
 # Load the ReFrame module
 # Currently, we load the default version. Maybe we should somehow make this configurable in the future?
 module load ReFrame
