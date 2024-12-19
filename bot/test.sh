@@ -126,7 +126,7 @@ echo "bot/test.sh: created unique base tmp storage directory at ${JOB_STORAGE}"
 echo "bot/test.sh: MODULEPATH='${MODULEPATH}'"
 echo "bot/test.sh: does it know that it is on a UGent cluster? HPCUGENT_FAMILY_CLUSTER='${HPCUGENT_FAMILY_CLUSTER}'"
 if [ -z "$HPCUGENT_FAMILY_CLUSTER" ]; then
-    module purge --force
+    module --force purge
     echo "bot/test.sh: MODULEPATH='${MODULEPATH}'"
 fi
 # obtain list of modules to be loaded
