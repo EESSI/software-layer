@@ -124,6 +124,7 @@ JOB_STORAGE=$(mktemp --directory --tmpdir=${STORAGE} bot_job_tmp_XXX)
 echo "bot/test.sh: created unique base tmp storage directory at ${JOB_STORAGE}"
 
 echo "bot/test.sh: MODULEPATH='${MODULEPATH}'"
+echo "bot/test.sh: does it know that it is on a UGent cluster? HPCUGENT_FAMILY_CLUSTER='${HPCUGENT_FAMILY_CLUSTER}'"
 if [ -z "$HPCUGENT_FAMILY_CLUSTER" ]; then
     module purge --force
     echo "bot/test.sh: MODULEPATH='${MODULEPATH}'"
