@@ -103,7 +103,6 @@ mkdir -p ${STORAGE}
 JOB_STORAGE=$(mktemp --directory --tmpdir=${STORAGE} bot_job_tmp_XXX)
 echo "bot/build.sh: created unique base tmp storage directory at ${JOB_STORAGE}"
 
-echo "bot/build.sh: MODULEPATH='${MODULEPATH}'"
 # obtain list of modules to be loaded
 LOAD_MODULES=$(cfg_get_value "site_config" "load_modules")
 echo "bot/build.sh: LOAD_MODULES='${LOAD_MODULES}'"
