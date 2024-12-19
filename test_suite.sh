@@ -73,6 +73,8 @@ fi
 
 TMPDIR=$(mktemp -d)
 
+nvidia-smi
+
 echo ">> Setting up environment..."
 # For this call to be succesful, it needs to be able to import archspec (which is part of EESSI)
 # Thus, we execute it in a subshell where EESSI is already initialized (a bit like a bootstrap)
@@ -80,7 +82,7 @@ export EESSI_SOFTWARE_SUBDIR_OVERRIDE=$(source $TOPDIR/init/bash > /dev/null 2>&
 echo "EESSI_SOFTWARE_SUBDIR_OVERRIDE: $EESSI_SOFTWARE_SUBDIR_OVERRIDE"
 
 source $TOPDIR/init/bash
-export MODULEPATH=/cvmfs/software.eessi.io/versions/2023.06/software/linux/x86_64/amd/zen3/accel/nvidia/cc80:$MODULEPATH
+export MODULEPATH=/cvmfs/software.eessi.io/versions/2023.06/software/linux/x86_64/amd/zen3/accel/nvidia/cc80/modules/all:$MODULEPATH
 
 # We have to ignore the LMOD cache, otherwise the software that is built in the build step cannot be found/loaded
 # Reason is that the LMOD cache is normally only updated on the Stratum 0, once everything is ingested
