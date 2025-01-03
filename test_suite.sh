@@ -73,6 +73,7 @@ fi
 
 TMPDIR=$(mktemp -d)
 
+ehco "HOSTNAME=$HOSTNAME"
 nvidia-smi
 
 echo ">> Setting up environment..."
