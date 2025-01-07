@@ -52,10 +52,10 @@ def is_gcccore_1220_based(**kwargs):
     :param str tcname: Toolchain name specified in the EasyConfig
     :param str tcversion: Toolchain version specified in the EasyConfig
     """
-    ecname = kwargs.get['ecname', None]
-    ecversion = kwargs.get['ecversion', None]
-    tcname = kwargs.get['tcname', None]
-    tcversion = kwargs.get['tcversion', None]
+    ecname = kwargs.get('ecname', None)
+    ecversion = kwargs.get('ecversion', None)
+    tcname = kwargs.get('tcname', None)
+    tcversion = kwargs.get('tcversion', None)
 
     gcccore_based_names = ['GCCcore', 'GCC']
     foss_based_names = ['gfbf', 'gompi', 'foss']
@@ -405,7 +405,8 @@ def parse_hook_zen4_module_only(ec, eprefix):
     This toolchain will not be supported on Zen4, so we will generate a modulefile
     and have it print an LmodError.
     """
-    if is_gcccore_1220_based(ec['name'], ec['version'], ec['toolchain']['name'], ec['toolchain']['version']):
+    if is_gcccore_1220_based(ecname=ec['name'], ecversion=ec['version'], tcname=ec['toolchain']['name'],
+                             tcversion=ec['toolchain']['version']):
         env_varname = EESSI_IGNORE_ZEN4_GCC1220_ENVVAR
         # TODO: create a docs page to which we can refer for more info here
         # TODO: then update the link to the known issues page to the _specific_ issue
@@ -432,7 +433,8 @@ def pre_fetch_hook_zen4_gcccore1220(self, *args, **kwargs):
     This toolchain will not be supported on Zen4, so we will generate a modulefile
     and have it print an LmodError.
     """
-    if is_gcccore_1220_based(self.name, self.version, self.toolchain.name, self.toolchain.version):
+    if is_gcccore_1220_based(ecname=self.name, ecversion=self.version, tcname=self.toolchain.name,
+                             tcversion=self.toolchain.version):
         if hasattr(self, EESSI_MODULE_ONLY_ATTR):
             raise EasyBuildError("'self' already has attribute %s! Can't use pre_fetch hook.",
                                  EESSI_MODULE_ONLY_ATTR)
@@ -450,7 +452,8 @@ def pre_fetch_hook_zen4_gcccore1220(self, *args, **kwargs):
 
 def post_module_hook_zen4_gcccore1220(self, *args, **kwargs):
     """Revert changes from pre_fetch_hook_zen4_gcccore1220"""
-    if is_gcccore_1220_based(self.name, self.version, self.toolchain.name, self.toolchain.version):
+    if is_gcccore_1220_based(ecname=self.name, ecversion=self.version, tcname=self.toolchain.name,
+                             tcversion=self.toolchain.version):
         if hasattr(self, EESSI_MODULE_ONLY_ATTR):
             update_build_option('module_only', getattr(self, EESSI_MODULE_ONLY_ATTR))
             print_msg("Restored original build option 'module_only' to %s" % getattr(self, EESSI_MODULE_ONLY_ATTR))
@@ -471,13 +474,15 @@ def post_module_hook_zen4_gcccore1220(self, *args, **kwargs):
 # _with_ the warning for the current software being installed)
 def pre_prepare_hook_ignore_zen4_gcccore1220_error(self, *args, **kwargs):
     """Set environment variable to ignore the LmodError from parse_hook_zen4_module_only during build phase"""
-    if is_gcccore_1220_based(self.name, self.version, self.toolchain.name, self.toolchain.version):
+    if is_gcccore_1220_based(ecname=self.name, ecversion=self.version, tcname=self.toolchain.name,
+                             tcversion=self.toolchain.version):
         os.environ[EESSI_IGNORE_ZEN4_GCC1220_ENVVAR] = "1"
 
 
 def post_prepare_hook_ignore_zen4_gcccore1220_error(self, *args, **kwargs):
     """Unset environment variable to ignore the LmodError from parse_hook_zen4_module_only during build phase"""
-    if is_gcccore_1220_based(self.name, self.version, self.toolchain.name, self.toolchain.version):
+    if is_gcccore_1220_based(ecname=self.name, ecversion=self.version, tcname=self.toolchain.name,
+                             tcversion=self.toolchain.version):
         del os.environ[EESSI_IGNORE_ZEN4_GCC1220_ENVVAR]
 
 
