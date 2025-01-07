@@ -40,8 +40,23 @@ HOST_INJECTIONS_LOCATION = "/cvmfs/software.eessi.io/host_injections/"
 # Make sure a single environment variable name is used for this throughout the hooks
 EESSI_IGNORE_ZEN4_GCC1220_ENVVAR="EESSI_IGNORE_LMOD_ERROR_ZEN4_GCC1220"
 
-def is_gcccore_1220_based(ecname, ecversion, tcname, tcversion):
-    """Checks if this easyconfig either _is_ or _uses_ a GCCcore-12.2.2 based toolchain"""
+def is_gcccore_1220_based(**kwargs):
+# ecname, ecversion, tcname, tcversion):
+    """
+    Checks if this easyconfig either _is_ or _uses_ a GCCcore-12.2.0 based toolchain.
+    This function is, for example, used to generate errors in GCCcore-12.2.0 based modules for the zen4 architecture
+    since zen4 is not fully supported with that toolchain.
+
+    :param str ecname: Name of the software specified in the EasyConfig
+    :param str ecversion: Version of the software specified in the EasyConfig
+    :param str tcname: Toolchain name specified in the EasyConfig
+    :param str tcversion: Toolchain version specified in the EasyConfig
+    """
+    ecname = kwargs.get['ecname', None]
+    ecversion = kwargs.get['ecversion', None]
+    tcname = kwargs.get['tcname', None]
+    tcversion = kwargs.get['tcversion', None]
+
     gcccore_based_names = ['GCCcore', 'GCC']
     foss_based_names = ['gfbf', 'gompi', 'foss']
     return (
@@ -397,7 +412,7 @@ def parse_hook_zen4_module_only(ec, eprefix):
         # Need to escape newline character so that the newline character actually ends up in the module file
         # (otherwise, it splits the string, and a 2-line string ends up in the modulefile, resulting in syntax error)
         errmsg = "EasyConfigs using toolchains based on GCCcore-12.2.0 are not supported for the Zen4 architecture.\\n"
-        errmsg += "See https://www.eessi.io/docs/known_issues/eessi-2023.06/"
+        errmsg += "See https://www.eessi.io/docs/known_issues/eessi-2023.06/#gcc-1220-and-foss-2022b-based-modules-cannot-be-loaded-on-zen4-architecture"
         ec['modluafooter'] = 'if (not os.getenv("%s")) then LmodError("%s") end' % (env_varname, errmsg)
 
 
@@ -451,7 +466,9 @@ def post_module_hook_zen4_gcccore1220(self, *args, **kwargs):
                                  EESSI_FORCE_ATTR)
 
 
-# We do this as early as possible - and remove it all the way in the last step hook (post_testcases_hook)
+# Modules for dependencies are loaded in the prepare step. Thus, that's where we need this variable to be set
+# so that the modules can be succesfully loaded without printing the error (so that we can create a module
+# _with_ the warning for the current software being installed)
 def pre_prepare_hook_ignore_zen4_gcccore1220_error(self, *args, **kwargs):
     """Set environment variable to ignore the LmodError from parse_hook_zen4_module_only during build phase"""
     if is_gcccore_1220_based(self.name, self.version, self.toolchain.name, self.toolchain.version):
