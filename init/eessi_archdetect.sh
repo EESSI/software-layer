@@ -111,15 +111,17 @@ cpupath(){
     update_arch_specs "$base_dir/arch_specs/${spec_file}"
   
     # Identify the host CPU vendor
-    local cpu_vendor_tag="vendor[ _]id"
-    local cpu_vendor=$(get_cpuinfo "$cpu_vendor_tag")
+    local cpu_vendor=$(get_cpuinfo "vendor[ _]id")
+    if [ "${cpu_vendor}" == "" ]; then
+        cpu_vendor=$(get_cpuinfo "cpu[ _]implementer")
+    fi
     log "DEBUG" "cpupath: CPU vendor of host system: '$cpu_vendor'"
   
     # Identify the host CPU flags or features
     local cpu_flag_tag='flags'
     # cpuinfo systems print different line identifiers, eg features, instead of flags
     [ "${cpu_vendor}" == "ARM" ] && cpu_flag_tag='flags'
-    [ "${machine_type}" == "aarch64" ] && [ "${cpu_vendor}x" == "x" ] && cpu_flag_tag='features'
+    [ "${machine_type}" == "aarch64" ] && [ "${cpu_flag_tag}" == "flags" ] && cpu_flag_tag='features'
     [ "${machine_type}" == "ppc64le" ] && cpu_flag_tag='cpu'
   
     local cpu_flags=$(get_cpuinfo "$cpu_flag_tag")
