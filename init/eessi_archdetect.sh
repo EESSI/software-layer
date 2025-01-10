@@ -118,11 +118,20 @@ cpupath(){
     log "DEBUG" "cpupath: CPU vendor of host system: '$cpu_vendor'"
   
     # Identify the host CPU flags or features
-    local cpu_flag_tag='flags'
     # cpuinfo systems print different line identifiers, eg features, instead of flags
-    [ "${cpu_vendor}" == "ARM" ] && cpu_flag_tag='flags'
-    [ "${machine_type}" == "aarch64" ] && [ "${cpu_flag_tag}" == "flags" ] && cpu_flag_tag='features'
-    [ "${machine_type}" == "ppc64le" ] && cpu_flag_tag='cpu'
+    local cpu_flag_tag;
+    if [ "${cpu_vendor}" == "ARM" ]; then
+        # if CPU vendor field is ARM, then we should be able to determine CPU microarchitecture based on 'flags' field
+        cpu_flag_tag='flags'
+    # if 64-bit Arm CPU without "ARM" as vendor ID, we need to take into account 'features' field
+    elif [ "${machine_type}" == "aarch64" ]; then
+        cpu_flag_tag='features'
+    # on 64-bit POWER, we need to look at 'cpu' field
+    elif [ "${machine_type}" == "ppc64le" ]; then
+        cpu_flag_tag='cpu'
+    else
+        cpu_flag_tag='flags'
+    fi
   
     local cpu_flags=$(get_cpuinfo "$cpu_flag_tag")
     log "DEBUG" "cpupath: CPU flags of host system: '$cpu_flags'"
