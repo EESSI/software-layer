@@ -1,0 +1,15 @@
+# Choose an EESSI version
+set EESSI_VERSION (set -q EESSI_VERSION; and echo "$EESSI_VERSION"; or echo "2023.06")
+# Path to top-level module tree
+set -x MODULEPATH /cvmfs/software.eessi.io/versions/"$EESSI_VERSION"/init/modules
+. /cvmfs/software.eessi.io/versions/"$EESSI_VERSION"/compat/linux/(uname -m)/usr/share/Lmod/init/fish
+
+if test -z "$__Init_Default_Modules"
+	export __Init_Default_Modules=1;
+
+	## ability to predefine elsewhere the default list
+	set -x LMOD_SYSTEM_DEFAULT_MODULES (set -q LMOD_SYSTEM_DEFAULT_MODULE; and echo "$LMOD_SYSTEM_DEFAULT_MODULE"; or echo "EESSI/$EESSI_VERSION")
+	module --initial_load --no_redirect restore
+else
+	module refresh
+end

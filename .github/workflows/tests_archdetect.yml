@@ -1,11 +1,14 @@
 # documentation: https://help.github.com/en/articles/workflow-syntax-for-github-actions
 name: Tests for eessi_archdetect.sh
-on: [push, pull_request]
+on:
+  push:
+    branches: [ "*-software.eessi.io" ]
+  pull_request:
 permissions:
   contents: read # to fetch code (actions/checkout)
 jobs:
   build:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     strategy:
       matrix:
         proc_cpuinfo:

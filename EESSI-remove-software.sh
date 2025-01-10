@@ -79,6 +79,17 @@ echo ">> Setting up \$MODULEPATH..."
 module --force purge
 # ignore current $MODULEPATH entirely
 module unuse $MODULEPATH
+
+# if an accelerator target is specified, we need to make sure that the CPU-only modules are also still available
+if [ ! -z ${EESSI_ACCELERATOR_TARGET} ]; then
+    CPU_ONLY_MODULES_PATH=$(echo $EASYBUILD_INSTALLPATH | sed "s@/accel/${EESSI_ACCELERATOR_TARGET}@@g")/modules/all
+    if [ -d ${CPU_ONLY_MODULES_PATH} ]; then
+        module use ${CPU_ONLY_MODULES_PATH}
+    else
+        fatal_error "Derived path to CPU-only modules does not exist: ${CPU_ONLY_MODULES_PATH}"
+    fi
+fi
+
 module use $EASYBUILD_INSTALLPATH/modules/all
 if [[ -z ${MODULEPATH} ]]; then
     fatal_error "Failed to set up \$MODULEPATH?!"
@@ -91,7 +102,7 @@ pr_diff=$(ls [0-9]*.diff | head -1)
 
 # if this script is run as root, use PR patch file to determine if software needs to be removed first
 if [ $EUID -eq 0 ]; then
-    changed_easystacks_rebuilds=$(cat ${pr_diff} | grep '^+++' | cut -f2 -d' ' | sed 's@^[a-z]/@@g' | grep '^easystacks/.*yml$' | egrep -v 'known-issues|missing' | grep "/rebuilds/")
+    changed_easystacks_rebuilds=$(cat ${pr_diff} | grep '^+++' | cut -f2 -d' ' | sed 's@^[a-z]/@@g' | grep 'easystacks/.*yml$' | egrep -v 'known-issues|missing' | grep "/rebuilds/")
     if [ -z ${changed_easystacks_rebuilds} ]; then
         echo "No software needs to be removed."
     else
@@ -109,11 +120,18 @@ if [ $EUID -eq 0 ]; then
                 #  * [R] $CFGS/s/someapp/someapp-someversion.eb (module: someapp/someversion)
                 rebuild_apps=$(eb --allow-use-as-root-and-accept-consequences --dry-run-short --rebuild --easystack ${easystack_file} | grep "^ \* \[R\]" | grep -o "module: .*[^)]" | awk '{print $2}')
                 for app in ${rebuild_apps}; do
-                    app_dir=${EASYBUILD_INSTALLPATH}/software/${app}
-                    app_module=${EASYBUILD_INSTALLPATH}/modules/all/${app}.lua
+                    # Returns e.g. /cvmfs/software.eessi.io/versions/2023.06/software/linux/x86_64/amd/zen2/modules/all:
+                    app_modulepath=$(module --terse av ${app} 2>&1 | head -n 1 | sed 's/://')
+                    # Two dirname invocations, so returns e.g. /cvmfs/software.eessi.io/versions/2023.06/software/linux/x86_64/amd/zen2
+                    app_installprefix=$(dirname $(dirname ${app_modulepath}))
+                    app_dir=${app_installprefix}/software/${app}
+                    app_module=${app_installprefix}/modules/all/${app}.lua
                     echo_yellow "Removing ${app_dir} and ${app_module}..."
                     rm -rf ${app_dir}
                     rm -rf ${app_module}
+                    # recreate some directory to work around permission denied
+                    # issues when rebuilding the package
+                    mkdir -p ${app_dir}/easybuild
                 done
             else
                 fatal_error "Easystack file ${easystack_file} not found!"

@@ -1,11 +1,14 @@
 # documentation: https://help.github.com/en/articles/workflow-syntax-for-github-actions
 name: Test software licenses
-on: [push, pull_request]
+on:
+  push:
+    branches: [ "*-software.eessi.io" ]
+  pull_request:
 permissions:
   contents: read # to fetch code (actions/checkout)
 jobs:
   build:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     steps:
         - name: Check out software-layer repository
           uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1

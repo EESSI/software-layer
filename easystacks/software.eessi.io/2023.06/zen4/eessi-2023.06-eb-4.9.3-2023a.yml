@@ -1,0 +1,19 @@
+easyconfigs:
+  - LAMMPS-2Aug2023_update2-foss-2023a-kokkos.eb
+  - JupyterNotebook-7.0.2-GCCcore-12.3.0.eb
+  - PyQt5-5.15.10-GCCcore-12.3.0.eb
+  - OrthoFinder-2.5.5-foss-2023a.eb
+  - snakemake-8.4.2-foss-2023a.eb
+  - Rivet-3.1.9-gompi-2023a-HepMC3-3.2.6.eb
+  - GATK-4.5.0.0-GCCcore-12.3.0-Java-17.eb
+  - ipympl-0.9.3-gfbf-2023a.eb
+  - LHAPDF-6.5.4-GCC-12.3.0.eb
+  - LoopTools-2.15-GCC-12.3.0.eb
+  - ncdu-1.18-GCC-12.3.0.eb
+  - WhatsHap-2.2-foss-2023a.eb
+  - PyOpenGL-3.1.7-GCCcore-12.3.0.eb
+  - SAMtools-1.18-GCC-12.3.0.eb
+  - CDO-2.2.2-gompi-2023a.eb
+  - OSU-Micro-Benchmarks-7.1-1-gompi-2023a.eb
+  - BWA-0.7.17-20220923-GCCcore-12.3.0.eb
+  - Valgrind-3.21.0-gompi-2023a.eb

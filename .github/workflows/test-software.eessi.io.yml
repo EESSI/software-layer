@@ -1,11 +1,21 @@
 # documentation: https://help.github.com/en/articles/workflow-syntax-for-github-actions
 name: Check for missing software installations in software.eessi.io
-on: [push, pull_request, workflow_dispatch]
+on:
+  push:
+    branches: [ "*-software.eessi.io" ]
+  pull_request:
+  workflow_dispatch:
 permissions:
   contents: read # to fetch code (actions/checkout)
+env:
+  EESSI_ACCELERATOR_TARGETS: |
+    x86_64/amd/zen2:
+      - nvidia/cc80
+    x86_64/amd/zen3:
+      - nvidia/cc80
 jobs:
   check_missing:
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-latest
     strategy:
       fail-fast: false
       matrix:
@@ -17,6 +27,7 @@ jobs:
         - aarch64/neoverse_v1
         - x86_64/amd/zen2
         - x86_64/amd/zen3
+        - x86_64/amd/zen4
         - x86_64/intel/haswell
         - x86_64/intel/skylake_avx512
         - x86_64/generic
@@ -44,13 +55,47 @@ jobs:
               export EESSI_PREFIX=/cvmfs/software.eessi.io/versions/${{matrix.EESSI_VERSION}}
               export EESSI_OS_TYPE=linux
               env | grep ^EESSI | sort
-              echo "just run check_missing_installations.sh (should use easystacks/software.eessi.io/${{matrix.EESSI_VERSION}}/eessi-${{matrix.EESSI_VERSION}}-*.yml)"
-              for easystack_file in $(ls easystacks/software.eessi.io/${{matrix.EESSI_VERSION}}/eessi-${{matrix.EESSI_VERSION}}-eb-*.yml); do
+
+              # first check the CPU-only builds for this CPU target
+              echo "just run check_missing_installations.sh (should use easystacks/software.eessi.io/${{matrix.EESSI_VERSION}}/eessi-${{matrix.EESSI_VERSION}}-*.yml with latest EasyBuild release)"
+              for easystack_file in $(EESSI_VERSION=${{matrix.EESSI_VERSION}} .github/workflows/scripts/only_latest_easystacks.sh); do
+                  if [ ${{matrix.EESSI_SOFTWARE_SUBDIR_OVERRIDE}} = "x86_64/amd/zen4" ]; then
+                      if grep -q 2022b <<<"${easystack_file}"; then
+                        # skip the check of installed software on zen4 for foss/2022b builds
+                        continue
+                      fi
+                      if [[ $easystack_file == *"rebuilds"* ]]; then
+                        # Also handle rebuilds, make a temporary EasyStack file where we clean out all 2022b stuff and use that
+                        new_easystack=$(mktemp pruned_easystackXXX --suffix=.yml)
+                        # first clean out the options then clean out the .eb name
+                        sed '/2022b\|12\.2\.0/,/\.eb/{/\.eb/!d}' "${easystack_file}" | sed '/2022b\|12\.2\.0/d' > $new_easystack
+                        diff --unified=0 "$easystack_file" "$new_easystack" || :
+                        easystack_file="$new_easystack"
+                      fi
+                  fi
                   echo "check missing installations for ${easystack_file}..."
                   ./check_missing_installations.sh ${easystack_file}
                   ec=$?
                   if [[ ${ec} -ne 0 ]]; then echo "missing installations found for ${easystack_file}!" >&2; exit ${ec}; fi
               done
+
+              # now check the accelerator builds for this CPU target
+              accelerators=$(echo "${EESSI_ACCELERATOR_TARGETS}" | yq ".${EESSI_SOFTWARE_SUBDIR_OVERRIDE}[]")
+              if [ -z ${accelerators} ]; then
+                  echo "no accelerator targets defined for ${EESSI_SOFTWARE_SUBDIR_OVERRIDE}"
+              else
+                  for accel in ${accelerators}; do
+                      module use ${EESSI_SOFTWARE_PATH}/accel/${accel}/modules/all
+                      echo "checking missing installations for accelerator ${accel} using modulepath: ${MODULEPATH}"
+                      for easystack_file in $(EESSI_VERSION=${{matrix.EESSI_VERSION}} ACCEL_EASYSTACKS=1 .github/workflows/scripts/only_latest_easystacks.sh); do
+                          echo "check missing installations for ${easystack_file}..."
+                          ./check_missing_installations.sh ${easystack_file}
+                          ec=$?
+                          if [[ ${ec} -ne 0 ]]; then echo "missing installations found for ${easystack_file}!" >&2; exit ${ec}; fi
+                      done
+                      module unuse ${EESSI_SOFTWARE_PATH}/accel/${accel}/modules/all
+                  done
+              fi
 
         - name: Test check_missing_installations.sh with missing package (GCC/8.3.0)
           run: |

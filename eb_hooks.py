@@ -1,5 +1,6 @@
 # Hooks to customize how EasyBuild installs software in EESSI
 # see https://docs.easybuild.io/en/latest/Hooks.html
+import glob
 import os
 import re
 
@@ -23,10 +24,16 @@ except ImportError:
 CPU_TARGET_NEOVERSE_N1 = 'aarch64/neoverse_n1'
 CPU_TARGET_NEOVERSE_V1 = 'aarch64/neoverse_v1'
 CPU_TARGET_AARCH64_GENERIC = 'aarch64/generic'
+CPU_TARGET_A64FX = 'aarch64/a64fx'
+
+CPU_TARGET_ZEN4 = 'x86_64/amd/zen4'
 
 EESSI_RPATH_OVERRIDE_ATTR = 'orig_rpath_override_dirs'
 
 SYSTEM = EASYCONFIG_CONSTANTS['SYSTEM'][0]
+
+EESSI_INSTALLATION_REGEX = r"^/cvmfs/[^/]*.eessi.io/versions/"
+HOST_INJECTIONS_LOCATION = "/cvmfs/software.eessi.io/host_injections/"
 
 
 def get_eessi_envvar(eessi_envvar):
@@ -80,8 +87,12 @@ def post_ready_hook(self, *args, **kwargs):
     """
     # 'parallel' easyconfig parameter is set via EasyBlock.set_parallel in ready step based on available cores.
     # here we reduce parallellism to only use half of that for selected software,
-    # to avoid failing builds/tests due to out-of-memory problems
-    if self.name in ['TensorFlow', 'libxc']:
+    # to avoid failing builds/tests due to out-of-memory problems;
+    memory_hungry_build = self.name in ['libxc', 'MBX', 'TensorFlow']
+    # on A64FX systems, (HBM) memory is typically scarce, so we need to use fewer cores for some builds
+    cpu_target = get_eessi_envvar('EESSI_SOFTWARE_SUBDIR')
+    memory_hungry_build_a64fx = cpu_target == CPU_TARGET_A64FX and self.name in ['Qt5', 'ROOT']
+    if memory_hungry_build or memory_hungry_build_a64fx:
         parallel = self.cfg['parallel']
         if parallel > 1:
             self.cfg['parallel'] = parallel // 2
@@ -123,7 +134,8 @@ def pre_prepare_hook(self, *args, **kwargs):
 def post_prepare_hook_gcc_prefixed_ld_rpath_wrapper(self, *args, **kwargs):
     """
     Post-configure hook for GCCcore:
-    - copy RPATH wrapper script for linker commands to also have a wrapper in place with system type prefix like 'x86_64-pc-linux-gnu'
+    - copy RPATH wrapper script for linker commands to also have a wrapper in
+      place with system type prefix like 'x86_64-pc-linux-gnu'
     """
     if self.name == 'GCCcore':
         config_guess = obtain_config_guess()
@@ -178,7 +190,9 @@ def parse_hook_casacore_disable_vectorize(ec, eprefix):
         ):
             cpu_target = get_eessi_envvar('EESSI_SOFTWARE_SUBDIR')
             if cpu_target == CPU_TARGET_NEOVERSE_V1:
-                if not hasattr(ec, 'toolchainopts'):
+                # Make sure the toolchainopts key exists, and the value is a dict,
+                # before we add the option to disable vectorization
+                if 'toolchainopts' not in ec or ec['toolchainopts'] is None:
                     ec['toolchainopts'] = {}
                 ec['toolchainopts']['vectorize'] = False
                 print_msg("Changed toochainopts for %s: %s", ec.name, ec['toolchainopts'])
@@ -212,6 +226,19 @@ def parse_hook_fontconfig_add_fonts(ec, eprefix):
         print_msg("Added '%s' configure option for %s", with_add_fonts, ec.name)
     else:
         raise EasyBuildError("fontconfig-specific hook triggered for non-fontconfig easyconfig?!")
+
+
+def parse_hook_grpcio_zlib(ec, ecprefix):
+    """Adjust preinstallopts to use ZLIB from compat layer."""
+    if ec.name == 'grpcio' and ec.version in ['1.57.0']:
+        exts_list = ec['exts_list']
+        original_preinstallopts = (exts_list[0][2])['preinstallopts']
+        original_option = "GRPC_PYTHON_BUILD_SYSTEM_ZLIB=True"
+        new_option = "GRPC_PYTHON_BUILD_SYSTEM_ZLIB=False"
+        (exts_list[0][2])['preinstallopts'] = original_preinstallopts.replace(original_option, new_option, 1)
+        print_msg("Modified the easyconfig to use compat ZLIB with GRPC_PYTHON_BUILD_SYSTEM_ZLIB=False")
+    else:
+        raise EasyBuildError("grpcio-specific hook triggered for a non-grpcio easyconfig?!")
 
 
 def parse_hook_openblas_relax_lapack_tests_num_errors(ec, eprefix):
@@ -258,10 +285,10 @@ def parse_hook_qt5_check_qtwebengine_disable(ec, eprefix):
     Disable check for QtWebEngine in Qt5 as workaround for problem with determining glibc version.
     """
     if ec.name == 'Qt5':
-         # workaround for glibc version being reported as "UNKNOWN" in Gentoo Prefix environment by EasyBuild v4.7.2,
-         # see also https://github.com/easybuilders/easybuild-framework/pull/4290
-         ec['check_qtwebengine'] = False
-         print_msg("Checking for QtWebEgine in Qt5 installation has been disabled")
+        # workaround for glibc version being reported as "UNKNOWN" in Gentoo Prefix environment by EasyBuild v4.7.2,
+        # see also https://github.com/easybuilders/easybuild-framework/pull/4290
+        ec['check_qtwebengine'] = False
+        print_msg("Checking for QtWebEgine in Qt5 installation has been disabled")
     else:
         raise EasyBuildError("Qt5-specific hook triggered for non-Qt5 easyconfig?!")
 
@@ -276,21 +303,54 @@ def parse_hook_ucx_eprefix(ec, eprefix):
         raise EasyBuildError("UCX-specific hook triggered for non-UCX easyconfig?!")
 
 
-def parse_hook_lammps_remove_deps_for_CI_aarch64(ec, *args, **kwargs):
+def parse_hook_freeimage_aarch64(ec, *args, **kwargs):
     """
-    Remove x86_64 specific dependencies for the CI to pass on aarch64
+    Make sure to build with -fPIC on ARM to avoid
+    https://github.com/EESSI/software-layer/pull/736#issuecomment-2373261889
     """
-    if ec.name == 'LAMMPS' and ec.version in ('2Aug2023_update2',):
+    if ec.name == 'FreeImage' and ec.version in ('3.18.0',):
         if os.getenv('EESSI_CPU_FAMILY') == 'aarch64':
-            # ScaFaCoS and tbb are not compatible with aarch64/* CPU targets,
-            # so remove them as dependencies for LAMMPS (they're optional);
-            # see also https://github.com/easybuilders/easybuild-easyconfigs/pull/19164 +
-            # https://github.com/easybuilders/easybuild-easyconfigs/pull/19000;
-            # we need this hook because we check for missing installations for all CPU targets
-            # on an x86_64 VM in GitHub Actions (so condition based on ARCH in LAMMPS easyconfig is always true)
-            ec['dependencies'] = [dep for dep in ec['dependencies'] if dep[0] not in ('ScaFaCoS', 'tbb')]
+            # Make sure the toolchainopts key exists, and the value is a dict,
+            # before we add the option to enable PIC and disable PNG_ARM_NEON_OPT
+            if 'toolchainopts' not in ec or ec['toolchainopts'] is None:
+                ec['toolchainopts'] = {}
+            ec['toolchainopts']['pic'] = True
+            ec['toolchainopts']['extra_cflags'] = '-DPNG_ARM_NEON_OPT=0'
+            print_msg("Changed toolchainopts for %s: %s", ec.name, ec['toolchainopts']) 
+
+
+def parse_hook_lammps_remove_deps_for_aarch64(ec, *args, **kwargs):
+    """
+    Remove x86_64 specific dependencies for the CI and missing installations to pass on aarch64
+    """
+    if ec.name == 'LAMMPS':
+        if ec.version in ('2Aug2023_update2', '29Aug2024'):
+            if os.getenv('EESSI_CPU_FAMILY') == 'aarch64':
+                # ScaFaCoS and tbb are not compatible with aarch64/* CPU targets,
+                # so remove them as dependencies for LAMMPS (they're optional);
+                # see also https://github.com/easybuilders/easybuild-easyconfigs/pull/19164 +
+                # https://github.com/easybuilders/easybuild-easyconfigs/pull/19000;
+                # we need this hook because we check for missing installations for all CPU targets
+                # on an x86_64 VM in GitHub Actions (so condition based on ARCH in LAMMPS easyconfig is always true)
+                ec['dependencies'] = [dep for dep in ec['dependencies'] if dep[0] not in ('ScaFaCoS', 'tbb',)]
     else:
         raise EasyBuildError("LAMMPS-specific hook triggered for non-LAMMPS easyconfig?!")
+
+
+def parse_hook_CP2K_remove_deps_for_aarch64(ec, *args, **kwargs):
+    """
+    Remove x86_64 specific dependencies for the CI and missing installations to pass on aarch64
+    """
+    if ec.name == 'CP2K' and ec.version in ('2023.1',):
+        if os.getenv('EESSI_CPU_FAMILY') == 'aarch64':
+            # LIBXSMM is not supported on ARM with GCC 12.2.0 and 12.3.0
+            # See https://www.cp2k.org/dev:compiler_support
+            # See https://github.com/easybuilders/easybuild-easyconfigs/pull/20951
+            # we need this hook because we check for missing installations for all CPU targets
+            # on an x86_64 VM in GitHub Actions (so condition based on ARCH in LAMMPS easyconfig is always true)
+            ec['dependencies'] = [dep for dep in ec['dependencies'] if dep[0] not in ('libxsmm',)]
+    else:
+        raise EasyBuildError("CP2K-specific hook triggered for non-CP2K easyconfig?!")
 
 
 def pre_prepare_hook_highway_handle_test_compilation_issues(self, *args, **kwargs):
@@ -298,16 +358,16 @@ def pre_prepare_hook_highway_handle_test_compilation_issues(self, *args, **kwarg
     Solve issues with compiling or running the tests on both
     neoverse_n1 and neoverse_v1 with Highway 1.0.4 and GCC 12.3.0:
       - for neoverse_n1 we set optarch to GENERIC
-      - for neoverse_v1 we completely disable the tests
+      - for neoverse_v1 and a64fx we completely disable the tests
     cfr. https://github.com/EESSI/software-layer/issues/469
     """
     if self.name == 'Highway':
         tcname, tcversion = self.toolchain.name, self.toolchain.version
         cpu_target = get_eessi_envvar('EESSI_SOFTWARE_SUBDIR')
-        # note: keep condition in sync with the one used in 
+        # note: keep condition in sync with the one used in
         # post_prepare_hook_highway_handle_test_compilation_issues
         if self.version in ['1.0.4'] and tcname == 'GCCcore' and tcversion == '12.3.0':
-            if cpu_target == CPU_TARGET_NEOVERSE_V1:
+            if cpu_target in [CPU_TARGET_A64FX, CPU_TARGET_NEOVERSE_V1]:
                 self.cfg.update('configopts', '-DHWY_ENABLE_TESTS=OFF')
             if cpu_target == CPU_TARGET_NEOVERSE_N1:
                 self.orig_optarch = build_option('optarch')
@@ -323,16 +383,108 @@ def post_prepare_hook_highway_handle_test_compilation_issues(self, *args, **kwar
     if self.name == 'Highway':
         tcname, tcversion = self.toolchain.name, self.toolchain.version
         cpu_target = get_eessi_envvar('EESSI_SOFTWARE_SUBDIR')
-        # note: keep condition in sync with the one used in 
+        # note: keep condition in sync with the one used in
         # pre_prepare_hook_highway_handle_test_compilation_issues
         if self.version in ['1.0.4'] and tcname == 'GCCcore' and tcversion == '12.3.0':
             if cpu_target == CPU_TARGET_NEOVERSE_N1:
                 update_build_option('optarch', self.orig_optarch)
 
+
 def pre_configure_hook(self, *args, **kwargs):
     """Main pre-configure hook: trigger custom functions based on software name."""
     if self.name in PRE_CONFIGURE_HOOKS:
         PRE_CONFIGURE_HOOKS[self.name](self, *args, **kwargs)
+
+
+def pre_configure_hook_BLIS_a64fx(self, *args, **kwargs):
+    """
+    Pre-configure hook for BLIS when building for A64FX:
+    - add -DCACHE_SECTOR_SIZE_READONLY to $CFLAGS for BLIS 0.9.0, cfr. https://github.com/flame/blis/issues/800
+    """
+    if self.name == 'BLIS':
+        cpu_target = get_eessi_envvar('EESSI_SOFTWARE_SUBDIR')
+        if self.version == '0.9.0' and cpu_target == CPU_TARGET_A64FX:
+            # last argument of BLIS' configure command is configuration target (usually 'auto' for auto-detect),
+            # specifying of variables should be done before that
+            config_opts = self.cfg['configopts'].split(' ')
+            cflags_var = 'CFLAGS="$CFLAGS -DCACHE_SECTOR_SIZE_READONLY"'
+            config_target = config_opts[-1]
+            self.cfg['configopts'] = ' '.join(config_opts[:-1] + [cflags_var, config_target])
+    else:
+        raise EasyBuildError("BLIS-specific hook triggered for non-BLIS easyconfig?!")
+
+
+def pre_configure_hook_score_p(self, *args, **kwargs):
+    """
+    Pre-configure hook for Score-p
+    - specify correct path to binutils (in compat layer)
+    """
+    if self.name == 'Score-P':
+
+        # determine path to Prefix installation in compat layer via $EPREFIX
+        eprefix = get_eessi_envvar('EPREFIX')
+
+        binutils_lib_path_glob_pattern = os.path.join(eprefix, 'usr', 'lib*', 'binutils', '*-linux-gnu', '2.*')
+        binutils_lib_path = glob.glob(binutils_lib_path_glob_pattern)
+        if len(binutils_lib_path) == 1:
+            self.cfg.update('configopts', '--with-libbfd-lib=' + binutils_lib_path[0])
+            self.cfg.update('configopts', '--with-libbfd-include=' + os.path.join(binutils_lib_path[0], 'include'))
+        else:
+            raise EasyBuildError("Failed to isolate path for binutils libraries using %s, got %s",
+                                 binutils_lib_path_glob_pattern, binutils_lib_path)
+
+    else:
+        raise EasyBuildError("Score-P-specific hook triggered for non-Score-P easyconfig?!")
+
+
+def pre_configure_hook_extrae(self, *args, **kwargs):
+    """
+    Pre-configure hook for Extrae
+    - avoid use of 'which' in configure script
+    - specify correct path to binutils/zlib (in compat layer)
+    """
+    if self.name == 'Extrae':
+
+        # determine path to Prefix installation in compat layer via $EPREFIX
+        eprefix = get_eessi_envvar('EPREFIX')
+
+        binutils_lib_path_glob_pattern = os.path.join(eprefix, 'usr', 'lib*', 'binutils', '*-linux-gnu', '2.*')
+        binutils_lib_path = glob.glob(binutils_lib_path_glob_pattern)
+        if len(binutils_lib_path) == 1:
+            self.cfg.update('configopts', '--with-binutils=' + binutils_lib_path[0])
+        else:
+            raise EasyBuildError("Failed to isolate path for binutils libraries using %s, got %s",
+                                 binutils_lib_path_glob_pattern, binutils_lib_path)
+
+        # zlib is a filtered dependency, so we need to manually specify it's location to avoid the host version
+        self.cfg.update('configopts', '--with-libz=' + eprefix)
+
+        # replace use of 'which' with 'command -v', since 'which' is broken in EESSI build container;
+        # this must be done *after* running configure script, because initial configuration re-writes configure script,
+        # and problem due to use of which only pops up when running make ?!
+        self.cfg.update(
+            'prebuildopts',
+            "cp config/mpi-macros.m4 config/mpi-macros.m4.orig && "
+            "sed -i 's/`which /`command -v /g' config/mpi-macros.m4 && "
+            )
+    else:
+        raise EasyBuildError("Extrae-specific hook triggered for non-Extrae easyconfig?!")
+
+
+def pre_configure_hook_gobject_introspection(self, *args, **kwargs):
+    """
+    pre-configure hook for GObject-Introspection:
+    - prevent GObject-Introspection from setting $LD_LIBRARY_PATH if EasyBuild is configured to filter it, see:
+      https://github.com/EESSI/software-layer/issues/196
+    """
+    if self.name == 'GObject-Introspection':
+        # inject a line that removes all items from runtime_path_envvar that are in $EASYBUILD_FILTER_ENVVARS
+        sed_cmd = r'sed -i "s@\(^\s*runtime_path_envvar = \)\(.*\)@'
+        sed_cmd += r'\1\2\n\1 [x for x in runtime_path_envvar if not x in os.environ.get(\'EASYBUILD_FILTER_ENV_VARS\', \'\').split(\',\')]@g"'
+        sed_cmd += ' %(start_dir)s/giscanner/ccompiler.py && '
+        self.cfg.update('preconfigopts', sed_cmd)
+    else:
+        raise EasyBuildError("GObject-Introspection-specific hook triggered for non-GObject-Introspection easyconfig?!")
 
 
 def pre_configure_hook_gromacs(self, *args, **kwargs):
@@ -345,7 +497,10 @@ def pre_configure_hook_gromacs(self, *args, **kwargs):
         cpu_target = get_eessi_envvar('EESSI_SOFTWARE_SUBDIR')
         if LooseVersion(self.version) <= LooseVersion('2024.1') and cpu_target == CPU_TARGET_NEOVERSE_V1:
             self.cfg.update('configopts', '-DGMX_SIMD=ARM_NEON_ASIMD')
-            print_msg("Avoiding use of SVE instructions for GROMACS %s by using ARM_NEON_ASIMD as GMX_SIMD value", self.version)
+            print_msg(
+                "Avoiding use of SVE instructions for GROMACS %s by using ARM_NEON_ASIMD as GMX_SIMD value",
+                self.version
+                )
     else:
         raise EasyBuildError("GROMACS-specific hook triggered for non-GROMACS easyconfig?!")
 
@@ -354,17 +509,33 @@ def pre_configure_hook_openblas_optarch_generic(self, *args, **kwargs):
     """
     Pre-configure hook for OpenBLAS: add DYNAMIC_ARCH=1 to build/test/install options when using --optarch=GENERIC
     """
+    # note: OpenBLAS easyblock was updated in https://github.com/easybuilders/easybuild-easyblocks/pull/3492
+    # to take care of this already, so at some point this hook can be removed...
     if self.name == 'OpenBLAS':
         if build_option('optarch') == OPTARCH_GENERIC:
+            dynamic_arch = 'DYNAMIC_ARCH=1'
             for step in ('build', 'test', 'install'):
-                self.cfg.update(f'{step}opts', "DYNAMIC_ARCH=1")
+                if dynamic_arch not in self.cfg[f'{step}opts']:
+                    self.cfg.update(f'{step}opts', dynamic_arch)
 
-            # use -mtune=generic rather than -mcpu=generic in $CFLAGS on aarch64,
-            # because -mcpu=generic implies a particular -march=armv* which clashes with those used by OpenBLAS
-            # when building with DYNAMIC_ARCH=1
             if get_cpu_architecture() == AARCH64:
-                cflags = os.getenv('CFLAGS').replace('-mcpu=generic', '-mtune=generic')
-                env.setvar('CFLAGS', cflags)
+                # when building for aarch64/generic, we also need to set TARGET=ARMV8 to make sure
+                # that the driver parts of OpenBLAS are compiled generically;
+                # see also https://github.com/OpenMathLib/OpenBLAS/issues/4945
+                target_armv8 = 'TARGET=ARMV8'
+                for step in ('build', 'test', 'install'):
+                    if target_armv8 not in self.cfg[f'{step}opts']:
+                        self.cfg.update(f'{step}opts', target_armv8)
+
+                # use -mtune=generic rather than -mcpu=generic in $CFLAGS for aarch64/generic,
+                # because -mcpu=generic implies a particular -march=armv* which clashes with those used by OpenBLAS
+                # when building with DYNAMIC_ARCH=1
+                mcpu_generic = '-mcpu=generic'
+                cflags = os.getenv('CFLAGS')
+                if mcpu_generic in cflags:
+                    cflags = cflags.replace(mcpu_generic, '-mtune=generic')
+                    self.log.info("Replaced -mcpu=generic with -mtune=generic in $CFLAGS")
+                    env.setvar('CFLAGS', cflags)
     else:
         raise EasyBuildError("OpenBLAS-specific hook triggered for non-OpenBLAS easyconfig?!")
 
@@ -406,32 +577,34 @@ def pre_configure_hook_wrf_aarch64(self, *args, **kwargs):
             pattern = "Linux x86_64 ppc64le, gfortran"
             repl = "Linux x86_64 aarch64 ppc64le, gfortran"
             if LooseVersion(self.version) <= LooseVersion('3.9.0'):
-                    self.cfg.update('preconfigopts', "sed -i 's/%s/%s/g' arch/configure_new.defaults && " % (pattern, repl))
-                    print_msg("Using custom preconfigopts for %s: %s", self.name, self.cfg['preconfigopts'])
+                self.cfg.update('preconfigopts', "sed -i 's/%s/%s/g' arch/configure_new.defaults && " % (pattern, repl))
+                print_msg("Using custom preconfigopts for %s: %s", self.name, self.cfg['preconfigopts'])
 
             if LooseVersion('4.0.0') <= LooseVersion(self.version) <= LooseVersion('4.2.1'):
-                    self.cfg.update('preconfigopts', "sed -i 's/%s/%s/g' arch/configure.defaults && " % (pattern, repl))
-                    print_msg("Using custom preconfigopts for %s: %s", self.name, self.cfg['preconfigopts'])
+                self.cfg.update('preconfigopts', "sed -i 's/%s/%s/g' arch/configure.defaults && " % (pattern, repl))
+                print_msg("Using custom preconfigopts for %s: %s", self.name, self.cfg['preconfigopts'])
     else:
         raise EasyBuildError("WRF-specific hook triggered for non-WRF easyconfig?!")
 
 
-def pre_configure_hook_atspi2core_filter_ld_library_path(self, *args, **kwargs):
+def pre_configure_hook_LAMMPS_zen4(self, *args, **kwargs):
     """
-    pre-configure hook for at-spi2-core:
-    - instruct GObject-Introspection's g-ir-scanner tool to not set $LD_LIBRARY_PATH
-      when EasyBuild is configured to filter it, see:
-      https://github.com/EESSI/software-layer/issues/196
+    pre-configure hook for LAMMPS:
+    - set kokkos_arch on x86_64/amd/zen4
     """
-    if self.name == 'at-spi2-core':
-        if build_option('filter_env_vars') and 'LD_LIBRARY_PATH' in build_option('filter_env_vars'):
-            sed_cmd = 'sed -i "s/gir_extra_args = \[/gir_extra_args = \[\\n  \'--lib-dirs-envvar=FILTER_LD_LIBRARY_PATH\',/g" %(start_dir)s/atspi/meson.build && '
-            self.cfg.update('preconfigopts', sed_cmd)
+
+    cpu_target = get_eessi_envvar('EESSI_SOFTWARE_SUBDIR')
+    if self.name == 'LAMMPS':
+        if self.version in ('2Aug2023_update2', '29Aug2024'):
+            if get_cpu_architecture() == X86_64:
+                if cpu_target == CPU_TARGET_ZEN4:
+                    # There is no support for ZEN4 in LAMMPS yet so falling back to ZEN3
+                    self.cfg['kokkos_arch'] = 'ZEN3'
     else:
-        raise EasyBuildError("at-spi2-core-specific hook triggered for non-at-spi2-core easyconfig?!")
+        raise EasyBuildError("LAMMPS-specific hook triggered for non-LAMMPS easyconfig?!")
 
 
-def pre_test_hook(self,*args, **kwargs):
+def pre_test_hook(self, *args, **kwargs):
     """Main pre-test hook: trigger custom functions based on software name."""
     if self.name in PRE_TEST_HOOKS:
         PRE_TEST_HOOKS[self.name](self, *args, **kwargs)
@@ -469,20 +642,31 @@ def pre_test_hook_ignore_failing_tests_FFTWMPI(self, *args, **kwargs):
 def pre_test_hook_ignore_failing_tests_SciPybundle(self, *args, **kwargs):
     """
     Pre-test hook for SciPy-bundle: skip failing tests for selected SciPy-bundle versions
-    In version 2021.10, 2 failing tests in scipy 1.6.3:
+    In version 2021.10 on neoverse_v1, 2 failing tests in scipy 1.6.3:
         FAILED optimize/tests/test_linprog.py::TestLinprogIPSparse::test_bug_6139 - A...
         FAILED optimize/tests/test_linprog.py::TestLinprogIPSparsePresolve::test_bug_6139
         = 2 failed, 30554 passed, 2064 skipped, 10992 deselected, 76 xfailed, 7 xpassed, 40 warnings in 380.27s (0:06:20) =
-    In versions 2023.02, 2023.07, and 2023.11, 2 failing tests in scipy (versions 1.10.1, 1.11.1, 1.11.4):
+    In versions 2023.02 + 2023.07 + 2023.11 on neoverse_v1, 2 failing tests in scipy (versions 1.10.1, 1.11.1, 1.11.4):
         FAILED scipy/spatial/tests/test_distance.py::TestPdist::test_pdist_correlation_iris
         FAILED scipy/spatial/tests/test_distance.py::TestPdist::test_pdist_correlation_iris_float32
         = 2 failed, 54409 passed, 3016 skipped, 223 xfailed, 13 xpassed, 10917 warnings in 892.04s (0:14:52) =
-    In previous versions we were not as strict yet on the numpy/SciPy tests
+    In version 2023.07 on a64fx, 4 failing tests in scipy 1.11.1:
+        FAILED scipy/optimize/tests/test_linprog.py::TestLinprogIPSparse::test_bug_6139
+        FAILED scipy/optimize/tests/test_linprog.py::TestLinprogIPSparsePresolve::test_bug_6139
+        FAILED scipy/spatial/tests/test_distance.py::TestPdist::test_pdist_correlation_iris
+        FAILED scipy/spatial/tests/test_distance.py::TestPdist::test_pdist_correlation_iris_float32
+        = 4 failed, 54407 passed, 3016 skipped, 223 xfailed, 13 xpassed, 10917 warnings in 6068.43s (1:41:08) =
+    (in previous versions we were not as strict yet on the numpy/SciPy tests)
     """
     cpu_target = get_eessi_envvar('EESSI_SOFTWARE_SUBDIR')
-    scipy_bundle_versions = ('2021.10', '2023.02', '2023.07', '2023.11')
-    if self.name == 'SciPy-bundle' and self.version in scipy_bundle_versions and cpu_target == CPU_TARGET_NEOVERSE_V1:
-        self.cfg['testopts'] = "|| echo ignoring failing tests"
+    scipy_bundle_versions_nv1 = ('2021.10', '2023.02', '2023.07', '2023.11')
+    scipy_bundle_versions_a64fx = ('2023.07', '2023.11')
+    if self.name == 'SciPy-bundle':
+        if cpu_target == CPU_TARGET_NEOVERSE_V1 and self.version in scipy_bundle_versions_nv1:
+            self.cfg['testopts'] = "|| echo ignoring failing tests"
+        elif cpu_target == CPU_TARGET_A64FX and self.version in scipy_bundle_versions_a64fx:
+            self.cfg['testopts'] = "|| echo ignoring failing tests"
+
 
 def pre_test_hook_ignore_failing_tests_netCDF(self, *args, **kwargs):
     """
@@ -496,6 +680,7 @@ def pre_test_hook_ignore_failing_tests_netCDF(self, *args, **kwargs):
     cpu_target = get_eessi_envvar('EESSI_SOFTWARE_SUBDIR')
     if self.name == 'netCDF' and self.version == '4.9.2' and cpu_target == CPU_TARGET_NEOVERSE_V1:
         self.cfg['testopts'] = "|| echo ignoring failing tests"
+
 
 def pre_test_hook_increase_max_failed_tests_arm_PyTorch(self, *args, **kwargs):
     """
@@ -561,18 +746,22 @@ def pre_single_extension_testthat(ext, *args, **kwargs):
         ext.cfg['preinstallopts'] = "sed -i 's/SIGSTKSZ/32768/g' inst/include/testthat/vendor/catch.h && "
 
 
-def post_sanitycheck_hook(self, *args, **kwargs):
-    """Main post-sanity-check hook: trigger custom functions based on software name."""
-    if self.name in POST_SANITYCHECK_HOOKS:
-        POST_SANITYCHECK_HOOKS[self.name](self, *args, **kwargs)
+def post_postproc_hook(self, *args, **kwargs):
+    """Main post-postprocessing hook: trigger custom functions based on software name."""
+    if self.name in POST_POSTPROC_HOOKS:
+        POST_POSTPROC_HOOKS[self.name](self, *args, **kwargs)
 
 
-def post_sanitycheck_cuda(self, *args, **kwargs):
+def post_postproc_cuda(self, *args, **kwargs):
     """
     Remove files from CUDA installation that we are not allowed to ship,
     and replace them with a symlink to a corresponding installation under host_injections.
     """
-    if self.name == 'CUDA':
+
+    # We need to check if we are doing an EESSI-distributed installation
+    eessi_installation = bool(re.search(EESSI_INSTALLATION_REGEX, self.installdir))
+
+    if self.name == 'CUDA' and eessi_installation:
         print_msg("Replacing files in CUDA installation that we can not ship with symlinks to host_injections...")
 
         # read CUDA EULA, construct allowlist based on section 2.6 that specifies list of files that can be shipped
@@ -597,6 +786,11 @@ def post_sanitycheck_cuda(self, *args, **kwargs):
             for word in line.split():
                 if any(ext in word for ext in file_extensions):
                     allowlist.append(os.path.splitext(word)[0])
+        # The EULA of CUDA 12.4 introduced a typo (confirmed by NVIDIA):
+        # libnvrtx-builtins_static.so should be libnvrtc-builtins_static.so
+        if 'libnvrtx-builtins_static' in allowlist:
+            allowlist.remove('libnvrtx-builtins_static')
+            allowlist.append('libnvrtc-builtins_static')
         allowlist = sorted(set(allowlist))
         self.log.info("Allowlist for files in CUDA installation that can be redistributed: " + ', '.join(allowlist))
 
@@ -606,56 +800,170 @@ def post_sanitycheck_cuda(self, *args, **kwargs):
         if 'libcudart' not in allowlist:
             raise EasyBuildError("Did not find 'libcudart' in allowlist: %s" % allowlist)
 
-        # iterate over all files in the CUDA installation directory
-        for dir_path, _, files in os.walk(self.installdir):
-            for filename in files:
-                full_path = os.path.join(dir_path, filename)
-                # we only really care about real files, i.e. not symlinks
-                if not os.path.islink(full_path):
-                    # check if the current file name stub is part of the allowlist
-                    basename = filename.split('.')[0]
-                    if basename in allowlist:
-                        self.log.debug("%s is found in allowlist, so keeping it: %s", basename, full_path)
-                    else:
-                        self.log.debug("%s is not found in allowlist, so replacing it with symlink: %s",
-                                       basename, full_path)
-                        # if it is not in the allowlist, delete the file and create a symlink to host_injections
-                        host_inj_path = full_path.replace('versions', 'host_injections')
-                        # make sure source and target of symlink are not the same
-                        if full_path == host_inj_path:
-                            raise EasyBuildError("Source (%s) and target (%s) are the same location, are you sure you "
-                                                 "are using this hook for an EESSI installation?",
-                                                 full_path, host_inj_path)
-                        remove_file(full_path)
-                        symlink(host_inj_path, full_path)
+        # replace files that are not distributable with symlinks into
+        # host_injections
+        replace_non_distributable_files_with_symlinks(self.log, self.installdir, self.name, allowlist)
     else:
         raise EasyBuildError("CUDA-specific hook triggered for non-CUDA easyconfig?!")
 
 
+def post_postproc_cudnn(self, *args, **kwargs):
+    """
+    Remove files from cuDNN installation that we are not allowed to ship,
+    and replace them with a symlink to a corresponding installation under host_injections.
+    """
+
+    # We need to check if we are doing an EESSI-distributed installation
+    eessi_installation = bool(re.search(EESSI_INSTALLATION_REGEX, self.installdir))
+
+    if self.name == 'cuDNN' and eessi_installation:
+        print_msg("Replacing files in cuDNN installation that we can not ship with symlinks to host_injections...")
+
+        allowlist = ['LICENSE']
+
+        # read cuDNN LICENSE, construct allowlist based on section "2. Distribution" that specifies list of files that can be shipped
+        license_path = os.path.join(self.installdir, 'LICENSE')
+        search_string = "2. Distribution. The following portions of the SDK are distributable under the Agreement:"
+        found_search_string = False
+        with open(license_path) as infile:
+            for line in infile:
+                if line.strip().startswith(search_string):
+                    found_search_string = True
+                    # remove search string, split into words, remove trailing
+                    # dots '.' and only retain words starting with a dot '.'
+                    distributable = line[len(search_string):]
+                    # distributable looks like ' the runtime files .so and .dll.'
+                    # note the '.' after '.dll'
+                    for word in distributable.split():
+                        if word[0] == '.':
+                            # rstrip is used to remove the '.' after '.dll'
+                            allowlist.append(word.rstrip('.'))
+        if not found_search_string:
+            # search string wasn't found in LICENSE file
+            raise EasyBuildError("search string '%s' was not found in license file '%s';"
+                                 "hence installation may be replaced by symlinks only",
+                                 search_string, license_path)
+
+        allowlist = sorted(set(allowlist))
+        self.log.info("Allowlist for files in cuDNN installation that can be redistributed: " + ', '.join(allowlist))
+
+        # replace files that are not distributable with symlinks into
+        # host_injections
+        replace_non_distributable_files_with_symlinks(self.log, self.installdir, self.name, allowlist)
+    else:
+        raise EasyBuildError("cuDNN-specific hook triggered for non-cuDNN easyconfig?!")
+
+
+def replace_non_distributable_files_with_symlinks(log, install_dir, pkg_name, allowlist):
+    """
+    Replace files that cannot be distributed with symlinks into host_injections
+    """
+    # Different packages use different ways to specify which files or file
+    # 'types' may be redistributed. For CUDA, the 'EULA.txt' lists full file
+    # names. For cuDNN, the 'LICENSE' lists file endings/suffixes (e.g., '.so')
+    # that can be redistributed.
+    # The map 'extension_based' defines which of these two ways are employed. If
+    # full file names are used it maps a package name (key) to False (value). If
+    # endings/suffixes are used, it maps a package name to True. Later we can
+    # easily use this data structure to employ the correct method for
+    # postprocessing an installation.
+    extension_based = {
+        "CUDA": False,
+        "cuDNN": True,
+    }
+    if not pkg_name in extension_based:
+        raise EasyBuildError("Don't know how to strip non-distributable files from package %s.", pkg_name)
+
+    # iterate over all files in the package installation directory
+    for dir_path, _, files in os.walk(install_dir):
+        for filename in files:
+            full_path = os.path.join(dir_path, filename)
+            # we only really care about real files, i.e. not symlinks
+            if not os.path.islink(full_path):
+                check_by_extension = extension_based[pkg_name] and '.' in filename
+                if check_by_extension:
+                    # if the allowlist only contains extensions, we have to
+                    # determine that from filename. we assume the extension is
+                    # the second element when splitting the filename at dots
+                    # (e.g., for 'libcudnn_adv_infer.so.8.9.2' the extension
+                    # would be '.so')
+                    extension = '.' + filename.split('.')[1]
+                # check if the current file name stub or its extension is part of the allowlist
+                basename =  filename.split('.')[0]
+                if basename in allowlist:
+                    log.debug("%s is found in allowlist, so keeping it: %s", basename, full_path)
+                elif check_by_extension and extension in allowlist:
+                    log.debug("%s is found in allowlist, so keeping it: %s", extension, full_path)
+                else:
+                    print_name = filename if extension_based[pkg_name] else basename
+                    log.debug("%s is not found in allowlist, so replacing it with symlink: %s",
+                              print_name, full_path)
+                    # the host_injections path is under a fixed repo/location for CUDA or cuDNN
+                    host_inj_path = re.sub(EESSI_INSTALLATION_REGEX, HOST_INJECTIONS_LOCATION, full_path)
+                    # CUDA and cu* libraries themselves don't care about compute capability so remove this
+                    # duplication from under host_injections (symlink to a single CUDA or cu* library
+                    # installation for all compute capabilities)
+                    accel_subdir = os.getenv("EESSI_ACCELERATOR_TARGET")
+                    if accel_subdir:
+                        host_inj_path = host_inj_path.replace("/accel/%s" % accel_subdir, '')
+                    # make sure source and target of symlink are not the same
+                    if full_path == host_inj_path:
+                        raise EasyBuildError("Source (%s) and target (%s) are the same location, are you sure you "
+                                             "are using this hook for an EESSI installation?",
+                                             full_path, host_inj_path)
+                    remove_file(full_path)
+                    symlink(host_inj_path, full_path)
+
+
 def inject_gpu_property(ec):
     """
-    Add 'gpu' property, via modluafooter easyconfig parameter
+    Add 'gpu' property and EESSI<PACKAGE>VERSION envvars via modluafooter
+    easyconfig parameter, and drop dependencies to build dependencies
     """
     ec_dict = ec.asdict()
-    # Check if CUDA is in the dependencies, if so add the 'gpu' Lmod property
-    if ('CUDA' in [dep[0] for dep in iter(ec_dict['dependencies'])]):
-        ec.log.info("Injecting gpu as Lmod arch property and envvar with CUDA version")
-        key = 'modluafooter'
-        value = 'add_property("arch","gpu")'
-        cuda_version = 0
-        for dep in iter(ec_dict['dependencies']):
-            # Make CUDA a build dependency only (rpathing saves us from link errors)
-            if 'CUDA' in dep[0]:
-                cuda_version = dep[1]
-                ec_dict['dependencies'].remove(dep)
-                if dep not in ec_dict['builddependencies']:
-                    ec_dict['builddependencies'].append(dep)
-        value = '\n'.join([value, 'setenv("EESSICUDAVERSION","%s")' % cuda_version])
-        if key in ec_dict:
-            if not value in ec_dict[key]:
-                ec[key] = '\n'.join([ec_dict[key], value])
+    # Check if CUDA, cuDNN, you-name-it is in the dependencies, if so
+    # - drop dependency to build dependency
+    # - add 'gpu' Lmod property
+    # - add envvar with package version
+    pkg_names = ( "CUDA", "cuDNN" )
+    pkg_versions = { }
+    add_gpu_property = ''
+
+    for pkg_name in pkg_names:
+        # Check if pkg_name is in the dependencies, if so drop dependency to build
+        # dependency and set variable for later adding the 'gpu' Lmod property
+        # to '.remove' dependencies from ec_dict['dependencies'] we make a copy,
+        # iterate over the copy and can then savely use '.remove' on the original
+        # ec_dict['dependencies'].
+        deps = ec_dict['dependencies'][:]
+        if (pkg_name in [dep[0] for dep in deps]):
+            add_gpu_property = 'add_property("arch","gpu")'
+            for dep in deps:
+                if pkg_name == dep[0]:
+                    # make pkg_name a build dependency only (rpathing saves us from link errors)
+                    ec.log.info("Dropping dependency on %s to build dependency" % pkg_name)
+                    ec_dict['dependencies'].remove(dep)
+                    if dep not in ec_dict['builddependencies']:
+                        ec_dict['builddependencies'].append(dep)
+                    # take note of version for creating the modluafooter
+                    pkg_versions[pkg_name] = dep[1]
+    if add_gpu_property:
+        ec.log.info("Injecting gpu as Lmod arch property and envvars for dependencies with their version")
+        modluafooter = 'modluafooter'
+        extra_mod_footer_lines = [add_gpu_property]
+        for pkg_name, version in pkg_versions.items():
+            envvar = "EESSI%sVERSION" % pkg_name.upper()
+            extra_mod_footer_lines.append('setenv("%s","%s")' % (envvar, version))
+        # take into account that modluafooter may already be set
+        if modluafooter in ec_dict:
+            value = ec_dict[modluafooter]
+            for line in extra_mod_footer_lines:
+                if not line in value:
+                    value = '\n'.join([value, line])
+            ec[modluafooter] = value
         else:
-            ec[key] = value
+            ec[modluafooter] = '\n'.join(extra_mod_footer_lines)
+
     return ec
 
 
@@ -663,7 +971,10 @@ PARSE_HOOKS = {
     'casacore': parse_hook_casacore_disable_vectorize,
     'CGAL': parse_hook_cgal_toolchainopts_precise,
     'fontconfig': parse_hook_fontconfig_add_fonts,
-    'LAMMPS': parse_hook_lammps_remove_deps_for_CI_aarch64,
+    'FreeImage': parse_hook_freeimage_aarch64,
+    'grpcio': parse_hook_grpcio_zlib,
+    'LAMMPS': parse_hook_lammps_remove_deps_for_aarch64,
+    'CP2K': parse_hook_CP2K_remove_deps_for_aarch64,
     'OpenBLAS': parse_hook_openblas_relax_lapack_tests_num_errors,
     'pybind11': parse_hook_pybind11_replace_catch2,
     'Qt5': parse_hook_qt5_check_qtwebengine_disable,
@@ -680,12 +991,16 @@ POST_PREPARE_HOOKS = {
 }
 
 PRE_CONFIGURE_HOOKS = {
+    'BLIS': pre_configure_hook_BLIS_a64fx,
+    'GObject-Introspection': pre_configure_hook_gobject_introspection,
+    'Extrae': pre_configure_hook_extrae,
     'GROMACS': pre_configure_hook_gromacs,
     'libfabric': pre_configure_hook_libfabric_disable_psm3_x86_64_generic,
     'MetaBAT': pre_configure_hook_metabat_filtered_zlib_dep,
     'OpenBLAS': pre_configure_hook_openblas_optarch_generic,
     'WRF': pre_configure_hook_wrf_aarch64,
-    'at-spi2-core': pre_configure_hook_atspi2core_filter_ld_library_path,
+    'LAMMPS': pre_configure_hook_LAMMPS_zen4,
+    'Score-P': pre_configure_hook_score_p,
 }
 
 PRE_TEST_HOOKS = {
@@ -707,6 +1022,7 @@ POST_SINGLE_EXTENSION_HOOKS = {
     'numpy': post_single_extension_numpy,
 }
 
-POST_SANITYCHECK_HOOKS = {
-    'CUDA': post_sanitycheck_cuda,
+POST_POSTPROC_HOOKS = {
+    'CUDA': post_postproc_cuda,
+    'cuDNN': post_postproc_cudnn,
 }

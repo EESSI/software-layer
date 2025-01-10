@@ -1,0 +1,30 @@
+easyconfigs:
+  - IPython-8.17.2-GCCcore-13.2.0.eb
+  - dlb-3.4-gompi-2023b.eb
+  - pystencils-1.3.4-gfbf-2023b.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/20889
+        from-commit: c66c4788a17f7e4f55aa23f9fdb782aad97c9ce7
+  - Extrae-4.2.0-gompi-2023b.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/21017
+        from-commit: 120f4d56efebd2bc61382db4c84a664a339c66cf
+        # see https://github.com/easybuilders/easybuild-easyblocks/pull/3393
+        include-easyblocks-from-commit: c4951c78d62fa5cf8e9f6fe0ead212d2a4d7cb9c
+  - pyMBE-0.8.0-foss-2023b.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/21034
+        from-commit: 76e7fc6657bab64bfbec826540a3a8f0040258f2
+  - STAR-2.7.11b-GCC-13.2.0.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/21200
+        from-commit: 765ba900daf5953e306c4dad896febe52fdd6c00
+  - HPL-2.3-foss-2023b.eb
+  - Brunsli-0.1-GCCcore-13.2.0.eb:
+      options:
+        # https://github.com/easybuilders/easybuild-easyconfigs/pull/21366
+        from-commit: 1736a123b1685836452587a5c51793257570bb2d
+  - R-bundle-CRAN-2024.06-foss-2023b.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/21285
+        from-commit: 41a2cd83f9fb017b76f0693f6a264d8acb548317

@@ -112,26 +112,8 @@ fi
 
 TMPDIR=$(mktemp -d)
 
-echo ">> Setting up environment..."
 
-source $TOPDIR/init/minimal_eessi_env
-
-if [ -d $EESSI_CVMFS_REPO ]; then
-    echo_green "$EESSI_CVMFS_REPO available, OK!"
-else
-    fatal_error "$EESSI_CVMFS_REPO is not available!"
-fi
-
-# make sure we're in Prefix environment by checking $SHELL
-if [[ ${SHELL} = ${EPREFIX}/bin/bash ]]; then
-    echo_green ">> It looks like we're in a Gentoo Prefix environment, good!"
-else
-    fatal_error "Not running in Gentoo Prefix environment, run '${EPREFIX}/startprefix' first!"
-fi
-
-# avoid that pyc files for EasyBuild are stored in EasyBuild installation directory
-export PYTHONPYCACHEPREFIX=$TMPDIR/pycache
-
+# Get override subdir
 DETECTION_PARAMETERS=''
 GENERIC=0
 EB='eb'
@@ -148,9 +130,75 @@ if [ -z $EESSI_SOFTWARE_SUBDIR_OVERRIDE ]; then
   echo ">> Determined \$EESSI_SOFTWARE_SUBDIR_OVERRIDE via 'eessi_software_subdir.py $DETECTION_PARAMETERS' script"
 else
   echo ">> Picking up pre-defined \$EESSI_SOFTWARE_SUBDIR_OVERRIDE: ${EESSI_SOFTWARE_SUBDIR_OVERRIDE}"
-  # make sure directory exists (since it's expected by init/eessi_environment_variables when using archdetect)
-  mkdir -p ${EESSI_PREFIX}/software/${EESSI_OS_TYPE}/${EESSI_SOFTWARE_SUBDIR_OVERRIDE}
+  # Run in a subshell, so that minimal_eessi_env doesn't change the shell environment for the rest of this script
+  (
+      # Make sure EESSI_PREFIX and EESSI_OS_TYPE are set
+      source $TOPDIR/init/minimal_eessi_env
+
+      # make sure directory exists (since it's expected by init/eessi_environment_variables when using archdetect)
+      mkdir -p ${EESSI_PREFIX}/software/${EESSI_OS_TYPE}/${EESSI_SOFTWARE_SUBDIR_OVERRIDE}
+  )
 fi
+
+echo ">> Setting up environment..."
+
+# If EESSI_VERSION is not set, source the defaults script to set it
+if [ -z ${EESSI_VERSION} ]; then
+    source $TOPDIR/init/eessi_defaults
+fi
+
+# If module command does not exist, use the one from the compat layer
+command -v module
+module_cmd_exists=$?
+if [[ "$module_cmd_exists" -ne 0 ]]; then
+    echo_green "No module command found, initializing lmod from the compatibility layer"
+    # Minimal initalization of the lmod from the compat layer
+    source $TOPDIR/init/lmod/bash
+else
+    echo_green "Module command found"
+fi
+ml_version_out=$TMPDIR/ml.out
+ml --version &> $ml_version_out
+if [[ $? -eq 0 ]]; then
+    echo_green ">> Found Lmod ${LMOD_VERSION}"
+else
+    fatal_error "Failed to initialize Lmod?! (see output in ${ml_version_out}"
+fi
+
+# Make sure we start with no modules and clean $MODULEPATH
+echo ">> Setting up \$MODULEPATH..."
+module --force purge
+module unuse $MODULEPATH
+
+# Initialize the EESSI environment
+module use $TOPDIR/init/modules
+module load EESSI/$EESSI_VERSION
+
+# make sure we're in Prefix environment by checking $SHELL
+# We can only do this after loading the EESSI module, as we need ${EPREFIX}
+if [[ ${SHELL} = ${EPREFIX}/bin/bash ]]; then
+    echo_green ">> It looks like we're in a Gentoo Prefix environment, good!"
+else
+    fatal_error "Not running in Gentoo Prefix environment, run '${EPREFIX}/startprefix' first!"
+fi
+
+if [ -d $EESSI_CVMFS_REPO ]; then
+    echo_green "$EESSI_CVMFS_REPO available, OK!"
+else
+    fatal_error "$EESSI_CVMFS_REPO is not available!"
+fi
+
+# Check that EESSI_SOFTWARE_SUBDIR now matches EESSI_SOFTWARE_SUBDIR_OVERRIDE
+if [[ -z ${EESSI_SOFTWARE_SUBDIR} ]]; then
+    fatal_error "Failed to determine software subdirectory?!"
+elif [[ "${EESSI_SOFTWARE_SUBDIR}" != "${EESSI_SOFTWARE_SUBDIR_OVERRIDE}" ]]; then
+    fatal_error "Values for EESSI_SOFTWARE_SUBDIR_OVERRIDE (${EESSI_SOFTWARE_SUBDIR_OVERRIDE}) and EESSI_SOFTWARE_SUBDIR (${EESSI_SOFTWARE_SUBDIR}) differ!"
+else
+    echo_green ">> Using ${EESSI_SOFTWARE_SUBDIR} as software subdirectory!"
+fi
+
+# avoid that pyc files for EasyBuild are stored in EasyBuild installation directory
+export PYTHONPYCACHEPREFIX=$TMPDIR/pycache
 
 # if we run the script for the first time, e.g., to start building for a new
 #   stack, we need to ensure certain files are present in
@@ -161,40 +209,71 @@ _eessi_software_path=${EESSI_PREFIX}/software/${EESSI_OS_TYPE}/${EESSI_SOFTWARE_
 _lmod_cfg_dir=${_eessi_software_path}/.lmod
 _lmod_rc_file=${_lmod_cfg_dir}/lmodrc.lua
 if [ ! -f ${_lmod_rc_file} ]; then
+    echo "Lmod file '${_lmod_rc_file}' does not exist yet; creating it..."
     command -V python3
     python3 ${TOPDIR}/create_lmodrc.py ${_eessi_software_path}
 fi
 _lmod_sitepackage_file=${_lmod_cfg_dir}/SitePackage.lua
 if [ ! -f ${_lmod_sitepackage_file} ]; then
+    echo "Lmod file '${_lmod_sitepackage_file}' does not exist yet; creating it..."
     command -V python3
     python3 ${TOPDIR}/create_lmodsitepackage.py ${_eessi_software_path}
 fi
 
-# Set all the EESSI environment variables (respecting $EESSI_SOFTWARE_SUBDIR_OVERRIDE)
-# $EESSI_SILENT - don't print any messages
-# $EESSI_BASIC_ENV - give a basic set of environment variables
-EESSI_SILENT=1 EESSI_BASIC_ENV=1 source $TOPDIR/init/eessi_environment_variables
+# install any additional required scripts
+# order is important: these are needed to install a full CUDA SDK in host_injections
+# for now, this just reinstalls all scripts. Note the most elegant, but works
 
-if [[ -z ${EESSI_SOFTWARE_SUBDIR} ]]; then
-    fatal_error "Failed to determine software subdirectory?!"
-elif [[ "${EESSI_SOFTWARE_SUBDIR}" != "${EESSI_SOFTWARE_SUBDIR_OVERRIDE}" ]]; then
-    fatal_error "Values for EESSI_SOFTWARE_SUBDIR_OVERRIDE (${EESSI_SOFTWARE_SUBDIR_OVERRIDE}) and EESSI_SOFTWARE_SUBDIR (${EESSI_SOFTWARE_SUBDIR}) differ!"
-else
-    echo_green ">> Using ${EESSI_SOFTWARE_SUBDIR} as software subdirectory!"
-fi
-
-echo ">> Initializing Lmod..."
-source $EPREFIX/usr/share/Lmod/init/bash
-ml_version_out=$TMPDIR/ml.out
-ml --version &> $ml_version_out
-if [[ $? -eq 0 ]]; then
-    echo_green ">> Found Lmod ${LMOD_VERSION}"
-else
-    fatal_error "Failed to initialize Lmod?! (see output in ${ml_version_out}"
+# Only run install_scripts.sh if not dev.eessi.io for security
+if [[ "${EESSI_CVMFS_REPO}" != /cvmfs/dev.eessi.io ]]; then
+    ${TOPDIR}/install_scripts.sh --prefix ${EESSI_PREFIX}
 fi
 
 echo ">> Configuring EasyBuild..."
-source $TOPDIR/configure_easybuild
+
+# Make sure EESSI-extend is not loaded, and configure location variables for a
+#   CVMFS installation
+module unload EESSI-extend
+unset EESSI_USER_INSTALL
+unset EESSI_PROJECT_INSTALL
+unset EESSI_SITE_INSTALL
+export EESSI_CVMFS_INSTALL=1
+
+# We now run 'source load_eessi_extend_module.sh' to load or install and load the
+#   EESSI-extend module which sets up all build environment settings.
+# The script requires the EESSI_VERSION given as argument, a couple of
+#   environment variables set (TMPDIR, EB and EASYBUILD_INSTALLPATH) and the
+#   function check_exit_code defined.
+# NOTE 1, the script exits if those variables/functions are undefined.
+# NOTE 2, loading the EESSI-extend module may adjust the value of EASYBUILD_INSTALLPATH,
+#   e.g., to point to the installation directory for accelerators.
+# NOTE 3, we have to set a default for EASYBUILD_INSTALLPATH here in cases the
+#   EESSI-extend module itself needs to be installed.
+export EASYBUILD_INSTALLPATH=${EESSI_PREFIX}/software/${EESSI_OS_TYPE}/${EESSI_SOFTWARE_SUBDIR_OVERRIDE}
+source load_eessi_extend_module.sh ${EESSI_VERSION}
+
+# Install full CUDA SDK and cu* libraries in host_injections
+# Hardcode this for now, see if it works
+# TODO: We should make a nice yaml and loop over all CUDA versions in that yaml to figure out what to install
+# Allow skipping CUDA SDK install in e.g. CI environments
+echo "Going to install full CUDA SDK and cu* libraries under host_injections if necessary"
+temp_install_storage=${TMPDIR}/temp_install_storage
+mkdir -p ${temp_install_storage}
+if [ -z "${skip_cuda_install}" ] || [ ! "${skip_cuda_install}" ]; then
+    ${EESSI_PREFIX}/scripts/gpu_support/nvidia/install_cuda_and_libraries.sh \
+        -t ${temp_install_storage} \
+        --accept-cuda-eula \
+        --accept-cudnn-eula
+else
+    echo "Skipping installation of CUDA SDK and cu* libraries in host_injections, since the --skip-cuda-install flag was passed"
+fi
+
+# Install NVIDIA drivers in host_injections (if they exist)
+if command_exists "nvidia-smi"; then
+    echo "Command 'nvidia-smi' found. Installing NVIDIA drivers for use in prefix shell..."
+    ${EESSI_PREFIX}/scripts/gpu_support/nvidia/link_nvidia_host_libraries.sh
+fi
+
 
 if [ ! -z "${shared_fs_path}" ]; then
     shared_eb_sourcepath=${shared_fs_path}/easybuild/sources
@@ -202,12 +281,23 @@ if [ ! -z "${shared_fs_path}" ]; then
     export EASYBUILD_SOURCEPATH=${shared_eb_sourcepath}:${EASYBUILD_SOURCEPATH}
 fi
 
-echo ">> Setting up \$MODULEPATH..."
-# make sure no modules are loaded
-module --force purge
-# ignore current $MODULEPATH entirely
-module unuse $MODULEPATH
+# if an accelerator target is specified, we need to make sure that the CPU-only modules are also still available
+if [ ! -z ${EESSI_ACCELERATOR_TARGET} ]; then
+    CPU_ONLY_MODULES_PATH=$(echo $EASYBUILD_INSTALLPATH | sed "s@/accel/${EESSI_ACCELERATOR_TARGET}@@g")/modules/all
+    if [ -d ${CPU_ONLY_MODULES_PATH} ]; then
+        module use ${CPU_ONLY_MODULES_PATH}
+    else
+        fatal_error "Derived path to CPU-only modules does not exist: ${CPU_ONLY_MODULES_PATH}"
+    fi
+fi
+
+# If in dev.eessi.io, allow building on top of software.eessi.io
+if [[ "${EESSI_CVMFS_REPO}" == /cvmfs/dev.eessi.io ]]; then
+    module use /cvmfs/software.eessi.io/versions/$EESSI_VERSION/software/${EESSI_OS_TYPE}/${EESSI_SOFTWARE_SUBDIR_OVERRIDE}/modules/all
+fi
+
 module use $EASYBUILD_INSTALLPATH/modules/all
+
 if [[ -z ${MODULEPATH} ]]; then
     fatal_error "Failed to set up \$MODULEPATH?!"
 else
@@ -217,40 +307,9 @@ fi
 # assume there's only one diff file that corresponds to the PR patch file
 pr_diff=$(ls [0-9]*.diff | head -1)
 
-# install any additional required scripts
-# order is important: these are needed to install a full CUDA SDK in host_injections
-# for now, this just reinstalls all scripts. Note the most elegant, but works
-${TOPDIR}/install_scripts.sh --prefix ${EESSI_PREFIX}
-
-# Install full CUDA SDK in host_injections
-# Hardcode this for now, see if it works
-# TODO: We should make a nice yaml and loop over all CUDA versions in that yaml to figure out what to install
-# Allow skipping CUDA SDK install in e.g. CI environments
-# The install_cuda... script uses EasyBuild. So, we need to check if we have EB
-# or skip this step.
-module_avail_out=$TMPDIR/ml.out
-module avail 2>&1 | grep EasyBuild &> ${module_avail_out}
-if [[ $? -eq 0 ]]; then
-    echo_green ">> Found an EasyBuild module"
-else
-    echo_yellow ">> No EasyBuild module found: skipping step to install CUDA (see output in ${module_avail_out})"
-    export skip_cuda_install=True
-fi
-
-if [ -z "${skip_cuda_install}" ] || [ ! "${skip_cuda_install}" ]; then
-    ${EESSI_PREFIX}/scripts/gpu_support/nvidia/install_cuda_host_injections.sh -c 12.1.1 --accept-cuda-eula
-else
-    echo "Skipping installation of CUDA SDK in host_injections, since the --skip-cuda-install flag was passed OR no EasyBuild module was found"
-fi
-
-# Install NVIDIA drivers in host_injections (if they exist)
-if command_exists "nvidia-smi"; then
-    echo "Command 'nvidia-smi' found. Installing NVIDIA drivers for use in prefix shell..."
-    ${EESSI_PREFIX}/scripts/gpu_support/nvidia/link_nvidia_host_libraries.sh
-fi
 
 # use PR patch file to determine in which easystack files stuff was added
-changed_easystacks=$(cat ${pr_diff} | grep '^+++' | cut -f2 -d' ' | sed 's@^[a-z]/@@g' | grep '^easystacks/.*yml$' | egrep -v 'known-issues|missing') 
+changed_easystacks=$(cat ${pr_diff} | grep '^+++' | cut -f2 -d' ' | sed 's@^[a-z]/@@g' | grep 'easystacks/.*yml$' | egrep -v 'known-issues|missing') 
 if [ -z "${changed_easystacks}" ]; then
     echo "No missing installations, party time!"  # Ensure the bot report success, as there was nothing to be build here
 else
@@ -276,7 +335,7 @@ else
         if [ -f ${easystack_file} ]; then
             echo_green "Feeding easystack file ${easystack_file} to EasyBuild..."
 
-            ${EB} --easystack ${TOPDIR}/${easystack_file} --robot
+            ${EB} --easystack ${easystack_file} --robot
             ec=$?
 
             # copy EasyBuild log file if EasyBuild exited with an error
@@ -289,7 +348,7 @@ else
                 copy_build_log "${eb_last_log}" "${build_logs_dir}"
             fi
     
-            $TOPDIR/check_missing_installations.sh ${TOPDIR}/${easystack_file} ${TOPDIR}/${pr_diff}
+            $TOPDIR/check_missing_installations.sh ${easystack_file} ${pr_diff}
         else
             fatal_error "Easystack file ${easystack_file} not found!"
         fi
@@ -297,22 +356,30 @@ else
     done
 fi
 
-### add packages here
-
-echo ">> Creating/updating Lmod RC file..."
 export LMOD_CONFIG_DIR="${EASYBUILD_INSTALLPATH}/.lmod"
 lmod_rc_file="$LMOD_CONFIG_DIR/lmodrc.lua"
+if [[ ! -z ${EESSI_ACCELERATOR_TARGET} ]]; then
+    # EESSI_ACCELERATOR_TARGET is set, so let's remove the accelerator path from $lmod_rc_file
+    lmod_rc_file=$(echo ${lmod_rc_file} | sed "s@/accel/${EESSI_ACCELERATOR_TARGET}@@")
+    echo "Path to lmodrc.lua changed to '${lmod_rc_file}'"
+fi
 lmodrc_changed=$(cat ${pr_diff} | grep '^+++' | cut -f2 -d' ' | sed 's@^[a-z]/@@g' | grep '^create_lmodrc.py$' > /dev/null; echo $?)
 if [ ! -f $lmod_rc_file ] || [ ${lmodrc_changed} == '0' ]; then
+    echo ">> Creating/updating Lmod RC file (${lmod_rc_file})..."
     python3 $TOPDIR/create_lmodrc.py ${EASYBUILD_INSTALLPATH}
     check_exit_code $? "$lmod_rc_file created" "Failed to create $lmod_rc_file"
 fi
 
-echo ">> Creating/updating Lmod SitePackage.lua ..."
 export LMOD_PACKAGE_PATH="${EASYBUILD_INSTALLPATH}/.lmod"
 lmod_sitepackage_file="$LMOD_PACKAGE_PATH/SitePackage.lua"
+if [[ ! -z ${EESSI_ACCELERATOR_TARGET} ]]; then
+    # EESSI_ACCELERATOR_TARGET is set, so let's remove the accelerator path from $lmod_sitepackage_file
+    lmod_sitepackage_file=$(echo ${lmod_sitepackage_file} | sed "s@/accel/${EESSI_ACCELERATOR_TARGET}@@")
+    echo "Path to SitePackage.lua changed to '${lmod_sitepackage_file}'"
+fi
 sitepackage_changed=$(cat ${pr_diff} | grep '^+++' | cut -f2 -d' ' | sed 's@^[a-z]/@@g' | grep '^create_lmodsitepackage.py$' > /dev/null; echo $?)
 if [ ! -f "$lmod_sitepackage_file" ] || [ "${sitepackage_changed}" == '0' ]; then
+    echo ">> Creating/updating Lmod SitePackage.lua (${lmod_sitepackage_file})..."
     python3 $TOPDIR/create_lmodsitepackage.py ${EASYBUILD_INSTALLPATH}
     check_exit_code $? "$lmod_sitepackage_file created" "Failed to create $lmod_sitepackage_file"
 fi
