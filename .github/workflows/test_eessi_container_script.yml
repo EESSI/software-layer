@@ -9,7 +9,7 @@ permissions:
   contents: read # to fetch code (actions/checkout)
 jobs:
   eessi_container_script:
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     strategy:
       fail-fast: false
       matrix:
