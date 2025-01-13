@@ -17,7 +17,7 @@ if [[ $(echo -e "$ubuntu_version\n23.10" | sort -V | head -n 1) == "23.10" ]]; t
 # Permit unprivileged user namespace creation for apptainer starter
 abi <abi/4.0>,
 include <tunables/global>
-profile apptainer /usr/local/libexec/apptainer/bin/starter{,-suid} 
+profile apptainer /usr/local/libexec/apptainer/bin/starter{,-suid}
     flags=(unconfined) {
   userns,
   # Site-specific additions and overrides. See local/README for details.
