@@ -11,7 +11,8 @@ curl -OL https://dl.fedoraproject.org/${epel_subdir}/Everything/x86_64/Packages/
 sudo alien -d ${apptainer_rpm}
 sudo apt install ./apptainer*.deb
 # No unpriviledged user name spaces in Ubuntu 23.10+
-if [ "$(lsb_release -r | awk '{print $2}')" \ge "23.10" ]; then
+ubuntu_version=$(lsb_release -r | awk '{print $2}')
+if [[ $(echo -e "$ubuntu_version\n23.10" | sort -V | head -n 1) == "23.10" ]]; then
     sudo tee /etc/apparmor.d/apptainer << 'EOF'
 # Permit unprivileged user namespace creation for apptainer starter
 abi <abi/4.0>,
