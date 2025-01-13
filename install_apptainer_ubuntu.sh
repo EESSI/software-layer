@@ -26,6 +26,7 @@ profile apptainer /usr/local/libexec/apptainer/bin/starter{,-suid}
 EOF
     sudo systemctl reload apparmor
 fi
+which apptainer
 apptainer --version
 # also check whether 'singularity' command is still provided by Apptainer installation
 singularity --version
