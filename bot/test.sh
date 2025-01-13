@@ -208,6 +208,12 @@ fi
 # Reframe configuration
 TEST_STEP_ARGS+=("--extra-bind-paths" "/sys/fs/cgroup:/hostsys/fs/cgroup:ro")
 
+# add options required to handle NVIDIA support
+if command_exists "nvidia-smi"; then
+    echo "Command 'nvidia-smi' found, using available GPU"
+    TEST_STEP_ARGS+=("--nvidia" "run")
+fi
+
 # prepare arguments to test_suite.sh (specific to test step)
 declare -a TEST_SUITE_ARGS=()
 if [[ ${EESSI_SOFTWARE_SUBDIR_OVERRIDE} =~ .*/generic$ ]]; then
