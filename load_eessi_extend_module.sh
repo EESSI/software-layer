@@ -88,14 +88,19 @@ else
         echo ">> Final installation in ${EASYBUILD_INSTALLPATH}..."
         export PATH=${EB_TMPDIR}/bin:${PATH}
         export PYTHONPATH=$(ls -d ${EB_TMPDIR}/lib/python*/site-packages):${PYTHONPATH}
-        eb_install_out=${TMPDIR}/eb_install.out
-        ok_msg="EESSI-extend/${EESSI_EXTEND_VERSION} installed, let's go!"
-        fail_msg="Installing EESSI-extend/${EESSI_EXTEND_VERSION} failed, that's not good... (output: ${eb_install_out})"
         # EESSI-extend also needs EasyBuild to be installed as a module, so install the latest release
+        eb_install_out=${TMPDIR}/eb_install.out
+        ok_msg="Latest EasyBuild installed, let's go!"
+        fail_msg="Installing latest EasyBuild failed, that's not good... (output: ${eb_install_out})"
         ${EB} --install-latest-eb-release 2>&1 | tee ${eb_install_out}
+        check_exit_code $? "${ok_msg}" "${fail_msg}"
+        # Now install EESSI-extend
+        eessi_install_out=${TMPDIR}/eessi_install.out
+        ok_msg="EESSI-extend/${EESSI_EXTEND_VERSION} installed, let's go!"
+        fail_msg="Installing EESSI-extend/${EESSI_EXTEND_VERSION} failed, that's not good... (output: ${eessi_install_out})"
         # while always adding --try-amend=keep... may do no harm, we could make
         # an attempt to figure out if it is needed, e.g., when we are rebuilding
-        ${EB} "EESSI-extend-easybuild.eb" --try-amend=keeppreviousinstall=True 2>&1 | tee ${eb_install_out}
+        ${EB} "EESSI-extend-easybuild.eb" --try-amend=keeppreviousinstall=True 2>&1 | tee ${eessi_install_out}
         check_exit_code $? "${ok_msg}" "${fail_msg}"
     )
 
