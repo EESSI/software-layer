@@ -91,6 +91,8 @@ else
         eb_install_out=${TMPDIR}/eb_install.out
         ok_msg="EESSI-extend/${EESSI_EXTEND_VERSION} installed, let's go!"
         fail_msg="Installing EESSI-extend/${EESSI_EXTEND_VERSION} failed, that's not good... (output: ${eb_install_out})"
+        # EESSI-extend also needs EasyBuild to be installed as a module, so install the latest release
+        ${EB} --install-latest-eb-release 2>&1 | tee ${eb_install_out}
         # while always adding --try-amend=keep... may do no harm, we could make
         # an attempt to figure out if it is needed, e.g., when we are rebuilding
         ${EB} "EESSI-extend-easybuild.eb" --try-amend=keeppreviousinstall=True 2>&1 | tee ${eb_install_out}
