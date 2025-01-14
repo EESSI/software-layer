@@ -1,0 +1,6 @@
+easyconfigs:
+  - EasyBuild-4.8.2.eb
+  - EasyBuild-4.9.0.eb
+  - EasyBuild-4.9.1.eb
+  - EasyBuild-4.9.2.eb
+  - EasyBuild-4.9.4.eb
