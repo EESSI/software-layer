@@ -73,9 +73,6 @@ fi
 
 TMPDIR=$(mktemp -d)
 
-echo "HOSTNAME=$HOSTNAME"
-nvidia-smi
-
 echo ">> Setting up environment..."
 # For this call to be succesful, it needs to be able to import archspec (which is part of EESSI)
 # Thus, we execute it in a subshell where EESSI is already initialized (a bit like a bootstrap)
