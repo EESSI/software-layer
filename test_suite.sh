@@ -235,7 +235,18 @@ else
     fatal_error "Failed to extract names of tests to run: ${REFRAME_NAME_ARGS}"
     exit ${test_selection_exit_code}
 fi
-export REFRAME_ARGS="--tag CI --tag 1_4_node --nocolor ${REFRAME_NAME_ARGS}"
+# Allow people deploying the bot to overrwide this
+if [ -z "$REFRAME_SCALE_TAG" ]; then
+    REFRAME_SCALE_TAGS="--tag 1_4_node"
+fi
+if [ -z "$REFRAME_CI_TAG" ]; then
+    REFRAME_CI_TAG="--tag CI"
+fi
+# Allow bot-deployers to add additional args through the environment
+if [ -z "$REFRAME_ADDITIONAL_ARGS" ]; then
+    REFRAME_ADDITIONAL_ARGS=""
+fi
+export REFRAME_ARGS="${REFRAME_CI_TAG} ${REFRAME_SCALE_TAG} ${REFRAME_ADDITIONAL_ARGS} --nocolor ${REFRAME_NAME_ARGS}"
 
 # List the tests we want to run
 echo "Listing tests: reframe ${REFRAME_ARGS} --list"
