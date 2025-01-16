@@ -235,7 +235,7 @@ else
     fatal_error "Failed to extract names of tests to run: ${REFRAME_NAME_ARGS}"
     exit ${test_selection_exit_code}
 fi
-export REFRAME_ARGS="--tag CI --tag 1_node --nocolor ${REFRAME_NAME_ARGS}"
+export REFRAME_ARGS="--tag CI --tag 1_4_node --nocolor ${REFRAME_NAME_ARGS}"
 
 # List the tests we want to run
 echo "Listing tests: reframe ${REFRAME_ARGS} --list"
