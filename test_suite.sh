@@ -136,9 +136,9 @@ fi
 # RFM_CONFIG_FILES _has_ to be set by the site hosting the bot, so that it knows where to find the ReFrame
 # config file that matches the bot config. See https://gitlab.com/eessi/support/-/issues/114#note_2293660921
 if [ -z "$RFM_CONFIG_FILES" ]; then
-    err_msg = "Please set RFM_CONFIG_FILES in the environment of this bot instance to point to a valid"
-    err_msg = "${err_msg} ReFrame configuration file that matches the bot config."
-    err_msg = "${err_msg} For more information, see https://gitlab.com/eessi/support/-/issues/114#note_2293660921"
+    err_msg="Please set RFM_CONFIG_FILES in the environment of this bot instance to point to a valid"
+    err_msg="${err_msg} ReFrame configuration file that matches the bot config."
+    err_msg="${err_msg} For more information, see https://gitlab.com/eessi/support/-/issues/114#note_2293660921"
     fatal_error "${err_msg}"
 fi
 export RFM_CHECK_SEARCH_PATH=$TESTSUITEPREFIX/eessi/testsuite/tests
