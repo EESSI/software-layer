@@ -2,4 +2,4 @@
 # The module is an EasyBuild created module and therefore needs to be an allowed
 # module when running EasyBuild
 easyconfigs:
-  - EESSI-extend-2023.06-easybuild.eb 
+  - EESSI-extend-easybuild.eb

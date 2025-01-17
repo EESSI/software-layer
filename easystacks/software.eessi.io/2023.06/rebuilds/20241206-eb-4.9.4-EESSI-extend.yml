@@ -1,0 +1,6 @@
+# 2024.12.06
+# - Use $EESSI_VERSION to determine version of EESSI-extend module
+# - Fix the filtered dependencies for aarch64: Yasm instead of yasm
+# - Also add filtered dependencies for RISC-V
+easyconfigs:
+  - EESSI-extend-easybuild.eb

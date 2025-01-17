@@ -1,5 +1,5 @@
 # 2024.10.08
 # EESSI-extend should use EESSI_SITE_INSTALLPATH, instead of recalculating this
 easyconfigs:
-  - EESSI-extend-2023.06-easybuild.eb
+  - EESSI-extend-easybuild.eb
 
