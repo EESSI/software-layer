@@ -135,9 +135,9 @@ else
       # Make sure EESSI_PREFIX and EESSI_OS_TYPE are set
       source $TOPDIR/init/minimal_eessi_env
 
-      echo ">> Creating directory for software subdirectory override: ${EESSI_PREFIX}/software/${EESSI_OS_TYPE}/${EESSI_SOFTWARE_SUBDIR_OVERRIDE}"
-      # make sure directory exists (since it's expected by init/eessi_environment_variables when using archdetect)
-      mkdir -p ${EESSI_PREFIX}/software/${EESSI_OS_TYPE}/${EESSI_SOFTWARE_SUBDIR_OVERRIDE}
+      # make sure the the software and modules directory exist
+      # (since it's expected by init/eessi_environment_variables when using archdetect and by the EESSI module)
+      mkdir -p ${EESSI_PREFIX}/software/${EESSI_OS_TYPE}/${EESSI_SOFTWARE_SUBDIR_OVERRIDE}/{modules,software}
   )
 fi
 
