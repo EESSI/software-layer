@@ -5,3 +5,7 @@ easyconfigs:
   - OpenMPI-4.1.6-GCC-13.2.0:
       options:
         from-pr: 19940
+  - XZ-5.4.4-GCCcore-13.2.0.eb
+  - SQLite-3.43.1-GCCcore-13.2.0.eb
+  - UnZip-6.0-GCCcore-13.2.0.eb
+  - libffi-3.4.4-GCCcore-13.2.0.eb

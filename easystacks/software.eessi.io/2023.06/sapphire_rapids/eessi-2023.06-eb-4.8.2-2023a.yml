@@ -1,0 +1,6 @@
+easyconfigs:
+  - XZ-5.4.2-GCCcore-12.3.0.eb
+  - libffi-3.4.4-GCCcore-12.3.0.eb
+  - SQLite-3.42.0-GCCcore-12.3.0.eb
+  - bzip2-1.0.8-GCCcore-12.3.0.eb
+  - UnZip-6.0-GCCcore-12.3.0.eb
