@@ -3,6 +3,9 @@ easyconfigs:
   - Python-3.10.8-GCCcore-12.2.0-bare.eb
   - make-4.3-GCCcore-12.2.0.eb
   - cairo-1.17.4-GCCcore-12.2.0.eb
+  - UCC-1.1.0-GCCcore-12.2.0.eb
+  - PMIx-4.2.2-GCCcore-12.2.0.eb
+  - libfabric-1.16.1-GCCcore-12.2.0.eb
   - foss-2022b.eb
   - HarfBuzz-5.3.1-GCCcore-12.2.0.eb:
       options:
