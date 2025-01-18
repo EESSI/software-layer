@@ -4,3 +4,6 @@ easyconfigs:
   - SQLite-3.42.0-GCCcore-12.3.0.eb
   - bzip2-1.0.8-GCCcore-12.3.0.eb
   - UnZip-6.0-GCCcore-12.3.0.eb
+  - poetry-1.5.1-GCCcore-12.3.0.eb
+  - git-2.41.0-GCCcore-12.3.0-nodocs.eb
+  - flit-3.9.0-GCCcore-12.3.0.eb
