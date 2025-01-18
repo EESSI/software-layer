@@ -3,3 +3,9 @@ easyconfigs:
   - Python-3.10.8-GCCcore-12.2.0-bare.eb
   - make-4.3-GCCcore-12.2.0.eb
   - cairo-1.17.4-GCCcore-12.2.0.eb
+  - foss-2022b.eb
+  - HarfBuzz-5.3.1-GCCcore-12.2.0.eb:
+      options:
+        from-pr: 19339
+  - Qt5-5.15.7-GCCcore-12.2.0.eb
+  - QuantumESPRESSO-7.2-foss-2022b.eb
