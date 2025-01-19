@@ -10,3 +10,7 @@ easyconfigs:
   - UnZip-6.0-GCCcore-13.2.0.eb
   - libffi-3.4.4-GCCcore-13.2.0.eb
   - cairo-1.18.0-GCCcore-13.2.0.eb
+  - poetry-1.6.1-GCCcore-13.2.0.eb
+  - git-2.42.0-GCCcore-13.2.0.eb
+  - flit-3.9.0-GCCcore-13.2.0.eb
+  - expat-2.5.0-GCCcore-13.2.0.eb
