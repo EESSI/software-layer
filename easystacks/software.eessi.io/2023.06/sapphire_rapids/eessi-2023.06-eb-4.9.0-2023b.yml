@@ -9,3 +9,4 @@ easyconfigs:
   - SQLite-3.43.1-GCCcore-13.2.0.eb
   - UnZip-6.0-GCCcore-13.2.0.eb
   - libffi-3.4.4-GCCcore-13.2.0.eb
+  - cairo-1.18.0-GCCcore-13.2.0.eb
