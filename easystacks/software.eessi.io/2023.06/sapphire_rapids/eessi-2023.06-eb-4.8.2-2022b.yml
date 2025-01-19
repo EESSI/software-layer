@@ -6,3 +6,9 @@ easyconfigs:
   - UCC-1.1.0-GCCcore-12.2.0.eb
   - PMIx-4.2.2-GCCcore-12.2.0.eb
   - libfabric-1.16.1-GCCcore-12.2.0.eb
+  - foss-2022b.eb
+  - HarfBuzz-5.3.1-GCCcore-12.2.0.eb:
+      options:
+        from-pr: 19339
+  - Qt5-5.15.7-GCCcore-12.2.0.eb
+  - QuantumESPRESSO-7.2-foss-2022b.eb
