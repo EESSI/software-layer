@@ -1,2 +1,14 @@
 easyconfigs:
   - OpenMPI-4.1.4-GCC-12.2.0.eb
+  - SciPy-bundle-2023.02-gfbf-2022b.eb
+  - GDAL-3.6.2-foss-2022b.eb
+  - waLBerla-6.1-foss-2022b.eb:
+      options:
+        from-pr: 19324
+  - WRF-4.4.1-foss-2022b-dmpar.eb
+  - ImageMagick-7.1.0-53-GCCcore-12.2.0.eb:
+      options:
+        from-pr: 20086
+  - R-4.2.2-foss-2022b.eb:
+      options:
+        from-pr: 20238
