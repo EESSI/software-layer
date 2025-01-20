@@ -85,6 +85,12 @@ source $TOPDIR/init/bash
 # Reason is that the LMOD cache is normally only updated on the Stratum 0, once everything is ingested
 export LMOD_IGNORE_CACHE=1
 
+source $software_layer_dir/scripts/cfg_files.sh
+
+# defaults
+export JOB_CFG_FILE="${JOB_CFG_FILE_OVERRIDE:=cfg/job.cfg}"
+HOST_ARCH=$(uname -m)
+
 # check if ${JOB_CFG_FILE} exists
 if [[ ! -r "${JOB_CFG_FILE}" ]]; then
     fatal_error "job config file (JOB_CFG_FILE=${JOB_CFG_FILE}) does not exist or not readable"
