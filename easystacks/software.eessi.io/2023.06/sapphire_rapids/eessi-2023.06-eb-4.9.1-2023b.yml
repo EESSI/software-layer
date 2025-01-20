@@ -2,3 +2,11 @@ easyconfigs:
   - Python-3.11.5-GCCcore-13.2.0.eb
   - hatchling-1.18.0-GCCcore-13.2.0.eb
   - Python-bundle-PyPI-2023.10-GCCcore-13.2.0.eb
+  - scikit-build-core-0.9.3-GCCcore-13.2.0.eb:
+      options:
+        # from-commit: 61d07bff09afe63cfe1ae35dc58a0c8be01eed62
+        from-pr: 20526
+  - GROMACS-2024.1-foss-2023b.eb:
+      options:
+        # from-commit: a0a467a88506c765a93a96b20d7a8fcb01d46b24
+        from-pr: 20522
