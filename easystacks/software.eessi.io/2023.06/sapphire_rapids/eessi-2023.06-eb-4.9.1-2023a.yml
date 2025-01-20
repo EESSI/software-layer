@@ -1,0 +1,4 @@
+easyconfigs:
+  - Python-3.11.3-GCCcore-12.3.0.eb
+  - hatchling-1.18.0-GCCcore-12.3.0.eb
+  - Python-bundle-PyPI-2023.06-GCCcore-12.3.0.eb

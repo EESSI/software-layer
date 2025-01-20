@@ -1,0 +1,3 @@
+easyconfigs:
+  - GObject-Introspection-1.78.1-GCCcore-13.2.0.eb
+  - at-spi2-core-2.50.0-GCCcore-13.2.0.eb
