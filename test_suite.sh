@@ -85,6 +85,16 @@ source $TOPDIR/init/bash
 # Reason is that the LMOD cache is normally only updated on the Stratum 0, once everything is ingested
 export LMOD_IGNORE_CACHE=1
 
+# check if ${JOB_CFG_FILE} exists
+if [[ ! -r "${JOB_CFG_FILE}" ]]; then
+    fatal_error "job config file (JOB_CFG_FILE=${JOB_CFG_FILE}) does not exist or not readable"
+fi
+echo "test_suite.sh: showing ${JOB_CFG_FILE} from software-layer side"
+cat ${JOB_CFG_FILE}
+
+echo "test_suite.sh: obtaining configuration settings from '${JOB_CFG_FILE}'"
+cfg_load ${JOB_CFG_FILE}
+
 echo "test_suite.sh: MODULEPATH='${MODULEPATH}'"
 export EESSI_ACCELERATOR_TARGET=$(cfg_get_value "architecture" "accelerator")
 echo "test_suite.sh: EESSI_ACCELERATOR_TARGET='${EESSI_ACCELERATOR_TARGET}'"
