@@ -86,6 +86,7 @@ source $TOPDIR/init/bash
 export LMOD_IGNORE_CACHE=1
 
 echo "test_suite.sh: MODULEPATH='${MODULEPATH}'"
+echo "test_suite.sh: EESSI_ACCELERATOR_TARGET='${EESSI_ACCELERATOR_TARGET}'"
 # Load the ReFrame module
 # Currently, we load the default version. Maybe we should somehow make this configurable in the future?
 module load ReFrame
