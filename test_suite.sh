@@ -85,6 +85,7 @@ source $TOPDIR/init/bash
 # Reason is that the LMOD cache is normally only updated on the Stratum 0, once everything is ingested
 export LMOD_IGNORE_CACHE=1
 
+software_layer_dir=$(dirname $(realpath $0))
 source $software_layer_dir/scripts/cfg_files.sh
 
 # defaults
