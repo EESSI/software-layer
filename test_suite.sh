@@ -256,7 +256,7 @@ else
 fi
 # Allow people deploying the bot to overrwide this
 if [ -z "$REFRAME_SCALE_TAG" ]; then
-    REFRAME_SCALE_TAGS="--tag 1_4_node"
+    REFRAME_SCALE_TAG="--tag 1_4_node"
 fi
 if [ -z "$REFRAME_CI_TAG" ]; then
     REFRAME_CI_TAG="--tag CI"
