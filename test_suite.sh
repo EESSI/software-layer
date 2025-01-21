@@ -227,9 +227,9 @@ export PSM3_DEVICES='self,shm'  # this is enough, since we only run single node 
 # Check we can run reframe
 reframe --version
 if [[ $? -eq 0 ]]; then
-echo_green "Succesfully ran 'reframe --version'"
+    echo_green "Succesfully ran 'reframe --version'"
 else
-fatal_error "Failed to run 'reframe --version'"
+    fatal_error "Failed to run 'reframe --version'"
 fi
 
 # Get the subset of test names based on the test mapping and tags (e.g. CI, 1_node)
