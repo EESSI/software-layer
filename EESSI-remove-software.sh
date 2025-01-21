@@ -132,8 +132,8 @@ if [ $EUID -eq 0 ]; then
                     # recreate some directory to work around permission denied
                     # issues when rebuilding the package
                     mkdir -p ${app_dir}
-                    ls ${app_dir}
                     mkdir -p ${app_dir}/easybuild
+                    echo "Running ls ${app_dir}/easybuild"
                     ls ${app_dir}/easybuild
                 done
             else
