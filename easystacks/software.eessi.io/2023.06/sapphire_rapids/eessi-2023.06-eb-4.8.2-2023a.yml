@@ -11,3 +11,22 @@ easyconfigs:
   - poetry-1.5.1-GCCcore-12.3.0.eb
   - git-2.41.0-GCCcore-12.3.0-nodocs.eb
   - flit-3.9.0-GCCcore-12.3.0.eb
+  - OpenBLAS-0.3.23-GCC-12.3.0.eb:
+      options:
+        # required for Intel Sapphire Rapids support
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/19159
+        from-pr: 19159
+  - foss-2023a.eb
+  - pybind11-2.11.1-GCCcore-12.3.0.eb:
+      # avoid indirect dependency on old CMake version built with GCCcore/10.2.0 via Catch2 build dependency;
+      # see https://github.com/easybuilders/easybuild-easyconfigs/pull/19270
+      options:
+        from-pr: 19270
+  - SciPy-bundle-2023.07-gfbf-2023a.eb:
+      options:
+        from-pr: 21693
+  - TensorFlow-2.13.0-foss-2023a.eb:
+      # patch setup.py for grpcio extension in TensorFlow 2.13.0 easyconfigs to take into account alternate sysroot;
+      # see https://github.com/easybuilders/easybuild-easyconfigs/pull/19268
+      options:
+        from-pr: 19268

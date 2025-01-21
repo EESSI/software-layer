@@ -337,6 +337,9 @@ else
             echo_green "Feeding easystack file ${easystack_file} to EasyBuild..."
 
             if [[ ${easystack_file} == *"/rebuilds/"* ]]; then
+                # the removal script should have removed the original directory and created a new and empty one
+                # to work around permission issues:
+                # https://github.com/EESSI/software-layer/issues/556
                 echo_yellow "This is a rebuild, so using --try-amend=keeppreviousinstall=True to reuse the already created directory"
                 ${EB} --easystack ${easystack_file} --robot --try-amend=keeppreviousinstall=True
             else
