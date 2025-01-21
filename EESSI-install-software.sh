@@ -336,7 +336,11 @@ else
         if [ -f ${easystack_file} ]; then
             echo_green "Feeding easystack file ${easystack_file} to EasyBuild..."
 
-            ${EB} --easystack ${easystack_file} --robot
+            if [[ $stack == *"/rebuilds/"* ]]; then
+                ${EB} --easystack ${easystack_file} --robot --try-amend=keeppreviousinstall=True
+            else
+                ${EB} --easystack ${easystack_file} --robot
+            fi
             ec=$?
 
             # copy EasyBuild log file if EasyBuild exited with an error
