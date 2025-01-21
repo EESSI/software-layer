@@ -25,11 +25,11 @@ mappings:
   LAMMPS/*:
     - EESSI_LAMMPS
   OSU-Micro-Benchmarks/*:
-    - EESSI_OSU_Micro_Benchmarks
+    - EESSI_OSU
   GROMACS/*:
     - EESSI_GROMACS
   default_tests:
     # Low level tests
-    - EESSI_OSU_Micro_Benchmarks
+    - EESSI_OSU
     # A very quick-to-run high level application test
     - EESSI_LAMMPS
