@@ -8,10 +8,13 @@ from stat import S_IREAD, S_IWRITE, S_IRGRP, S_IWGRP, S_IROTH
 
 DOT_LMOD = '.lmod'
 
-hook_txt = """require("strict")
+hook_prologue = """require("strict")
 local hook = require("Hook")
 local open = io.open
 
+"""
+
+hook_txt = """
 local function read_file(path)
     local file = open(path, "rb") -- r read mode and b binary mode
     if not file then return nil end
@@ -203,10 +206,46 @@ end
 
 hook.register("load", eessi_load_hook)
 
+"""
+
+hook_epilogue = """
 -- Note that this needs to happen at the end, so that any EESSI specific hooks can be overwritten by the site
 load_site_specific_hooks()
 """
 
+
+# This hook is only for zen4.
+hook_txt_zen4 = """
+local function hide_2022b_modules(modT)
+    -- modT is a table with: fullName, sn, fn and isVisible
+    -- The latter is a boolean to determine if a module is visible or not
+
+    local tcver = modT.fullName:match("gfbf%-(20[0-9][0-9][ab])") or
+                  modT.fullName:match("gompi%-(20[0-9][0-9][ab])") or
+                  modT.fullName:match("foss%-(20[0-9][0-9][ab])") or
+                  modT.fullName:match("GCC%-([0-9]*.[0-9]*.[0-9]*)") or
+                  modT.fullName:match("GCCcore%-([0-9]*.[0-9]*.[0-9]*)")
+
+    -- if nothing matches, return              
+    if tcver == nil then return end
+
+    -- if we have matches, check if the toolchain version is either 2022b or 12.2.0
+    if parseVersion(tcver) == parseVersion("2022b") or parseVersion(tcver) == parseVersion("12.2.0") then
+        modT.isVisible = false
+    end
+end
+
+hook.register("isVisibleHook", hide_2022b_modules)
+"""
+
+# Append conditionally for zen4
+eessi_software_subdir_override = os.getenv("EESSI_SOFTWARE_SUBDIR_OVERRIDE")
+if eessi_software_subdir_override == "x86_64/amd/zen4":
+    hook_txt = hook_txt + hook_txt_zen4
+
+# Concatenate hook prologue, body and epilogue
+# Note that this has to happen after any conditional items have been added to the hook_txt
+hook_txt = hook_prologue + hook_txt + hook_epilogue
 
 def error(msg):
     sys.stderr.write("ERROR: %s\n" % msg)
