@@ -127,14 +127,17 @@ if [ $EUID -eq 0 ]; then
                     app_dir=${app_installprefix}/software/${app}
                     app_module=${app_installprefix}/modules/all/${app}.lua
                     echo_yellow "Removing ${app_dir} and ${app_module}..."
+                    app_subdirs=$(find ${app_dir} -mindepth 1 -maxdepth 1 -type d)
                     rm -rf ${app_dir}
                     rm -rf ${app_module}
                     # recreate some directory to work around permission denied
                     # issues when rebuilding the package
                     mkdir -p ${app_dir}
-                    mkdir -p ${app_dir}/easybuild
-                    echo "Running ls ${app_dir}/easybuild"
-                    ls ${app_dir}/easybuild
+                    for app_subdir in ${app_subdirs}; do
+                        echo "Recreating ${app_subdir}..."
+                        mkdir -p ${app_subdir}
+                        ls ${app_subdir}
+                    done
                 done
             else
                 fatal_error "Easystack file ${easystack_file} not found!"
