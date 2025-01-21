@@ -1,0 +1,14 @@
+# 2025.01.21
+# While adding support for Intel Sapphire Rapids, additional patches applied to the
+# original easyconfig were required to successfully build SciPy-bundle 2023.07.
+# In order to keep the stack consistent across the different CPUs,
+# a rebuild is done for all CPU targets with this updated easyconfig.
+# See:
+# - https://github.com/easybuilders/easybuild-easyconfigs/pull/19419
+# - https://github.com/easybuilders/easybuild-easyconfigs/pull/20817
+# - https://github.com/easybuilders/easybuild-easyconfigs/pull/21693
+easyconfigs:
+  - SciPy-bundle-2023.07-gfbf-2023a.eb
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/21693
+        from-commit: 7c5144d2c1a061cd9f08b5901970b7f6ec5eb5c0
