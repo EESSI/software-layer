@@ -178,6 +178,10 @@ EESSI_SOFTWARE_SUBDIR_OVERRIDE=${EESSI_SOFTWARE_SUBDIR_OVERRIDE:-${CPU_TARGET}}
 export EESSI_SOFTWARE_SUBDIR_OVERRIDE
 echo "bot/test.sh: EESSI_SOFTWARE_SUBDIR_OVERRIDE='${EESSI_SOFTWARE_SUBDIR_OVERRIDE}'"
 
+# determine accelerator target (if any) from .architecture in ${JOB_CFG_FILE}
+export EESSI_ACCELERATOR_TARGET=$(cfg_get_value "architecture" "accelerator")
+echo "bot/test.sh: EESSI_ACCELERATOR_TARGET='${EESSI_ACCELERATOR_TARGET}'"
+
 # get EESSI_OS_TYPE from .architecture.os_type in ${JOB_CFG_FILE} (default: linux)
 EESSI_OS_TYPE=$(cfg_get_value "architecture" "os_type")
 export EESSI_OS_TYPE=${EESSI_OS_TYPE:-linux}
