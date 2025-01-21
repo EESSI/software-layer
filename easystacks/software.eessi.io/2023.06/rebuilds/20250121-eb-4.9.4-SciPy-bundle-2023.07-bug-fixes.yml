@@ -8,7 +8,7 @@
 # - https://github.com/easybuilders/easybuild-easyconfigs/pull/20817
 # - https://github.com/easybuilders/easybuild-easyconfigs/pull/21693
 easyconfigs:
-  - SciPy-bundle-2023.07-gfbf-2023a.eb
+  - SciPy-bundle-2023.07-gfbf-2023a.eb:
       options:
         # see https://github.com/easybuilders/easybuild-easyconfigs/pull/21693
         from-commit: 7c5144d2c1a061cd9f08b5901970b7f6ec5eb5c0
