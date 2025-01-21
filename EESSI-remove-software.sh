@@ -131,7 +131,10 @@ if [ $EUID -eq 0 ]; then
                     rm -rf ${app_module}
                     # recreate some directory to work around permission denied
                     # issues when rebuilding the package
+                    mkdir -p ${app_dir}
+                    ls ${app_dir}
                     mkdir -p ${app_dir}/easybuild
+                    ls ${app_dir}/easybuild
                 done
             else
                 fatal_error "Easystack file ${easystack_file} not found!"
