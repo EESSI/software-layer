@@ -265,7 +265,7 @@ fi
 if [ -z "$REFRAME_ADDITIONAL_ARGS" ]; then
     REFRAME_ADDITIONAL_ARGS=""
 fi
-export REFRAME_ARGS="${REFRAME_CI_TAG} ${REFRAME_SCALE_TAG} ${REFRAME_ADDITIONAL_ARGS} --nocolor ${REFRAME_NAME_ARGS}"
+export REFRAME_ARGS="${REFRAME_CI_TAG} ${REFRAME_SCALE_TAG} ${REFRAME_ADDITIONAL_ARGS} --nocolor"
 
 # List the tests we want to run
 echo "Listing tests: reframe ${REFRAME_ARGS} --list"
