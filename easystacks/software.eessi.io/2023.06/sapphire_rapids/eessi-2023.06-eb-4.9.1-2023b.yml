@@ -10,3 +10,7 @@ easyconfigs:
       options:
         # from-commit: a0a467a88506c765a93a96b20d7a8fcb01d46b24
         from-pr: 20522
+  - NLTK-3.8.1-foss-2023b.eb
+  - Valgrind-3.23.0-gompi-2023b.eb:
+      options:
+        from-pr: 20792
