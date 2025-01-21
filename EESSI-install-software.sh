@@ -336,7 +336,8 @@ else
         if [ -f ${easystack_file} ]; then
             echo_green "Feeding easystack file ${easystack_file} to EasyBuild..."
 
-            if [[ $stack == *"/rebuilds/"* ]]; then
+            if [[ ${easystack_file} == *"/rebuilds/"* ]]; then
+                echo_yellow "This is a rebuild, so using --try-amend=keeppreviousinstall=True to reuse the already created directory"
                 ${EB} --easystack ${easystack_file} --robot --try-amend=keeppreviousinstall=True
             else
                 ${EB} --easystack ${easystack_file} --robot
