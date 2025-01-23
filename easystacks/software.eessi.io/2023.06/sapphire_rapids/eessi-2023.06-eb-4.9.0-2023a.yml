@@ -31,3 +31,7 @@ easyconfigs:
       options:
         # see https://github.com/easybuilders/easybuild-easyconfigs/pull/19480
         from-pr: 19480
+  - PyTorch-2.1.2-foss-2023a.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/19573
+        from-pr: 19573
