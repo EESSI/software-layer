@@ -9,7 +9,7 @@ from easybuild.easyblocks.generic.configuremake import obtain_config_guess
 from easybuild.framework.easyconfig.constants import EASYCONFIG_CONSTANTS
 from easybuild.tools.build_log import EasyBuildError, print_msg
 from easybuild.tools.config import build_option, update_build_option
-from easybuild.tools.filetools import apply_regex_substitutions, copy_file, remove_file, symlink, which
+from easybuild.tools.filetools import apply_regex_substitutions, copy_file, dir_contains_files, remove_file, symlink, which
 from easybuild.tools.run import run_cmd
 from easybuild.tools.systemtools import AARCH64, POWER, X86_64, get_cpu_architecture, get_cpu_features
 from easybuild.tools.toolchain.compiler import OPTARCH_GENERIC
@@ -448,6 +448,16 @@ def pre_fetch_hook_zen4_gcccore1220(self, *args, **kwargs):
         setattr(self, EESSI_FORCE_ATTR, build_option('force'))
         update_build_option('force', 'True')
         print_msg("Updated build option 'force' to 'True'")
+
+
+def pre_install_hook(self, *args, **kwargs):
+    """Main pre install hook: trigger custom functions based on software name."""
+    if 'keeppreviousinstall' in self.cfg and self.cfg['keeppreviousinstall']:
+        if dir_contains_files(self.installdir, recursive=True):
+            raise EasyBuildError("Parameter keeppreviousinstall is set to True, but the installation directory still contains files!")
+
+    if self.name in PRE_INSTALL_HOOKS:
+        PRE_INSTALL_HOOKS[ec.name](self, *args, **kwargs)
 
 
 def post_module_hook_zen4_gcccore1220(self, *args, **kwargs):
@@ -1148,6 +1158,8 @@ PRE_CONFIGURE_HOOKS = {
     'LAMMPS': pre_configure_hook_LAMMPS_zen4,
     'Score-P': pre_configure_hook_score_p,
 }
+
+PRE_INSTALL_HOOKS = {}
 
 PRE_TEST_HOOKS = {
     'ESPResSo': pre_test_hook_ignore_failing_tests_ESPResSo,
