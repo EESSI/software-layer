@@ -17,3 +17,17 @@ easyconfigs:
   - Rivet-3.1.9-gompi-2023a-HepMC3-3.2.6.eb:
       options:
         from-pr: 19679
+  - Pillow-10.0.0-GCCcore-12.3.0.eb
+  - sympy-1.12-gfbf-2023a.eb
+  - networkx-3.1-gfbf-2023a.eb
+  - expecttest-0.1.5-GCCcore-12.3.0.eb
+  - PyYAML-6.0-GCCcore-12.3.0.eb
+  - pytest-flakefinder-1.1.0-GCCcore-12.3.0.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/19480
+        from-pr: 19480
+  - pytest-rerunfailures-12.0-GCCcore-12.3.0.eb
+  - pytest-shard-0.1.2-GCCcore-12.3.0.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/19480
+        from-pr: 19480
