@@ -24,13 +24,10 @@ easyconfigs:
   - PyYAML-6.0-GCCcore-12.3.0.eb
   - pytest-flakefinder-1.1.0-GCCcore-12.3.0.eb:
       options:
-        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/19573
-        from-pr: 19573
-  - pytest-rerunfailures-12.0-GCCcore-12.3.0.eb:
-      options:
-        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/19573
-        from-pr: 19573
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/19480
+        from-pr: 19480
+  - pytest-rerunfailures-12.0-GCCcore-12.3.0.eb
   - pytest-shard-0.1.2-GCCcore-12.3.0.eb:
       options:
-        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/19573
-        from-pr: 19573
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/19480
+        from-pr: 19480
