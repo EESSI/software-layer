@@ -29,4 +29,7 @@ easyconfigs:
   - R-bundle-CRAN-2024.06-foss-2023b.eb:
       options:
         # see https://github.com/easybuilders/easybuild-easyconfigs/pull/21285
+        # the commit we use is not from the PR , but the same one as used for Brunsli,
+        # because otherwise the missing installation script still complains about a missing Highway
+        # note: this commit has the same version of R-bundle-CRAN as merged by PR #21285
         from-commit: 1736a123b1685836452587a5c51793257570bb2d
