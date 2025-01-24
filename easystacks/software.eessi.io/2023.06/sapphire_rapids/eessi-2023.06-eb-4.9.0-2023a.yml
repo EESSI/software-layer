@@ -41,26 +41,7 @@ easyconfigs:
       options:
         from-pr: 19471
         include-easyblocks-from-pr: 3036
-  - matplotlib-3.7.2-gfbf-2023a.eb
-  - PyQt5-5.15.10-GCCcore-12.3.0.eb:
-      # see https://github.com/easybuilders/easybuild-easyconfigs/pull/19554
+  - PyTorch-2.1.2-foss-2023a.eb:
       options:
-        from-pr: 19554
-  - Pillow-SIMD-9.5.0-GCCcore-12.3.0.eb:
-      options:
-        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/19996
-        from-pr: 19996
-  - dask-2023.9.2-foss-2023a.eb
-  - JupyterNotebook-7.0.2-GCCcore-12.3.0.eb
-  - ImageMagick-7.1.1-15-GCCcore-12.3.0.eb:
-      options:
-        from-pr: 20086
-  - Z3-4.12.2-GCCcore-12.3.0.eb:
-      options:
-        # The Z3 dependency of PyTorch had it's versionsuffix removed
-        # and we need to workaround the problem this creates,
-        # see https://github.com/EESSI/software-layer/pull/501 for details
-        from-pr: 20050
-  - PyOpenGL-3.1.7-GCCcore-12.3.0.eb:
-      options:
-        from-pr: 20007
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/19573
+        from-pr: 19573

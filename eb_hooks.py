@@ -26,6 +26,7 @@ CPU_TARGET_NEOVERSE_V1 = 'aarch64/neoverse_v1'
 CPU_TARGET_AARCH64_GENERIC = 'aarch64/generic'
 CPU_TARGET_A64FX = 'aarch64/a64fx'
 
+CPU_TARGET_SAPPHIRE_RAPIDS = 'x86_64/intel/sapphire_rapids'
 CPU_TARGET_ZEN4 = 'x86_64/amd/zen4'
 
 EESSI_RPATH_OVERRIDE_ATTR = 'orig_rpath_override_dirs'
@@ -817,11 +818,16 @@ def pre_test_hook_ignore_failing_tests_netCDF(self, *args, **kwargs):
 
 def pre_test_hook_increase_max_failed_tests_arm_PyTorch(self, *args, **kwargs):
     """
-    Pre-test hook for PyTorch: increase max failing tests for ARM for PyTorch 2.1.2
-    See https://github.com/EESSI/software-layer/pull/444#issuecomment-1890416171
+    Pre-test hook for PyTorch: increase max failing tests for ARM and Intel Sapphire Rapids for PyTorch 2.1.2
+    See https://github.com/EESSI/software-layer/pull/444#issuecomment-1890416171 and
+    https://github.com/EESSI/software-layer/pull/875#issuecomment-2606854400
     """
-    if self.name == 'PyTorch' and self.version == '2.1.2' and get_cpu_architecture() == AARCH64:
-        self.cfg['max_failed_tests'] = 10
+    cpu_target = get_eessi_envvar('EESSI_SOFTWARE_SUBDIR')
+    if self.name == 'PyTorch' and self.version == '2.1.2':
+        if get_cpu_architecture() == AARCH64:
+            self.cfg['max_failed_tests'] = 10
+        if cpu_target == CPU_TARGET_SAPPHIRE_RAPIDS:
+            self.cfg['max_failed_tests'] = 4
 
 
 def pre_single_extension_hook(ext, *args, **kwargs):
