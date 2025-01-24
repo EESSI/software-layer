@@ -41,6 +41,10 @@ easyconfigs:
       options:
         from-pr: 19471
         include-easyblocks-from-pr: 3036
+  - PyTorch-2.1.2-foss-2023a.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/19573
+        from-pr: 19573
   - matplotlib-3.7.2-gfbf-2023a.eb
   - PyQt5-5.15.10-GCCcore-12.3.0.eb:
       # see https://github.com/easybuilders/easybuild-easyconfigs/pull/19554
