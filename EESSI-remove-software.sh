@@ -102,7 +102,7 @@ pr_diff=$(ls [0-9]*.diff | head -1)
 
 # if this script is run as root, use PR patch file to determine if software needs to be removed first
 if [ $EUID -eq 0 ]; then
-    changed_easystacks_rebuilds=$(cat ${pr_diff} | grep '^+++' | cut -f2 -d' ' | sed 's@^[a-z]/@@g' | grep '^easystacks/.*yml$' | egrep -v 'known-issues|missing' | grep "/rebuilds/")
+    changed_easystacks_rebuilds=$(cat ${pr_diff} | grep '^+++' | cut -f2 -d' ' | sed 's@^[a-z]/@@g' | grep 'easystacks/.*yml$' | egrep -v 'known-issues|missing' | grep "/rebuilds/")
     if [ -z ${changed_easystacks_rebuilds} ]; then
         echo "No software needs to be removed."
     else
@@ -125,10 +125,18 @@ if [ $EUID -eq 0 ]; then
                     # Two dirname invocations, so returns e.g. /cvmfs/software.eessi.io/versions/2023.06/software/linux/x86_64/amd/zen2
                     app_installprefix=$(dirname $(dirname ${app_modulepath}))
                     app_dir=${app_installprefix}/software/${app}
+                    app_subdirs=$(find ${app_dir} -mindepth 1 -maxdepth 1 -type d)
                     app_module=${app_installprefix}/modules/all/${app}.lua
                     echo_yellow "Removing ${app_dir} and ${app_module}..."
                     rm -rf ${app_dir}
                     rm -rf ${app_module}
+                    # recreate the installation directories and first-level subdirectories to work around permission denied
+                    # issues when rebuilding the package (see https://github.com/EESSI/software-layer/issues/556)
+                    echo_yellow "Recreating an empty ${app_dir}..."
+                    mkdir -p ${app_dir}
+                    for app_subdir in ${app_subdirs}; do
+                        mkdir -p ${app_subdir}
+                    done
                 done
             else
                 fatal_error "Easystack file ${easystack_file} not found!"

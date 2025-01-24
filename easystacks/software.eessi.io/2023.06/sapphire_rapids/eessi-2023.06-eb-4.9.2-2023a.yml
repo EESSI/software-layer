@@ -1,0 +1,12 @@
+easyconfigs:
+  - GObject-Introspection-1.76.1-GCCcore-12.3.0.eb
+  - at-spi2-core-2.49.91-GCCcore-12.3.0.eb
+  - OpenFOAM-10-foss-2023a.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/20958
+        from-commit: dbadb2074464d816740ee0e95595c2cb31b6338f
+  - OpenFOAM-11-foss-2023a.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/20958
+        from-commit: dbadb2074464d816740ee0e95595c2cb31b6338f
+

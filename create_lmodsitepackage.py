@@ -8,7 +8,7 @@ from stat import S_IREAD, S_IWRITE, S_IRGRP, S_IWGRP, S_IROTH
 
 DOT_LMOD = '.lmod'
 
-hook_txt ="""require("strict")
+hook_txt = """require("strict")
 local hook = require("Hook")
 local open = io.open
 
@@ -36,7 +36,7 @@ local function from_eessi_prefix(t)
         -- eessi_prefix_host_injections is the prefix with site-extensions (i.e. additional modules)
         -- to the official EESSI modules, e.g. /cvmfs/software.eessi.io/host_injections/2023.06
         local eessi_prefix_host_injections = string.gsub(eessi_prefix, 'versions', 'host_injections')
-        
+
        -- Check if the full modulepath starts with the eessi_prefix_*
         return string.find(t.fn, "^" .. eessi_prefix) ~= nil or string.find(t.fn, "^" .. eessi_prefix_host_injections) ~= nil
     end
@@ -103,7 +103,7 @@ local function load_site_specific_hooks()
     if isFile(archSitePackage) then
         dofile(archSitePackage)
     end
-    
+
 end
 
 
@@ -111,10 +111,10 @@ local function eessi_cuda_enabled_load_hook(t)
     local frameStk  = require("FrameStk"):singleton()
     local mt        = frameStk:mt()
     local simpleName = string.match(t.modFullName, "(.-)/")
-    -- If we try to load CUDA itself, check if the full CUDA SDK was installed on the host in host_injections. 
+    -- If we try to load CUDA itself, check if the full CUDA SDK was installed on the host in host_injections.
     -- This is required for end users to build additional CUDA software. If the full SDK isn't present, refuse
     -- to load the CUDA module and print an informative message on how to set up GPU support for EESSI
-    local refer_to_docs = "For more information on how to do this, see https://www.eessi.io/docs/gpu/.\\n"
+    local refer_to_docs = "For more information on how to do this, see https://www.eessi.io/docs/site_specific_config/gpu/.\\n"
     if simpleName == 'CUDA' then
         -- get the full host_injections path
         local hostInjections = string.gsub(os.getenv('EESSI_SOFTWARE_PATH') or "", 'versions', 'host_injections')
@@ -207,6 +207,7 @@ hook.register("load", eessi_load_hook)
 load_site_specific_hooks()
 """
 
+
 def error(msg):
     sys.stderr.write("ERROR: %s\n" % msg)
     sys.exit(1)
@@ -221,12 +222,18 @@ if not os.path.exists(prefix):
     error("Prefix directory %s does not exist!" % prefix)
 
 sitepackage_path = os.path.join(prefix, DOT_LMOD, 'SitePackage.lua')
+
+# Lmod itself doesn't care about compute capability so remove this duplication from
+# the install path (if it exists)
+accel_subdir = os.getenv("EESSI_ACCELERATOR_TARGET")
+if accel_subdir:
+    sitepackage_path = sitepackage_path.replace("/accel/%s" % accel_subdir, '')
 try:
     os.makedirs(os.path.dirname(sitepackage_path), exist_ok=True)
     with open(sitepackage_path, 'w') as fp:
         fp.write(hook_txt)
     # Make sure that the created Lmod file has "read/write" for the user/group and "read" permissions for others
-    os.chmod(sitepackage_path, S_IREAD|S_IWRITE|S_IRGRP|S_IWGRP|S_IROTH)
+    os.chmod(sitepackage_path, S_IREAD | S_IWRITE | S_IRGRP | S_IWGRP | S_IROTH)
 
 except (IOError, OSError) as err:
     error("Failed to create %s: %s" % (sitepackage_path, err))

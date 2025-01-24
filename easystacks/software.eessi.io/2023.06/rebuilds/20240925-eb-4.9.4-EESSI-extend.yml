@@ -1,0 +1,6 @@
+# 2024.09.25
+# EESSI-extend did not support LMOD_EXACT_MATCH 
+# (see https://github.com/EESSI/software-layer/pull/747)
+easyconfigs:
+  - EESSI-extend-easybuild.eb
+

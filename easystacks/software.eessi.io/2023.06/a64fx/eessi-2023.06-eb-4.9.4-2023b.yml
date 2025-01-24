@@ -1,0 +1,4 @@
+easyconfigs:
+  - SciPy-bundle-2023.11-gfbf-2023b.eb
+  - ESPResSo-4.2.2-foss-2023b.eb
+  - pyMBE-0.8.0-foss-2023b.eb

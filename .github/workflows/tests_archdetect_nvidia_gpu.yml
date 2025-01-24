@@ -1,0 +1,124 @@
+# documentation: https://help.github.com/en/articles/workflow-syntax-for-github-actions
+name: Tests for accelerator detection (NVIDIA GPU)
+on:
+  push:
+  pull_request:
+permissions:
+  contents: read # to fetch code (actions/checkout)
+jobs:
+  build:
+    runs-on: ubuntu-24.04
+    strategy:
+      matrix:
+        fake_nvidia_smi_script:
+          - none # no nvidia-smi command
+          - no_devices # nvidia-smi command works, but no GPUs available
+          - 1xa100 # cc80, supported with (atleast) zen2 CPU
+          - 2xa100 # cc80, supported with (atleast) zen2 CPU
+          - 4xa100 # cc80, supported with (atleast) zen2 CPU
+          - cc01 # non-existing GPU
+      fail-fast: false
+    steps:
+    - name: checkout
+      uses: actions/checkout@d632683dd7b4114ad314bca15554477dd762a938 # v4.2.0
+
+    # we deliberately do not use the eessi/github-action-eessi action,
+    # because we want to control when the EESSI environment is initialized
+    - name: Mount EESSI CernVM-FS repository
+      uses: cvmfs-contrib/github-action-cvmfs@55899ca74cf78ab874bdf47f5a804e47c198743c # v4.0
+      with:
+          cvmfs_config_package: https://github.com/EESSI/filesystem-layer/releases/download/latest/cvmfs-config-eessi_latest_all.deb
+          cvmfs_http_proxy: DIRECT
+          cvmfs_repositories: software.eessi.io
+
+    - name: test accelerator detection
+      run: |
+          export EESSI_SOFTWARE_SUBDIR_OVERRIDE='x86_64/amd/zen2'
+
+          # put fake nvidia-smi command in place (unless we don't want to)
+          if [[ "${{matrix.fake_nvidia_smi_script}}" != "none" ]]; then
+              tmpdir=$(mktemp -d)
+              ln -s $PWD/tests/archdetect/nvidia-smi/${{matrix.fake_nvidia_smi_script}}.sh $tmpdir/nvidia-smi
+              export PATH=$tmpdir:$PATH
+          fi
+
+          # first run with debugging enabled, just to show the output
+          ./init/eessi_archdetect.sh -d accelpath || echo "non-zero exit code: $?"
+
+          # verify output (or exit code if non-zero)
+          out=$(./init/eessi_archdetect.sh accelpath || echo "non-zero exit code: $?")
+
+          if [[ $out == "$( cat ./tests/archdetect/nvidia-smi/${{matrix.fake_nvidia_smi_script}}.output )" ]]; then
+
+              echo "Test for '${{matrix.fake_nvidia_smi_script}}' PASSED: '$out'"
+
+              # run full EESSI init script, which pick up on the accelerator (if available)
+              echo
+              . init/bash 2>&1 | tee init.out
+              echo "-----------------------------------------------------------------------------"
+
+              if [[ "${{matrix.fake_nvidia_smi_script}}" == "none" ]] || [[ "${{matrix.fake_nvidia_smi_script}}" == "no_devices" ]]; then
+
+                  pattern="archdetect could not detect any accelerators"
+                  echo ">>> checking for pattern '${pattern}' in init output..."
+                  grep "${pattern}" init.out || (echo "FAILED 1" || exit 1)
+
+                  pattern="archdetect found supported accelerator"
+                  echo ">>> checking for lack of pattern '${pattern}' in init output..."
+                  match=$(grep "${pattern}" init.out || true)
+                  test "x${match}" = "x" || (echo "unexpected match found for '${pattern}' in init output" && exit 1)
+
+                  pattern="Prepending /cvmfs/software.eessi.io/versions/2023.06/software/linux/.*/accel/.*/modules/all to \$MODULEPATH"
+                  echo ">>> checking for lack of pattern '${pattern}' in init output..."
+                  match=$(grep "${pattern}" init.out || true)
+                  test "x${match}" = "x" || (echo "unexpected match found for '${pattern}' in init output" && exit 1)
+
+              elif [[ "${{matrix.fake_nvidia_smi_script}}" == "cc01" ]]; then
+
+                  pattern="No matching path found in x86_64/amd/zen2 for accelerator detected by archdetect (accel/nvidia/cc01)"
+                  echo ">>> checking for pattern '${pattern}' in init output..."
+                  grep "${pattern}" init.out || (echo "FAILED 1" || exit 1)
+
+                  pattern="Prepending /cvmfs/software.eessi.io/versions/2023.06/software/linux/.*/accel/.*/modules/all to \$MODULEPATH"
+                  echo ">>> checking for lack of pattern '${pattern}' in init output..."
+                  match=$(grep "${pattern}" init.out || true)
+                  test "x${match}" = "x" || (echo "unexpected match found for '${pattern}' in init output" && exit 1)
+
+              else
+                  echo ">>> checking for 'accel/nvidia/cc80' in init output..."
+                  grep "archdetect found supported accelerator for CPU target x86_64/amd/zen2: accel/nvidia/cc80" init.out || (echo "FAILED 2" && exit 1)
+                  grep "Prepending /cvmfs/software.eessi.io/versions/2023.06/software/linux/x86_64/amd/zen2/accel/nvidia/cc80/modules/all to \$MODULEPATH" init.out || (echo "FAILED 3" && exit 1)
+              fi
+
+              echo ">>> checking last line of init output..."
+              tail -1 init.out | grep "Environment set up to use EESSI (2023.06), have fun!" || (echo "FAILED, full init utput:" && cat init.out && exit 1)
+
+              echo "All checks on init output PASSED"
+          else
+              echo "Test for '${{matrix.fake_nvidia_smi_script}}' FAILED: '$out'" >&2
+              exit 1
+          fi
+
+    - name: test accelerator detection under $EESSI_ACCEL_SOFTWARE_SUBDIR_OVERRIDE + $EESSI_ACCELERATOR_TARGET_OVERRIDE
+      run: |
+          export EESSI_SOFTWARE_SUBDIR_OVERRIDE='x86_64/amd/zen2'
+          export EESSI_ACCEL_SOFTWARE_SUBDIR_OVERRIDE='x86_64/amd/zen3'
+          export EESSI_ACCELERATOR_TARGET_OVERRIDE='accel/nvidia/cc80'
+
+          # first run with debugging enabled, just to show the output
+          ./init/eessi_archdetect.sh -d accelpath || echo "non-zero exit code: $?"
+
+          # verify output (or exit code if non-zero)
+          out=$(./init/eessi_archdetect.sh accelpath || echo "non-zero exit code: $?")
+
+          echo
+          . init/bash 2>&1 | tee init.out
+          echo "-----------------------------------------------------------------------------"
+
+          echo ">>> checking for 'accel/nvidia/cc80' in init output..."
+          grep "archdetect found supported accelerator for CPU target x86_64/amd/zen3: accel/nvidia/cc80" init.out || (echo "FAILED 1" && exit 1)
+          grep "Using x86_64/amd/zen2 as software subdirectory" init.out || (echo "FAILED 2" && exit 1)
+          grep "Prepending /cvmfs/software.eessi.io/versions/2023.06/software/linux/x86_64/amd/zen2/modules/all to \$MODULEPATH" init.out || (echo "FAILED 3" && exit 1)
+          grep "Prepending /cvmfs/software.eessi.io/versions/2023.06/software/linux/x86_64/amd/zen3/accel/nvidia/cc80/modules/all to \$MODULEPATH" init.out || (echo "FAILED 4" && exit 1)
+
+          echo "All checks on init output PASSED"
