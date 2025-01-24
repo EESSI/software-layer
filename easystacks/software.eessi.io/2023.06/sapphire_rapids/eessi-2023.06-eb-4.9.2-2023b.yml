@@ -17,4 +17,13 @@ easyconfigs:
       options:
         # see https://github.com/easybuilders/easybuild-easyconfigs/pull/21034
         from-commit: 76e7fc6657bab64bfbec826540a3a8f0040258f2
-  
+  - STAR-2.7.11b-GCC-13.2.0.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/21200
+        from-commit: 765ba900daf5953e306c4dad896febe52fdd6c00
+  - HPL-2.3-foss-2023b.eb
+  - R-bundle-CRAN-2024.06-foss-2023b.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/21366
+        # we use a commit from the Brunsli PR here to get rid of the Highway dependency
+        from-commit: 1736a123b1685836452587a5c51793257570bb2d
