@@ -17,8 +17,14 @@
 base_dir=$(dirname $(realpath $0))
 source ${base_dir}/init/eessi_defaults
 
+# Make sure we clone the latest version. This assumes versions are of the format "v1.2.3", then picks the latest
+# then checks it out
+TEST_CLONE="git clone https://github.com/EESSI/test-suite EESSI-test-suite && cd EESSI-test-suite"
+LATEST_VERSION="VERSION=\$(git tag | grep '^v[0-9]\+\.[0-9]\+\.[0-9]\+$' | sort -t. -k 1,1n -k 2,2n -k 3,3n | tail -1)"
+CHECKOUT_LATEST="git checkout \${VERSION}"
+
 # Git clone has to be run in compat layer, to make the git command available
-./run_in_compat_layer_env.sh "git clone https://github.com/EESSI/test-suite EESSI-test-suite"
+./run_in_compat_layer_env.sh "${TEST_CLONE} && ${LATEST_VERSION} && ${CHECKOUT_LATEST}"
 
 # Run the test suite
 ./test_suite.sh "$@"
