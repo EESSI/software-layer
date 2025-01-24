@@ -41,3 +41,7 @@ easyconfigs:
       options:
         from-pr: 19471
         include-easyblocks-from-pr: 3036
+  - PyTorch-2.1.2-foss-2023a.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/19573
+        from-pr: 19573
