@@ -452,6 +452,12 @@ def pre_fetch_hook_zen4_gcccore1220(self, *args, **kwargs):
 
 def pre_install_hook(self, *args, **kwargs):
     """Main pre install hook: trigger custom functions based on software name."""
+
+    # To work around a permission issue fo rebuilds (see https://github.com/EESSI/software-layer/issues/556),
+    # a solution was implemented (see https://github.com/EESSI/software-layer/issues/556)
+    # that removes the existing installation directory, creates a new one (with some empty top-level subdirs),
+    # and calls EasyBuild with --try-amend=keeppreviousinstall=True (to prevent it from removing it and recreating it once again).
+    # To be sure, we check here if this parameter is used, and if so, if the directory really does not contain any files anymore.
     if 'keeppreviousinstall' in self.cfg and self.cfg['keeppreviousinstall']:
         if dir_contains_files(self.installdir, recursive=True):
             raise EasyBuildError("Parameter keeppreviousinstall is set to True, but the installation directory still contains files!")
