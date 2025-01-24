@@ -68,3 +68,7 @@ easyconfigs:
   - PyOpenGL-3.1.7-GCCcore-12.3.0.eb:
       options:
         from-pr: 20007
+  - R-bundle-CRAN-2023.12-foss-2023a.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/20238
+        from-pr: 20238
