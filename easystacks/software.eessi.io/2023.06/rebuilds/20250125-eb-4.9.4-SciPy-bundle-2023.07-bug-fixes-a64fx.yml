@@ -1,0 +1,8 @@
+# 2025.01.25
+# rebuild SciPy-bundle 2023.07 with additional patches,
+# as was done for other CPU targets in https://github.com/EESSI/software-layer/pull/866
+easyconfigs:
+  - SciPy-bundle-2023.07-gfbf-2023a.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/21693
+        from-commit: 7c5144d2c1a061cd9f08b5901970b7f6ec5eb5c0
