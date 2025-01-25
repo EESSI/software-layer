@@ -82,3 +82,7 @@ easyconfigs:
   - MODFLOW-6.4.4-foss-2023a.eb:
       options:
         from-pr: 20142
+  - R-bundle-CRAN-2023.12-foss-2023a.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/20238
+        from-pr: 20238
