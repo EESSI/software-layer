@@ -13,9 +13,7 @@ easyconfigs:
   - BWA-0.7.18-GCCcore-12.3.0.eb
   - CapnProto-1.0.1-GCCcore-12.3.0.eb
   - DendroPy-4.6.1-GCCcore-12.3.0.eb
-  - DIAMOND-2.1.8-GCC-12.3.0.eb
   - FastME-2.1.6.3-GCC-12.3.0.eb
-  - fastp-0.23.4-GCC-12.3.0.eb
   - HMMER-3.4-gompi-2023a.eb
   - IQ-TREE-2.3.5-gompi-2023a.eb:
       options:
