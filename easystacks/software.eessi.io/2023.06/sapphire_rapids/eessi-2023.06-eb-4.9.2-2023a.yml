@@ -13,14 +13,22 @@ easyconfigs:
   - BWA-0.7.18-GCCcore-12.3.0.eb
   - CapnProto-1.0.1-GCCcore-12.3.0.eb
   - DendroPy-4.6.1-GCCcore-12.3.0.eb
+  - DIAMOND-2.1.8-GCC-12.3.0.eb
   - FastME-2.1.6.3-GCC-12.3.0.eb
+  - fastp-0.23.4-GCC-12.3.0.eb
   - HMMER-3.4-gompi-2023a.eb
   - IQ-TREE-2.3.5-gompi-2023a.eb:
       options:
         # see https://github.com/easybuilders/easybuild-easyconfigs/pull/20955
-        from-commit: 185f88b9a03d65a7fb74edc7acb4221e87e90784
+        from-commit: 185f88b9a03d65a7fb74edc7acb4221e87e90784      
   - KronaTools-2.8.1-GCCcore-12.3.0.eb
   - LSD2-2.4.1-GCCcore-12.3.0.eb
   - MAFFT-7.520-GCC-12.3.0-with-extensions.eb
   - ncbi-vdb-3.0.10-gompi-2023a.eb
-
+  - MetalWalls-21.06.1-foss-2023a.eb
+  - QuantumESPRESSO-7.3.1-foss-2023a.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/20138
+        from-commit: dbdaacc0739fdee91baa9123864ea4428cf21273
+        # see https://github.com/easybuilders/easybuild-easyblocks/pull/3338
+        include-easyblocks-from-commit: 32e45bd1f2d916732ca5852d55d17fa4d99e388b
