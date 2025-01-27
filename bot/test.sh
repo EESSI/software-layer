@@ -50,11 +50,6 @@ cat ${JOB_CFG_FILE}
 echo "bot/test.sh: obtaining configuration settings from '${JOB_CFG_FILE}'"
 cfg_load ${JOB_CFG_FILE}
 
-# if http_proxy is defined in ${JOB_CFG_FILE} use it, if not use env var $http_proxy
-HTTP_PROXY=$(cfg_get_value "site_config" "http_proxy")
-HTTP_PROXY=${HTTP_PROXY:-${http_proxy}}
-echo "bot/test.sh: HTTP_PROXY='${HTTP_PROXY}'"
-
 # if https_proxy is defined in ${JOB_CFG_FILE} use it, if not use env var $https_proxy
 HTTPS_PROXY=$(cfg_get_value "site_config" "https_proxy")
 HTTPS_PROXY=${HTTPS_PROXY:-${https_proxy}}
