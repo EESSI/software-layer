@@ -132,7 +132,7 @@ else
 fi
 
 # WARNING: REMOVE BEFORE MERGING, THIS IS JUST TO TEST WITH THE AWS BOT:
-export RFM_CONFIG_FILES="/home/$USER/example_reframe_config.py"
+export RFM_CONFIG_FILES="/project/def-users/$user/shared/example_reframe_config.py"
 
 # Configure ReFrame, see https://www.eessi.io/docs/test-suite/installation-configuration
 # RFM_CONFIG_FILES _has_ to be set by the site hosting the bot, so that it knows where to find the ReFrame
