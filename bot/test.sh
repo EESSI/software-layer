@@ -79,7 +79,7 @@ fi
 
 # check if path to directory on shared filesystem is specified,
 # and use it as location for source tarballs used by EasyBuild if so
-export SHARED_FS_PATH=$(cfg_get_value "site_config" "shared_fs_path")
+SHARED_FS_PATH=$(cfg_get_value "site_config" "shared_fs_path")
 echo "bot/test.sh: SHARED_FS_PATH='${SHARED_FS_PATH}'"
 # if $SHARED_FS_PATH is set, add it to $SINGULARITY_BIND so the path is available in the build container
 if [[ ! -z ${SHARED_FS_PATH} ]]; then
@@ -222,6 +222,9 @@ fi
 declare -a TEST_SUITE_ARGS=()
 if [[ ${EESSI_SOFTWARE_SUBDIR_OVERRIDE} =~ .*/generic$ ]]; then
     TEST_SUITE_ARGS+=("--generic")
+fi
+if [[ ${SHARED_FS_PATH} ]]; then
+    TEST_SUITE_ARGS+=("--shared-fs-path ${SHARED_FS_PATH}")
 fi
 # [[ ! -z ${BUILD_LOGS_DIR} ]] && TEST_SUITE_ARGS+=("--build-logs-dir" "${BUILD_LOGS_DIR}")
 # [[ ! -z ${SHARED_FS_PATH} ]] && TEST_SUITE_ARGS+=("--shared-fs-path" "${SHARED_FS_PATH}")

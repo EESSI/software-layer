@@ -136,8 +136,8 @@ fi
 # RFM_CONFIG_FILES _has_ to be set by the site hosting the bot, so that it knows where to find the ReFrame
 # config file that matches the bot config. See https://gitlab.com/eessi/support/-/issues/114#note_2293660921
 if [ -z "$RFM_CONFIG_FILES" ]; then
-    if [ -z "${SHARED_FS_PATH}" ]; then
-        fatal_error "SHARED_FS_PATH was expected, but was not set"
+    if [ -z "${shared_fs_path}" ]; then
+        fatal_error "Environment variable 'shared_fs_path' was expected, but was not set"
     fi
     # Try to find a config file at $SHARED_FS_PATH/reframe_config.py
     export RFM_CONFIG_FILES="${SHARED_FS_PATH}/reframe_config.py"
