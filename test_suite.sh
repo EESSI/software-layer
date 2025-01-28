@@ -136,13 +136,19 @@ fi
 # RFM_CONFIG_FILES _has_ to be set by the site hosting the bot, so that it knows where to find the ReFrame
 # config file that matches the bot config. See https://gitlab.com/eessi/support/-/issues/114#note_2293660921
 if [ -z "$RFM_CONFIG_FILES" ]; then
-    # WARNING: REMOVE BEFORE MERGING, THIS IS JUST TO TEST WITH THE AWS BOT:
-    export RFM_CONFIG_FILES="/project/def-users/$USER/shared/example_reframe_config.py"
-
-    err_msg="Please set RFM_CONFIG_FILES in the environment of this bot instance to point to a valid"
-    err_msg="${err_msg} ReFrame configuration file that matches the bot config."
-    err_msg="${err_msg} For more information, see https://gitlab.com/eessi/support/-/issues/114#note_2293660921"
-    fatal_error "${err_msg}"
+    if [ -z "${SHARED_FS_PATH}" ]; then
+        fatal_error "SHARED_FS_PATH was expected, but was not set"
+    fi
+    # Try to find a config file at $SHARED_FS_PATH/reframe_config.py
+    export RFM_CONFIG_FILES="${SHARED_FS_PATH}/reframe_config.py"
+    if [ ! -f "${RFM_CONFIG_FILES}" ]; then
+        # If we haven't found the ReFrame config, print an informative error
+        err_msg="Please put a ReFrame configuration file in ${SHARED_FS_PATH}/reframe_config.py"
+        err_msg="${err_msg} or set RFM_CONFIG_FILES in the environment of this bot instance to point to a valid"
+        err_msg="${err_msg} ReFrame configuration file that matches the bot config."
+        err_msg="${err_msg} For more information, see https://gitlab.com/eessi/support/-/issues/114#note_2293660921"
+        fatal_error "${err_msg}"
+    fi
 fi
 export RFM_CHECK_SEARCH_PATH=$TESTSUITEPREFIX/eessi/testsuite/tests
 export RFM_CHECK_SEARCH_RECURSIVE=1
