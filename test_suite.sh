@@ -131,13 +131,14 @@ else
     fatal_error "Failed to import ${testsuite_import}"
 fi
 
-# WARNING: REMOVE BEFORE MERGING, THIS IS JUST TO TEST WITH THE AWS BOT:
-export RFM_CONFIG_FILES="/project/def-users/$USER/shared/example_reframe_config.py"
 
 # Configure ReFrame, see https://www.eessi.io/docs/test-suite/installation-configuration
 # RFM_CONFIG_FILES _has_ to be set by the site hosting the bot, so that it knows where to find the ReFrame
 # config file that matches the bot config. See https://gitlab.com/eessi/support/-/issues/114#note_2293660921
 if [ -z "$RFM_CONFIG_FILES" ]; then
+    # WARNING: REMOVE BEFORE MERGING, THIS IS JUST TO TEST WITH THE AWS BOT:
+    export RFM_CONFIG_FILES="/project/def-users/$USER/shared/example_reframe_config.py"
+
     err_msg="Please set RFM_CONFIG_FILES in the environment of this bot instance to point to a valid"
     err_msg="${err_msg} ReFrame configuration file that matches the bot config."
     err_msg="${err_msg} For more information, see https://gitlab.com/eessi/support/-/issues/114#note_2293660921"
