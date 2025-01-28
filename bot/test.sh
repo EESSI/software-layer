@@ -118,12 +118,9 @@ mkdir -p ${STORAGE}
 JOB_STORAGE=$(mktemp --directory --tmpdir=${STORAGE} bot_job_tmp_XXX)
 echo "bot/test.sh: created unique base tmp storage directory at ${JOB_STORAGE}"
 
+# Check MODULPATH
 echo "bot/test.sh: MODULEPATH='${MODULEPATH}'"
-# Checking if it is running at Gent because than the modules need to be unloaded
-if [ '$HPCUGENT_FAMILY_CLUSTER' ]; then
-    module --force purge
-fi
-echo "bot/test.sh: MODULEPATH='${MODULEPATH}'"
+
 # obtain list of modules to be loaded
 LOAD_MODULES=$(cfg_get_value "site_config" "load_modules")
 echo "bot/test.sh: LOAD_MODULES='${LOAD_MODULES}'"
