@@ -272,7 +272,7 @@ echo "Listing tests: reframe ${REFRAME_ARGS} --list"
 echo ${REFRAME_ARGS}
 echo "${REFRAME_ARGS}"
 echo $REFRAME_ARGS
-reframe ${REFRAME_CI_TAG} ${REFRAME_SCALE_TAG} ${REFRAME_ADDITIONAL_ARGS} --nocolor "${REFRAME_NAME_ARGS}" --list -v
+reframe ${REFRAME_CI_TAG} ${REFRAME_SCALE_TAG} ${REFRAME_ADDITIONAL_ARGS} --nocolor "${REFRAME_NAME_ARGS//\'}" --list -v
 if [[ $? -eq 0 ]]; then
     echo_green "Succesfully listed ReFrame tests with command: reframe ${REFRAME_ARGS} --list"
 else
@@ -281,7 +281,7 @@ fi
 
 # Run all tests
 echo "Running tests: reframe ${REFRAME_ARGS} --run"
-reframe ${REFRAME_CI_TAG} ${REFRAME_SCALE_TAG} ${REFRAME_ADDITIONAL_ARGS} --nocolor $REFRAME_NAME_ARGS --run
+reframe ${REFRAME_CI_TAG} ${REFRAME_SCALE_TAG} ${REFRAME_ADDITIONAL_ARGS} --nocolor ${REFRAME_NAME_ARGS//\'} --run
 reframe_exit_code=$?
 if [[ ${reframe_exit_code} -eq 0 ]]; then
     echo_green "ReFrame runtime ran succesfully with command: reframe ${REFRAME_ARGS} --run."
