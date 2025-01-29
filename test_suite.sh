@@ -155,10 +155,19 @@ fi
 # RFM_CONFIG_FILES _has_ to be set by the site hosting the bot, so that it knows where to find the ReFrame
 # config file that matches the bot config. See https://gitlab.com/eessi/support/-/issues/114#note_2293660921
 if [ -z "$RFM_CONFIG_FILES" ]; then
-    err_msg="Please set RFM_CONFIG_FILES in the environment of this bot instance to point to a valid"
-    err_msg="${err_msg} ReFrame configuration file that matches the bot config."
-    err_msg="${err_msg} For more information, see https://gitlab.com/eessi/support/-/issues/114#note_2293660921"
-    fatal_error "${err_msg}"
+    if [ -z "${shared_fs_path}" ]; then
+        fatal_error "Environment variable 'shared_fs_path' was expected, but was not set"
+    fi
+    # Try to find a config file at $shared_fs_path/reframe_config.py
+    export RFM_CONFIG_FILES="${shared_fs_path}/reframe_config.py"
+    if [ ! -f "${RFM_CONFIG_FILES}" ]; then
+        # If we haven't found the ReFrame config, print an informative error
+        err_msg="Please put a ReFrame configuration file in ${shared_fs_path}/reframe_config.py"
+        err_msg="${err_msg} or set RFM_CONFIG_FILES in the environment of this bot instance to point to a valid"
+        err_msg="${err_msg} ReFrame configuration file that matches the bot config."
+        err_msg="${err_msg} For more information, see https://gitlab.com/eessi/support/-/issues/114#note_2293660921"
+        fatal_error "${err_msg}"
+    fi
 fi
 export RFM_CHECK_SEARCH_PATH=$TESTSUITEPREFIX/eessi/testsuite/tests
 export RFM_CHECK_SEARCH_RECURSIVE=1
@@ -176,46 +185,6 @@ export RFM_SYSTEM="BotBuildTests:${REFRAME_PARTITION_NAME}"
 
 echo "Configured reframe with the following environment variables:"
 env | grep "RFM_"
-
-# THIS WHOLE BLOCK SHOULD NO LONGER BE NEEDED IF WE HAVE SITE-SPECIFIC CONFIG FILES
-# # The /sys inside the container is not the same as the /sys of the host
-# # We want to extract the memory limit from the cgroup on the host (which is typically set by SLURM).
-# # Thus, bot/test.sh bind-mounts the host's /sys/fs/cgroup into /hostsys/fs/cgroup
-# # and that's the prefix we use to extract the memory limit from
-# cgroup_v1_mem_limit="/hostsys/fs/cgroup/memory/$(</proc/self/cpuset)/memory.limit_in_bytes"
-# cgroup_v2_mem_limit="/hostsys/fs/cgroup/$(</proc/self/cpuset)/memory.max"
-# if [ -f "$cgroup_v1_mem_limit" ]; then
-#     echo "Getting memory limit from file $cgroup_v1_mem_limit"
-#     cgroup_mem_bytes=$(cat "$cgroup_v1_mem_limit")
-# elif [ -f "$cgroup_v2_mem_limit" ]; then
-#     echo "Getting memory limit from file $cgroup_v2_mem_limit"
-#     cgroup_mem_bytes=$(cat "$cgroup_v2_mem_limit")
-#     if [ "$cgroup_mem_bytes" = 'max' ]; then
-#         # In cgroupsv2, the memory.max file may contain 'max', meaning the group can use the full system memory
-#         # Here, we get the system memory from /proc/meminfo. Units are supposedly always in kb, but lets match them too
-#         cgroup_mem_kilobytes=$(grep -oP 'MemTotal:\s+\K\d+(?=\s+kB)' /proc/meminfo)
-#         if [[ $? -ne 0 ]] || [[ -z "$cgroup_mem_kilobytes" ]]; then
-#             fatal_error "Failed to get memory limit from /proc/meminfo"
-#         fi
-#         cgroup_mem_bytes=$(("$cgroup_mem_kilobytes"*1024))
-#     fi
-# else
-#     fatal_error "Both files ${cgroup_v1_mem_limit} and ${cgroup_v2_mem_limit} couldn't be found. Failed to get the memory limit from the current cgroup"
-# fi
-# if [[ $? -eq 0 ]]; then
-#     # Convert to MiB
-#     cgroup_mem_mib=$(("$cgroup_mem_bytes"/(1024*1024)))
-# else
-#     fatal_error "Failed to get the memory limit in bytes from the current cgroup"
-# fi
-# echo "Detected available memory: ${cgroup_mem_mib} MiB"
-# 
-# cp ${RFM_CONFIG_FILE_TEMPLATE} ${RFM_CONFIG_FILES}
-# echo "Replacing memory limit in the ReFrame config file with the detected CGROUP memory limit: ${cgroup_mem_mib} MiB"
-# sed -i "s/__MEM_PER_NODE__/${cgroup_mem_mib}/g" $RFM_CONFIG_FILES
-# RFM_PARTITION="${SLURM_JOB_PARTITION}"
-# echo "Replacing partition name in the template ReFrame config file: ${RFM_PARTITION}"
-# sed -i "s/__RFM_PARTITION__/${RFM_PARTITION}/g" $RFM_CONFIG_FILES
 
 # Make debugging easier by printing the final config file:
 echo "ReFrame config file used:"

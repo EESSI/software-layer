@@ -221,6 +221,9 @@ declare -a TEST_SUITE_ARGS=()
 if [[ ${EESSI_SOFTWARE_SUBDIR_OVERRIDE} =~ .*/generic$ ]]; then
     TEST_SUITE_ARGS+=("--generic")
 fi
+if [[ ${SHARED_FS_PATH} ]]; then
+    TEST_SUITE_ARGS+=("--shared-fs-path" "${SHARED_FS_PATH}")
+fi
 # [[ ! -z ${BUILD_LOGS_DIR} ]] && TEST_SUITE_ARGS+=("--build-logs-dir" "${BUILD_LOGS_DIR}")
 # [[ ! -z ${SHARED_FS_PATH} ]] && TEST_SUITE_ARGS+=("--shared-fs-path" "${SHARED_FS_PATH}")
 
