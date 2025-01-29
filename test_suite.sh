@@ -85,26 +85,6 @@ source $TOPDIR/init/bash
 # Reason is that the LMOD cache is normally only updated on the Stratum 0, once everything is ingested
 export LMOD_IGNORE_CACHE=1
 
-software_layer_dir=$(dirname $(realpath $0))
-source $software_layer_dir/scripts/cfg_files.sh
-
-# defaults
-export JOB_CFG_FILE="${JOB_CFG_FILE_OVERRIDE:=cfg/job.cfg}"
-HOST_ARCH=$(uname -m)
-
-# check if ${JOB_CFG_FILE} exists
-if [[ ! -r "${JOB_CFG_FILE}" ]]; then
-    fatal_error "job config file (JOB_CFG_FILE=${JOB_CFG_FILE}) does not exist or not readable"
-fi
-echo "test_suite.sh: showing ${JOB_CFG_FILE} from software-layer side"
-cat ${JOB_CFG_FILE}
-
-echo "test_suite.sh: obtaining configuration settings from '${JOB_CFG_FILE}'"
-cfg_load ${JOB_CFG_FILE}
-
-echo "test_suite.sh: MODULEPATH='${MODULEPATH}'"
-export EESSI_ACCELERATOR_TARGET=$(cfg_get_value "architecture" "accelerator")
-echo "test_suite.sh: EESSI_ACCELERATOR_TARGET='${EESSI_ACCELERATOR_TARGET}'"
 # Load the ReFrame module
 # Currently, we load the default version. Maybe we should somehow make this configurable in the future?
 module load ReFrame
@@ -225,21 +205,20 @@ else
 fi
 # Allow people deploying the bot to overrwide this
 if [ -z "$REFRAME_SCALE_TAG" ]; then
-    REFRAME_SCALE_TAG=--tag=1_4_node
+    REFRAME_SCALE_TAG="--tag 1_node"
 fi
 if [ -z "$REFRAME_CI_TAG" ]; then
-    REFRAME_CI_TAG=--tag=CI
+    REFRAME_CI_TAG="--tag CI"
 fi
 # Allow bot-deployers to add additional args through the environment
 if [ -z "$REFRAME_ADDITIONAL_ARGS" ]; then
     REFRAME_ADDITIONAL_ARGS=""
 fi
 export REFRAME_ARGS="${REFRAME_CI_TAG} ${REFRAME_SCALE_TAG} ${REFRAME_ADDITIONAL_ARGS} --nocolor ${REFRAME_NAME_ARGS}"
-export REFRAME_ARGS=${REFRAME_ARGS//\"/}
 
 # List the tests we want to run
 echo "Listing tests: reframe ${REFRAME_ARGS} --list"
-reframe ${REFRAME_ARGS} --list -v
+reframe ${REFRAME_ARGS} --list
 if [[ $? -eq 0 ]]; then
     echo_green "Succesfully listed ReFrame tests with command: reframe ${REFRAME_ARGS} --list"
 else
