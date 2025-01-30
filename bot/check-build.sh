@@ -8,6 +8,7 @@
 # https://github.com/EESSI/software-layer.git
 #
 # author: Thomas Roeblitz (@trz42)
+# author: Samuel Moors (@smoors)
 #
 # license: GPLv2
 #
@@ -59,10 +60,12 @@ display_help() {
   echo " OPTIONS:"
   echo "  -h | --help    - display this usage information [default: false]"
   echo "  -v | --verbose - display more information [default: false]"
+  echo "  --use-check-build-artefacts-script - alternative build artefacts check (sources file check-build-artefacts.sh if exists) [default: false]"
 }
 
 # set defaults for command line arguments
 VERBOSE=0
+USE_CHECK_BUILD_ARTEFACTS_SCRIPT=0
 
 POSITIONAL_ARGS=()
 
@@ -74,6 +77,10 @@ while [[ $# -gt 0 ]]; do
       ;;
     -v|--verbose)
       VERBOSE=1
+      shift 1
+      ;;
+    --use-check-build-artefacts-script)
+      USE_CHECK_BUILD_ARTEFACTS_SCRIPT=1
       shift 1
       ;;
     --)
@@ -157,20 +164,22 @@ if [[ ${SLURM_OUTPUT_FOUND} -eq 1 ]]; then
   [[ ${VERBOSE} -ne 0 ]] && echo "${grep_out}"
 fi
 
-TGZ=-1
-TARBALL=
-if [[ ${SLURM_OUTPUT_FOUND} -eq 1 ]]; then
-  GP_tgz_created="\.tar\.gz created!"
-  grep_out=$(grep -v "^>> searching for " ${job_dir}/${job_out} | grep "${GP_tgz_created}" | sort -u)
-  if [[ $? -eq 0 ]]; then
-      TGZ=1
-      TARBALL=$(echo ${grep_out} | sed -e 's@^.*/\(eessi[^/ ]*\) .*$@\1@')
-  else
-      TGZ=0
-  fi
-  # have to be careful to not add searched for pattern into slurm out file
-  [[ ${VERBOSE} -ne 0 ]] && echo ">> searching for '"${GP_tgz_created}"'"
-  [[ ${VERBOSE} -ne 0 ]] && echo "${grep_out}"
+if [[ $USE_CHECK_BUILD_ARTEFACTS_SCRIPT -eq 0 ]]; then
+    TGZ=-1
+    TARBALL=
+    if [[ ${SLURM_OUTPUT_FOUND} -eq 1 ]]; then
+      GP_tgz_created="\.tar\.gz created!"
+      grep_out=$(grep -v "^>> searching for " ${job_dir}/${job_out} | grep "${GP_tgz_created}" | sort -u)
+      if [[ $? -eq 0 ]]; then
+          TGZ=1
+          TARBALL=$(echo ${grep_out} | sed -e 's@^.*/\(eessi[^/ ]*\) .*$@\1@')
+      else
+          TGZ=0
+      fi
+      # have to be careful to not add searched for pattern into slurm out file
+      [[ ${VERBOSE} -ne 0 ]] && echo ">> searching for '"${GP_tgz_created}"'"
+      [[ ${VERBOSE} -ne 0 ]] && echo "${grep_out}"
+    fi
 fi
 
 [[ ${VERBOSE} -ne 0 ]] && echo "SUMMARY: ${job_dir}/${job_out}"
@@ -180,7 +189,9 @@ fi
 [[ ${VERBOSE} -ne 0 ]] && echo "  FAILED.....: $([[ $FAILED -eq 1 ]] && echo 'yes' || echo 'no') (no)"
 [[ ${VERBOSE} -ne 0 ]] && echo "  REQ_MISSING: $([[ $MISSING -eq 1 ]] && echo 'yes' || echo 'no') (no)"
 [[ ${VERBOSE} -ne 0 ]] && echo "  NO_MISSING.: $([[ $NO_MISSING -eq 1 ]] && echo 'yes' || echo 'no') (yes)"
-[[ ${VERBOSE} -ne 0 ]] && echo "  TGZ_CREATED: $([[ $TGZ -eq 1 ]] && echo 'yes' || echo 'no') (yes)"
+if [[ $USE_CHECK_BUILD_ARTEFACTS_SCRIPT -eq 0 ]]; then
+    [[ ${VERBOSE} -ne 0 ]] && echo "  TGZ_CREATED: $([[ $TGZ -eq 1 ]] && echo 'yes' || echo 'no') (yes)"
+fi
 
 # Here, we try to do some additional analysis on the output file
 # to see if we can print a more clear 'reason' for the failure
@@ -208,8 +219,8 @@ if [[ ${SLURM_OUTPUT_FOUND} -eq 1 ]] && \
    [[ ${FAILED} -eq 0 ]] && \
    [[ ${MISSING} -eq 0 ]] && \
    [[ ${NO_MISSING} -eq 1 ]] && \
-   [[ ${TGZ} -eq 1 ]] && \
-   [[ ! -z ${TARBALL} ]]; then
+   [[ $USE_CHECK_BUILD_ARTEFACTS_SCRIPT -ne 0 || ${TGZ} -eq 1 ]] && \
+   [[ $USE_CHECK_BUILD_ARTEFACTS_SCRIPT -ne 0 || -n ${TARBALL} ]]; then
     # SUCCESS
     status="SUCCESS"
     reason=""
@@ -417,127 +428,145 @@ success_msg="found message(s) matching <code>${GP_no_missing}</code>"
 failure_msg="no message matching <code>${GP_no_missing}</code>"
 comment_details_list=${comment_details_list}$(add_detail ${NO_MISSING} 1 "${success_msg}" "${failure_msg}")
 
-success_msg="found message matching <code>${GP_tgz_created}</code>"
-failure_msg="no message matching <code>${GP_tgz_created}</code>"
-comment_details_list=${comment_details_list}$(add_detail ${TGZ} 1 "${success_msg}" "${failure_msg}")
+if [[ $USE_CHECK_BUILD_ARTEFACTS_SCRIPT -eq 0 ]]; then
+    success_msg="found message matching <code>${GP_tgz_created}</code>"
+    failure_msg="no message matching <code>${GP_tgz_created}</code>"
+    comment_details_list=${comment_details_list}$(add_detail ${TGZ} 1 "${success_msg}" "${failure_msg}")
+fi
 
 # Now, do the actual replacement of __DETAILS_FMT__
 comment_details_fmt="<dt>_Details_</dt><dd>__DETAILS_LIST__</dd>"
 comment_details="${comment_details_fmt/__DETAILS_LIST__/${comment_details_list}}"
 comment_description=${comment_description/__DETAILS_FMT__/${comment_details}}
 
-# first construct comment_artefacts_list
-# then use it to set comment_artefacts
-comment_artifacts_list=""
-
-# TARBALL should only contain a single tarball
-if [[ ! -z ${TARBALL} ]]; then
-    # Example of the detailed information for a tarball. The actual result MUST be a
-    # single line (no '\n') or it would break the structure of the markdown table
-    # that holds status updates of a bot job.
-    # 
-    # <dd>
-    #   <details>
-    #     <summary><code>eessi-2023.06-software-linux-x86_64-generic-1682696567.tar.gz</code></summary>
-    #     size: 234 MiB (245366784 bytes)<br/>
-    #     entries: 1234<br/>
-    #     modules under _2023.06/software/linux/x86_64/intel/cascadelake/modules/all/_<br/>
-    #     <pre>
-    #       GCC/9.3.0.lua<br/>
-    #       GCC/10.3.0.lua<br/>
-    #       OpenSSL/1.1.lua
-    #     </pre>
-    #     software under _2023.06/software/linux/x86_64/intel/cascadelake/software/_
-    #     <pre>
-    #       GCC/9.3.0/<br/>
-    #       CMake/3.20.1-GCCcore-10.3.0/<br/>
-    #       OpenMPI/4.1.1-GCC-10.3.0/
-    #     </pre>
-    #     other under _2023.06/software/linux/x86_64/intel/cascadelake/_
-    #     <pre>
-    #       .lmod/cache/spiderT.lua<br/>
-    #       .lmod/cache/spiderT.luac_5.1<br/>
-    #       .lmod/cache/timestamp
-    #     </pre>
-    #   </details>
-    # </dd>
-    size="$(stat --dereference --printf=%s ${TARBALL})"
-    size_mib=$((${size} >> 20))
-    tmpfile=$(mktemp --tmpdir=. tarfiles.XXXX)
-    tar tf ${TARBALL} > ${tmpfile}
-    entries=$(cat ${tmpfile} | wc -l)
-    # determine prefix from job config: VERSION/software/OS_TYPE/CPU_FAMILY/ARCHITECTURE
-    # e.g., 2023.06/software/linux/x86_64/intel/skylake_avx512
-    # cfg/job.cfg contains (only the attributes to be used are shown below):
-    # [repository]
-    # repo_version = 2023.06
-    # [architecture]
-    # os_type = linux
-    # software_subdir = x86_64/intel/skylake_avx512
-    repo_version=$(cfg_get_value "repository" "repo_version")
-    os_type=$(cfg_get_value "architecture" "os_type")
-    software_subdir=$(cfg_get_value "architecture" "software_subdir")
-    accelerator=$(cfg_get_value "architecture" "accelerator")
-    prefix="${repo_version}/software/${os_type}/${software_subdir}"
-
-    # if we build for an accelerator, the prefix is different
-    if [[ ! -z ${accelerator} ]]; then
-      prefix="${prefix}/accel/${accelerator}"
-    fi
-
-    # extract directories/entries from tarball content
-    modules_entries=$(grep "${prefix}/modules" ${tmpfile})
-    software_entries=$(grep "${prefix}/software" ${tmpfile})
-    other_entries=$(cat ${tmpfile} | grep -v "${prefix}/modules" | grep -v "${prefix}/software")
-    other_shortened=$(echo "${other_entries}" | sed -e "s@^.*${prefix}/@@" | sort -u)
-    modules=$(echo "${modules_entries}" | grep "/all/.*/.*lua$" | sed -e 's@^.*/\([^/]*/[^/]*.lua\)$@\1@' | sort -u)
-    software_pkgs=$(echo "${software_entries}" | sed -e "s@${prefix}/software/@@" | awk -F/ '{if (NR >= 2) {print $1 "/" $2}}' | sort -u)
-
-    artefact_summary="<summary>$(print_code_item '__ITEM__' ${TARBALL})</summary>"
+if [[ $USE_CHECK_BUILD_ARTEFACTS_SCRIPT -eq 0 ]]; then
+    # first construct comment_artefacts_list
+    # then use it to set comment_artefacts
     comment_artifacts_list=""
-    comment_artifacts_list="${comment_artifacts_list}$(print_br_item2 'size: __ITEM__ MiB (__ITEM2__ bytes)' ${size_mib} ${size})"
-    comment_artifacts_list="${comment_artifacts_list}$(print_br_item 'entries: __ITEM__' ${entries})"
-    comment_artifacts_list="${comment_artifacts_list}$(print_br_item 'modules under ___ITEM___' ${prefix}/modules/all)"
-    comment_artifacts_list="${comment_artifacts_list}<pre>"
-    if [[ ! -z ${modules} ]]; then
-        while IFS= read -r mod ; do
-            comment_artifacts_list="${comment_artifacts_list}$(print_br_item '<code>__ITEM__</code>' ${mod})"
-        done <<< "${modules}"
+
+    # TARBALL should only contain a single tarball
+    if [[ ! -z ${TARBALL} ]]; then
+        # Example of the detailed information for a tarball. The actual result MUST be a
+        # single line (no '\n') or it would break the structure of the markdown table
+        # that holds status updates of a bot job.
+        # 
+        # <dd>
+        #   <details>
+        #     <summary><code>eessi-2023.06-software-linux-x86_64-generic-1682696567.tar.gz</code></summary>
+        #     size: 234 MiB (245366784 bytes)<br/>
+        #     entries: 1234<br/>
+        #     modules under _2023.06/software/linux/x86_64/intel/cascadelake/modules/all/_<br/>
+        #     <pre>
+        #       GCC/9.3.0.lua<br/>
+        #       GCC/10.3.0.lua<br/>
+        #       OpenSSL/1.1.lua
+        #     </pre>
+        #     software under _2023.06/software/linux/x86_64/intel/cascadelake/software/_
+        #     <pre>
+        #       GCC/9.3.0/<br/>
+        #       CMake/3.20.1-GCCcore-10.3.0/<br/>
+        #       OpenMPI/4.1.1-GCC-10.3.0/
+        #     </pre>
+        #     other under _2023.06/software/linux/x86_64/intel/cascadelake/_
+        #     <pre>
+        #       .lmod/cache/spiderT.lua<br/>
+        #       .lmod/cache/spiderT.luac_5.1<br/>
+        #       .lmod/cache/timestamp
+        #     </pre>
+        #   </details>
+        # </dd>
+        size="$(stat --dereference --printf=%s ${TARBALL})"
+        size_mib=$((${size} >> 20))
+        tmpfile=$(mktemp --tmpdir=. tarfiles.XXXX)
+        tar tf ${TARBALL} > ${tmpfile}
+        entries=$(cat ${tmpfile} | wc -l)
+        # determine prefix from job config: VERSION/software/OS_TYPE/CPU_FAMILY/ARCHITECTURE
+        # e.g., 2023.06/software/linux/x86_64/intel/skylake_avx512
+        # cfg/job.cfg contains (only the attributes to be used are shown below):
+        # [repository]
+        # repo_version = 2023.06
+        # [architecture]
+        # os_type = linux
+        # software_subdir = x86_64/intel/skylake_avx512
+        repo_version=$(cfg_get_value "repository" "repo_version")
+        os_type=$(cfg_get_value "architecture" "os_type")
+        software_subdir=$(cfg_get_value "architecture" "software_subdir")
+        accelerator=$(cfg_get_value "architecture" "accelerator")
+        prefix="${repo_version}/software/${os_type}/${software_subdir}"
+
+        # if we build for an accelerator, the prefix is different
+        if [[ ! -z ${accelerator} ]]; then
+          prefix="${prefix}/accel/${accelerator}"
+        fi
+
+        # extract directories/entries from tarball content
+        modules_entries=$(grep "${prefix}/modules" ${tmpfile})
+        software_entries=$(grep "${prefix}/software" ${tmpfile})
+        other_entries=$(cat ${tmpfile} | grep -v "${prefix}/modules" | grep -v "${prefix}/software")
+        other_shortened=$(echo "${other_entries}" | sed -e "s@^.*${prefix}/@@" | sort -u)
+        modules=$(echo "${modules_entries}" | grep "/all/.*/.*lua$" | sed -e 's@^.*/\([^/]*/[^/]*.lua\)$@\1@' | sort -u)
+        software_pkgs=$(echo "${software_entries}" | sed -e "s@${prefix}/software/@@" | awk -F/ '{if (NR >= 2) {print $1 "/" $2}}' | sort -u)
+
+        artefact_summary="<summary>$(print_code_item '__ITEM__' ${TARBALL})</summary>"
+        comment_artifacts_list=""
+        comment_artifacts_list="${comment_artifacts_list}$(print_br_item2 'size: __ITEM__ MiB (__ITEM2__ bytes)' ${size_mib} ${size})"
+        comment_artifacts_list="${comment_artifacts_list}$(print_br_item 'entries: __ITEM__' ${entries})"
+        comment_artifacts_list="${comment_artifacts_list}$(print_br_item 'modules under ___ITEM___' ${prefix}/modules/all)"
+        comment_artifacts_list="${comment_artifacts_list}<pre>"
+        if [[ ! -z ${modules} ]]; then
+            while IFS= read -r mod ; do
+                comment_artifacts_list="${comment_artifacts_list}$(print_br_item '<code>__ITEM__</code>' ${mod})"
+            done <<< "${modules}"
+        else
+            comment_artifacts_list="${comment_artifacts_list}$(print_br_item '__ITEM__' 'no module files in tarball')"
+        fi
+        comment_artifacts_list="${comment_artifacts_list}</pre>"
+        comment_artifacts_list="${comment_artifacts_list}$(print_br_item 'software under ___ITEM___' ${prefix}/software)"
+        comment_artifacts_list="${comment_artifacts_list}<pre>"
+        if [[ ! -z ${software_pkgs} ]]; then
+            while IFS= read -r sw_pkg ; do
+                comment_artifacts_list="${comment_artifacts_list}$(print_br_item '<code>__ITEM__</code>' ${sw_pkg})"
+            done <<< "${software_pkgs}"
+        else
+            comment_artifacts_list="${comment_artifacts_list}$(print_br_item '__ITEM__' 'no software packages in tarball')"
+        fi
+        comment_artifacts_list="${comment_artifacts_list}</pre>"
+        comment_artifacts_list="${comment_artifacts_list}$(print_br_item 'other under ___ITEM___' ${prefix})"
+        comment_artifacts_list="${comment_artifacts_list}<pre>"
+        if [[ ! -z ${other_shortened} ]]; then
+            while IFS= read -r other ; do
+                comment_artifacts_list="${comment_artifacts_list}$(print_br_item '<code>__ITEM__</code>' ${other})"
+            done <<< "${other_shortened}"
+        else
+            comment_artifacts_list="${comment_artifacts_list}$(print_br_item '__ITEM__' 'no other files in tarball')"
+        fi
+        comment_artifacts_list="${comment_artifacts_list}</pre>"
     else
-        comment_artifacts_list="${comment_artifacts_list}$(print_br_item '__ITEM__' 'no module files in tarball')"
+        comment_artifacts_list="${comment_artifacts_list}$(print_dd_item 'No artefacts were created or found.' '')"
     fi
-    comment_artifacts_list="${comment_artifacts_list}</pre>"
-    comment_artifacts_list="${comment_artifacts_list}$(print_br_item 'software under ___ITEM___' ${prefix}/software)"
-    comment_artifacts_list="${comment_artifacts_list}<pre>"
-    if [[ ! -z ${software_pkgs} ]]; then
-        while IFS= read -r sw_pkg ; do
-            comment_artifacts_list="${comment_artifacts_list}$(print_br_item '<code>__ITEM__</code>' ${sw_pkg})"
-        done <<< "${software_pkgs}"
-    else
-        comment_artifacts_list="${comment_artifacts_list}$(print_br_item '__ITEM__' 'no software packages in tarball')"
+
+    comment_artefact_details_fmt="<details>__ARTEFACT_SUMMARY____ARTEFACT_DETAILS__</details>"
+    comment_artefacts_details="${comment_artefact_details_fmt/__ARTEFACT_SUMMARY__/${artefact_summary}}"
+    comment_artefacts_details="${comment_artefacts_details/__ARTEFACT_DETAILS__/${comment_artifacts_list}}"
+
+    comment_artefacts_fmt="<dt>_Artefacts_</dt><dd>__ARTEFACTS_LIST__</dd>"
+    comment_artefacts="${comment_artefacts_fmt/__ARTEFACTS_LIST__/${comment_artefacts_details}}"
+    comment_description=${comment_description/__ARTEFACTS_FMT__/${comment_artefacts}}
+
+    echo "artefacts = " >> ${job_result_file}
+    echo "${TARBALL}" | sed -e 's/^/    /g' >> ${job_result_file}
+
+    # remove tmpfile
+    if [[ -f ${tmpfile} ]]; then
+        rm ${tmpfile}
     fi
-    comment_artifacts_list="${comment_artifacts_list}</pre>"
-    comment_artifacts_list="${comment_artifacts_list}$(print_br_item 'other under ___ITEM___' ${prefix})"
-    comment_artifacts_list="${comment_artifacts_list}<pre>"
-    if [[ ! -z ${other_shortened} ]]; then
-        while IFS= read -r other ; do
-            comment_artifacts_list="${comment_artifacts_list}$(print_br_item '<code>__ITEM__</code>' ${other})"
-        done <<< "${other_shortened}"
-    else
-        comment_artifacts_list="${comment_artifacts_list}$(print_br_item '__ITEM__' 'no other files in tarball')"
-    fi
-    comment_artifacts_list="${comment_artifacts_list}</pre>"
+
+elif [[ -f "$TOPDIR/check-build-artefacts.sh" ]]; then
+    source "$TOPDIR/check-build-artefacts.sh"
 else
-    comment_artifacts_list="${comment_artifacts_list}$(print_dd_item 'No artefacts were created or found.' '')"
+    echo "ERROR: Required script $TOPDIR/check-build-artefacts.sh not found!" >&2
+    exit 1
 fi
-
-comment_artefact_details_fmt="<details>__ARTEFACT_SUMMARY____ARTEFACT_DETAILS__</details>"
-comment_artefacts_details="${comment_artefact_details_fmt/__ARTEFACT_SUMMARY__/${artefact_summary}}"
-comment_artefacts_details="${comment_artefacts_details/__ARTEFACT_DETAILS__/${comment_artifacts_list}}"
-
-comment_artefacts_fmt="<dt>_Artefacts_</dt><dd>__ARTEFACTS_LIST__</dd>"
-comment_artefacts="${comment_artefacts_fmt/__ARTEFACTS_LIST__/${comment_artefacts_details}}"
-comment_description=${comment_description/__ARTEFACTS_FMT__/${comment_artefacts}}
 
 echo "${comment_description}" >> ${job_result_file}
 
@@ -545,13 +574,6 @@ echo "${comment_description}" >> ${job_result_file}
 # - this should make use of subsequent steps such as deploying a tarball more
 #   efficient
 echo "status = ${status}" >> ${job_result_file}
-echo "artefacts = " >> ${job_result_file}
-echo "${TARBALL}" | sed -e 's/^/    /g' >> ${job_result_file}
-
-# remove tmpfile
-if [[ -f ${tmpfile} ]]; then
-    rm ${tmpfile}
-fi
 
 # exit script with value that reflects overall job result: SUCCESS (0), FAILURE (1)
 test "${status}" == "SUCCESS"
