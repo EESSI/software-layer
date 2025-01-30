@@ -60,7 +60,7 @@ display_help() {
   echo " OPTIONS:"
   echo "  -h | --help    - display this usage information [default: false]"
   echo "  -v | --verbose - display more information [default: false]"
-  echo "  -a | --use-check-build-artefacts-script - alternative build artefacts check (sources file check-build-artefacts.sh if exists) [default: false]"
+  echo "  --use-check-build-artefacts-script - alternative build artefacts check (sources file check-build-artefacts.sh if exists) [default: false]"
 }
 
 # set defaults for command line arguments
@@ -79,7 +79,7 @@ while [[ $# -gt 0 ]]; do
       VERBOSE=1
       shift 1
       ;;
-    -a|--alt-artefacts)
+    --use-check-build-artefacts-script)
       USE_CHECK_BUILD_ARTEFACTS_SCRIPT=1
       shift 1
       ;;
