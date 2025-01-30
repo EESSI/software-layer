@@ -60,12 +60,12 @@ display_help() {
   echo " OPTIONS:"
   echo "  -h | --help    - display this usage information [default: false]"
   echo "  -v | --verbose - display more information [default: false]"
-  echo "  -a | --alt-artefacts - alternative artefacts check (sources file check-build-artefacts.sh if exists) [default: false]"
+  echo "  -a | --use-check-build-artefacts-script - alternative build artefacts check (sources file check-build-artefacts.sh if exists) [default: false]"
 }
 
 # set defaults for command line arguments
 VERBOSE=0
-ALT_ARTEFACTS=0
+USE_CHECK_BUILD_ARTEFACTS_SCRIPT=0
 
 POSITIONAL_ARGS=()
 
@@ -80,7 +80,7 @@ while [[ $# -gt 0 ]]; do
       shift 1
       ;;
     -a|--alt-artefacts)
-      ALT_ARTEFACTS=1
+      USE_CHECK_BUILD_ARTEFACTS_SCRIPT=1
       shift 1
       ;;
     --)
@@ -164,7 +164,7 @@ if [[ ${SLURM_OUTPUT_FOUND} -eq 1 ]]; then
   [[ ${VERBOSE} -ne 0 ]] && echo "${grep_out}"
 fi
 
-if [[ $ALT_ARTEFACTS -eq 0 ]]; then
+if [[ $USE_CHECK_BUILD_ARTEFACTS_SCRIPT -eq 0 ]]; then
     TGZ=-1
     TARBALL=
     if [[ ${SLURM_OUTPUT_FOUND} -eq 1 ]]; then
@@ -189,7 +189,7 @@ fi
 [[ ${VERBOSE} -ne 0 ]] && echo "  FAILED.....: $([[ $FAILED -eq 1 ]] && echo 'yes' || echo 'no') (no)"
 [[ ${VERBOSE} -ne 0 ]] && echo "  REQ_MISSING: $([[ $MISSING -eq 1 ]] && echo 'yes' || echo 'no') (no)"
 [[ ${VERBOSE} -ne 0 ]] && echo "  NO_MISSING.: $([[ $NO_MISSING -eq 1 ]] && echo 'yes' || echo 'no') (yes)"
-if [[ $ALT_ARTEFACTS -eq 0 ]]; then
+if [[ $USE_CHECK_BUILD_ARTEFACTS_SCRIPT -eq 0 ]]; then
     [[ ${VERBOSE} -ne 0 ]] && echo "  TGZ_CREATED: $([[ $TGZ -eq 1 ]] && echo 'yes' || echo 'no') (yes)"
 fi
 
@@ -219,8 +219,8 @@ if [[ ${SLURM_OUTPUT_FOUND} -eq 1 ]] && \
    [[ ${FAILED} -eq 0 ]] && \
    [[ ${MISSING} -eq 0 ]] && \
    [[ ${NO_MISSING} -eq 1 ]] && \
-   [[ $ALT_ARTEFACTS -ne 0 || ${TGZ} -eq 1 ]] && \
-   [[ $ALT_ARTEFACTS -ne 0 || -n ${TARBALL} ]]; then
+   [[ $USE_CHECK_BUILD_ARTEFACTS_SCRIPT -ne 0 || ${TGZ} -eq 1 ]] && \
+   [[ $USE_CHECK_BUILD_ARTEFACTS_SCRIPT -ne 0 || -n ${TARBALL} ]]; then
     # SUCCESS
     status="SUCCESS"
     reason=""
@@ -428,7 +428,7 @@ success_msg="found message(s) matching <code>${GP_no_missing}</code>"
 failure_msg="no message matching <code>${GP_no_missing}</code>"
 comment_details_list=${comment_details_list}$(add_detail ${NO_MISSING} 1 "${success_msg}" "${failure_msg}")
 
-if [[ $ALT_ARTEFACTS -eq 0 ]]; then
+if [[ $USE_CHECK_BUILD_ARTEFACTS_SCRIPT -eq 0 ]]; then
     success_msg="found message matching <code>${GP_tgz_created}</code>"
     failure_msg="no message matching <code>${GP_tgz_created}</code>"
     comment_details_list=${comment_details_list}$(add_detail ${TGZ} 1 "${success_msg}" "${failure_msg}")
@@ -439,7 +439,7 @@ comment_details_fmt="<dt>_Details_</dt><dd>__DETAILS_LIST__</dd>"
 comment_details="${comment_details_fmt/__DETAILS_LIST__/${comment_details_list}}"
 comment_description=${comment_description/__DETAILS_FMT__/${comment_details}}
 
-if [[ $ALT_ARTEFACTS -eq 0 ]]; then
+if [[ $USE_CHECK_BUILD_ARTEFACTS_SCRIPT -eq 0 ]]; then
     # first construct comment_artefacts_list
     # then use it to set comment_artefacts
     comment_artifacts_list=""
@@ -563,6 +563,9 @@ if [[ $ALT_ARTEFACTS -eq 0 ]]; then
 
 elif [[ -f "$TOPDIR/check-build-artefacts.sh" ]]; then
     source "$TOPDIR/check-build-artefacts.sh"
+else
+    echo "ERROR: Required script $TOPDIR/check-build-artefacts.sh not found!" >&2
+    exit 1
 fi
 
 echo "${comment_description}" >> ${job_result_file}
