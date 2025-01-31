@@ -553,6 +553,12 @@ if [[ $USE_CHECK_BUILD_ARTEFACTS_SCRIPT -eq 0 ]]; then
     comment_artefacts="${comment_artefacts_fmt/__ARTEFACTS_LIST__/${comment_artefacts_details}}"
     comment_description=${comment_description/__ARTEFACTS_FMT__/${comment_artefacts}}
 
+    echo "${comment_description}" >> ${job_result_file}
+
+    # add overall result: SUCCESS, FAILURE, UNKNOWN + artefacts
+    # - this should make use of subsequent steps such as deploying a tarball more
+    #   efficient
+    echo "status = ${status}" >> ${job_result_file}
     echo "artefacts = " >> ${job_result_file}
     echo "${TARBALL}" | sed -e 's/^/    /g' >> ${job_result_file}
 
@@ -567,13 +573,6 @@ else
     echo "ERROR: Required script $TOPDIR/check-build-artefacts.sh not found!" >&2
     exit 1
 fi
-
-echo "${comment_description}" >> ${job_result_file}
-
-# add overall result: SUCCESS, FAILURE, UNKNOWN + artefacts
-# - this should make use of subsequent steps such as deploying a tarball more
-#   efficient
-echo "status = ${status}" >> ${job_result_file}
 
 # exit script with value that reflects overall job result: SUCCESS (0), FAILURE (1)
 test "${status}" == "SUCCESS"
