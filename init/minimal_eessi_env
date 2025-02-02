@@ -8,7 +8,17 @@ EESSI_INIT_DIR_PATH=$(dirname $(readlink -f $BASH_SOURCE))
 #   script takes *_OVERRIDEs into account
 source ${EESSI_INIT_DIR_PATH}/eessi_defaults
 
-export EESSI_PREFIX=$EESSI_CVMFS_REPO/versions/$EESSI_VERSION
+# If $EESSI_DEV_PROJECT is defined, then we are building for dev.eessi.io
+# and add a subdirectory to $EESSI_PREFIX
+if [ -z ${EESSI_DEV_PROJECT} ]; then
+    export EESSI_PREFIX=$EESSI_CVMFS_REPO/versions/$EESSI_VERSION
+else
+    echo "\$EESSI_DEV_PROJECT: ${EESSI_DEV_PROJECT}; building for dev.eessi.io"
+    export EESSI_PREFIX=$EESSI_CVMFS_REPO_OVERRIDE/versions/$EESSI_VERSION/$EESSI_DEV_PROJECT
+    # Set EESSI_PREFIX to the dev project path for EESSI-extend
+    export EESSI_CVMFS_INSTALL=$EESSI_PREFIX
+fi
+
 
 if [[ $(uname -s) == 'Linux' ]]; then
     export EESSI_OS_TYPE='linux'
