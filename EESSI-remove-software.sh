@@ -131,9 +131,11 @@ if [ $EUID -eq 0 ]; then
                     rm -rf ${app_dir}
                     rm -rf ${app_module}
                     # recreate the installation directory and do an ls on the first-level subdirectories to work around
-                    # permission denied issues when rebuilding the package (see https://github.com/EESSI/software-layer/issues/556)
+                    # permission issues when reinstalling the application (see https://github.com/EESSI/software-layer/issues/556)
                     echo_yellow "Recreating an empty ${app_dir}..."
                     mkdir -p ${app_dir}
+                    # these subdirs don't (and shouldn't) exist, but we need to do the ls anyway as a workaround,
+                    # so redirect to /dev/null and ignore the exit code
                     ls ${app_subdirs} >& /dev/null || true
                 done
             else
