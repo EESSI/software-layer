@@ -125,11 +125,19 @@ if [ $EUID -eq 0 ]; then
                     # Two dirname invocations, so returns e.g. /cvmfs/software.eessi.io/versions/2023.06/software/linux/x86_64/amd/zen2
                     app_installprefix=$(dirname $(dirname ${app_modulepath}))
                     app_dir=${app_installprefix}/software/${app}
+                    app_subdirs=$(find ${app_dir} -mindepth 1 -maxdepth 1 -type d)
                     app_module=${app_installprefix}/modules/all/${app}.lua
                     echo_yellow "Removing ${app_dir} and ${app_module}..."
                     find ${app_dir} -type f -exec rm -f {} \;
                     rm -rf ${app_dir}
                     rm -rf ${app_module}
+                    # recreate the installation directories and first-level subdirectories to work around permission denied
+                    # issues when rebuilding the package (see https://github.com/EESSI/software-layer/issues/556)
+                    echo_yellow "Recreating an empty ${app_dir}..."
+                    mkdir -p ${app_dir}
+                    for app_subdir in ${app_subdirs}; do
+                        mkdir -p ${app_subdir}
+                    done
                 done
             else
                 fatal_error "Easystack file ${easystack_file} not found!"

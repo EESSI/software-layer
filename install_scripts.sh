@@ -123,9 +123,19 @@ copy_files_by_list ${TOPDIR}/scripts ${INSTALL_PREFIX}/scripts "${script_files[@
 
 # Copy files for the scripts/gpu_support/nvidia directory
 nvidia_files=(
-    install_cuda_host_injections.sh link_nvidia_host_libraries.sh
+    install_cuda_and_libraries.sh
+    install_cuda_host_injections.sh
+    link_nvidia_host_libraries.sh
 )
 copy_files_by_list ${TOPDIR}/scripts/gpu_support/nvidia ${INSTALL_PREFIX}/scripts/gpu_support/nvidia "${nvidia_files[@]}"
+
+# Easystacks to be used to install software in host injections
+host_injections_easystacks=(
+    eessi-2023.06-eb-4.9.4-2023a-CUDA-host-injections.yml
+    eessi-2023.06-eb-4.9.4-2023b-CUDA-host-injections.yml
+)
+copy_files_by_list ${TOPDIR}/scripts/gpu_support/nvidia/easystacks \
+${INSTALL_PREFIX}/scripts/gpu_support/nvidia/easystacks "${host_injections_easystacks[@]}"
 
 # Copy over EasyBuild hooks file used for installations
 hook_files=(

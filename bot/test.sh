@@ -103,25 +103,25 @@ fi
 RESUME_DIR=$(grep 'Using .* as tmp directory' slurm-${SLURM_JOBID}.out | head -1 | awk '{print $2}')
 
 if [[ -z ${RESUME_DIR} ]]; then
-  echo -n "setting \$STORAGE by replacing any var in '${LOCAL_TMP}' -> "
-  # replace any env variable in ${LOCAL_TMP} with its
-  #   current value (e.g., a value that is local to the job)
-  STORAGE=$(envsubst <<< ${LOCAL_TMP})
-  echo "'${STORAGE}'"
-
-  # make sure ${STORAGE} exists
-  mkdir -p ${STORAGE}
-
-  # make sure the base tmp storage is unique
-  JOB_STORAGE=$(mktemp --directory --tmpdir=${STORAGE} bot_job_tmp_XXX)
-  echo "bot/test.sh: created unique base tmp storage directory at ${JOB_STORAGE}"
-
   RESUME_TGZ=${PWD}/previous_tmp/build_step/$(ls previous_tmp/build_step)
   if [[ -z ${RESUME_TGZ} ]]; then
     echo "bot/test.sh: no information about tmp directory and tarball of build step; --> giving up"
     exit 2
   fi
 fi
+
+echo -n "setting \$STORAGE by replacing any var in '${LOCAL_TMP}' -> "
+# replace any env variable in ${LOCAL_TMP} with its
+#   current value (e.g., a value that is local to the job)
+STORAGE=$(envsubst <<< ${LOCAL_TMP})
+echo "'${STORAGE}'"
+
+# make sure ${STORAGE} exists
+mkdir -p ${STORAGE}
+
+# make sure the base tmp storage is unique
+JOB_STORAGE=$(mktemp --directory --tmpdir=${STORAGE} bot_job_tmp_XXX)
+echo "bot/test.sh: created unique base tmp storage directory at ${JOB_STORAGE}"
 
 # obtain list of modules to be loaded
 LOAD_MODULES=$(cfg_get_value "site_config" "load_modules")
@@ -130,7 +130,7 @@ echo "bot/test.sh: LOAD_MODULES='${LOAD_MODULES}'"
 # singularity/apptainer settings: CONTAINER, HOME, TMPDIR, BIND
 CONTAINER=$(cfg_get_value "repository" "container")
 export SINGULARITY_HOME="${PWD}:/eessi_bot_job"
-export SINGULARITY_TMPDIR="${PWD}/singularity_tmpdir"
+export SINGULARITY_TMPDIR="${JOB_STORAGE:-${PWD}}/singularity_tmpdir"
 mkdir -p ${SINGULARITY_TMPDIR}
 
 # load modules if LOAD_MODULES is not empty
@@ -172,6 +172,10 @@ EESSI_SOFTWARE_SUBDIR_OVERRIDE=${EESSI_SOFTWARE_SUBDIR_OVERRIDE:-${CPU_TARGET}}
 export EESSI_SOFTWARE_SUBDIR_OVERRIDE
 echo "bot/test.sh: EESSI_SOFTWARE_SUBDIR_OVERRIDE='${EESSI_SOFTWARE_SUBDIR_OVERRIDE}'"
 
+# determine accelerator target (if any) from .architecture in ${JOB_CFG_FILE}
+export EESSI_ACCELERATOR_TARGET=$(cfg_get_value "architecture" "accelerator")
+echo "bot/test.sh: EESSI_ACCELERATOR_TARGET='${EESSI_ACCELERATOR_TARGET}'"
+
 # get EESSI_OS_TYPE from .architecture.os_type in ${JOB_CFG_FILE} (default: linux)
 EESSI_OS_TYPE=$(cfg_get_value "architecture" "os_type")
 export EESSI_OS_TYPE=${EESSI_OS_TYPE:-linux}
@@ -208,10 +212,19 @@ fi
 # Reframe configuration
 TEST_STEP_ARGS+=("--extra-bind-paths" "/sys/fs/cgroup:/hostsys/fs/cgroup:ro")
 
+# add options required to handle NVIDIA support
+if command_exists "nvidia-smi"; then
+    echo "Command 'nvidia-smi' found, using available GPU"
+    TEST_STEP_ARGS+=("--nvidia" "run")
+fi
+
 # prepare arguments to test_suite.sh (specific to test step)
 declare -a TEST_SUITE_ARGS=()
 if [[ ${EESSI_SOFTWARE_SUBDIR_OVERRIDE} =~ .*/generic$ ]]; then
     TEST_SUITE_ARGS+=("--generic")
+fi
+if [[ ${SHARED_FS_PATH} ]]; then
+    TEST_SUITE_ARGS+=("--shared-fs-path" "${SHARED_FS_PATH}")
 fi
 # [[ ! -z ${BUILD_LOGS_DIR} ]] && TEST_SUITE_ARGS+=("--build-logs-dir" "${BUILD_LOGS_DIR}")
 # [[ ! -z ${SHARED_FS_PATH} ]] && TEST_SUITE_ARGS+=("--shared-fs-path" "${SHARED_FS_PATH}")

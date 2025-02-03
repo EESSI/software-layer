@@ -1,8 +1,10 @@
+# Choose an EESSI CVMFS repository
+set EESSI_CVMFS_REPO (set -q EESSI_CVMFS_REPO; and echo "$EESSI_CVMFS_REPO"; or echo "/cvmfs/software.eessi.io")
 # Choose an EESSI version
 set EESSI_VERSION (set -q EESSI_VERSION; and echo "$EESSI_VERSION"; or echo "2023.06")
 # Path to top-level module tree
-set -x MODULEPATH /cvmfs/software.eessi.io/versions/"$EESSI_VERSION"/init/modules
-. /cvmfs/software.eessi.io/versions/"$EESSI_VERSION"/compat/linux/(uname -m)/usr/share/Lmod/init/fish
+set -x MODULEPATH "$EESSI_CVMFS_REPO"/versions/"$EESSI_VERSION"/init/modules
+. "$EESSI_CVMFS_REPO"/versions/"$EESSI_VERSION"/compat/linux/(uname -m)/usr/share/Lmod/init/fish
 
 if test -z "$__Init_Default_Modules"
 	export __Init_Default_Modules=1;
