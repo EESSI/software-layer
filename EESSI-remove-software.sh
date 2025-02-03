@@ -134,9 +134,7 @@ if [ $EUID -eq 0 ]; then
                     # permission denied issues when rebuilding the package (see https://github.com/EESSI/software-layer/issues/556)
                     echo_yellow "Recreating an empty ${app_dir}..."
                     mkdir -p ${app_dir}
-                    for app_subdir in ${app_subdirs}; do
-                        ls ${app_subdir} >& /dev/null || true
-                    done
+                    ls ${app_subdirs} >& /dev/null || true
                 done
             else
                 fatal_error "Easystack file ${easystack_file} not found!"
