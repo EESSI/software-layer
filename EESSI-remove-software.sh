@@ -128,7 +128,6 @@ if [ $EUID -eq 0 ]; then
                     app_subdirs=$(find ${app_dir} -mindepth 1 -maxdepth 1 -type d)
                     app_module=${app_installprefix}/modules/all/${app}.lua
                     echo_yellow "Removing ${app_dir} and ${app_module}..."
-                    find ${app_dir} -type f -exec rm -f {} \;
                     rm -rf ${app_dir}
                     rm -rf ${app_module}
                     # recreate the installation directories and first-level subdirectories to work around permission denied
