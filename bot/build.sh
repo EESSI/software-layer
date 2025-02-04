@@ -115,7 +115,7 @@ mkdir -p ${SINGULARITY_TMPDIR}
 
 # load modules if LOAD_MODULES is not empty
 if [[ ! -z ${LOAD_MODULES} ]]; then
-    for mod in $(echo ${LOAD_MODULES} | tr "'" | tr ',' '\n')
+    for mod in $(echo ${LOAD_MODULES} | tr -d "'" | tr ',' '\n')
     do
         echo "bot/build.sh: loading module '${mod}'"
         module load ${mod}
