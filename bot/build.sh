@@ -57,6 +57,7 @@ echo "bot/build.sh: LOCAL_TMP='${LOCAL_TMP}'"
 
 # Bind mount the current $TMPDIR into the container.
 # A call to e.g. `mktemp` inside the container would try to use this path - and will fail if we don't bind-mount
+echo "bot/build.sh: TMPDIR=${TMDPIR}|
 if [[ -z ${TMPDIR} ]]; then
     if [[ -z ${SINGULARITY_BIND} ]]; then
         export SINGULARITY_BIND="${TMPDIR}"
@@ -92,6 +93,8 @@ if [[ ! -z ${SHARED_FS_PATH} ]]; then
         export SINGULARITY_BIND="${SINGULARITY_BIND},${SHARED_FS_PATH}"
     fi
 fi
+
+echo "DEBUG: SINGULARITY_BIND AFTER APPENDING: ${SINGULARITY_BIND}"
 
 SINGULARITY_CACHEDIR=$(cfg_get_value "site_config" "container_cachedir")
 echo "bot/build.sh: SINGULARITY_CACHEDIR='${SINGULARITY_CACHEDIR}'"
