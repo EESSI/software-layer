@@ -55,6 +55,17 @@ LOCAL_TMP=$(cfg_get_value "site_config" "local_tmp")
 echo "bot/build.sh: LOCAL_TMP='${LOCAL_TMP}'"
 # TODO should local_tmp be mandatory? --> then we check here and exit if it is not provided
 
+# Bind mount the current $TMPDIR into the container.
+# A call to e.g. `mktemp` inside the container would try to use this path - and will fail if we don't bind-mount
+if [[ -z ${TMPDIR} ]]; then
+    if [[ -z ${SINGULARITY_BIND} ]]; then
+        export SINGULARITY_BIND="${TMPDIR}"
+    else
+        export SINGULARITY_BIND="${SINGULARITY_BIND},${TMPDIR}"
+    fi
+fi
+
+
 # check if path to copy build logs to is specified, so we can copy build logs for failing builds there
 BUILD_LOGS_DIR=$(cfg_get_value "site_config" "build_logs_dir")
 echo "bot/build.sh: BUILD_LOGS_DIR='${BUILD_LOGS_DIR}'"
@@ -261,7 +272,6 @@ fi
 # create tmp file for output of build step
 build_outerr=$(mktemp build.outerr.XXXX)
 
-echo "TMPDIR when calling build software: $TMPDIR"
 echo "Executing command to build software:"
 echo "$software_layer_dir/eessi_container.sh ${COMMON_ARGS[@]} ${BUILD_STEP_ARGS[@]}"
 echo "                     -- $software_layer_dir/install_software_layer.sh \"${INSTALL_SCRIPT_ARGS[@]}\" \"$@\" 2>&1 | tee -a ${build_outerr}"
@@ -299,7 +309,6 @@ export TGZ=$(printf "eessi-%s-software-%s-%s-%d.tar.gz" ${EESSI_VERSION} ${EESSI
 # TODO should we make this a configurable parameter of eessi_container.sh using
 # /tmp as default?
 TMP_IN_CONTAINER=/tmp
-echo "TMPDIR when calling create tarball: $TMPDIR"
 echo "Executing command to create tarball:"
 echo "$software_layer_dir/eessi_container.sh ${COMMON_ARGS[@]} ${TARBALL_STEP_ARGS[@]}"
 echo "                     -- $software_layer_dir/create_tarball.sh ${TMP_IN_CONTAINER} ${EESSI_VERSION} ${EESSI_SOFTWARE_SUBDIR_OVERRIDE} \"${EESSI_ACCELERATOR_TARGET}\" /eessi_bot_job/${TGZ} 2>&1 | tee -a ${tar_outerr}"
