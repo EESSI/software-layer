@@ -311,6 +311,9 @@ else
     TARBALL_STEP_ARGS+=("--resume" "${REMOVAL_TMPDIR}")
 fi
 
+# Make sure we define storage, so that the TMPDIR is set to this in eessi_container.sh
+TARBALL_STEP_ARGS+=("--storage" "${STORAGE}")
+
 timestamp=$(date +%s)
 # to set EESSI_VERSION we need to source init/eessi_defaults now
 source $software_layer_dir/init/eessi_defaults

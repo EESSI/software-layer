@@ -363,40 +363,41 @@ fi
 # 2. set up host storage/tmp if necessary
 # if session to be resumed from a previous one (--resume ARG) and ARG is a directory
 #   just reuse ARG, define environment variables accordingly and skip creating a new
-#   tmp storage
+#    eessi.XXXXXXXXXXX tempdir within TMPDIR
+
+# But before we call mktemp, we need to potentially set or create TMPDIR
+# as location for temporary data use in the following order
+#   a. command line argument -l|--host-storage
+#   b. env var TMPDIR
+#   c. /tmp
+# note, we ensure that (a) takes precedence by setting TMPDIR to STORAGE
+#     if STORAGE is not empty
+# note, (b) & (c) are automatically ensured by using 'mktemp -d --tmpdir' to
+#     create a temporary directory
+if [[ ! -z ${STORAGE} ]]; then
+  export TMPDIR=${STORAGE}
+  # mktemp fails if TMPDIR does not exist, so let's create it
+  mkdir -p ${TMPDIR}
+fi
+if [[ ! -z ${TMPDIR} ]]; then
+  # TODO check if TMPDIR already exists
+  # mktemp fails if TMPDIR does not exist, so let's create it
+  mkdir -p ${TMPDIR}
+fi
+if [[ -z ${TMPDIR} ]]; then
+  # mktemp falls back to using /tmp if TMPDIR is empty
+  # TODO check if /tmp is writable, large enough and usable (different
+  #      features for ro-access and rw-access)
+  [[ ${VERBOSE} -eq 1 ]] && echo "skipping sanity checks for /tmp"
+fi
+
+# Now, set the EESSI_HOST_STORAGE either baed on the resumed directory, or create a new one with mktemp
 if [[ ! -z ${RESUME} && -d ${RESUME} ]]; then
   # resume from directory ${RESUME}
   #   skip creating a new tmp directory, just set environment variables
   echo "Resuming from previous run using temporary storage at ${RESUME}"
   EESSI_HOST_STORAGE=${RESUME}
 else
-  # we need a tmp location (and possibly init it with ${RESUME} if it was not
-  #   a directory
-
-  # as location for temporary data use in the following order
-  #   a. command line argument -l|--host-storage
-  #   b. env var TMPDIR
-  #   c. /tmp
-  # note, we ensure that (a) takes precedence by setting TMPDIR to STORAGE
-  #     if STORAGE is not empty
-  # note, (b) & (c) are automatically ensured by using 'mktemp -d --tmpdir' to
-  #     create a temporary directory
-  if [[ ! -z ${STORAGE} ]]; then
-    export TMPDIR=${STORAGE}
-    # mktemp fails if TMPDIR does not exist, so let's create it
-    mkdir -p ${TMPDIR}
-  fi
-  if [[ ! -z ${TMPDIR} ]]; then
-    # TODO check if TMPDIR already exists
-    # mktemp fails if TMPDIR does not exist, so let's create it
-    mkdir -p ${TMPDIR}
-  fi
-  if [[ -z ${TMPDIR} ]]; then
-    # mktemp falls back to using /tmp if TMPDIR is empty
-    # TODO check if /tmp is writable, large enough and usable (different
-    #      features for ro-access and rw-access)
-    [[ ${VERBOSE} -eq 1 ]] && echo "skipping sanity checks for /tmp"
-  fi
   EESSI_HOST_STORAGE=$(mktemp -d --tmpdir eessi.XXXXXXXXXX)
   echo "Using ${EESSI_HOST_STORAGE} as tmp directory (to resume session add '--resume ${EESSI_HOST_STORAGE}')."
 fi
