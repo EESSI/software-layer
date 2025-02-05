@@ -21,15 +21,11 @@
 # stop as soon as something fails
 set -e
 
-echo "DEBUG: TMPDIR=$TMPDIR"
-
 # Make sure we are referring to software-layer as working directory
 software_layer_dir=$(dirname $(dirname $(realpath $0)))
 # source utils.sh and cfg_files.sh
 source $software_layer_dir/scripts/utils.sh
 source $software_layer_dir/scripts/cfg_files.sh
-
-echo "DEBUG2: TMPDIR=$TMPDIR"
 
 # defaults
 export JOB_CFG_FILE="${JOB_CFG_FILE_OVERRIDE:=cfg/job.cfg}"
@@ -45,36 +41,19 @@ cat ${JOB_CFG_FILE}
 echo "bot/build.sh: obtaining configuration settings from '${JOB_CFG_FILE}'"
 cfg_load ${JOB_CFG_FILE}
 
-echo "DEBUG3: TMPDIR=$TMPDIR"
-
 # if http_proxy is defined in ${JOB_CFG_FILE} use it, if not use env var $http_proxy
 HTTP_PROXY=$(cfg_get_value "site_config" "http_proxy")
 HTTP_PROXY=${HTTP_PROXY:-${http_proxy}}
 echo "bot/build.sh: HTTP_PROXY='${HTTP_PROXY}'"
-echo "DEBUG4: TMPDIR=$TMPDIR"
 
 # if https_proxy is defined in ${JOB_CFG_FILE} use it, if not use env var $https_proxy
 HTTPS_PROXY=$(cfg_get_value "site_config" "https_proxy")
 HTTPS_PROXY=${HTTPS_PROXY:-${https_proxy}}
 echo "bot/build.sh: HTTPS_PROXY='${HTTPS_PROXY}'"
 
-echo "DEBUG5: TMPDIR=$TMPDIR"
 LOCAL_TMP=$(cfg_get_value "site_config" "local_tmp")
-echo "DEBUG6: TMPDIR=$TMPDIR"
 echo "bot/build.sh: LOCAL_TMP='${LOCAL_TMP}'"
 # TODO should local_tmp be mandatory? --> then we check here and exit if it is not provided
-
-# Bind mount the current $TMPDIR into the container.
-# A call to e.g. `mktemp` inside the container would try to use this path - and will fail if we don't bind-mount
-echo "bot/build.sh: TMPDIR=${TMDPIR}"
-if [[ -z ${TMPDIR} ]]; then
-    if [[ -z ${SINGULARITY_BIND} ]]; then
-        export SINGULARITY_BIND="${TMPDIR}"
-    else
-        export SINGULARITY_BIND="${SINGULARITY_BIND},${TMPDIR}"
-    fi
-fi
-
 
 # check if path to copy build logs to is specified, so we can copy build logs for failing builds there
 BUILD_LOGS_DIR=$(cfg_get_value "site_config" "build_logs_dir")
@@ -102,8 +81,6 @@ if [[ ! -z ${SHARED_FS_PATH} ]]; then
         export SINGULARITY_BIND="${SINGULARITY_BIND},${SHARED_FS_PATH}"
     fi
 fi
-
-echo "DEBUG: SINGULARITY_BIND AFTER APPENDING: ${SINGULARITY_BIND}"
 
 SINGULARITY_CACHEDIR=$(cfg_get_value "site_config" "container_cachedir")
 echo "bot/build.sh: SINGULARITY_CACHEDIR='${SINGULARITY_CACHEDIR}'"
