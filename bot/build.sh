@@ -29,6 +29,8 @@ software_layer_dir=$(dirname $(dirname $(realpath $0)))
 source $software_layer_dir/scripts/utils.sh
 source $software_layer_dir/scripts/cfg_files.sh
 
+echo "DEBUG2: TMPDIR=$TMPDIR"
+
 # defaults
 export JOB_CFG_FILE="${JOB_CFG_FILE_OVERRIDE:=cfg/job.cfg}"
 HOST_ARCH=$(uname -m)
@@ -42,6 +44,8 @@ cat ${JOB_CFG_FILE}
 
 echo "bot/build.sh: obtaining configuration settings from '${JOB_CFG_FILE}'"
 cfg_load ${JOB_CFG_FILE}
+
+echo "DEBUG3: TMPDIR=$TMPDIR"
 
 # if http_proxy is defined in ${JOB_CFG_FILE} use it, if not use env var $http_proxy
 HTTP_PROXY=$(cfg_get_value "site_config" "http_proxy")
