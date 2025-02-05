@@ -28,4 +28,3 @@ easyconfigs:
       options:
         # see https://github.com/easybuilders/easybuild-easyconfigs/pull/21285
         from-commit: 41a2cd83f9fb017b76f0693f6a264d8acb548317
-  - BCFtools-1.19-GCC-13.2.0.eb
