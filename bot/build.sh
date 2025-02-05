@@ -57,7 +57,7 @@ echo "bot/build.sh: LOCAL_TMP='${LOCAL_TMP}'"
 
 # Bind mount the current $TMPDIR into the container.
 # A call to e.g. `mktemp` inside the container would try to use this path - and will fail if we don't bind-mount
-echo "bot/build.sh: TMPDIR=${TMDPIR}|
+echo "bot/build.sh: TMPDIR=${TMDPIR}"
 if [[ -z ${TMPDIR} ]]; then
     if [[ -z ${SINGULARITY_BIND} ]]; then
         export SINGULARITY_BIND="${TMPDIR}"
