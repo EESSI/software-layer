@@ -104,7 +104,7 @@ TOPDIR=$(dirname $(realpath $0))
 source $TOPDIR/scripts/utils.sh
 
 
-echo "$TMPDIR in EESSI-install-software.sh: $TMPDIR"
+echo "TMPDIR in EESSI-install-software.sh: $TMPDIR"
 
 # honor $TMPDIR if it is already defined, use /tmp otherwise
 if [ -z $TMPDIR ]; then
