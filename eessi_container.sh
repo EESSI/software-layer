@@ -382,6 +382,7 @@ else
   # note, (b) & (c) are automatically ensured by using 'mktemp -d --tmpdir' to
   #     create a temporary directory
   if [[ ! -z ${STORAGE} ]]; then
+    [[ ${VERBOSE} -eq 1 ]] && echo "export TMPDIR=${STORAGE}"
     export TMPDIR=${STORAGE}
     # mktemp fails if TMPDIR does not exist, so let's create it
     mkdir -p ${TMPDIR}
@@ -529,6 +530,13 @@ BIND_PATHS="${EESSI_CVMFS_VAR_LIB}:/var/lib/cvmfs,${EESSI_CVMFS_VAR_RUN}:/var/ru
 
 # provide a '/tmp' inside the container
 BIND_PATHS="${BIND_PATHS},${EESSI_TMPDIR}:${TMP_IN_CONTAINER}"
+# if TMPDIR is not empty and if TMP_IN_CONTAINER is not a prefix of TMPDIR, we need to add a bind mount for TMPDIR
+if [[ ! -z ${TMPDIR} && ${TMP_IN_CONTAINER} != ${TMPDIR}* ]]; then
+    echo "TMPDIR is not empty (${TMPDIR}) and TMP_IN_CONTAINER (${TMP_IN_CONTAINER}) is not a prefix of TMPDIR: adding bind mount for TMPDIR"
+    BIND_PATHS="${BIND_PATHS},${TMPDIR}"
+fi
+
+# add bind mount for extra bind paths
 if [[ ! -z ${EXTRA_BIND_PATHS} ]]; then
     BIND_PATHS="${BIND_PATHS},${EXTRA_BIND_PATHS}"
 fi
