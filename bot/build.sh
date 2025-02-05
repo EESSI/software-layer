@@ -51,13 +51,16 @@ echo "DEBUG3: TMPDIR=$TMPDIR"
 HTTP_PROXY=$(cfg_get_value "site_config" "http_proxy")
 HTTP_PROXY=${HTTP_PROXY:-${http_proxy}}
 echo "bot/build.sh: HTTP_PROXY='${HTTP_PROXY}'"
+echo "DEBUG4: TMPDIR=$TMPDIR"
 
 # if https_proxy is defined in ${JOB_CFG_FILE} use it, if not use env var $https_proxy
 HTTPS_PROXY=$(cfg_get_value "site_config" "https_proxy")
 HTTPS_PROXY=${HTTPS_PROXY:-${https_proxy}}
 echo "bot/build.sh: HTTPS_PROXY='${HTTPS_PROXY}'"
 
+echo "DEBUG5: TMPDIR=$TMPDIR"
 LOCAL_TMP=$(cfg_get_value "site_config" "local_tmp")
+echo "DEBUG6: TMPDIR=$TMPDIR"
 echo "bot/build.sh: LOCAL_TMP='${LOCAL_TMP}'"
 # TODO should local_tmp be mandatory? --> then we check here and exit if it is not provided
 
