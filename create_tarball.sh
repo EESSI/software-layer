@@ -14,6 +14,7 @@ cpu_arch_subdir=$3
 accel_subdir=$4
 target_tgz=$5
 
+echo "$TMPDIR in create_tarball: $TMPDIR"
 tmpdir=`mktemp -d`
 echo ">> tmpdir: $tmpdir"
 

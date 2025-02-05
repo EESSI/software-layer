@@ -261,6 +261,7 @@ fi
 # create tmp file for output of build step
 build_outerr=$(mktemp build.outerr.XXXX)
 
+echo "TMPDIR when calling build software: $TMPDIR"
 echo "Executing command to build software:"
 echo "$software_layer_dir/eessi_container.sh ${COMMON_ARGS[@]} ${BUILD_STEP_ARGS[@]}"
 echo "                     -- $software_layer_dir/install_software_layer.sh \"${INSTALL_SCRIPT_ARGS[@]}\" \"$@\" 2>&1 | tee -a ${build_outerr}"
@@ -298,6 +299,7 @@ export TGZ=$(printf "eessi-%s-software-%s-%s-%d.tar.gz" ${EESSI_VERSION} ${EESSI
 # TODO should we make this a configurable parameter of eessi_container.sh using
 # /tmp as default?
 TMP_IN_CONTAINER=/tmp
+echo "TMPDIR when calling create tarball: $TMPDIR"
 echo "Executing command to create tarball:"
 echo "$software_layer_dir/eessi_container.sh ${COMMON_ARGS[@]} ${TARBALL_STEP_ARGS[@]}"
 echo "                     -- $software_layer_dir/create_tarball.sh ${TMP_IN_CONTAINER} ${EESSI_VERSION} ${EESSI_SOFTWARE_SUBDIR_OVERRIDE} \"${EESSI_ACCELERATOR_TARGET}\" /eessi_bot_job/${TGZ} 2>&1 | tee -a ${tar_outerr}"
