@@ -271,8 +271,15 @@ fi
 
 # Install NVIDIA drivers in host_injections (if they exist)
 if command_exists "nvidia-smi"; then
-    echo "Command 'nvidia-smi' found. Installing NVIDIA drivers for use in prefix shell..."
-    ${EESSI_PREFIX}/scripts/gpu_support/nvidia/link_nvidia_host_libraries.sh
+    nvidia-smi --version
+    ec=$?
+    if [ ${ec} -ne 0 ]; then 
+        echo "Command 'nvidia-smi' found. Installing NVIDIA drivers for use in prefix shell..."
+        ${EESSI_PREFIX}/scripts/gpu_support/nvidia/link_nvidia_host_libraries.sh
+    else
+        echo "Warning: command 'nvidia-smi' found, but 'nvidia-smi --version' did not run succesfully."
+        echo "IF the current node acutally does contain Nvidia GPUs, this should be considered an error."
+    fi
 fi
 
 
