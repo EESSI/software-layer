@@ -259,7 +259,7 @@ if command_exists "nvidia-smi"; then
     nvidia-smi --version
     ec=$?
     set -e
-    if [ ${ec} -ne 0 ]; then
+    if [ ${ec} -eq 0 ]; then
         echo "Command 'nvidia-smi' found, using available GPU"
         BUILD_STEP_ARGS+=("--nvidia" "all")
     else

@@ -273,7 +273,7 @@ fi
 if command_exists "nvidia-smi"; then
     nvidia-smi --version
     ec=$?
-    if [ ${ec} -ne 0 ]; then 
+    if [ ${ec} -eq 0 ]; then 
         echo "Command 'nvidia-smi' found. Installing NVIDIA drivers for use in prefix shell..."
         ${EESSI_PREFIX}/scripts/gpu_support/nvidia/link_nvidia_host_libraries.sh
     else
