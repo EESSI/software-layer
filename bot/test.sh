@@ -215,8 +215,11 @@ TEST_STEP_ARGS+=("--extra-bind-paths" "/sys/fs/cgroup:/hostsys/fs/cgroup:ro")
 
 # add options required to handle NVIDIA support
 if command_exists "nvidia-smi"; then
+    # Accept that this may fail
+    set +e
     nvidia-smi --version
     ec=$?
+    set -e
     if [ ${ec} -ne 0 ]; then
         echo "Command 'nvidia-smi' found, using available GPU"
         BUILD_STEP_ARGS+=("--nvidia" "run")
