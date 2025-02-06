@@ -264,7 +264,8 @@ if command_exists "nvidia-smi"; then
         BUILD_STEP_ARGS+=("--nvidia" "all")
     else
         echo "Warning: command 'nvidia-smi' found, but 'nvidia-smi --version' did not run succesfully."
-        echo "IF the current node acutally does contain Nvidia GPUs, this should be considered an error."
+        echo "This script now assumes this is NOT a GPU node."
+        echo "If, and only if, the current node actually does contain Nvidia GPUs, this should be considered an error."
         BUILD_STEP_ARGS+=("--nvidia" "install")
     fi
 else
