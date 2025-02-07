@@ -28,12 +28,12 @@ easyconfigs:
   - DP3-6.2-foss-2023b.eb:
       options:
         # see https://github.com/easybuilders/easybuild-easyconfigs/pull/21765
-        from-commit: bf9fe67ec7d14f823c32081d52eb9d2763e8dcd0
+        from-commit: c7e4bfe1a57cf9781ce346ba8ae9081644408c23
   - WSClean-3.5-foss-2023b.eb:
       options:
         # see https://github.com/easybuilders/easybuild-easyconfigs/pull/21765
-        from-commit: bf9fe67ec7d14f823c32081d52eb9d2763e8dcd0
+        from-commit: c7e4bfe1a57cf9781ce346ba8ae9081644408c23
   - EveryBeam-0.6.1-foss-2023b.eb:
       options:
         # see https://github.com/easybuilders/easybuild-easyconfigs/pull/21765
-        from-commit: bf9fe67ec7d14f823c32081d52eb9d2763e8dcd0 
+        from-commit: c7e4bfe1a57cf9781ce346ba8ae9081644408c23 
