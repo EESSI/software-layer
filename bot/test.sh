@@ -214,8 +214,19 @@ TEST_STEP_ARGS+=("--extra-bind-paths" "/sys/fs/cgroup:/hostsys/fs/cgroup:ro")
 
 # add options required to handle NVIDIA support
 if command_exists "nvidia-smi"; then
-    echo "Command 'nvidia-smi' found, using available GPU"
-    TEST_STEP_ARGS+=("--nvidia" "run")
+    # Accept that this may fail
+    set +e
+    nvidia-smi --version
+    ec=$?
+    set -e
+    if [ ${ec} -eq 0 ]; then
+        echo "Command 'nvidia-smi' found, using available GPU"
+        TEST_STEP_ARGS+=("--nvidia" "run")
+    else
+        echo "Warning: command 'nvidia-smi' found, but 'nvidia-smi --version' did not run succesfully."
+        echo "This script now assumes this is NOT a GPU node."
+        echo "If, and only if, the current node actually does contain Nvidia GPUs, this should be considered an error."
+    fi
 fi
 
 # prepare arguments to test_suite.sh (specific to test step)
