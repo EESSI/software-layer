@@ -204,7 +204,6 @@ else
     exit ${test_selection_exit_code}
 fi
 # Allow people deploying the bot to override this
-echo "REFRAME_SCALE_TAG: $REFRAME_SCALE_TAG"
 if [ -z "$REFRAME_SCALE_TAG" ]; then
     REFRAME_SCALE_TAG="--tag 1_node"
 fi

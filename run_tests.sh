@@ -27,5 +27,4 @@ CHECKOUT_LATEST="git checkout \${VERSION}"
 ./run_in_compat_layer_env.sh "${TEST_CLONE} && ${LATEST_VERSION} && ${CHECKOUT_LATEST}"
 
 # Run the test suite
-echo "REFRAME_SCALE_TAG in run_tests: $REFRAME_SCALE_TAG"
 ./test_suite.sh "$@"
