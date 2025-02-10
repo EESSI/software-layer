@@ -243,14 +243,28 @@ mkdir -p ${TARBALL_TMP_BUILD_STEP_DIR}
 # prepare arguments to eessi_container.sh specific to build step
 BUILD_STEP_ARGS+=("--save" "${TARBALL_TMP_BUILD_STEP_DIR}")
 BUILD_STEP_ARGS+=("--storage" "${STORAGE}")
+
 # add options required to handle NVIDIA support
 if command_exists "nvidia-smi"; then
-    echo "Command 'nvidia-smi' found, using available GPU"
-    BUILD_STEP_ARGS+=("--nvidia" "all")
+    # Accept that this may fail
+    set +e
+    nvidia-smi --version
+    ec=$?
+    set -e
+    if [ ${ec} -eq 0 ]; then
+        echo "Command 'nvidia-smi' found, using available GPU"
+        BUILD_STEP_ARGS+=("--nvidia" "all")
+    else
+        echo "Warning: command 'nvidia-smi' found, but 'nvidia-smi --version' did not run succesfully."
+        echo "This script now assumes this is NOT a GPU node."
+        echo "If, and only if, the current node actually does contain Nvidia GPUs, this should be considered an error."
+        BUILD_STEP_ARGS+=("--nvidia" "install")
+    fi
 else
     echo "No 'nvidia-smi' found, no available GPU but allowing overriding this check"
     BUILD_STEP_ARGS+=("--nvidia" "install")
 fi
+
 # Retain location for host injections so we don't reinstall CUDA
 # (Always need to run the driver installation as available driver may change)
 if [[ ! -z ${SHARED_FS_PATH} ]]; then
