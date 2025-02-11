@@ -15,7 +15,7 @@ env:
       - nvidia/cc80
 jobs:
   check_missing:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     strategy:
       fail-fast: false
       matrix:
@@ -57,17 +57,8 @@ jobs:
               env | grep ^EESSI | sort
 
               # first check the CPU-only builds for this CPU target
-              echo "just run check_missing_installations.sh (should use easystacks/software.eessi.io/${{matrix.EESSI_VERSION}}/eessi-${{matrix.EESSI_VERSION}}-*.yml)"
-              for easystack_file in $(ls easystacks/software.eessi.io/${{matrix.EESSI_VERSION}}/eessi-${{matrix.EESSI_VERSION}}-eb-*.yml); do
-                  if [ ${{matrix.EESSI_SOFTWARE_SUBDIR_OVERRIDE}} = "x86_64/amd/zen4" ]; then
-                      if grep -q 2022b <<<"${easystack_file}"; then
-                          # skip the check of installed software on zen4 for foss/2022b builds
-                          continue
-                      elif grep -q CUDA <<<"${easystack_file}"; then
-                          # skip the check of install CUDA software in the CPU path for zen4
-                          continue
-                      fi
-                  fi
+              echo "just run check_missing_installations.sh (should use easystacks/software.eessi.io/${{matrix.EESSI_VERSION}}/eessi-${{matrix.EESSI_VERSION}}-*.yml with latest EasyBuild release)"
+              for easystack_file in $(EESSI_VERSION=${{matrix.EESSI_VERSION}} .github/workflows/scripts/only_latest_easystacks.sh); do
                   echo "check missing installations for ${easystack_file}..."
                   ./check_missing_installations.sh ${easystack_file}
                   ec=$?
@@ -82,7 +73,7 @@ jobs:
                   for accel in ${accelerators}; do
                       module use ${EESSI_SOFTWARE_PATH}/accel/${accel}/modules/all
                       echo "checking missing installations for accelerator ${accel} using modulepath: ${MODULEPATH}"
-                      for easystack_file in $(ls easystacks/software.eessi.io/${{matrix.EESSI_VERSION}}/accel/$(dirname ${accel})/eessi-${{matrix.EESSI_VERSION}}-eb-*.yml); do
+                      for easystack_file in $(EESSI_VERSION=${{matrix.EESSI_VERSION}} ACCEL_EASYSTACKS=1 .github/workflows/scripts/only_latest_easystacks.sh); do
                           echo "check missing installations for ${easystack_file}..."
                           ./check_missing_installations.sh ${easystack_file}
                           ec=$?

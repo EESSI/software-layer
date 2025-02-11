@@ -1,0 +1,6 @@
+# 2024.11.12
+# for installations under /cvmfs, if EESSI_ACCELERATOR_TARGET is set,
+# EESSI-extend should adjust EASYBUILD_INSTALLPATH and set
+# EASYBUILD_CUDA_COMPUTE_CAPABILITIES
+easyconfigs:
+  - EESSI-extend-easybuild.eb

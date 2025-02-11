@@ -1,8 +1,10 @@
+# Choose an EESSI CVMFS repository
+EESSI_CVMFS_REPO="${EESSI_CVMFS_REPO:-/cvmfs/software.eessi.io}"
 # Choose an EESSI version
 EESSI_VERSION="${EESSI_VERSION:-2023.06}"
 # Path to top-level module tree
-export MODULEPATH=/cvmfs/software.eessi.io/versions/"$EESSI_VERSION"/init/modules
-. /cvmfs/software.eessi.io/versions/"$EESSI_VERSION"/compat/linux/$(uname -m)/usr/share/Lmod/init/bash
+export MODULEPATH="${EESSI_CVMFS_REPO}/versions/${EESSI_VERSION}/init/modules"
+. "${EESSI_CVMFS_REPO}/versions/${EESSI_VERSION}/compat/linux/$(uname -m)/usr/share/Lmod/init/bash"
 
 if [ -z "$__Init_Default_Modules" ]; then
    export __Init_Default_Modules=1;

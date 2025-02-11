@@ -38,6 +38,45 @@ if [ -d $EESSI_PREFIX ]; then
           break
         fi
       done
+
+      # we need to make sure that errexit shell option (set -e) is not enabled,
+      # since archdetect will produce non-zero exit code if no accelerator was found
+      if [[ "$-" =~ e ]]; then
+        errexit_shell_option_set='yes'
+        set +e
+      else
+        errexit_shell_option_set='no'
+      fi
+
+      # to be able to grab exit code of archdetect trying to detect accelerators,
+      # we can not run it via $(...), so we have to redirect the output to a temporary file
+      tmpout=$(mktemp)
+      ${EESSI_INIT_DIR_PATH}/eessi_archdetect.sh accelpath 2>&1 > $tmpout
+      accelpath_exit_code=$?
+
+      if [[ "$errexit_shell_option_set" == "yes" ]]; then
+        set -e
+      fi
+
+      if [[ $accelpath_exit_code -eq 0 ]]; then
+          export EESSI_ACCEL_SUBDIR=$(tail -1 $tmpout && rm -f $tmpout)
+          if [ -z ${EESSI_ACCEL_SUBDIR} ]; then
+              error "accelerator detection with archdetect worked, but no result was returned?!"
+          else
+              # allow specifying different parent directory for accel/* subdirectory via $EESSI_ACCEL_SOFTWARE_SUBDIR_OVERRIDE
+              EESSI_ACCEL_SOFTWARE_SUBDIR=${EESSI_ACCEL_SOFTWARE_SUBDIR_OVERRIDE:-$EESSI_SOFTWARE_SUBDIR}
+              # path to where accel/* subdirectory is located
+              EESSI_ACCEL_SOFTWARE_PATH=${EESSI_PREFIX}/software/${EESSI_OS_TYPE}/${EESSI_ACCEL_SOFTWARE_SUBDIR}
+              if [ -d $EESSI_ACCEL_SOFTWARE_PATH/${EESSI_ACCEL_SUBDIR} ]; then
+                  show_msg "archdetect found supported accelerator for CPU target ${EESSI_ACCEL_SOFTWARE_SUBDIR}: ${EESSI_ACCEL_SUBDIR}"
+              else
+                  show_msg "No matching path found in ${EESSI_ACCEL_SOFTWARE_SUBDIR} for accelerator detected by archdetect (${EESSI_ACCEL_SUBDIR})"
+              fi
+          fi
+      else
+          show_msg "archdetect could not detect any accelerators"
+          rm -f $tmpout
+      fi
     elif [ "$EESSI_USE_ARCHSPEC" == "1" ]; then
       # note: eessi_software_subdir_for_host.py will pick up value from $EESSI_SOFTWARE_SUBDIR_OVERRIDE if it's defined!
       export EESSI_EPREFIX_PYTHON=$EESSI_EPREFIX/usr/bin/python3
@@ -47,16 +86,6 @@ if [ -d $EESSI_PREFIX ]; then
       error "Don't know how to detect host CPU, giving up!"
     fi
     if [ ! -z $EESSI_SOFTWARE_SUBDIR ]; then
-
-        # use x86_64/amd/zen3 for now when AMD Genoa (Zen4) CPU is detected,
-        # since optimized software installations for Zen4 are a work-in-progress,
-        # see https://gitlab.com/eessi/support/-/issues/37
-        if [[ "${EESSI_SOFTWARE_SUBDIR}" == "x86_64/amd/zen4" ]]; then
-            if [ -z $EESSI_SOFTWARE_SUBDIR_OVERRIDE ]; then
-                export EESSI_SOFTWARE_SUBDIR="x86_64/amd/zen3"
-                echo -e "\e[33mSticking to ${EESSI_SOFTWARE_SUBDIR} for now, since optimized installations for AMD Genoa (Zen4) are a work in progress, see https://gitlab.com/eessi/support/-/issues/37 for more information\e[0m"
-            fi
-        fi
 
         show_msg "Using ${EESSI_SOFTWARE_SUBDIR} as software subdirectory."
         export EESSI_SOFTWARE_PATH=$EESSI_PREFIX/software/$EESSI_OS_TYPE/$EESSI_SOFTWARE_SUBDIR
@@ -81,15 +110,17 @@ if [ -d $EESSI_PREFIX ]; then
         if [ ! -z $EESSI_BASIC_ENV ]; then
           show_msg "Only setting up basic environment, so we're done"
         elif [ -d $EESSI_SOFTWARE_PATH ]; then
+          export EESSI_SITE_SOFTWARE_PATH=${EESSI_SOFTWARE_PATH/versions/host_injections}
+          show_msg "Using ${EESSI_SITE_SOFTWARE_PATH} as the site extension directory for installations."
+          # Allow for use of alternative module tree shipped with EESSI
+          if [ -z ${EESSI_MODULE_SUBDIR+x} ]; then
+            # EESSI_MODULE_SUBDIR not set
+            EESSI_MODULE_SUBDIR="modules/all"
+          fi
           # Allow for the use of a custom MNS
           if [ -z ${EESSI_CUSTOM_MODULEPATH+x} ]; then
             # EESSI_CUSTOM_MODULEPATH not set so we use our defaults
 
-            # Allow for use of alternative module tree shipped with EESSI
-            if [ -z ${EESSI_MODULE_SUBDIR+x} ]; then
-              # EESSI_MODULE_SUBDIR not set
-              EESSI_MODULE_SUBDIR="modules/all"
-            fi
             EESSI_MODULEPATH=$EESSI_SOFTWARE_PATH/$EESSI_MODULE_SUBDIR
           else
             show_msg "Using defined environment variable \$EESSI_CUSTOM_MODULEPATH to set EESSI_MODULEPATH."
@@ -99,18 +130,23 @@ if [ -d $EESSI_PREFIX ]; then
           if [ -d $EESSI_MODULEPATH ]; then
             export EESSI_MODULEPATH=$EESSI_MODULEPATH
             show_msg "Using ${EESSI_MODULEPATH} as the directory to be added to MODULEPATH."
-            export EESSI_SITE_MODULEPATH=${EESSI_MODULEPATH/versions/host_injections}
+            export EESSI_SITE_MODULEPATH=$EESSI_SITE_SOFTWARE_PATH/$EESSI_MODULE_SUBDIR
             show_msg "Using ${EESSI_SITE_MODULEPATH} as the site extension directory to be added to MODULEPATH."
           else
             error "EESSI module path at $EESSI_MODULEPATH not found!"
             false
           fi
 
+          if [ -d ${EESSI_ACCEL_SOFTWARE_PATH}/${EESSI_ACCEL_SUBDIR}/${EESSI_MODULE_SUBDIR} ]; then
+              export EESSI_MODULEPATH_ACCEL=${EESSI_ACCEL_SOFTWARE_PATH}/${EESSI_ACCEL_SUBDIR}/${EESSI_MODULE_SUBDIR}
+              show_msg "Using ${EESSI_MODULEPATH_ACCEL} as additional directory (for accelerators) to be added to MODULEPATH."
+          fi
+
           # Fix wrong path for RHEL >=8 libcurl 
-	  # This is required here because we ship curl in our compat layer. If we only provided
-	  # curl as a module file we could instead do this via a `modluafooter` in an EasyBuild
-	  # hook (or via an Lmod hook)
-	  rhel_libcurl_file="/etc/pki/tls/certs/ca-bundle.crt"
+          # This is required here because we ship curl in our compat layer. If we only provided
+          # curl as a module file we could instead do this via a `modluafooter` in an EasyBuild
+          # hook (or via an Lmod hook)
+          rhel_libcurl_file="/etc/pki/tls/certs/ca-bundle.crt"
           if [ -f $rhel_libcurl_file ]; then
             show_msg "Found libcurl CAs file at RHEL location, setting CURL_CA_BUNDLE"
             export CURL_CA_BUNDLE=$rhel_libcurl_file
