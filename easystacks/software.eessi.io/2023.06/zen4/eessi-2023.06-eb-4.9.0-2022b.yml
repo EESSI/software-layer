@@ -1,0 +1,28 @@
+easyconfigs:
+  # Adding Python explicitely, as defined in 20240729-eb-4.9.2-Python-ctypes.yml
+  - Python-3.10.8-GCCcore-12.2.0-bare:
+      options:
+        # See https://github.com/easybuilders/easybuild-easyblocks/pull/3352
+        # Can't use include-easyblocks-from-commit here, as was done for rebuilds for the other archs
+        # because the eb version from this easystack isn't new enough to know it
+        # include-easyblocks-from-commit: 1ee17c0f7726c69e97442f53c65c5f041d65c94f
+        include-easyblocks-from-pr: 3352
+  - Python-3.10.8-GCCcore-12.2.0:
+      options:
+        # See https://github.com/easybuilders/easybuild-easyblocks/pull/3352
+        # Can't use include-easyblocks-from-commit here, as was done for rebuilds for the other archs
+        # because the eb version from this easystack isn't new enough to know it
+        # include-easyblocks-from-commit: 1ee17c0f7726c69e97442f53c65c5f041d65c94f
+        include-easyblocks-from-pr: 3352
+  - SciPy-bundle-2023.02-gfbf-2022b.eb
+  - GDAL-3.6.2-foss-2022b.eb
+  - waLBerla-6.1-foss-2022b.eb:
+      options:
+        from-pr: 19324
+  - WRF-4.4.1-foss-2022b-dmpar.eb
+  - ImageMagick-7.1.0-53-GCCcore-12.2.0.eb:
+      options:
+        from-pr: 20086
+  - R-4.2.2-foss-2022b.eb:
+      options:
+        from-pr: 20238

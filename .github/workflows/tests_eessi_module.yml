@@ -8,7 +8,7 @@ permissions:
   contents: read # to fetch code (actions/checkout)
 jobs:
   basic_checks:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     strategy:
       fail-fast: false
       matrix:
@@ -63,7 +63,7 @@ jobs:
           set -e  # Re-enable exit on non-zero status
 
   lmod_and_init_script_comparison:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     strategy:
       fail-fast: false
       matrix:
@@ -136,7 +136,7 @@ jobs:
           fi
 
   make_sure_load_and_unload_work:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     strategy:
       fail-fast: false
       matrix:

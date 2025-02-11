@@ -1,0 +1,12 @@
+# 2025.02.03
+# Rebuild LAMMPS 2Aug2023_update2 for Sapphire Rapids,
+# as the existing version used an old version of archspec that detected the CPU as Icelake.
+# See https://github.com/easybuilders/easybuild-easyconfigs/pull/22235
+# and https://github.com/easybuilders/easybuild-easyblocks/pull/3569.
+easyconfigs:
+  - LAMMPS-2Aug2023_update2-foss-2023a-kokkos.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/22235
+        from-commit: 01dd97ea62fe4d7d0df040ede3af03eb2f1b8641
+        # see https://github.com/easybuilders/easybuild-easyblocks/pull/3569
+        include-easyblocks-from-commit: b0ce5ec66c8f797220b2c2a773acfc4aeae7a0c7

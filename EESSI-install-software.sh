@@ -140,9 +140,9 @@ else
       # Make sure EESSI_PREFIX and EESSI_OS_TYPE are set
       source $TOPDIR/init/minimal_eessi_env
 
-      # make sure directory exists (since it's expected by init/eessi_environment_variables when using archdetect)
-      echo "  Creating software directory at '${EESSI_PREFIX}/software/${EESSI_OS_TYPE}/${EESSI_SOFTWARE_SUBDIR_OVERRIDE}/software'"
-      mkdir -p ${EESSI_PREFIX}/software/${EESSI_OS_TYPE}/${EESSI_SOFTWARE_SUBDIR_OVERRIDE}/software
+      # make sure the the software and modules directory exist
+      # (since it's expected by init/eessi_environment_variables when using archdetect and by the EESSI module)
+      mkdir -p ${EESSI_PREFIX}/software/${EESSI_OS_TYPE}/${EESSI_SOFTWARE_SUBDIR_OVERRIDE}/{modules,software}
   )
 fi
 
@@ -235,22 +235,34 @@ if [[ "${EESSI_CVMFS_REPO}" != /cvmfs/dev.eessi.io ]]; then
     ${TOPDIR}/install_scripts.sh --prefix ${EESSI_PREFIX}
 fi
 
+echo ">> Configuring EasyBuild..."
+
+# Make sure EESSI-extend is not loaded, and configure location variables for a
+#   CVMFS installation
+module unload EESSI-extend
+unset EESSI_USER_INSTALL
+unset EESSI_PROJECT_INSTALL
+unset EESSI_SITE_INSTALL
+export EESSI_CVMFS_INSTALL=1
+
+# We now run 'source load_eessi_extend_module.sh' to load or install and load the
+#   EESSI-extend module which sets up all build environment settings.
+# The script requires the EESSI_VERSION given as argument, a couple of
+#   environment variables set (TMPDIR, EB and EASYBUILD_INSTALLPATH) and the
+#   function check_exit_code defined.
+# NOTE 1, the script exits if those variables/functions are undefined.
+# NOTE 2, loading the EESSI-extend module may adjust the value of EASYBUILD_INSTALLPATH,
+#   e.g., to point to the installation directory for accelerators.
+# NOTE 3, we have to set a default for EASYBUILD_INSTALLPATH here in cases the
+#   EESSI-extend module itself needs to be installed.
+export EASYBUILD_INSTALLPATH=${EESSI_PREFIX}/software/${EESSI_OS_TYPE}/${EESSI_SOFTWARE_SUBDIR_OVERRIDE}
+source load_eessi_extend_module.sh ${EESSI_VERSION}
+
 # Install full CUDA SDK and cu* libraries in host_injections
 # Hardcode this for now, see if it works
 # TODO: We should make a nice yaml and loop over all CUDA versions in that yaml to figure out what to install
 # Allow skipping CUDA SDK install in e.g. CI environments
-# The install_cuda... script uses EasyBuild. So, we need to check if we have EB
-# or skip this step.
 echo "Going to install full CUDA SDK and cu* libraries under host_injections if necessary"
-module_avail_out=$TMPDIR/ml.out
-module avail 2>&1 | grep EasyBuild &> ${module_avail_out}
-if [[ $? -eq 0 ]]; then
-    echo_green ">> Found an EasyBuild module"
-else
-    echo_yellow ">> No EasyBuild module found: skipping step to install CUDA (see output in ${module_avail_out})"
-    export skip_cuda_install=True
-fi
-
 temp_install_storage=${TMPDIR}/temp_install_storage
 mkdir -p ${temp_install_storage}
 if [ -z "${skip_cuda_install}" ] || [ ! "${skip_cuda_install}" ]; then
@@ -259,7 +271,7 @@ if [ -z "${skip_cuda_install}" ] || [ ! "${skip_cuda_install}" ]; then
         --accept-cuda-eula \
         --accept-cudnn-eula
 else
-    echo "Skipping installation of CUDA SDK and cu* libraries in host_injections, since the --skip-cuda-install flag was passed OR no EasyBuild module was found"
+    echo "Skipping installation of CUDA SDK and cu* libraries in host_injections, since the --skip-cuda-install flag was passed"
 fi
 
 # Install NVIDIA drivers in host_injections (if they exist)
@@ -268,27 +280,6 @@ if command_exists "nvidia-smi"; then
     ${EESSI_PREFIX}/scripts/gpu_support/nvidia/link_nvidia_host_libraries.sh
 fi
 
-
-echo ">> Configuring EasyBuild..."
-
-# Make sure that we use the EESSI_CVMFS_INSTALL
-# Since the path is set when loading EESSI-extend, we reload it to make sure it works - even if it is already loaded
-# Note we need to do this after running install_cuda_and_libraries, since that does installations in the EESSI_SITE_INSTALL 
-unset EESSI_USER_INSTALL
-unset EESSI_PROJECT_INSTALL
-unset EESSI_SITE_INSTALL
-export EESSI_CVMFS_INSTALL=1
-module unload EESSI-extend
-eessi_extend_module=EESSI-extend/${EESSI_VERSION}-easybuild
-module avail ${eessi_extend_module} 2>&1 | grep "${eessi_extend_module}"
-ec=$?
-if [ ${ec} -eq 0 ]; then
-    module load ${eessi_extend_module}
-else
-    echo "Did not find ${eessi_extend_module} module; setting EASYBUILD_INSTALLPATH and EASYBUILD_EXPERIMENTAL manually"
-    export EASYBUILD_INSTALLPATH=${EESSI_PREFIX}/software/${EESSI_OS_TYPE}/${EESSI_SOFTWARE_SUBDIR_OVERRIDE}
-    export EASYBUILD_EXPERIMENTAL=1
-fi
 
 if [ ! -z "${shared_fs_path}" ]; then
     shared_eb_sourcepath=${shared_fs_path}/easybuild/sources
@@ -355,7 +346,15 @@ else
         if [ -f ${easystack_file} ]; then
             echo_green "Feeding easystack file ${easystack_file} to EasyBuild..."
 
-            ${EB} --easystack ${easystack_file} --robot
+            if [[ ${easystack_file} == *"/rebuilds/"* ]]; then
+                # the removal script should have removed the original directory and created a new and empty one
+                # to work around permission issues:
+                # https://github.com/EESSI/software-layer/issues/556
+                echo_yellow "This is a rebuild, so using --try-amend=keeppreviousinstall=True to reuse the already created directory"
+                ${EB} --easystack ${easystack_file} --robot --try-amend=keeppreviousinstall=True
+            else
+                ${EB} --easystack ${easystack_file} --robot
+            fi
             ec=$?
 
             # copy EasyBuild log file if EasyBuild exited with an error

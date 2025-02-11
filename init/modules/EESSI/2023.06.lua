@@ -12,6 +12,13 @@ whatis("URL: https://www.eessi.io/docs/")
 conflict("EESSI")
 local eessi_version = myModuleVersion()
 local eessi_repo = "/cvmfs/software.eessi.io"
+if (subprocess("uname -m"):gsub("\n$","") == "riscv64") then
+    eessi_version = os.getenv("EESSI_VERSION_OVERRIDE") or "20240402"
+    eessi_repo = "/cvmfs/riscv.eessi.io"
+    LmodMessage("RISC-V architecture detected, but there is no RISC-V support yet in the production repository.\n" ..
+                "Automatically switching to version " .. eessi_version .. " of the RISC-V development repository " .. eessi_repo .. ".\n" ..
+                "For more details about this repository, see https://www.eessi.io/docs/repositories/riscv.eessi.io/.")
+end
 local eessi_prefix = pathJoin(eessi_repo, "versions", eessi_version)
 local eessi_os_type = "linux"
 setenv("EESSI_VERSION", eessi_version)
@@ -42,15 +49,6 @@ function archdetect_cpu()
         -- We loop over the list, and return the highest matching arch for which a directory exists for this EESSI version
         for archdetect_filter_cpu in string.gmatch(archdetect_options, "([^" .. ":" .. "]+)") do
             if isDir(pathJoin(eessi_prefix, "software", eessi_os_type, archdetect_filter_cpu, "software")) then
-                -- use x86_64/amd/zen3 for now when AMD Genoa (Zen4) CPU is detected,
-                -- since optimized software installations for Zen4 are a work-in-progress,
-                -- see https://gitlab.com/eessi/support/-/issues/37
-                if (archdetect_filter_cpu == "x86_64/amd/zen4" and not os.getenv("EESSI_SOFTWARE_SUBDIR_OVERRIDE") == "x86_64/amd/zen4") then
-                    archdetect_filter_cpu = "x86_64/amd/zen3"
-                    if mode() == "load" then
-                        LmodMessage("Sticking to " .. archdetect_filter_cpu .. " for now, since optimized installations for AMD Genoa (Zen4) are a work in progress.")
-                    end
-                end
                 eessiDebug("Selected archdetect CPU: " .. archdetect_filter_cpu)
                 return archdetect_filter_cpu
             end
