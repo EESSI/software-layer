@@ -1,2 +1,3 @@
 easyconfigs:
-  - GCCcore-13.2.0.eb
+  - GCCcore-13.2.0.eb # should already be there
+  - black-24.10.0-GCCcore-13.2.0.eb
