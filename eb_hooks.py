@@ -26,14 +26,46 @@ CPU_TARGET_NEOVERSE_V1 = 'aarch64/neoverse_v1'
 CPU_TARGET_AARCH64_GENERIC = 'aarch64/generic'
 CPU_TARGET_A64FX = 'aarch64/a64fx'
 
+CPU_TARGET_SAPPHIRE_RAPIDS = 'x86_64/intel/sapphire_rapids'
 CPU_TARGET_ZEN4 = 'x86_64/amd/zen4'
 
 EESSI_RPATH_OVERRIDE_ATTR = 'orig_rpath_override_dirs'
+EESSI_MODULE_ONLY_ATTR = 'orig_module_only'
+EESSI_FORCE_ATTR = 'orig_force'
 
 SYSTEM = EASYCONFIG_CONSTANTS['SYSTEM'][0]
 
 EESSI_INSTALLATION_REGEX = r"^/cvmfs/[^/]*.eessi.io/versions/"
 HOST_INJECTIONS_LOCATION = "/cvmfs/software.eessi.io/host_injections/"
+
+# Make sure a single environment variable name is used for this throughout the hooks
+EESSI_IGNORE_ZEN4_GCC1220_ENVVAR="EESSI_IGNORE_LMOD_ERROR_ZEN4_GCC1220"
+
+def is_gcccore_1220_based(**kwargs):
+# ecname, ecversion, tcname, tcversion):
+    """
+    Checks if this easyconfig either _is_ or _uses_ a GCCcore-12.2.0 based toolchain.
+    This function is, for example, used to generate errors in GCCcore-12.2.0 based modules for the zen4 architecture
+    since zen4 is not fully supported with that toolchain.
+
+    :param str ecname: Name of the software specified in the EasyConfig
+    :param str ecversion: Version of the software specified in the EasyConfig
+    :param str tcname: Toolchain name specified in the EasyConfig
+    :param str tcversion: Toolchain version specified in the EasyConfig
+    """
+    ecname = kwargs.get('ecname', None)
+    ecversion = kwargs.get('ecversion', None)
+    tcname = kwargs.get('tcname', None)
+    tcversion = kwargs.get('tcversion', None)
+
+    gcccore_based_names = ['GCCcore', 'GCC']
+    foss_based_names = ['gfbf', 'gompi', 'foss']
+    return (
+        (tcname in foss_based_names and tcversion == '2022b') or
+        (tcname in gcccore_based_names and LooseVersion(tcversion) == LooseVersion('12.2.0')) or
+        (ecname in foss_based_names and ecversion == '2022b') or
+        (ecname in gcccore_based_names and LooseVersion(ecversion) == LooseVersion('12.2.0'))
+    )
 
 
 def get_eessi_envvar(eessi_envvar):
@@ -76,6 +108,11 @@ def parse_hook(ec, *args, **kwargs):
 
     if ec.name in PARSE_HOOKS:
         PARSE_HOOKS[ec.name](ec, eprefix)
+
+    # Always trigger this one, regardless of ec.name
+    cpu_target = get_eessi_envvar('EESSI_SOFTWARE_SUBDIR')
+    if cpu_target == CPU_TARGET_ZEN4:
+        parse_hook_zen4_module_only(ec, eprefix)
 
     # inject the GPU property (if required)
     ec = inject_gpu_property(ec)
@@ -130,6 +167,11 @@ def pre_prepare_hook(self, *args, **kwargs):
     if self.name in PRE_PREPARE_HOOKS:
         PRE_PREPARE_HOOKS[self.name](self, *args, **kwargs)
 
+    # Always trigger this one, regardless of ec.name
+    cpu_target = get_eessi_envvar('EESSI_SOFTWARE_SUBDIR')
+    if cpu_target == CPU_TARGET_ZEN4:
+        pre_prepare_hook_ignore_zen4_gcccore1220_error(self, *args, **kwargs)
+
 
 def post_prepare_hook_gcc_prefixed_ld_rpath_wrapper(self, *args, **kwargs):
     """
@@ -174,6 +216,11 @@ def post_prepare_hook(self, *args, **kwargs):
 
     if self.name in POST_PREPARE_HOOKS:
         POST_PREPARE_HOOKS[self.name](self, *args, **kwargs)
+
+    # Always trigger this one, regardless of ec.name
+    cpu_target = get_eessi_envvar('EESSI_SOFTWARE_SUBDIR')
+    if cpu_target == CPU_TARGET_ZEN4:
+        post_prepare_hook_ignore_zen4_gcccore1220_error(self, *args, **kwargs)
 
 
 def parse_hook_casacore_disable_vectorize(ec, eprefix):
@@ -351,6 +398,93 @@ def parse_hook_CP2K_remove_deps_for_aarch64(ec, *args, **kwargs):
             ec['dependencies'] = [dep for dep in ec['dependencies'] if dep[0] not in ('libxsmm',)]
     else:
         raise EasyBuildError("CP2K-specific hook triggered for non-CP2K easyconfig?!")
+
+
+def parse_hook_zen4_module_only(ec, eprefix):
+    """
+    Use --force --module-only if building a foss-2022b-based EasyConfig for Zen4.
+    This toolchain will not be supported on Zen4, so we will generate a modulefile
+    and have it print an LmodError.
+    """
+    if is_gcccore_1220_based(ecname=ec['name'], ecversion=ec['version'], tcname=ec['toolchain']['name'],
+                             tcversion=ec['toolchain']['version']):
+        env_varname = EESSI_IGNORE_ZEN4_GCC1220_ENVVAR
+        # TODO: create a docs page to which we can refer for more info here
+        # TODO: then update the link to the known issues page to the _specific_ issue
+        # Need to escape newline character so that the newline character actually ends up in the module file
+        # (otherwise, it splits the string, and a 2-line string ends up in the modulefile, resulting in syntax error)
+        errmsg = "EasyConfigs using toolchains based on GCCcore-12.2.0 are not supported for the Zen4 architecture.\\n"
+        errmsg += "See https://www.eessi.io/docs/known_issues/eessi-2023.06/#gcc-1220-and-foss-2022b-based-modules-cannot-be-loaded-on-zen4-architecture"
+        ec['modluafooter'] = 'if (not os.getenv("%s")) then LmodError("%s") end' % (env_varname, errmsg)
+
+
+def pre_fetch_hook(self, *args, **kwargs):
+    """Main pre fetch hook: trigger custom functions based on software name."""
+    if self.name in PRE_FETCH_HOOKS:
+        PRE_FETCH_HOOKS[ec.name](self, *args, **kwargs)
+
+    # Always trigger this one, regardless of self.name
+    cpu_target = get_eessi_envvar('EESSI_SOFTWARE_SUBDIR')
+    if cpu_target == CPU_TARGET_ZEN4:
+        pre_fetch_hook_zen4_gcccore1220(self, *args, **kwargs)
+
+
+def pre_fetch_hook_zen4_gcccore1220(self, *args, **kwargs):
+    """Use --force --module-only if building a foss-2022b-based EasyConfig for Zen4.
+    This toolchain will not be supported on Zen4, so we will generate a modulefile
+    and have it print an LmodError.
+    """
+    if is_gcccore_1220_based(ecname=self.name, ecversion=self.version, tcname=self.toolchain.name,
+                             tcversion=self.toolchain.version):
+        if hasattr(self, EESSI_MODULE_ONLY_ATTR):
+            raise EasyBuildError("'self' already has attribute %s! Can't use pre_fetch hook.",
+                                 EESSI_MODULE_ONLY_ATTR)
+        setattr(self, EESSI_MODULE_ONLY_ATTR, build_option('module_only'))
+        update_build_option('module_only', 'True')
+        print_msg("Updated build option 'module-only' to 'True'")
+
+        if hasattr(self, EESSI_FORCE_ATTR):
+            raise EasyBuildError("'self' already has attribute %s! Can't use pre_fetch hook.",
+                                 EESSI_FORCE_ATTR)
+        setattr(self, EESSI_FORCE_ATTR, build_option('force'))
+        update_build_option('force', 'True')
+        print_msg("Updated build option 'force' to 'True'")
+
+
+def post_module_hook_zen4_gcccore1220(self, *args, **kwargs):
+    """Revert changes from pre_fetch_hook_zen4_gcccore1220"""
+    if is_gcccore_1220_based(ecname=self.name, ecversion=self.version, tcname=self.toolchain.name,
+                             tcversion=self.toolchain.version):
+        if hasattr(self, EESSI_MODULE_ONLY_ATTR):
+            update_build_option('module_only', getattr(self, EESSI_MODULE_ONLY_ATTR))
+            print_msg("Restored original build option 'module_only' to %s" % getattr(self, EESSI_MODULE_ONLY_ATTR))
+        else:
+            raise EasyBuildError("Cannot restore module_only to it's original value: 'self' is missing attribute %s.",
+                                 EESSI_MODULE_ONLY_ATTR)
+
+        if hasattr(self, EESSI_FORCE_ATTR):
+            update_build_option('force', getattr(self, EESSI_FORCE_ATTR))
+            print_msg("Restored original build option 'force' to %s" % getattr(self, EESSI_FORCE_ATTR))
+        else:
+            raise EasyBuildError("Cannot restore force to it's original value: 'self' is misisng attribute %s.",
+                                 EESSI_FORCE_ATTR)
+
+
+# Modules for dependencies are loaded in the prepare step. Thus, that's where we need this variable to be set
+# so that the modules can be succesfully loaded without printing the error (so that we can create a module
+# _with_ the warning for the current software being installed)
+def pre_prepare_hook_ignore_zen4_gcccore1220_error(self, *args, **kwargs):
+    """Set environment variable to ignore the LmodError from parse_hook_zen4_module_only during build phase"""
+    if is_gcccore_1220_based(ecname=self.name, ecversion=self.version, tcname=self.toolchain.name,
+                             tcversion=self.toolchain.version):
+        os.environ[EESSI_IGNORE_ZEN4_GCC1220_ENVVAR] = "1"
+
+
+def post_prepare_hook_ignore_zen4_gcccore1220_error(self, *args, **kwargs):
+    """Unset environment variable to ignore the LmodError from parse_hook_zen4_module_only during build phase"""
+    if is_gcccore_1220_based(ecname=self.name, ecversion=self.version, tcname=self.toolchain.name,
+                             tcversion=self.toolchain.version):
+        del os.environ[EESSI_IGNORE_ZEN4_GCC1220_ENVVAR]
 
 
 def pre_prepare_hook_highway_handle_test_compilation_issues(self, *args, **kwargs):
@@ -684,11 +818,16 @@ def pre_test_hook_ignore_failing_tests_netCDF(self, *args, **kwargs):
 
 def pre_test_hook_increase_max_failed_tests_arm_PyTorch(self, *args, **kwargs):
     """
-    Pre-test hook for PyTorch: increase max failing tests for ARM for PyTorch 2.1.2
-    See https://github.com/EESSI/software-layer/pull/444#issuecomment-1890416171
+    Pre-test hook for PyTorch: increase max failing tests for ARM and Intel Sapphire Rapids for PyTorch 2.1.2
+    See https://github.com/EESSI/software-layer/pull/444#issuecomment-1890416171 and
+    https://github.com/EESSI/software-layer/pull/875#issuecomment-2606854400
     """
-    if self.name == 'PyTorch' and self.version == '2.1.2' and get_cpu_architecture() == AARCH64:
-        self.cfg['max_failed_tests'] = 10
+    cpu_target = get_eessi_envvar('EESSI_SOFTWARE_SUBDIR')
+    if self.name == 'PyTorch' and self.version == '2.1.2':
+        if get_cpu_architecture() == AARCH64:
+            self.cfg['max_failed_tests'] = 10
+        if cpu_target == CPU_TARGET_SAPPHIRE_RAPIDS:
+            self.cfg['max_failed_tests'] = 4
 
 
 def pre_single_extension_hook(ext, *args, **kwargs):
@@ -967,6 +1106,17 @@ def inject_gpu_property(ec):
     return ec
 
 
+def post_module_hook(self, *args, **kwargs):
+    """Main post module hook: trigger custom functions based on software name."""
+    if self.name in POST_MODULE_HOOKS:
+        POST_MODULE_HOOKS[ec.name](self, *args, **kwargs)
+
+    # Always trigger this one, regardless of self.name
+    cpu_target = get_eessi_envvar('EESSI_SOFTWARE_SUBDIR')
+    if cpu_target == CPU_TARGET_ZEN4:
+        post_module_hook_zen4_gcccore1220(self, *args, **kwargs)
+
+
 PARSE_HOOKS = {
     'casacore': parse_hook_casacore_disable_vectorize,
     'CGAL': parse_hook_cgal_toolchainopts_precise,
@@ -980,6 +1130,8 @@ PARSE_HOOKS = {
     'Qt5': parse_hook_qt5_check_qtwebengine_disable,
     'UCX': parse_hook_ucx_eprefix,
 }
+
+PRE_FETCH_HOOKS = {}
 
 PRE_PREPARE_HOOKS = {
     'Highway': pre_prepare_hook_highway_handle_test_compilation_issues,
@@ -1026,3 +1178,5 @@ POST_POSTPROC_HOOKS = {
     'CUDA': post_postproc_cuda,
     'cuDNN': post_postproc_cudnn,
 }
+
+POST_MODULE_HOOKS = {}

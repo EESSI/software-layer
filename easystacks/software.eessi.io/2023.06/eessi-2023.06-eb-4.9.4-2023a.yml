@@ -37,3 +37,15 @@ easyconfigs:
       options:
         # see https://github.com/easybuilders/easybuild-easyconfigs/pull/20230
         from-commit: 91c8df6b4c0810061e9f325427c9c79e961bc4b0
+  - Tombo-1.5.1-foss-2023a.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/21925
+        from-commit: 522ca010ab11949ab9594037f72b975cf1cd0d33
+  - elfx86exts-0.6.2-GCC-12.3.0.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/22145
+        from-commit: 31478e5c9869de3add74d0a02dd5df01ea65b21e
+  - archspec-0.2.5-GCCcore-12.3.0.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/22235
+        from-commit: 01dd97ea62fe4d7d0df040ede3af03eb2f1b8641

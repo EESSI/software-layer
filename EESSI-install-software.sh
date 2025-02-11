@@ -135,8 +135,9 @@ else
       # Make sure EESSI_PREFIX and EESSI_OS_TYPE are set
       source $TOPDIR/init/minimal_eessi_env
 
-      # make sure directory exists (since it's expected by init/eessi_environment_variables when using archdetect)
-      mkdir -p ${EESSI_PREFIX}/software/${EESSI_OS_TYPE}/${EESSI_SOFTWARE_SUBDIR_OVERRIDE}
+      # make sure the the software and modules directory exist
+      # (since it's expected by init/eessi_environment_variables when using archdetect and by the EESSI module)
+      mkdir -p ${EESSI_PREFIX}/software/${EESSI_OS_TYPE}/${EESSI_SOFTWARE_SUBDIR_OVERRIDE}/{modules,software}
   )
 fi
 
@@ -340,7 +341,15 @@ else
         if [ -f ${easystack_file} ]; then
             echo_green "Feeding easystack file ${easystack_file} to EasyBuild..."
 
-            ${EB} --easystack ${easystack_file} --robot
+            if [[ ${easystack_file} == *"/rebuilds/"* ]]; then
+                # the removal script should have removed the original directory and created a new and empty one
+                # to work around permission issues:
+                # https://github.com/EESSI/software-layer/issues/556
+                echo_yellow "This is a rebuild, so using --try-amend=keeppreviousinstall=True to reuse the already created directory"
+                ${EB} --easystack ${easystack_file} --robot --try-amend=keeppreviousinstall=True
+            else
+                ${EB} --easystack ${easystack_file} --robot
+            fi
             ec=$?
 
             # copy EasyBuild log file if EasyBuild exited with an error
