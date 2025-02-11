@@ -1,3 +1,6 @@
 easyconfigs:
   - GCCcore-13.2.0.eb # should already be there
-  - black-24.10.0-GCCcore-13.2.0.eb
+  - black-24.10.0-GCCcore-13.2.0.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/21684
+        from-commit: e842030c4423a57cc2254dae3329573ed062f4cf
