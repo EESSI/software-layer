@@ -1,0 +1,51 @@
+# documentation: https://help.github.com/en/articles/workflow-syntax-for-github-actions
+name: Check for discrepancies between software stacks in software.eessi.io
+on:
+  push:
+    branches: [ "*-software.eessi.io" ]
+  pull_request:
+  workflow_dispatch:
+permissions:
+  contents: read # to fetch code (actions/checkout)
+env:
+  EESSI_ACCELERATOR_TARGETS: |
+    x86_64/amd/zen2:
+      - nvidia/cc80
+    x86_64/amd/zen3:
+      - nvidia/cc80
+jobs:
+  check_missing:
+    runs-on: ubuntu-24.04
+    strategy:
+      fail-fast: false
+      matrix:
+        EESSI_VERSION:
+        - 2023.06
+        COMPARISON_ARCH:
+        - aarch64/neoverse_n1
+        - aarch64/neoverse_v1
+        - x86_64/amd/zen2
+        - x86_64/amd/zen3
+        - x86_64/amd/zen4
+        - x86_64/intel/haswell
+        - x86_64/intel/skylake_avx512
+    steps:
+        - name: Check out software-layer repository
+          uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
+
+        - name: Mount EESSI CernVM-FS pilot repository
+          uses: cvmfs-contrib/github-action-cvmfs@55899ca74cf78ab874bdf47f5a804e47c198743c # v4.0
+          with:
+              cvmfs_config_package: https://github.com/EESSI/filesystem-layer/releases/download/latest/cvmfs-config-eessi_latest_all.deb
+              cvmfs_http_proxy: DIRECT
+              cvmfs_repositories: software.eessi.io
+
+        - name: Check
+          run: |
+              export EESSI_PREFIX=/cvmfs/software.eessi.io/versions/${{matrix.EESSI_VERSION}}
+              export EESSI_OS_TYPE=linux
+              env | grep ^EESSI | sort
+
+              # Compare the requested architecture to the generic stack
+              # (assumes the general structure /cvmfs/software.eessi.io/versions/2023.06/software/linux/$COMPARISON_ARCH/modules/all)
+              .github/workflows/scripts/compare_to_generic.sh ${EESSI_PREFIX}/software/${EESSI_OS_TYPE} ${{matrix.COMPARISON_ARCH}}
