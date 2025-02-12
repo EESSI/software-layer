@@ -252,20 +252,7 @@ export EESSI_CVMFS_INSTALL=1
 # NOTE 3, we have to set a default for EASYBUILD_INSTALLPATH here in cases the
 #   EESSI-extend module itself needs to be installed.
 export EASYBUILD_INSTALLPATH=${EESSI_PREFIX}/software/${EESSI_OS_TYPE}/${EESSI_SOFTWARE_SUBDIR_OVERRIDE}
-if [[ ! -z ${EESSI_DEV_PROJECT} ]]; then
-    unset EESSI_CVMFS_INSTALL
-    export EESSI_PROJECT_INSTALL=$EESSI_CVMFS_REPO_OVERRIDE/versions/$EESSI_VERSION/$EESSI_DEV_PROJECT/software/${EESSI_OS_TYPE}/${EESSI_SOFTWARE_SUBDIR_OVERRIDE}
-    # Force override of $EESSI_SOFTWARE_PATH
-    ORIG_EESSI_SOFTWARE_PATH=$EESSI_SOFTWARE_PATH
-    EESSI_SOFTWARE_PATH=$EESSI_CVMFS_REPO
-    echo "$ORIG_EESSI_SOFTWARE_PATH temp override to $EESSI_SOFTWARE_PATH"
-fi
 source $TOPDIR/load_eessi_extend_module.sh ${EESSI_VERSION}
-
-if [[ ! -z ${ORIG_EESSI_SOFTWARE_PATH} ]]; then
-    EESSI_SOFTWARE_PATH=$ORIG_EESSI_SOFTWARE_PATH
-    unset $ORIG_EESSI_SOFTWARE_PATH
-fi
 
 # Install full CUDA SDK and cu* libraries in host_injections
 # Hardcode this for now, see if it works
@@ -306,6 +293,14 @@ if [ ! -z ${EESSI_ACCELERATOR_TARGET} ]; then
     fi
 fi
 
+# If in dev.eessi.io, allow building on top of software.eessi.io
+if [[ ! -z ${EESSI_DEV_PROJECT} ]]; then
+    module use /cvmfs/software.eessi.io/versions/$EESSI_VERSION/software/${EESSI_OS_TYPE}/${EESSI_SOFTWARE_SUBDIR_OVERRIDE}/modules/all
+    # Overwrite EASYBUILD_INSTALLPATH to point to dev.eessi.io
+    EASYBUILD_INSTALLPATH=$EESSI_CVMFS_REPO_OVERRIDE/versions/$EESSI_VERSION/$EESSI_DEV_PROJECT/software/${EESSI_OS_TYPE}/${EESSI_SOFTWARE_SUBDIR_OVERRIDE}
+    echo ">> \$EASYBUILD_INSTALLPATH overwritten to ${EASYBUILD_INSTALLPATH}"
+    module use $EASYBUILD_INSTALLPATH/modules/all
+fi
 
 if [[ -z ${MODULEPATH} ]]; then
     fatal_error "Failed to set up \$MODULEPATH?!"
