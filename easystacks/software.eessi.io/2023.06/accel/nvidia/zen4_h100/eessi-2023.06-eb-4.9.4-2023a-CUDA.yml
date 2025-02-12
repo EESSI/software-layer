@@ -1,0 +1,5 @@
+easyconfigs:
+  - CUDA-12.1.1.eb:
+      options:
+        accept-eula-for: CUDA
+  - pmt-1.2.0-GCCcore-12.3.0-CUDA-12.1.1.eb
