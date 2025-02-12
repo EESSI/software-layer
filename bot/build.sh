@@ -103,10 +103,6 @@ echo "bot/build.sh: STORAGE='${STORAGE}'"
 # make sure ${STORAGE} exists
 mkdir -p ${STORAGE}
 
-# Make sure ${STORAGE} gets bind-mounted
-# This will make sure that any subsequent jobs that create dirs or files under STORAGE have access to it in the container
-export SINGULARITY_BIND="${SINGULARITY_BIND},${STORAGE}"
-
 # make sure the base tmp storage is unique
 JOB_STORAGE=$(mktemp --directory --tmpdir=${STORAGE} bot_job_tmp_XXX)
 echo "bot/build.sh: created unique base tmp storage directory at ${JOB_STORAGE}"
@@ -309,9 +305,6 @@ else
     # a removal step was done, so resume from its temporary directory (which was also used for the build step)
     TARBALL_STEP_ARGS+=("--resume" "${REMOVAL_TMPDIR}")
 fi
-
-# Make sure we define storage, so that the TMPDIR is set to this in eessi_container.sh
-TARBALL_STEP_ARGS+=("--storage" "${STORAGE}")
 
 timestamp=$(date +%s)
 # to set EESSI_VERSION we need to source init/eessi_defaults now
