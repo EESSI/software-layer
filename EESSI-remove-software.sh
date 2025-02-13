@@ -137,6 +137,7 @@ if [ $EUID -eq 0 ]; then
                     # these subdirs don't (and shouldn't) exist, but we need to do the ls anyway as a workaround,
                     # so redirect to /dev/null and ignore the exit code
                     ls ${app_subdirs} >& /dev/null || true
+                    ls $(dirname ${app_module}) >& /dev/null || true
                 done
             else
                 fatal_error "Easystack file ${easystack_file} not found!"
