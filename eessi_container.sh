@@ -530,6 +530,15 @@ BIND_PATHS="${EESSI_CVMFS_VAR_LIB}:/var/lib/cvmfs,${EESSI_CVMFS_VAR_RUN}:/var/ru
 
 # provide a '/tmp' inside the container
 BIND_PATHS="${BIND_PATHS},${EESSI_TMPDIR}:${TMP_IN_CONTAINER}"
+
+# if TMPDIR is not empty and if TMP_IN_CONTAINER is not a prefix of TMPDIR, we need to add a bind mount for TMPDIR
+if [[ ! -z ${TMPDIR} && ${TMP_IN_CONTAINER} != ${TMPDIR}* ]]; then
+    msg="TMPDIR is not empty (${TMPDIR}) and TMP_IN_CONTAINER (${TMP_IN_CONTAINER}) is not a prefix of TMPDIR:"
+    msg="${msg} adding bind mount for TMPDIR"
+    echo "${msg}"
+    BIND_PATHS="${BIND_PATHS},${TMPDIR}"
+fi
+
 if [[ ! -z ${EXTRA_BIND_PATHS} ]]; then
     BIND_PATHS="${BIND_PATHS},${EXTRA_BIND_PATHS}"
 fi
