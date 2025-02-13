@@ -130,13 +130,13 @@ if [ $EUID -eq 0 ]; then
                     echo_yellow "Removing ${app_dir} and ${app_module}..."
                     rm -rf ${app_dir}
                     rm -rf ${app_module}
-                    # recreate the installation directories and first-level subdirectories to work around permission denied
-                    # issues when rebuilding the package (see https://github.com/EESSI/software-layer/issues/556)
+                    # recreate the installation directory and do an ls on the first-level subdirectories to work around
+                    # permission issues when reinstalling the application (see https://github.com/EESSI/software-layer/issues/556)
                     echo_yellow "Recreating an empty ${app_dir}..."
                     mkdir -p ${app_dir}
-                    for app_subdir in ${app_subdirs}; do
-                        mkdir -p ${app_subdir}
-                    done
+                    # these subdirs don't (and shouldn't) exist, but we need to do the ls anyway as a workaround,
+                    # so redirect to /dev/null and ignore the exit code
+                    ls ${app_subdirs} >& /dev/null || true
                 done
             else
                 fatal_error "Easystack file ${easystack_file} not found!"

@@ -252,6 +252,7 @@ mkdir -p ${TARBALL_TMP_BUILD_STEP_DIR}
 # prepare arguments to eessi_container.sh specific to build step
 BUILD_STEP_ARGS+=("--save" "${TARBALL_TMP_BUILD_STEP_DIR}")
 BUILD_STEP_ARGS+=("--storage" "${STORAGE}")
+
 # add options required to handle NVIDIA support
 if command_exists "nvidia-smi"; then
     # Accept that this may fail

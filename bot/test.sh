@@ -222,7 +222,7 @@ if command_exists "nvidia-smi"; then
     set -e
     if [ ${ec} -eq 0 ]; then
         echo "Command 'nvidia-smi' found, using available GPU"
-        BUILD_STEP_ARGS+=("--nvidia" "run")
+        TEST_STEP_ARGS+=("--nvidia" "run")
     else
         echo "Warning: command 'nvidia-smi' found, but 'nvidia-smi --version' did not run succesfully."
         echo "This script now assumes this is NOT a GPU node."

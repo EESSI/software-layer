@@ -283,7 +283,6 @@ if command_exists "nvidia-smi"; then
     fi
 fi
 
-
 if [ ! -z "${shared_fs_path}" ]; then
     shared_eb_sourcepath=${shared_fs_path}/easybuild/sources
     echo ">> Using ${shared_eb_sourcepath} as shared EasyBuild source path"

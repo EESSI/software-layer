@@ -45,3 +45,7 @@ easyconfigs:
       options:
         # see https://github.com/easybuilders/easybuild-easyconfigs/pull/22145
         from-commit: 31478e5c9869de3add74d0a02dd5df01ea65b21e
+  - archspec-0.2.5-GCCcore-12.3.0.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/22235
+        from-commit: 01dd97ea62fe4d7d0df040ede3af03eb2f1b8641
