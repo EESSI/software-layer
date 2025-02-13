@@ -90,11 +90,15 @@ if [[ ! -z ${SINGULARITY_CACHEDIR} ]]; then
     export SINGULARITY_CACHEDIR
 fi
 
-echo -n "setting \$STORAGE by replacing any var in '${LOCAL_TMP}' -> "
-# replace any env variable in ${LOCAL_TMP} with its
-#   current value (e.g., a value that is local to the job)
-STORAGE=$(envsubst <<< ${LOCAL_TMP})
-echo "'${STORAGE}'"
+if [[ -z "${TMPDIR}" ]]; then
+    echo -n "setting \$STORAGE by replacing any var in '${LOCAL_TMP}' -> "
+    # replace any env variable in ${LOCAL_TMP} with its
+    #   current value (e.g., a value that is local to the job)
+    STORAGE=$(envsubst <<< ${LOCAL_TMP})
+else
+    STORAGE=${TMPDIR}
+fi
+echo "bot/build.sh: STORAGE='${STORAGE}'"
 
 # make sure ${STORAGE} exists
 mkdir -p ${STORAGE}
