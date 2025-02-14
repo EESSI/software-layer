@@ -107,6 +107,7 @@ elseif (os.getenv("EESSI_SITE_INSTALL") ~= nil) then
 else
   -- Deal with user and project installs
   project_install = os.getenv("EESSI_PROJECT_INSTALL")
+  eessi_dev_project = os.getenv("EESSI_DEV_INSTALL")
   project_modulepath = nil
   if (project_install ~= nil) then
     -- Check the folder exists
@@ -116,7 +117,16 @@ else
     if (mode() == "load") then
       LmodMessage("Configuring for use of EESSI_PROJECT_INSTALL under " .. project_install)
     end
-    easybuild_installpath = string.gsub(os.getenv("EESSI_SOFTWARE_PATH"), os.getenv("EESSI_CVMFS_REPO"), project_install)
+    if (eessi_dev_project ~= nil) then
+      -- Project install is assumed to be $EESSI_CVMFS_REPO_OVERRIDE set to dev.eessi.io
+      eessi_software_path = os.getenv("EESSI_SOFTWARE_PATH")
+      -- Extract ${EESSI_OS_TYPE}/${EESSI_SOFTWARE_SUBDIR} from ${EESSI_SOFTWARE_PATH}
+      os_type_software_subdir = string.match(eessi_software_path, "software/(.*)")
+      -- Construct installpath for dev.eessi.io and include project subdir
+      easybuild_installpath = pathJoin(project_install, 'versions', version, eessi_dev_project, 'software', os_type_software_subdir)
+    else
+      easybuild_installpath = string.gsub(os.getenv("EESSI_SOFTWARE_PATH"), os.getenv("EESSI_CVMFS_REPO"), project_install)
+    end
     project_modulepath = pathJoin(easybuild_installpath, 'modules', 'all')
   end
   user_install = os.getenv("EESSI_USER_INSTALL")
