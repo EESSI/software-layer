@@ -798,6 +798,7 @@ do
         EESSI_FUSE_MOUNTS+=("--fusemount" "${EESSI_READONLY}")
 
         EESSI_WRITABLE_OVERLAY="container:fuse-overlayfs"
+        EESSI_WRITABLE_OVERLAY+=" -o debug" # for debug output
         EESSI_WRITABLE_OVERLAY+=" -o lowerdir=/cvmfs_ro/${cvmfs_repo_name}"
         EESSI_WRITABLE_OVERLAY+=" -o upperdir=${TMP_IN_CONTAINER}/${cvmfs_repo_name}/overlay-upper"
         EESSI_WRITABLE_OVERLAY+=" -o workdir=${TMP_IN_CONTAINER}/${cvmfs_repo_name}/overlay-work"
