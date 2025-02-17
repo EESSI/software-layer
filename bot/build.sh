@@ -213,6 +213,49 @@ changed_easystacks_rebuilds=$(cat ${pr_diff} | grep '^+++' | cut -f2 -d' ' | sed
 if [[ -z "${changed_easystacks_rebuilds}" ]]; then
     echo "This PR does not add any easystack files in a rebuilds subdirectory, so let's skip the removal step."
 else
+    # determine which software packages (and modules) have to be removed
+    TARBALL_TMP_DETERMINE_STEP_DIR=${PREVIOUS_TMP_DIR}/determine_step
+    mkdir -p ${TARBALL_TMP_DETERMINE_STEP_DIR}
+
+    # prepare arguments to eessi_container.sh specific to determine step
+    declare -a DETERMINE_STEP_ARGS=()
+    DETERMINE_STEP_ARGS+=("--save" "${TARBALL_TMP_DETERMINE_STEP_DIR}")
+    DETERMINE_STEP_ARGS+=("--storage" "${STORAGE}")
+
+    # create tmp file for output of determine step
+    determine_outerr=$(mktemp determine.outerr.XXXX)
+
+    echo "Executing command to determine software to be removed:"
+    echo "${software_layer_dir}/eessi_container.sh ${COMMON_ARGS[@]} ${DETERMINE_STEP_ARGS[@]}"
+    echo "                     -- ${software_layer_dir}/EESSI-determine-rebuilds.sh \"${DETERMINE_SCRIPT_ARGS[@]}\" \"$@\" 2>&1 | tee -a ${determine_outerr}"
+    ${software_layer_dir}/eessi_container.sh "${COMMON_ARGS[@]}" "${DETERMINE_STEP_ARGS[@]}" \
+                         -- ${software_layer_dir}/EESSI-determine-rebuilds.sh "${DETERMINE_SCRIPT_ARGS[@]}" "$@" 2>&1 | tee -a ${determine_outerr}
+
+    # process output file
+    #   for each line containing 'REMOVE_DIRECTORY some_path'
+    #     create a new directory ${STORAGE}/lower_dirs/some_path_stripped
+    #       where the prefix /cvmfs/repo_name is removed from some_path
+    #     set permission of the directory to u+rwx
+    #   for each line containing 'REMOVE_FILE some_file_path'
+    #     touch a new file ${STORAGE}/lower_dirs/some_file_path_stripped
+    #       where the prefix /cvmfs/repo_name is removed from some_file_path
+    #     set permission of the file to u+rw
+
+    LOWER_DIRS="${STORAGE}/lower_dirs"
+    mkdir -p "${LOWER_DIRS}"
+
+    grep ^REMOVE_DIRECTORY ${determine_outerr} | cut -f4- -d'/' > ${determine_outerr}.rm_dirs
+    cat ${determine_outerr}.rm_dirs | while read remove_dir; do
+        mkdir -p ${STORAGE}/lower_dirs/${remove_dir}
+        chmod ugo+rwx ${STORAGE}/lower_dirs/${remove_dir}
+    done
+
+    grep ^REMOVE_FILE ${determine_outerr} | cut -f4- -d'/' > ${determine_outerr}.rm_files
+    cat ${determine_outerr}.rm_files | while read remove_file; do
+        touch ${STORAGE}/lower_dirs/${remove_file}
+        chmod ugo+rw ${STORAGE}/lower_dirs/${remove_file}
+    done
+
     # prepare directory to store tarball of tmp for removal and build steps
     TARBALL_TMP_REMOVAL_STEP_DIR=${PREVIOUS_TMP_DIR}/removal_step
     mkdir -p ${TARBALL_TMP_REMOVAL_STEP_DIR}
@@ -224,7 +267,11 @@ else
 
     # add fakeroot option in order to be able to remove software, see:
     # https://github.com/EESSI/software-layer/issues/312
-    REMOVAL_STEP_ARGS+=("--fakeroot")
+    # REMOVAL_STEP_ARGS+=("--fakeroot")
+
+    if [[ ! -z ${LOWER_DIRS} ]]; then
+        REMOVAL_STEP_ARGS+=("--lower-dirs" "${LOWER_DIRS}")
+    fi
 
     # create tmp file for output of removal step
     removal_outerr=$(mktemp remove.outerr.XXXX)
@@ -274,6 +321,10 @@ fi
 # (Always need to run the driver installation as available driver may change)
 if [[ ! -z ${SHARED_FS_PATH} ]]; then
     BUILD_STEP_ARGS+=("--host-injections" "${SHARED_FS_PATH}/host-injections")
+fi
+
+if [[ ! -z ${LOWER_DIRS} ]]; then
+    BUILD_STEP_ARGS+=("--lower-dirs" "${LOWER_DIRS}")
 fi
 
 # create tmp file for output of build step

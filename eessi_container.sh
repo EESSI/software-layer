@@ -89,6 +89,11 @@ display_help() {
   echo "  -n | --nvidia MODE      - configure the container to work with NVIDIA GPUs,"
   echo "                            MODE==install for a CUDA installation, MODE==run to"
   echo "                            attach a GPU, MODE==all for both [default: false]"
+  echo "  -o | --lower-dirs DIRS  - list of ':' separated directories that are used"
+  echo "                            in front of the default lower dir (CVMFS repo);"
+  echo "                            fuse-overlayfs will merge all lower directories;"
+  echo "                            the option can be used to make certain directories"
+  echo "                            in the CVMFS repo writable [default: none]"
   echo "  -r | --repository CFG   - configuration file or identifier defining the"
   echo "                            repository to use; can be given multiple times;"
   echo "                            CFG may include a suffix ',access={ro,rw}' to"
@@ -125,6 +130,7 @@ FAKEROOT=0
 VERBOSE=0
 STORAGE=
 LIST_REPOS=0
+LOWER_DIRS=
 MODE="shell"
 SETUP_NVIDIA=0
 REPOSITORIES=()
@@ -180,6 +186,10 @@ while [[ $# -gt 0 ]]; do
     -n|--nvidia)
       SETUP_NVIDIA=1
       NVIDIA_MODE="$2"
+      shift 2
+      ;;
+    -o|--lower_dirs)
+      LOWER_DIRS="$2"
       shift 2
       ;;
     -r|--repository)
@@ -771,6 +781,7 @@ do
             #   Hence, we have to use ${TMP_IN_CONTAINER}/${cvmfs_repo_name}/overlay-upper
             # the left-most directory given for the lowerdir argument is put on top,
             #   and with no upperdir=... the whole overlayfs is made available read-only
+            # TODO add LOWER_DIRS in between??? see rw access below
             EESSI_READONLY_OVERLAY+=" -o lowerdir=${TMP_IN_CONTAINER}/${cvmfs_repo_name}/overlay-upper:/cvmfs_ro/${cvmfs_repo_name}"
             EESSI_READONLY_OVERLAY+=" /cvmfs/${cvmfs_repo_name}"
             export EESSI_READONLY_OVERLAY
@@ -799,6 +810,12 @@ do
 
         EESSI_WRITABLE_OVERLAY="container:fuse-overlayfs"
         EESSI_WRITABLE_OVERLAY+=" -o debug" # for debug output
+        if [[ -z ${LOWER_DIRS} ]]; then
+            # need to convert ':' in LOWER_DIRS to ',' because bind mounts use ',' as
+            # separator while the lowerdir overlayfs option uses ':'
+            export BIND_PATHS="${BIND_PATHS},${LOWER_DIRS/:/,}"
+            lowerdirs=${LOWER_DIRS}:${lowerdirs}
+        fi
         EESSI_WRITABLE_OVERLAY+=" -o lowerdir=/cvmfs_ro/${cvmfs_repo_name}"
         EESSI_WRITABLE_OVERLAY+=" -o upperdir=${TMP_IN_CONTAINER}/${cvmfs_repo_name}/overlay-upper"
         EESSI_WRITABLE_OVERLAY+=" -o workdir=${TMP_IN_CONTAINER}/${cvmfs_repo_name}/overlay-work"
