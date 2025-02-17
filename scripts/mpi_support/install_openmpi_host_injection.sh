@@ -143,10 +143,10 @@ inject_mpi() {
     local -A libs_arr
 
     while read -r libname libpath; do
-    [[ ${libpath} =~ ${AMAZON_PATH}/.* ]] && libpath=${host_injection_mpi_path}/$(basename ${libpath})
-    [[ ${libname} =~ libefa\.so\.?.* ]] && libpath=${host_injection_mpi_path}/$(basename ${libpath})
-    [[ ${libname} =~ libibverbs\.so\.?.* ]] && libpath=${host_injection_mpi_path}/$(basename ${libpath})
-    libs_arr[${libname}]=${libpath}
+        [[ ${libpath} =~ ${AMAZON_PATH}/.* ]] && libpath=${host_injection_mpi_path}/$(basename ${libpath})
+        [[ ${libname} =~ libefa\.so\.?.* ]] && libpath=${host_injection_mpi_path}/$(basename ${libpath})
+        [[ ${libname} =~ libibverbs\.so\.?.* ]] && libpath=${host_injection_mpi_path}/$(basename ${libpath})
+        libs_arr[${libname}]=${libpath}
     done < <(cat <(${system_ldd} ${temp_inject_path}/*) <(find ${openmpi_path} -mindepth 3 -name "*.so*" -print0 | xargs -0 ${system_ldd}) | awk '/=>/{print $1, $3}' | sort | uniq)
 
     # Get MPI related lib dependencies not resolved by EESSI ldd
