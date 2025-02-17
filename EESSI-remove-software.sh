@@ -121,6 +121,7 @@ if [ $EUID -ne 0 ]; then
                 # so let's figure out which modules have to be rebuilt by doing a dry-run and grepping "someapp/someversion" for the relevant lines (with [R])
                 #  * [R] $CFGS/s/someapp/someapp-someversion.eb (module: someapp/someversion)
                 # rebuild_apps=$(eb --allow-use-as-root-and-accept-consequences --dry-run-short --rebuild --easystack ${easystack_file} | grep "^ \* \[R\]" | grep -o "module: .*[^)]" | awk '{print $2}')
+                eb --dry-run-short --rebuild --easystack ${easystack_file} | grep "^ \* \[R\]" | grep -o "module: .*[^)]" | awk '{print $2}'
                 rebuild_apps=$(eb --dry-run-short --rebuild --easystack ${easystack_file} | grep "^ \* \[R\]" | grep -o "module: .*[^)]" | awk '{print $2}')
                 for app in ${rebuild_apps}; do
                     # Returns e.g. /cvmfs/software.eessi.io/versions/2023.06/software/linux/x86_64/amd/zen2/modules/all:
