@@ -809,7 +809,7 @@ do
         EESSI_FUSE_MOUNTS+=("--fusemount" "${EESSI_READONLY}")
 
         EESSI_WRITABLE_OVERLAY="container:fuse-overlayfs"
-        EESSI_WRITABLE_OVERLAY+=" -o debug" # for debug output
+        # EESSI_WRITABLE_OVERLAY+=" -o debug" # for debug output
         if [[ -z ${LOWER_DIRS} ]]; then
             # need to convert ':' in LOWER_DIRS to ',' because bind mounts use ',' as
             # separator while the lowerdir overlayfs option uses ':'
