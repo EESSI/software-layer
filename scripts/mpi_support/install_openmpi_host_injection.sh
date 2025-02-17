@@ -153,22 +153,22 @@ inject_mpi() {
     local lib
 
     while read -r lib; do
-    local dep
+        local dep
 
-    ${PATCHELF_BIN} --set-rpath "" ${lib}
+        ${PATCHELF_BIN} --set-rpath "" ${lib}
 
-    while read -r dep; do
-        if ${PATCHELF_BIN} --print-needed ${lib} | grep -q "${dep}"; then
-            ${PATCHELF_BIN} --replace-needed ${dep} ${libs_arr[${dep}]} ${lib}
-        fi
-    done < <(${eessi_ldd} ${lib} | awk '/not found/ || /libefa/ || /libibverbs/ {print $1}' | sort | uniq)
-
-    # Inject into libmpi.so non resolved dependencies from dlopen libraries that are not already present in libmpi.so
-    if [[ ${lib} =~ libmpi\.so ]]; then
         while read -r dep; do
-            ${PATCHELF_BIN} --add-needed ${libs_arr[${dep}]} ${lib}
-        done < <(comm -23 <(find ${openmpi_path} -mindepth 3 -name "*.so*" -print0 | xargs -0 ${eessi_ldd} | awk '/not found/ {print $1}' | sort | uniq) <(${PATCHELF_BIN} --print-needed ${lib} | sort))
-    fi
+            if ${PATCHELF_BIN} --print-needed ${lib} | grep -q "${dep}"; then
+                ${PATCHELF_BIN} --replace-needed ${dep} ${libs_arr[${dep}]} ${lib}
+            fi
+        done < <(${eessi_ldd} ${lib} | awk '/not found/ || /libefa/ || /libibverbs/ {print $1}' | sort | uniq)
+
+        # Inject into libmpi.so non resolved dependencies from dlopen libraries that are not already present in libmpi.so
+        if [[ ${lib} =~ libmpi\.so ]]; then
+            while read -r dep; do
+                ${PATCHELF_BIN} --add-needed ${libs_arr[${dep}]} ${lib}
+            done < <(comm -23 <(find ${openmpi_path} -mindepth 3 -name "*.so*" -print0 | xargs -0 ${eessi_ldd} | awk '/not found/ {print $1}' | sort | uniq) <(${PATCHELF_BIN} --print-needed ${lib} | sort))
+        fi
 
     done < <(find ${temp_inject_path} -type f)
 
