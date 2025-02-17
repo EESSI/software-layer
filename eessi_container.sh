@@ -188,7 +188,7 @@ while [[ $# -gt 0 ]]; do
       NVIDIA_MODE="$2"
       shift 2
       ;;
-    -o|--lower_dirs)
+    -o|--lower-dirs)
       LOWER_DIRS="$2"
       shift 2
       ;;
