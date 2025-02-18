@@ -259,6 +259,7 @@ if [[ ! -z ${EESSI_DEV_PROJECT} ]]; then
     unset EESSI_CVMFS_INSTALL
     export EESSI_PROJECT_INSTALL=${EESSI_CVMFS_REPO_OVERRIDE}/${EESSI_DEV_PROJECT}
     echo ">> \$EESSI_PROJECT_INSTALL set to ${EESSI_PROJECT_INSTALL}"
+    mkdir -p ${EESSI_PROJECT_INSTALL}
 fi
 
 source $TOPDIR/load_eessi_extend_module.sh ${EESSI_VERSION}
