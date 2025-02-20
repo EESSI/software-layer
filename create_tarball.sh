@@ -4,24 +4,22 @@ set -e
 
 base_dir=$(dirname $(realpath $0))
 
-if [ $# -ne 6 ]; then
-    echo "ERROR: Usage: $0 <EESSI tmp dir (example: /tmp/$USER/EESSI)> <version (example: 2023.06)> <CPU arch subdir (example: x86_64/amd/zen2)> <accelerator subdir (example: nvidia/cc80)> <dev project> (example: ESPREsSo) <path to tarball>" >&2
+if [ $# -ne 5 ]; then
+    echo "ERROR: Usage: $0 <EESSI tmp dir (example: /tmp/$USER/EESSI)> <version (example: 2023.06)> <CPU arch subdir (example: x86_64/amd/zen2)> <accelerator subdir (example: nvidia/cc80)> <path to tarball>" >&2
     exit 1
 fi
 eessi_tmpdir=$1
 eessi_version=$2
 cpu_arch_subdir=$3
 accel_subdir=$4
-eessi_dev_project=$5
-target_tgz=$6
+target_tgz=$5
 
 tmpdir=`mktemp -d`
 echo ">> tmpdir: $tmpdir"
 
 os="linux"
 source ${base_dir}/init/eessi_defaults
-# EESSI_CVMFS_REPO is followed by $EESSI_DEV_PROJECT if defined
-cvmfs_repo=${EESSI_CVMFS_REPO}${eessi_dev_project:+/$eessi_dev_project}
+cvmfs_repo=${EESSI_CVMFS_REPO}
 
 software_dir="${cvmfs_repo}/versions/${eessi_version}/software/${os}/${cpu_arch_subdir}"
 
