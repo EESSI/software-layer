@@ -303,8 +303,8 @@ export EESSI_DEV_PROJECT=${EESSI_DEV_PROJECT}
 TMP_IN_CONTAINER=/tmp
 echo "Executing command to create tarball:"
 echo "$software_layer_dir/eessi_container.sh ${COMMON_ARGS[@]} ${TARBALL_STEP_ARGS[@]}"
-echo "                     -- $software_layer_dir/create_tarball.sh ${TMP_IN_CONTAINER} ${EESSI_VERSION} ${EESSI_SOFTWARE_SUBDIR_OVERRIDE} \"${EESSI_ACCELERATOR_TARGET}\" \"${EESSI_DEV_PROJECT}\" /eessi_bot_job/${TGZ} 2>&1 | tee -a ${tar_outerr}"
+echo "                     -- $software_layer_dir/create_tarball.sh ${TMP_IN_CONTAINER} ${EESSI_VERSION} ${EESSI_SOFTWARE_SUBDIR_OVERRIDE} \"${EESSI_ACCELERATOR_TARGET}\" /eessi_bot_job/${TGZ} 2>&1 | tee -a ${tar_outerr}"
 $software_layer_dir/eessi_container.sh "${COMMON_ARGS[@]}" "${TARBALL_STEP_ARGS[@]}" \
-                     -- $software_layer_dir/create_tarball.sh ${TMP_IN_CONTAINER} ${EESSI_VERSION} ${EESSI_SOFTWARE_SUBDIR_OVERRIDE} "${EESSI_ACCELERATOR_TARGET}" "${EESSI_DEV_PROJECT}" /eessi_bot_job/${TGZ} 2>&1 | tee -a ${tar_outerr}
+                     -- $software_layer_dir/create_tarball.sh ${TMP_IN_CONTAINER} ${EESSI_VERSION} ${EESSI_SOFTWARE_SUBDIR_OVERRIDE} "${EESSI_ACCELERATOR_TARGET}" /eessi_bot_job/${TGZ} 2>&1 | tee -a ${tar_outerr}
 
 exit 0
