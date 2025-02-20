@@ -106,6 +106,7 @@ elseif (os.getenv("EESSI_SITE_INSTALL") ~= nil) then
   easybuild_installpath = os.getenv("EESSI_SITE_SOFTWARE_PATH")
 else
   -- Deal with user and project installs
+  project_install = os.getenv("EESSI_PROJECT_INSTALL")
   project_modulepath = nil
   if (project_install ~= nil) then
     -- Check the folder exists
