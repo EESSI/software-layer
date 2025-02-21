@@ -1,0 +1,9 @@
+easyconfigs:
+  - OpenBLAS-0.3.21-GCC-12.2.0.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyblocks/pull/3492
+        include-easyblocks-from-commit: d06d9617d9bfb63d338b6879eab9da81c8a312d8
+  - OpenMPI-4.1.4-GCC-12.2.0.eb:
+      options:
+        from-pr: 19940
+  - foss-2022b.eb
