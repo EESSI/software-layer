@@ -1,5 +1,7 @@
 easyconfigs:
-  - GCC-12.3.0.eb
+  - GCCcore-12.3.0.eb:
+      options:
+        from-pr: 20218
   - OpenBLAS-0.3.23-GCC-12.3.0.eb:
       options:
         # required for Intel Sapphire Rapids support
