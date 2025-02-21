@@ -1,6 +1,9 @@
 easyconfigs:
   - OpenBLAS-0.3.21-GCC-12.2.0.eb:
       options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/19159
+        # required for Sapphire Rapids support
+        from-pr: 19159
         # see https://github.com/easybuilders/easybuild-easyblocks/pull/3492
         include-easyblocks-from-pr: 3492
   - OpenMPI-4.1.4-GCC-12.2.0.eb:
