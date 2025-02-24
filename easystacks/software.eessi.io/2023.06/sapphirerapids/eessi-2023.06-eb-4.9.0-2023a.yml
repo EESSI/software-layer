@@ -63,7 +63,6 @@ easyconfigs:
       options:
         from-pr: 20007
   - OpenJPEG-2.5.0-GCCcore-12.3.0.eb
-  - OpenFOAM-10-foss-2023a.eb
   - Highway-1.0.4-GCCcore-12.3.0.eb
   - ELPA-2023.05.001-foss-2023a.eb
   - libxc-6.2.2-GCC-12.3.0.eb
