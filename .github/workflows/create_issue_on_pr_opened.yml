@@ -4,6 +4,10 @@ on:
   pull_request:
     types: [opened]
 
+permissions:
+  contents: read  # to fetch code (actions/checkout)
+  issues: write  # to create an associated issue (if necessary)
+
 jobs:
   create-issue:
     runs-on: ubuntu-latest
