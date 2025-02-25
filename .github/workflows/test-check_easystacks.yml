@@ -42,6 +42,7 @@ jobs:
           uses: dorny/paths-filter@v3
           id: changes
           with:
+            list-files: shell
             filters: |
               changed:
                 - 'easystacks/**'
