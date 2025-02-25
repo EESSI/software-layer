@@ -44,7 +44,7 @@ jobs:
           with:
             filters: |
               changed:
-                -'easystacks/**'
+                - 'easystacks/**'
         - name: Test check_missing_installations.sh script
           if: ${{ steps.changes.outputs.changed == 'true' }}
           run: |
