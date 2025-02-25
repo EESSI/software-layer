@@ -61,16 +61,13 @@ jobs:
               env | grep ^EESSI | sort
 
               # check for missing installations if a file in the easystacks directory is changed
-              echo 
-
-              # first check the CPU-only builds for this CPU target
-              #echo "just run check_missing_installations.sh (should use easystacks/software.eessi.io/${{matrix.EESSI_VERSION}}/eessi-${{matrix.EESSI_VERSION}}-*.yml with latest EasyBuild release)"
-              #for easystack_file in $(EESSI_VERSION=${{matrix.EESSI_VERSION}} .github/workflows/scripts/only_latest_easystacks.sh); do
-              #    echo "check missing installations for ${easystack_file}..."
-              #    ./check_missing_installations.sh ${easystack_file}
-              #    ec=$?
-              #    if [[ ${ec} -ne 0 ]]; then echo "missing installations found for ${easystack_file}!" >&2; exit ${ec}; fi
-              #done
+              echo "check for missing installation in changed easystack files"
+              for easystack_file in ${{ steps.changes.outputs.changed_files }}; do
+                  echo "check missing installatios for ${easystack_file}..."
+                  ./check_missing_installations.sh ${easystack_file}
+                  ec=$?
+                  echo "print the output of missing: ${eb_missing_out}"
+              done
 
               # now check the accelerator builds for this CPU target
               #accelerators=$(echo "${EESSI_ACCELERATOR_TARGETS}" | yq ".${EESSI_SOFTWARE_SUBDIR_OVERRIDE}[]")
