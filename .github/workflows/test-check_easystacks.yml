@@ -69,6 +69,7 @@ jobs:
                   echo "check missing installatios for ${easystack_file}..."
                   ./check_missing_installations.sh ${easystack_file}
                   ec=$?
+                  echo "print what  is in ${ec}"
                   if [[ ${ec} -ne 0 ]]; then echo "missing installations found for ${easystack_file}!" >&2; exit ${ec}; fi
                   echo "print the output of missing: ${eb_missing_out}"
               done
