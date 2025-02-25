@@ -63,13 +63,12 @@ jobs:
 
               # check for missing installations if a file in the easystacks directory is changed
               echo "check for missing installation in changed easystack files"
-              echo ${{ steps.changes.outputs }}
-              echo ${{ steps.changes.outputs.changed_files }}
               
-              for easystack_file in ${{ steps.changes.outputs.changed_files }}; do
+              for easystack_file in (${{ steps.changes.outputs.changed_files }}); do
                   echo "check missing installatios for ${easystack_file}..."
                   ./check_missing_installations.sh ${easystack_file}
                   ec=$?
+                  if [[ ${ec} -ne 0 ]]; then echo "missing installations found for ${easystack_file}!" >&2; exit ${ec}; fi
                   echo "print the output of missing: ${eb_missing_out}"
               done
 
