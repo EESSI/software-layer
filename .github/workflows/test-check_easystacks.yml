@@ -38,10 +38,13 @@ jobs:
               cvmfs_config_package: https://github.com/EESSI/filesystem-layer/releases/download/latest/cvmfs-config-eessi_latest_all.deb
               cvmfs_http_proxy: DIRECT
               cvmfs_repositories: software.eessi.io
-              filters: |
-                changed:
-                  -'easystacks/**'
-
+        - name: find changed easystacks
+          uses: dorny/paths-filter@v3
+          id: changes
+          with:
+            filters: |
+              changed:
+                -'easystacks/**'
         - name: Test check_missing_installations.sh script
           if: ${{ steps.changes.outputs.changed == 'true' }}
           run: |
