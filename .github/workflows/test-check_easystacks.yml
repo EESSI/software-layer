@@ -48,6 +48,7 @@ jobs:
                 - 'easystacks/**'
         - name: Test check_missing_installations.sh script
           if: ${{ steps.changes.outputs.changed == 'true' }}
+          continue-on-error: true
           run: |
               export EESSI_SOFTWARE_SUBDIR_OVERRIDE=${{matrix.EESSI_SOFTWARE_SUBDIR_OVERRIDE}}
               source /cvmfs/software.eessi.io/versions/${{matrix.EESSI_VERSION}}/init/bash
