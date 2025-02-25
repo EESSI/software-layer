@@ -1,0 +1,10 @@
+easyconfigs:
+  - OpenFOAM-10-foss-2023a.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/20958
+        from-commit: dbadb2074464d816740ee0e95595c2cb31b6338f
+  - OpenFOAM-11-foss-2023a.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/20958
+        from-commit: dbadb2074464d816740ee0e95595c2cb31b6338f
+
