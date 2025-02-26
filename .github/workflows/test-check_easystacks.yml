@@ -68,7 +68,7 @@ jobs:
               
               for easystack_file in ${easystack_files[@]}; do
                   echo "check missing installatios for ${easystack_file}..."
-                  ./check_missing_installations.sh ${easystack_file} >&1 || ec=$?
+                  ./check_missing_installations.sh ${easystack_file} || ec=$?
                   export eb_missing_out=$(./check_missing_installations.sh ${easystack_file})
                   if [[ ${ec} -ne 0 ]]; then 
                       echo "missing installations found for ${easystack_file}!" >&2
