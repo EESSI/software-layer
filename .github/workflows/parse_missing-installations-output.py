@@ -12,5 +12,5 @@ for ec in missing:
         missing_cpu.append(ec)
 if len(missing_cpu) != 0:
     os.environ['missing_cpu'] = missing_cpu
-if len(missing_gpu) !0:
+if len(missing_gpu) != 0:
     os.environ['missing_cpu'] = missing_cpu
