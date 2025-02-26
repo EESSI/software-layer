@@ -1,8 +1,8 @@
 import os
 import re
 
-eb_missing_out = os.environ['eb_missing_out']
-missing = re.findall("\([A-Z_a-z0-9_\-_\.]*.eb\)", eb_missing_out)
+missing = os.environ['missing']
+missing = missing.split('\n')
 missing_cuda = []
 missing_cpu = []
 for ec in missing:
@@ -10,7 +10,14 @@ for ec in missing:
         missing_cuda.append(ec)
     else:
         missing_cpu.append(ec)
-if len(missing_cpu) != 0:
-    os.environ['MISSING_CPU'] = str(missing_cpu)
-if len(missing_cuda) != 0:
-    os.environ['MISSING_CUDA'] = str(missing_cuda)
+if len(missing_cpu) != 0 and len(missing_cuda) != 0:
+    print('Error: CPU dependencies for a GPU build must be submitted in a seperate pr')
+    print(f'Please open a seperate pr of the dependencies: {missing_cpu}')
+    exit(1)
+elif len(missing_cuda) != 0:
+    # TODO: Make this set the accelorator label?
+    print(f'Have fun installing the following gpu builds: {missing_cuda}')
+elif len(missing_cpu) != 0:
+    print(f'Have fun installing the following gpu builds: {missing_cpu}')
+else:
+    print('no missing modules')

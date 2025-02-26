@@ -69,8 +69,10 @@ jobs:
               for easystack_file in ${easystack_files[@]}; do
                   echo "check missing installatios for ${easystack_file}..."
                   ./check_missing_installations.sh ${easystack_file} || ec=$?
-                  if [[ ${ec} -ne 0 ]]; then echo "missing installations found for ${easystack_file}!" >&2; exit ${ec}; fi
-                  echo "print the output of missing: ${eb_missing_out}"
+                  if [[ ${ec} -ne 0 ]]; then 
+                      echo "missing installations found for ${easystack_file}!" >&2
+                      python .github/workflows/parse_missing-installations-output.py 
+                  fi
               done
 
               # now check the accelerator builds for this CPU target
