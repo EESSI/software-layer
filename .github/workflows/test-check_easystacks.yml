@@ -71,6 +71,7 @@ jobs:
                   ./check_missing_installations.sh ${easystack_file} || ec=$?
                   if [[ ${ec} -ne 0 ]]; then 
                       echo "missing installations found for ${easystack_file}!" >&2
+                      export missing=$(env | grep .eb\) | tr -d \*)
                       python .github/workflows/parse_missing-installations-output.py 
                   fi
               done
