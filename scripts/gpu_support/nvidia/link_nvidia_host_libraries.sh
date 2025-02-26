@@ -40,7 +40,7 @@
 # 1. Initialize environment and source utility functions #
 # ###################################################### #
 
-TOPDIR=$(dirname "$(realpath "$BASH_SOURCE")")
+TOPDIR=$(dirname "$(realpath "${BASH_SOURCE[0]}")")
 source "$TOPDIR"/../../utils.sh
 
 # Command line help function
@@ -191,11 +191,13 @@ get_nvlib_list() {
 # Exits with error if permissions are too restrictive
 check_global_read() {
     # Get the current umask value
-    local current_umask=$(umask)
+    local current_umask
+    current_umask=$(umask)
     log_verbose "current umask: ${current_umask}"
 
     # Convert umask to decimal to analyze
-    local umask_octal=$(printf '%03o\n' "$current_umask")
+    local umask_octal
+    umask_octal=$(printf '%03o\n' "$current_umask")
 
     # Check if umask allows global read
     if [ "$umask_octal" -gt 022 ]; then
@@ -208,8 +210,9 @@ check_global_read() {
 # Checks for nvidia-smi command and extracts GPU information
 # Sets HOST_GPU_CUDA_VERSION and HOST_GPU_DRIVER_VERSION variables
 check_nvidia_smi_info() {
-    nvidia_smi=$(command -v nvidia-smi)
-    if [[ $? -eq 0 ]]; then
+    
+    if command -v nvidia-smi
+    then
         log_verbose "Found nvidia-smi at: $(which nvidia-smi)"
         
         # Create temporary file for nvidia-smi output
@@ -217,16 +220,17 @@ check_nvidia_smi_info() {
         log_verbose "Creating temporary output file: ${nvidia_smi_out}"
         
         # Query GPU information and parse versions
-        nvidia-smi --query-gpu=gpu_name,count,driver_version,compute_cap --format=csv,noheader 2>&1 > $nvidia_smi_out
-        if [[ $? -eq 0 ]]; then
+        
+        if nvidia-smi --query-gpu=gpu_name,count,driver_version,compute_cap --format=csv,noheader > "$nvidia_smi_out" 2>&1
+        then
             nvidia_smi_info=$(head -1 "${nvidia_smi_out}")
             HOST_GPU_CUDA_VERSION=$(echo "${nvidia_smi_info}" | sed 's/, /,/g' | cut -f4 -d,)
             HOST_GPU_DRIVER_VERSION=$(echo "${nvidia_smi_info}" | sed 's/, /,/g' | cut -f3 -d,)
             echo_green "Found host CUDA version ${HOST_GPU_CUDA_VERSION}"
             echo_green "Found NVIDIA GPU driver version ${HOST_GPU_DRIVER_VERSION}"
-            rm -f $nvidia_smi_out
+            rm -f "$nvidia_smi_out"
         else
-            fatal_error "nvidia-smi command failed, see output in $nvidia_smi_out"
+            fatal_error "nvidia-smi command failed, see output in $nvidia_smi_out. Please remove the file afterwards."
         fi
     else
         fatal_error "nvidia-smi command not found"
@@ -352,6 +356,7 @@ show_ld_preload() {
         echo_yellow "Then you can set LD_PRELOAD only when you want to run a GPU application,"
         echo_yellow "e.g. deviceQuery command from CUDA-Samples module:"
         echo_yellow "    LD_PRELOAD=\"\$EESSI_GPU_COMPAT_LD_PRELOAD\" deviceQuery"
+        echo_yellow "or  LD_PRELOAD=\"\$EESSI_GPU_LD_PRELOAD\" deviceQuery"
     else
         echo "No libraries matched, LD_PRELOAD not set."
     fi
@@ -376,6 +381,7 @@ find_cuda_libraries_on_host() {
     singularity_libs=$(ls /.singularity.d/libs/* 2>/dev/null)
 
     # Now gather the list of possible CUDA libraries and make them into an array
+    # https://www.shellcheck.net/wiki/SC2207
     cuda_candidate_libraries=($(get_nvlib_list "${LIBS_LIST}"))
     # Check if the function returned an error (e.g., curl failed)
     # Echo here, we take stdout from function as list of libraries.
@@ -396,11 +402,12 @@ find_cuda_libraries_on_host() {
 
         if [ -n "$matched" ]; then
             log_verbose "Found matches for ${library}: $matched."
+            # Do not quote $matched, since it can contain multiple libraries split by \n!
             MATCHED_LIBRARIES+=($matched)
         else
             # There are some libraries, that weren't matched/found on the system
             log_verbose "No matches found for ${library}"
-            MISSING_LIBRARIES+=($library)
+            MISSING_LIBRARIES+=("$library")
         fi
     done
 
@@ -412,36 +419,6 @@ find_cuda_libraries_on_host() {
         echo_yellow "The following libraries were not found (based on 'get_nvlib_list')"
         printf '%s\n' "${MISSING_LIBRARIES[@]}"
     fi
-}
-
-# Creates symlinks for nvidia libraries in host injection directory
-# Writes driver and CUDA version information to specified location
-link_matched_libraries () {
-    
-    echo_green "Linking drivers to the host_injection folder"
-    check_global_read
-    if ! create_directory_structure "${host_injection_driver_dir}" ; then
-        fatal_error "No write permissions to directory ${host_injection_driver_dir}"
-    fi
-
-    cd "${host_injection_driver_dir}" || fatal_error "Failed to cd to ${host_injection_driver_dir}"
-    log_verbose "Changed directory to: $PWD"
-
-    # Make symlinks to all the interesting libraries
-    # Loop over each matched library
-    for library in "${MATCHED_LIBRARIES[@]}"; do
-  
-        # Create a symlink in the current directory
-        ln -s "$library" .
-        # Check if the symlink was created successfully
-        if [ $? -ne 0 ]; then
-            fatal_error "Error: Failed to create symlink for library $library in $PWD"
-        fi
-    done
-
-    # Inject driver and CUDA versions into the directory
-    echo "$HOST_GPU_DRIVER_VERSION" > driver_version.txt
-    echo "$HOST_GPU_CUDA_VERSION" > cuda_version.txt
 }
 
 # Actually simlinks the Matched libraries to correct folders.
@@ -505,12 +482,13 @@ symlink_mode () {
 
         # Make symlinks to all the interesting libraries
         # Loop over each matched library
-        for library in "${matched_libraries_arr[@]}"; do
+        for library in "${MATCHED_LIBRARIES[@]}"; do
+            log_verbose "Linking library: ${library}"
     
             # Create a symlink in the current directory
-            ln -s "$library" .
-            # Check if the symlink was created successfully
-            if [ $? -ne 0 ]; then
+            # and check if the symlink was created successfully
+            if ! ln -s "$library" .
+            then
                 fatal_error "Error: Failed to create symlink for library $library in $PWD"
             fi
         done
@@ -535,8 +513,9 @@ symlink_mode () {
             # Need to remove the link first, otherwise this will follow existing symlink 
             # and create host directory one level down !
             rm "$symlink"
-            ln -sf host "$symlink"
-            if [ $? -eq 0 ]; then
+            
+            if ln -sf host "$symlink"
+            then
                 echo "Successfully force recreated symlink between $symlink and host in $PWD"
             else
                 fatal_error "Failed to force recreate symlink between $symlink and host in $PWD"
@@ -544,8 +523,8 @@ symlink_mode () {
         fi
     else
         # If the symlink doesn't exists, create normal one.
-        ln -s host "$symlink"
-        if [ $? -eq 0 ]; then
+        if ln -s host "$symlink"
+        then
             echo "Successfully created symlink between $symlink and host in $PWD"
         else
             fatal_error "Failed to create symlink between $symlink and host in $PWD"
@@ -569,8 +548,9 @@ symlink_mode () {
             cd "$host_injection_linker_dir" || fatal_error "Failed to cd to $host_injection_linker_dir"
             log_verbose "Changed directory to: $PWD"
 
-            ln -sf "$expected_target" lib
-            if [ $? -eq 0 ]; then
+            
+            if ln -sf "$expected_target" lib
+            then
                 echo "Successfully force created symlink between $expected_target and lib in $PWD"
             else
                 fatal_error "Failed to force create symlink between $expected_target and lib in $PWD"
@@ -585,8 +565,8 @@ symlink_mode () {
         cd "$host_injection_linker_dir" || fatal_error "Failed to cd to $host_injection_linker_dir"
         log_verbose "Changed directory to: $PWD"
 
-        ln -s "$host_injections_nvidia_dir/latest" lib
-        if [ $? -eq 0 ]; then
+        if ln -s "$host_injections_nvidia_dir/latest" lib
+        then
             echo "Successfully created symlink between $host_injections_nvidia_dir/latest and lib in $PWD"
         else
             fatal_error "Failed to create symlink between $host_injections_nvidia_dir/latest and lib in $PWD"
