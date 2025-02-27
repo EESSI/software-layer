@@ -29,7 +29,6 @@ easyconfigs:
   - snakemake-8.4.2-foss-2023a.eb:
       options:
         from-pr: 19646
-  - archspec-0.2.1-GCCcore-12.3.0.eb
   - LAMMPS-2Aug2023_update2-foss-2023a-kokkos.eb:
       # see https://github.com/easybuilders/easybuild-easyconfigs/pull/19471
       # see https://github.com/easybuilders/easybuild-easyblocks/pull/3036
