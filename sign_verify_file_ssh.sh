@@ -14,7 +14,7 @@ fi
 MODE="$1"
 FILE_TO_SIGN="$2"
 
-# Ensure the tarball exists
+# Ensure the file exists
 if [ ! -f "$FILE_TO_SIGN" ]; then
     echo "Error: File '$FILE_TO_SIGN' not found."
     exit 1
@@ -62,8 +62,8 @@ if [ "$MODE" == "sign" ]; then
     echo "Converting SSH key to OpenSSH format..."
     convert_pem_to_ssh "$PRIVATE_KEY_PEM" "$PRIVATE_KEY"
 
-    # Sign the tarball
-    echo "Signing the tarball..."
+    # Sign the file
+    echo "Signing the file..."
     ssh-keygen -Y sign -f "$PRIVATE_KEY" -n file "$FILE_TO_SIGN"
 
     if [ ! -f "$SIG_FILE" ]; then
