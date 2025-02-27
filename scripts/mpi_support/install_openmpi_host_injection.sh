@@ -11,7 +11,7 @@
 
 # Initialise our bash functions
 TOPDIR=$(dirname $(realpath $BASH_SOURCE))
-source "$TOPDIR"/../../utils.sh
+source "$TOPDIR"/../utils.sh
 
 
 # Function to display help message
@@ -19,24 +19,10 @@ show_help() {
     echo "Usage: $0 [OPTIONS]"
     echo "Options:"
     echo "  --help                           Display this help message"
-    echo "  --mpi-path /path/to/mpi          Specify the path to the MPI host installation"
-    echo "  --pmix-path /path/to/mpi         Specify the path to the PMIX host installation"
+    echo "  --mpi-path /path/to/mpi          Specify the path to the MPI host installation (Required)"
     echo "  -t, --temp-dir /path/to/tmpdir   Specify a location to use for temporary"
     echo "                                   storage during the mpi injection"
-    echo "                                   (must have >10GB available)"
-}
-
-
-# Global associative array with os-release info
-declare -A OS_RELEASE
-
-get_os_release() {
-    local key
-    local value
-
-    while read -r key value; do
-    OS_RELEASE[${key}]="${value}"
-    done < <(awk -F = 'gsub(/"/, "", $2); {print $1, $2}' /etc/os-release)
+    echo "  --noclean                        Do not remove the temporary directory after finishing injection"
 }
 
 
@@ -49,67 +35,72 @@ parse_cmdline() {
                 ;;
             --mpi-path)
                 if [ -n "$2" ]; then
-                    MPI_PATH="$2"
+                    readonly MPI_PATH="$2"
                     shift 2
                 else
-                    echo "Error: Argument required for $1"
-                    show_help
-                    exit 1
-                fi
-                ;;
-            --pmix-path)
-                if [ -n "$2" ]; then
-                    PMIX_PATH="$2"
-                    shift 2
-                else
-                    echo "Error: Argument required for $1"
+                    echo_red "Error: Argument required for $1"
                     show_help
                     exit 1
                 fi
                 ;;
             -t|--temp-dir)
                 if [ -n "$2" ]; then
-                    TEMP_DIR="$2"
+                    readonly TEMP_DIR="$2"
                     shift 2
                 else
-                    echo "Error: Argument required for $1"
+                    echo_red "Error: Argument required for $1"
                     show_help
                     exit 1
                 fi
                 ;;
+            --noclean)
+                CLEAN=false
+                shift 1
+                ;;
             *)
+                echo_red "Error: Unknown option: $1"
                 show_help
-                fatal_error "Error: Unknown option: $1"
+                exit 1
                 ;;
         esac
     done
+    if [ -z "${MPI_PATH}" ]; then
+        echo_yellow "MPI path was not specified and it is required"
+        show_help
+        exit 0
+    fi
+    readonly CLEAN=${CLEAN:=true}
 }
 
 
 # ****Warning: patchelf v0.18.0 (currently shipped with EESSI) does not work.****
 # We get v0.17.2
 download_patchelf() {
+    # Temporary directory to save patchelf
+    local tmpdir=$1
+
     local patchelf_version="0.17.2"
     local url
+    local curl_opts="-L --silent --show-error --fail"
 
     url="https://github.com/NixOS/patchelf/releases/download/${patchelf_version}/"
     url+="patchelf-${patchelf_version}-${EESSI_CPU_FAMILY}.tar.gz"
 
-    curl ${url} ${CURL_OPTS} -o ${TEMP_DIR}/patchelf.tar.gz
-    tar -xf ${TEMP_DIR}/patchelf.tar.gz -C ${TEMP_DIR}
-    PATCHELF_BIN=${TEMP_DIR}/bin/patchelf
+    local patchelf_path=${tmpdir}/patchelf
+    mkdir ${patchelf_path}
+
+    curl ${url} ${curl_opts} -o ${patchelf_path}/patchelf.tar.gz
+    tar -xf ${patchelf_path}/patchelf.tar.gz -C ${patchelf_path}
+    PATCHELF_BIN=${patchelf_path}/bin/patchelf
 }
 
 
 inject_mpi() {
-    local efa_path="${AMAZON_PATH}/efa"
-    local openmpi_path="${MPI_PATH}"
-    local pmix_path="${PMIX_PATH}"
+    # Temporary directory for injection
+    local tmpdir=$1
 
     local eessi_ldd="${EESSI_EPREFIX}/usr/bin/ldd"
     local system_ldd="/usr/bin/ldd"
-
-    (( OPENMPI_VERSION == 5 )) && openmpi_path+=5
 
     local host_injection_mpi_path
 
@@ -118,63 +109,81 @@ inject_mpi() {
     host_injection_mpi_path+="/rpath_overrides/OpenMPI/system/lib"
 
     if [ -d ${host_injection_mpi_path} ]; then
-        echo "MPI was already injected"
-        return 0
+        if [ -n "$(ls -A ${host_injection_mpi_path})" ]; then
+            echo "MPI was already injected"
+            return 0
+        fi
     fi
 
-    sudo mkdir -p ${host_injection_mpi_path}
+    mkdir -p ${host_injection_mpi_path}
 
-    local temp_inject_path="${TEMP_DIR}/mpi_inject"
+    local temp_inject_path="${tmpdir}/mpi_inject"
     mkdir ${temp_inject_path}
 
-    # Get all library files from efa and openmpi dirs
-    find ${efa_path} ${openmpi_path} ${pmix_path} -maxdepth 2 -type f -name "*.so*" -exec cp {} ${temp_inject_path} \;
+    # Get all library files from openmpi dir
+    find ${MPI_PATH} -maxdepth 1 -type f -name "*.so*" -exec cp {} ${temp_inject_path} \;
 
     # Copy library links to host injection path
-    sudo find ${efa_path} ${openmpi_path} ${pmix_path} -maxdepth 2 -type l -name "*.so*" -exec cp -P {} ${host_injection_mpi_path} \;
-
-    # Get system libefa.so and libibverbs.so
-    find /lib/ /lib64/ \( -name "libefa.so*" -or -name "libibverbs.so*" \) -type f -exec cp {} ${temp_inject_path} \;
-    sudo find /lib/ /lib64/ \( -name "libefa.so*" -or -name "libibverbs.so*" \) -type l -exec cp -P {} ${host_injection_mpi_path} \;
-
+    find ${MPI_PATH} -maxdepth 1 -type l -name "*.so*" -exec cp -P {} ${host_injection_mpi_path} \;
 
     # Get MPI libs dependencies from system ldd
     local libname libpath
-    local -A libs_arr
+    local -A libs_dict
+    local -a dlopen_libs
 
+    readarray -d '' dlopen_libs < <(find ${MPI_PATH} -mindepth 2 -name "*.so*")
+
+    # Get all library names and paths in associative array
     while read -r libname libpath; do
-        [[ ${libpath} =~ ${AMAZON_PATH}/.* ]] && libpath=${host_injection_mpi_path}/$(basename ${libpath})
-        [[ ${libname} =~ libefa\.so\.?.* ]] && libpath=${host_injection_mpi_path}/$(basename ${libpath})
-        [[ ${libname} =~ libibverbs\.so\.?.* ]] && libpath=${host_injection_mpi_path}/$(basename ${libpath})
-        libs_arr[${libname}]=${libpath}
-    done < <(cat <(${system_ldd} ${temp_inject_path}/*) <(find ${openmpi_path} -mindepth 3 -name "*.so*" -print0 | xargs -0 ${system_ldd}) | awk '/=>/{print $1, $3}' | sort | uniq)
+        # If library is libfabric or from the MPI path, modify libpath in assoc array to point to host_injection_mpi_path
+        if [[ ${libname} =~ libfabric\.so\.?.* ]] && [[ ! -f ${temp_inject_path}/${libname} ]]; then
+            local libdir="$(dirname ${libpath})/"     # without trailing slash the find does not work
+            find ${libdir} -maxdepth 1 -type f -name "libfabric.so*" -exec cp {} ${temp_inject_path} \;
+            find ${libdir} -maxdepth 1 -type l -name "libfabric.so*" -exec cp -P {} ${host_injection_mpi_path} \;
+            libpath=${host_injection_mpi_path}/$(basename ${libpath})
+        fi
+
+        if [[ ${libpath} =~ ${MPI_PATH}/.* ]]; then
+            libpath=${host_injection_mpi_path}/$(basename ${libpath})
+        fi
+        
+        libs_dict[${libname}]=${libpath}
+    done < <(cat <(find ${temp_inject_path} -maxdepth 1 -type f -name "*.so*" -exec ${system_ldd} {} \;) \
+                 <(for dlopen in ${dlopen_libs[@]}; do ${system_ldd} ${dlopen}; done) \
+            | awk '/=>/ {print $1, $3}' | sort | uniq)
 
     # Get MPI related lib dependencies not resolved by EESSI ldd
     local lib
-
     while read -r lib; do
         local dep
 
-        ${PATCHELF_BIN} --set-rpath "" ${lib}
-
+        ${PATCHELF_BIN} --set-rpath "${host_injection_mpi_path}" ${lib}
         while read -r dep; do
-            if ${PATCHELF_BIN} --print-needed ${lib} | grep -q "${dep}"; then
-                ${PATCHELF_BIN} --replace-needed ${dep} ${libs_arr[${dep}]} ${lib}
-            fi
-        done < <(${eessi_ldd} ${lib} | awk '/not found/ || /libefa/ || /libibverbs/ {print $1}' | sort | uniq)
+            ${PATCHELF_BIN} --replace-needed ${dep} ${libs_dict[${dep}]} ${lib}
+        done < <(${eessi_ldd} ${lib} | awk '/not found/ {print $1}' | sort | uniq)
 
         # Inject into libmpi.so non resolved dependencies from dlopen libraries that are not already present in libmpi.so
         if [[ ${lib} =~ libmpi\.so ]]; then
             while read -r dep; do
-                ${PATCHELF_BIN} --add-needed ${libs_arr[${dep}]} ${lib}
-            done < <(comm -23 <(find ${openmpi_path} -mindepth 3 -name "*.so*" -print0 | xargs -0 ${eessi_ldd} | awk '/not found/ {print $1}' | sort | uniq) <(${PATCHELF_BIN} --print-needed ${lib} | sort))
+                if ! ${PATCHELF_BIN} --print-needed ${lib} | grep -q "${dep}"; then
+                    ${PATCHELF_BIN} --add-needed ${libs_dict[${dep}]} ${lib}                    
+                fi
+            done < <(for dlopen in ${dlopen_libs[@]}; do ${eessi_ldd} ${dlopen}; done \
+                     | grep -e "=> not found" -e "=> ${MPI_PATH}" | awk '{print $1}' | sort | uniq)
+        fi
+
+        # Force system libefa, librdmacm, libibverbs and libpsm2 (present in the EESSI compat layer)
+        if [[ ${lib} =~ libfabric\.so\.?.* ]]; then
+            while read -r dep; do
+                ${PATCHELF_BIN} --replace-needed ${dep} ${libs_dict[${dep}]} ${lib}
+            done < <(${system_ldd} ${lib} | awk '/libefa/ || /libibverbs/ || /libpsm2/ || /librdmacm/ {print $1}' | sort | uniq)
         fi
 
     done < <(find ${temp_inject_path} -type f)
 
     # Sanity check MPI injection
     if ${eessi_ldd} ${temp_inject_path}/* &> /dev/null; then
-        sudo cp ${temp_inject_path}/* -t ${host_injection_mpi_path}
+        cp ${temp_inject_path}/* -t ${host_injection_mpi_path}
         echo_green "MPI injection was successful"
         return 0
     else
@@ -184,9 +193,12 @@ inject_mpi() {
 
 
 main() {
-    process_cmdline "$@"
-    get_os_release
+    parse_cmdline "$@"
     check_eessi_initialised
+
+    # Create directory linked by host_injections
+    local inject_dir=$(readlink -f /cvmfs/software.eessi.io/host_injections)
+    [[ ! -d ${inject_dir} ]] && mkdir -p ${inject_dir}
 
     # we need a directory we can use for temporary storage
     if [[ -z "${TEMP_DIR}" ]]; then
@@ -198,12 +210,14 @@ main() {
         fi
     fi
 
-    echo "OpenMPI version to inject: ${OPENMPI_VERSION}"
-    download_patchelf
-    inject_mpi
+    echo "Temporary directory for injection: ${tmpdir}"
 
-    rm -rf "${tmpdir}"
-    echo "EESSI setup completed with success"
+    download_patchelf ${tmpdir}
+    inject_mpi ${tmpdir}
+
+    if ${CLEAN}; then
+        rm -rf "${tmpdir}"
+    fi
 }
 
 main "$@"
