@@ -91,20 +91,6 @@ jobs:
           sed -i "s@./EESSI-install-software.sh@./EESSI-install-software.sh --skip-cuda-install@g" install_software_layer.sh
           ./eessi_container.sh --mode run --verbose /software-layer/install_software_layer.sh
 
-    - name: test sign_verify_file_ssh.sh script
-      run: |
-          # Create a PEM format ssh identity
-          ssh-keygen -t rsa -b 4096 -m PEM -f id_rsa.pem -N ""
-          # Create a file to sign
-          echo "I will sign this" > check_ssh_signing.txt
-          # Sign the file
-          ./sign_verify_file_ssh.sh sign check_ssh_signing.txt id_rsa.pem
-          # Create an allowed_signers file based on the public key
-          echo -n "allowed_signer " > allowed_signers 
-          cat id_rsa.pem.pub >> allowed_signers
-          # Verify the signature
-          ./sign_verify_file_ssh.sh verify check_ssh_signing.txt allowed_signers
-
     - name: test create_directory_tarballs.sh script
       run: |
           # bind current directory into container as /software-layer
@@ -114,6 +100,22 @@ jobs:
           ./eessi_container.sh --mode run --verbose /software-layer/create_directory_tarballs.sh 2023.06
           # check if tarballs have been produced
           ls -l *.tar.gz
+
+    - name: test sign_verify_file_ssh.sh script
+      run: |
+          # Create a PEM format ssh identity
+          ssh-keygen -t rsa -b 4096 -m PEM -f id_rsa.pem -N ""
+          # Create a file to sign
+          echo "I will sign this" > check_ssh_signing.txt
+          # bind current directory into container as /software-layer
+          export SINGULARITY_BIND="${PWD}:/software-layer"
+          # Sign the file in the container
+          ./eessi_container.sh --mode run --verbose /software-layer/sign_verify_file_ssh.sh sign /software-layer/check_ssh_signing.txt /software-layer/id_rsa.pem
+          # Create an allowed_signers file based on the public key
+          echo -n "allowed_signer " > allowed_signers 
+          cat id_rsa.pem.pub >> allowed_signers
+          # Verify the signature
+          ./sign_verify_file_ssh.sh verify check_ssh_signing.txt allowed_signers
 
     - name: test create_lmodsitepackage.py script
       run: |
