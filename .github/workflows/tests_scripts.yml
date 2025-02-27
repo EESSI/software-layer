@@ -12,6 +12,7 @@ on:
       - run_in_compat_layer_env.sh
       - scripts/utils.sh
       - update_lmod_cache.sh
+      - sign_verify_file_ssh.sh
 
   pull_request:
     paths:
@@ -24,6 +25,7 @@ on:
       - run_in_compat_layer_env.sh
       - scripts/utils.sh
       - update_lmod_cache.sh
+      - sign_verify_file_ssh.sh
 permissions:
   contents: read # to fetch code (actions/checkout)
 jobs:
@@ -88,6 +90,20 @@ jobs:
           # skip installation of CUDA SDKs, since this is too heavy for CI
           sed -i "s@./EESSI-install-software.sh@./EESSI-install-software.sh --skip-cuda-install@g" install_software_layer.sh
           ./eessi_container.sh --mode run --verbose /software-layer/install_software_layer.sh
+
+    - name: test sign_verify_file_ssh.sh script
+      run: |
+          # Create a PEM format ssh identity
+          ssh-keygen -t rsa -b 4096 -m PEM -f id_rsa.pem -N ""
+          # Create a file to sign
+          echo "I will sign this" > check_ssh_signing.txt
+          # Sign the file
+          ./sign_verify_file_ssh.sh sign check_ssh_signing.txt id_rsa.pem
+          # Create an allowed_signers file based on the public key
+          echo -n "allowed_signer " > allowed_signers 
+          cat id_rsa.pem.pub >> allowed_signers
+          # Verify the signature
+          ./sign_verify_file_ssh.sh verify check_ssh_signing.txt allowed_signers
 
     - name: test create_directory_tarballs.sh script
       run: |
