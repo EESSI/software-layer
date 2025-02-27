@@ -35,6 +35,11 @@ easyconfigs:
         # see https://github.com/easybuilders/easybuild-easyconfigs/pull/20951
         from-commit: a92667fe32396bbd4106243658625f7ff2adcd68
   - amdahl-0.3.1-gompi-2023a.eb
-  - librosa-0.10.1-foss-2023a.eb
+  - LLVM-14.0.6-GCCcore-12.3.0-llvmlite.eb
+  - numba-0.58.1-foss-2023a.eb
+  - librosa-0.10.1-foss-2023a.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/21434
+        from-commit: 4b6170603150c9c93602b0deb726869d19a390f0
   - xarray-2023.9.0-gfbf-2023a.eb
   - SciTools-Iris-3.9.0-foss-2023a.eb
