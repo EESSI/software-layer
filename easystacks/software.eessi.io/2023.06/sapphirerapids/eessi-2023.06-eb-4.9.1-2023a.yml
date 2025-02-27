@@ -1,9 +1,9 @@
 easyconfigs:
   - ncdu-1.18-GCC-12.3.0.eb
   - SAMtools-1.18-GCC-12.3.0.eb
-#  - R-bundle-Bioconductor-3.18-foss-2023a-R-4.3.2.eb:
-#      options:
-#        from-pr: 20379
+  - R-bundle-Bioconductor-3.18-foss-2023a-R-4.3.2.eb:
+      options:
+        from-pr: 20379
   - ipympl-0.9.3-gfbf-2023a.eb:
      options:
        from-pr: 18852
