@@ -113,7 +113,7 @@ jobs:
           echo -n "allowed_signer " > allowed_signers 
           cat id_rsa.pem.pub >> allowed_signers
           # Verify the signature
-          ./sign_verify_file_ssh.sh verify check_ssh_signing.txt allowed_signers
+          ./sign_verify_file_ssh.sh verify "$TARBALL" allowed_signers
 
     - name: test create_lmodsitepackage.py script
       run: |
