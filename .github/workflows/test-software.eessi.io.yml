@@ -60,8 +60,7 @@ jobs:
               echo "just run check_missing_installations.sh (should use easystacks/software.eessi.io/${{matrix.EESSI_VERSION}}/eessi-${{matrix.EESSI_VERSION}}-*.yml with latest EasyBuild release)"
               for easystack_file in $(EESSI_VERSION=${{matrix.EESSI_VERSION}} .github/workflows/scripts/only_latest_easystacks.sh); do
                   echo "check missing installations for ${easystack_file}..."
-                  ./check_missing_installations.sh ${easystack_file}
-                  ec=$?
+                  ./check_missing_installations.sh ${easystack_file} || ec=$?
                   if [[ ${ec} -ne 0 ]]; then echo "missing installations found for ${easystack_file}!" >&2; exit ${ec}; fi
               done
 
@@ -75,8 +74,7 @@ jobs:
                       echo "checking missing installations for accelerator ${accel} using modulepath: ${MODULEPATH}"
                       for easystack_file in $(EESSI_VERSION=${{matrix.EESSI_VERSION}} ACCEL_EASYSTACKS=1 .github/workflows/scripts/only_latest_easystacks.sh); do
                           echo "check missing installations for ${easystack_file}..."
-                          ./check_missing_installations.sh ${easystack_file}
-                          ec=$?
+                          ./check_missing_installations.sh ${easystack_file} || ec=$?
                           if [[ ${ec} -ne 0 ]]; then echo "missing installations found for ${easystack_file}!" >&2; exit ${ec}; fi
                       done
                       module unuse ${EESSI_SOFTWARE_PATH}/accel/${accel}/modules/all
