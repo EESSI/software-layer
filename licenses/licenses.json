@@ -1,10 +1,2753 @@
 {
-    "EasyBuild": {
-        "spdx": "GPL-2.0-only",
-        "license_url": "https://easybuild.io"
+    "ALL/0.9.2-foss-2023a": {
+        "License": "not found",
+        "Needs Manual Check": true,
+        "Retrieved At": "2025-02-27T15:53:29.100793"
     },
-    "GCCcore": {
-        "spdx": "GPL-2.0-with-GCC-exception",
-        "license_url": "https://github.com/gcc-mirror/gcc/blob/master/COPYING"
+    "AOFlagger/3.4.0-foss-2023b": {
+        "License": "not found",
+        "Needs Manual Check": true,
+        "Retrieved At": "2025-02-27T15:53:29.447234"
+    },
+    "ASE/3.22.1-gfbf-2022b": {
+        "License": "not found",
+        "Needs Manual Check": true,
+        "Retrieved At": "2025-02-27T15:53:29.842785"
+    },
+    "ATK/2.38.0-GCCcore-13.2.0": {
+        "License": [
+            "Other"
+        ],
+        "Needs Manual Check": false,
+        "Retrieved At": "2025-02-27T15:53:30.189547"
+    },
+    "Abseil/20240116.1-GCCcore-13.2.0": {
+        "License": [
+            "Apache-2.0"
+        ],
+        "Needs Manual Check": false,
+        "Retrieved At": "2025-02-27T15:53:30.611517"
+    },
+    "Archive-Zip/1.68-GCCcore-12.2.0": {
+        "License": [
+            "Other"
+        ],
+        "Needs Manual Check": false,
+        "Retrieved At": "2025-02-27T15:53:30.991588"
+    },
+    "Armadillo/12.8.0-foss-2023b": {
+        "License": [
+            "Apache-2.0"
+        ],
+        "Needs Manual Check": false,
+        "Retrieved At": "2025-02-27T15:53:31.434616"
+    },
+    "Arrow/16.1.0-gfbf-2023b": {
+        "License": [
+            "Other"
+        ],
+        "Needs Manual Check": false,
+        "Retrieved At": "2025-02-27T15:53:31.774589"
+    },
+    "BCFtools/1.18-GCC-12.3.0": {
+        "License": "not found",
+        "Needs Manual Check": true,
+        "Retrieved At": "2025-02-27T15:53:32.554180"
+    },
+    "BLAST+/2.14.1-gompi-2023a": {
+        "License": [
+            "Other"
+        ],
+        "Needs Manual Check": false,
+        "Retrieved At": "2025-02-27T15:53:32.985170"
+    },
+    "BLIS/0.9.0-GCC-13.2.0": {
+        "License": "other",
+        "Needs Manual Check": true,
+        "Retrieved At": "2025-02-27T15:53:33.189893"
+    },
+    "BWA/0.7.18-GCCcore-12.3.0": {
+        "License": "not found",
+        "Needs Manual Check": true,
+        "Retrieved At": "2025-02-27T15:53:34.013710"
+    },
+    "BamTools/2.5.2-GCC-12.2.0": {
+        "License": "mit",
+        "Needs Manual Check": false,
+        "Retrieved At": "2025-02-27T15:53:34.304312"
+    },
+    "Bazel/6.3.1-GCCcore-12.3.0": {
+        "License": "not found",
+        "Needs Manual Check": true,
+        "Retrieved At": "2025-02-27T15:53:35.060698"
+    },
+    "BeautifulSoup/4.12.2-GCCcore-12.3.0": {
+        "License": [
+            "Other"
+        ],
+        "Needs Manual Check": false,
+        "Retrieved At": "2025-02-27T15:53:35.441440"
+    },
+    "Bio-DB-HTS/3.01-GCC-12.2.0": {
+        "License": "not found",
+        "Needs Manual Check": true,
+        "Retrieved At": "2025-02-27T15:53:36.211170"
+    },
+    "Bio-SearchIO-hmmer/1.7.3-GCC-12.2.0": {
+        "License": "not found",
+        "Needs Manual Check": true,
+        "Retrieved At": "2025-02-27T15:53:36.983623"
+    },
+    "BioPerl/1.7.8-GCCcore-12.3.0": {
+        "License": "not found",
+        "Needs Manual Check": true,
+        "Retrieved At": "2025-02-27T15:53:37.343507"
+    },
+    "Biopython/1.83-foss-2023a": {
+        "License": "not found",
+        "Needs Manual Check": true,
+        "Retrieved At": "2025-02-27T15:53:38.183475"
+    },
+    "Bison/3.8.2-GCCcore-13.2.0": {
+        "License": "not found",
+        "Needs Manual Check": true,
+        "Retrieved At": "2025-02-27T15:53:38.582722"
+    },
+    "Boost/1.83.0-GCC-13.2.0": {
+        "License": [
+            "Other"
+        ],
+        "Needs Manual Check": false,
+        "Retrieved At": "2025-02-27T15:53:38.994591"
+    },
+    "Boost.MPI/1.83.0-gompi-2023b": {
+        "License": [
+            "Other"
+        ],
+        "Needs Manual Check": false,
+        "Retrieved At": "2025-02-27T15:53:39.440954"
+    },
+    "Boost.Python/1.83.0-GCC-13.2.0": {
+        "License": "not found",
+        "Needs Manual Check": true,
+        "Retrieved At": "2025-02-27T15:53:40.239097"
+    },
+    "Bowtie2/2.5.1-GCC-12.2.0": {
+        "License": [
+            "Other"
+        ],
+        "Needs Manual Check": false,
+        "Retrieved At": "2025-02-27T15:53:40.581819"
+    },
+    "Brotli/1.1.0-GCCcore-13.2.0": {
+        "License": "mit",
+        "Needs Manual Check": false,
+        "Retrieved At": "2025-02-27T15:53:40.839397"
+    },
+    "Brunsli/0.1-GCCcore-13.2.0": {
+        "License": "mit",
+        "Needs Manual Check": false,
+        "Retrieved At": "2025-02-27T15:53:41.032503"
+    },
+    "CD-HIT/4.8.1-GCC-12.2.0": {
+        "License": "not found",
+        "Needs Manual Check": true,
+        "Retrieved At": "2025-02-27T15:53:41.744270"
+    },
+    "CDO/2.2.2-gompi-2023b": {
+        "License": "not found",
+        "Needs Manual Check": true,
+        "Retrieved At": "2025-02-27T15:53:42.636421"
+    },
+    "CFITSIO/4.3.1-GCCcore-13.2.0": {
+        "License": [
+            "Other"
+        ],
+        "Needs Manual Check": false,
+        "Retrieved At": "2025-02-27T15:53:43.021945"
+    },
+    "CGAL/5.6-GCCcore-12.3.0": {
+        "License": [
+            "CNRI-Python-GPL-Compatible"
+        ],
+        "Needs Manual Check": false,
+        "Retrieved At": "2025-02-27T15:53:43.414010"
+    },
+    "CMake/3.27.6-GCCcore-13.2.0": {
+        "License": [
+            "BSD-3-Clause"
+        ],
+        "Needs Manual Check": false,
+        "Retrieved At": "2025-02-27T15:53:43.837945"
+    },
+    "CP2K/2023.1-foss-2023a": {
+        "License": "not found",
+        "Needs Manual Check": true,
+        "Retrieved At": "2025-02-27T15:53:44.611834"
+    },
+    "CUDA/12.1.1": {
+        "License": [
+            "Other"
+        ],
+        "Needs Manual Check": false,
+        "Retrieved At": "2025-02-27T15:53:45.025057"
+    },
+    "CUDA-Samples/12.1-GCC-12.3.0-CUDA-12.1.1": {
+        "License": "other",
+        "Needs Manual Check": true,
+        "Retrieved At": "2025-02-27T15:53:45.342249"
+    },
+    "CapnProto/1.0.1-GCCcore-12.3.0": {
+        "License": [
+            "Other"
+        ],
+        "Needs Manual Check": false,
+        "Retrieved At": "2025-02-27T15:53:45.698246"
+    },
+    "Cartopy/0.22.0-foss-2023a": {
+        "License": [
+            "Other"
+        ],
+        "Needs Manual Check": false,
+        "Retrieved At": "2025-02-27T15:53:46.176136"
+    },
+    "Cassiopeia/2.0.0-foss-2023a": {
+        "License": "mit",
+        "Needs Manual Check": false,
+        "Retrieved At": "2025-02-27T15:53:46.415924"
+    },
+    "Catch2/2.13.9-GCCcore-13.2.0": {
+        "License": "bsl-1.0",
+        "Needs Manual Check": false,
+        "Retrieved At": "2025-02-27T15:53:46.881221"
+    },
+    "Cbc/2.10.11-foss-2023a": {
+        "License": "other",
+        "Needs Manual Check": true,
+        "Retrieved At": "2025-02-27T15:53:47.158707"
+    },
+    "Cgl/0.60.8-foss-2023a": {
+        "License": "other",
+        "Needs Manual Check": true,
+        "Retrieved At": "2025-02-27T15:53:47.392925"
+    },
+    "Clp/1.17.9-foss-2023a": {
+        "License": "other",
+        "Needs Manual Check": true,
+        "Retrieved At": "2025-02-27T15:53:47.679247"
+    },
+    "CoinUtils/2.11.10-GCC-12.3.0": {
+        "License": "other",
+        "Needs Manual Check": true,
+        "Retrieved At": "2025-02-27T15:53:47.927356"
+    },
+    "Core/settarg/": {
+        "License": "not found",
+        "Needs Manual Check": true,
+        "Retrieved At": "2025-02-27T15:53:47.927415"
+    },
+    "Critic2/1.2-foss-2023a": {
+        "License": "not found",
+        "Needs Manual Check": true,
+        "Retrieved At": "2025-02-27T15:53:48.818545"
+    },
+    "CubeLib/4.8.2-GCCcore-13.2.0": {
+        "License": [
+            "Other"
+        ],
+        "Needs Manual Check": false,
+        "Retrieved At": "2025-02-27T15:53:49.290582"
+    },
+    "CubeWriter/4.8.2-GCCcore-13.2.0": {
+        "License": [
+            "Other"
+        ],
+        "Needs Manual Check": false,
+        "Retrieved At": "2025-02-27T15:53:50.615549"
+    },
+    "Cython/3.0.10-GCCcore-13.2.0": {
+        "License": [
+            "Apache-2.0"
+        ],
+        "Needs Manual Check": false,
+        "Retrieved At": "2025-02-27T15:53:51.667850"
+    },
+    "DB/18.1.40-GCCcore-12.3.0": {
+        "License": "not found",
+        "Needs Manual Check": true,
+        "Retrieved At": "2025-02-27T15:53:52.394218"
+    },
+    "DB_File/1.859-GCCcore-12.3.0": {
+        "License": "not found",
+        "Needs Manual Check": true,
+        "Retrieved At": "2025-02-27T15:53:53.141786"
+    },
+    "DIAMOND/2.1.8-GCC-12.3.0": {
+        "License": "gpl-3.0",
+        "Needs Manual Check": false,
+        "Retrieved At": "2025-02-27T15:53:53.421625"
+    },
+    "DP3/6.2-foss-2023b": {
+        "License": "not found",
+        "Needs Manual Check": true,
+        "Retrieved At": "2025-02-27T15:53:53.834235"
+    },
+    "DendroPy/4.6.1-GCCcore-12.3.0": {
+        "License": "not found",
+        "Needs Manual Check": true,
+        "Retrieved At": "2025-02-27T15:53:54.168562"
+    },
+    "Doxygen/1.9.8-GCCcore-13.2.0": {
+        "License": [
+            "Other"
+        ],
+        "Needs Manual Check": false,
+        "Retrieved At": "2025-02-27T15:53:54.521278"
+    },
+    "EESSI-extend/2023.06-easybuild": {
+        "License": "not found",
+        "Needs Manual Check": true,
+        "Retrieved At": "2025-02-27T15:53:54.521327"
+    },
+    "ELPA/2023.05.001-foss-2023a": {
+        "License": [
+            "Other"
+        ],
+        "Needs Manual Check": false,
+        "Retrieved At": "2025-02-27T15:53:54.858916"
+    },
+    "ESPResSo/4.2.2-foss-2023b": {
+        "License": "not found",
+        "Needs Manual Check": true,
+        "Retrieved At": "2025-02-27T15:53:56.252390"
+    },
+    "ETE/3.1.3-foss-2023a": {
+        "License": "not found",
+        "Needs Manual Check": true,
+        "Retrieved At": "2025-02-27T15:53:57.231734"
+    },
+    "EasyBuild/4.9.4": {
+        "License": [
+            "Other"
+        ],
+        "Needs Manual Check": false,
+        "Retrieved At": "2025-02-27T15:53:57.520030"
+    },
+    "Eigen/3.4.0-GCCcore-13.2.0": {
+        "License": "not found",
+        "Needs Manual Check": true,
+        "Retrieved At": "2025-02-27T15:53:58.328711"
+    },
+    "EveryBeam/0.6.1-foss-2023b": {
+        "License": "not found",
+        "Needs Manual Check": true,
+        "Retrieved At": "2025-02-27T15:53:58.661568"
+    },
+    "Extrae/4.2.0-gompi-2023b": {
+        "License": [
+            "Other"
+        ],
+        "Needs Manual Check": false,
+        "Retrieved At": "2025-02-27T15:53:59.021499"
+    },
+    "FFTW/3.3.10-GCC-13.2.0": {
+        "License": [
+            "Other"
+        ],
+        "Needs Manual Check": false,
+        "Retrieved At": "2025-02-27T15:53:59.338033"
+    },
+    "FFTW.MPI/3.3.10-gompi-2023b": {
+        "License": [
+            "Other"
+        ],
+        "Needs Manual Check": false,
+        "Retrieved At": "2025-02-27T15:53:59.720740"
+    },
+    "FFmpeg/6.0-GCCcore-13.2.0": {
+        "License": "not found",
+        "Needs Manual Check": true,
+        "Retrieved At": "2025-02-27T15:54:00.478091"
+    },
+    "FLAC/1.4.3-GCCcore-13.2.0": {
+        "License": [
+            "CNRI-Python-GPL-Compatible"
+        ],
+        "Needs Manual Check": false,
+        "Retrieved At": "2025-02-27T15:54:01.313526"
+    },
+    "FLTK/1.3.8-GCCcore-12.3.0": {
+        "License": "not found",
+        "Needs Manual Check": true,
+        "Retrieved At": "2025-02-27T15:54:03.094820"
+    },
+    "FastME/2.1.6.3-GCC-12.3.0": {
+        "License": [
+            "Other"
+        ],
+        "Needs Manual Check": false,
+        "Retrieved At": "2025-02-27T15:54:03.691940"
+    },
+    "Fiona/1.9.5-foss-2023a": {
+        "License": "bsd-3-clause",
+        "Needs Manual Check": false,
+        "Retrieved At": "2025-02-27T15:54:04.442995"
+    },
+    "Flask/2.2.3-GCCcore-12.2.0": {
+        "License": "not found",
+        "Needs Manual Check": true,
+        "Retrieved At": "2025-02-27T15:54:07.898709"
+    },
+    "FlexiBLAS/3.3.1-GCC-13.2.0": {
+        "License": "bsd-3-clause-open-mpi",
+        "Needs Manual Check": false,
+        "Retrieved At": "2025-02-27T15:54:09.136270"
+    },
+    "FragGeneScan/1.31-GCCcore-12.3.0": {
+        "License": "not found",
+        "Needs Manual Check": true,
+        "Retrieved At": "2025-02-27T15:54:09.556066"
+    },
+    "FreeImage/3.18.0-GCCcore-12.3.0": {
+        "License": "not found",
+        "Needs Manual Check": true,
+        "Retrieved At": "2025-02-27T15:54:09.934278"
+    },
+    "FriBidi/1.0.13-GCCcore-13.2.0": {
+        "License": "lgpl-2.1",
+        "Needs Manual Check": false,
+        "Retrieved At": "2025-02-27T15:54:11.842036"
+    },
+    "GATK/4.5.0.0-GCCcore-12.3.0-Java-17": {
+        "License": "not found",
+        "Needs Manual Check": true,
+        "Retrieved At": "2025-02-27T15:54:14.105498"
+    },
+    "GCC/13.2.0": {
+        "License": [
+            "GPL-3.0-or-later"
+        ],
+        "Needs Manual Check": false,
+        "Retrieved At": "2025-02-27T15:54:14.759831"
+    },
+    "GCCcore/13.2.0": {
+        "License": [
+            "GPL-3.0-or-later"
+        ],
+        "Needs Manual Check": false,
+        "Retrieved At": "2025-02-27T15:54:15.925200"
+    },
+    "GDAL/3.9.0-foss-2023b": {
+        "License": "not found",
+        "Needs Manual Check": true,
+        "Retrieved At": "2025-02-27T15:54:16.752007"
+    },
+    "GDB/13.2-GCCcore-12.3.0": {
+        "License": "not found",
+        "Needs Manual Check": true,
+        "Retrieved At": "2025-02-27T15:54:17.261043"
+    },
+    "GDRCopy/2.4-GCCcore-13.2.0": {
+        "License": "mit",
+        "Needs Manual Check": false,
+        "Retrieved At": "2025-02-27T15:54:17.897757"
+    },
+    "GEOS/3.12.1-GCC-13.2.0": {
+        "License": "not found",
+        "Needs Manual Check": true,
+        "Retrieved At": "2025-02-27T15:54:19.977700"
+    },
+    "GL2PS/1.4.2-GCCcore-12.3.0": {
+        "License": [
+            "Other"
+        ],
+        "Needs Manual Check": false,
+        "Retrieved At": "2025-02-27T15:54:21.199257"
+    },
+    "GLPK/5.0-GCCcore-13.2.0": {
+        "License": [
+            "GPL-3.0-only"
+        ],
+        "Needs Manual Check": false,
+        "Retrieved At": "2025-02-27T15:54:22.512204"
+    },
+    "GLib/2.78.1-GCCcore-13.2.0": {
+        "License": [
+            "LGPL-2.1-or-later"
+        ],
+        "Needs Manual Check": false,
+        "Retrieved At": "2025-02-27T15:54:23.177951"
+    },
+    "GMP/6.3.0-GCCcore-13.2.0": {
+        "License": [
+            "LGPL-3.0-or-later",
+            "GPL-2.0-or-later"
+        ],
+        "Needs Manual Check": false,
+        "Retrieved At": "2025-02-27T15:54:23.937164"
+    },
+    "GObject-Introspection/1.78.1-GCCcore-13.2.0": {
+        "License": "not found",
+        "Needs Manual Check": true,
+        "Retrieved At": "2025-02-27T15:54:24.405530"
+    },
+    "GROMACS/2024.4-foss-2023b": {
+        "License": [
+            "Other"
+        ],
+        "Needs Manual Check": false,
+        "Retrieved At": "2025-02-27T15:54:25.034476"
+    },
+    "GSL/2.7-GCC-13.2.0": {
+        "License": "not found",
+        "Needs Manual Check": true,
+        "Retrieved At": "2025-02-27T15:54:25.455768"
+    },
+    "GST-plugins-base/1.24.8-GCC-13.2.0": {
+        "License": [
+            "Other"
+        ],
+        "Needs Manual Check": false,
+        "Retrieved At": "2025-02-27T15:54:26.175467"
+    },
+    "GStreamer/1.24.8-GCC-13.2.0": {
+        "License": [
+            "Other"
+        ],
+        "Needs Manual Check": false,
+        "Retrieved At": "2025-02-27T15:54:26.528756"
+    },
+    "GTK3/3.24.39-GCCcore-13.2.0": {
+        "License": "not found",
+        "Needs Manual Check": true,
+        "Retrieved At": "2025-02-27T15:54:26.905517"
+    },
+    "Gdk-Pixbuf/2.42.10-GCCcore-13.2.0": {
+        "License": "not found",
+        "Needs Manual Check": true,
+        "Retrieved At": "2025-02-27T15:54:27.570729"
+    },
+    "GenomeTools/1.6.2-GCC-12.2.0": {
+        "License": "not found",
+        "Needs Manual Check": true,
+        "Retrieved At": "2025-02-27T15:54:28.300790"
+    },
+    "Ghostscript/10.02.1-GCCcore-13.2.0": {
+        "License": "not found",
+        "Needs Manual Check": true,
+        "Retrieved At": "2025-02-27T15:54:28.914454"
+    },
+    "GitPython/3.1.40-GCCcore-12.3.0": {
+        "License": [
+            "Other"
+        ],
+        "Needs Manual Check": false,
+        "Retrieved At": "2025-02-27T15:54:29.328786"
+    },
+    "Graphene/1.10.8-GCCcore-13.2.0": {
+        "License": "not found",
+        "Needs Manual Check": true,
+        "Retrieved At": "2025-02-27T15:54:29.744072"
+    },
+    "HDBSCAN/0.8.38.post1-foss-2023a": {
+        "License": "not found",
+        "Needs Manual Check": true,
+        "Retrieved At": "2025-02-27T15:54:30.299650"
+    },
+    "HDF/4.2.16-2-GCCcore-13.2.0": {
+        "License": "not found",
+        "Needs Manual Check": true,
+        "Retrieved At": "2025-02-27T15:54:31.390028"
+    },
+    "HDF5/1.14.3-gompi-2023b": {
+        "License": "not found",
+        "Needs Manual Check": true,
+        "Retrieved At": "2025-02-27T15:54:32.319532"
+    },
+    "HMMER/3.4-gompi-2023a": {
+        "License": "not found",
+        "Needs Manual Check": true,
+        "Retrieved At": "2025-02-27T15:54:33.594098"
+    },
+    "HPL/2.3-foss-2023b": {
+        "License": [
+            "Other"
+        ],
+        "Needs Manual Check": false,
+        "Retrieved At": "2025-02-27T15:54:34.839239"
+    },
+    "HTSlib/1.19.1-GCC-13.2.0": {
+        "License": "not found",
+        "Needs Manual Check": true,
+        "Retrieved At": "2025-02-27T15:54:35.626017"
+    },
+    "HarfBuzz/8.2.2-GCCcore-13.2.0": {
+        "License": [
+            "MIT"
+        ],
+        "Needs Manual Check": false,
+        "Retrieved At": "2025-02-27T15:54:36.087027"
+    },
+    "HepMC3/3.2.6-GCC-12.3.0": {
+        "License": "not found",
+        "Needs Manual Check": true,
+        "Retrieved At": "2025-02-27T15:54:36.832079"
+    },
+    "Highway/1.0.4-GCCcore-12.3.0": {
+        "License": "apache-2.0",
+        "Needs Manual Check": false,
+        "Retrieved At": "2025-02-27T15:54:38.044136"
+    },
+    "Hypre/2.29.0-foss-2023a": {
+        "License": "not found",
+        "Needs Manual Check": true,
+        "Retrieved At": "2025-02-27T15:54:41.585244"
+    },
+    "ICU/74.1-GCCcore-13.2.0": {
+        "License": [
+            "ICU"
+        ],
+        "Needs Manual Check": false,
+        "Retrieved At": "2025-02-27T15:54:56.901830"
+    },
+    "IDG/1.2.0-foss-2023b": {
+        "License": "not found",
+        "Needs Manual Check": true,
+        "Retrieved At": "2025-02-27T15:54:57.328174"
+    },
+    "IPython/8.17.2-GCCcore-13.2.0": {
+        "License": "not found",
+        "Needs Manual Check": true,
+        "Retrieved At": "2025-02-27T15:54:57.761430"
+    },
+    "IQ-TREE/2.3.5-gompi-2023a": {
+        "License": "not found",
+        "Needs Manual Check": true,
+        "Retrieved At": "2025-02-27T15:55:09.537114"
+    },
+    "ISA-L/2.30.0-GCCcore-12.3.0": {
+        "License": "other",
+        "Needs Manual Check": true,
+        "Retrieved At": "2025-02-27T15:55:10.384442"
+    },
+    "ISL/0.26-GCCcore-12.3.0": {
+        "License": "not found",
+        "Needs Manual Check": true,
+        "Retrieved At": "2025-02-27T15:55:11.189898"
+    },
+    "ITSTool/2.0.7-GCCcore-12.3.0": {
+        "License": [
+            "GPL-3.0+"
+        ],
+        "Needs Manual Check": false,
+        "Retrieved At": "2025-02-27T15:55:11.784755"
+    },
+    "ImageMagick/7.1.1-34-GCCcore-13.2.0": {
+        "License": [
+            "ImageMagick"
+        ],
+        "Needs Manual Check": false,
+        "Retrieved At": "2025-02-27T15:55:19.874216"
+    },
+    "Imath/3.1.9-GCCcore-13.2.0": {
+        "License": "not found",
+        "Needs Manual Check": true,
+        "Retrieved At": "2025-02-27T15:55:22.940277"
+    },
+    "JasPer/4.0.0-GCCcore-13.2.0": {
+        "License": [
+            "Other"
+        ],
+        "Needs Manual Check": false,
+        "Retrieved At": "2025-02-27T15:55:23.363892"
+    },
+    "Java/17.0.6": {
+        "License": [
+            "Other"
+        ],
+        "Needs Manual Check": false,
+        "Retrieved At": "2025-02-27T15:55:23.857445"
+    },
+    "JsonCpp/1.9.5-GCCcore-12.3.0": {
+        "License": "not found",
+        "Needs Manual Check": true,
+        "Retrieved At": "2025-02-27T15:55:24.787415"
+    },
+    "Judy/1.0.5-GCCcore-12.3.0": {
+        "License": [
+            "LGPL-2.0-only"
+        ],
+        "Needs Manual Check": false,
+        "Retrieved At": "2025-02-27T15:55:25.224421"
+    },
+    "JupyterLab/4.0.5-GCCcore-12.3.0": {
+        "License": [
+            "Other"
+        ],
+        "Needs Manual Check": false,
+        "Retrieved At": "2025-02-27T15:55:25.617736"
+    },
+    "JupyterNotebook/7.0.2-GCCcore-12.3.0": {
+        "License": [
+            "Other"
+        ],
+        "Needs Manual Check": false,
+        "Retrieved At": "2025-02-27T15:55:26.248688"
+    },
+    "KaHIP/3.16-gompi-2023a": {
+        "License": "not found",
+        "Needs Manual Check": true,
+        "Retrieved At": "2025-02-27T15:55:27.015178"
+    },
+    "KronaTools/2.8.1-GCCcore-12.3.0": {
+        "License": "not found",
+        "Needs Manual Check": true,
+        "Retrieved At": "2025-02-27T15:55:28.391339"
+    },
+    "LAME/3.100-GCCcore-13.2.0": {
+        "License": [
+            "LGPL-2.0-or-later"
+        ],
+        "Needs Manual Check": false,
+        "Retrieved At": "2025-02-27T15:55:28.970390"
+    },
+    "LAMMPS/29Aug2024-foss-2023b-kokkos": {
+        "License": "not found",
+        "Needs Manual Check": true,
+        "Retrieved At": "2025-02-27T15:55:29.516550"
+    },
+    "LERC/4.0.0-GCCcore-13.2.0": {
+        "License": "apache-2.0",
+        "Needs Manual Check": false,
+        "Retrieved At": "2025-02-27T15:55:30.146488"
+    },
+    "LHAPDF/6.5.4-GCC-12.3.0": {
+        "License": "not found",
+        "Needs Manual Check": true,
+        "Retrieved At": "2025-02-27T15:55:30.922337"
+    },
+    "LLVM/16.0.6-GCCcore-13.2.0": {
+        "License": [
+            "Apache-2.0"
+        ],
+        "Needs Manual Check": false,
+        "Retrieved At": "2025-02-27T15:55:31.730710"
+    },
+    "LMDB/0.9.31-GCCcore-12.3.0": {
+        "License": "not found",
+        "Needs Manual Check": true,
+        "Retrieved At": "2025-02-27T15:55:32.805246"
+    },
+    "LRBinner/0.1-foss-2023a": {
+        "License": "gpl-2.0",
+        "Needs Manual Check": false,
+        "Retrieved At": "2025-02-27T15:55:33.879298"
+    },
+    "LSD2/2.4.1-GCCcore-12.3.0": {
+        "License": "gpl-2.0",
+        "Needs Manual Check": false,
+        "Retrieved At": "2025-02-27T15:55:34.544309"
+    },
+    "LZO/2.10-GCCcore-12.3.0": {
+        "License": [
+            "Other"
+        ],
+        "Needs Manual Check": false,
+        "Retrieved At": "2025-02-27T15:55:34.948326"
+    },
+    "LibTIFF/4.6.0-GCCcore-13.2.0": {
+        "License": "not found",
+        "Needs Manual Check": true,
+        "Retrieved At": "2025-02-27T15:55:35.772835"
+    },
+    "Libint/2.7.2-GCC-12.3.0-lmax-6-cp2k": {
+        "License": "other",
+        "Needs Manual Check": true,
+        "Retrieved At": "2025-02-27T15:55:36.416805"
+    },
+    "LightGBM/4.5.0-foss-2023a": {
+        "License": "not found",
+        "Needs Manual Check": true,
+        "Retrieved At": "2025-02-27T15:55:36.857930"
+    },
+    "LittleCMS/2.15-GCCcore-13.2.0": {
+        "License": "not found",
+        "Needs Manual Check": true,
+        "Retrieved At": "2025-02-27T15:55:37.345243"
+    },
+    "LoopTools/2.15-GCC-12.3.0": {
+        "License": "not found",
+        "Needs Manual Check": true,
+        "Retrieved At": "2025-02-27T15:55:38.056942"
+    },
+    "Lua/5.4.6-GCCcore-13.2.0": {
+        "License": [
+            "MIT"
+        ],
+        "Needs Manual Check": false,
+        "Retrieved At": "2025-02-27T15:55:38.705991"
+    },
+    "MAFFT/7.520-GCC-12.3.0-with-extensions": {
+        "License": "not found",
+        "Needs Manual Check": true,
+        "Retrieved At": "2025-02-27T15:55:39.091016"
+    },
+    "MBX/1.1.0-foss-2023a": {
+        "License": "other",
+        "Needs Manual Check": true,
+        "Retrieved At": "2025-02-27T15:55:40.307845"
+    },
+    "MCL/22.282-GCCcore-12.3.0": {
+        "License": "not found",
+        "Needs Manual Check": true,
+        "Retrieved At": "2025-02-27T15:55:41.134498"
+    },
+    "MDAnalysis/2.4.2-foss-2022b": {
+        "License": "not found",
+        "Needs Manual Check": true,
+        "Retrieved At": "2025-02-27T15:55:41.581013"
+    },
+    "MDI/1.4.29-gompi-2023b": {
+        "License": "bsd-3-clause",
+        "Needs Manual Check": false,
+        "Retrieved At": "2025-02-27T15:55:42.753798"
+    },
+    "METIS/5.1.0-GCCcore-12.3.0": {
+        "License": [
+            "Other"
+        ],
+        "Needs Manual Check": false,
+        "Retrieved At": "2025-02-27T15:55:43.218796"
+    },
+    "MMseqs2/14-7e284-gompi-2023a": {
+        "License": "not found",
+        "Needs Manual Check": true,
+        "Retrieved At": "2025-02-27T15:55:43.676059"
+    },
+    "MODFLOW/6.4.4-foss-2023a": {
+        "License": "not found",
+        "Needs Manual Check": true,
+        "Retrieved At": "2025-02-27T15:55:44.825133"
+    },
+    "MPC/1.3.1-GCCcore-13.2.0": {
+        "License": [
+            "LGPL-3.0-or-later"
+        ],
+        "Needs Manual Check": false,
+        "Retrieved At": "2025-02-27T15:55:45.563197"
+    },
+    "MPFR/4.2.1-GCCcore-13.2.0": {
+        "License": "not found",
+        "Needs Manual Check": true,
+        "Retrieved At": "2025-02-27T15:55:46.471810"
+    },
+    "MUMPS/5.6.1-foss-2023a-metis": {
+        "License": "not found",
+        "Needs Manual Check": true,
+        "Retrieved At": "2025-02-27T15:55:47.232447"
+    },
+    "Mako/1.2.4-GCCcore-13.2.0": {
+        "License": "not found",
+        "Needs Manual Check": true,
+        "Retrieved At": "2025-02-27T15:55:47.607882"
+    },
+    "MariaDB/11.6.0-GCC-12.3.0": {
+        "License": [
+            "LGPL-2.1-or-later"
+        ],
+        "Needs Manual Check": false,
+        "Retrieved At": "2025-02-27T15:55:48.156244"
+    },
+    "Mash/2.3-GCC-12.2.0": {
+        "License": "not found",
+        "Needs Manual Check": true,
+        "Retrieved At": "2025-02-27T15:55:49.322815"
+    },
+    "Mesa/23.1.9-GCCcore-13.2.0": {
+        "License": "not found",
+        "Needs Manual Check": true,
+        "Retrieved At": "2025-02-27T15:55:49.949176"
+    },
+    "Meson/1.3.1-GCCcore-12.3.0": {
+        "License": [
+            "Apache-2.0"
+        ],
+        "Needs Manual Check": false,
+        "Retrieved At": "2025-02-27T15:55:50.521143"
+    },
+    "MetaEuk/6-GCC-12.2.0": {
+        "License": "not found",
+        "Needs Manual Check": true,
+        "Retrieved At": "2025-02-27T15:55:53.755820"
+    },
+    "MetalWalls/21.06.1-foss-2023a": {
+        "License": null,
+        "Needs Manual Check": false,
+        "Retrieved At": "2025-02-27T15:55:54.274979"
+    },
+    "MultiQC/1.14-foss-2022b": {
+        "License": [
+            "Other"
+        ],
+        "Needs Manual Check": false,
+        "Retrieved At": "2025-02-27T15:55:54.662307"
+    },
+    "Mustache/1.3.3-foss-2023b": {
+        "License": "mit",
+        "Needs Manual Check": false,
+        "Retrieved At": "2025-02-27T15:55:57.969110"
+    },
+    "NASM/2.16.01-GCCcore-13.2.0": {
+        "License": [
+            "BSD-2-Clause"
+        ],
+        "Needs Manual Check": false,
+        "Retrieved At": "2025-02-27T15:55:59.557432"
+    },
+    "NCCL/2.18.3-GCCcore-12.3.0-CUDA-12.1.1": {
+        "License": "not found",
+        "Needs Manual Check": true,
+        "Retrieved At": "2025-02-27T15:56:04.520789"
+    },
+    "NLTK/3.8.1-foss-2023b": {
+        "License": [
+            "Other"
+        ],
+        "Needs Manual Check": false,
+        "Retrieved At": "2025-02-27T15:56:06.639367"
+    },
+    "NLopt/2.7.1-GCCcore-13.2.0": {
+        "License": "not found",
+        "Needs Manual Check": true,
+        "Retrieved At": "2025-02-27T15:56:07.514919"
+    },
+    "NSPR/4.35-GCCcore-13.2.0": {
+        "License": "not found",
+        "Needs Manual Check": true,
+        "Retrieved At": "2025-02-27T15:56:08.609749"
+    },
+    "NSS/3.94-GCCcore-13.2.0": {
+        "License": [
+            "Other"
+        ],
+        "Needs Manual Check": false,
+        "Retrieved At": "2025-02-27T15:56:11.918310"
+    },
+    "Nextflow/23.10.0": {
+        "License": "not found",
+        "Needs Manual Check": true,
+        "Retrieved At": "2025-02-27T15:56:15.048498"
+    },
+    "Ninja/1.11.1-GCCcore-13.2.0": {
+        "License": [
+            "Apache-2.0"
+        ],
+        "Needs Manual Check": false,
+        "Retrieved At": "2025-02-27T15:56:15.570184"
+    },
+    "OPARI2/2.0.8-GCCcore-13.2.0": {
+        "License": "not found",
+        "Needs Manual Check": true,
+        "Retrieved At": "2025-02-27T15:56:16.376730"
+    },
+    "OSU-Micro-Benchmarks/7.2-gompi-2023b": {
+        "License": [
+            "Other"
+        ],
+        "Needs Manual Check": false,
+        "Retrieved At": "2025-02-27T15:56:17.046169"
+    },
+    "OTF2/3.0.3-GCCcore-13.2.0": {
+        "License": "not found",
+        "Needs Manual Check": true,
+        "Retrieved At": "2025-02-27T15:56:17.896472"
+    },
+    "OpenBLAS/0.3.24-GCC-13.2.0": {
+        "License": "not found",
+        "Needs Manual Check": true,
+        "Retrieved At": "2025-02-27T15:56:18.253605"
+    },
+    "OpenEXR/3.2.0-GCCcore-13.2.0": {
+        "License": [
+            "BSD-3-Clause"
+        ],
+        "Needs Manual Check": false,
+        "Retrieved At": "2025-02-27T15:56:20.637767"
+    },
+    "OpenFOAM/v2406-foss-2023a": {
+        "License": [
+            "Other"
+        ],
+        "Needs Manual Check": false,
+        "Retrieved At": "2025-02-27T15:56:22.029236"
+    },
+    "OpenJPEG/2.5.0-GCCcore-13.2.0": {
+        "License": [
+            "BSD-2-Clause"
+        ],
+        "Needs Manual Check": false,
+        "Retrieved At": "2025-02-27T15:56:22.559773"
+    },
+    "OpenMPI/4.1.6-GCC-13.2.0": {
+        "License": [
+            "Other"
+        ],
+        "Needs Manual Check": false,
+        "Retrieved At": "2025-02-27T15:56:23.233541"
+    },
+    "OpenPGM/5.2.122-GCCcore-13.2.0": {
+        "License": [
+            "LGPL-2.1"
+        ],
+        "Needs Manual Check": false,
+        "Retrieved At": "2025-02-27T15:56:23.802919"
+    },
+    "OpenSSL/1.1": {
+        "License": [
+            "Apache-2.0"
+        ],
+        "Needs Manual Check": false,
+        "Retrieved At": "2025-02-27T15:56:24.416517"
+    },
+    "OrthoFinder/2.5.5-foss-2023a": {
+        "License": "gpl-3.0",
+        "Needs Manual Check": false,
+        "Retrieved At": "2025-02-27T15:56:25.470486"
+    },
+    "Osi/0.108.9-GCC-12.3.0": {
+        "License": "other",
+        "Needs Manual Check": true,
+        "Retrieved At": "2025-02-27T15:56:26.146786"
+    },
+    "PAPI/7.1.0-GCCcore-13.2.0": {
+        "License": "not found",
+        "Needs Manual Check": true,
+        "Retrieved At": "2025-02-27T15:56:26.993707"
+    },
+    "PCRE/8.45-GCCcore-13.2.0": {
+        "License": [
+            "BSD-3-Clause"
+        ],
+        "Needs Manual Check": false,
+        "Retrieved At": "2025-02-27T15:56:31.570623"
+    },
+    "PCRE2/10.42-GCCcore-13.2.0": {
+        "License": [
+            "BSD-3-Clause"
+        ],
+        "Needs Manual Check": false,
+        "Retrieved At": "2025-02-27T15:56:31.885273"
+    },
+    "PDT/3.25.2-GCCcore-13.2.0": {
+        "License": "not found",
+        "Needs Manual Check": true,
+        "Retrieved At": "2025-02-27T15:56:32.655045"
+    },
+    "PETSc/3.20.3-foss-2023a": {
+        "License": "not found",
+        "Needs Manual Check": true,
+        "Retrieved At": "2025-02-27T15:56:45.765254"
+    },
+    "PGPLOT/5.2.2-GCCcore-13.2.0": {
+        "License": [
+            "Other"
+        ],
+        "Needs Manual Check": false,
+        "Retrieved At": "2025-02-27T15:56:50.491419"
+    },
+    "PLUMED/2.9.2-foss-2023b": {
+        "License": "not found",
+        "Needs Manual Check": true,
+        "Retrieved At": "2025-02-27T15:56:56.055577"
+    },
+    "PLY/3.11-GCCcore-12.3.0": {
+        "License": [
+            "BSD-3-Clause"
+        ],
+        "Needs Manual Check": false,
+        "Retrieved At": "2025-02-27T15:56:57.727744"
+    },
+    "PMIx/4.2.6-GCCcore-13.2.0": {
+        "License": "not found",
+        "Needs Manual Check": true,
+        "Retrieved At": "2025-02-27T15:57:05.097951"
+    },
+    "PROJ/9.3.1-GCCcore-13.2.0": {
+        "License": "not found",
+        "Needs Manual Check": true,
+        "Retrieved At": "2025-02-27T15:57:05.947555"
+    },
+    "Pango/1.51.0-GCCcore-13.2.0": {
+        "License": [
+            "LGPL-2.1-or-later"
+        ],
+        "Needs Manual Check": false,
+        "Retrieved At": "2025-02-27T15:57:06.893456"
+    },
+    "ParMETIS/4.0.3-gompi-2023a": {
+        "License": [
+            "Other"
+        ],
+        "Needs Manual Check": false,
+        "Retrieved At": "2025-02-27T15:57:07.487785"
+    },
+    "ParaView/5.11.2-foss-2023a": {
+        "License": [
+            "Other"
+        ],
+        "Needs Manual Check": false,
+        "Retrieved At": "2025-02-27T15:57:07.993816"
+    },
+    "Paraver/4.11.4-GCC-12.3.0": {
+        "License": [
+            "Other"
+        ],
+        "Needs Manual Check": false,
+        "Retrieved At": "2025-02-27T15:57:08.592769"
+    },
+    "Perl/5.38.0-GCCcore-13.2.0": {
+        "License": [
+            "Artistic-1.0-Perl",
+            "GPL-1.0-or-later"
+        ],
+        "Needs Manual Check": false,
+        "Retrieved At": "2025-02-27T15:57:09.362734"
+    },
+    "Perl-bundle-CPAN/5.36.1-GCCcore-12.3.0": {
+        "License": [
+            "Artistic-1.0-Perl",
+            "GPL-1.0-or-later"
+        ],
+        "Needs Manual Check": false,
+        "Retrieved At": "2025-02-27T15:57:09.777442"
+    },
+    "Pillow/10.2.0-GCCcore-13.2.0": {
+        "License": "not found",
+        "Needs Manual Check": true,
+        "Retrieved At": "2025-02-27T15:57:10.119318"
+    },
+    "Pillow-SIMD/9.5.0-GCCcore-12.3.0": {
+        "License": "other",
+        "Needs Manual Check": true,
+        "Retrieved At": "2025-02-27T15:57:11.482397"
+    },
+    "Pint/0.24-GCCcore-13.2.0": {
+        "License": "other",
+        "Needs Manual Check": true,
+        "Retrieved At": "2025-02-27T15:57:12.319238"
+    },
+    "PostgreSQL/16.1-GCCcore-13.2.0": {
+        "License": [
+            "PostgreSQL"
+        ],
+        "Needs Manual Check": false,
+        "Retrieved At": "2025-02-27T15:57:12.956277"
+    },
+    "PuLP/2.8.0-foss-2023a": {
+        "License": "other",
+        "Needs Manual Check": true,
+        "Retrieved At": "2025-02-27T15:57:14.929652"
+    },
+    "PyOpenGL/3.1.7-GCCcore-12.3.0": {
+        "License": [
+            "BSD-3-Clause"
+        ],
+        "Needs Manual Check": false,
+        "Retrieved At": "2025-02-27T15:57:15.464738"
+    },
+    "PyQt-builder/1.15.4-GCCcore-12.3.0": {
+        "License": [
+            "GPL-2.0+"
+        ],
+        "Needs Manual Check": false,
+        "Retrieved At": "2025-02-27T15:57:15.877847"
+    },
+    "PyQt5/5.15.10-GCCcore-12.3.0": {
+        "License": "not found",
+        "Needs Manual Check": true,
+        "Retrieved At": "2025-02-27T15:57:16.285995"
+    },
+    "PyTorch/2.1.2-foss-2023a": {
+        "License": [
+            "Other"
+        ],
+        "Needs Manual Check": false,
+        "Retrieved At": "2025-02-27T15:57:16.741152"
+    },
+    "PyYAML/6.0.1-GCCcore-13.2.0": {
+        "License": "mit",
+        "Needs Manual Check": false,
+        "Retrieved At": "2025-02-27T15:57:17.335334"
+    },
+    "PyZMQ/25.1.1-GCCcore-12.3.0": {
+        "License": "not found",
+        "Needs Manual Check": true,
+        "Retrieved At": "2025-02-27T15:57:17.872928"
+    },
+    "Pygments/2.18.0-GCCcore-12.3.0": {
+        "License": [
+            "BSD-2-Clause"
+        ],
+        "Needs Manual Check": false,
+        "Retrieved At": "2025-02-27T15:57:19.589161"
+    },
+    "Pysam/0.22.0-GCC-12.3.0": {
+        "License": "mit",
+        "Needs Manual Check": false,
+        "Retrieved At": "2025-02-27T15:57:25.362644"
+    },
+    "Python/3.11.5-GCCcore-13.2.0": {
+        "License": "not found",
+        "Needs Manual Check": true,
+        "Retrieved At": "2025-02-27T15:57:33.423469"
+    },
+    "Python-bundle-PyPI/2023.10-GCCcore-13.2.0": {
+        "License": "not found",
+        "Needs Manual Check": true,
+        "Retrieved At": "2025-02-27T15:57:33.790224"
+    },
+    "Qhull/2020.2-GCCcore-13.2.0": {
+        "License": [
+            "Other"
+        ],
+        "Needs Manual Check": false,
+        "Retrieved At": "2025-02-27T15:57:34.160995"
+    },
+    "Qt5/5.15.13-GCCcore-13.2.0": {
+        "License": [
+            "LGPL-2.1-only",
+            "LGPL-3.0-only",
+            "GPL-3.0-only",
+            "MulanPSL-1.0"
+        ],
+        "Needs Manual Check": false,
+        "Retrieved At": "2025-02-27T15:57:34.904022"
+    },
+    "QuantumESPRESSO/7.3.1-foss-2023a": {
+        "License": "not found",
+        "Needs Manual Check": true,
+        "Retrieved At": "2025-02-27T15:57:35.264860"
+    },
+    "R/4.4.1-gfbf-2023b": {
+        "License": [
+            "GPL-2.0-only",
+            "CNRI-Python-GPL-Compatible",
+            "LGPL-2.1-or-later"
+        ],
+        "Needs Manual Check": false,
+        "Retrieved At": "2025-02-27T15:57:49.275209"
+    },
+    "R-bundle-Bioconductor/3.18-foss-2023a-R-4.3.2": {
+        "License": [
+            "GPL-2.0"
+        ],
+        "Needs Manual Check": false,
+        "Retrieved At": "2025-02-27T15:57:49.741718"
+    },
+    "R-bundle-CRAN/2024.06-foss-2023b": {
+        "License": [
+            "GPL-2.0-only",
+            "CNRI-Python-GPL-Compatible",
+            "LGPL-2.1-or-later"
+        ],
+        "Needs Manual Check": false,
+        "Retrieved At": "2025-02-27T15:57:52.409555"
+    },
+    "RE2/2024-03-01-GCCcore-13.2.0": {
+        "License": "bsd-3-clause",
+        "Needs Manual Check": false,
+        "Retrieved At": "2025-02-27T15:57:56.511616"
+    },
+    "ROOT/6.30.06-foss-2023a": {
+        "License": [
+            "Other"
+        ],
+        "Needs Manual Check": false,
+        "Retrieved At": "2025-02-27T15:58:00.518307"
+    },
+    "RapidJSON/1.1.0-GCCcore-12.2.0": {
+        "License": [
+            "Other"
+        ],
+        "Needs Manual Check": false,
+        "Retrieved At": "2025-02-27T15:58:01.064460"
+    },
+    "Raptor/2.0.16-GCCcore-12.3.0": {
+        "License": "not found",
+        "Needs Manual Check": true,
+        "Retrieved At": "2025-02-27T15:58:01.989080"
+    },
+    "Rasqal/0.9.33-GCCcore-12.3.0": {
+        "License": "not found",
+        "Needs Manual Check": true,
+        "Retrieved At": "2025-02-27T15:58:03.583953"
+    },
+    "ReFrame/4.6.2": {
+        "License": "bsd-3-clause",
+        "Needs Manual Check": false,
+        "Retrieved At": "2025-02-27T15:58:04.045240"
+    },
+    "Redland/1.0.17-GCC-12.3.0": {
+        "License": [
+            "LGPL-2.1-or-later"
+        ],
+        "Needs Manual Check": false,
+        "Retrieved At": "2025-02-27T15:58:05.946447"
+    },
+    "Rivet/3.1.9-gompi-2023a-HepMC3-3.2.6": {
+        "License": null,
+        "Needs Manual Check": false,
+        "Retrieved At": "2025-02-27T15:58:10.326112"
+    },
+    "Ruby/3.3.0-GCCcore-12.3.0": {
+        "License": "not found",
+        "Needs Manual Check": true,
+        "Retrieved At": "2025-02-27T15:58:17.266672"
+    },
+    "Rust/1.76.0-GCCcore-13.2.0": {
+        "License": [
+            "Apache-2.0",
+            "MIT"
+        ],
+        "Needs Manual Check": false,
+        "Retrieved At": "2025-02-27T15:58:19.222127"
+    },
+    "SAMtools/1.18-GCC-12.3.0": {
+        "License": "not found",
+        "Needs Manual Check": true,
+        "Retrieved At": "2025-02-27T15:58:20.077584"
+    },
+    "SCOTCH/7.0.3-gompi-2023a": {
+        "License": "not found",
+        "Needs Manual Check": true,
+        "Retrieved At": "2025-02-27T15:58:23.712532"
+    },
+    "SDL2/2.28.5-GCCcore-13.2.0": {
+        "License": [
+            "Zlib"
+        ],
+        "Needs Manual Check": false,
+        "Retrieved At": "2025-02-27T15:58:24.214107"
+    },
+    "SEPP/4.5.1-foss-2022b": {
+        "License": "gpl-3.0",
+        "Needs Manual Check": false,
+        "Retrieved At": "2025-02-27T15:58:25.139792"
+    },
+    "SIONlib/1.7.7-GCCcore-13.2.0-tools": {
+        "License": [
+            "Other"
+        ],
+        "Needs Manual Check": false,
+        "Retrieved At": "2025-02-27T15:58:28.585853"
+    },
+    "SIP/6.8.1-GCCcore-12.3.0": {
+        "License": [
+            "Other"
+        ],
+        "Needs Manual Check": false,
+        "Retrieved At": "2025-02-27T15:58:29.366872"
+    },
+    "SLEPc/3.20.1-foss-2023a": {
+        "License": [
+            "Other"
+        ],
+        "Needs Manual Check": false,
+        "Retrieved At": "2025-02-27T15:58:29.753751"
+    },
+    "SQLAlchemy/2.0.25-GCCcore-12.3.0": {
+        "License": "not found",
+        "Needs Manual Check": true,
+        "Retrieved At": "2025-02-27T15:58:45.517969"
+    },
+    "SQLite/3.43.1-GCCcore-13.2.0": {
+        "License": [
+            "blessing"
+        ],
+        "Needs Manual Check": false,
+        "Retrieved At": "2025-02-27T15:58:46.193935"
+    },
+    "STAR/2.7.11b-GCC-13.2.0": {
+        "License": "mit",
+        "Needs Manual Check": false,
+        "Retrieved At": "2025-02-27T15:58:47.364273"
+    },
+    "SWIG/4.1.1-GCCcore-13.2.0": {
+        "License": [
+            "GPL-3.0-only"
+        ],
+        "Needs Manual Check": false,
+        "Retrieved At": "2025-02-27T15:58:47.831207"
+    },
+    "ScaFaCoS/1.0.4-foss-2023b": {
+        "License": [
+            "Other"
+        ],
+        "Needs Manual Check": false,
+        "Retrieved At": "2025-02-27T15:58:52.697764"
+    },
+    "ScaLAPACK/2.2.0-gompi-2023b-fb": {
+        "License": [
+            "Other"
+        ],
+        "Needs Manual Check": false,
+        "Retrieved At": "2025-02-27T15:58:53.113105"
+    },
+    "SciPy-bundle/2023.11-gfbf-2023b": {
+        "License": "not found",
+        "Needs Manual Check": true,
+        "Retrieved At": "2025-02-27T15:58:54.110742"
+    },
+    "SciTools-Iris/3.9.0-foss-2023a": {
+        "License": "not found",
+        "Needs Manual Check": true,
+        "Retrieved At": "2025-02-27T15:58:54.730898"
+    },
+    "Score-P/8.4-gompi-2023b": {
+        "License": "not found",
+        "Needs Manual Check": true,
+        "Retrieved At": "2025-02-27T15:58:55.393911"
+    },
+    "Seaborn/0.13.2-gfbf-2023a": {
+        "License": [
+            "Other"
+        ],
+        "Needs Manual Check": false,
+        "Retrieved At": "2025-02-27T15:58:56.300786"
+    },
+    "Shapely/2.0.1-gfbf-2023a": {
+        "License": "bsd-3-clause",
+        "Needs Manual Check": false,
+        "Retrieved At": "2025-02-27T15:58:57.223007"
+    },
+    "SlurmViewer/1.0.1-GCCcore-13.2.0": {
+        "License": "mit",
+        "Needs Manual Check": false,
+        "Retrieved At": "2025-02-27T15:58:58.236066"
+    },
+    "Solids4foam/2.1-foss-2023a": {
+        "License": "not found",
+        "Needs Manual Check": true,
+        "Retrieved At": "2025-02-27T15:58:59.117674"
+    },
+    "SuiteSparse/7.1.0-foss-2023a": {
+        "License": "not found",
+        "Needs Manual Check": true,
+        "Retrieved At": "2025-02-27T15:59:00.487062"
+    },
+    "SuperLU_DIST/8.1.2-foss-2023a": {
+        "License": [
+            "Other"
+        ],
+        "Needs Manual Check": false,
+        "Retrieved At": "2025-02-27T15:59:00.931459"
+    },
+    "Szip/2.1.1-GCCcore-13.2.0": {
+        "License": [
+            "Other"
+        ],
+        "Needs Manual Check": false,
+        "Retrieved At": "2025-02-27T15:59:01.405579"
+    },
+    "Tcl/8.6.13-GCCcore-13.2.0": {
+        "License": [
+            "Other"
+        ],
+        "Needs Manual Check": false,
+        "Retrieved At": "2025-02-27T15:59:01.901706"
+    },
+    "TensorFlow/2.13.0-foss-2023a": {
+        "License": "not found",
+        "Needs Manual Check": true,
+        "Retrieved At": "2025-02-27T15:59:02.333049"
+    },
+    "Tk/8.6.13-GCCcore-13.2.0": {
+        "License": [
+            "Other"
+        ],
+        "Needs Manual Check": false,
+        "Retrieved At": "2025-02-27T15:59:02.700822"
+    },
+    "Tkinter/3.11.5-GCCcore-13.2.0": {
+        "License": "not found",
+        "Needs Manual Check": true,
+        "Retrieved At": "2025-02-27T15:59:03.542622"
+    },
+    "Tombo/1.5.1-foss-2023a": {
+        "License": "other",
+        "Needs Manual Check": true,
+        "Retrieved At": "2025-02-27T15:59:04.545703"
+    },
+    "Transrate/1.0.3-GCC-12.3.0": {
+        "License": "not found",
+        "Needs Manual Check": true,
+        "Retrieved At": "2025-02-27T15:59:06.229783"
+    },
+    "UCC/1.2.0-GCCcore-13.2.0": {
+        "License": "not found",
+        "Needs Manual Check": true,
+        "Retrieved At": "2025-02-27T15:59:07.450700"
+    },
+    "UCC-CUDA/1.2.0-GCCcore-12.3.0-CUDA-12.1.1": {
+        "License": "not found",
+        "Needs Manual Check": true,
+        "Retrieved At": "2025-02-27T15:59:08.328207"
+    },
+    "UCX/1.15.0-GCCcore-13.2.0": {
+        "License": "not found",
+        "Needs Manual Check": true,
+        "Retrieved At": "2025-02-27T15:59:09.114474"
+    },
+    "UCX-CUDA/1.14.1-GCCcore-12.3.0-CUDA-12.1.1": {
+        "License": "not found",
+        "Needs Manual Check": true,
+        "Retrieved At": "2025-02-27T15:59:09.944822"
+    },
+    "UDUNITS/2.2.28-GCCcore-13.2.0": {
+        "License": [
+            "Other"
+        ],
+        "Needs Manual Check": false,
+        "Retrieved At": "2025-02-27T15:59:10.408589"
+    },
+    "UnZip/6.0-GCCcore-13.2.0": {
+        "License": [
+            "Other"
+        ],
+        "Needs Manual Check": false,
+        "Retrieved At": "2025-02-27T15:59:10.938646"
+    },
+    "VCFtools/0.1.16-GCC-12.2.0": {
+        "License": "not found",
+        "Needs Manual Check": true,
+        "Retrieved At": "2025-02-27T15:59:11.786425"
+    },
+    "VTK/9.3.0-foss-2023b": {
+        "License": [
+            "Other"
+        ],
+        "Needs Manual Check": false,
+        "Retrieved At": "2025-02-27T15:59:12.216998"
+    },
+    "Valgrind/3.23.0-gompi-2023b": {
+        "License": "not found",
+        "Needs Manual Check": true,
+        "Retrieved At": "2025-02-27T15:59:12.714598"
+    },
+    "Vim/9.1.0004-GCCcore-12.3.0": {
+        "License": [
+            "Other"
+        ],
+        "Needs Manual Check": false,
+        "Retrieved At": "2025-02-27T15:59:13.466274"
+    },
+    "Voro++/0.4.6-GCCcore-13.2.0": {
+        "License": "not found",
+        "Needs Manual Check": true,
+        "Retrieved At": "2025-02-27T15:59:15.103045"
+    },
+    "WCSLIB/7.11-GCC-13.2.0": {
+        "License": "not found",
+        "Needs Manual Check": true,
+        "Retrieved At": "2025-02-27T15:59:16.917093"
+    },
+    "WRF/4.4.1-foss-2022b-dmpar": {
+        "License": "not found",
+        "Needs Manual Check": true,
+        "Retrieved At": "2025-02-27T15:59:17.904206"
+    },
+    "WSClean/3.5-foss-2023b": {
+        "License": "not found",
+        "Needs Manual Check": true,
+        "Retrieved At": "2025-02-27T15:59:18.383145"
+    },
+    "Wayland/1.22.0-GCCcore-13.2.0": {
+        "License": [
+            "MIT"
+        ],
+        "Needs Manual Check": false,
+        "Retrieved At": "2025-02-27T15:59:22.854628"
+    },
+    "WhatsHap/2.2-foss-2023a": {
+        "License": "not found",
+        "Needs Manual Check": true,
+        "Retrieved At": "2025-02-27T15:59:23.418683"
+    },
+    "X11/20231019-GCCcore-13.2.0": {
+        "License": [
+            "MIT"
+        ],
+        "Needs Manual Check": false,
+        "Retrieved At": "2025-02-27T15:59:23.988313"
+    },
+    "XML-LibXML/2.0209-GCCcore-12.3.0": {
+        "License": "not found",
+        "Needs Manual Check": true,
+        "Retrieved At": "2025-02-27T15:59:24.417258"
+    },
+    "Xerces-C++/3.2.5-GCCcore-13.2.0": {
+        "License": "not found",
+        "Needs Manual Check": true,
+        "Retrieved At": "2025-02-27T15:59:26.387953"
+    },
+    "Xvfb/21.1.9-GCCcore-13.2.0": {
+        "License": "not found",
+        "Needs Manual Check": true,
+        "Retrieved At": "2025-02-27T15:59:28.962456"
+    },
+    "YODA/1.9.9-GCC-12.3.0": {
+        "License": [
+            "Other"
+        ],
+        "Needs Manual Check": false,
+        "Retrieved At": "2025-02-27T15:59:34.230947"
+    },
+    "Yasm/1.3.0-GCCcore-13.2.0": {
+        "License": "not found",
+        "Needs Manual Check": true,
+        "Retrieved At": "2025-02-27T15:59:46.168785"
+    },
+    "Z3/4.12.2-GCCcore-12.3.0-Python-3.11.3": {
+        "License": "not found",
+        "Needs Manual Check": true,
+        "Retrieved At": "2025-02-27T15:59:46.168824"
+    },
+    "ZeroMQ/4.3.5-GCCcore-13.2.0": {
+        "License": "not found",
+        "Needs Manual Check": true,
+        "Retrieved At": "2025-02-27T15:59:47.072941"
+    },
+    "Zip/3.0-GCCcore-12.3.0": {
+        "License": [
+            "Other"
+        ],
+        "Needs Manual Check": false,
+        "Retrieved At": "2025-02-27T16:00:03.236644"
+    },
+    "amdahl/0.3.1-gompi-2023a": {
+        "License": "mit",
+        "Needs Manual Check": false,
+        "Retrieved At": "2025-02-27T16:00:03.603151"
+    },
+    "archspec/0.2.5-GCCcore-12.3.0": {
+        "License": "other",
+        "Needs Manual Check": true,
+        "Retrieved At": "2025-02-27T16:00:04.558623"
+    },
+    "arpack-ng/3.9.0-foss-2023b": {
+        "License": "other",
+        "Needs Manual Check": true,
+        "Retrieved At": "2025-02-27T16:00:06.138245"
+    },
+    "arrow-R/14.0.1-foss-2023a-R-4.3.2": {
+        "License": "not found",
+        "Needs Manual Check": true,
+        "Retrieved At": "2025-02-27T16:00:06.760982"
+    },
+    "at-spi2-atk/2.38.0-GCCcore-13.2.0": {
+        "License": "not found",
+        "Needs Manual Check": true,
+        "Retrieved At": "2025-02-27T16:00:07.973090"
+    },
+    "at-spi2-core/2.50.0-GCCcore-13.2.0": {
+        "License": "not found",
+        "Needs Manual Check": true,
+        "Retrieved At": "2025-02-27T16:00:08.294611"
+    },
+    "basemap/1.3.9-foss-2023a": {
+        "License": [
+            "Other"
+        ],
+        "Needs Manual Check": false,
+        "Retrieved At": "2025-02-27T16:00:08.796128"
+    },
+    "bokeh/3.2.2-foss-2023a": {
+        "License": "bsd-3-clause",
+        "Needs Manual Check": false,
+        "Retrieved At": "2025-02-27T16:00:11.663997"
+    },
+    "cURL/8.3.0-GCCcore-13.2.0": {
+        "License": [
+            "MIT"
+        ],
+        "Needs Manual Check": false,
+        "Retrieved At": "2025-02-27T16:00:12.314838"
+    },
+    "cairo/1.18.0-GCCcore-13.2.0": {
+        "License": "not found",
+        "Needs Manual Check": true,
+        "Retrieved At": "2025-02-27T16:00:12.704607"
+    },
+    "casacore/3.5.0-foss-2023b": {
+        "License": "other",
+        "Needs Manual Check": true,
+        "Retrieved At": "2025-02-27T16:00:13.600322"
+    },
+    "ccache/4.9-GCCcore-12.3.0": {
+        "License": [
+            "GPL-3.0-or-later"
+        ],
+        "Needs Manual Check": false,
+        "Retrieved At": "2025-02-27T16:00:14.729126"
+    },
+    "cffi/1.15.1-GCCcore-13.2.0": {
+        "License": [
+            "Other"
+        ],
+        "Needs Manual Check": false,
+        "Retrieved At": "2025-02-27T16:00:15.098446"
+    },
+    "cimfomfa/22.273-GCCcore-12.3.0": {
+        "License": "other",
+        "Needs Manual Check": true,
+        "Retrieved At": "2025-02-27T16:00:16.863503"
+    },
+    "colorize/0.7.7-GCC-12.3.0": {
+        "License": "gpl-2.0",
+        "Needs Manual Check": false,
+        "Retrieved At": "2025-02-27T16:00:18.132196"
+    },
+    "cooler/0.10.2-foss-2023b": {
+        "License": "not found",
+        "Needs Manual Check": true,
+        "Retrieved At": "2025-02-27T16:00:20.147753"
+    },
+    "cpio/2.15-GCCcore-12.3.0": {
+        "License": "not found",
+        "Needs Manual Check": true,
+        "Retrieved At": "2025-02-27T16:00:22.552686"
+    },
+    "cppy/1.2.1-GCCcore-13.2.0": {
+        "License": "bsd-3-clause",
+        "Needs Manual Check": false,
+        "Retrieved At": "2025-02-27T16:00:23.799160"
+    },
+    "crb-blast/0.6.9-GCC-12.3.0": {
+        "License": null,
+        "Needs Manual Check": false,
+        "Retrieved At": "2025-02-27T16:00:25.486257"
+    },
+    "cryptography/41.0.5-GCCcore-13.2.0": {
+        "License": "other",
+        "Needs Manual Check": true,
+        "Retrieved At": "2025-02-27T16:00:27.144222"
+    },
+    "dask/2023.9.2-foss-2023a": {
+        "License": [
+            "BSD-3-Clause"
+        ],
+        "Needs Manual Check": false,
+        "Retrieved At": "2025-02-27T16:00:27.692939"
+    },
+    "dill/0.3.8-GCCcore-13.2.0": {
+        "License": [
+            "BSD-3-Clause"
+        ],
+        "Needs Manual Check": false,
+        "Retrieved At": "2025-02-27T16:00:28.211345"
+    },
+    "dlb/3.4-gompi-2023b": {
+        "License": "not found",
+        "Needs Manual Check": true,
+        "Retrieved At": "2025-02-27T16:00:54.462652"
+    },
+    "double-conversion/3.3.0-GCCcore-13.2.0": {
+        "License": "bsd-3-clause",
+        "Needs Manual Check": false,
+        "Retrieved At": "2025-02-27T16:00:55.065125"
+    },
+    "ecBuild/3.8.0": {
+        "License": "not found",
+        "Needs Manual Check": true,
+        "Retrieved At": "2025-02-27T16:01:29.400210"
+    },
+    "ecCodes/2.31.0-gompi-2023b": {
+        "License": [
+            "Other"
+        ],
+        "Needs Manual Check": false,
+        "Retrieved At": "2025-02-27T16:01:36.420967"
+    },
+    "elfutils/0.190-GCCcore-13.2.0": {
+        "License": "not found",
+        "Needs Manual Check": true,
+        "Retrieved At": "2025-02-27T16:02:02.451863"
+    },
+    "elfx86exts/0.6.2-GCC-12.3.0": {
+        "License": "mit",
+        "Needs Manual Check": false,
+        "Retrieved At": "2025-02-27T16:02:04.134104"
+    },
+    "expat/2.5.0-GCCcore-13.2.0": {
+        "License": "not found",
+        "Needs Manual Check": true,
+        "Retrieved At": "2025-02-27T16:03:44.486589"
+    },
+    "expecttest/0.1.5-GCCcore-12.3.0": {
+        "License": "mit",
+        "Needs Manual Check": false,
+        "Retrieved At": "2025-02-27T16:04:24.338519"
+    },
+    "f90wrap/0.2.13-foss-2023a": {
+        "License": "lgpl-3.0",
+        "Needs Manual Check": false,
+        "Retrieved At": "2025-02-27T16:05:11.971697"
+    },
+    "fastjet/3.4.2-gompi-2023a": {
+        "License": "not found",
+        "Needs Manual Check": true,
+        "Retrieved At": "2025-02-27T16:06:29.976987"
+    },
+    "fastjet-contrib/1.053-gompi-2023a": {
+        "License": [
+            "Other"
+        ],
+        "Needs Manual Check": false,
+        "Retrieved At": "2025-02-27T16:06:40.930965"
+    },
+    "fastp/0.23.4-GCC-12.3.0": {
+        "License": "mit",
+        "Needs Manual Check": false,
+        "Retrieved At": "2025-02-27T16:06:53.133321"
+    },
+    "ffnvcodec/12.1.14.0": {
+        "License": [
+            "MIT"
+        ],
+        "Needs Manual Check": false,
+        "Retrieved At": "2025-02-27T16:06:58.688178"
+    },
+    "flatbuffers/23.5.26-GCCcore-12.3.0": {
+        "License": "apache-2.0",
+        "Needs Manual Check": false,
+        "Retrieved At": "2025-02-27T16:07:05.169328"
+    },
+    "flatbuffers-python/23.5.26-GCCcore-12.3.0": {
+        "License": "apache-2.0",
+        "Needs Manual Check": false,
+        "Retrieved At": "2025-02-27T16:07:05.453024"
+    },
+    "flit/3.9.0-GCCcore-13.2.0": {
+        "License": "bsd-3-clause",
+        "Needs Manual Check": false,
+        "Retrieved At": "2025-02-27T16:07:33.373666"
+    },
+    "fontconfig/2.14.2-GCCcore-13.2.0": {
+        "License": [
+            "MIT"
+        ],
+        "Needs Manual Check": false,
+        "Retrieved At": "2025-02-27T16:07:40.084990"
+    },
+    "foss/2023b": {
+        "License": "not found",
+        "Needs Manual Check": true,
+        "Retrieved At": "2025-02-27T16:07:45.584223"
+    },
+    "freeglut/3.4.0-GCCcore-12.3.0": {
+        "License": [
+            "Other"
+        ],
+        "Needs Manual Check": false,
+        "Retrieved At": "2025-02-27T16:07:47.691709"
+    },
+    "freetype/2.13.2-GCCcore-13.2.0": {
+        "License": "not found",
+        "Needs Manual Check": true,
+        "Retrieved At": "2025-02-27T16:08:01.789938"
+    },
+    "geopandas/0.14.2-foss-2023a": {
+        "License": "not found",
+        "Needs Manual Check": true,
+        "Retrieved At": "2025-02-27T16:08:02.399581"
+    },
+    "gfbf/2023b": {
+        "License": [
+            "Other"
+        ],
+        "Needs Manual Check": false,
+        "Retrieved At": "2025-02-27T16:08:09.988242"
+    },
+    "giflib/5.2.1-GCCcore-13.2.0": {
+        "License": "not found",
+        "Needs Manual Check": true,
+        "Retrieved At": "2025-02-27T16:08:10.995916"
+    },
+    "git/2.42.0-GCCcore-13.2.0": {
+        "License": [
+            "Other"
+        ],
+        "Needs Manual Check": false,
+        "Retrieved At": "2025-02-27T16:08:21.418307"
+    },
+    "gmpy2/2.1.5-GCC-13.2.0": {
+        "License": "lgpl-3.0",
+        "Needs Manual Check": false,
+        "Retrieved At": "2025-02-27T16:08:32.320539"
+    },
+    "gmsh/4.12.2-foss-2023a": {
+        "License": [
+            "GPL-2.0-or-later"
+        ],
+        "Needs Manual Check": false,
+        "Retrieved At": "2025-02-27T16:08:32.840708"
+    },
+    "gnuplot/5.4.8-GCCcore-12.3.0": {
+        "License": "not found",
+        "Needs Manual Check": true,
+        "Retrieved At": "2025-02-27T16:08:33.898437"
+    },
+    "gompi/2023b": {
+        "License": [
+            "Other"
+        ],
+        "Needs Manual Check": false,
+        "Retrieved At": "2025-02-27T16:08:38.622892"
+    },
+    "googletest/1.14.0-GCCcore-13.2.0": {
+        "License": "bsd-3-clause",
+        "Needs Manual Check": false,
+        "Retrieved At": "2025-02-27T16:08:41.050173"
+    },
+    "graphite2/1.3.14-GCCcore-13.2.0": {
+        "License": [
+            "Other"
+        ],
+        "Needs Manual Check": false,
+        "Retrieved At": "2025-02-27T16:08:49.875511"
+    },
+    "groff/1.22.4-GCCcore-12.3.0": {
+        "License": "not found",
+        "Needs Manual Check": true,
+        "Retrieved At": "2025-02-27T16:09:35.892334"
+    },
+    "grpcio/1.57.0-GCCcore-12.3.0": {
+        "License": [
+            "Apache-2.0",
+            "BSD-3-Clause",
+            "MIT"
+        ],
+        "Needs Manual Check": false,
+        "Retrieved At": "2025-02-27T16:09:43.078066"
+    },
+    "gtk-doc/1.34.0-GCCcore-12.3.0": {
+        "License": "gfdl-1.1",
+        "Needs Manual Check": false,
+        "Retrieved At": "2025-02-27T16:09:48.049794"
+    },
+    "gzip/1.13-GCCcore-13.2.0": {
+        "License": [
+            "GPL-3.0-or-later"
+        ],
+        "Needs Manual Check": false,
+        "Retrieved At": "2025-02-27T16:09:55.900442"
+    },
+    "h5netcdf/1.2.0-foss-2023a": {
+        "License": "not found",
+        "Needs Manual Check": true,
+        "Retrieved At": "2025-02-27T16:09:57.832774"
+    },
+    "h5py/3.11.0-foss-2023b": {
+        "License": [
+            "Other"
+        ],
+        "Needs Manual Check": false,
+        "Retrieved At": "2025-02-27T16:10:06.454363"
+    },
+    "hatch-jupyter-builder/0.9.1-GCCcore-12.3.0": {
+        "License": "not found",
+        "Needs Manual Check": true,
+        "Retrieved At": "2025-02-27T16:10:09.682602"
+    },
+    "hatchling/1.18.0-GCCcore-13.2.0": {
+        "License": "not found",
+        "Needs Manual Check": true,
+        "Retrieved At": "2025-02-27T16:10:13.877695"
+    },
+    "hic-straw/1.3.1-foss-2023b": {
+        "License": "mit",
+        "Needs Manual Check": false,
+        "Retrieved At": "2025-02-27T16:10:35.244184"
+    },
+    "hiredis/1.2.0-GCCcore-12.3.0": {
+        "License": "bsd-3-clause",
+        "Needs Manual Check": false,
+        "Retrieved At": "2025-02-27T16:10:36.419748"
+    },
+    "hwloc/2.9.2-GCCcore-13.2.0": {
+        "License": [
+            "Other"
+        ],
+        "Needs Manual Check": false,
+        "Retrieved At": "2025-02-27T16:11:09.806255"
+    },
+    "hypothesis/6.90.0-GCCcore-13.2.0": {
+        "License": "other",
+        "Needs Manual Check": true,
+        "Retrieved At": "2025-02-27T16:11:11.505497"
+    },
+    "ipympl/0.9.3-gfbf-2023a": {
+        "License": "not found",
+        "Needs Manual Check": true,
+        "Retrieved At": "2025-02-27T16:11:12.804396"
+    },
+    "jbigkit/2.1-GCCcore-13.2.0": {
+        "License": [
+            "Other"
+        ],
+        "Needs Manual Check": false,
+        "Retrieved At": "2025-02-27T16:11:13.781430"
+    },
+    "jedi/0.19.1-GCCcore-13.2.0": {
+        "License": "other",
+        "Needs Manual Check": true,
+        "Retrieved At": "2025-02-27T16:11:14.987672"
+    },
+    "jemalloc/5.3.0-GCCcore-12.3.0": {
+        "License": [
+            "BSD-2-Clause"
+        ],
+        "Needs Manual Check": false,
+        "Retrieved At": "2025-02-27T16:11:15.601642"
+    },
+    "jq/1.6-GCCcore-12.2.0": {
+        "License": [
+            "Other"
+        ],
+        "Needs Manual Check": false,
+        "Retrieved At": "2025-02-27T16:11:16.535686"
+    },
+    "json-c/0.17-GCCcore-13.2.0": {
+        "License": "other",
+        "Needs Manual Check": true,
+        "Retrieved At": "2025-02-27T16:11:19.622109"
+    },
+    "jupyter-server/2.7.2-GCCcore-12.3.0": {
+        "License": [
+            "Other"
+        ],
+        "Needs Manual Check": false,
+        "Retrieved At": "2025-02-27T16:11:20.035471"
+    },
+    "kim-api/2.3.0-GCC-13.2.0": {
+        "License": [
+            "Other"
+        ],
+        "Needs Manual Check": false,
+        "Retrieved At": "2025-02-27T16:11:21.522159"
+    },
+    "libGLU/9.0.3-GCCcore-13.2.0": {
+        "License": "not found",
+        "Needs Manual Check": true,
+        "Retrieved At": "2025-02-27T16:11:22.451414"
+    },
+    "libaec/1.0.6-GCCcore-13.2.0": {
+        "License": "bsd-2-clause",
+        "Needs Manual Check": false,
+        "Retrieved At": "2025-02-27T16:11:24.666426"
+    },
+    "libaio/0.3.113-GCCcore-12.3.0": {
+        "License": [
+            "LGPL-2.1-or-later"
+        ],
+        "Needs Manual Check": false,
+        "Retrieved At": "2025-02-27T16:11:26.073726"
+    },
+    "libarchive/3.7.2-GCCcore-13.2.0": {
+        "License": [
+            "BSD-2-Clause",
+            "BSD-3-Clause"
+        ],
+        "Needs Manual Check": false,
+        "Retrieved At": "2025-02-27T16:11:27.001425"
+    },
+    "libcerf/2.3-GCCcore-12.3.0": {
+        "License": "not found",
+        "Needs Manual Check": true,
+        "Retrieved At": "2025-02-27T16:11:54.356475"
+    },
+    "libcint/5.4.0-gfbf-2023a": {
+        "License": "apache-2.0",
+        "Needs Manual Check": false,
+        "Retrieved At": "2025-02-27T16:12:00.099458"
+    },
+    "libdeflate/1.19-GCCcore-13.2.0": {
+        "License": "mit",
+        "Needs Manual Check": false,
+        "Retrieved At": "2025-02-27T16:12:00.655100"
+    },
+    "libdrm/2.4.117-GCCcore-13.2.0": {
+        "License": [
+            "Other"
+        ],
+        "Needs Manual Check": false,
+        "Retrieved At": "2025-02-27T16:12:08.135421"
+    },
+    "libdwarf/0.9.2-GCCcore-13.2.0": {
+        "License": [
+            "LGPL-2.1-or-later"
+        ],
+        "Needs Manual Check": false,
+        "Retrieved At": "2025-02-27T16:12:15.966742"
+    },
+    "libepoxy/1.5.10-GCCcore-13.2.0": {
+        "License": "other",
+        "Needs Manual Check": true,
+        "Retrieved At": "2025-02-27T16:12:17.131312"
+    },
+    "libevent/2.1.12-GCCcore-13.2.0": {
+        "License": [
+            "BSD-3-Clause"
+        ],
+        "Needs Manual Check": false,
+        "Retrieved At": "2025-02-27T16:12:18.002910"
+    },
+    "libfabric/1.19.0-GCCcore-13.2.0": {
+        "License": "not found",
+        "Needs Manual Check": true,
+        "Retrieved At": "2025-02-27T16:12:26.266126"
+    },
+    "libffi/3.4.4-GCCcore-13.2.0": {
+        "License": [
+            "MIT"
+        ],
+        "Needs Manual Check": false,
+        "Retrieved At": "2025-02-27T16:12:32.312247"
+    },
+    "libgcrypt/1.10.3-GCCcore-12.3.0": {
+        "License": "not found",
+        "Needs Manual Check": true,
+        "Retrieved At": "2025-02-27T16:12:39.807918"
+    },
+    "libgd/2.3.3-GCCcore-12.3.0": {
+        "License": "not found",
+        "Needs Manual Check": true,
+        "Retrieved At": "2025-02-27T16:12:52.008563"
+    },
+    "libgeotiff/1.7.3-GCCcore-13.2.0": {
+        "License": "not found",
+        "Needs Manual Check": true,
+        "Retrieved At": "2025-02-27T16:12:52.851848"
+    },
+    "libgit2/1.7.2-GCCcore-13.2.0": {
+        "License": [
+            "BSD-3-Clause-Attribution"
+        ],
+        "Needs Manual Check": false,
+        "Retrieved At": "2025-02-27T16:12:53.492634"
+    },
+    "libglvnd/1.7.0-GCCcore-13.2.0": {
+        "License": null,
+        "Needs Manual Check": false,
+        "Retrieved At": "2025-02-27T16:12:55.105283"
+    },
+    "libgpg-error/1.48-GCCcore-12.3.0": {
+        "License": "not found",
+        "Needs Manual Check": true,
+        "Retrieved At": "2025-02-27T16:12:59.537402"
+    },
+    "libiconv/1.17-GCCcore-13.2.0": {
+        "License": [
+            "GPL-3.0-or-later"
+        ],
+        "Needs Manual Check": false,
+        "Retrieved At": "2025-02-27T16:13:00.102075"
+    },
+    "libidn2/2.3.7-GCCcore-12.3.0": {
+        "License": "not found",
+        "Needs Manual Check": true,
+        "Retrieved At": "2025-02-27T16:13:05.045812"
+    },
+    "libjpeg-turbo/3.0.1-GCCcore-13.2.0": {
+        "License": "not found",
+        "Needs Manual Check": true,
+        "Retrieved At": "2025-02-27T16:13:05.478267"
+    },
+    "libogg/1.3.5-GCCcore-13.2.0": {
+        "License": [
+            "BSD-3-Clause"
+        ],
+        "Needs Manual Check": false,
+        "Retrieved At": "2025-02-27T16:13:09.020280"
+    },
+    "libopus/1.5.2-GCCcore-13.2.0": {
+        "License": [
+            "BSD-3-Clause"
+        ],
+        "Needs Manual Check": false,
+        "Retrieved At": "2025-02-27T16:13:09.646063"
+    },
+    "libpciaccess/0.17-GCCcore-13.2.0": {
+        "License": [
+            "Other"
+        ],
+        "Needs Manual Check": false,
+        "Retrieved At": "2025-02-27T16:13:11.531661"
+    },
+    "libpng/1.6.40-GCCcore-13.2.0": {
+        "License": [
+            "Other"
+        ],
+        "Needs Manual Check": false,
+        "Retrieved At": "2025-02-27T16:13:13.469614"
+    },
+    "librosa/0.10.1-foss-2023a": {
+        "License": "not found",
+        "Needs Manual Check": true,
+        "Retrieved At": "2025-02-27T16:13:14.367804"
+    },
+    "libsndfile/1.2.2-GCCcore-13.2.0": {
+        "License": [
+            "LGPL-2.0+"
+        ],
+        "Needs Manual Check": false,
+        "Retrieved At": "2025-02-27T16:13:14.895676"
+    },
+    "libsodium/1.0.19-GCCcore-13.2.0": {
+        "License": "not found",
+        "Needs Manual Check": true,
+        "Retrieved At": "2025-02-27T16:13:15.349659"
+    },
+    "libspatialindex/1.9.3-GCCcore-13.2.0": {
+        "License": "not found",
+        "Needs Manual Check": true,
+        "Retrieved At": "2025-02-27T16:13:18.598716"
+    },
+    "libtirpc/1.3.4-GCCcore-13.2.0": {
+        "License": [
+            "BSD-3-Clause"
+        ],
+        "Needs Manual Check": false,
+        "Retrieved At": "2025-02-27T16:13:19.069621"
+    },
+    "libunwind/1.6.2-GCCcore-13.2.0": {
+        "License": [
+            "MIT"
+        ],
+        "Needs Manual Check": false,
+        "Retrieved At": "2025-02-27T16:13:19.844882"
+    },
+    "libvorbis/1.3.7-GCCcore-13.2.0": {
+        "License": [
+            "BSD-3-Clause"
+        ],
+        "Needs Manual Check": false,
+        "Retrieved At": "2025-02-27T16:13:20.657881"
+    },
+    "libvori/220621-GCCcore-12.3.0": {
+        "License": "not found",
+        "Needs Manual Check": true,
+        "Retrieved At": "2025-02-27T16:13:22.109823"
+    },
+    "libwebp/1.3.2-GCCcore-13.2.0": {
+        "License": [
+            "BSD-3-Clause"
+        ],
+        "Needs Manual Check": false,
+        "Retrieved At": "2025-02-27T16:13:22.650287"
+    },
+    "libxc/6.2.2-GCC-12.3.0": {
+        "License": [
+            "Other"
+        ],
+        "Needs Manual Check": false,
+        "Retrieved At": "2025-02-27T16:13:23.115268"
+    },
+    "libxml2/2.11.5-GCCcore-13.2.0": {
+        "License": "not found",
+        "Needs Manual Check": true,
+        "Retrieved At": "2025-02-27T16:13:23.881062"
+    },
+    "libxml2-python/2.11.4-GCCcore-12.3.0": {
+        "License": "not found",
+        "Needs Manual Check": true,
+        "Retrieved At": "2025-02-27T16:13:24.997458"
+    },
+    "libxslt/1.1.38-GCCcore-13.2.0": {
+        "License": "not found",
+        "Needs Manual Check": true,
+        "Retrieved At": "2025-02-27T16:13:26.136235"
+    },
+    "libxsmm/1.17-GCC-12.3.0": {
+        "License": "bsd-3-clause",
+        "Needs Manual Check": false,
+        "Retrieved At": "2025-02-27T16:13:26.930887"
+    },
+    "libyaml/0.2.5-GCCcore-13.2.0": {
+        "License": [
+            "MIT"
+        ],
+        "Needs Manual Check": false,
+        "Retrieved At": "2025-02-27T16:13:27.489580"
+    },
+    "lpsolve/5.5.2.11-GCC-12.2.0": {
+        "License": [
+            "Other"
+        ],
+        "Needs Manual Check": false,
+        "Retrieved At": "2025-02-27T16:13:27.950676"
+    },
+    "lxml/4.9.3-GCCcore-13.2.0": {
+        "License": [
+            "BSD-3-Clause",
+            "ZPL-2.0"
+        ],
+        "Needs Manual Check": false,
+        "Retrieved At": "2025-02-27T16:13:28.932727"
+    },
+    "lz4/1.9.4-GCCcore-13.2.0": {
+        "License": [
+            "Other"
+        ],
+        "Needs Manual Check": false,
+        "Retrieved At": "2025-02-27T16:13:29.314264"
+    },
+    "make/4.4.1-GCCcore-13.2.0": {
+        "License": "not found",
+        "Needs Manual Check": true,
+        "Retrieved At": "2025-02-27T16:13:29.759523"
+    },
+    "mallard-ducktype/1.0.2-GCCcore-12.3.0": {
+        "License": "mit",
+        "Needs Manual Check": false,
+        "Retrieved At": "2025-02-27T16:13:30.645141"
+    },
+    "matplotlib/3.8.2-gfbf-2023b": {
+        "License": [
+            "Python-2.0"
+        ],
+        "Needs Manual Check": false,
+        "Retrieved At": "2025-02-27T16:13:31.271312"
+    },
+    "maturin/1.5.0-GCCcore-13.2.0-Rust-1.76.0": {
+        "License": "apache-2.0",
+        "Needs Manual Check": false,
+        "Retrieved At": "2025-02-27T16:13:33.856878"
+    },
+    "meson-python/0.15.0-GCCcore-13.2.0": {
+        "License": "mit",
+        "Needs Manual Check": false,
+        "Retrieved At": "2025-02-27T16:13:35.061156"
+    },
+    "mpi4py/3.1.5-gompi-2023b": {
+        "License": "bsd-3-clause",
+        "Needs Manual Check": false,
+        "Retrieved At": "2025-02-27T16:13:35.653470"
+    },
+    "mpl-ascii/0.10.0-gfbf-2023a": {
+        "License": "mit",
+        "Needs Manual Check": false,
+        "Retrieved At": "2025-02-27T16:13:36.966045"
+    },
+    "multiprocess/0.70.16-gfbf-2023b": {
+        "License": "other",
+        "Needs Manual Check": true,
+        "Retrieved At": "2025-02-27T16:13:37.548688"
+    },
+    "ncbi-vdb/3.0.10-gompi-2023a": {
+        "License": "other",
+        "Needs Manual Check": true,
+        "Retrieved At": "2025-02-27T16:13:39.936249"
+    },
+    "ncdu/1.18-GCC-12.3.0": {
+        "License": [
+            "MIT"
+        ],
+        "Needs Manual Check": false,
+        "Retrieved At": "2025-02-27T16:13:40.774083"
+    },
+    "netCDF/4.9.2-gompi-2023b": {
+        "License": [
+            "BSD-3-Clause"
+        ],
+        "Needs Manual Check": false,
+        "Retrieved At": "2025-02-27T16:13:42.073888"
+    },
+    "netCDF-Fortran/4.6.1-gompi-2023a": {
+        "License": [
+            "BSD-3-Clause"
+        ],
+        "Needs Manual Check": false,
+        "Retrieved At": "2025-02-27T16:13:42.570923"
+    },
+    "netcdf4-python/1.6.4-foss-2023a": {
+        "License": "not found",
+        "Needs Manual Check": true,
+        "Retrieved At": "2025-02-27T16:13:43.006958"
+    },
+    "nettle/3.9.1-GCCcore-13.2.0": {
+        "License": [
+            "LGPL-2.0-or-later"
+        ],
+        "Needs Manual Check": false,
+        "Retrieved At": "2025-02-27T16:13:45.041933"
+    },
+    "networkx/3.2.1-gfbf-2023b": {
+        "License": "not found",
+        "Needs Manual Check": true,
+        "Retrieved At": "2025-02-27T16:13:45.481087"
+    },
+    "nlohmann_json/3.11.3-GCCcore-13.2.0": {
+        "License": "mit",
+        "Needs Manual Check": false,
+        "Retrieved At": "2025-02-27T16:13:46.319596"
+    },
+    "nodejs/20.9.0-GCCcore-13.2.0": {
+        "License": "not found",
+        "Needs Manual Check": true,
+        "Retrieved At": "2025-02-27T16:13:47.271822"
+    },
+    "nsync/1.26.0-GCCcore-12.3.0": {
+        "License": "apache-2.0",
+        "Needs Manual Check": false,
+        "Retrieved At": "2025-02-27T16:13:48.344487"
+    },
+    "numactl/2.0.16-GCCcore-13.2.0": {
+        "License": "gpl-2.0",
+        "Needs Manual Check": false,
+        "Retrieved At": "2025-02-27T16:13:50.321900"
+    },
+    "numba/0.58.1-foss-2023a": {
+        "License": [
+            "Other"
+        ],
+        "Needs Manual Check": false,
+        "Retrieved At": "2025-02-27T16:13:50.814137"
+    },
+    "occt/7.8.0-GCCcore-12.3.0": {
+        "License": "not found",
+        "Needs Manual Check": true,
+        "Retrieved At": "2025-02-27T16:13:53.524573"
+    },
+    "orjson/3.9.15-GCCcore-12.3.0": {
+        "License": "apache-2.0",
+        "Needs Manual Check": false,
+        "Retrieved At": "2025-02-27T16:13:54.698346"
+    },
+    "parallel/20230722-GCCcore-12.2.0": {
+        "License": "not found",
+        "Needs Manual Check": true,
+        "Retrieved At": "2025-02-27T16:13:55.147138"
+    },
+    "patchelf/0.18.0-GCCcore-13.2.0": {
+        "License": "gpl-3.0",
+        "Needs Manual Check": false,
+        "Retrieved At": "2025-02-27T16:13:55.946145"
+    },
+    "pixman/0.42.2-GCCcore-13.2.0": {
+        "License": "not found",
+        "Needs Manual Check": true,
+        "Retrieved At": "2025-02-27T16:13:56.684353"
+    },
+    "pkgconf/2.0.3-GCCcore-13.2.0": {
+        "License": "other",
+        "Needs Manual Check": true,
+        "Retrieved At": "2025-02-27T16:13:57.110319"
+    },
+    "pkgconfig/1.5.5-GCCcore-12.3.0-python": {
+        "License": "mit",
+        "Needs Manual Check": false,
+        "Retrieved At": "2025-02-27T16:13:57.917935"
+    },
+    "poetry/1.6.1-GCCcore-13.2.0": {
+        "License": [
+            "MIT"
+        ],
+        "Needs Manual Check": false,
+        "Retrieved At": "2025-02-27T16:13:58.563575"
+    },
+    "protobuf/24.0-GCCcore-12.3.0": {
+        "License": "other",
+        "Needs Manual Check": true,
+        "Retrieved At": "2025-02-27T16:14:00.241747"
+    },
+    "protobuf-python/4.24.0-GCCcore-12.3.0": {
+        "License": "other",
+        "Needs Manual Check": true,
+        "Retrieved At": "2025-02-27T16:14:02.418082"
+    },
+    "psycopg2/2.9.9-GCCcore-12.3.0": {
+        "License": [
+            "Other"
+        ],
+        "Needs Manual Check": false,
+        "Retrieved At": "2025-02-27T16:14:02.883209"
+    },
+    "pyMBE/0.8.0-foss-2023b": {
+        "License": "not found",
+        "Needs Manual Check": true,
+        "Retrieved At": "2025-02-27T16:14:02.883220"
+    },
+    "pybind11/2.11.1-GCCcore-13.2.0": {
+        "License": [
+            "Other"
+        ],
+        "Needs Manual Check": false,
+        "Retrieved At": "2025-02-27T16:14:04.745907"
+    },
+    "pydantic/2.7.4-GCCcore-13.2.0": {
+        "License": "mit",
+        "Needs Manual Check": false,
+        "Retrieved At": "2025-02-27T16:14:06.602105"
+    },
+    "pyfaidx/0.8.1.1-GCCcore-13.2.0": {
+        "License": "not found",
+        "Needs Manual Check": true,
+        "Retrieved At": "2025-02-27T16:14:07.287418"
+    },
+    "pyproj/3.6.0-GCCcore-12.3.0": {
+        "License": "not found",
+        "Needs Manual Check": true,
+        "Retrieved At": "2025-02-27T16:14:07.721955"
+    },
+    "pystencils/1.3.4-gfbf-2023b": {
+        "License": "not found",
+        "Needs Manual Check": true,
+        "Retrieved At": "2025-02-27T16:14:08.349326"
+    },
+    "pytest-flakefinder/1.1.0-GCCcore-12.3.0": {
+        "License": "other",
+        "Needs Manual Check": true,
+        "Retrieved At": "2025-02-27T16:14:09.498655"
+    },
+    "pytest-rerunfailures/12.0-GCCcore-12.3.0": {
+        "License": "other",
+        "Needs Manual Check": true,
+        "Retrieved At": "2025-02-27T16:14:10.438013"
+    },
+    "pytest-shard/0.1.2-GCCcore-12.3.0": {
+        "License": "mit",
+        "Needs Manual Check": false,
+        "Retrieved At": "2025-02-27T16:14:11.437650"
+    },
+    "python-casacore/3.5.2-foss-2023b": {
+        "License": "not found",
+        "Needs Manual Check": true,
+        "Retrieved At": "2025-02-27T16:14:11.810821"
+    },
+    "python-isal/1.1.0-GCCcore-12.3.0": {
+        "License": "other",
+        "Needs Manual Check": true,
+        "Retrieved At": "2025-02-27T16:14:13.218349"
+    },
+    "python-xxhash/3.4.1-GCCcore-12.3.0": {
+        "License": "bsd-2-clause",
+        "Needs Manual Check": false,
+        "Retrieved At": "2025-02-27T16:14:13.786910"
+    },
+    "re2c/3.1-GCCcore-13.2.0": {
+        "License": "not found",
+        "Needs Manual Check": true,
+        "Retrieved At": "2025-02-27T16:14:15.024009"
+    },
+    "rpy2/3.5.15-foss-2023a": {
+        "License": "not found",
+        "Needs Manual Check": true,
+        "Retrieved At": "2025-02-27T16:14:15.432293"
+    },
+    "scikit-build/0.17.6-GCCcore-13.2.0": {
+        "License": "not found",
+        "Needs Manual Check": true,
+        "Retrieved At": "2025-02-27T16:14:15.935426"
+    },
+    "scikit-build-core/0.9.3-GCCcore-13.2.0": {
+        "License": [
+            "Other"
+        ],
+        "Needs Manual Check": false,
+        "Retrieved At": "2025-02-27T16:14:16.526547"
+    },
+    "scikit-learn/1.4.0-gfbf-2023b": {
+        "License": "not found",
+        "Needs Manual Check": true,
+        "Retrieved At": "2025-02-27T16:14:16.891041"
+    },
+    "setuptools/64.0.3-GCCcore-12.2.0": {
+        "License": [
+            "MIT"
+        ],
+        "Needs Manual Check": false,
+        "Retrieved At": "2025-02-27T16:14:17.496208"
+    },
+    "setuptools-rust/1.8.0-GCCcore-13.2.0": {
+        "License": "mit",
+        "Needs Manual Check": false,
+        "Retrieved At": "2025-02-27T16:14:18.912050"
+    },
+    "siscone/3.0.6-GCCcore-12.3.0": {
+        "License": "not found",
+        "Needs Manual Check": true,
+        "Retrieved At": "2025-02-27T16:14:19.769538"
+    },
+    "snakemake/8.4.2-foss-2023a": {
+        "License": "not found",
+        "Needs Manual Check": true,
+        "Retrieved At": "2025-02-27T16:14:20.270122"
+    },
+    "snappy/1.1.10-GCCcore-13.2.0": {
+        "License": "other",
+        "Needs Manual Check": true,
+        "Retrieved At": "2025-02-27T16:14:21.874831"
+    },
+    "spglib-python/2.0.2-gfbf-2022b": {
+        "License": "not found",
+        "Needs Manual Check": true,
+        "Retrieved At": "2025-02-27T16:14:22.835007"
+    },
+    "statsmodels/0.14.1-gfbf-2023b": {
+        "License": [
+            "BSD-3-Clause"
+        ],
+        "Needs Manual Check": false,
+        "Retrieved At": "2025-02-27T16:14:23.373461"
+    },
+    "sympy/1.12-gfbf-2023b": {
+        "License": "not found",
+        "Needs Manual Check": true,
+        "Retrieved At": "2025-02-27T16:14:23.783094"
+    },
+    "tbb/2021.13.0-GCCcore-13.2.0": {
+        "License": "apache-2.0",
+        "Needs Manual Check": false,
+        "Retrieved At": "2025-02-27T16:14:25.877236"
+    },
+    "tcsh/6.24.07-GCCcore-12.2.0": {
+        "License": [
+            "BSD-3-Clause"
+        ],
+        "Needs Manual Check": false,
+        "Retrieved At": "2025-02-27T16:14:26.360393"
+    },
+    "time/1.9-GCCcore-12.2.0": {
+        "License": [
+            "GPL-3.0-only"
+        ],
+        "Needs Manual Check": false,
+        "Retrieved At": "2025-02-27T16:14:26.846288"
+    },
+    "tmux/3.3a-GCCcore-12.3.0": {
+        "License": "other",
+        "Needs Manual Check": true,
+        "Retrieved At": "2025-02-27T16:14:29.062884"
+    },
+    "tornado/6.3.2-GCCcore-12.3.0": {
+        "License": "apache-2.0",
+        "Needs Manual Check": false,
+        "Retrieved At": "2025-02-27T16:14:29.634358"
+    },
+    "tqdm/4.66.2-GCCcore-13.2.0": {
+        "License": "other",
+        "Needs Manual Check": true,
+        "Retrieved At": "2025-02-27T16:14:30.388862"
+    },
+    "typing-extensions/4.10.0-GCCcore-13.2.0": {
+        "License": "other",
+        "Needs Manual Check": true,
+        "Retrieved At": "2025-02-27T16:14:31.446144"
+    },
+    "unixODBC/2.3.12-GCCcore-12.3.0": {
+        "License": [
+            "LGPL-2.0-or-later"
+        ],
+        "Needs Manual Check": false,
+        "Retrieved At": "2025-02-27T16:14:32.331650"
+    },
+    "utf8proc/2.9.0-GCCcore-13.2.0": {
+        "License": "other",
+        "Needs Manual Check": true,
+        "Retrieved At": "2025-02-27T16:14:32.752633"
+    },
+    "virtualenv/20.24.6-GCCcore-13.2.0": {
+        "License": "mit",
+        "Needs Manual Check": false,
+        "Retrieved At": "2025-02-27T16:14:33.396085"
+    },
+    "waLBerla/6.1-foss-2023a": {
+        "License": "not found",
+        "Needs Manual Check": true,
+        "Retrieved At": "2025-02-27T16:14:34.837990"
+    },
+    "wget/1.24.5-GCCcore-12.3.0": {
+        "License": "not found",
+        "Needs Manual Check": true,
+        "Retrieved At": "2025-02-27T16:14:35.255842"
+    },
+    "wradlib/2.0.3-foss-2023a": {
+        "License": "not found",
+        "Needs Manual Check": true,
+        "Retrieved At": "2025-02-27T16:14:35.765106"
+    },
+    "wrapt/1.15.0-gfbf-2023a": {
+        "License": "not found",
+        "Needs Manual Check": true,
+        "Retrieved At": "2025-02-27T16:14:36.199443"
+    },
+    "wxWidgets/3.2.6-GCC-13.2.0": {
+        "License": "not found",
+        "Needs Manual Check": true,
+        "Retrieved At": "2025-02-27T16:14:36.689016"
+    },
+    "x264/20231019-GCCcore-13.2.0": {
+        "License": [
+            "GPL-2.0-or-later"
+        ],
+        "Needs Manual Check": false,
+        "Retrieved At": "2025-02-27T16:14:37.219901"
+    },
+    "x265/3.5-GCCcore-13.2.0": {
+        "License": "not found",
+        "Needs Manual Check": true,
+        "Retrieved At": "2025-02-27T16:14:38.893318"
+    },
+    "xarray/2023.9.0-gfbf-2023a": {
+        "License": "apache-2.0",
+        "Needs Manual Check": false,
+        "Retrieved At": "2025-02-27T16:14:40.129673"
+    },
+    "xorg-macros/1.20.0-GCCcore-13.2.0": {
+        "License": "mit",
+        "Needs Manual Check": false,
+        "Retrieved At": "2025-02-27T16:14:41.122669"
+    },
+    "xprop/1.2.6-GCCcore-12.3.0": {
+        "License": [
+            "MIT"
+        ],
+        "Needs Manual Check": false,
+        "Retrieved At": "2025-02-27T16:14:41.621964"
+    },
+    "xxHash/0.8.2-GCCcore-12.3.0": {
+        "License": "not found",
+        "Needs Manual Check": true,
+        "Retrieved At": "2025-02-27T16:14:42.521261"
+    },
+    "xxd/9.1.0307-GCCcore-13.2.0": {
+        "License": [
+            "Other"
+        ],
+        "Needs Manual Check": false,
+        "Retrieved At": "2025-02-27T16:14:43.001350"
+    },
+    "yell/2.2.2-GCC-12.3.0": {
+        "License": [
+            "MIT"
+        ],
+        "Needs Manual Check": false,
+        "Retrieved At": "2025-02-27T16:14:44.243451"
+    },
+    "yelp-tools/42.1-GCCcore-12.3.0": {
+        "License": "gpl-2.0+",
+        "Needs Manual Check": false,
+        "Retrieved At": "2025-02-27T16:14:44.821202"
+    },
+    "yelp-xsl/42.1-GCCcore-12.3.0": {
+        "License": "not found",
+        "Needs Manual Check": true,
+        "Retrieved At": "2025-02-27T16:14:46.276365"
+    },
+    "zstd/1.5.5-GCCcore-13.2.0": {
+        "License": "not found",
+        "Needs Manual Check": true,
+        "Retrieved At": "2025-02-27T16:14:46.724092"
     }
 }
