@@ -168,8 +168,7 @@ inject_mpi() {
                 if ! ${PATCHELF_BIN} --print-needed ${lib} | grep -q "${dep}"; then
                     ${PATCHELF_BIN} --add-needed ${libs_dict[${dep}]} ${lib}                    
                 fi
-            done < <(for dlopen in ${dlopen_libs[@]}; do ${eessi_ldd} ${dlopen}; done \
-                     | grep -e "=> not found" -e "=> ${MPI_PATH}" | awk '{print $1}' | sort | uniq)
+            done < <(for dlopen in ${dlopen_libs[@]}; do ${eessi_ldd} ${dlopen}; done | awk '/not found/ {print $1}' | sort | uniq)
         fi
 
         # Force system libefa, librdmacm, libibverbs and libpsm2 (present in the EESSI compat layer)
