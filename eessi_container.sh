@@ -734,7 +734,7 @@ do
     # if building for dev.eessi.io, also include the project subdirectory
     #   so we redefine cvmfs_repo_name} to match EESSI_CVMFS_REPO_OVERRIDE
     if [[ ${cvmfs_repo_name} == "dev.eessi.io" ]]; then
-        echo "Building for dev.eessi.io, appending "
+        echo "Building for dev.eessi.io, appending EESSI_DEV_PROJET to cvmfs_repo_name"
         cvmfs_repo_name = ${cvmfs_repo_name}${EESSI_DEV_PROJECT:+/$EESSI_DEV_PROJECT}
     fi
 
