@@ -228,7 +228,7 @@ local function using_eessi_accel_stack ()
 end
 
 local function eessi_removed_module_warning_startup_hook(usrCmd)
-    if usrCmd == 'load' then
+    if usrCmd == 'load' and not os.getenv("EESSI_SKIP_REMOVED_MODULES_CHECK") then
         local CUDA_RELOCATION_MSG = [[All CUDA installations and modules depending on CUDA have been relocated to GPU-specific stacks.
         Please see https://www.eessi.io/docs/site_specific_config/gpu/ for more information.]]
 
@@ -267,7 +267,7 @@ local function eessi_removed_module_warning_startup_hook(usrCmd)
             end
         end
         if error_msg ~= "" then
-            LmodError('\\n' .. error_msg)
+            LmodError('\\n' .. error_msg .. 'If you know what you are doing and you want to ignore this check for removed/relocated modules,, set $EESSI_SKIP_REMOVED_MODULES_CHECK to any value.')
         end
     end
 end
