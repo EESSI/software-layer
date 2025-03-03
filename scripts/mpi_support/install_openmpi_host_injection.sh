@@ -155,6 +155,12 @@ inject_mpi() {
             local libdir="$(dirname ${libpath})/"     # without trailing slash the find does not work
             find ${libdir} -maxdepth 1 -type f -name "libfabric.so*" -exec cp {} ${temp_inject_path} \;
             find ${libdir} -maxdepth 1 -type l -name "libfabric.so*" -exec cp -P {} ${host_injection_mpi_path} \;
+
+            local depname deppath
+            while read -r depname deppath; do
+                libs_dict[${depname}]=${deppath}
+            done < <(${system_ldd} ${libpath} | awk '/=>/ {print $1, $3}' | sort | uniq)
+
             libpath=${host_injection_mpi_path}/$(basename ${libpath})
         fi
 
