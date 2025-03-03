@@ -271,10 +271,17 @@ fi
 
 # Install NVIDIA drivers in host_injections (if they exist)
 if command_exists "nvidia-smi"; then
-    echo "Command 'nvidia-smi' found. Installing NVIDIA drivers for use in prefix shell..."
-    ${EESSI_PREFIX}/scripts/gpu_support/nvidia/link_nvidia_host_libraries.sh
+    nvidia-smi --version
+    ec=$?
+    if [ ${ec} -eq 0 ]; then 
+        echo "Command 'nvidia-smi' found. Installing NVIDIA drivers for use in prefix shell..."
+        ${EESSI_PREFIX}/scripts/gpu_support/nvidia/link_nvidia_host_libraries.sh
+    else
+        echo "Warning: command 'nvidia-smi' found, but 'nvidia-smi --version' did not run succesfully."
+        echo "This script now assumes this is NOT a GPU node."
+        echo "If, and only if, the current node actually does contain Nvidia GPUs, this should be considered an error."
+    fi
 fi
-
 
 if [ ! -z "${shared_fs_path}" ]; then
     shared_eb_sourcepath=${shared_fs_path}/easybuild/sources

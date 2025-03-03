@@ -8,10 +8,13 @@ from stat import S_IREAD, S_IWRITE, S_IRGRP, S_IWGRP, S_IROTH
 
 DOT_LMOD = '.lmod'
 
-hook_txt = """require("strict")
+hook_prologue = """require("strict")
 local hook = require("Hook")
 local open = io.open
 
+"""
+
+hook_txt = """
 local function read_file(path)
     local file = open(path, "rb") -- r read mode and b binary mode
     if not file then return nil end
@@ -107,36 +110,42 @@ local function load_site_specific_hooks()
 end
 
 
-local function eessi_cuda_enabled_load_hook(t)
+local function eessi_cuda_and_libraries_enabled_load_hook(t)
     local frameStk  = require("FrameStk"):singleton()
     local mt        = frameStk:mt()
     local simpleName = string.match(t.modFullName, "(.-)/")
-    -- If we try to load CUDA itself, check if the full CUDA SDK was installed on the host in host_injections.
-    -- This is required for end users to build additional CUDA software. If the full SDK isn't present, refuse
-    -- to load the CUDA module and print an informative message on how to set up GPU support for EESSI
+    local packagesList = { ["CUDA"] = true, ["cuDNN"] = true }
+    -- If we try to load any of the modules in packagesList, we check if the
+    -- full package was installed on the host in host_injections.
+    -- This is required for end users to build additional software that depends
+    -- on the package. If the full SDK isn't present, refuse
+    -- to load the module and print an informative message on how to set up GPU support for EESSI
     local refer_to_docs = "For more information on how to do this, see https://www.eessi.io/docs/site_specific_config/gpu/.\\n"
-    if simpleName == 'CUDA' then
+    if packagesList[simpleName] then
+        -- simpleName is a module in packagesList
         -- get the full host_injections path
         local hostInjections = string.gsub(os.getenv('EESSI_SOFTWARE_PATH') or "", 'versions', 'host_injections')
-        -- build final path where the CUDA software should be installed
-        local cudaEasyBuildDir = hostInjections .. "/software/" .. t.modFullName .. "/easybuild"
-        local cudaDirExists = isDir(cudaEasyBuildDir)
-        if not cudaDirExists then
+
+        -- build final path where the software should be installed
+        local packageEasyBuildDir = hostInjections .. "/software/" .. t.modFullName .. "/easybuild"
+        local packageDirExists = isDir(packageEasyBuildDir)
+        if not packageDirExists then
             local advice = "but while the module file exists, the actual software is not entirely shipped with EESSI "
-            advice = advice .. "due to licencing. You will need to install a full copy of the CUDA SDK where EESSI "
+            advice = advice .. "due to licencing. You will need to install a full copy of the " .. simpleName .. " package where EESSI "
             advice = advice .. "can find it.\\n"
             advice = advice .. refer_to_docs
             LmodError("\\nYou requested to load ", simpleName, " ", advice)
         end
     end
-    -- when loading CUDA enabled modules check if the necessary driver libraries are accessible to the EESSI linker,
+    -- when loading CUDA (and cu*) enabled modules check if the necessary driver libraries are accessible to the EESSI linker,
     -- otherwise, refuse to load the requested module and print error message
     local checkGpu = mt:haveProperty(simpleName,"arch","gpu")
     local overrideGpuCheck = os.getenv("EESSI_OVERRIDE_GPU_CHECK")
     if checkGpu and (overrideGpuCheck == nil) then
         local arch = os.getenv("EESSI_CPU_FAMILY") or ""
-        local cudaVersionFile = "/cvmfs/software.eessi.io/host_injections/nvidia/" .. arch .. "/latest/cuda_version.txt"
-        local cudaDriverFile = "/cvmfs/software.eessi.io/host_injections/nvidia/" .. arch .. "/latest/libcuda.so"
+        local cvmfs_repo = os.getenv("EESSI_CVMFS_REPO") or ""
+        local cudaVersionFile = cvmfs_repo .. "/host_injections/nvidia/" .. arch .. "/latest/cuda_version.txt"
+        local cudaDriverFile = cvmfs_repo .. "/host_injections/nvidia/" .. arch .. "/latest/libcuda.so"
         local cudaDriverExists = isFile(cudaDriverFile)
         local singularityCudaExists = isFile("/.singularity.d/libs/libcuda.so")
         if not (cudaDriverExists or singularityCudaExists)  then
@@ -194,19 +203,55 @@ end
 -- Also: make it non-local, so it can be imported and extended by other lmodrc files if needed
 function eessi_load_hook(t)
     eessi_espresso_deprecated_message(t)
-    -- Only apply CUDA hooks if the loaded module is in the EESSI prefix
-    -- This avoids getting an Lmod Error when trying to load a CUDA module from a local software stack
+    -- Only apply CUDA and cu*-library hooks if the loaded module is in the EESSI prefix
+    -- This avoids getting an Lmod Error when trying to load a CUDA or cu* module from a local software stack
     if from_eessi_prefix(t) then
-        eessi_cuda_enabled_load_hook(t)
+        eessi_cuda_and_libraries_enabled_load_hook(t)
     end
 end
 
 hook.register("load", eessi_load_hook)
 
+"""
+
+hook_epilogue = """
 -- Note that this needs to happen at the end, so that any EESSI specific hooks can be overwritten by the site
 load_site_specific_hooks()
 """
 
+
+# This hook is only for zen4.
+hook_txt_zen4 = """
+local function hide_2022b_modules(modT)
+    -- modT is a table with: fullName, sn, fn and isVisible
+    -- The latter is a boolean to determine if a module is visible or not
+
+    local tcver = modT.fullName:match("gfbf%-(20[0-9][0-9][ab])") or
+                  modT.fullName:match("gompi%-(20[0-9][0-9][ab])") or
+                  modT.fullName:match("foss%-(20[0-9][0-9][ab])") or
+                  modT.fullName:match("GCC%-([0-9]*.[0-9]*.[0-9]*)") or
+                  modT.fullName:match("GCCcore%-([0-9]*.[0-9]*.[0-9]*)")
+
+    -- if nothing matches, return              
+    if tcver == nil then return end
+
+    -- if we have matches, check if the toolchain version is either 2022b or 12.2.0
+    if parseVersion(tcver) == parseVersion("2022b") or parseVersion(tcver) == parseVersion("12.2.0") then
+        modT.isVisible = false
+    end
+end
+
+hook.register("isVisibleHook", hide_2022b_modules)
+"""
+
+# Append conditionally for zen4
+eessi_software_subdir_override = os.getenv("EESSI_SOFTWARE_SUBDIR_OVERRIDE")
+if eessi_software_subdir_override == "x86_64/amd/zen4":
+    hook_txt = hook_txt + hook_txt_zen4
+
+# Concatenate hook prologue, body and epilogue
+# Note that this has to happen after any conditional items have been added to the hook_txt
+hook_txt = hook_prologue + hook_txt + hook_epilogue
 
 def error(msg):
     sys.stderr.write("ERROR: %s\n" % msg)
