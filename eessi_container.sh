@@ -736,6 +736,7 @@ do
     if [[ ${cvmfs_repo_name} == "dev.eessi.io" ]]; then
         echo "Building for dev.eessi.io, appending EESSI_DEV_PROJECT: $EESSI_DEV_PROJECT to cvmfs_repo_name"
         cvmfs_repo_name=${cvmfs_repo_name}${EESSI_DEV_PROJECT:+/$EESSI_DEV_PROJECT}
+        mkdir -p ${EESSI_PROJECT_INSTALL}
     fi
 
     # always create a directory for the repository (e.g., to store settings, ...)
