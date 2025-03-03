@@ -105,7 +105,6 @@ inject_mpi() {
     local host_injection_mpi_path
 
     host_injection_mpi_path=${EESSI_SOFTWARE_PATH/versions/host_injections}
-    host_injection_mpi_path+="/software/${EESSI_OS_TYPE}/${EESSI_SOFTWARE_SUBDIR}"
     host_injection_mpi_path+="/rpath_overrides/OpenMPI/system/lib"
 
     if [ -d ${host_injection_mpi_path} ]; then
