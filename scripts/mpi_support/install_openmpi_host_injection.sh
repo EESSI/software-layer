@@ -142,11 +142,19 @@ inject_mpi() {
             libpath=${host_injection_mpi_path}/$(basename ${libpath})
         fi
 
+        if [[ ${libname} =~ libpmix\.so\.?.* ]] && [[ ! -f ${temp_inject_path}/${libname} ]]; then
+            local libdir="$(dirname ${libpath})/"     # without trailing slash the find does not work
+            find ${libdir} -maxdepth 1 -type f -name "libpmix.so*" -exec cp {} ${temp_inject_path} \;
+            find ${libdir} -maxdepth 1 -type l -name "libpmix.so*" -exec cp -P {} ${host_injection_mpi_path} \;
+            libpath=${host_injection_mpi_path}/$(basename ${libpath})
+        fi
+
         if [[ ${libpath} =~ ${MPI_PATH}/.* ]]; then
             libpath=${host_injection_mpi_path}/$(basename ${libpath})
         fi
         
         libs_dict[${libname}]=${libpath}
+
     done < <(cat <(find ${temp_inject_path} -maxdepth 1 -type f -name "*.so*" -exec ${system_ldd} {} \;) \
                  <(for dlopen in ${dlopen_libs[@]}; do ${system_ldd} ${dlopen}; done) \
             | awk '/=>/ {print $1, $3}' | sort | uniq)
