@@ -731,13 +731,6 @@ do
         cvmfs_repo_name=$(cfg_get_value ${cfg_repo_id} "repo_name")
     fi
 
-    # if building for dev.eessi.io, also include the project subdirectory
-    #   so we redefine cvmfs_repo_name} to match EESSI_CVMFS_REPO_OVERRIDE
-    if [[ ${cvmfs_repo_name} == "dev.eessi.io" ]]; then
-        echo "Building for dev.eessi.io, appending EESSI_DEV_PROJECT: $EESSI_DEV_PROJECT to cvmfs_repo_name"
-        cvmfs_repo_name=${cvmfs_repo_name}${EESSI_DEV_PROJECT:+/$EESSI_DEV_PROJECT}
-        mkdir -p ${cvmfs_repo_name}
-    fi
 
     # always create a directory for the repository (e.g., to store settings, ...)
     mkdir -p ${EESSI_TMPDIR}/${cvmfs_repo_name}
@@ -798,8 +791,8 @@ do
 
         EESSI_WRITABLE_OVERLAY="container:fuse-overlayfs"
         EESSI_WRITABLE_OVERLAY+=" -o lowerdir=/cvmfs_ro/${cvmfs_repo_name}"
-        EESSI_WRITABLE_OVERLAY+=" -o upperdir=${TMP_IN_CONTAINER}/${cvmfs_repo_name}/overlay-upper"
-        EESSI_WRITABLE_OVERLAY+=" -o workdir=${TMP_IN_CONTAINER}/${cvmfs_repo_name}/overlay-work"
+        EESSI_WRITABLE_OVERLAY+=" -o upperdir=${TMP_IN_CONTAINER}/${cvmfs_repo_name}${EESSI_DEV_PROJECT:+/$EESSI_DEV_PROJECT}/overlay-upper"
+        EESSI_WRITABLE_OVERLAY+=" -o workdir=${TMP_IN_CONTAINER}/${cvmfs_repo_name}${EESSI_DEV_PROJECT:+/$EESSI_DEV_PROJECT}/overlay-work"
         EESSI_WRITABLE_OVERLAY+=" /cvmfs/${cvmfs_repo_name}"
         export EESSI_WRITABLE_OVERLAY
 
