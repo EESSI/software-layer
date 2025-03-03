@@ -116,9 +116,12 @@ if [ $EUID -eq 0 ]; then
             if [ -f ${easystack_file} ]; then
                 echo_green "Software rebuild(s) requested in ${easystack_file}, so determining which existing installation have to be removed..."
                 # we need to remove existing installation directories first,
-                # so let's figure out which modules have to be rebuilt by doing a dry-run and grepping "someapp/someversion" for the relevant lines (with [R])
+                # so let's figure out which modules have to be rebuilt by doing a
+                # dry-run and grepping "someapp/someversion" for the relevant
+                # lines (with [R] or [F])
+                #  * [F] $CFGS/s/someapp/someapp-someversion.eb (module: someapp/someversion)
                 #  * [R] $CFGS/s/someapp/someapp-someversion.eb (module: someapp/someversion)
-                rebuild_apps=$(eb --allow-use-as-root-and-accept-consequences --dry-run-short --rebuild --easystack ${easystack_file} | grep "^ \* \[R\]" | grep -o "module: .*[^)]" | awk '{print $2}')
+                rebuild_apps=$(eb --allow-use-as-root-and-accept-consequences --dry-run-short --rebuild --easystack ${easystack_file} | grep "^ \* \[[FR]\]" | grep -o "module: .*[^)]" | awk '{print $2}')
                 for app in ${rebuild_apps}; do
                     # Returns e.g. /cvmfs/software.eessi.io/versions/2023.06/software/linux/x86_64/amd/zen2/modules/all:
                     app_modulepath=$(module --terse av ${app} 2>&1 | head -n 1 | sed 's/://')
@@ -130,13 +133,13 @@ if [ $EUID -eq 0 ]; then
                     echo_yellow "Removing ${app_dir} and ${app_module}..."
                     rm -rf ${app_dir}
                     rm -rf ${app_module}
-                    # recreate the installation directories and first-level subdirectories to work around permission denied
-                    # issues when rebuilding the package (see https://github.com/EESSI/software-layer/issues/556)
+                    # recreate the installation directory and do an ls on the first-level subdirectories to work around
+                    # permission issues when reinstalling the application (see https://github.com/EESSI/software-layer/issues/556)
                     echo_yellow "Recreating an empty ${app_dir}..."
                     mkdir -p ${app_dir}
-                    for app_subdir in ${app_subdirs}; do
-                        mkdir -p ${app_subdir}
-                    done
+                    # these subdirs don't (and shouldn't) exist, but we need to do the ls anyway as a workaround,
+                    # so redirect to /dev/null and ignore the exit code
+                    ls ${app_subdirs} >& /dev/null || true
                 done
             else
                 fatal_error "Easystack file ${easystack_file} not found!"

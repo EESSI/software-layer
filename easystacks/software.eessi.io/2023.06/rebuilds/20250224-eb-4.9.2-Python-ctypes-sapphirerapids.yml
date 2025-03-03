@@ -1,4 +1,4 @@
-# 2025.01.19
+# 2025.02.24
 # Python ctypes relies on LD_LIBRARY_PATH and doesn't respect rpath linking. There is a workaround
 # for the EasyBuild context in https://github.com/easybuilders/easybuild-easyblocks/pull/3352.
 #

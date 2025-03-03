@@ -26,7 +26,7 @@ CPU_TARGET_NEOVERSE_V1 = 'aarch64/neoverse_v1'
 CPU_TARGET_AARCH64_GENERIC = 'aarch64/generic'
 CPU_TARGET_A64FX = 'aarch64/a64fx'
 
-CPU_TARGET_SAPPHIRE_RAPIDS = 'x86_64/intel/sapphire_rapids'
+CPU_TARGET_SAPPHIRE_RAPIDS = 'x86_64/intel/sapphirerapids'
 CPU_TARGET_ZEN4 = 'x86_64/amd/zen4'
 
 EESSI_RPATH_OVERRIDE_ATTR = 'orig_rpath_override_dirs'

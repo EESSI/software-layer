@@ -1,7 +1,5 @@
 easyconfigs:
-  - Python-3.11.5-GCCcore-13.2.0.eb
-  - hatchling-1.18.0-GCCcore-13.2.0.eb
-  - Python-bundle-PyPI-2023.10-GCCcore-13.2.0.eb
+  # include the changes from rebuilds/20240515-eb-4.9.1-GROMACS-correct-gmxapi-version.yml
   - scikit-build-core-0.9.3-GCCcore-13.2.0.eb:
       options:
         # from-commit: 61d07bff09afe63cfe1ae35dc58a0c8be01eed62
