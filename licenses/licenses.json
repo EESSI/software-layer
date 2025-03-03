@@ -1,482 +1,502 @@
 {
     "ALL/0.9.2-foss-2023a": {
-        "License": "not found",
-        "Needs Manual Check": true,
-        "Retrieved From": "not found"
+        "License": "https://gitlab.jsc.fz-juelich.de/SLMS/loadbalancing/-/blob/master/LICENSE",
+        "Needs Manual Check": false,
+        "Retrieved from": "https://gitlab.jsc.fz-juelich.de/SLMS/loadbalancing"
     },
     "AOFlagger/3.4.0-foss-2023b": {
         "License": "not found",
         "Needs Manual Check": true,
-        "Retrieved From": "not found"
+        "Homepage": "https://aoflagger.readthedocs.io/",
+        "Source url": "N/A"
     },
     "ASE/3.22.1-gfbf-2022b": {
-        "License": "not found",
-        "Needs Manual Check": true,
-        "Retrieved From": "not found"
+        "License": "https://wiki.fysik.dtu.dk/development/licenseinfo.html#license-info",
+        "Needs Manual Check": false,
+        "Retrieved from": "https://wiki.fysik.dtu.dk/ase"
     },
     "ATK/2.38.0-GCCcore-13.2.0": {
         "License": [
             "Other"
         ],
         "Needs Manual Check": false,
-        "Retrieved From": "https://developer.gnome.org/atk/"
+        "Retrieved from": "https://packages.ecosyste.ms/api/v1/packages/lookup?repository_url=https%3A%2F%2Fdeveloper.gnome.org%2Fatk%2F"
     },
     "Abseil/20240116.1-GCCcore-13.2.0": {
         "License": [
             "Apache-2.0"
         ],
         "Needs Manual Check": false,
-        "Retrieved From": "https://abseil.io/"
+        "Retrieved from": "https://packages.ecosyste.ms/api/v1/packages/lookup?repository_url=https%3A%2F%2Fabseil.io%2F"
     },
     "Archive-Zip/1.68-GCCcore-12.2.0": {
         "License": [
             "Other"
         ],
         "Needs Manual Check": false,
-        "Retrieved From": "https://metacpan.org/pod/Archive::Zip"
+        "Retrieved from": "https://packages.ecosyste.ms/api/v1/packages/lookup?repository_url=https%3A%2F%2Fmetacpan.org%2Fpod%2FArchive%3A%3AZip"
     },
     "Armadillo/12.8.0-foss-2023b": {
         "License": [
             "Apache-2.0"
         ],
         "Needs Manual Check": false,
-        "Retrieved From": "https://arma.sourceforge.net/"
+        "Retrieved from": "https://packages.ecosyste.ms/api/v1/packages/lookup?repository_url=https%3A%2F%2Farma.sourceforge.net%2F"
     },
     "Arrow/16.1.0-gfbf-2023b": {
         "License": [
             "Other"
         ],
         "Needs Manual Check": false,
-        "Retrieved From": "https://arrow.apache.org"
+        "Retrieved from": "https://packages.ecosyste.ms/api/v1/packages/lookup?repository_url=https%3A%2F%2Farrow.apache.org"
     },
     "BCFtools/1.18-GCC-12.3.0": {
         "License": "not found",
         "Needs Manual Check": true,
-        "Retrieved From": "not found"
+        "Homepage": "https://www.htslib.org/",
+        "Source url": "https://github.com/samtools/bcftools/releases/download/1.18"
     },
     "BLAST+/2.14.1-gompi-2023a": {
         "License": [
             "Other"
         ],
         "Needs Manual Check": false,
-        "Retrieved From": "https://blast.ncbi.nlm.nih.gov/"
+        "Retrieved from": "https://packages.ecosyste.ms/api/v1/packages/lookup?repository_url=https%3A%2F%2Fblast.ncbi.nlm.nih.gov%2F"
     },
     "BLIS/0.9.0-GCC-13.2.0": {
-        "License": "not found",
-        "Needs Manual Check": true,
-        "Retrieved From": "not found"
+        "License": "https://github.com/flame/blis/blob/master/LICENSE",
+        "Needs Manual Check": false,
+        "Retrieved from": "https://repos.ecosyste.ms/api/v1/hosts/GitHub/repositories/flame%2Fblis"
     },
     "BWA/0.7.18-GCCcore-12.3.0": {
-        "License": "not found",
-        "Needs Manual Check": true,
-        "Retrieved From": "not found"
+        "License": "gpl-3.0",
+        "Needs Manual Check": false,
+        "Retrieved from": "https://repos.ecosyste.ms/api/v1/repositories/lookup?url=https%3A%2F%2Fgithub.com%2Flh3%2FBWA"
     },
     "BamTools/2.5.2-GCC-12.2.0": {
-        "License": "not found",
-        "Needs Manual Check": true,
-        "Retrieved From": "not found"
+        "License": "mit",
+        "Needs Manual Check": false,
+        "Retrieved from": "https://repos.ecosyste.ms/api/v1/repositories/lookup?url=https%3A%2F%2Fgithub.com%2Fpezmaster31%2Fbamtools"
     },
     "Bazel/6.3.1-GCCcore-12.3.0": {
         "License": "not found",
         "Needs Manual Check": true,
-        "Retrieved From": "not found"
+        "Homepage": "https://bazel.io/",
+        "Source url": "https://github.com/bazelbuild/bazel/releases/download/6.3.1"
     },
     "BeautifulSoup/4.12.2-GCCcore-12.3.0": {
         "License": [
             "Other"
         ],
         "Needs Manual Check": false,
-        "Retrieved From": "https://www.crummy.com/software/BeautifulSoup"
+        "Retrieved from": "https://packages.ecosyste.ms/api/v1/packages/lookup?repository_url=https%3A%2F%2Fwww.crummy.com%2Fsoftware%2FBeautifulSoup"
     },
     "Bio-DB-HTS/3.01-GCC-12.2.0": {
-        "License": "not found",
-        "Needs Manual Check": true,
-        "Retrieved From": "not found"
+        "License": "https://metacpan.org/release/AVULLO/Bio-DB-HTS-3.01/source/LICENSE",
+        "Needs Manual Check": false,
+        "Retrieved from": "https://metacpan.org/release/Bio-DB-HTS"
     },
     "Bio-SearchIO-hmmer/1.7.3-GCC-12.2.0": {
         "License": "not found",
         "Needs Manual Check": true,
-        "Retrieved From": "not found"
+        "Homepage": "https://metacpan.org/pod/Bio::SearchIO::hmmer3",
+        "Source url": "https://cpan.metacpan.org/authors/id/C/CJ/CJFIELDS/"
     },
     "BioPerl/1.7.8-GCCcore-12.3.0": {
-        "License": "not found",
-        "Needs Manual Check": true,
-        "Retrieved From": "not found"
+        "License": "https://www.gnu.org/licenses/old-licenses/fdl-1.2.html",
+        "Needs Manual Check": false,
+        "Retrieved from": "https://bioperl.org/"
     },
     "Biopython/1.83-foss-2023a": {
         "License": "not found",
         "Needs Manual Check": true,
-        "Retrieved From": "not found"
+        "Homepage": "https://www.biopython.org",
+        "Source url": "https://biopython.org/DIST"
     },
     "Bison/3.8.2-GCCcore-13.2.0": {
-        "License": "not found",
-        "Needs Manual Check": true,
-        "Retrieved From": "not found"
+        "License": "https://www.gnu.org/licenses/licenses.html",
+        "Needs Manual Check": false,
+        "Retrieved from": "https://www.gnu.org/software/bison"
     },
     "Boost/1.83.0-GCC-13.2.0": {
         "License": [
             "Other"
         ],
         "Needs Manual Check": false,
-        "Retrieved From": "https://www.boost.org/"
+        "Retrieved from": "https://packages.ecosyste.ms/api/v1/packages/lookup?repository_url=https%3A%2F%2Fwww.boost.org%2F"
     },
     "Boost.MPI/1.83.0-gompi-2023b": {
         "License": [
             "Other"
         ],
         "Needs Manual Check": false,
-        "Retrieved From": "https://www.boost.org/"
+        "Retrieved from": "https://packages.ecosyste.ms/api/v1/packages/lookup?repository_url=https%3A%2F%2Fwww.boost.org%2F"
     },
     "Boost.Python/1.83.0-GCC-13.2.0": {
-        "License": "not found",
-        "Needs Manual Check": true,
-        "Retrieved From": "not found"
+        "License": "http://www.boost.org/LICENSE_1_0.txt",
+        "Needs Manual Check": false,
+        "Retrieved from": "https://boostorg.github.io/python"
     },
     "Bowtie2/2.5.1-GCC-12.2.0": {
         "License": [
             "Other"
         ],
         "Needs Manual Check": false,
-        "Retrieved From": "https://bowtie-bio.sourceforge.net/bowtie2/index.shtml"
+        "Retrieved from": "https://packages.ecosyste.ms/api/v1/packages/lookup?repository_url=https%3A%2F%2Fbowtie-bio.sourceforge.net%2Fbowtie2%2Findex.shtml"
     },
     "Brotli/1.1.0-GCCcore-13.2.0": {
-        "License": "not found",
-        "Needs Manual Check": true,
-        "Retrieved From": "not found"
+        "License": "mit",
+        "Needs Manual Check": false,
+        "Retrieved from": "https://repos.ecosyste.ms/api/v1/repositories/lookup?url=https%3A%2F%2Fgithub.com%2Fgoogle%2Fbrotli"
     },
     "Brunsli/0.1-GCCcore-13.2.0": {
-        "License": "not found",
-        "Needs Manual Check": true,
-        "Retrieved From": "not found"
+        "License": "mit",
+        "Needs Manual Check": false,
+        "Retrieved from": "https://repos.ecosyste.ms/api/v1/repositories/lookup?url=https%3A%2F%2Fgithub.com%2Fgoogle%2Fbrunsli%2F"
     },
     "CD-HIT/4.8.1-GCC-12.2.0": {
         "License": "not found",
         "Needs Manual Check": true,
-        "Retrieved From": "not found"
+        "Homepage": "http://weizhongli-lab.org/cd-hit/",
+        "Source url": "https://github.com/weizhongli/cdhit/releases/download/V4.8.1/"
     },
     "CDO/2.2.2-gompi-2023b": {
         "License": "not found",
         "Needs Manual Check": true,
-        "Retrieved From": "not found"
+        "Homepage": "https://code.zmaw.de/projects/cdo",
+        "Source url": "https://code.mpimet.mpg.de/attachments/download/28882/"
     },
     "CFITSIO/4.3.1-GCCcore-13.2.0": {
         "License": [
             "Other"
         ],
         "Needs Manual Check": false,
-        "Retrieved From": "https://heasarc.gsfc.nasa.gov/fitsio/"
+        "Retrieved from": "https://packages.ecosyste.ms/api/v1/packages/lookup?repository_url=https%3A%2F%2Fheasarc.gsfc.nasa.gov%2Ffitsio%2F"
     },
     "CGAL/5.6-GCCcore-12.3.0": {
         "License": [
             "CNRI-Python-GPL-Compatible"
         ],
         "Needs Manual Check": false,
-        "Retrieved From": "https://www.cgal.org/"
+        "Retrieved from": "https://packages.ecosyste.ms/api/v1/packages/lookup?repository_url=https%3A%2F%2Fwww.cgal.org%2F"
     },
     "CMake/3.27.6-GCCcore-13.2.0": {
         "License": [
             "BSD-3-Clause"
         ],
         "Needs Manual Check": false,
-        "Retrieved From": "https://www.cmake.org"
+        "Retrieved from": "https://packages.ecosyste.ms/api/v1/packages/lookup?repository_url=https%3A%2F%2Fwww.cmake.org"
     },
     "CP2K/2023.1-foss-2023a": {
         "License": "not found",
         "Needs Manual Check": true,
-        "Retrieved From": "not found"
+        "Homepage": "https://www.cp2k.org/",
+        "Source url": "https://github.com/cp2k/cp2k/releases/download/v2023.1/"
     },
     "CUDA/12.1.1": {
         "License": [
             "Other"
         ],
         "Needs Manual Check": false,
-        "Retrieved From": "https://developer.nvidia.com/cuda-toolkit"
+        "Retrieved from": "https://packages.ecosyste.ms/api/v1/packages/lookup?repository_url=https%3A%2F%2Fdeveloper.nvidia.com%2Fcuda-toolkit"
     },
     "CUDA-Samples/12.1-GCC-12.3.0-CUDA-12.1.1": {
-        "License": "not found",
-        "Needs Manual Check": true,
-        "Retrieved From": "not found"
+        "License": "https://github.com/NVIDIA/cuda-samples/blob/master/LICENSE",
+        "Needs Manual Check": false,
+        "Retrieved from": "https://repos.ecosyste.ms/api/v1/hosts/GitHub/repositories/NVIDIA%2Fcuda-samples"
     },
     "CapnProto/1.0.1-GCCcore-12.3.0": {
         "License": [
             "Other"
         ],
         "Needs Manual Check": false,
-        "Retrieved From": "https://capnproto.org"
+        "Retrieved from": "https://packages.ecosyste.ms/api/v1/packages/lookup?repository_url=https%3A%2F%2Fcapnproto.org"
     },
     "Cartopy/0.22.0-foss-2023a": {
         "License": [
             "Other"
         ],
         "Needs Manual Check": false,
-        "Retrieved From": "https://scitools.org.uk/cartopy/docs/latest/"
+        "Retrieved from": "https://packages.ecosyste.ms/api/v1/packages/lookup?repository_url=https%3A%2F%2Fscitools.org.uk%2Fcartopy%2Fdocs%2Flatest%2F"
     },
     "Cassiopeia/2.0.0-foss-2023a": {
-        "License": "not found",
-        "Needs Manual Check": true,
-        "Retrieved From": "not found"
+        "License": "mit",
+        "Needs Manual Check": false,
+        "Retrieved from": "https://repos.ecosyste.ms/api/v1/repositories/lookup?url=https%3A%2F%2Fgithub.com%2FYosefLab%2FCassiopeia"
     },
     "Catch2/2.13.9-GCCcore-13.2.0": {
-        "License": "not found",
-        "Needs Manual Check": true,
-        "Retrieved From": "not found"
+        "License": "bsl-1.0",
+        "Needs Manual Check": false,
+        "Retrieved from": "https://repos.ecosyste.ms/api/v1/repositories/lookup?url=https%3A%2F%2Fgithub.com%2Fcatchorg%2FCatch2"
     },
     "Cbc/2.10.11-foss-2023a": {
-        "License": "not found",
-        "Needs Manual Check": true,
-        "Retrieved From": "not found"
+        "License": "https://github.com/coin-or/Cbc/blob/master/LICENSE",
+        "Needs Manual Check": false,
+        "Retrieved from": "https://repos.ecosyste.ms/api/v1/hosts/GitHub/repositories/coin-or%2FCbc"
     },
     "Cgl/0.60.8-foss-2023a": {
-        "License": "not found",
-        "Needs Manual Check": true,
-        "Retrieved From": "not found"
+        "License": "https://github.com/coin-or/Cgl/blob/master/LICENSE",
+        "Needs Manual Check": false,
+        "Retrieved from": "https://repos.ecosyste.ms/api/v1/hosts/GitHub/repositories/coin-or%2FCgl"
     },
     "Clp/1.17.9-foss-2023a": {
-        "License": "not found",
-        "Needs Manual Check": true,
-        "Retrieved From": "not found"
+        "License": "https://github.com/coin-or/Clp/blob/master/LICENSE",
+        "Needs Manual Check": false,
+        "Retrieved from": "https://repos.ecosyste.ms/api/v1/hosts/GitHub/repositories/coin-or%2FClp"
     },
     "CoinUtils/2.11.10-GCC-12.3.0": {
-        "License": "not found",
-        "Needs Manual Check": true,
-        "Retrieved From": "not found"
+        "License": "https://github.com/coin-or/CoinUtils/blob/master/LICENSE",
+        "Needs Manual Check": false,
+        "Retrieved from": "https://repos.ecosyste.ms/api/v1/hosts/GitHub/repositories/coin-or%2FCoinUtils"
     },
     "Core/settarg/": {
         "License": "not found",
         "Needs Manual Check": true,
-        "Retrieved From": "not found"
+        "Homepage": "N/A",
+        "Source url": "N/A"
     },
     "Critic2/1.2-foss-2023a": {
-        "License": "not found",
-        "Needs Manual Check": true,
-        "Retrieved From": "not found"
+        "License": "https://github.com/aoterodelaroza/critic2/blob/master/LICENSE",
+        "Needs Manual Check": false,
+        "Retrieved from": "https://repos.ecosyste.ms/api/v1/hosts/GitHub/repositories/aoterodelaroza%2Fcritic2"
     },
     "CubeLib/4.8.2-GCCcore-13.2.0": {
         "License": [
             "Other"
         ],
         "Needs Manual Check": false,
-        "Retrieved From": "https://www.scalasca.org/software/cube-4.x/download.html"
+        "Retrieved from": "https://packages.ecosyste.ms/api/v1/packages/lookup?repository_url=https%3A%2F%2Fwww.scalasca.org%2Fsoftware%2Fcube-4.x%2Fdownload.html"
     },
     "CubeWriter/4.8.2-GCCcore-13.2.0": {
         "License": [
             "Other"
         ],
         "Needs Manual Check": false,
-        "Retrieved From": "https://www.scalasca.org/software/cube-4.x/download.html"
+        "Retrieved from": "https://packages.ecosyste.ms/api/v1/packages/lookup?repository_url=https%3A%2F%2Fwww.scalasca.org%2Fsoftware%2Fcube-4.x%2Fdownload.html"
     },
     "Cython/3.0.10-GCCcore-13.2.0": {
         "License": [
             "Apache-2.0"
         ],
         "Needs Manual Check": false,
-        "Retrieved From": "https://cython.org/"
+        "Retrieved from": "https://packages.ecosyste.ms/api/v1/packages/lookup?repository_url=https%3A%2F%2Fcython.org%2F"
     },
     "DB/18.1.40-GCCcore-12.3.0": {
         "License": "not found",
         "Needs Manual Check": true,
-        "Retrieved From": "not found"
+        "Homepage": "https://www.oracle.com/technetwork/products/berkeleydb",
+        "Source url": "http://download.oracle.com/berkeley-db/"
     },
     "DB_File/1.859-GCCcore-12.3.0": {
-        "License": "not found",
-        "Needs Manual Check": true,
-        "Retrieved From": "not found"
+        "License": "https://perldoc.perl.org/DB_File.html#COPYRIGHT",
+        "Needs Manual Check": false,
+        "Retrieved from": "https://perldoc.perl.org/DB_File.html"
     },
     "DIAMOND/2.1.8-GCC-12.3.0": {
-        "License": "not found",
-        "Needs Manual Check": true,
-        "Retrieved From": "not found"
+        "License": "gpl-3.0",
+        "Needs Manual Check": false,
+        "Retrieved from": "https://repos.ecosyste.ms/api/v1/repositories/lookup?url=https%3A%2F%2Fgithub.com%2Fbbuchfink%2Fdiamond"
     },
     "DP3/6.2-foss-2023b": {
         "License": "not found",
         "Needs Manual Check": true,
-        "Retrieved From": "not found"
+        "Homepage": "https://dp3.readthedocs.io/",
+        "Source url": "N/A"
     },
     "DendroPy/4.6.1-GCCcore-12.3.0": {
         "License": "not found",
         "Needs Manual Check": true,
-        "Retrieved From": "not found"
+        "Homepage": "https://dendropy.org/",
+        "Source url": "N/A"
     },
     "Doxygen/1.9.8-GCCcore-13.2.0": {
         "License": [
             "Other"
         ],
         "Needs Manual Check": false,
-        "Retrieved From": "https://www.doxygen.org"
+        "Retrieved from": "https://packages.ecosyste.ms/api/v1/packages/lookup?repository_url=https%3A%2F%2Fwww.doxygen.org"
     },
     "EESSI-extend/2023.06-easybuild": {
         "License": "not found",
         "Needs Manual Check": true,
-        "Retrieved From": "not found"
+        "Homepage": "N/A",
+        "Source url": "N/A"
     },
     "ELPA/2023.05.001-foss-2023a": {
         "License": [
             "Other"
         ],
         "Needs Manual Check": false,
-        "Retrieved From": "https://elpa.mpcdf.mpg.de/"
+        "Retrieved from": "https://packages.ecosyste.ms/api/v1/packages/lookup?repository_url=https%3A%2F%2Felpa.mpcdf.mpg.de%2F"
     },
     "ESPResSo/4.2.2-foss-2023b": {
-        "License": "not found",
-        "Needs Manual Check": true,
-        "Retrieved From": "not found"
+        "License": "https://creativecommons.org/licenses/by-nc-sa/3.0/",
+        "Needs Manual Check": false,
+        "Retrieved from": "https://espressomd.org/wordpress"
     },
     "ETE/3.1.3-foss-2023a": {
         "License": "not found",
         "Needs Manual Check": true,
-        "Retrieved From": "not found"
+        "Homepage": "http://etetoolkit.org",
+        "Source url": "https://pypi.python.org/packages/source/e/ete3"
     },
     "EasyBuild/4.9.4": {
         "License": [
             "Other"
         ],
         "Needs Manual Check": false,
-        "Retrieved From": "https://easybuilders.github.io/easybuild"
+        "Retrieved from": "https://packages.ecosyste.ms/api/v1/packages/lookup?repository_url=https%3A%2F%2Feasybuilders.github.io%2Feasybuild"
     },
     "Eigen/3.4.0-GCCcore-13.2.0": {
-        "License": "not found",
-        "Needs Manual Check": true,
-        "Retrieved From": "not found"
+        "License": "https://eigen.tuxfamily.org#License",
+        "Needs Manual Check": false,
+        "Retrieved from": "https://eigen.tuxfamily.org"
     },
     "EveryBeam/0.6.1-foss-2023b": {
         "License": "not found",
         "Needs Manual Check": true,
-        "Retrieved From": "not found"
+        "Homepage": "https://everybeam.readthedocs.io/",
+        "Source url": "N/A"
     },
     "Extrae/4.2.0-gompi-2023b": {
         "License": [
             "Other"
         ],
         "Needs Manual Check": false,
-        "Retrieved From": "https://tools.bsc.es/extrae"
+        "Retrieved from": "https://packages.ecosyste.ms/api/v1/packages/lookup?repository_url=https%3A%2F%2Ftools.bsc.es%2Fextrae"
     },
     "FFTW/3.3.10-GCC-13.2.0": {
         "License": [
             "Other"
         ],
         "Needs Manual Check": false,
-        "Retrieved From": "https://www.fftw.org"
+        "Retrieved from": "https://packages.ecosyste.ms/api/v1/packages/lookup?repository_url=https%3A%2F%2Fwww.fftw.org"
     },
     "FFTW.MPI/3.3.10-gompi-2023b": {
         "License": [
             "Other"
         ],
         "Needs Manual Check": false,
-        "Retrieved From": "https://www.fftw.org"
+        "Retrieved from": "https://packages.ecosyste.ms/api/v1/packages/lookup?repository_url=https%3A%2F%2Fwww.fftw.org"
     },
     "FFmpeg/6.0-GCCcore-13.2.0": {
         "License": "not found",
         "Needs Manual Check": true,
-        "Retrieved From": "not found"
+        "Homepage": "https://www.ffmpeg.org/",
+        "Source url": "https://ffmpeg.org/releases/"
     },
     "FLAC/1.4.3-GCCcore-13.2.0": {
         "License": [
             "CNRI-Python-GPL-Compatible"
         ],
         "Needs Manual Check": false,
-        "Retrieved From": "https://xiph.org/flac/"
+        "Retrieved from": "https://packages.ecosyste.ms/api/v1/packages/lookup?repository_url=https%3A%2F%2Fxiph.org%2Fflac%2F"
     },
     "FLTK/1.3.8-GCCcore-12.3.0": {
-        "License": "not found",
-        "Needs Manual Check": true,
-        "Retrieved From": "not found"
+        "License": "https://www.fltk.org/COPYING.php",
+        "Needs Manual Check": false,
+        "Retrieved from": "https://www.fltk.org"
     },
     "FastME/2.1.6.3-GCC-12.3.0": {
         "License": [
             "Other"
         ],
         "Needs Manual Check": false,
-        "Retrieved From": "http://www.atgc-montpellier.fr/fastme/"
+        "Retrieved from": "https://packages.ecosyste.ms/api/v1/packages/lookup?repository_url=http%3A%2F%2Fwww.atgc-montpellier.fr%2Ffastme%2F"
     },
     "Fiona/1.9.5-foss-2023a": {
-        "License": "not found",
-        "Needs Manual Check": true,
-        "Retrieved From": "not found"
+        "License": "bsd-3-clause",
+        "Needs Manual Check": false,
+        "Retrieved from": "https://repos.ecosyste.ms/api/v1/repositories/lookup?url=https%3A%2F%2Fgithub.com%2FToblerity%2FFiona"
     },
     "Flask/2.2.3-GCCcore-12.2.0": {
         "License": "not found",
         "Needs Manual Check": true,
-        "Retrieved From": "not found"
+        "Homepage": "https://www.palletsprojects.com/p/flask/",
+        "Source url": "N/A"
     },
     "FlexiBLAS/3.3.1-GCC-13.2.0": {
-        "License": "not found",
-        "Needs Manual Check": true,
-        "Retrieved From": "not found"
+        "License": "bsd-3-clause-open-mpi",
+        "Needs Manual Check": false,
+        "Retrieved from": "https://repos.ecosyste.ms/api/v1/repositories/lookup?url=https%3A%2F%2Fgitlab.mpi-magdeburg.mpg.de%2Fsoftware%2Fflexiblas-release"
     },
     "FragGeneScan/1.31-GCCcore-12.3.0": {
         "License": "not found",
         "Needs Manual Check": true,
-        "Retrieved From": "not found"
+        "Homepage": "https://omics.informatics.indiana.edu/FragGeneScan/",
+        "Source url": "N/A"
     },
     "FreeImage/3.18.0-GCCcore-12.3.0": {
-        "License": "not found",
-        "Needs Manual Check": true,
-        "Retrieved From": "not found"
+        "License": "http://freeimage.sourceforge.net/license.html",
+        "Needs Manual Check": false,
+        "Retrieved from": "http://freeimage.sourceforge.net"
     },
     "FriBidi/1.0.13-GCCcore-13.2.0": {
-        "License": "not found",
-        "Needs Manual Check": true,
-        "Retrieved From": "not found"
+        "License": "lgpl-2.1",
+        "Needs Manual Check": false,
+        "Retrieved from": "https://repos.ecosyste.ms/api/v1/repositories/lookup?url=https%3A%2F%2Fgithub.com%2Ffribidi%2Ffribidi"
     },
     "GATK/4.5.0.0-GCCcore-12.3.0-Java-17": {
         "License": "not found",
         "Needs Manual Check": true,
-        "Retrieved From": "not found"
+        "Homepage": "https://www.broadinstitute.org/gatk/",
+        "Source url": "https://github.com/broadinstitute/gatk/releases/download/4.5.0.0/"
     },
     "GCC/13.2.0": {
         "License": [
             "GPL-3.0-or-later"
         ],
         "Needs Manual Check": false,
-        "Retrieved From": "https://gcc.gnu.org/"
+        "Retrieved from": "https://packages.ecosyste.ms/api/v1/packages/lookup?repository_url=https%3A%2F%2Fgcc.gnu.org%2F"
     },
     "GCCcore/13.2.0": {
         "License": [
             "GPL-3.0-or-later"
         ],
         "Needs Manual Check": false,
-        "Retrieved From": "https://gcc.gnu.org/"
+        "Retrieved from": "https://packages.ecosyste.ms/api/v1/packages/lookup?repository_url=https%3A%2F%2Fgcc.gnu.org%2F"
     },
     "GDAL/3.9.0-foss-2023b": {
-        "License": "not found",
-        "Needs Manual Check": true,
-        "Retrieved From": "not found"
+        "License": "https://www.gdal.org/license.html",
+        "Needs Manual Check": false,
+        "Retrieved from": "https://www.gdal.org"
     },
     "GDB/13.2-GCCcore-12.3.0": {
         "License": "not found",
         "Needs Manual Check": true,
-        "Retrieved From": "not found"
+        "Homepage": "https://www.gnu.org/software/gdb/gdb.html",
+        "Source url": "N/A"
     },
     "GDRCopy/2.4-GCCcore-13.2.0": {
-        "License": "not found",
-        "Needs Manual Check": true,
-        "Retrieved From": "not found"
+        "License": "mit",
+        "Needs Manual Check": false,
+        "Retrieved from": "https://repos.ecosyste.ms/api/v1/repositories/lookup?url=https%3A%2F%2Fgithub.com%2FNVIDIA%2Fgdrcopy"
     },
     "GEOS/3.12.1-GCC-13.2.0": {
-        "License": "not found",
-        "Needs Manual Check": true,
-        "Retrieved From": "not found"
+        "License": "http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html",
+        "Needs Manual Check": false,
+        "Retrieved from": "https://trac.osgeo.org/geos"
     },
     "GL2PS/1.4.2-GCCcore-12.3.0": {
         "License": [
             "Other"
         ],
         "Needs Manual Check": false,
-        "Retrieved From": "https://www.geuz.org/gl2ps/"
+        "Retrieved from": "https://packages.ecosyste.ms/api/v1/packages/lookup?repository_url=https%3A%2F%2Fwww.geuz.org%2Fgl2ps%2F"
     },
     "GLPK/5.0-GCCcore-13.2.0": {
         "License": [
             "GPL-3.0-only"
         ],
         "Needs Manual Check": false,
-        "Retrieved From": "https://www.gnu.org/software/glpk/"
+        "Retrieved from": "https://packages.ecosyste.ms/api/v1/packages/lookup?repository_url=https%3A%2F%2Fwww.gnu.org%2Fsoftware%2Fglpk%2F"
     },
     "GLib/2.78.1-GCCcore-13.2.0": {
         "License": [
             "LGPL-2.1-or-later"
         ],
         "Needs Manual Check": false,
-        "Retrieved From": "https://www.gtk.org/"
+        "Retrieved from": "https://packages.ecosyste.ms/api/v1/packages/lookup?repository_url=https%3A%2F%2Fwww.gtk.org%2F"
     },
     "GMP/6.3.0-GCCcore-13.2.0": {
         "License": [
@@ -484,626 +504,654 @@
             "GPL-2.0-or-later"
         ],
         "Needs Manual Check": false,
-        "Retrieved From": "https://gmplib.org/"
+        "Retrieved from": "https://packages.ecosyste.ms/api/v1/packages/lookup?repository_url=https%3A%2F%2Fgmplib.org%2F"
     },
     "GObject-Introspection/1.78.1-GCCcore-13.2.0": {
         "License": "not found",
         "Needs Manual Check": true,
-        "Retrieved From": "not found"
+        "Homepage": "https://gi.readthedocs.io/en/latest/",
+        "Source url": "N/A"
     },
     "GROMACS/2024.4-foss-2023b": {
         "License": [
             "Other"
         ],
         "Needs Manual Check": false,
-        "Retrieved From": "https://www.gromacs.org"
+        "Retrieved from": "https://packages.ecosyste.ms/api/v1/packages/lookup?repository_url=https%3A%2F%2Fwww.gromacs.org"
     },
     "GSL/2.7-GCC-13.2.0": {
-        "License": "not found",
-        "Needs Manual Check": true,
-        "Retrieved From": "not found"
+        "License": "https://www.gnu.org/licenses/licenses.html",
+        "Needs Manual Check": false,
+        "Retrieved from": "https://www.gnu.org/software/gsl/"
     },
     "GST-plugins-base/1.24.8-GCC-13.2.0": {
         "License": [
             "Other"
         ],
         "Needs Manual Check": false,
-        "Retrieved From": "https://gstreamer.freedesktop.org/"
+        "Retrieved from": "https://packages.ecosyste.ms/api/v1/packages/lookup?repository_url=https%3A%2F%2Fgstreamer.freedesktop.org%2F"
     },
     "GStreamer/1.24.8-GCC-13.2.0": {
         "License": [
             "Other"
         ],
         "Needs Manual Check": false,
-        "Retrieved From": "https://gstreamer.freedesktop.org/"
+        "Retrieved from": "https://packages.ecosyste.ms/api/v1/packages/lookup?repository_url=https%3A%2F%2Fgstreamer.freedesktop.org%2F"
     },
     "GTK3/3.24.39-GCCcore-13.2.0": {
-        "License": "not found",
-        "Needs Manual Check": true,
-        "Retrieved From": "not found"
+        "License": "https://developer.gnome.org/gtk3/stable/enum.License.html",
+        "Needs Manual Check": false,
+        "Retrieved from": "https://developer.gnome.org/gtk3/stable/"
     },
     "Gdk-Pixbuf/2.42.10-GCCcore-13.2.0": {
         "License": "not found",
         "Needs Manual Check": true,
-        "Retrieved From": "not found"
+        "Homepage": "https://docs.gtk.org/gdk-pixbuf/",
+        "Source url": "N/A"
     },
     "GenomeTools/1.6.2-GCC-12.2.0": {
-        "License": "not found",
-        "Needs Manual Check": true,
-        "Retrieved From": "not found"
+        "License": "http://genometools.org/license.html",
+        "Needs Manual Check": false,
+        "Retrieved from": "http://genometools.org"
     },
     "Ghostscript/10.02.1-GCCcore-13.2.0": {
-        "License": "not found",
-        "Needs Manual Check": true,
-        "Retrieved From": "not found"
+        "License": "https://www.gnu.org/licenses/agpl-3.0.html",
+        "Needs Manual Check": false,
+        "Retrieved from": "https://ghostscript.com"
     },
     "GitPython/3.1.40-GCCcore-12.3.0": {
         "License": [
             "Other"
         ],
         "Needs Manual Check": false,
-        "Retrieved From": "https://gitpython.readthedocs.org"
+        "Retrieved from": "https://packages.ecosyste.ms/api/v1/packages/lookup?repository_url=https%3A%2F%2Fgitpython.readthedocs.org"
     },
     "Graphene/1.10.8-GCCcore-13.2.0": {
-        "License": "not found",
-        "Needs Manual Check": true,
-        "Retrieved From": "not found"
+        "License": "https://github.com/ebassi/graphene/blob/master/LICENSE",
+        "Needs Manual Check": false,
+        "Retrieved from": "https://ebassi.github.io/graphene/"
     },
     "HDBSCAN/0.8.38.post1-foss-2023a": {
         "License": "not found",
         "Needs Manual Check": true,
-        "Retrieved From": "not found"
+        "Homepage": "http://hdbscan.readthedocs.io/en/latest/",
+        "Source url": "N/A"
     },
     "HDF/4.2.16-2-GCCcore-13.2.0": {
         "License": "not found",
         "Needs Manual Check": true,
-        "Retrieved From": "not found"
+        "Homepage": "https://support.hdfgroup.org/products/hdf4/",
+        "Source url": "http://support.hdfgroup.org/ftp/HDF/releases/HDF4.2.16/src/"
     },
     "HDF5/1.14.3-gompi-2023b": {
         "License": "not found",
         "Needs Manual Check": true,
-        "Retrieved From": "not found"
+        "Homepage": "https://portal.hdfgroup.org/display/support",
+        "Source url": "https://support.hdfgroup.org/ftp/HDF5/releases/hdf5-1.14/hdf5-1.14.3/src"
     },
     "HMMER/3.4-gompi-2023a": {
         "License": "not found",
         "Needs Manual Check": true,
-        "Retrieved From": "not found"
+        "Homepage": "http://hmmer.org/",
+        "Source url": "N/A"
     },
     "HPL/2.3-foss-2023b": {
         "License": [
             "Other"
         ],
         "Needs Manual Check": false,
-        "Retrieved From": "https://www.netlib.org/benchmark/hpl/"
+        "Retrieved from": "https://packages.ecosyste.ms/api/v1/packages/lookup?repository_url=https%3A%2F%2Fwww.netlib.org%2Fbenchmark%2Fhpl%2F"
     },
     "HTSlib/1.19.1-GCC-13.2.0": {
         "License": "not found",
         "Needs Manual Check": true,
-        "Retrieved From": "not found"
+        "Homepage": "https://www.htslib.org/",
+        "Source url": "https://github.com/samtools/htslib/releases/download/1.19.1/"
     },
     "HarfBuzz/8.2.2-GCCcore-13.2.0": {
         "License": [
             "MIT"
         ],
         "Needs Manual Check": false,
-        "Retrieved From": "https://www.freedesktop.org/wiki/Software/HarfBuzz"
+        "Retrieved from": "https://packages.ecosyste.ms/api/v1/packages/lookup?repository_url=https%3A%2F%2Fwww.freedesktop.org%2Fwiki%2FSoftware%2FHarfBuzz"
     },
     "HepMC3/3.2.6-GCC-12.3.0": {
         "License": "not found",
         "Needs Manual Check": true,
-        "Retrieved From": "not found"
+        "Homepage": "http://hepmc.web.cern.ch/hepmc/",
+        "Source url": "https://hepmc.web.cern.ch/hepmc/releases/"
     },
     "Highway/1.0.4-GCCcore-12.3.0": {
-        "License": "not found",
-        "Needs Manual Check": true,
-        "Retrieved From": "not found"
+        "License": "apache-2.0",
+        "Needs Manual Check": false,
+        "Retrieved from": "https://repos.ecosyste.ms/api/v1/repositories/lookup?url=https%3A%2F%2Fgithub.com%2Fgoogle%2Fhighway"
     },
     "Hypre/2.29.0-foss-2023a": {
-        "License": "not found",
-        "Needs Manual Check": true,
-        "Retrieved From": "not found"
+        "License": "https://github.com/hypre-space/hypre/blob/master/LICENSE-APACHE",
+        "Needs Manual Check": false,
+        "Retrieved from": "https://repos.ecosyste.ms/api/v1/hosts/GitHub/repositories/hypre-space%2Fhypre"
     },
     "ICU/74.1-GCCcore-13.2.0": {
         "License": [
             "ICU"
         ],
         "Needs Manual Check": false,
-        "Retrieved From": "https://icu.unicode.org"
+        "Retrieved from": "https://packages.ecosyste.ms/api/v1/packages/lookup?repository_url=https%3A%2F%2Ficu.unicode.org"
     },
     "IDG/1.2.0-foss-2023b": {
         "License": "not found",
         "Needs Manual Check": true,
-        "Retrieved From": "not found"
+        "Homepage": "https://idg.readthedocs.io/",
+        "Source url": "N/A"
     },
     "IPython/8.17.2-GCCcore-13.2.0": {
         "License": "not found",
         "Needs Manual Check": true,
-        "Retrieved From": "not found"
+        "Homepage": "https://ipython.org/index.html",
+        "Source url": "N/A"
     },
     "IQ-TREE/2.3.5-gompi-2023a": {
-        "License": "not found",
-        "Needs Manual Check": true,
-        "Retrieved From": "not found"
+        "License": "gpl-2.0",
+        "Needs Manual Check": false,
+        "Retrieved from": "https://repos.ecosyste.ms/api/v1/repositories/lookup?url=https%3A%2F%2Fgithub.com%2Fiqtree%2Fiqtree2"
     },
     "ISA-L/2.30.0-GCCcore-12.3.0": {
-        "License": "not found",
-        "Needs Manual Check": true,
-        "Retrieved From": "not found"
+        "License": "https://github.com/intel/isa-l/blob/master/LICENSE",
+        "Needs Manual Check": false,
+        "Retrieved from": "https://repos.ecosyste.ms/api/v1/hosts/GitHub/repositories/intel%2Fisa-l"
     },
     "ISL/0.26-GCCcore-12.3.0": {
         "License": "not found",
         "Needs Manual Check": true,
-        "Retrieved From": "not found"
+        "Homepage": "https://libisl.sourceforge.io",
+        "Source url": "https://libisl.sourceforge.io"
     },
     "ITSTool/2.0.7-GCCcore-12.3.0": {
         "License": [
             "GPL-3.0+"
         ],
         "Needs Manual Check": false,
-        "Retrieved From": "http://itstool.org/"
+        "Retrieved from": "https://packages.ecosyste.ms/api/v1/packages/lookup?repository_url=http%3A%2F%2Fitstool.org%2F"
     },
     "ImageMagick/7.1.1-34-GCCcore-13.2.0": {
         "License": [
             "ImageMagick"
         ],
         "Needs Manual Check": false,
-        "Retrieved From": "https://www.imagemagick.org/"
+        "Retrieved from": "https://packages.ecosyste.ms/api/v1/packages/lookup?repository_url=https%3A%2F%2Fwww.imagemagick.org%2F"
     },
     "Imath/3.1.9-GCCcore-13.2.0": {
-        "License": "not found",
-        "Needs Manual Check": true,
-        "Retrieved From": "not found"
+        "License": "https://imath.readthedocs.io/en/latest/license.html#license",
+        "Needs Manual Check": false,
+        "Retrieved from": "https://imath.readthedocs.io/en/latest/"
     },
     "JasPer/4.0.0-GCCcore-13.2.0": {
         "License": [
             "Other"
         ],
         "Needs Manual Check": false,
-        "Retrieved From": "https://www.ece.uvic.ca/~frodo/jasper/"
+        "Retrieved from": "https://packages.ecosyste.ms/api/v1/packages/lookup?repository_url=https%3A%2F%2Fwww.ece.uvic.ca%2F~frodo%2Fjasper%2F"
     },
     "Java/17.0.6": {
         "License": [
             "Other"
         ],
         "Needs Manual Check": false,
-        "Retrieved From": "http://openjdk.java.net"
+        "Retrieved from": "https://packages.ecosyste.ms/api/v1/packages/lookup?repository_url=http%3A%2F%2Fopenjdk.java.net"
     },
     "JsonCpp/1.9.5-GCCcore-12.3.0": {
-        "License": "not found",
-        "Needs Manual Check": true,
-        "Retrieved From": "not found"
+        "License": "https://github.com/open-source-parsers/jsoncpp/blob/master/LICENSE",
+        "Needs Manual Check": false,
+        "Retrieved from": "https://open-source-parsers.github.io/jsoncpp-docs/doxygen/index.html"
     },
     "Judy/1.0.5-GCCcore-12.3.0": {
         "License": [
             "LGPL-2.0-only"
         ],
         "Needs Manual Check": false,
-        "Retrieved From": "http://judy.sourceforge.net/"
+        "Retrieved from": "https://packages.ecosyste.ms/api/v1/packages/lookup?repository_url=http%3A%2F%2Fjudy.sourceforge.net%2F"
     },
     "JupyterLab/4.0.5-GCCcore-12.3.0": {
         "License": [
             "Other"
         ],
         "Needs Manual Check": false,
-        "Retrieved From": "https://jupyter.org/"
+        "Retrieved from": "https://packages.ecosyste.ms/api/v1/packages/lookup?repository_url=https%3A%2F%2Fjupyter.org%2F"
     },
     "JupyterNotebook/7.0.2-GCCcore-12.3.0": {
         "License": [
             "Other"
         ],
         "Needs Manual Check": false,
-        "Retrieved From": "https://jupyter.org/"
+        "Retrieved from": "https://packages.ecosyste.ms/api/v1/packages/lookup?repository_url=https%3A%2F%2Fjupyter.org%2F"
     },
     "KaHIP/3.16-gompi-2023a": {
-        "License": "not found",
-        "Needs Manual Check": true,
-        "Retrieved From": "not found"
+        "License": "mit",
+        "Needs Manual Check": false,
+        "Retrieved from": "https://repos.ecosyste.ms/api/v1/repositories/lookup?url=https%3A%2F%2Fgithub.com%2FKaHIP%2FKaHIP"
     },
     "KronaTools/2.8.1-GCCcore-12.3.0": {
         "License": "not found",
         "Needs Manual Check": true,
-        "Retrieved From": "not found"
+        "Homepage": "https://github.com/marbl/Krona/wiki/KronaTools",
+        "Source url": "https://github.com/marbl/Krona/releases/download/v2.8.1/"
     },
     "LAME/3.100-GCCcore-13.2.0": {
         "License": [
             "LGPL-2.0-or-later"
         ],
         "Needs Manual Check": false,
-        "Retrieved From": "http://lame.sourceforge.net/"
+        "Retrieved from": "https://packages.ecosyste.ms/api/v1/packages/lookup?repository_url=http%3A%2F%2Flame.sourceforge.net%2F"
     },
     "LAMMPS/29Aug2024-foss-2023b-kokkos": {
         "License": "not found",
         "Needs Manual Check": true,
-        "Retrieved From": "not found"
+        "Homepage": "https://www.lammps.org",
+        "Source url": "N/A"
     },
     "LERC/4.0.0-GCCcore-13.2.0": {
-        "License": "not found",
-        "Needs Manual Check": true,
-        "Retrieved From": "not found"
+        "License": "apache-2.0",
+        "Needs Manual Check": false,
+        "Retrieved from": "https://repos.ecosyste.ms/api/v1/repositories/lookup?url=https%3A%2F%2Fgithub.com%2FEsri%2Flerc"
     },
     "LHAPDF/6.5.4-GCC-12.3.0": {
         "License": "not found",
         "Needs Manual Check": true,
-        "Retrieved From": "not found"
+        "Homepage": "http://lhapdf.hepforge.org/",
+        "Source url": "http://www.hepforge.org/archive/lhapdf/"
     },
     "LLVM/16.0.6-GCCcore-13.2.0": {
         "License": [
             "Apache-2.0"
         ],
         "Needs Manual Check": false,
-        "Retrieved From": "https://llvm.org/"
+        "Retrieved from": "https://packages.ecosyste.ms/api/v1/packages/lookup?repository_url=https%3A%2F%2Fllvm.org%2F"
     },
     "LMDB/0.9.31-GCCcore-12.3.0": {
-        "License": "not found",
-        "Needs Manual Check": true,
-        "Retrieved From": "not found"
+        "License": "https://www.symas.com/symas-open-source-licenses",
+        "Needs Manual Check": false,
+        "Retrieved from": "https://symas.com/lmdb"
     },
     "LRBinner/0.1-foss-2023a": {
-        "License": "not found",
-        "Needs Manual Check": true,
-        "Retrieved From": "not found"
+        "License": "gpl-2.0",
+        "Needs Manual Check": false,
+        "Retrieved from": "https://repos.ecosyste.ms/api/v1/repositories/lookup?url=https%3A%2F%2Fgithub.com%2Fanuradhawick%2FLRBinner"
     },
     "LSD2/2.4.1-GCCcore-12.3.0": {
-        "License": "not found",
-        "Needs Manual Check": true,
-        "Retrieved From": "not found"
+        "License": "gpl-2.0",
+        "Needs Manual Check": false,
+        "Retrieved from": "https://repos.ecosyste.ms/api/v1/repositories/lookup?url=https%3A%2F%2Fgithub.com%2Ftothuhien%2Flsd2"
     },
     "LZO/2.10-GCCcore-12.3.0": {
         "License": [
             "Other"
         ],
         "Needs Manual Check": false,
-        "Retrieved From": "https://www.oberhumer.com/opensource/lzo/"
+        "Retrieved from": "https://packages.ecosyste.ms/api/v1/packages/lookup?repository_url=https%3A%2F%2Fwww.oberhumer.com%2Fopensource%2Flzo%2F"
     },
     "LibTIFF/4.6.0-GCCcore-13.2.0": {
-        "License": "not found",
-        "Needs Manual Check": true,
-        "Retrieved From": "not found"
+        "License": "https://libtiff.gitlab.io/libtiff/project/license.html",
+        "Needs Manual Check": false,
+        "Retrieved from": "https://libtiff.gitlab.io/libtiff/"
     },
     "Libint/2.7.2-GCC-12.3.0-lmax-6-cp2k": {
-        "License": "not found",
-        "Needs Manual Check": true,
-        "Retrieved From": "not found"
+        "License": "https://github.com/evaleev/libint/blob/master/LICENSE",
+        "Needs Manual Check": false,
+        "Retrieved from": "https://repos.ecosyste.ms/api/v1/hosts/GitHub/repositories/evaleev%2Flibint"
     },
     "LightGBM/4.5.0-foss-2023a": {
         "License": "not found",
         "Needs Manual Check": true,
-        "Retrieved From": "not found"
+        "Homepage": "https://lightgbm.readthedocs.io",
+        "Source url": "N/A"
     },
     "LittleCMS/2.15-GCCcore-13.2.0": {
         "License": "not found",
         "Needs Manual Check": true,
-        "Retrieved From": "not found"
+        "Homepage": "https://www.littlecms.com/",
+        "Source url": "N/A"
     },
     "LoopTools/2.15-GCC-12.3.0": {
-        "License": "not found",
-        "Needs Manual Check": true,
-        "Retrieved From": "not found"
+        "License": "http://gnu.org/licenses/lgpl.html",
+        "Needs Manual Check": false,
+        "Retrieved from": "https://feynarts.de/looptools/"
     },
     "Lua/5.4.6-GCCcore-13.2.0": {
         "License": [
             "MIT"
         ],
         "Needs Manual Check": false,
-        "Retrieved From": "https://www.lua.org/"
+        "Retrieved from": "https://packages.ecosyste.ms/api/v1/packages/lookup?repository_url=https%3A%2F%2Fwww.lua.org%2F"
     },
     "MAFFT/7.520-GCC-12.3.0-with-extensions": {
-        "License": "not found",
-        "Needs Manual Check": true,
-        "Retrieved From": "not found"
+        "License": "https://mafft.cbrc.jp/alignment/software/license66.txt",
+        "Needs Manual Check": false,
+        "Retrieved from": "https://mafft.cbrc.jp/alignment/software/source.html"
     },
     "MBX/1.1.0-foss-2023a": {
-        "License": "not found",
-        "Needs Manual Check": true,
-        "Retrieved From": "not found"
+        "License": "https://github.com/paesanilab/MBX/blob/master/LICENSE",
+        "Needs Manual Check": false,
+        "Retrieved from": "https://repos.ecosyste.ms/api/v1/hosts/GitHub/repositories/paesanilab%2FMBX"
     },
     "MCL/22.282-GCCcore-12.3.0": {
         "License": "not found",
         "Needs Manual Check": true,
-        "Retrieved From": "not found"
+        "Homepage": "https://micans.org/mcl/",
+        "Source url": "http://micans.org/mcl/src/"
     },
     "MDAnalysis/2.4.2-foss-2022b": {
-        "License": "not found",
-        "Needs Manual Check": true,
-        "Retrieved From": "not found"
+        "License": "https://www.gnu.org/licenses/gpl-2.0.html",
+        "Needs Manual Check": false,
+        "Retrieved from": "https://www.mdanalysis.org/"
     },
     "MDI/1.4.29-gompi-2023b": {
-        "License": "not found",
-        "Needs Manual Check": true,
-        "Retrieved From": "not found"
+        "License": "bsd-3-clause",
+        "Needs Manual Check": false,
+        "Retrieved from": "https://repos.ecosyste.ms/api/v1/repositories/lookup?url=https%3A%2F%2Fgithub.com%2FMolSSI-MDI%2FMDI_Library"
     },
     "METIS/5.1.0-GCCcore-12.3.0": {
         "License": [
             "Other"
         ],
         "Needs Manual Check": false,
-        "Retrieved From": "http://glaros.dtc.umn.edu/gkhome/metis/metis/overview"
+        "Retrieved from": "https://packages.ecosyste.ms/api/v1/packages/lookup?repository_url=http%3A%2F%2Fglaros.dtc.umn.edu%2Fgkhome%2Fmetis%2Fmetis%2Foverview"
     },
     "MMseqs2/14-7e284-gompi-2023a": {
-        "License": "not found",
-        "Needs Manual Check": true,
-        "Retrieved From": "not found"
+        "License": "https://mmseqs.com/soedinglab/MMseqs2/blob/master/LICENSE.md",
+        "Needs Manual Check": false,
+        "Retrieved from": "https://mmseqs.com"
     },
     "MODFLOW/6.4.4-foss-2023a": {
         "License": "not found",
         "Needs Manual Check": true,
-        "Retrieved From": "not found"
+        "Homepage": "https://www.usgs.gov/mission-areas/water-resources/science/modflow-and-related-programs",
+        "Source url": "https://github.com/%(github_account)s/modflow6/archive"
     },
     "MPC/1.3.1-GCCcore-13.2.0": {
         "License": [
             "LGPL-3.0-or-later"
         ],
         "Needs Manual Check": false,
-        "Retrieved From": "http://www.multiprecision.org/"
+        "Retrieved from": "https://packages.ecosyste.ms/api/v1/packages/lookup?repository_url=http%3A%2F%2Fwww.multiprecision.org%2F"
     },
     "MPFR/4.2.1-GCCcore-13.2.0": {
-        "License": "not found",
-        "Needs Manual Check": true,
-        "Retrieved From": "not found"
+        "License": "https://www.gnu.org/licenses/lgpl-3.0.html",
+        "Needs Manual Check": false,
+        "Retrieved from": "https://www.mpfr.org"
     },
     "MUMPS/5.6.1-foss-2023a-metis": {
         "License": "not found",
         "Needs Manual Check": true,
-        "Retrieved From": "not found"
+        "Homepage": "https://graal.ens-lyon.fr/MUMPS/",
+        "Source url": "https://graal.ens-lyon.fr/MUMPS/"
     },
     "Mako/1.2.4-GCCcore-13.2.0": {
-        "License": "not found",
-        "Needs Manual Check": true,
-        "Retrieved From": "not found"
+        "License": "http://www.opensource.org/licenses/mit-license.php",
+        "Needs Manual Check": false,
+        "Retrieved from": "https://www.makotemplates.org"
     },
     "MariaDB/11.6.0-GCC-12.3.0": {
         "License": [
             "LGPL-2.1-or-later"
         ],
         "Needs Manual Check": false,
-        "Retrieved From": "https://mariadb.org/"
+        "Retrieved from": "https://packages.ecosyste.ms/api/v1/packages/lookup?repository_url=https%3A%2F%2Fmariadb.org%2F"
     },
     "Mash/2.3-GCC-12.2.0": {
-        "License": "not found",
-        "Needs Manual Check": true,
-        "Retrieved From": "not found"
+        "License": "https://github.com/marbl/Mash/blob/master/LICENSE.txt",
+        "Needs Manual Check": false,
+        "Retrieved from": "https://repos.ecosyste.ms/api/v1/hosts/GitHub/repositories/marbl%2FMash"
     },
     "Mesa/23.1.9-GCCcore-13.2.0": {
-        "License": "not found",
-        "Needs Manual Check": true,
-        "Retrieved From": "not found"
+        "License": "https://docs.mesa3d.org/license.html",
+        "Needs Manual Check": false,
+        "Retrieved from": "https://www.mesa3d.org/"
     },
     "Meson/1.3.1-GCCcore-12.3.0": {
         "License": [
             "Apache-2.0"
         ],
         "Needs Manual Check": false,
-        "Retrieved From": "https://mesonbuild.com"
+        "Retrieved from": "https://packages.ecosyste.ms/api/v1/packages/lookup?repository_url=https%3A%2F%2Fmesonbuild.com"
     },
     "MetaEuk/6-GCC-12.2.0": {
         "License": "not found",
         "Needs Manual Check": true,
-        "Retrieved From": "not found"
+        "Homepage": "https://metaeuk.soedinglab.org",
+        "Source url": "https://github.com/soedinglab/metaeuk/archive"
     },
     "MetalWalls/21.06.1-foss-2023a": {
-        "License": "not found",
-        "Needs Manual Check": true,
-        "Retrieved From": "not found"
+        "License": "mit",
+        "Needs Manual Check": false,
+        "Retrieved from": "https://repos.ecosyste.ms/api/v1/repositories/lookup?url=https%3A%2F%2Fgitlab.com%2Fampere2%2Fmetalwalls"
     },
     "MultiQC/1.14-foss-2022b": {
         "License": [
             "Other"
         ],
         "Needs Manual Check": false,
-        "Retrieved From": "https://multiqc.info"
+        "Retrieved from": "https://packages.ecosyste.ms/api/v1/packages/lookup?repository_url=https%3A%2F%2Fmultiqc.info"
     },
     "Mustache/1.3.3-foss-2023b": {
-        "License": "not found",
-        "Needs Manual Check": true,
-        "Retrieved From": "not found"
+        "License": "mit",
+        "Needs Manual Check": false,
+        "Retrieved from": "https://repos.ecosyste.ms/api/v1/repositories/lookup?url=https%3A%2F%2Fgithub.com%2Fay-lab%2Fmustache"
     },
     "NASM/2.16.01-GCCcore-13.2.0": {
         "License": [
             "BSD-2-Clause"
         ],
         "Needs Manual Check": false,
-        "Retrieved From": "https://www.nasm.us/"
+        "Retrieved from": "https://packages.ecosyste.ms/api/v1/packages/lookup?repository_url=https%3A%2F%2Fwww.nasm.us%2F"
     },
     "NCCL/2.18.3-GCCcore-12.3.0-CUDA-12.1.1": {
         "License": "not found",
         "Needs Manual Check": true,
-        "Retrieved From": "not found"
+        "Homepage": "https://developer.nvidia.com/nccl",
+        "Source url": "N/A"
     },
     "NLTK/3.8.1-foss-2023b": {
         "License": [
             "Other"
         ],
         "Needs Manual Check": false,
-        "Retrieved From": "https://www.nltk.org/"
+        "Retrieved from": "https://packages.ecosyste.ms/api/v1/packages/lookup?repository_url=https%3A%2F%2Fwww.nltk.org%2F"
     },
     "NLopt/2.7.1-GCCcore-13.2.0": {
-        "License": "not found",
-        "Needs Manual Check": true,
-        "Retrieved From": "not found"
+        "License": "http://ab-initio.mit.edu/wiki/index.php/NLopt_License_and_Copyright/",
+        "Needs Manual Check": false,
+        "Retrieved from": "http://ab-initio.mit.edu/wiki/index.php/NLopt"
     },
     "NSPR/4.35-GCCcore-13.2.0": {
         "License": "not found",
         "Needs Manual Check": true,
-        "Retrieved From": "not found"
+        "Homepage": "https://developer.mozilla.org/en-US/docs/Mozilla/Projects/NSPR",
+        "Source url": "https://ftp.mozilla.org/pub/nspr/releases/v4.35/src/"
     },
     "NSS/3.94-GCCcore-13.2.0": {
         "License": [
             "Other"
         ],
         "Needs Manual Check": false,
-        "Retrieved From": "https://developer.mozilla.org/en-US/docs/Mozilla/Projects/NSS"
+        "Retrieved from": "https://packages.ecosyste.ms/api/v1/packages/lookup?repository_url=https%3A%2F%2Fdeveloper.mozilla.org%2Fen-US%2Fdocs%2FMozilla%2FProjects%2FNSS"
     },
     "Nextflow/23.10.0": {
         "License": "not found",
         "Needs Manual Check": true,
-        "Retrieved From": "not found"
+        "Homepage": "https://www.nextflow.io/",
+        "Source url": "https://github.com/nextflow-io/nextflow/releases/download/v%(version)s/"
     },
     "Ninja/1.11.1-GCCcore-13.2.0": {
         "License": [
             "Apache-2.0"
         ],
         "Needs Manual Check": false,
-        "Retrieved From": "https://ninja-build.org/"
+        "Retrieved from": "https://packages.ecosyste.ms/api/v1/packages/lookup?repository_url=https%3A%2F%2Fninja-build.org%2F"
     },
     "OPARI2/2.0.8-GCCcore-13.2.0": {
-        "License": "not found",
-        "Needs Manual Check": true,
-        "Retrieved From": "not found"
+        "License": "https://opensource.org/licenses/BSD-3-Clause",
+        "Needs Manual Check": false,
+        "Retrieved from": "https://www.score-p.org"
     },
     "OSU-Micro-Benchmarks/7.2-gompi-2023b": {
         "License": [
             "Other"
         ],
         "Needs Manual Check": false,
-        "Retrieved From": "https://mvapich.cse.ohio-state.edu/benchmarks/"
+        "Retrieved from": "https://packages.ecosyste.ms/api/v1/packages/lookup?repository_url=https%3A%2F%2Fmvapich.cse.ohio-state.edu%2Fbenchmarks%2F"
     },
     "OTF2/3.0.3-GCCcore-13.2.0": {
-        "License": "not found",
-        "Needs Manual Check": true,
-        "Retrieved From": "not found"
+        "License": "https://opensource.org/licenses/BSD-3-Clause",
+        "Needs Manual Check": false,
+        "Retrieved from": "https://www.score-p.org"
     },
     "OpenBLAS/0.3.24-GCC-13.2.0": {
         "License": "not found",
         "Needs Manual Check": true,
-        "Retrieved From": "not found"
+        "Homepage": "http://www.openblas.net/",
+        "Source url": "N/A"
     },
     "OpenEXR/3.2.0-GCCcore-13.2.0": {
         "License": [
             "BSD-3-Clause"
         ],
         "Needs Manual Check": false,
-        "Retrieved From": "https://www.openexr.com/"
+        "Retrieved from": "https://packages.ecosyste.ms/api/v1/packages/lookup?repository_url=https%3A%2F%2Fwww.openexr.com%2F"
     },
     "OpenFOAM/v2406-foss-2023a": {
         "License": [
             "Other"
         ],
         "Needs Manual Check": false,
-        "Retrieved From": "https://www.openfoam.com/"
+        "Retrieved from": "https://packages.ecosyste.ms/api/v1/packages/lookup?repository_url=https%3A%2F%2Fwww.openfoam.com%2F"
     },
     "OpenJPEG/2.5.0-GCCcore-13.2.0": {
         "License": [
             "BSD-2-Clause"
         ],
         "Needs Manual Check": false,
-        "Retrieved From": "https://www.openjpeg.org/"
+        "Retrieved from": "https://packages.ecosyste.ms/api/v1/packages/lookup?repository_url=https%3A%2F%2Fwww.openjpeg.org%2F"
     },
     "OpenMPI/4.1.6-GCC-13.2.0": {
         "License": [
             "Other"
         ],
         "Needs Manual Check": false,
-        "Retrieved From": "https://www.open-mpi.org/"
+        "Retrieved from": "https://packages.ecosyste.ms/api/v1/packages/lookup?repository_url=https%3A%2F%2Fwww.open-mpi.org%2F"
     },
     "OpenPGM/5.2.122-GCCcore-13.2.0": {
         "License": [
             "LGPL-2.1"
         ],
         "Needs Manual Check": false,
-        "Retrieved From": "https://code.google.com/p/openpgm/"
+        "Retrieved from": "https://packages.ecosyste.ms/api/v1/packages/lookup?repository_url=https%3A%2F%2Fcode.google.com%2Fp%2Fopenpgm%2F"
     },
     "OpenSSL/1.1": {
         "License": [
             "Apache-2.0"
         ],
         "Needs Manual Check": false,
-        "Retrieved From": "https://www.openssl.org/"
+        "Retrieved from": "https://packages.ecosyste.ms/api/v1/packages/lookup?repository_url=https%3A%2F%2Fwww.openssl.org%2F"
     },
     "OrthoFinder/2.5.5-foss-2023a": {
-        "License": "not found",
-        "Needs Manual Check": true,
-        "Retrieved From": "not found"
+        "License": "gpl-3.0",
+        "Needs Manual Check": false,
+        "Retrieved from": "https://repos.ecosyste.ms/api/v1/repositories/lookup?url=https%3A%2F%2Fgithub.com%2Fdavidemms%2FOrthoFinder"
     },
     "Osi/0.108.9-GCC-12.3.0": {
-        "License": "not found",
-        "Needs Manual Check": true,
-        "Retrieved From": "not found"
+        "License": "https://github.com/coin-or/Osi/blob/master/LICENSE",
+        "Needs Manual Check": false,
+        "Retrieved from": "https://repos.ecosyste.ms/api/v1/hosts/GitHub/repositories/coin-or%2FOsi"
     },
     "PAPI/7.1.0-GCCcore-13.2.0": {
         "License": "not found",
         "Needs Manual Check": true,
-        "Retrieved From": "not found"
+        "Homepage": "https://icl.cs.utk.edu/projects/papi/",
+        "Source url": "https://icl.utk.edu/projects/papi/downloads"
     },
     "PCRE/8.45-GCCcore-13.2.0": {
         "License": [
             "BSD-3-Clause"
         ],
         "Needs Manual Check": false,
-        "Retrieved From": "https://www.pcre.org/"
+        "Retrieved from": "https://packages.ecosyste.ms/api/v1/packages/lookup?repository_url=https%3A%2F%2Fwww.pcre.org%2F"
     },
     "PCRE2/10.42-GCCcore-13.2.0": {
         "License": [
             "BSD-3-Clause"
         ],
         "Needs Manual Check": false,
-        "Retrieved From": "https://www.pcre.org/"
+        "Retrieved from": "https://packages.ecosyste.ms/api/v1/packages/lookup?repository_url=https%3A%2F%2Fwww.pcre.org%2F"
     },
     "PDT/3.25.2-GCCcore-13.2.0": {
         "License": "not found",
         "Needs Manual Check": true,
-        "Retrieved From": "not found"
+        "Homepage": "https://www.cs.uoregon.edu/research/pdt/",
+        "Source url": "http://tau.uoregon.edu/pdt_releases/"
     },
     "PETSc/3.20.3-foss-2023a": {
         "License": "not found",
         "Needs Manual Check": true,
-        "Retrieved From": "not found"
+        "Homepage": "https://www.mcs.anl.gov/petsc",
+        "Source url": "N/A"
     },
     "PGPLOT/5.2.2-GCCcore-13.2.0": {
         "License": [
             "Other"
         ],
         "Needs Manual Check": false,
-        "Retrieved From": "https://sites.astro.caltech.edu/~tjp/pgplot/"
+        "Retrieved from": "https://packages.ecosyste.ms/api/v1/packages/lookup?repository_url=https%3A%2F%2Fsites.astro.caltech.edu%2F~tjp%2Fpgplot%2F"
     },
     "PLUMED/2.9.2-foss-2023b": {
-        "License": "not found",
-        "Needs Manual Check": true,
-        "Retrieved From": "not found"
+        "License": "http://creativecommons.org/licenses/by-sa/4.0/",
+        "Needs Manual Check": false,
+        "Retrieved from": "https://www.plumed.org"
     },
     "PLY/3.11-GCCcore-12.3.0": {
         "License": [
             "BSD-3-Clause"
         ],
         "Needs Manual Check": false,
-        "Retrieved From": "https://www.dabeaz.com/ply/"
+        "Retrieved from": "https://packages.ecosyste.ms/api/v1/packages/lookup?repository_url=https%3A%2F%2Fwww.dabeaz.com%2Fply%2F"
     },
     "PMIx/4.2.6-GCCcore-13.2.0": {
         "License": "not found",
         "Needs Manual Check": true,
-        "Retrieved From": "not found"
+        "Homepage": "https://pmix.org/",
+        "Source url": "https://github.com/openpmix/openpmix/releases/download/v4.2.6"
     },
     "PROJ/9.3.1-GCCcore-13.2.0": {
-        "License": "not found",
-        "Needs Manual Check": true,
-        "Retrieved From": "not found"
+        "License": "https://proj.org/about.html#license",
+        "Needs Manual Check": false,
+        "Retrieved from": "https://proj.org"
     },
     "Pango/1.51.0-GCCcore-13.2.0": {
         "License": [
             "LGPL-2.1-or-later"
         ],
         "Needs Manual Check": false,
-        "Retrieved From": "https://www.pango.org/"
+        "Retrieved from": "https://packages.ecosyste.ms/api/v1/packages/lookup?repository_url=https%3A%2F%2Fwww.pango.org%2F"
     },
     "ParMETIS/4.0.3-gompi-2023a": {
         "License": [
             "Other"
         ],
         "Needs Manual Check": false,
-        "Retrieved From": "http://glaros.dtc.umn.edu/gkhome/metis/parmetis/overview"
+        "Retrieved from": "https://packages.ecosyste.ms/api/v1/packages/lookup?repository_url=http%3A%2F%2Fglaros.dtc.umn.edu%2Fgkhome%2Fmetis%2Fparmetis%2Foverview"
     },
     "ParaView/5.11.2-foss-2023a": {
         "License": [
             "Other"
         ],
         "Needs Manual Check": false,
-        "Retrieved From": "https://www.paraview.org"
+        "Retrieved from": "https://packages.ecosyste.ms/api/v1/packages/lookup?repository_url=https%3A%2F%2Fwww.paraview.org"
     },
     "Paraver/4.11.4-GCC-12.3.0": {
         "License": [
             "Other"
         ],
         "Needs Manual Check": false,
-        "Retrieved From": "https://tools.bsc.es/paraver"
+        "Retrieved from": "https://packages.ecosyste.ms/api/v1/packages/lookup?repository_url=https%3A%2F%2Ftools.bsc.es%2Fparaver"
     },
     "Perl/5.38.0-GCCcore-13.2.0": {
         "License": [
@@ -1111,7 +1159,7 @@
             "GPL-1.0-or-later"
         ],
         "Needs Manual Check": false,
-        "Retrieved From": "https://www.perl.org/"
+        "Retrieved from": "https://packages.ecosyste.ms/api/v1/packages/lookup?repository_url=https%3A%2F%2Fwww.perl.org%2F"
     },
     "Perl-bundle-CPAN/5.36.1-GCCcore-12.3.0": {
         "License": [
@@ -1119,99 +1167,99 @@
             "GPL-1.0-or-later"
         ],
         "Needs Manual Check": false,
-        "Retrieved From": "https://www.perl.org/"
+        "Retrieved from": "https://packages.ecosyste.ms/api/v1/packages/lookup?repository_url=https%3A%2F%2Fwww.perl.org%2F"
     },
     "Pillow/10.2.0-GCCcore-13.2.0": {
-        "License": "not found",
-        "Needs Manual Check": true,
-        "Retrieved From": "not found"
+        "License": "https://pillow.readthedocs.org/about.html#license",
+        "Needs Manual Check": false,
+        "Retrieved from": "https://pillow.readthedocs.org/"
     },
     "Pillow-SIMD/9.5.0-GCCcore-12.3.0": {
-        "License": "not found",
-        "Needs Manual Check": true,
-        "Retrieved From": "not found"
+        "License": "https://github.com/uploadcare/pillow-simd/blob/simd/master/LICENSE",
+        "Needs Manual Check": false,
+        "Retrieved from": "https://repos.ecosyste.ms/api/v1/hosts/GitHub/repositories/uploadcare%2Fpillow-simd"
     },
     "Pint/0.24-GCCcore-13.2.0": {
-        "License": "not found",
-        "Needs Manual Check": true,
-        "Retrieved From": "not found"
+        "License": "https://github.com/hgrecco/pint/blob/master/LICENSE",
+        "Needs Manual Check": false,
+        "Retrieved from": "https://repos.ecosyste.ms/api/v1/hosts/GitHub/repositories/hgrecco%2Fpint"
     },
     "PostgreSQL/16.1-GCCcore-13.2.0": {
         "License": [
             "PostgreSQL"
         ],
         "Needs Manual Check": false,
-        "Retrieved From": "https://www.postgresql.org/"
+        "Retrieved from": "https://packages.ecosyste.ms/api/v1/packages/lookup?repository_url=https%3A%2F%2Fwww.postgresql.org%2F"
     },
     "PuLP/2.8.0-foss-2023a": {
-        "License": "not found",
-        "Needs Manual Check": true,
-        "Retrieved From": "not found"
+        "License": "https://github.com/coin-or/pulp/blob/master/LICENSE",
+        "Needs Manual Check": false,
+        "Retrieved from": "https://repos.ecosyste.ms/api/v1/hosts/GitHub/repositories/coin-or%2Fpulp"
     },
     "PyOpenGL/3.1.7-GCCcore-12.3.0": {
         "License": [
             "BSD-3-Clause"
         ],
         "Needs Manual Check": false,
-        "Retrieved From": "http://pyopengl.sourceforge.net"
+        "Retrieved from": "https://packages.ecosyste.ms/api/v1/packages/lookup?repository_url=http%3A%2F%2Fpyopengl.sourceforge.net"
     },
     "PyQt-builder/1.15.4-GCCcore-12.3.0": {
         "License": [
             "GPL-2.0+"
         ],
         "Needs Manual Check": false,
-        "Retrieved From": "http://www.example.com"
+        "Retrieved from": "https://packages.ecosyste.ms/api/v1/packages/lookup?repository_url=http%3A%2F%2Fwww.example.com"
     },
     "PyQt5/5.15.10-GCCcore-12.3.0": {
-        "License": "not found",
-        "Needs Manual Check": true,
-        "Retrieved From": "not found"
+        "License": "https://www.riverbankcomputing.com/commercial/license-faq",
+        "Needs Manual Check": false,
+        "Retrieved from": "https://www.riverbankcomputing.com/software/pyqt"
     },
     "PyTorch/2.1.2-foss-2023a": {
         "License": [
             "Other"
         ],
         "Needs Manual Check": false,
-        "Retrieved From": "https://pytorch.org/"
+        "Retrieved from": "https://packages.ecosyste.ms/api/v1/packages/lookup?repository_url=https%3A%2F%2Fpytorch.org%2F"
     },
     "PyYAML/6.0.1-GCCcore-13.2.0": {
-        "License": "not found",
-        "Needs Manual Check": true,
-        "Retrieved From": "not found"
+        "License": "mit",
+        "Needs Manual Check": false,
+        "Retrieved from": "https://repos.ecosyste.ms/api/v1/repositories/lookup?url=https%3A%2F%2Fgithub.com%2Fyaml%2Fpyyaml"
     },
     "PyZMQ/25.1.1-GCCcore-12.3.0": {
-        "License": "not found",
-        "Needs Manual Check": true,
-        "Retrieved From": "not found"
+        "License": "https://www.zeromq.org/license/",
+        "Needs Manual Check": false,
+        "Retrieved from": "https://www.zeromq.org/bindings:python"
     },
     "Pygments/2.18.0-GCCcore-12.3.0": {
         "License": [
             "BSD-2-Clause"
         ],
         "Needs Manual Check": false,
-        "Retrieved From": "https://pygments.org/"
+        "Retrieved from": "https://packages.ecosyste.ms/api/v1/packages/lookup?repository_url=https%3A%2F%2Fpygments.org%2F"
     },
     "Pysam/0.22.0-GCC-12.3.0": {
-        "License": "not found",
-        "Needs Manual Check": true,
-        "Retrieved From": "not found"
+        "License": "mit",
+        "Needs Manual Check": false,
+        "Retrieved from": "https://repos.ecosyste.ms/api/v1/repositories/lookup?url=https%3A%2F%2Fgithub.com%2Fpysam-developers%2Fpysam"
     },
     "Python/3.11.5-GCCcore-13.2.0": {
-        "License": "not found",
-        "Needs Manual Check": true,
-        "Retrieved From": "not found"
+        "License": "https://docs.python.org/3/license.html",
+        "Needs Manual Check": false,
+        "Retrieved from": "https://python.org/"
     },
     "Python-bundle-PyPI/2023.10-GCCcore-13.2.0": {
-        "License": "not found",
-        "Needs Manual Check": true,
-        "Retrieved From": "not found"
+        "License": "https://docs.python.org/3/license.html",
+        "Needs Manual Check": false,
+        "Retrieved from": "https://python.org/"
     },
     "Qhull/2020.2-GCCcore-13.2.0": {
         "License": [
             "Other"
         ],
         "Needs Manual Check": false,
-        "Retrieved From": "http://www.qhull.org"
+        "Retrieved from": "https://packages.ecosyste.ms/api/v1/packages/lookup?repository_url=http%3A%2F%2Fwww.qhull.org"
     },
     "Qt5/5.15.13-GCCcore-13.2.0": {
         "License": [
@@ -1221,12 +1269,13 @@
             "MulanPSL-1.0"
         ],
         "Needs Manual Check": false,
-        "Retrieved From": "https://qt.io/"
+        "Retrieved from": "https://packages.ecosyste.ms/api/v1/packages/lookup?repository_url=https%3A%2F%2Fqt.io%2F"
     },
     "QuantumESPRESSO/7.3.1-foss-2023a": {
         "License": "not found",
         "Needs Manual Check": true,
-        "Retrieved From": "not found"
+        "Homepage": "https://www.quantum-espresso.org",
+        "Source url": "N/A"
     },
     "R/4.4.1-gfbf-2023b": {
         "License": [
@@ -1235,14 +1284,14 @@
             "LGPL-2.1-or-later"
         ],
         "Needs Manual Check": false,
-        "Retrieved From": "https://www.r-project.org/"
+        "Retrieved from": "https://packages.ecosyste.ms/api/v1/packages/lookup?repository_url=https%3A%2F%2Fwww.r-project.org%2F"
     },
     "R-bundle-Bioconductor/3.18-foss-2023a-R-4.3.2": {
         "License": [
             "GPL-2.0"
         ],
         "Needs Manual Check": false,
-        "Retrieved From": "https://bioconductor.org"
+        "Retrieved from": "https://packages.ecosyste.ms/api/v1/packages/lookup?repository_url=https%3A%2F%2Fbioconductor.org"
     },
     "R-bundle-CRAN/2024.06-foss-2023b": {
         "License": [
@@ -1251,58 +1300,60 @@
             "LGPL-2.1-or-later"
         ],
         "Needs Manual Check": false,
-        "Retrieved From": "https://www.r-project.org/"
+        "Retrieved from": "https://packages.ecosyste.ms/api/v1/packages/lookup?repository_url=https%3A%2F%2Fwww.r-project.org%2F"
     },
     "RE2/2024-03-01-GCCcore-13.2.0": {
-        "License": "not found",
-        "Needs Manual Check": true,
-        "Retrieved From": "not found"
+        "License": "bsd-3-clause",
+        "Needs Manual Check": false,
+        "Retrieved from": "https://repos.ecosyste.ms/api/v1/repositories/lookup?url=https%3A%2F%2Fgithub.com%2Fgoogle%2Fre2"
     },
     "ROOT/6.30.06-foss-2023a": {
         "License": [
             "Other"
         ],
         "Needs Manual Check": false,
-        "Retrieved From": "https://root.cern.ch"
+        "Retrieved from": "https://packages.ecosyste.ms/api/v1/packages/lookup?repository_url=https%3A%2F%2Froot.cern.ch"
     },
     "RapidJSON/1.1.0-GCCcore-12.2.0": {
         "License": [
             "Other"
         ],
         "Needs Manual Check": false,
-        "Retrieved From": "https://rapidjson.org"
+        "Retrieved from": "https://packages.ecosyste.ms/api/v1/packages/lookup?repository_url=https%3A%2F%2Frapidjson.org"
     },
     "Raptor/2.0.16-GCCcore-12.3.0": {
-        "License": "not found",
-        "Needs Manual Check": true,
-        "Retrieved From": "not found"
+        "License": "https://librdf.org/raptor/UPGRADING.html",
+        "Needs Manual Check": false,
+        "Retrieved from": "https://librdf.org/raptor/"
     },
     "Rasqal/0.9.33-GCCcore-12.3.0": {
         "License": "not found",
         "Needs Manual Check": true,
-        "Retrieved From": "not found"
+        "Homepage": "hhttps://librdf.org/rasqal",
+        "Source url": "https://download.librdf.org/source"
     },
     "ReFrame/4.6.2": {
-        "License": "not found",
-        "Needs Manual Check": true,
-        "Retrieved From": "not found"
+        "License": "bsd-3-clause",
+        "Needs Manual Check": false,
+        "Retrieved from": "https://repos.ecosyste.ms/api/v1/repositories/lookup?url=https%3A%2F%2Fgithub.com%2Freframe-hpc%2Freframe"
     },
     "Redland/1.0.17-GCC-12.3.0": {
         "License": [
             "LGPL-2.1-or-later"
         ],
         "Needs Manual Check": false,
-        "Retrieved From": "https://librdf.org/raptor"
+        "Retrieved from": "https://packages.ecosyste.ms/api/v1/packages/lookup?repository_url=https%3A%2F%2Flibrdf.org%2Fraptor"
     },
     "Rivet/3.1.9-gompi-2023a-HepMC3-3.2.6": {
-        "License": "not found",
-        "Needs Manual Check": true,
-        "Retrieved From": "not found"
+        "License": "gpl-3.0",
+        "Needs Manual Check": false,
+        "Retrieved from": "https://repos.ecosyste.ms/api/v1/repositories/lookup?url=https%3A%2F%2Fgitlab.com%2Fhepcedar%2Frivet"
     },
     "Ruby/3.3.0-GCCcore-12.3.0": {
         "License": "not found",
         "Needs Manual Check": true,
-        "Retrieved From": "not found"
+        "Homepage": "https://www.ruby-lang.org",
+        "Source url": "https://cache.ruby-lang.org/pub/ruby/3.3"
     },
     "Rust/1.76.0-GCCcore-13.2.0": {
         "License": [
@@ -1310,616 +1361,642 @@
             "MIT"
         ],
         "Needs Manual Check": false,
-        "Retrieved From": "https://www.rust-lang.org"
+        "Retrieved from": "https://packages.ecosyste.ms/api/v1/packages/lookup?repository_url=https%3A%2F%2Fwww.rust-lang.org"
     },
     "SAMtools/1.18-GCC-12.3.0": {
         "License": "not found",
         "Needs Manual Check": true,
-        "Retrieved From": "not found"
+        "Homepage": "https://www.htslib.org/",
+        "Source url": "https://github.com/samtools/samtools/releases/download/1.18"
     },
     "SCOTCH/7.0.3-gompi-2023a": {
-        "License": "not found",
-        "Needs Manual Check": true,
-        "Retrieved From": "not found"
+        "License": "http://www.cecill.info/licences/Licence_CeCILL-C_V1-en.html",
+        "Needs Manual Check": false,
+        "Retrieved from": "https://www.labri.fr/perso/pelegrin/scotch/"
     },
     "SDL2/2.28.5-GCCcore-13.2.0": {
         "License": [
             "Zlib"
         ],
         "Needs Manual Check": false,
-        "Retrieved From": "https://www.libsdl.org/"
+        "Retrieved from": "https://packages.ecosyste.ms/api/v1/packages/lookup?repository_url=https%3A%2F%2Fwww.libsdl.org%2F"
     },
     "SEPP/4.5.1-foss-2022b": {
-        "License": "not found",
-        "Needs Manual Check": true,
-        "Retrieved From": "not found"
+        "License": "gpl-3.0",
+        "Needs Manual Check": false,
+        "Retrieved from": "https://repos.ecosyste.ms/api/v1/repositories/lookup?url=https%3A%2F%2Fgithub.com%2Fsmirarab%2Fsepp"
     },
     "SIONlib/1.7.7-GCCcore-13.2.0-tools": {
         "License": [
             "Other"
         ],
         "Needs Manual Check": false,
-        "Retrieved From": "https://www.fz-juelich.de/ias/jsc/EN/Expertise/Support/Software/SIONlib/_node.html"
+        "Retrieved from": "https://packages.ecosyste.ms/api/v1/packages/lookup?repository_url=https%3A%2F%2Fwww.fz-juelich.de%2Fias%2Fjsc%2FEN%2FExpertise%2FSupport%2FSoftware%2FSIONlib%2F_node.html"
     },
     "SIP/6.8.1-GCCcore-12.3.0": {
         "License": [
             "Other"
         ],
         "Needs Manual Check": false,
-        "Retrieved From": "http://www.riverbankcomputing.com/software/sip/"
+        "Retrieved from": "https://packages.ecosyste.ms/api/v1/packages/lookup?repository_url=http%3A%2F%2Fwww.riverbankcomputing.com%2Fsoftware%2Fsip%2F"
     },
     "SLEPc/3.20.1-foss-2023a": {
         "License": [
             "Other"
         ],
         "Needs Manual Check": false,
-        "Retrieved From": "https://slepc.upv.es"
+        "Retrieved from": "https://packages.ecosyste.ms/api/v1/packages/lookup?repository_url=https%3A%2F%2Fslepc.upv.es"
     },
     "SQLAlchemy/2.0.25-GCCcore-12.3.0": {
-        "License": "not found",
-        "Needs Manual Check": true,
-        "Retrieved From": "not found"
+        "License": "https://www.sqlalchemy.org/download.html#license",
+        "Needs Manual Check": false,
+        "Retrieved from": "https://www.sqlalchemy.org/"
     },
     "SQLite/3.43.1-GCCcore-13.2.0": {
         "License": [
             "blessing"
         ],
         "Needs Manual Check": false,
-        "Retrieved From": "https://www.sqlite.org/"
+        "Retrieved from": "https://packages.ecosyste.ms/api/v1/packages/lookup?repository_url=https%3A%2F%2Fwww.sqlite.org%2F"
     },
     "STAR/2.7.11b-GCC-13.2.0": {
-        "License": "not found",
-        "Needs Manual Check": true,
-        "Retrieved From": "not found"
+        "License": "mit",
+        "Needs Manual Check": false,
+        "Retrieved from": "https://repos.ecosyste.ms/api/v1/repositories/lookup?url=https%3A%2F%2Fgithub.com%2Falexdobin%2FSTAR"
     },
     "SWIG/4.1.1-GCCcore-13.2.0": {
         "License": [
             "GPL-3.0-only"
         ],
         "Needs Manual Check": false,
-        "Retrieved From": "http://www.swig.org/"
+        "Retrieved from": "https://packages.ecosyste.ms/api/v1/packages/lookup?repository_url=http%3A%2F%2Fwww.swig.org%2F"
     },
     "ScaFaCoS/1.0.4-foss-2023b": {
         "License": [
             "Other"
         ],
         "Needs Manual Check": false,
-        "Retrieved From": "http://www.scafacos.de/"
+        "Retrieved from": "https://packages.ecosyste.ms/api/v1/packages/lookup?repository_url=http%3A%2F%2Fwww.scafacos.de%2F"
     },
     "ScaLAPACK/2.2.0-gompi-2023b-fb": {
         "License": [
             "Other"
         ],
         "Needs Manual Check": false,
-        "Retrieved From": "https://www.netlib.org/scalapack/"
+        "Retrieved from": "https://packages.ecosyste.ms/api/v1/packages/lookup?repository_url=https%3A%2F%2Fwww.netlib.org%2Fscalapack%2F"
     },
     "SciPy-bundle/2023.11-gfbf-2023b": {
-        "License": "not found",
-        "Needs Manual Check": true,
-        "Retrieved From": "not found"
+        "License": "https://docs.python.org/3/license.html",
+        "Needs Manual Check": false,
+        "Retrieved from": "https://python.org/"
     },
     "SciTools-Iris/3.9.0-foss-2023a": {
-        "License": "not found",
-        "Needs Manual Check": true,
-        "Retrieved From": "not found"
+        "License": "https://scitools-iris.readthedocs.io/copyright.html",
+        "Needs Manual Check": false,
+        "Retrieved from": "https://scitools-iris.readthedocs.io"
     },
     "Score-P/8.4-gompi-2023b": {
-        "License": "not found",
-        "Needs Manual Check": true,
-        "Retrieved From": "not found"
+        "License": "https://opensource.org/licenses/BSD-3-Clause",
+        "Needs Manual Check": false,
+        "Retrieved from": "https://www.score-p.org"
     },
     "Seaborn/0.13.2-gfbf-2023a": {
         "License": [
             "Other"
         ],
         "Needs Manual Check": false,
-        "Retrieved From": "https://seaborn.pydata.org/"
+        "Retrieved from": "https://packages.ecosyste.ms/api/v1/packages/lookup?repository_url=https%3A%2F%2Fseaborn.pydata.org%2F"
     },
     "Shapely/2.0.1-gfbf-2023a": {
-        "License": "not found",
-        "Needs Manual Check": true,
-        "Retrieved From": "not found"
+        "License": "bsd-3-clause",
+        "Needs Manual Check": false,
+        "Retrieved from": "https://repos.ecosyste.ms/api/v1/repositories/lookup?url=https%3A%2F%2Fgithub.com%2FToblerity%2FShapely"
     },
     "SlurmViewer/1.0.1-GCCcore-13.2.0": {
-        "License": "not found",
-        "Needs Manual Check": true,
-        "Retrieved From": "not found"
+        "License": "mit",
+        "Needs Manual Check": false,
+        "Retrieved from": "https://repos.ecosyste.ms/api/v1/repositories/lookup?url=https%3A%2F%2Fgitlab.com%2Flkeb%2Fslurm_viewer"
     },
     "Solids4foam/2.1-foss-2023a": {
-        "License": "not found",
-        "Needs Manual Check": true,
-        "Retrieved From": "not found"
+        "License": "https://github.com/solids4foam/solids4foam.github.io",
+        "Needs Manual Check": false,
+        "Retrieved from": "https://www.solids4foam.com/"
     },
     "SuiteSparse/7.1.0-foss-2023a": {
         "License": "not found",
         "Needs Manual Check": true,
-        "Retrieved From": "not found"
+        "Homepage": "https://faculty.cse.tamu.edu/davis/suitesparse.html",
+        "Source url": "https://github.com/DrTimothyAldenDavis/SuiteSparse/archive"
     },
     "SuperLU_DIST/8.1.2-foss-2023a": {
         "License": [
             "Other"
         ],
         "Needs Manual Check": false,
-        "Retrieved From": "https://crd-legacy.lbl.gov/~xiaoye/SuperLU/"
+        "Retrieved from": "https://packages.ecosyste.ms/api/v1/packages/lookup?repository_url=https%3A%2F%2Fcrd-legacy.lbl.gov%2F~xiaoye%2FSuperLU%2F"
     },
     "Szip/2.1.1-GCCcore-13.2.0": {
         "License": [
             "Other"
         ],
         "Needs Manual Check": false,
-        "Retrieved From": "https://support.hdfgroup.org/doc_resource/SZIP/"
+        "Retrieved from": "https://packages.ecosyste.ms/api/v1/packages/lookup?repository_url=https%3A%2F%2Fsupport.hdfgroup.org%2Fdoc_resource%2FSZIP%2F"
     },
     "Tcl/8.6.13-GCCcore-13.2.0": {
         "License": [
             "Other"
         ],
         "Needs Manual Check": false,
-        "Retrieved From": "https://www.tcl.tk/"
+        "Retrieved from": "https://packages.ecosyste.ms/api/v1/packages/lookup?repository_url=https%3A%2F%2Fwww.tcl.tk%2F"
     },
     "TensorFlow/2.13.0-foss-2023a": {
         "License": "not found",
         "Needs Manual Check": true,
-        "Retrieved From": "not found"
+        "Homepage": "https://www.tensorflow.org/",
+        "Source url": "N/A"
     },
     "Tk/8.6.13-GCCcore-13.2.0": {
         "License": [
             "Other"
         ],
         "Needs Manual Check": false,
-        "Retrieved From": "https://www.tcl.tk/"
+        "Retrieved from": "https://packages.ecosyste.ms/api/v1/packages/lookup?repository_url=https%3A%2F%2Fwww.tcl.tk%2F"
     },
     "Tkinter/3.11.5-GCCcore-13.2.0": {
-        "License": "not found",
-        "Needs Manual Check": true,
-        "Retrieved From": "not found"
+        "License": "https://docs.python.org/3/license.html",
+        "Needs Manual Check": false,
+        "Retrieved from": "https://python.org/"
     },
     "Tombo/1.5.1-foss-2023a": {
-        "License": "not found",
-        "Needs Manual Check": true,
-        "Retrieved From": "not found"
+        "License": "https://github.com/nanoporetech/tombo/blob/master/LICENSE.md",
+        "Needs Manual Check": false,
+        "Retrieved from": "https://repos.ecosyste.ms/api/v1/hosts/GitHub/repositories/nanoporetech%2Ftombo"
     },
     "Transrate/1.0.3-GCC-12.3.0": {
-        "License": "not found",
-        "Needs Manual Check": true,
-        "Retrieved From": "not found"
+        "License": "http://transrate.mit-license.org",
+        "Needs Manual Check": false,
+        "Retrieved from": "https://hibberdlab.com/transrate"
     },
     "UCC/1.2.0-GCCcore-13.2.0": {
-        "License": "not found",
-        "Needs Manual Check": true,
-        "Retrieved From": "not found"
+        "License": "bsd-3-clause",
+        "Needs Manual Check": false,
+        "Retrieved from": "https://repos.ecosyste.ms/api/v1/repositories/lookup?url=https%3A%2F%2Fgithub.com%2Fopenucx%2Fucc"
     },
     "UCC-CUDA/1.2.0-GCCcore-12.3.0-CUDA-12.1.1": {
-        "License": "not found",
-        "Needs Manual Check": true,
-        "Retrieved From": "not found"
+        "License": "bsd-3-clause",
+        "Needs Manual Check": false,
+        "Retrieved from": "https://repos.ecosyste.ms/api/v1/repositories/lookup?url=https%3A%2F%2Fgithub.com%2Fopenucx%2Fucc"
     },
     "UCX/1.15.0-GCCcore-13.2.0": {
         "License": "not found",
         "Needs Manual Check": true,
-        "Retrieved From": "not found"
+        "Homepage": "https://www.openucx.org/",
+        "Source url": "https://github.com/openucx/ucx/releases/download/v1.15.0"
     },
     "UCX-CUDA/1.14.1-GCCcore-12.3.0-CUDA-12.1.1": {
         "License": "not found",
         "Needs Manual Check": true,
-        "Retrieved From": "not found"
+        "Homepage": "http://www.openucx.org/",
+        "Source url": "https://github.com/openucx/ucx/releases/download/v1.14.1"
     },
     "UDUNITS/2.2.28-GCCcore-13.2.0": {
         "License": [
             "Other"
         ],
         "Needs Manual Check": false,
-        "Retrieved From": "https://www.unidata.ucar.edu/software/udunits/"
+        "Retrieved from": "https://packages.ecosyste.ms/api/v1/packages/lookup?repository_url=https%3A%2F%2Fwww.unidata.ucar.edu%2Fsoftware%2Fudunits%2F"
     },
     "UnZip/6.0-GCCcore-13.2.0": {
         "License": [
             "Other"
         ],
         "Needs Manual Check": false,
-        "Retrieved From": "http://www.info-zip.org/UnZip.html"
+        "Retrieved from": "https://packages.ecosyste.ms/api/v1/packages/lookup?repository_url=http%3A%2F%2Fwww.info-zip.org%2FUnZip.html"
     },
     "VCFtools/0.1.16-GCC-12.2.0": {
         "License": "not found",
         "Needs Manual Check": true,
-        "Retrieved From": "not found"
+        "Homepage": "https://vcftools.github.io",
+        "Source url": "https://github.com/vcftools/vcftools/releases/download/v0.1.16/"
     },
     "VTK/9.3.0-foss-2023b": {
         "License": [
             "Other"
         ],
         "Needs Manual Check": false,
-        "Retrieved From": "https://www.vtk.org"
+        "Retrieved from": "https://packages.ecosyste.ms/api/v1/packages/lookup?repository_url=https%3A%2F%2Fwww.vtk.org"
     },
     "Valgrind/3.23.0-gompi-2023b": {
-        "License": "not found",
-        "Needs Manual Check": true,
-        "Retrieved From": "not found"
+        "License": "http://www.gnu.org/licenses/gpl-2.0.html",
+        "Needs Manual Check": false,
+        "Retrieved from": "https://valgrind.org"
     },
     "Vim/9.1.0004-GCCcore-12.3.0": {
         "License": [
             "Other"
         ],
         "Needs Manual Check": false,
-        "Retrieved From": "http://www.vim.org"
+        "Retrieved from": "https://packages.ecosyste.ms/api/v1/packages/lookup?repository_url=http%3A%2F%2Fwww.vim.org"
     },
     "Voro++/0.4.6-GCCcore-13.2.0": {
         "License": "not found",
         "Needs Manual Check": true,
-        "Retrieved From": "not found"
+        "Homepage": "http://math.lbl.gov/voro++/",
+        "Source url": "N/A"
     },
     "WCSLIB/7.11-GCC-13.2.0": {
         "License": "not found",
         "Needs Manual Check": true,
-        "Retrieved From": "not found"
+        "Homepage": "https://www.atnf.csiro.au/people/mcalabre/WCS/",
+        "Source url": "ftp://ftp.atnf.csiro.au/pub/software/wcslib/"
     },
     "WRF/4.4.1-foss-2022b-dmpar": {
-        "License": "not found",
-        "Needs Manual Check": true,
-        "Retrieved From": "not found"
+        "License": "https://github.com/wrf-model/WRF/blob/master/LICENSE.txt",
+        "Needs Manual Check": false,
+        "Retrieved from": "https://repos.ecosyste.ms/api/v1/hosts/GitHub/repositories/wrf-model%2FWRF"
     },
     "WSClean/3.5-foss-2023b": {
         "License": "not found",
         "Needs Manual Check": true,
-        "Retrieved From": "not found"
+        "Homepage": "https://wsclean.readthedocs.io/",
+        "Source url": "N/A"
     },
     "Wayland/1.22.0-GCCcore-13.2.0": {
         "License": [
             "MIT"
         ],
         "Needs Manual Check": false,
-        "Retrieved From": "https://wayland.freedesktop.org/"
+        "Retrieved from": "https://packages.ecosyste.ms/api/v1/packages/lookup?repository_url=https%3A%2F%2Fwayland.freedesktop.org%2F"
     },
     "WhatsHap/2.2-foss-2023a": {
         "License": "not found",
         "Needs Manual Check": true,
-        "Retrieved From": "not found"
+        "Homepage": "https://whatshap.readthedocs.io",
+        "Source url": "N/A"
     },
     "X11/20231019-GCCcore-13.2.0": {
         "License": [
             "MIT"
         ],
         "Needs Manual Check": false,
-        "Retrieved From": "https://www.x.org"
+        "Retrieved from": "https://packages.ecosyste.ms/api/v1/packages/lookup?repository_url=https%3A%2F%2Fwww.x.org"
     },
     "XML-LibXML/2.0209-GCCcore-12.3.0": {
-        "License": "not found",
-        "Needs Manual Check": true,
-        "Retrieved From": "not found"
+        "License": "https://metacpan.org/pod/distribution/XML-LibXML/LibXML.pod#COPYRIGHT",
+        "Needs Manual Check": false,
+        "Retrieved from": "https://metacpan.org/pod/distribution/XML-LibXML/LibXML.pod"
     },
     "Xerces-C++/3.2.5-GCCcore-13.2.0": {
-        "License": "not found",
-        "Needs Manual Check": true,
-        "Retrieved From": "not found"
+        "License": "http://www.apache.org/licenses/LICENSE-2.0.html",
+        "Needs Manual Check": false,
+        "Retrieved from": "https://xerces.apache.org/xerces-c/"
     },
     "Xvfb/21.1.9-GCCcore-13.2.0": {
         "License": "not found",
         "Needs Manual Check": true,
-        "Retrieved From": "not found"
+        "Homepage": "https://www.x.org/releases/X11R7.6/doc/man/man1/Xvfb.1.xhtml",
+        "Source url": "N/A"
     },
     "YODA/1.9.9-GCC-12.3.0": {
         "License": [
             "Other"
         ],
         "Needs Manual Check": false,
-        "Retrieved From": "https://yoda.hepforge.org/"
+        "Retrieved from": "https://packages.ecosyste.ms/api/v1/packages/lookup?repository_url=https%3A%2F%2Fyoda.hepforge.org%2F"
     },
     "Yasm/1.3.0-GCCcore-13.2.0": {
         "License": "not found",
         "Needs Manual Check": true,
-        "Retrieved From": "not found"
+        "Homepage": "https://www.tortall.net/projects/yasm/",
+        "Source url": "https://github.com/yasm/yasm/releases/download/v1.3.0/"
     },
     "Z3/4.12.2-GCCcore-12.3.0-Python-3.11.3": {
         "License": "not found",
         "Needs Manual Check": true,
-        "Retrieved From": "not found"
+        "Homepage": "N/A",
+        "Source url": "N/A"
     },
     "ZeroMQ/4.3.5-GCCcore-13.2.0": {
         "License": "not found",
         "Needs Manual Check": true,
-        "Retrieved From": "not found"
+        "Homepage": "https://www.zeromq.org/",
+        "Source url": "https://github.com/zeromq/libzmq/releases/download/v4.3.5/"
     },
     "Zip/3.0-GCCcore-12.3.0": {
         "License": [
             "Other"
         ],
         "Needs Manual Check": false,
-        "Retrieved From": "http://www.info-zip.org/Zip.html"
+        "Retrieved from": "https://packages.ecosyste.ms/api/v1/packages/lookup?repository_url=http%3A%2F%2Fwww.info-zip.org%2FZip.html"
     },
     "amdahl/0.3.1-gompi-2023a": {
-        "License": "not found",
-        "Needs Manual Check": true,
-        "Retrieved From": "not found"
+        "License": "mit",
+        "Needs Manual Check": false,
+        "Retrieved from": "https://repos.ecosyste.ms/api/v1/repositories/lookup?url=https%3A%2F%2Fgithub.com%2Fhpc-carpentry%2Famdahl"
     },
     "archspec/0.2.5-GCCcore-12.3.0": {
-        "License": "not found",
-        "Needs Manual Check": true,
-        "Retrieved From": "not found"
+        "License": "https://github.com/archspec/archspec/blob/master/LICENSE-APACHE",
+        "Needs Manual Check": false,
+        "Retrieved from": "https://repos.ecosyste.ms/api/v1/hosts/GitHub/repositories/archspec%2Farchspec"
     },
     "arpack-ng/3.9.0-foss-2023b": {
-        "License": "not found",
-        "Needs Manual Check": true,
-        "Retrieved From": "not found"
+        "License": "https://github.com/opencollab/arpack-ng/blob/master/COPYING",
+        "Needs Manual Check": false,
+        "Retrieved from": "https://repos.ecosyste.ms/api/v1/hosts/GitHub/repositories/opencollab%2Farpack-ng"
     },
     "arrow-R/14.0.1-foss-2023a-R-4.3.2": {
-        "License": "not found",
-        "Needs Manual Check": true,
-        "Retrieved From": "not found"
+        "License": "https://www.apache.org/licenses/LICENSE-2.0",
+        "Needs Manual Check": false,
+        "Retrieved from": "https://cran.r-project.org/web/packages/arrow"
     },
     "at-spi2-atk/2.38.0-GCCcore-13.2.0": {
         "License": "not found",
         "Needs Manual Check": true,
-        "Retrieved From": "not found"
+        "Homepage": "https://wiki.gnome.org/Accessibility",
+        "Source url": "N/A"
     },
     "at-spi2-core/2.50.0-GCCcore-13.2.0": {
         "License": "not found",
         "Needs Manual Check": true,
-        "Retrieved From": "not found"
+        "Homepage": "https://wiki.gnome.org/Accessibility",
+        "Source url": "N/A"
     },
     "basemap/1.3.9-foss-2023a": {
         "License": [
             "Other"
         ],
         "Needs Manual Check": false,
-        "Retrieved From": "https://matplotlib.org/basemap/"
+        "Retrieved from": "https://packages.ecosyste.ms/api/v1/packages/lookup?repository_url=https%3A%2F%2Fmatplotlib.org%2Fbasemap%2F"
     },
     "bokeh/3.2.2-foss-2023a": {
-        "License": "not found",
-        "Needs Manual Check": true,
-        "Retrieved From": "not found"
+        "License": "bsd-3-clause",
+        "Needs Manual Check": false,
+        "Retrieved from": "https://repos.ecosyste.ms/api/v1/repositories/lookup?url=https%3A%2F%2Fgithub.com%2Fbokeh%2Fbokeh"
     },
     "cURL/8.3.0-GCCcore-13.2.0": {
         "License": [
             "MIT"
         ],
         "Needs Manual Check": false,
-        "Retrieved From": "https://curl.haxx.se"
+        "Retrieved from": "https://packages.ecosyste.ms/api/v1/packages/lookup?repository_url=https%3A%2F%2Fcurl.haxx.se"
     },
     "cairo/1.18.0-GCCcore-13.2.0": {
         "License": "not found",
         "Needs Manual Check": true,
-        "Retrieved From": "not found"
+        "Homepage": "https://cairographics.org",
+        "Source url": "N/A"
     },
     "casacore/3.5.0-foss-2023b": {
-        "License": "not found",
-        "Needs Manual Check": true,
-        "Retrieved From": "not found"
+        "License": "https://github.com/casacore/casacore/blob/master/COPYING",
+        "Needs Manual Check": false,
+        "Retrieved from": "https://repos.ecosyste.ms/api/v1/hosts/GitHub/repositories/casacore%2Fcasacore"
     },
     "ccache/4.9-GCCcore-12.3.0": {
         "License": [
             "GPL-3.0-or-later"
         ],
         "Needs Manual Check": false,
-        "Retrieved From": "https://ccache.dev/"
+        "Retrieved from": "https://packages.ecosyste.ms/api/v1/packages/lookup?repository_url=https%3A%2F%2Fccache.dev%2F"
     },
     "cffi/1.15.1-GCCcore-13.2.0": {
         "License": [
             "Other"
         ],
         "Needs Manual Check": false,
-        "Retrieved From": "https://cffi.readthedocs.io/en/latest/"
+        "Retrieved from": "https://packages.ecosyste.ms/api/v1/packages/lookup?repository_url=https%3A%2F%2Fcffi.readthedocs.io%2Fen%2Flatest%2F"
     },
     "cimfomfa/22.273-GCCcore-12.3.0": {
-        "License": "not found",
-        "Needs Manual Check": true,
-        "Retrieved From": "not found"
+        "License": "https://github.com/micans/cimfomfa/blob/main/LICENSE",
+        "Needs Manual Check": false,
+        "Retrieved from": "https://repos.ecosyste.ms/api/v1/hosts/GitHub/repositories/micans%2Fcimfomfa"
     },
     "colorize/0.7.7-GCC-12.3.0": {
-        "License": "not found",
-        "Needs Manual Check": true,
-        "Retrieved From": "not found"
+        "License": "gpl-2.0",
+        "Needs Manual Check": false,
+        "Retrieved from": "https://repos.ecosyste.ms/api/v1/repositories/lookup?url=https%3A%2F%2Fgithub.com%2Ffazibear%2Fcolorize"
     },
     "cooler/0.10.2-foss-2023b": {
         "License": "not found",
         "Needs Manual Check": true,
-        "Retrieved From": "not found"
+        "Homepage": "https://open2c.github.io/cooler",
+        "Source url": "N/A"
     },
     "cpio/2.15-GCCcore-12.3.0": {
-        "License": "not found",
-        "Needs Manual Check": true,
-        "Retrieved From": "not found"
+        "License": "https://www.gnu.org/licenses/license-list.html",
+        "Needs Manual Check": false,
+        "Retrieved from": "https://savannah.gnu.org/projects/cpio/"
     },
     "cppy/1.2.1-GCCcore-13.2.0": {
-        "License": "not found",
-        "Needs Manual Check": true,
-        "Retrieved From": "not found"
+        "License": "bsd-3-clause",
+        "Needs Manual Check": false,
+        "Retrieved from": "https://repos.ecosyste.ms/api/v1/repositories/lookup?url=https%3A%2F%2Fgithub.com%2Fnucleic%2Fcppy"
     },
     "crb-blast/0.6.9-GCC-12.3.0": {
-        "License": "not found",
-        "Needs Manual Check": true,
-        "Retrieved From": "not found"
+        "License": null,
+        "Needs Manual Check": false,
+        "Retrieved from": "https://repos.ecosyste.ms/api/v1/repositories/lookup?url=https%3A%2F%2Fgithub.com%2Fcboursnell%2Fcrb-blast"
     },
     "cryptography/41.0.5-GCCcore-13.2.0": {
-        "License": "not found",
-        "Needs Manual Check": true,
-        "Retrieved From": "not found"
+        "License": "https://github.com/pyca/cryptography/blob/main/LICENSE",
+        "Needs Manual Check": false,
+        "Retrieved from": "https://repos.ecosyste.ms/api/v1/hosts/GitHub/repositories/pyca%2Fcryptography"
     },
     "dask/2023.9.2-foss-2023a": {
         "License": [
             "BSD-3-Clause"
         ],
         "Needs Manual Check": false,
-        "Retrieved From": "https://dask.org/"
+        "Retrieved from": "https://packages.ecosyste.ms/api/v1/packages/lookup?repository_url=https%3A%2F%2Fdask.org%2F"
     },
     "dill/0.3.8-GCCcore-13.2.0": {
         "License": [
             "BSD-3-Clause"
         ],
         "Needs Manual Check": false,
-        "Retrieved From": "https://pypi.org/project/dill/"
+        "Retrieved from": "https://packages.ecosyste.ms/api/v1/packages/lookup?repository_url=https%3A%2F%2Fpypi.org%2Fproject%2Fdill%2F"
     },
     "dlb/3.4-gompi-2023b": {
         "License": "not found",
         "Needs Manual Check": true,
-        "Retrieved From": "not found"
+        "Homepage": "https://pm.bsc.es/dlb/",
+        "Source url": "https://pm.bsc.es/ftp/dlb/releases"
     },
     "double-conversion/3.3.0-GCCcore-13.2.0": {
-        "License": "not found",
-        "Needs Manual Check": true,
-        "Retrieved From": "not found"
+        "License": "bsd-3-clause",
+        "Needs Manual Check": false,
+        "Retrieved from": "https://repos.ecosyste.ms/api/v1/repositories/lookup?url=https%3A%2F%2Fgithub.com%2Fgoogle%2Fdouble-conversion"
     },
     "ecBuild/3.8.0": {
         "License": "not found",
         "Needs Manual Check": true,
-        "Retrieved From": "not found"
+        "Homepage": "https://ecbuild.readthedocs.io/",
+        "Source url": "N/A"
     },
     "ecCodes/2.31.0-gompi-2023b": {
         "License": [
             "Other"
         ],
         "Needs Manual Check": false,
-        "Retrieved From": "https://software.ecmwf.int/wiki/display/ECC/ecCodes+Home"
+        "Retrieved from": "https://packages.ecosyste.ms/api/v1/packages/lookup?repository_url=https%3A%2F%2Fsoftware.ecmwf.int%2Fwiki%2Fdisplay%2FECC%2FecCodes%2BHome"
     },
     "elfutils/0.190-GCCcore-13.2.0": {
         "License": "not found",
         "Needs Manual Check": true,
-        "Retrieved From": "not found"
+        "Homepage": "https://elfutils.org/",
+        "Source url": "https://sourceware.org/elfutils/ftp/0.190/"
     },
     "elfx86exts/0.6.2-GCC-12.3.0": {
-        "License": "not found",
-        "Needs Manual Check": true,
-        "Retrieved From": "not found"
+        "License": "mit",
+        "Needs Manual Check": false,
+        "Retrieved from": "https://repos.ecosyste.ms/api/v1/repositories/lookup?url=https%3A%2F%2Fgithub.com%2Fpkgw%2Felfx86exts"
     },
     "expat/2.5.0-GCCcore-13.2.0": {
         "License": "not found",
         "Needs Manual Check": true,
-        "Retrieved From": "not found"
+        "Homepage": "https://libexpat.github.io",
+        "Source url": "N/A"
     },
     "expecttest/0.1.5-GCCcore-12.3.0": {
-        "License": "not found",
-        "Needs Manual Check": true,
-        "Retrieved From": "not found"
+        "License": "mit",
+        "Needs Manual Check": false,
+        "Retrieved from": "https://repos.ecosyste.ms/api/v1/repositories/lookup?url=https%3A%2F%2Fgithub.com%2Fezyang%2Fexpecttest"
     },
     "f90wrap/0.2.13-foss-2023a": {
-        "License": "not found",
-        "Needs Manual Check": true,
-        "Retrieved From": "not found"
+        "License": "lgpl-3.0",
+        "Needs Manual Check": false,
+        "Retrieved from": "https://repos.ecosyste.ms/api/v1/repositories/lookup?url=https%3A%2F%2Fgithub.com%2Fjameskermode%2Ff90wrap"
     },
     "fastjet/3.4.2-gompi-2023a": {
         "License": "not found",
         "Needs Manual Check": true,
-        "Retrieved From": "not found"
+        "Homepage": "https://fastjet.fr/",
+        "Source url": "https://fastjet.fr/repo/"
     },
     "fastjet-contrib/1.053-gompi-2023a": {
         "License": [
             "Other"
         ],
         "Needs Manual Check": false,
-        "Retrieved From": "https://fastjet.hepforge.org/contrib/"
+        "Retrieved from": "https://packages.ecosyste.ms/api/v1/packages/lookup?repository_url=https%3A%2F%2Ffastjet.hepforge.org%2Fcontrib%2F"
     },
     "fastp/0.23.4-GCC-12.3.0": {
-        "License": "not found",
-        "Needs Manual Check": true,
-        "Retrieved From": "not found"
+        "License": "mit",
+        "Needs Manual Check": false,
+        "Retrieved from": "https://repos.ecosyste.ms/api/v1/repositories/lookup?url=https%3A%2F%2Fgithub.com%2FOpenGene%2Ffastp"
     },
     "ffnvcodec/12.1.14.0": {
         "License": [
             "MIT"
         ],
         "Needs Manual Check": false,
-        "Retrieved From": "https://git.videolan.org/?p=ffmpeg/nv-codec-headers.git"
+        "Retrieved from": "https://packages.ecosyste.ms/api/v1/packages/lookup?repository_url=https%3A%2F%2Fgit.videolan.org%2F%3Fp%3Dffmpeg%2Fnv-codec-headers.git"
     },
     "flatbuffers/23.5.26-GCCcore-12.3.0": {
-        "License": "not found",
-        "Needs Manual Check": true,
-        "Retrieved From": "not found"
+        "License": "apache-2.0",
+        "Needs Manual Check": false,
+        "Retrieved from": "https://repos.ecosyste.ms/api/v1/repositories/lookup?url=https%3A%2F%2Fgithub.com%2Fgoogle%2Fflatbuffers%2F"
     },
     "flatbuffers-python/23.5.26-GCCcore-12.3.0": {
-        "License": "not found",
-        "Needs Manual Check": true,
-        "Retrieved From": "not found"
+        "License": "apache-2.0",
+        "Needs Manual Check": false,
+        "Retrieved from": "https://repos.ecosyste.ms/api/v1/repositories/lookup?url=https%3A%2F%2Fgithub.com%2Fgoogle%2Fflatbuffers%2F"
     },
     "flit/3.9.0-GCCcore-13.2.0": {
-        "License": "not found",
-        "Needs Manual Check": true,
-        "Retrieved From": "not found"
+        "License": "bsd-3-clause",
+        "Needs Manual Check": false,
+        "Retrieved from": "https://repos.ecosyste.ms/api/v1/repositories/lookup?url=https%3A%2F%2Fgithub.com%2Fpypa%2Fflit"
     },
     "fontconfig/2.14.2-GCCcore-13.2.0": {
         "License": [
             "MIT"
         ],
         "Needs Manual Check": false,
-        "Retrieved From": "https://www.freedesktop.org/wiki/Software/fontconfig/"
+        "Retrieved from": "https://packages.ecosyste.ms/api/v1/packages/lookup?repository_url=https%3A%2F%2Fwww.freedesktop.org%2Fwiki%2FSoftware%2Ffontconfig%2F"
     },
     "foss/2023b": {
         "License": "not found",
         "Needs Manual Check": true,
-        "Retrieved From": "not found"
+        "Homepage": "https://easybuild.readthedocs.io/en/master/Common-toolchains.html#foss-toolchain",
+        "Source url": "N/A"
     },
     "freeglut/3.4.0-GCCcore-12.3.0": {
         "License": [
             "Other"
         ],
         "Needs Manual Check": false,
-        "Retrieved From": "http://freeglut.sourceforge.net/"
+        "Retrieved from": "https://packages.ecosyste.ms/api/v1/packages/lookup?repository_url=http%3A%2F%2Ffreeglut.sourceforge.net%2F"
     },
     "freetype/2.13.2-GCCcore-13.2.0": {
-        "License": "not found",
-        "Needs Manual Check": true,
-        "Retrieved From": "not found"
+        "License": "https://www.freetype.org/license.html",
+        "Needs Manual Check": false,
+        "Retrieved from": "https://www.freetype.org"
     },
     "geopandas/0.14.2-foss-2023a": {
         "License": "not found",
         "Needs Manual Check": true,
-        "Retrieved From": "not found"
+        "Homepage": "https://geopandas.org",
+        "Source url": "N/A"
     },
     "gfbf/2023b": {
         "License": [
             "Other"
         ],
         "Needs Manual Check": false,
-        "Retrieved From": "(none)"
+        "Retrieved from": "https://packages.ecosyste.ms/api/v1/packages/lookup?repository_url=%28none%29"
     },
     "giflib/5.2.1-GCCcore-13.2.0": {
         "License": "not found",
         "Needs Manual Check": true,
-        "Retrieved From": "not found"
+        "Homepage": "http://giflib.sourceforge.net/",
+        "Source url": "N/A"
     },
     "git/2.42.0-GCCcore-13.2.0": {
         "License": [
             "Other"
         ],
         "Needs Manual Check": false,
-        "Retrieved From": "https://git-scm.com"
+        "Retrieved from": "https://packages.ecosyste.ms/api/v1/packages/lookup?repository_url=https%3A%2F%2Fgit-scm.com"
     },
     "gmpy2/2.1.5-GCC-13.2.0": {
-        "License": "not found",
-        "Needs Manual Check": true,
-        "Retrieved From": "not found"
+        "License": "lgpl-3.0",
+        "Needs Manual Check": false,
+        "Retrieved from": "https://repos.ecosyste.ms/api/v1/repositories/lookup?url=https%3A%2F%2Fgithub.com%2Faleaxit%2Fgmpy"
     },
     "gmsh/4.12.2-foss-2023a": {
         "License": [
             "GPL-2.0-or-later"
         ],
         "Needs Manual Check": false,
-        "Retrieved From": "https://gmsh.info/"
+        "Retrieved from": "https://packages.ecosyste.ms/api/v1/packages/lookup?repository_url=https%3A%2F%2Fgmsh.info%2F"
     },
     "gnuplot/5.4.8-GCCcore-12.3.0": {
-        "License": "not found",
-        "Needs Manual Check": true,
-        "Retrieved From": "not found"
+        "License": "https://sourceforge.net/p/gnuplot/gnuplot-main/ci/master/tree/Copyright",
+        "Needs Manual Check": false,
+        "Retrieved from": "http://gnuplot.sourceforge.net"
     },
     "gompi/2023b": {
         "License": [
             "Other"
         ],
         "Needs Manual Check": false,
-        "Retrieved From": "(none)"
+        "Retrieved from": "https://packages.ecosyste.ms/api/v1/packages/lookup?repository_url=%28none%29"
     },
     "googletest/1.14.0-GCCcore-13.2.0": {
-        "License": "not found",
-        "Needs Manual Check": true,
-        "Retrieved From": "not found"
+        "License": "bsd-3-clause",
+        "Needs Manual Check": false,
+        "Retrieved from": "https://repos.ecosyste.ms/api/v1/repositories/lookup?url=https%3A%2F%2Fgithub.com%2Fgoogle%2Fgoogletest"
     },
     "graphite2/1.3.14-GCCcore-13.2.0": {
         "License": [
             "Other"
         ],
         "Needs Manual Check": false,
-        "Retrieved From": "https://scripts.sil.org/cms/scripts/page.php?site_id=projects&item_id=graphite_home"
+        "Retrieved from": "https://packages.ecosyste.ms/api/v1/packages/lookup?repository_url=https%3A%2F%2Fscripts.sil.org%2Fcms%2Fscripts%2Fpage.php%3Fsite_id%3Dprojects%26item_id%3Dgraphite_home"
     },
     "groff/1.22.4-GCCcore-12.3.0": {
-        "License": "not found",
-        "Needs Manual Check": true,
-        "Retrieved From": "not found"
+        "License": "https://www.gnu.org/licenses/why-assign.html",
+        "Needs Manual Check": false,
+        "Retrieved from": "https://www.gnu.org/software/groff"
     },
     "grpcio/1.57.0-GCCcore-12.3.0": {
         "License": [
@@ -1928,130 +2005,133 @@
             "MIT"
         ],
         "Needs Manual Check": false,
-        "Retrieved From": "https://grpc.io/"
+        "Retrieved from": "https://packages.ecosyste.ms/api/v1/packages/lookup?repository_url=https%3A%2F%2Fgrpc.io%2F"
     },
     "gtk-doc/1.34.0-GCCcore-12.3.0": {
-        "License": "not found",
-        "Needs Manual Check": true,
-        "Retrieved From": "not found"
+        "License": "gfdl-1.1",
+        "Needs Manual Check": false,
+        "Retrieved from": "https://repos.ecosyste.ms/api/v1/repositories/lookup?url=https%3A%2F%2Fgitlab.gnome.org%2FGNOME%2Fgtk-doc"
     },
     "gzip/1.13-GCCcore-13.2.0": {
         "License": [
             "GPL-3.0-or-later"
         ],
         "Needs Manual Check": false,
-        "Retrieved From": "https://www.gnu.org/software/gzip/"
+        "Retrieved from": "https://packages.ecosyste.ms/api/v1/packages/lookup?repository_url=https%3A%2F%2Fwww.gnu.org%2Fsoftware%2Fgzip%2F"
     },
     "h5netcdf/1.2.0-foss-2023a": {
-        "License": "not found",
-        "Needs Manual Check": true,
-        "Retrieved From": "not found"
+        "License": "https://h5netcdf.org/#license",
+        "Needs Manual Check": false,
+        "Retrieved from": "https://h5netcdf.org/"
     },
     "h5py/3.11.0-foss-2023b": {
         "License": [
             "Other"
         ],
         "Needs Manual Check": false,
-        "Retrieved From": "https://www.h5py.org/"
+        "Retrieved from": "https://packages.ecosyste.ms/api/v1/packages/lookup?repository_url=https%3A%2F%2Fwww.h5py.org%2F"
     },
     "hatch-jupyter-builder/0.9.1-GCCcore-12.3.0": {
         "License": "not found",
         "Needs Manual Check": true,
-        "Retrieved From": "not found"
+        "Homepage": "https://hatch-jupyter-builder.readthedocs.io",
+        "Source url": "N/A"
     },
     "hatchling/1.18.0-GCCcore-13.2.0": {
         "License": "not found",
         "Needs Manual Check": true,
-        "Retrieved From": "not found"
+        "Homepage": "https://hatch.pypa.io",
+        "Source url": "N/A"
     },
     "hic-straw/1.3.1-foss-2023b": {
-        "License": "not found",
-        "Needs Manual Check": true,
-        "Retrieved From": "not found"
+        "License": "mit",
+        "Needs Manual Check": false,
+        "Retrieved from": "https://repos.ecosyste.ms/api/v1/repositories/lookup?url=https%3A%2F%2Fgithub.com%2Faidenlab%2Fstraw"
     },
     "hiredis/1.2.0-GCCcore-12.3.0": {
-        "License": "not found",
-        "Needs Manual Check": true,
-        "Retrieved From": "not found"
+        "License": "bsd-3-clause",
+        "Needs Manual Check": false,
+        "Retrieved from": "https://repos.ecosyste.ms/api/v1/repositories/lookup?url=https%3A%2F%2Fgithub.com%2Fredis%2Fhiredis"
     },
     "hwloc/2.9.2-GCCcore-13.2.0": {
         "License": [
             "Other"
         ],
         "Needs Manual Check": false,
-        "Retrieved From": "https://www.open-mpi.org/projects/hwloc/"
+        "Retrieved from": "https://packages.ecosyste.ms/api/v1/packages/lookup?repository_url=https%3A%2F%2Fwww.open-mpi.org%2Fprojects%2Fhwloc%2F"
     },
     "hypothesis/6.90.0-GCCcore-13.2.0": {
-        "License": "not found",
-        "Needs Manual Check": true,
-        "Retrieved From": "not found"
+        "License": "https://github.com/HypothesisWorks/hypothesis/blob/master/LICENSE.txt",
+        "Needs Manual Check": false,
+        "Retrieved from": "https://repos.ecosyste.ms/api/v1/hosts/GitHub/repositories/HypothesisWorks%2Fhypothesis"
     },
     "ipympl/0.9.3-gfbf-2023a": {
         "License": "not found",
         "Needs Manual Check": true,
-        "Retrieved From": "not found"
+        "Homepage": "https://matplotlib.org/ipympl",
+        "Source url": "N/A"
     },
     "jbigkit/2.1-GCCcore-13.2.0": {
         "License": [
             "Other"
         ],
         "Needs Manual Check": false,
-        "Retrieved From": "https://www.cl.cam.ac.uk/~mgk25/jbigkit/"
+        "Retrieved from": "https://packages.ecosyste.ms/api/v1/packages/lookup?repository_url=https%3A%2F%2Fwww.cl.cam.ac.uk%2F~mgk25%2Fjbigkit%2F"
     },
     "jedi/0.19.1-GCCcore-13.2.0": {
-        "License": "not found",
-        "Needs Manual Check": true,
-        "Retrieved From": "not found"
+        "License": "https://github.com/davidhalter/jedi/blob/master/LICENSE.txt",
+        "Needs Manual Check": false,
+        "Retrieved from": "https://repos.ecosyste.ms/api/v1/hosts/GitHub/repositories/davidhalter%2Fjedi"
     },
     "jemalloc/5.3.0-GCCcore-12.3.0": {
         "License": [
             "BSD-2-Clause"
         ],
         "Needs Manual Check": false,
-        "Retrieved From": "http://jemalloc.net"
+        "Retrieved from": "https://packages.ecosyste.ms/api/v1/packages/lookup?repository_url=http%3A%2F%2Fjemalloc.net"
     },
     "jq/1.6-GCCcore-12.2.0": {
         "License": [
             "Other"
         ],
         "Needs Manual Check": false,
-        "Retrieved From": "https://stedolan.github.io/jq/"
+        "Retrieved from": "https://packages.ecosyste.ms/api/v1/packages/lookup?repository_url=https%3A%2F%2Fstedolan.github.io%2Fjq%2F"
     },
     "json-c/0.17-GCCcore-13.2.0": {
-        "License": "not found",
-        "Needs Manual Check": true,
-        "Retrieved From": "not found"
+        "License": "https://github.com/json-c/json-c/blob/master/COPYING",
+        "Needs Manual Check": false,
+        "Retrieved from": "https://repos.ecosyste.ms/api/v1/hosts/GitHub/repositories/json-c%2Fjson-c"
     },
     "jupyter-server/2.7.2-GCCcore-12.3.0": {
         "License": [
             "Other"
         ],
         "Needs Manual Check": false,
-        "Retrieved From": "https://jupyter.org/"
+        "Retrieved from": "https://packages.ecosyste.ms/api/v1/packages/lookup?repository_url=https%3A%2F%2Fjupyter.org%2F"
     },
     "kim-api/2.3.0-GCC-13.2.0": {
         "License": [
             "Other"
         ],
         "Needs Manual Check": false,
-        "Retrieved From": "https://openkim.org/"
+        "Retrieved from": "https://packages.ecosyste.ms/api/v1/packages/lookup?repository_url=https%3A%2F%2Fopenkim.org%2F"
     },
     "libGLU/9.0.3-GCCcore-13.2.0": {
-        "License": "not found",
-        "Needs Manual Check": true,
-        "Retrieved From": "not found"
+        "License": "https://docs.mesa3d.org/license.html",
+        "Needs Manual Check": false,
+        "Retrieved from": "https://mesa.freedesktop.org"
     },
     "libaec/1.0.6-GCCcore-13.2.0": {
-        "License": "not found",
-        "Needs Manual Check": true,
-        "Retrieved From": "not found"
+        "License": "bsd-2-clause",
+        "Needs Manual Check": false,
+        "Retrieved from": "https://repos.ecosyste.ms/api/v1/repositories/lookup?url=https%3A%2F%2Fgitlab.dkrz.de%2Fk202009%2Flibaec"
     },
     "libaio/0.3.113-GCCcore-12.3.0": {
         "License": [
             "LGPL-2.1-or-later"
         ],
         "Needs Manual Check": false,
-        "Retrieved From": "https://pagure.io/libaio"
+        "Retrieved from": "https://packages.ecosyste.ms/api/v1/packages/lookup?repository_url=https%3A%2F%2Fpagure.io%2Flibaio"
     },
     "libarchive/3.7.2-GCCcore-13.2.0": {
         "License": [
@@ -2059,233 +2139,241 @@
             "BSD-3-Clause"
         ],
         "Needs Manual Check": false,
-        "Retrieved From": "https://www.libarchive.org/"
+        "Retrieved from": "https://packages.ecosyste.ms/api/v1/packages/lookup?repository_url=https%3A%2F%2Fwww.libarchive.org%2F"
     },
     "libcerf/2.3-GCCcore-12.3.0": {
-        "License": "not found",
-        "Needs Manual Check": true,
-        "Retrieved From": "not found"
+        "License": "https://jugit.fz-juelich.de/mlz/libcerf/-/blob/main/LICENSE",
+        "Needs Manual Check": false,
+        "Retrieved from": "https://jugit.fz-juelich.de/mlz/libcerf"
     },
     "libcint/5.4.0-gfbf-2023a": {
-        "License": "not found",
-        "Needs Manual Check": true,
-        "Retrieved From": "not found"
+        "License": "apache-2.0",
+        "Needs Manual Check": false,
+        "Retrieved from": "https://repos.ecosyste.ms/api/v1/repositories/lookup?url=https%3A%2F%2Fgithub.com%2Fsunqm%2Flibcint"
     },
     "libdeflate/1.19-GCCcore-13.2.0": {
-        "License": "not found",
-        "Needs Manual Check": true,
-        "Retrieved From": "not found"
+        "License": "mit",
+        "Needs Manual Check": false,
+        "Retrieved from": "https://repos.ecosyste.ms/api/v1/repositories/lookup?url=https%3A%2F%2Fgithub.com%2Febiggers%2Flibdeflate"
     },
     "libdrm/2.4.117-GCCcore-13.2.0": {
         "License": [
             "Other"
         ],
         "Needs Manual Check": false,
-        "Retrieved From": "https://dri.freedesktop.org/libdrm/"
+        "Retrieved from": "https://packages.ecosyste.ms/api/v1/packages/lookup?repository_url=https%3A%2F%2Fdri.freedesktop.org%2Flibdrm%2F"
     },
     "libdwarf/0.9.2-GCCcore-13.2.0": {
         "License": [
             "LGPL-2.1-or-later"
         ],
         "Needs Manual Check": false,
-        "Retrieved From": "https://www.prevanders.net/dwarf.html"
+        "Retrieved from": "https://packages.ecosyste.ms/api/v1/packages/lookup?repository_url=https%3A%2F%2Fwww.prevanders.net%2Fdwarf.html"
     },
     "libepoxy/1.5.10-GCCcore-13.2.0": {
-        "License": "not found",
-        "Needs Manual Check": true,
-        "Retrieved From": "not found"
+        "License": "https://github.com/anholt/libepoxy/blob/master/COPYING",
+        "Needs Manual Check": false,
+        "Retrieved from": "https://repos.ecosyste.ms/api/v1/hosts/GitHub/repositories/anholt%2Flibepoxy"
     },
     "libevent/2.1.12-GCCcore-13.2.0": {
         "License": [
             "BSD-3-Clause"
         ],
         "Needs Manual Check": false,
-        "Retrieved From": "https://libevent.org/"
+        "Retrieved from": "https://packages.ecosyste.ms/api/v1/packages/lookup?repository_url=https%3A%2F%2Flibevent.org%2F"
     },
     "libfabric/1.19.0-GCCcore-13.2.0": {
         "License": "not found",
         "Needs Manual Check": true,
-        "Retrieved From": "not found"
+        "Homepage": "https://ofiwg.github.io/libfabric/",
+        "Source url": "https://github.com/ofiwg/libfabric/releases/download/v1.19.0"
     },
     "libffi/3.4.4-GCCcore-13.2.0": {
         "License": [
             "MIT"
         ],
         "Needs Manual Check": false,
-        "Retrieved From": "https://sourceware.org/libffi/"
+        "Retrieved from": "https://packages.ecosyste.ms/api/v1/packages/lookup?repository_url=https%3A%2F%2Fsourceware.org%2Flibffi%2F"
     },
     "libgcrypt/1.10.3-GCCcore-12.3.0": {
-        "License": "not found",
-        "Needs Manual Check": true,
-        "Retrieved From": "not found"
+        "License": "https://creativecommons.org/licenses/by-sa/3.0/",
+        "Needs Manual Check": false,
+        "Retrieved from": "https://gnupg.org/related_software/libgcrypt/index.html"
     },
     "libgd/2.3.3-GCCcore-12.3.0": {
         "License": "not found",
         "Needs Manual Check": true,
-        "Retrieved From": "not found"
+        "Homepage": "https://libgd.github.io",
+        "Source url": "https://github.com/libgd/libgd/releases/download/gd-2.3.3/"
     },
     "libgeotiff/1.7.3-GCCcore-13.2.0": {
-        "License": "not found",
-        "Needs Manual Check": true,
-        "Retrieved From": "not found"
+        "License": "http://static.fsf.org/nosvn/directory/fdl-1.3-standalone.html",
+        "Needs Manual Check": false,
+        "Retrieved from": "https://directory.fsf.org/wiki/Libgeotiff"
     },
     "libgit2/1.7.2-GCCcore-13.2.0": {
         "License": [
             "BSD-3-Clause-Attribution"
         ],
         "Needs Manual Check": false,
-        "Retrieved From": "https://libgit2.org/"
+        "Retrieved from": "https://packages.ecosyste.ms/api/v1/packages/lookup?repository_url=https%3A%2F%2Flibgit2.org%2F"
     },
     "libglvnd/1.7.0-GCCcore-13.2.0": {
-        "License": "not found",
-        "Needs Manual Check": true,
-        "Retrieved From": "not found"
+        "License": null,
+        "Needs Manual Check": false,
+        "Retrieved from": "https://repos.ecosyste.ms/api/v1/repositories/lookup?url=https%3A%2F%2Fgitlab.freedesktop.org%2Fglvnd%2Flibglvnd"
     },
     "libgpg-error/1.48-GCCcore-12.3.0": {
-        "License": "not found",
-        "Needs Manual Check": true,
-        "Retrieved From": "not found"
+        "License": "https://creativecommons.org/licenses/by-sa/3.0/",
+        "Needs Manual Check": false,
+        "Retrieved from": "https://gnupg.org/related_software/libgpg-error/index.html"
     },
     "libiconv/1.17-GCCcore-13.2.0": {
         "License": [
             "GPL-3.0-or-later"
         ],
         "Needs Manual Check": false,
-        "Retrieved From": "https://www.gnu.org/software/libiconv"
+        "Retrieved from": "https://packages.ecosyste.ms/api/v1/packages/lookup?repository_url=https%3A%2F%2Fwww.gnu.org%2Fsoftware%2Flibiconv"
     },
     "libidn2/2.3.7-GCCcore-12.3.0": {
-        "License": "not found",
-        "Needs Manual Check": true,
-        "Retrieved From": "not found"
+        "License": "http://www.gnu.org/licenses/licenses.html",
+        "Needs Manual Check": false,
+        "Retrieved from": "http://www.gnu.org/software/libidn2"
     },
     "libjpeg-turbo/3.0.1-GCCcore-13.2.0": {
         "License": "not found",
         "Needs Manual Check": true,
-        "Retrieved From": "not found"
+        "Homepage": "https://sourceforge.net/projects/libjpeg-turbo/",
+        "Source url": "N/A"
     },
     "libogg/1.3.5-GCCcore-13.2.0": {
         "License": [
             "BSD-3-Clause"
         ],
         "Needs Manual Check": false,
-        "Retrieved From": "https://xiph.org/ogg/"
+        "Retrieved from": "https://packages.ecosyste.ms/api/v1/packages/lookup?repository_url=https%3A%2F%2Fxiph.org%2Fogg%2F"
     },
     "libopus/1.5.2-GCCcore-13.2.0": {
         "License": [
             "BSD-3-Clause"
         ],
         "Needs Manual Check": false,
-        "Retrieved From": "https://www.opus-codec.org/"
+        "Retrieved from": "https://packages.ecosyste.ms/api/v1/packages/lookup?repository_url=https%3A%2F%2Fwww.opus-codec.org%2F"
     },
     "libpciaccess/0.17-GCCcore-13.2.0": {
         "License": [
             "Other"
         ],
         "Needs Manual Check": false,
-        "Retrieved From": "https://cgit.freedesktop.org/xorg/lib/libpciaccess/"
+        "Retrieved from": "https://packages.ecosyste.ms/api/v1/packages/lookup?repository_url=https%3A%2F%2Fcgit.freedesktop.org%2Fxorg%2Flib%2Flibpciaccess%2F"
     },
     "libpng/1.6.40-GCCcore-13.2.0": {
         "License": [
             "Other"
         ],
         "Needs Manual Check": false,
-        "Retrieved From": "http://www.libpng.org/pub/png/libpng.html"
+        "Retrieved from": "https://packages.ecosyste.ms/api/v1/packages/lookup?repository_url=http%3A%2F%2Fwww.libpng.org%2Fpub%2Fpng%2Flibpng.html"
     },
     "librosa/0.10.1-foss-2023a": {
         "License": "not found",
         "Needs Manual Check": true,
-        "Retrieved From": "not found"
+        "Homepage": "https://librosa.org/",
+        "Source url": "N/A"
     },
     "libsndfile/1.2.2-GCCcore-13.2.0": {
         "License": [
             "LGPL-2.0+"
         ],
         "Needs Manual Check": false,
-        "Retrieved From": "http://www.mega-nerd.com/libsndfile"
+        "Retrieved from": "https://packages.ecosyste.ms/api/v1/packages/lookup?repository_url=http%3A%2F%2Fwww.mega-nerd.com%2Flibsndfile"
     },
     "libsodium/1.0.19-GCCcore-13.2.0": {
-        "License": "not found",
-        "Needs Manual Check": true,
-        "Retrieved From": "not found"
+        "License": "https://doc.libsodium.org/#license",
+        "Needs Manual Check": false,
+        "Retrieved from": "https://doc.libsodium.org/"
     },
     "libspatialindex/1.9.3-GCCcore-13.2.0": {
-        "License": "not found",
-        "Needs Manual Check": true,
-        "Retrieved From": "not found"
+        "License": "https://libspatialindex.org#license-mit",
+        "Needs Manual Check": false,
+        "Retrieved from": "https://libspatialindex.org"
     },
     "libtirpc/1.3.4-GCCcore-13.2.0": {
         "License": [
             "BSD-3-Clause"
         ],
         "Needs Manual Check": false,
-        "Retrieved From": "https://sourceforge.net/projects/libtirpc/"
+        "Retrieved from": "https://packages.ecosyste.ms/api/v1/packages/lookup?repository_url=https%3A%2F%2Fsourceforge.net%2Fprojects%2Flibtirpc%2F"
     },
     "libunwind/1.6.2-GCCcore-13.2.0": {
         "License": [
             "MIT"
         ],
         "Needs Manual Check": false,
-        "Retrieved From": "https://www.nongnu.org/libunwind/"
+        "Retrieved from": "https://packages.ecosyste.ms/api/v1/packages/lookup?repository_url=https%3A%2F%2Fwww.nongnu.org%2Flibunwind%2F"
     },
     "libvorbis/1.3.7-GCCcore-13.2.0": {
         "License": [
             "BSD-3-Clause"
         ],
         "Needs Manual Check": false,
-        "Retrieved From": "https://xiph.org/vorbis/"
+        "Retrieved from": "https://packages.ecosyste.ms/api/v1/packages/lookup?repository_url=https%3A%2F%2Fxiph.org%2Fvorbis%2F"
     },
     "libvori/220621-GCCcore-12.3.0": {
         "License": "not found",
         "Needs Manual Check": true,
-        "Retrieved From": "not found"
+        "Homepage": "https://brehm-research.de/libvori.php",
+        "Source url": "https://brehm-research.de/files/"
     },
     "libwebp/1.3.2-GCCcore-13.2.0": {
         "License": [
             "BSD-3-Clause"
         ],
         "Needs Manual Check": false,
-        "Retrieved From": "https://developers.google.com/speed/webp/"
+        "Retrieved from": "https://packages.ecosyste.ms/api/v1/packages/lookup?repository_url=https%3A%2F%2Fdevelopers.google.com%2Fspeed%2Fwebp%2F"
     },
     "libxc/6.2.2-GCC-12.3.0": {
         "License": [
             "Other"
         ],
         "Needs Manual Check": false,
-        "Retrieved From": "https://libxc.gitlab.io"
+        "Retrieved from": "https://packages.ecosyste.ms/api/v1/packages/lookup?repository_url=https%3A%2F%2Flibxc.gitlab.io"
     },
     "libxml2/2.11.5-GCCcore-13.2.0": {
         "License": "not found",
         "Needs Manual Check": true,
-        "Retrieved From": "not found"
+        "Homepage": "http://xmlsoft.org/",
+        "Source url": "https://download.gnome.org/sources/libxml2/2.11/"
     },
     "libxml2-python/2.11.4-GCCcore-12.3.0": {
         "License": "not found",
         "Needs Manual Check": true,
-        "Retrieved From": "not found"
+        "Homepage": "http://xmlsoft.org/",
+        "Source url": "https://download.gnome.org/sources/libxml2/2.11/"
     },
     "libxslt/1.1.38-GCCcore-13.2.0": {
         "License": "not found",
         "Needs Manual Check": true,
-        "Retrieved From": "not found"
+        "Homepage": "http://xmlsoft.org/",
+        "Source url": "https://download.gnome.org/sources/libxslt/1.1/"
     },
     "libxsmm/1.17-GCC-12.3.0": {
-        "License": "not found",
-        "Needs Manual Check": true,
-        "Retrieved From": "not found"
+        "License": "bsd-3-clause",
+        "Needs Manual Check": false,
+        "Retrieved from": "https://repos.ecosyste.ms/api/v1/repositories/lookup?url=https%3A%2F%2Fgithub.com%2Flibxsmm%2Flibxsmm"
     },
     "libyaml/0.2.5-GCCcore-13.2.0": {
         "License": [
             "MIT"
         ],
         "Needs Manual Check": false,
-        "Retrieved From": "https://pyyaml.org/wiki/LibYAML"
+        "Retrieved from": "https://packages.ecosyste.ms/api/v1/packages/lookup?repository_url=https%3A%2F%2Fpyyaml.org%2Fwiki%2FLibYAML"
     },
     "lpsolve/5.5.2.11-GCC-12.2.0": {
         "License": [
             "Other"
         ],
         "Needs Manual Check": false,
-        "Retrieved From": "https://sourceforge.net/projects/lpsolve/"
+        "Retrieved from": "https://packages.ecosyste.ms/api/v1/packages/lookup?repository_url=https%3A%2F%2Fsourceforge.net%2Fprojects%2Flpsolve%2F"
     },
     "lxml/4.9.3-GCCcore-13.2.0": {
         "License": [
@@ -2293,459 +2381,475 @@
             "ZPL-2.0"
         ],
         "Needs Manual Check": false,
-        "Retrieved From": "https://lxml.de/"
+        "Retrieved from": "https://packages.ecosyste.ms/api/v1/packages/lookup?repository_url=https%3A%2F%2Flxml.de%2F"
     },
     "lz4/1.9.4-GCCcore-13.2.0": {
         "License": [
             "Other"
         ],
         "Needs Manual Check": false,
-        "Retrieved From": "https://lz4.github.io/lz4/"
+        "Retrieved from": "https://packages.ecosyste.ms/api/v1/packages/lookup?repository_url=https%3A%2F%2Flz4.github.io%2Flz4%2F"
     },
     "make/4.4.1-GCCcore-13.2.0": {
-        "License": "not found",
-        "Needs Manual Check": true,
-        "Retrieved From": "not found"
+        "License": "https://www.gnu.org/licenses/licenses.html",
+        "Needs Manual Check": false,
+        "Retrieved from": "https://www.gnu.org/software/make/make.html"
     },
     "mallard-ducktype/1.0.2-GCCcore-12.3.0": {
-        "License": "not found",
-        "Needs Manual Check": true,
-        "Retrieved From": "not found"
+        "License": "mit",
+        "Needs Manual Check": false,
+        "Retrieved from": "https://repos.ecosyste.ms/api/v1/repositories/lookup?url=https%3A%2F%2Fgithub.com%2Fprojectmallard%2Fmallard-ducktype"
     },
     "matplotlib/3.8.2-gfbf-2023b": {
         "License": [
             "Python-2.0"
         ],
         "Needs Manual Check": false,
-        "Retrieved From": "https://matplotlib.org"
+        "Retrieved from": "https://packages.ecosyste.ms/api/v1/packages/lookup?repository_url=https%3A%2F%2Fmatplotlib.org"
     },
     "maturin/1.5.0-GCCcore-13.2.0-Rust-1.76.0": {
-        "License": "not found",
-        "Needs Manual Check": true,
-        "Retrieved From": "not found"
+        "License": "apache-2.0",
+        "Needs Manual Check": false,
+        "Retrieved from": "https://repos.ecosyste.ms/api/v1/repositories/lookup?url=https%3A%2F%2Fgithub.com%2Fpyo3%2Fmaturin"
     },
     "meson-python/0.15.0-GCCcore-13.2.0": {
-        "License": "not found",
-        "Needs Manual Check": true,
-        "Retrieved From": "not found"
+        "License": "mit",
+        "Needs Manual Check": false,
+        "Retrieved from": "https://repos.ecosyste.ms/api/v1/repositories/lookup?url=https%3A%2F%2Fgithub.com%2Fmesonbuild%2Fmeson-python"
     },
     "mpi4py/3.1.5-gompi-2023b": {
-        "License": "not found",
-        "Needs Manual Check": true,
-        "Retrieved From": "not found"
+        "License": "bsd-3-clause",
+        "Needs Manual Check": false,
+        "Retrieved from": "https://repos.ecosyste.ms/api/v1/repositories/lookup?url=https%3A%2F%2Fgithub.com%2Fmpi4py%2Fmpi4py"
     },
     "mpl-ascii/0.10.0-gfbf-2023a": {
-        "License": "not found",
-        "Needs Manual Check": true,
-        "Retrieved From": "not found"
+        "License": "mit",
+        "Needs Manual Check": false,
+        "Retrieved from": "https://repos.ecosyste.ms/api/v1/repositories/lookup?url=https%3A%2F%2Fgithub.com%2Fchriscave%2Fmpl_ascii"
     },
     "multiprocess/0.70.16-gfbf-2023b": {
-        "License": "not found",
-        "Needs Manual Check": true,
-        "Retrieved From": "not found"
+        "License": "https://github.com/uqfoundation/multiprocess/blob/master/LICENSE",
+        "Needs Manual Check": false,
+        "Retrieved from": "https://repos.ecosyste.ms/api/v1/hosts/GitHub/repositories/uqfoundation%2Fmultiprocess"
     },
     "ncbi-vdb/3.0.10-gompi-2023a": {
-        "License": "not found",
-        "Needs Manual Check": true,
-        "Retrieved From": "not found"
+        "License": "https://github.com/ncbi/ncbi-vdb/blob/master/LICENSE",
+        "Needs Manual Check": false,
+        "Retrieved from": "https://repos.ecosyste.ms/api/v1/hosts/GitHub/repositories/ncbi%2Fncbi-vdb"
     },
     "ncdu/1.18-GCC-12.3.0": {
         "License": [
             "MIT"
         ],
         "Needs Manual Check": false,
-        "Retrieved From": "https://dev.yorhel.nl/ncdu"
+        "Retrieved from": "https://packages.ecosyste.ms/api/v1/packages/lookup?repository_url=https%3A%2F%2Fdev.yorhel.nl%2Fncdu"
     },
     "netCDF/4.9.2-gompi-2023b": {
         "License": [
             "BSD-3-Clause"
         ],
         "Needs Manual Check": false,
-        "Retrieved From": "https://www.unidata.ucar.edu/software/netcdf/"
+        "Retrieved from": "https://packages.ecosyste.ms/api/v1/packages/lookup?repository_url=https%3A%2F%2Fwww.unidata.ucar.edu%2Fsoftware%2Fnetcdf%2F"
     },
     "netCDF-Fortran/4.6.1-gompi-2023a": {
         "License": [
             "BSD-3-Clause"
         ],
         "Needs Manual Check": false,
-        "Retrieved From": "https://www.unidata.ucar.edu/software/netcdf/"
+        "Retrieved from": "https://packages.ecosyste.ms/api/v1/packages/lookup?repository_url=https%3A%2F%2Fwww.unidata.ucar.edu%2Fsoftware%2Fnetcdf%2F"
     },
     "netcdf4-python/1.6.4-foss-2023a": {
         "License": "not found",
         "Needs Manual Check": true,
-        "Retrieved From": "not found"
+        "Homepage": "https://unidata.github.io/netcdf4-python/",
+        "Source url": "N/A"
     },
     "nettle/3.9.1-GCCcore-13.2.0": {
         "License": [
             "LGPL-2.0-or-later"
         ],
         "Needs Manual Check": false,
-        "Retrieved From": "https://www.lysator.liu.se/~nisse/nettle/"
+        "Retrieved from": "https://packages.ecosyste.ms/api/v1/packages/lookup?repository_url=https%3A%2F%2Fwww.lysator.liu.se%2F~nisse%2Fnettle%2F"
     },
     "networkx/3.2.1-gfbf-2023b": {
-        "License": "not found",
-        "Needs Manual Check": true,
-        "Retrieved From": "not found"
+        "License": "https://pypi.python.org/search/?c=License+%3A%3A+OSI+Approved+%3A%3A+BSD+License",
+        "Needs Manual Check": false,
+        "Retrieved from": "https://pypi.python.org/pypi/networkx"
     },
     "nlohmann_json/3.11.3-GCCcore-13.2.0": {
-        "License": "not found",
-        "Needs Manual Check": true,
-        "Retrieved From": "not found"
+        "License": "mit",
+        "Needs Manual Check": false,
+        "Retrieved from": "https://repos.ecosyste.ms/api/v1/repositories/lookup?url=https%3A%2F%2Fgithub.com%2Fnlohmann%2Fjson"
     },
     "nodejs/20.9.0-GCCcore-13.2.0": {
         "License": "not found",
         "Needs Manual Check": true,
-        "Retrieved From": "not found"
+        "Homepage": "https://nodejs.org",
+        "Source url": "https://nodejs.org/dist/v20.9.0/"
     },
     "nsync/1.26.0-GCCcore-12.3.0": {
-        "License": "not found",
-        "Needs Manual Check": true,
-        "Retrieved From": "not found"
+        "License": "apache-2.0",
+        "Needs Manual Check": false,
+        "Retrieved from": "https://repos.ecosyste.ms/api/v1/repositories/lookup?url=https%3A%2F%2Fgithub.com%2Fgoogle%2Fnsync"
     },
     "numactl/2.0.16-GCCcore-13.2.0": {
-        "License": "not found",
-        "Needs Manual Check": true,
-        "Retrieved From": "not found"
+        "License": "gpl-2.0",
+        "Needs Manual Check": false,
+        "Retrieved from": "https://repos.ecosyste.ms/api/v1/repositories/lookup?url=https%3A%2F%2Fgithub.com%2Fnumactl%2Fnumactl"
     },
     "numba/0.58.1-foss-2023a": {
         "License": [
             "Other"
         ],
         "Needs Manual Check": false,
-        "Retrieved From": "https://numba.pydata.org/"
+        "Retrieved from": "https://packages.ecosyste.ms/api/v1/packages/lookup?repository_url=https%3A%2F%2Fnumba.pydata.org%2F"
     },
     "occt/7.8.0-GCCcore-12.3.0": {
-        "License": "not found",
-        "Needs Manual Check": true,
-        "Retrieved From": "not found"
+        "License": "lgpl-2.1",
+        "Needs Manual Check": false,
+        "Retrieved from": "https://repos.ecosyste.ms/api/v1/repositories/lookup?url=https%3A%2F%2Fgithub.com%2FOpen-Cascade-SAS%2FOCCT"
     },
     "orjson/3.9.15-GCCcore-12.3.0": {
-        "License": "not found",
-        "Needs Manual Check": true,
-        "Retrieved From": "not found"
+        "License": "apache-2.0",
+        "Needs Manual Check": false,
+        "Retrieved from": "https://repos.ecosyste.ms/api/v1/repositories/lookup?url=https%3A%2F%2Fgithub.com%2Fijl%2Forjson"
     },
     "parallel/20230722-GCCcore-12.2.0": {
-        "License": "not found",
-        "Needs Manual Check": true,
-        "Retrieved From": "not found"
+        "License": "https://www.gnu.org/licenses/license-list.html",
+        "Needs Manual Check": false,
+        "Retrieved from": "https://savannah.gnu.org/projects/parallel/"
     },
     "patchelf/0.18.0-GCCcore-13.2.0": {
-        "License": "not found",
-        "Needs Manual Check": true,
-        "Retrieved From": "not found"
+        "License": "gpl-3.0",
+        "Needs Manual Check": false,
+        "Retrieved from": "https://repos.ecosyste.ms/api/v1/repositories/lookup?url=https%3A%2F%2Fgithub.com%2FNixOS%2Fpatchelf"
     },
     "pixman/0.42.2-GCCcore-13.2.0": {
         "License": "not found",
         "Needs Manual Check": true,
-        "Retrieved From": "not found"
+        "Homepage": "http://www.pixman.org/",
+        "Source url": "https://cairographics.org/releases/"
     },
     "pkgconf/2.0.3-GCCcore-13.2.0": {
-        "License": "not found",
-        "Needs Manual Check": true,
-        "Retrieved From": "not found"
+        "License": "https://github.com/pkgconf/pkgconf/blob/master/COPYING",
+        "Needs Manual Check": false,
+        "Retrieved from": "https://repos.ecosyste.ms/api/v1/hosts/GitHub/repositories/pkgconf%2Fpkgconf"
     },
     "pkgconfig/1.5.5-GCCcore-12.3.0-python": {
-        "License": "not found",
-        "Needs Manual Check": true,
-        "Retrieved From": "not found"
+        "License": "mit",
+        "Needs Manual Check": false,
+        "Retrieved from": "https://repos.ecosyste.ms/api/v1/repositories/lookup?url=https%3A%2F%2Fgithub.com%2Fmatze%2Fpkgconfig"
     },
     "poetry/1.6.1-GCCcore-13.2.0": {
         "License": [
             "MIT"
         ],
         "Needs Manual Check": false,
-        "Retrieved From": "https://python-poetry.org"
+        "Retrieved from": "https://packages.ecosyste.ms/api/v1/packages/lookup?repository_url=https%3A%2F%2Fpython-poetry.org"
     },
     "protobuf/24.0-GCCcore-12.3.0": {
-        "License": "not found",
-        "Needs Manual Check": true,
-        "Retrieved From": "not found"
+        "License": "https://github.com/protocolbuffers/protobuf/blob/main/LICENSE",
+        "Needs Manual Check": false,
+        "Retrieved from": "https://repos.ecosyste.ms/api/v1/hosts/GitHub/repositories/protocolbuffers%2Fprotobuf"
     },
     "protobuf-python/4.24.0-GCCcore-12.3.0": {
-        "License": "not found",
-        "Needs Manual Check": true,
-        "Retrieved From": "not found"
+        "License": "https://github.com/protocolbuffers/protobuf/blob/main/LICENSE",
+        "Needs Manual Check": false,
+        "Retrieved from": "https://repos.ecosyste.ms/api/v1/hosts/GitHub/repositories/protocolbuffers%2Fprotobuf"
     },
     "psycopg2/2.9.9-GCCcore-12.3.0": {
         "License": [
             "Other"
         ],
         "Needs Manual Check": false,
-        "Retrieved From": "https://psycopg.org/"
+        "Retrieved from": "https://packages.ecosyste.ms/api/v1/packages/lookup?repository_url=https%3A%2F%2Fpsycopg.org%2F"
     },
     "pyMBE/0.8.0-foss-2023b": {
         "License": "not found",
         "Needs Manual Check": true,
-        "Retrieved From": "not found"
+        "Homepage": "",
+        "Source url": "N/A"
     },
     "pybind11/2.11.1-GCCcore-13.2.0": {
         "License": [
             "Other"
         ],
         "Needs Manual Check": false,
-        "Retrieved From": "https://pybind11.readthedocs.io"
+        "Retrieved from": "https://packages.ecosyste.ms/api/v1/packages/lookup?repository_url=https%3A%2F%2Fpybind11.readthedocs.io"
     },
     "pydantic/2.7.4-GCCcore-13.2.0": {
-        "License": "not found",
-        "Needs Manual Check": true,
-        "Retrieved From": "not found"
+        "License": "mit",
+        "Needs Manual Check": false,
+        "Retrieved from": "https://repos.ecosyste.ms/api/v1/repositories/lookup?url=https%3A%2F%2Fgithub.com%2Fsamuelcolvin%2Fpydantic"
     },
     "pyfaidx/0.8.1.1-GCCcore-13.2.0": {
-        "License": "not found",
-        "Needs Manual Check": true,
-        "Retrieved From": "not found"
+        "License": "https://pypi.python.org/search/?c=License+%3A%3A+OSI+Approved+%3A%3A+BSD+License",
+        "Needs Manual Check": false,
+        "Retrieved from": "https://pypi.python.org/pypi/pyfaidx"
     },
     "pyproj/3.6.0-GCCcore-12.3.0": {
         "License": "not found",
         "Needs Manual Check": true,
-        "Retrieved From": "not found"
+        "Homepage": "https://pyproj4.github.io/pyproj",
+        "Source url": "N/A"
     },
     "pystencils/1.3.4-gfbf-2023b": {
         "License": "not found",
         "Needs Manual Check": true,
-        "Retrieved From": "not found"
+        "Homepage": "https://pycodegen.pages.i10git.cs.fau.de/pystencils",
+        "Source url": "N/A"
     },
     "pytest-flakefinder/1.1.0-GCCcore-12.3.0": {
-        "License": "not found",
-        "Needs Manual Check": true,
-        "Retrieved From": "not found"
+        "License": "https://github.com/dropbox/pytest-flakefinder/blob/master/LICENSE",
+        "Needs Manual Check": false,
+        "Retrieved from": "https://repos.ecosyste.ms/api/v1/hosts/GitHub/repositories/dropbox%2Fpytest-flakefinder"
     },
     "pytest-rerunfailures/12.0-GCCcore-12.3.0": {
-        "License": "not found",
-        "Needs Manual Check": true,
-        "Retrieved From": "not found"
+        "License": "https://github.com/pytest-dev/pytest-rerunfailures/blob/master/LICENSE",
+        "Needs Manual Check": false,
+        "Retrieved from": "https://repos.ecosyste.ms/api/v1/hosts/GitHub/repositories/pytest-dev%2Fpytest-rerunfailures"
     },
     "pytest-shard/0.1.2-GCCcore-12.3.0": {
-        "License": "not found",
-        "Needs Manual Check": true,
-        "Retrieved From": "not found"
+        "License": "mit",
+        "Needs Manual Check": false,
+        "Retrieved from": "https://repos.ecosyste.ms/api/v1/repositories/lookup?url=https%3A%2F%2Fgithub.com%2FAdamGleave%2Fpytest-shard"
     },
     "python-casacore/3.5.2-foss-2023b": {
         "License": "not found",
         "Needs Manual Check": true,
-        "Retrieved From": "not found"
+        "Homepage": "https://casacore.github.io/python-casacore/#",
+        "Source url": "N/A"
     },
     "python-isal/1.1.0-GCCcore-12.3.0": {
-        "License": "not found",
-        "Needs Manual Check": true,
-        "Retrieved From": "not found"
+        "License": "https://github.com/pycompression/python-isal/blob/develop/LICENSE",
+        "Needs Manual Check": false,
+        "Retrieved from": "https://repos.ecosyste.ms/api/v1/hosts/GitHub/repositories/pycompression%2Fpython-isal"
     },
     "python-xxhash/3.4.1-GCCcore-12.3.0": {
-        "License": "not found",
-        "Needs Manual Check": true,
-        "Retrieved From": "not found"
+        "License": "bsd-2-clause",
+        "Needs Manual Check": false,
+        "Retrieved from": "https://repos.ecosyste.ms/api/v1/repositories/lookup?url=https%3A%2F%2Fgithub.com%2Fifduyue%2Fpython-xxhash"
     },
     "re2c/3.1-GCCcore-13.2.0": {
-        "License": "not found",
-        "Needs Manual Check": true,
-        "Retrieved From": "not found"
+        "License": "https://re2c.org#license",
+        "Needs Manual Check": false,
+        "Retrieved from": "https://re2c.org"
     },
     "rpy2/3.5.15-foss-2023a": {
         "License": "not found",
         "Needs Manual Check": true,
-        "Retrieved From": "not found"
+        "Homepage": "https://rpy2.github.io",
+        "Source url": "N/A"
     },
     "scikit-build/0.17.6-GCCcore-13.2.0": {
         "License": "not found",
         "Needs Manual Check": true,
-        "Retrieved From": "not found"
+        "Homepage": "https://scikit-build.readthedocs.io/en/latest",
+        "Source url": "N/A"
     },
     "scikit-build-core/0.9.3-GCCcore-13.2.0": {
         "License": [
             "Other"
         ],
         "Needs Manual Check": false,
-        "Retrieved From": "https://scikit-build.readthedocs.io/en/latest/"
+        "Retrieved from": "https://packages.ecosyste.ms/api/v1/packages/lookup?repository_url=https%3A%2F%2Fscikit-build.readthedocs.io%2Fen%2Flatest%2F"
     },
     "scikit-learn/1.4.0-gfbf-2023b": {
         "License": "not found",
         "Needs Manual Check": true,
-        "Retrieved From": "not found"
+        "Homepage": "https://scikit-learn.org/stable/index.html",
+        "Source url": "N/A"
     },
     "setuptools/64.0.3-GCCcore-12.2.0": {
         "License": [
             "MIT"
         ],
         "Needs Manual Check": false,
-        "Retrieved From": "https://pypi.org/project/setuptools"
+        "Retrieved from": "https://packages.ecosyste.ms/api/v1/packages/lookup?repository_url=https%3A%2F%2Fpypi.org%2Fproject%2Fsetuptools"
     },
     "setuptools-rust/1.8.0-GCCcore-13.2.0": {
-        "License": "not found",
-        "Needs Manual Check": true,
-        "Retrieved From": "not found"
+        "License": "mit",
+        "Needs Manual Check": false,
+        "Retrieved from": "https://repos.ecosyste.ms/api/v1/repositories/lookup?url=https%3A%2F%2Fgithub.com%2FPyO3%2Fsetuptools-rust"
     },
     "siscone/3.0.6-GCCcore-12.3.0": {
         "License": "not found",
         "Needs Manual Check": true,
-        "Retrieved From": "not found"
+        "Homepage": "https://siscone.hepforge.org/",
+        "Source url": "https://siscone.hepforge.org/downloads/"
     },
     "snakemake/8.4.2-foss-2023a": {
-        "License": "not found",
-        "Needs Manual Check": true,
-        "Retrieved From": "not found"
+        "License": "https://snakemake.readthedocs.io/project_info/license.html",
+        "Needs Manual Check": false,
+        "Retrieved from": "https://snakemake.readthedocs.io"
     },
     "snappy/1.1.10-GCCcore-13.2.0": {
-        "License": "not found",
-        "Needs Manual Check": true,
-        "Retrieved From": "not found"
+        "License": "https://github.com/google/snappy/blob/main/COPYING",
+        "Needs Manual Check": false,
+        "Retrieved from": "https://repos.ecosyste.ms/api/v1/hosts/GitHub/repositories/google%2Fsnappy"
     },
     "spglib-python/2.0.2-gfbf-2022b": {
-        "License": "not found",
-        "Needs Manual Check": true,
-        "Retrieved From": "not found"
+        "License": "https://pypi.python.org/search/?c=License+%3A%3A+OSI+Approved+%3A%3A+BSD+License",
+        "Needs Manual Check": false,
+        "Retrieved from": "https://pypi.python.org/pypi/spglib"
     },
     "statsmodels/0.14.1-gfbf-2023b": {
         "License": [
             "BSD-3-Clause"
         ],
         "Needs Manual Check": false,
-        "Retrieved From": "https://www.statsmodels.org/"
+        "Retrieved from": "https://packages.ecosyste.ms/api/v1/packages/lookup?repository_url=https%3A%2F%2Fwww.statsmodels.org%2F"
     },
     "sympy/1.12-gfbf-2023b": {
         "License": "not found",
         "Needs Manual Check": true,
-        "Retrieved From": "not found"
+        "Homepage": "https://sympy.org/",
+        "Source url": "N/A"
     },
     "tbb/2021.13.0-GCCcore-13.2.0": {
-        "License": "not found",
-        "Needs Manual Check": true,
-        "Retrieved From": "not found"
+        "License": "apache-2.0",
+        "Needs Manual Check": false,
+        "Retrieved from": "https://repos.ecosyste.ms/api/v1/repositories/lookup?url=https%3A%2F%2Fgithub.com%2Foneapi-src%2FoneTBB"
     },
     "tcsh/6.24.07-GCCcore-12.2.0": {
         "License": [
             "BSD-3-Clause"
         ],
         "Needs Manual Check": false,
-        "Retrieved From": "https://www.tcsh.org"
+        "Retrieved from": "https://packages.ecosyste.ms/api/v1/packages/lookup?repository_url=https%3A%2F%2Fwww.tcsh.org"
     },
     "time/1.9-GCCcore-12.2.0": {
         "License": [
             "GPL-3.0-only"
         ],
         "Needs Manual Check": false,
-        "Retrieved From": "https://www.gnu.org/software/time/"
+        "Retrieved from": "https://packages.ecosyste.ms/api/v1/packages/lookup?repository_url=https%3A%2F%2Fwww.gnu.org%2Fsoftware%2Ftime%2F"
     },
     "tmux/3.3a-GCCcore-12.3.0": {
-        "License": "not found",
-        "Needs Manual Check": true,
-        "Retrieved From": "not found"
+        "License": "https://github.com/tmux/tmux/blob/master/COPYING",
+        "Needs Manual Check": false,
+        "Retrieved from": "https://repos.ecosyste.ms/api/v1/hosts/GitHub/repositories/tmux%2Ftmux"
     },
     "tornado/6.3.2-GCCcore-12.3.0": {
-        "License": "not found",
-        "Needs Manual Check": true,
-        "Retrieved From": "not found"
+        "License": "apache-2.0",
+        "Needs Manual Check": false,
+        "Retrieved from": "https://repos.ecosyste.ms/api/v1/repositories/lookup?url=https%3A%2F%2Fgithub.com%2Ftornadoweb%2Ftornado"
     },
     "tqdm/4.66.2-GCCcore-13.2.0": {
-        "License": "not found",
-        "Needs Manual Check": true,
-        "Retrieved From": "not found"
+        "License": "https://github.com/tqdm/tqdm/blob/master/LICENCE",
+        "Needs Manual Check": false,
+        "Retrieved from": "https://repos.ecosyste.ms/api/v1/hosts/GitHub/repositories/tqdm%2Ftqdm"
     },
     "typing-extensions/4.10.0-GCCcore-13.2.0": {
-        "License": "not found",
-        "Needs Manual Check": true,
-        "Retrieved From": "not found"
+        "License": "https://github.com/python/typing_extensions/blob/main/LICENSE",
+        "Needs Manual Check": false,
+        "Retrieved from": "https://repos.ecosyste.ms/api/v1/hosts/GitHub/repositories/python%2Ftyping_extensions"
     },
     "unixODBC/2.3.12-GCCcore-12.3.0": {
         "License": [
             "LGPL-2.0-or-later"
         ],
         "Needs Manual Check": false,
-        "Retrieved From": "https://www.unixodbc.org/"
+        "Retrieved from": "https://packages.ecosyste.ms/api/v1/packages/lookup?repository_url=https%3A%2F%2Fwww.unixodbc.org%2F"
     },
     "utf8proc/2.9.0-GCCcore-13.2.0": {
-        "License": "not found",
-        "Needs Manual Check": true,
-        "Retrieved From": "not found"
+        "License": "https://github.com/JuliaStrings/utf8proc/blob/master/LICENSE.md",
+        "Needs Manual Check": false,
+        "Retrieved from": "https://repos.ecosyste.ms/api/v1/hosts/GitHub/repositories/JuliaStrings%2Futf8proc"
     },
     "virtualenv/20.24.6-GCCcore-13.2.0": {
-        "License": "not found",
-        "Needs Manual Check": true,
-        "Retrieved From": "not found"
+        "License": "mit",
+        "Needs Manual Check": false,
+        "Retrieved from": "https://repos.ecosyste.ms/api/v1/repositories/lookup?url=https%3A%2F%2Fgithub.com%2Fpypa%2Fvirtualenv"
     },
     "waLBerla/6.1-foss-2023a": {
         "License": "not found",
         "Needs Manual Check": true,
-        "Retrieved From": "not found"
+        "Homepage": "https://walberla.net/index.html",
+        "Source url": "https://i10git.cs.fau.de/walberla/walberla/-/archive/v6.1"
     },
     "wget/1.24.5-GCCcore-12.3.0": {
-        "License": "not found",
-        "Needs Manual Check": true,
-        "Retrieved From": "not found"
+        "License": "https://www.gnu.org/licenses/licenses.html",
+        "Needs Manual Check": false,
+        "Retrieved from": "https://www.gnu.org/software/wget"
     },
     "wradlib/2.0.3-foss-2023a": {
-        "License": "not found",
-        "Needs Manual Check": true,
-        "Retrieved From": "not found"
+        "License": "https://docs.wradlib.org/#license",
+        "Needs Manual Check": false,
+        "Retrieved from": "https://docs.wradlib.org/"
     },
     "wrapt/1.15.0-gfbf-2023a": {
-        "License": "not found",
-        "Needs Manual Check": true,
-        "Retrieved From": "not found"
+        "License": "https://pypi.org/search/?c=License+%3A%3A+OSI+Approved+%3A%3A+BSD+License",
+        "Needs Manual Check": false,
+        "Retrieved from": "https://pypi.org/project/wrapt/"
     },
     "wxWidgets/3.2.6-GCC-13.2.0": {
         "License": "not found",
         "Needs Manual Check": true,
-        "Retrieved From": "not found"
+        "Homepage": "https://www.wxwidgets.org",
+        "Source url": "N/A"
     },
     "x264/20231019-GCCcore-13.2.0": {
         "License": [
             "GPL-2.0-or-later"
         ],
         "Needs Manual Check": false,
-        "Retrieved From": "https://www.videolan.org/developers/x264.html"
+        "Retrieved from": "https://packages.ecosyste.ms/api/v1/packages/lookup?repository_url=https%3A%2F%2Fwww.videolan.org%2Fdevelopers%2Fx264.html"
     },
     "x265/3.5-GCCcore-13.2.0": {
-        "License": "not found",
-        "Needs Manual Check": true,
-        "Retrieved From": "not found"
+        "License": "https://www.x265.org/x265-licensees/",
+        "Needs Manual Check": false,
+        "Retrieved from": "https://x265.org/"
     },
     "xarray/2023.9.0-gfbf-2023a": {
-        "License": "not found",
-        "Needs Manual Check": true,
-        "Retrieved From": "not found"
+        "License": "apache-2.0",
+        "Needs Manual Check": false,
+        "Retrieved from": "https://repos.ecosyste.ms/api/v1/repositories/lookup?url=https%3A%2F%2Fgithub.com%2Fpydata%2Fxarray"
     },
     "xorg-macros/1.20.0-GCCcore-13.2.0": {
-        "License": "not found",
-        "Needs Manual Check": true,
-        "Retrieved From": "not found"
+        "License": "mit",
+        "Needs Manual Check": false,
+        "Retrieved from": "https://repos.ecosyste.ms/api/v1/repositories/lookup?url=https%3A%2F%2Fgitlab.freedesktop.org%2Fxorg%2Futil%2Fmacros"
     },
     "xprop/1.2.6-GCCcore-12.3.0": {
         "License": [
             "MIT"
         ],
         "Needs Manual Check": false,
-        "Retrieved From": "https://www.x.org/wiki/"
+        "Retrieved from": "https://packages.ecosyste.ms/api/v1/packages/lookup?repository_url=https%3A%2F%2Fwww.x.org%2Fwiki%2F"
     },
     "xxHash/0.8.2-GCCcore-12.3.0": {
-        "License": "not found",
-        "Needs Manual Check": true,
-        "Retrieved From": "not found"
+        "License": "https://github.com/Cyan4973/xxHash/blob/dev/LICENSE",
+        "Needs Manual Check": false,
+        "Retrieved from": "https://repos.ecosyste.ms/api/v1/hosts/GitHub/repositories/Cyan4973%2FxxHash"
     },
     "xxd/9.1.0307-GCCcore-13.2.0": {
         "License": [
             "Other"
         ],
         "Needs Manual Check": false,
-        "Retrieved From": "https://www.vim.org"
+        "Retrieved from": "https://packages.ecosyste.ms/api/v1/packages/lookup?repository_url=https%3A%2F%2Fwww.vim.org"
     },
     "yell/2.2.2-GCC-12.3.0": {
-        "License": "not found",
-        "Needs Manual Check": true,
-        "Retrieved From": "not found"
+        "License": "mit",
+        "Needs Manual Check": false,
+        "Retrieved from": "https://repos.ecosyste.ms/api/v1/repositories/lookup?url=https%3A%2F%2Fgithub.com%2Frudionrails%2Fyell"
     },
     "yelp-tools/42.1-GCCcore-12.3.0": {
-        "License": "not found",
-        "Needs Manual Check": true,
-        "Retrieved From": "not found"
+        "License": "gpl-2.0+",
+        "Needs Manual Check": false,
+        "Retrieved from": "https://repos.ecosyste.ms/api/v1/repositories/lookup?url=https%3A%2F%2Fgitlab.gnome.org%2FGNOME%2Fyelp-tools"
     },
     "yelp-xsl/42.1-GCCcore-12.3.0": {
         "License": "not found",
         "Needs Manual Check": true,
-        "Retrieved From": "not found"
+        "Homepage": "https://gitlab.gnome.org/GNOME/yelp-xslg",
+        "Source url": "https://gitlab.gnome.org/GNOME/yelp-xsl/-/archive/42.1/"
     },
     "zstd/1.5.5-GCCcore-13.2.0": {
         "License": "not found",
         "Needs Manual Check": true,
-        "Retrieved From": "not found"
+        "Homepage": "https://facebook.github.io/zstd",
+        "Source url": "N/A"
     }
 }
