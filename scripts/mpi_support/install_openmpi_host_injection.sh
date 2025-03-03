@@ -43,6 +43,16 @@ parse_cmdline() {
                     exit 1
                 fi
                 ;;
+            --pmix-path)
+                if [ -n "$2"]; then
+                    readonly PMIX_PATH="$2"
+                    shift 2
+                else
+                    echo_red "Error: Argument required for $1"
+                    show_help
+                    exit 1
+                fi
+                ;;
             -t|--temp-dir)
                 if [ -n "$2" ]; then
                     readonly TEMP_DIR="$2"
@@ -69,6 +79,12 @@ parse_cmdline() {
         show_help
         exit 0
     fi
+
+    if [ -z "${PMIX_PATH}" ]; then
+        echo_yellow "PMIX path was not specified"
+        echo_yellow "Assuming it is the directory where libpmix is found"
+    fi
+
     readonly CLEAN=${CLEAN:=true}
 }
 
@@ -126,7 +142,7 @@ inject_mpi() {
     find ${MPI_PATH} -maxdepth 1 -type l -name "*.so*" -exec cp -P {} ${host_injection_mpi_path} \;
 
     # Get MPI libs dependencies from system ldd
-    local libname libpath
+    local libname libpath pmixpath
     local -A libs_dict
     local -a dlopen_libs
 
@@ -144,8 +160,15 @@ inject_mpi() {
 
         if [[ ${libname} =~ libpmix\.so\.?.* ]] && [[ ! -f ${temp_inject_path}/${libname} ]]; then
             local libdir="$(dirname ${libpath})/"     # without trailing slash the find does not work
+            [ -n "${PMIX_PATH}" ] && pmixpath="${PMIX_PATH}/pmix" || pmixpath="$(dirname ${libpath})/pmix"
             find ${libdir} -maxdepth 1 -type f -name "libpmix.so*" -exec cp {} ${temp_inject_path} \;
             find ${libdir} -maxdepth 1 -type l -name "libpmix.so*" -exec cp -P {} ${host_injection_mpi_path} \;
+
+            local depname deppath
+            while read -r depname deppath; do
+                libs_dict[${depname}]=${deppath}
+            done < <(find ${pmixpath} -maxdepth 1 -name "*.so*" -exec ${system_ldd} {} \; | awk '/=>/ {print $1, $3}' | sort | uniq)
+
             libpath=${host_injection_mpi_path}/$(basename ${libpath})
         fi
 
@@ -178,6 +201,14 @@ inject_mpi() {
             done < <(for dlopen in ${dlopen_libs[@]}; do ${eessi_ldd} ${dlopen}; done \
                      | grep -e "=> not found" -e "=> ${MPI_PATH}" | awk '!/libmpi\.so.*/ {print $1}' | sort | uniq)
         fi
+
+        # Inject into libpmix.so non resolved dependencies from dlopen libraries in the PMIX path
+        if [[ ${lib} =~ libpmix\.so ]]; then            
+            while read -r dep; do
+                if ! ${PATCHELF_BIN} --print-needed ${lib} | grep -q "${dep}"; then
+                    ${PATCHELF_BIN} --add-needed ${libs_dict[${dep}]} ${lib}
+                fi
+            done < <(find ${pmixpath} -maxdepth 1 -type f -name "*.so*" -exec ${eessi_ldd} {} \; | awk '/not found/ && !/libpmix\.so.*/ {print $1}' | sort | uniq)
         fi
 
         # Force system libefa, librdmacm, libibverbs and libpsm2 (present in the EESSI compat layer)
