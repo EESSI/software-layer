@@ -149,7 +149,7 @@ inject_mpi() {
             libpath=${host_injection_mpi_path}/$(basename ${libpath})
         fi
 
-        if [[ ${libpath} =~ ${MPI_PATH}/.* ]]; then
+        if [[ ${libpath} =~ ${MPI_PATH} ]]; then
             libpath=${host_injection_mpi_path}/$(basename ${libpath})
         fi
         
@@ -173,9 +173,11 @@ inject_mpi() {
         if [[ ${lib} =~ libmpi\.so ]]; then
             while read -r dep; do
                 if ! ${PATCHELF_BIN} --print-needed ${lib} | grep -q "${dep}"; then
-                    ${PATCHELF_BIN} --add-needed ${libs_dict[${dep}]} ${lib}                    
+                    ${PATCHELF_BIN} --add-needed ${libs_dict[${dep}]} ${lib}
                 fi
-            done < <(for dlopen in ${dlopen_libs[@]}; do ${eessi_ldd} ${dlopen}; done | awk '/not found/ {print $1}' | sort | uniq)
+            done < <(for dlopen in ${dlopen_libs[@]}; do ${eessi_ldd} ${dlopen}; done \
+                     | grep -e "=> not found" -e "=> ${MPI_PATH}" | awk '!/libmpi\.so.*/ {print $1}' | sort | uniq)
+        fi
         fi
 
         # Force system libefa, librdmacm, libibverbs and libpsm2 (present in the EESSI compat layer)
