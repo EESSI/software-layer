@@ -151,7 +151,7 @@ inject_mpi() {
     # Get all library names and paths in associative array
     while read -r libname libpath; do
         # If library is libfabric or from the MPI path, modify libpath in assoc array to point to host_injection_mpi_path
-        if [[ ${libname} =~ libfabric\.so\.?.* ]] && [[ ! -f ${temp_inject_path}/${libname} ]]; then
+        if [[ ${libname} =~ libfabric\.so ]] && [[ ! -f ${temp_inject_path}/${libname} ]]; then
             local libdir="$(dirname ${libpath})/"     # without trailing slash the find does not work
             find ${libdir} -maxdepth 1 -type f -name "libfabric.so*" -exec cp {} ${temp_inject_path} \;
             find ${libdir} -maxdepth 1 -type l -name "libfabric.so*" -exec cp -P {} ${host_injection_mpi_path} \;
@@ -164,7 +164,7 @@ inject_mpi() {
             libpath=${host_injection_mpi_path}/$(basename ${libpath})
         fi
 
-        if [[ ${libname} =~ libpmix\.so\.?.* ]] && [[ ! -f ${temp_inject_path}/${libname} ]]; then
+        if [[ ${libname} =~ libpmix\.so ]] && [[ ! -f ${temp_inject_path}/${libname} ]]; then
             local libdir="$(dirname ${libpath})/"     # without trailing slash the find does not work
             [ -n "${PMIX_PATH}" ] && pmixpath="${PMIX_PATH}/pmix" || pmixpath="$(dirname ${libpath})/pmix"
             find ${libdir} -maxdepth 1 -type f -name "libpmix.so*" -exec cp {} ${temp_inject_path} \;
@@ -218,7 +218,7 @@ inject_mpi() {
         fi
 
         # Force system libefa, librdmacm, libibverbs and libpsm2 (present in the EESSI compat layer)
-        if [[ ${lib} =~ libfabric\.so\.?.* ]]; then
+        if [[ ${lib} =~ libfabric\.so ]]; then
             while read -r dep; do
                 ${PATCHELF_BIN} --replace-needed ${dep} ${libs_dict[${dep}]} ${lib}
             done < <(${system_ldd} ${lib} | awk '/libefa/ || /libibverbs/ || /libpsm2/ || /librdmacm/ {print $1}' | sort | uniq)
