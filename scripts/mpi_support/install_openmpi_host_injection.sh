@@ -208,7 +208,7 @@ inject_mpi() {
             if ${PATCHELF_BIN} --print-needed ${lib} | grep -q "${dep}"; then
                 ${PATCHELF_BIN} --replace-needed ${dep} ${libs_dict[${dep}]} ${lib}
             else
-                ${PATCHELF_BIN} --add-needed ${dep} ${libs_dict[${dep}]} ${lib}
+                ${PATCHELF_BIN} --add-needed ${libs_dict[${dep}]} ${lib}
             fi
         done < <(${eessi_ldd} ${lib} | awk '/not found/ {print $1}' | sort | uniq)
 
