@@ -194,6 +194,15 @@ inject_mpi() {
     while read -r lib; do
         local dep
 
+        # Force system libefa, librdmacm, libibverbs and libpsm2 (present in the EESSI compat layer)
+        # Must be done before the injection of unresolved dependencies
+        if [[ ${lib} =~ libfabric\.so ]]; then
+            while read -r dep; do
+                ${PATCHELF_BIN} --replace-needed ${dep} ${libs_dict[${dep}]} ${lib}
+            done < <(${system_ldd} ${lib} | awk '/libefa/ || /libibverbs/ || /libpsm2/ || /librdmacm/ {print $1}' | sort | uniq)
+        fi
+
+        # Do injection of unresolved libraries
         ${PATCHELF_BIN} --set-rpath "${host_injection_mpi_path}" ${lib}
         while read -r dep; do
             ${PATCHELF_BIN} --replace-needed ${dep} ${libs_dict[${dep}]} ${lib}
@@ -216,13 +225,6 @@ inject_mpi() {
                     ${PATCHELF_BIN} --add-needed ${libs_dict[${dep}]} ${lib}
                 fi
             done < <(find ${pmixpath} -maxdepth 1 -type f -name "*.so*" -exec ${eessi_ldd} {} \; | awk '/not found/ && !/libpmix\.so.*/ {print $1}' | sort | uniq)
-        fi
-
-        # Force system libefa, librdmacm, libibverbs and libpsm2 (present in the EESSI compat layer)
-        if [[ ${lib} =~ libfabric\.so ]]; then
-            while read -r dep; do
-                ${PATCHELF_BIN} --replace-needed ${dep} ${libs_dict[${dep}]} ${lib}
-            done < <(${system_ldd} ${lib} | awk '/libefa/ || /libibverbs/ || /libpsm2/ || /librdmacm/ {print $1}' | sort | uniq)
         fi
 
     done < <(find ${temp_inject_path} -type f)
