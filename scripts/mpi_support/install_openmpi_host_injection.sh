@@ -43,16 +43,6 @@ parse_cmdline() {
                     exit 1
                 fi
                 ;;
-            --pmix-path)
-                if [ -n "$2"]; then
-                    readonly PMIX_PATH="$2"
-                    shift 2
-                else
-                    echo_red "Error: Argument required for $1"
-                    show_help
-                    exit 1
-                fi
-                ;;
             -t|--temp-dir)
                 if [ -n "$2" ]; then
                     readonly TEMP_DIR="$2"
@@ -171,11 +161,6 @@ inject_mpi() {
             find ${libdir} -maxdepth 1 -type f -name "libpmix.so*" -exec cp {} ${temp_inject_path} \;
             find ${libdir} -maxdepth 1 -type l -name "libpmix.so*" -exec cp -P {} ${host_injection_mpi_path} \;
 
-            local depname deppath
-            while read -r depname deppath; do
-                libs_dict[${depname}]=${deppath}
-            done < <(find ${pmixpath} -maxdepth 1 -name "*.so*" -exec ${system_ldd} {} \; | awk '/=>/ {print $1, $3}' | sort | uniq)
-
             libpath=${host_injection_mpi_path}/$(basename ${libpath})
         fi
 
@@ -219,16 +204,7 @@ inject_mpi() {
                     ${PATCHELF_BIN} --add-needed ${libs_dict[${dep}]} ${lib}
                 fi
             done < <(for dlopen in ${dlopen_libs[@]}; do ${eessi_ldd} ${dlopen}; done \
-                     | grep -e "=> not found" -e "=> ${MPI_PATH}" | awk '!/libmpi\.so.*/ {print $1}' | sort | uniq)
-        fi
-
-        # Inject into libpmix.so non resolved dependencies from dlopen libraries in the PMIX path
-        if [[ ${lib} =~ libpmix\.so ]]; then            
-            while read -r dep; do
-                if ! ${PATCHELF_BIN} --print-needed ${lib} | grep -q "${dep}"; then
-                    ${PATCHELF_BIN} --add-needed ${libs_dict[${dep}]} ${lib}
-                fi
-            done < <(find ${pmixpath} -maxdepth 1 -type f -name "*.so*" -exec ${eessi_ldd} {} \; | awk '/not found/ && !/libpmix\.so.*/ {print $1}' | sort | uniq)
+                     | awk '/not found/ && !/libmpi\.so.*/ {print $1}' | sort | uniq)
         fi
 
     done < <(find ${temp_inject_path} -type f)
