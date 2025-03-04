@@ -22,7 +22,7 @@ show_help() {
     echo "  --mpi-path /path/to/mpi          Specify the path to the MPI host installation (Required)"
     echo "  -t, --temp-dir /path/to/tmpdir   Specify a location to use for temporary"
     echo "                                   storage during the mpi injection"
-    echo "  --noclean                        Do not remove the temporary directory after finishing injection"
+    echo "  --noclean                        Do not remove the temporary directory and the host injected libraries after finishing injection"
 }
 
 
@@ -205,13 +205,17 @@ inject_mpi() {
     done < <(find ${temp_inject_path} -type f)
 
     # Sanity check MPI injection
+    local sanity=1
     if ${eessi_ldd} ${temp_inject_path}/* &> /dev/null; then
         cp ${temp_inject_path}/* -t ${host_injection_mpi_path}
-        echo_green "MPI injection was successful"
-        return 0
-    else
-        fatal_error "MPI host injection failed. EESSI will use its own MPI libraries"
+        if ${eessi_ldd} ${temp_inject_path}/* | grep -q "not found"; then
+            ${CLEAN} && rm -f ${host_injection_mpi_path}/*.so*
+        else
+            sanity=0
+        fi
     fi
+    
+    return ${sanity}
 }
 
 
@@ -236,7 +240,12 @@ main() {
     echo "Temporary directory for injection: ${tmpdir}"
 
     download_patchelf ${tmpdir}
-    inject_mpi ${tmpdir}
+    
+    if inject_mpi ${tmpdir}; then
+        echo_green "MPI injection was successful"
+    else
+        fatal_error "MPI host injection failed"
+    fi
 
     if ${CLEAN}; then
         rm -rf "${tmpdir}"
