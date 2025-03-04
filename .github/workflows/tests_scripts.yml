@@ -108,12 +108,19 @@ jobs:
           # Find a file to sign
           export TARBALL="$(ls *.tar.gz | tail -1)"
           # Sign the file
-          ./sign_verify_file_ssh.sh sign "$TARBALL" id_rsa.pem
+          ./sign_verify_file_ssh.sh sign id_rsa.pem "$TARBALL"
           # Create an allowed_signers file based on the public key
-          echo -n "allowed_signer " > allowed_signers 
+          echo -n "allowed_identity " > allowed_signers 
           cat id_rsa.pem.pub >> allowed_signers
           # Verify the signature
-          ./sign_verify_file_ssh.sh verify "$TARBALL" allowed_signers
+          ./sign_verify_file_ssh.sh verify allowed_signers "$TARBALL"
+          # Make a new signature that does not appear in the allowed signers file
+          ssh-keygen -t rsa -b 4096 -m PEM -f id_rsa.alt.pem -N ""
+          # Sign the file again
+          rm "$TARBALL".sig
+          ./sign_verify_file_ssh.sh sign id_rsa.alt.pem "$TARBALL"
+          # Make sure signature checking fails
+          ./sign_verify_file_ssh.sh verify allowed_signers "$TARBALL" && exit 1 || echo "Expected failure for unknown identity"
 
     - name: test create_lmodsitepackage.py script
       run: |
