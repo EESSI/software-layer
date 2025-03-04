@@ -205,7 +205,11 @@ inject_mpi() {
         # Do injection of unresolved libraries
         ${PATCHELF_BIN} --set-rpath "${host_injection_mpi_path}" ${lib}
         while read -r dep; do
-            ${PATCHELF_BIN} --replace-needed ${dep} ${libs_dict[${dep}]} ${lib}
+            if ${PATCHELF_BIN} --print-needed ${lib} | grep -q "${dep}"; then
+                ${PATCHELF_BIN} --replace-needed ${dep} ${libs_dict[${dep}]} ${lib}
+            else
+                ${PATCHELF_BIN} --add-needed ${dep} ${libs_dict[${dep}]} ${lib}
+            fi
         done < <(${eessi_ldd} ${lib} | awk '/not found/ {print $1}' | sort | uniq)
 
         # Inject into libmpi.so non resolved dependencies from dlopen libraries that are not already present in libmpi.so
