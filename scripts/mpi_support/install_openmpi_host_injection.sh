@@ -149,8 +149,9 @@ inject_mpi() {
     readarray -d '' dlopen_libs < <(find ${MPI_PATH} -mindepth 2 -name "*.so*")
 
     # Get all library names and paths in associative array
+    # If library is libfabric, libpmix, or from the MPI path
+    # modify libpath in assoc array to point to host_injection_mpi_path
     while read -r libname libpath; do
-        # If library is libfabric or from the MPI path, modify libpath in assoc array to point to host_injection_mpi_path
         if [[ ${libname} =~ libfabric\.so ]] && [[ ! -f ${temp_inject_path}/${libname} ]]; then
             local libdir="$(dirname ${libpath})/"     # without trailing slash the find does not work
             find ${libdir} -maxdepth 1 -type f -name "libfabric.so*" -exec cp {} ${temp_inject_path} \;
@@ -188,7 +189,7 @@ inject_mpi() {
                  <(for dlopen in ${dlopen_libs[@]}; do ${system_ldd} ${dlopen}; done) \
             | awk '/=>/ {print $1, $3}' | sort | uniq)
 
-    # Get MPI related lib dependencies not resolved by EESSI ldd
+    # Do library injection to openmpi libs, libfabric and libpmix
     local lib
     while read -r lib; do
         local dep
