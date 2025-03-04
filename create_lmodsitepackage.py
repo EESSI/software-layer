@@ -267,7 +267,7 @@ local function eessi_removed_module_warning_startup_hook(usrCmd)
             end
         end
         if error_msg ~= "" then
-            LmodError('\\n' .. error_msg .. 'If you know what you are doing and you want to ignore this check for removed/relocated modules,, set $EESSI_SKIP_REMOVED_MODULES_CHECK to any value.')
+            LmodError('\\n' .. error_msg .. 'If you know what you are doing and you want to ignore this check for removed/relocated modules, set $EESSI_SKIP_REMOVED_MODULES_CHECK to any value.')
         end
     end
 end
