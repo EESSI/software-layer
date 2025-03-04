@@ -23,6 +23,7 @@ show_help() {
     echo "  -t, --temp-dir /path/to/tmpdir   Specify a location to use for temporary"
     echo "                                   storage during the mpi injection"
     echo "  --noclean                        Do not remove the temporary directory and the host injected libraries after finishing injection"
+    echo "  --force                          Force MPI injection even if it is already done"
 }
 
 
@@ -57,6 +58,10 @@ parse_cmdline() {
                 CLEAN=false
                 shift 1
                 ;;
+            --force)
+                FORCE=true
+                shift 1
+                ;;
             *)
                 echo_red "Error: Unknown option: $1"
                 show_help
@@ -71,6 +76,7 @@ parse_cmdline() {
     fi
 
     readonly CLEAN=${CLEAN:=true}
+    readonly FORCE=${FORCE:=false}
 }
 
 
@@ -111,7 +117,11 @@ inject_mpi() {
     if [ -d ${host_injection_mpi_path} ]; then
         if [ -n "$(ls -A ${host_injection_mpi_path})" ]; then
             echo "MPI was already injected"
-            return 0
+            if ${FORCE}; then
+                echo "Forcing new MPI injection"
+            else
+                return 0
+            fi
         fi
     fi
 
