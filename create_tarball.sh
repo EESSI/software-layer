@@ -29,7 +29,7 @@ if [ ! -d ${software_dir} ]; then
 fi
 
 cvmfs_repo_name=${cvmfs_repo#/cvmfs/}
-overlay_upper_dir="${eessi_tmpdir}/${cvmfs_repo_name}/overlay-upper${EESSI_DEV_PROJECT:+/$EESSI_DEV_PROJECT}"
+overlay_upper_dir="${eessi_tmpdir}/${cvmfs_repo_name}${EESSI_DEV_PROJECT:+/$EESSI_DEV_PROJECT}/overlay-upper${EESSI_DEV_PROJECT:+/$EESSI_DEV_PROJECT}"
 
 software_dir_overlay="${overlay_upper_dir}/versions/${eessi_version}"
 if [ ! -d ${software_dir_overlay} ]; then
