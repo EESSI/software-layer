@@ -70,11 +70,6 @@ parse_cmdline() {
         exit 0
     fi
 
-    if [ -z "${PMIX_PATH}" ]; then
-        echo_yellow "PMIX path was not specified"
-        echo_yellow "Assuming it is the directory where libpmix is found"
-    fi
-
     readonly CLEAN=${CLEAN:=true}
 }
 
