@@ -39,5 +39,5 @@ easyconfigs:
         from-commit: c7e4bfe1a57cf9781ce346ba8ae9081644408c23
   - astropy-7.0.0-gfbf-2023b.eb:
       options:
-        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/22198
-        from-commit: 3ea76951c188c23392445cf1f77069de5b2017c6
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/22469
+        from-commit: fc22841fef99cbb2a221c18029b15e692e78c27c
