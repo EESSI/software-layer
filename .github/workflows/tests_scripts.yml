@@ -116,10 +116,10 @@ jobs:
           ./sign_verify_file_ssh.sh verify allowed_signers "$TARBALL"
           # Make a new signature that does not appear in the allowed signers file
           ssh-keygen -t rsa -b 4096 -m PEM -f id_rsa.alt.pem -N ""
-          # Sign the file again
-          rm "$TARBALL".sig
-          ./sign_verify_file_ssh.sh sign id_rsa.alt.pem "$TARBALL"
-          # Make sure signature checking fails
+          # Replace the allowed signers file 
+          echo -n "disallowed_identity " > allowed_signers 
+          cat id_rsa.pem.pub >> allowed_signers
+          # Make sure signature checking fails in this case
           ./sign_verify_file_ssh.sh verify allowed_signers "$TARBALL" && exit 1 || echo "Expected failure for unknown identity"
 
     - name: test create_lmodsitepackage.py script
