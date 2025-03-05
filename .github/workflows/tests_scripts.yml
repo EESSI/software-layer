@@ -118,7 +118,7 @@ jobs:
           ssh-keygen -t rsa -b 4096 -m PEM -f id_rsa.alt.pem -N ""
           # Replace the allowed signers file 
           echo -n "disallowed_identity " > allowed_signers 
-          cat id_rsa.pem.pub >> allowed_signers
+          cat id_rsa.pem.alt.pub >> allowed_signers
           # Make sure signature checking fails in this case
           ./sign_verify_file_ssh.sh verify allowed_signers "$TARBALL" && exit 1 || echo "Expected failure for unknown identity"
 
