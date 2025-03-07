@@ -1,5 +1,5 @@
 easyconfigs:
   - Pandoc-3.6.2.eb:
       options:
-        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/22177
-        from-commit: 6ec0107ebb5dc8dd2c3b5a3a3b69d4da08681945
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/22493
+        from-commit: da8ed20bad0dd1c6533c568f6c4fbb7c3d15342e
