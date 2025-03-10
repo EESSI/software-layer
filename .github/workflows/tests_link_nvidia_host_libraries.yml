@@ -1,0 +1,131 @@
+# documentation: https://help.github.com/en/articles/workflow-syntax-for-github-actions
+name: Test NVIDIA Host Libraries Linking
+on:
+  push:
+  pull_request:
+permissions:
+  contents: read # to fetch code (actions/checkout)
+jobs:
+  build:
+    runs-on: ubuntu-24.04
+    steps:
+    - name: checkout
+      uses: actions/checkout@d632683dd7b4114ad314bca15554477dd762a938 # v4.2.0
+
+    # we deliberately do not use the eessi/github-action-eessi action,
+    # because we want to control when the EESSI environment is initialized
+    - name: Mount EESSI CernVM-FS repository
+      uses: cvmfs-contrib/github-action-cvmfs@55899ca74cf78ab874bdf47f5a804e47c198743c # v4.0
+      with:
+          cvmfs_config_package: https://github.com/EESSI/filesystem-layer/releases/download/latest/cvmfs-config-eessi_latest_all.deb
+          cvmfs_http_proxy: DIRECT
+          cvmfs_repositories: software.eessi.io
+
+    - name: Create EESSI test directories
+      run: |
+        # Create EESSI directories needed for the script
+        mkdir -p /tmp/eessi/cvmfs/software.eessi.io/host_injections/nvidia/x86_64
+        echo "EESSI_CVMFS_REPO=/tmp/eessi/cvmfs/software.eessi.io" >> $GITHUB_ENV
+        echo "EESSI_CPU_FAMILY=x86_64" >> $GITHUB_ENV
+        echo "EESSI_EPREFIX=/tmp/eessi/cvmfs/software.eessi.io/versions/2023.06" >> $GITHUB_ENV
+
+    - name: Setup mock NVIDIA libraries
+      run: |
+        # Run the script to create mock libraries
+        chmod +x ./tests/nvidia-libs/mock-nvidia-libs.sh
+        ./tests/nvidia-libs/mock-nvidia-libs.sh
+        
+        # Add commands to PATH
+        echo "PATH=/tmp/nvidia_commands:$PATH" >> $GITHUB_ENV
+
+    - name: Setup mock nvidia-smi
+      run: |
+        # Create directory for mock nvidia-smi
+        mkdir -p /tmp/nvidia-bin
+        
+        # Copy the mock script
+        chmod +x ./tests/nvidia-libs/mock-nvidia-smi.sh
+        cp ./tests/nvidia-libs/mock-nvidia-smi.sh /tmp/nvidia-bin/nvidia-smi
+        
+        # Add to PATH
+        echo "PATH=/tmp/nvidia-bin:$PATH" >> $GITHUB_ENV
+
+    - name: Test LD_PRELOAD mode
+      run: |
+        # Run the script with LD_PRELOAD option (shouldn't create symlinks)
+        output=$(./link_nvidia_host_libraries.sh --show-ld-preload || echo "Script returned non-zero: $?")
+        
+        # Check for expected outputs
+        echo "$output" | grep "export EESSI_GPU_COMPAT_LD_PRELOAD=" || { echo "EESSI_GPU_COMPAT_LD_PRELOAD not found in output"; exit 1; }
+        echo "$output" | grep "export EESSI_GPU_LD_PRELOAD=" || { echo "EESSI_GPU_LD_PRELOAD not found in output"; exit 1; }
+        echo "$output" | grep "export EESSI_OVERRIDE_GPU_CHECK=" || { echo "EESSI_OVERRIDE_GPU_CHECK not found in output"; exit 1; }
+        
+        # Verify that no symlinks were created
+        if [ -e "/tmp/eessi/cvmfs/software.eessi.io/host_injections/nvidia/x86_64/host/driver_version.txt" ]; then
+          echo "Error: symlinks were created in LD_PRELOAD mode"
+          exit 1
+        fi
+        
+        echo "LD_PRELOAD mode test passed."
+
+    - name: Test normal run (first time)
+      run: |
+        # Run with verbose mode
+        output=$(./link_nvidia_host_libraries.sh --verbose || echo "Script returned non-zero: $?")
+        
+        # Check if NVIDIA GPU was detected
+        echo "$output" | grep "Found NVIDIA GPU driver version 535.129.03" || { echo "Failed to detect NVIDIA driver version"; exit 1; }
+        echo "$output" | grep "Found host CUDA version 8.0" || { echo "Failed to detect CUDA version"; exit 1; }
+        
+        # Check if libraries were found
+        echo "$output" | grep "Matched.*CUDA Libraries" || { echo "Failed to match CUDA libraries"; exit 1; }
+        
+        # Verify symlinks were created
+        if [ ! -d "/tmp/eessi/cvmfs/software.eessi.io/host_injections/nvidia/x86_64/host" ]; then
+          echo "Error: host directory wasn't created"
+          exit 1
+        fi
+        
+        # Check if version files were created
+        if [ ! -f "/tmp/eessi/cvmfs/software.eessi.io/host_injections/nvidia/x86_64/host/driver_version.txt" ]; then
+          echo "Error: driver_version.txt wasn't created"
+          exit 1
+        fi
+        
+        # Check driver version content
+        grep "535.129.03" "/tmp/eessi/cvmfs/software.eessi.io/host_injections/nvidia/x86_64/host/driver_version.txt" || { echo "Incorrect driver version"; exit 1; }
+        
+        # Check if latest symlink was created
+        if [ ! -L "/tmp/eessi/cvmfs/software.eessi.io/host_injections/nvidia/x86_64/latest" ]; then
+          echo "Error: 'latest' symlink wasn't created"
+          exit 1
+        fi
+        
+        # Check if latest points to host
+        readlink "/tmp/eessi/cvmfs/software.eessi.io/host_injections/nvidia/x86_64/latest" | grep "host" || { echo "latest doesn't point to host"; exit 1; }
+        
+        echo "First normal run test passed"
+
+    - name: Test normal run (second time)
+      run: |
+        # Store file timestamps before second run
+        stat_before=$(stat "/tmp/eessi/cvmfs/software.eessi.io/host_injections/nvidia/x86_64/host/driver_version.txt")
+        
+        # Run script again
+        output=$(./link_nvidia_host_libraries.sh || echo "Script returned non-zero: $?")
+        
+        # Store file timestamps after second run
+        stat_after=$(stat "/tmp/eessi/cvmfs/software.eessi.io/host_injections/nvidia/x86_64/host/driver_version.txt")
+        
+        # Compare timestamps - should be the same (files shouldn't be modified)
+        if [[ "$stat_before" != "$stat_after" ]]; then
+          echo "Error: files were modified on second run when they shouldn't have been"
+          echo "Before: $stat_before"
+          echo "After: $stat_after"
+          exit 1
+        fi
+        
+        # Check for message indicating that libraries are already linked
+        echo "$output" | grep "have already been linked" || { echo "Missing 'already linked' message"; exit 1; }
+        
+        echo "Second normal run test passed"

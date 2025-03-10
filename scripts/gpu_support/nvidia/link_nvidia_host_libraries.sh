@@ -421,7 +421,7 @@ find_cuda_libraries_on_host() {
     fi
 }
 
-# Actually simlinks the Matched libraries to correct folders.
+# Actually symlinks the Matched libraries to correct folders.
 # Then also creates "host" and "latest" folder symlinks
 symlink_mode () {
     # First let's make sure the driver libraries are not already in place
