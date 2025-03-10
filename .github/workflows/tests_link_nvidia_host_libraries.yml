@@ -38,6 +38,7 @@ jobs:
     - name: Test LD_PRELOAD mode
       run: |
         echo ">>> EESSI_HOST_INJECTIONS = $EESSI_HOST_INJECTIONS"
+        echo "$(ls -l /cvmfs/software.eessi.io/host_injections)"
 
         # Run the script with LD_PRELOAD option (shouldn't create symlinks)
         output=$(./scripts/gpu_support/nvidia/link_nvidia_host_libraries.sh --show-ld-preload || echo "Script returned non-zero: $?")
