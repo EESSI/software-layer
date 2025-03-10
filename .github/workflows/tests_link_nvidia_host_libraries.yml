@@ -37,8 +37,7 @@ jobs:
 
     - name: Test LD_PRELOAD mode
       run: |
-        echo ">>> EESSI_HOST_INJECTIONS = $EESSI_HOST_INJECTIONS"
-        echo "$(ls -l /cvmfs/software.eessi.io/host_injections)"
+        echo ">>> Testing LD_PRELOAD mode"
 
         # Run the script with LD_PRELOAD option (shouldn't create symlinks)
         output=$(./scripts/gpu_support/nvidia/link_nvidia_host_libraries.sh --show-ld-preload || echo "Script returned non-zero: $?")
@@ -49,7 +48,7 @@ jobs:
         echo "$output" | grep "export EESSI_OVERRIDE_GPU_CHECK=" || { echo "EESSI_OVERRIDE_GPU_CHECK not found in output"; exit 1; }
         
         # Verify that no symlinks were created
-        if [ -e "$EESSI_HOST_INJECTIONS/nvidia/x86_64/host/driver_version.txt" ]; then
+        if [ -e "/opt/eessi/nvidia/x86_64/host/driver_version.txt" ]; then
           echo "Error: symlinks were created in LD_PRELOAD mode"
           exit 1
         fi
@@ -69,41 +68,41 @@ jobs:
         echo "$output" | grep "Matched.*CUDA Libraries" || { echo "Failed to match CUDA libraries"; exit 1; }
         
         # Verify symlinks were created
-        if [ ! -d "$EESSI_HOST_INJECTIONS/nvidia/x86_64/host" ]; then
+        if [ ! -d "/opt/eessi/nvidia/x86_64/host" ]; then
           echo "Error: host directory wasn't created"
           exit 1
         fi
         
         # Check if version files were created
-        if [ ! -f "$EESSI_HOST_INJECTIONS/nvidia/x86_64/host/driver_version.txt" ]; then
+        if [ ! -f "/opt/eessi/nvidia/x86_64/host/driver_version.txt" ]; then
           echo "Error: driver_version.txt wasn't created"
           exit 1
         fi
         
         # Check driver version content
-        grep "535.129.03" "$EESSI_HOST_INJECTIONS/nvidia/x86_64/host/driver_version.txt" || { echo "Incorrect driver version"; exit 1; }
+        grep "535.129.03" "/opt/eessi/nvidia/x86_64/host/driver_version.txt" || { echo "Incorrect driver version"; exit 1; }
         
         # Check if latest symlink was created
-        if [ ! -L "$EESSI_HOST_INJECTIONS/nvidia/x86_64/latest" ]; then
+        if [ ! -L "/opt/eessi/nvidia/x86_64/latest" ]; then
           echo "Error: 'latest' symlink wasn't created"
           exit 1
         fi
         
         # Check if latest points to host
-        readlink "$EESSI_HOST_INJECTIONS/nvidia/x86_64/latest" | grep "host" || { echo "latest doesn't point to host"; exit 1; }
+        readlink "/opt/eessi/nvidia/x86_64/latest" | grep "host" || { echo "latest doesn't point to host"; exit 1; }
         
         echo "First normal run test passed"
 
     - name: Test normal run (second time)
       run: |
         # Store file timestamps before second run
-        stat_before=$(stat "$EESSI_HOST_INJECTIONS/nvidia/x86_64/host/driver_version.txt")
+        stat_before=$(stat "/opt/eessi/nvidia/x86_64/host/driver_version.txt")
         
         # Run script again
         output=$(./scripts/gpu_support/nvidia/link_nvidia_host_libraries.sh || echo "Script returned non-zero: $?")
         
         # Store file timestamps after second run
-        stat_after=$(stat "$EESSI_HOST_INJECTIONS/nvidia/x86_64/host/driver_version.txt")
+        stat_after=$(stat "/opt/eessi/nvidia/x86_64/host/driver_version.txt")
         
         # Compare timestamps - should be the same (files shouldn't be modified)
         if [[ "$stat_before" != "$stat_after" ]]; then
