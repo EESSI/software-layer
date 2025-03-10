@@ -34,9 +34,6 @@ jobs:
         # Run the script to create mock libraries
         chmod +x ./tests/nvidia-libs/mock-nvidia-libs.sh
         ./tests/nvidia-libs/mock-nvidia-libs.sh
-        
-        # Add commands to PATH
-        echo "PATH=/tmp/nvidia_commands:$PATH" >> $GITHUB_ENV
 
     - name: Setup mock nvidia-smi
       run: |
@@ -53,7 +50,7 @@ jobs:
     - name: Test LD_PRELOAD mode
       run: |
         # Run the script with LD_PRELOAD option (shouldn't create symlinks)
-        output=$(./link_nvidia_host_libraries.sh --show-ld-preload || echo "Script returned non-zero: $?")
+        output=$(./scripts/gpu_support/nvidia/link_nvidia_host_libraries.sh --show-ld-preload || echo "Script returned non-zero: $?")
         
         # Check for expected outputs
         echo "$output" | grep "export EESSI_GPU_COMPAT_LD_PRELOAD=" || { echo "EESSI_GPU_COMPAT_LD_PRELOAD not found in output"; exit 1; }
@@ -71,7 +68,7 @@ jobs:
     - name: Test normal run (first time)
       run: |
         # Run with verbose mode
-        output=$(./link_nvidia_host_libraries.sh --verbose || echo "Script returned non-zero: $?")
+        output=$(./scripts/gpu_support/nvidia/link_nvidia_host_libraries.sh --verbose || echo "Script returned non-zero: $?")
         
         # Check if NVIDIA GPU was detected
         echo "$output" | grep "Found NVIDIA GPU driver version 535.129.03" || { echo "Failed to detect NVIDIA driver version"; exit 1; }
@@ -112,7 +109,7 @@ jobs:
         stat_before=$(stat "/tmp/eessi/cvmfs/software.eessi.io/host_injections/nvidia/x86_64/host/driver_version.txt")
         
         # Run script again
-        output=$(./link_nvidia_host_libraries.sh || echo "Script returned non-zero: $?")
+        output=$(./scripts/gpu_support/nvidia/link_nvidia_host_libraries.sh || echo "Script returned non-zero: $?")
         
         # Store file timestamps after second run
         stat_after=$(stat "/tmp/eessi/cvmfs/software.eessi.io/host_injections/nvidia/x86_64/host/driver_version.txt")
