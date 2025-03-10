@@ -15,13 +15,13 @@ jobs:
     - name: Initialize EESSI
       uses: eessi/github-action-eessi@v3
 
-    - name: Create EESSI test directories
-      run: |
-        # Create EESSI directories needed for the script
-        mkdir -p /tmp/eessi/cvmfs/software.eessi.io/host_injections/nvidia/x86_64
-        echo "EESSI_CVMFS_REPO=/tmp/eessi/cvmfs/software.eessi.io" >> $GITHUB_ENV
-        echo "EESSI_CPU_FAMILY=x86_64" >> $GITHUB_ENV
-        echo "EESSI_EPREFIX=/tmp/eessi/cvmfs/software.eessi.io/versions/2023.06" >> $GITHUB_ENV
+    # - name: Create EESSI test directories
+    #   run: |
+    #     # Create EESSI directories needed for the script
+    #     mkdir -p /tmp/eessi/cvmfs/software.eessi.io/host_injections/nvidia/x86_64
+    #     echo "EESSI_CVMFS_REPO=/tmp/eessi/cvmfs/software.eessi.io" >> $GITHUB_ENV
+    #     echo "EESSI_CPU_FAMILY=x86_64" >> $GITHUB_ENV
+    #     echo "EESSI_EPREFIX=/tmp/eessi/cvmfs/software.eessi.io/versions/2023.06" >> $GITHUB_ENV
 
     - name: Setup mock NVIDIA libraries
       run: |
