@@ -62,7 +62,7 @@ if [ ! -f "$FILE_TO_SIGN" ]; then
 fi
 
 # Use a very conservatuve umask throughout this script since we are dealing with sensitive things
-umask 0177 || { echo "Error: Failed to set 0177 umask."; exit $FILE_PROBLEM; }
+umask 077 || { echo "Error: Failed to set 0177 umask."; exit $FILE_PROBLEM; }
 
 # Create a restricted temporary directory and ensure cleanup on exit
 TEMP_DIR=$(mktemp -d) || { echo "Error: Failed to create temporary directory."; exit $FILE_PROBLEM; }
