@@ -41,6 +41,8 @@ jobs:
 
         # Run the script with LD_PRELOAD option (shouldn't create symlinks)
         output=$(./scripts/gpu_support/nvidia/link_nvidia_host_libraries.sh --show-ld-preload)
+        echo ">>> $output"
+        
         if [ $? -ne 0 ]; then
           echo "Script returned non-zero exit code in LD_PRELOAD mode"
           exit 1
