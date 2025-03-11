@@ -401,7 +401,7 @@ find_cuda_libraries_on_host() {
         matched=$(echo "$host_libraries $singularity_libs" | grep -v "i386" | grep "$library")
 
         if [ -n "$matched" ]; then
-            log_verbose "Found matches for ${library}: $matched."
+            log_verbose "Found matches for ${library}: $matched"
             # Do not quote $matched, since it can contain multiple libraries split by \n!
             MATCHED_LIBRARIES+=($matched)
         else
