@@ -360,7 +360,7 @@ show_ld_preload() {
     else
         echo "No libraries matched, LD_PRELOAD not set."
     fi
-    [[ "${BASH_SOURCE[0]}" != "${0}" ]] && return 1 || exit 1
+    [[ "${BASH_SOURCE[0]}" != "${0}" ]] && return 1
 }
 
 # Check host's ldconfig, gathers library paths, and filters them on matching.
