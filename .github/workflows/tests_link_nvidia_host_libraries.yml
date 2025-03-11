@@ -19,7 +19,7 @@ jobs:
       run: |
         # Run the script to create mock libraries
         chmod +x ./tests/nvidia-libs/mock-nvidia-libs.sh
-        echo ">>> running ./tests/nvidia-libs/mock-nvidia-libs.sh"
+        echo ">>> Running ./tests/nvidia-libs/mock-nvidia-libs.sh"
         ./tests/nvidia-libs/mock-nvidia-libs.sh
 
     - name: Setup mock nvidia-smi
@@ -29,7 +29,7 @@ jobs:
         
         # Copy the mock script
         chmod +x ./tests/nvidia-libs/mock-nvidia-smi.sh
-        echo ">>> copying ./tests/nvidia-libs/mock-nvidia-smi.sh"
+        echo ">>> Copying ./tests/nvidia-libs/mock-nvidia-smi.sh"
         cp ./tests/nvidia-libs/mock-nvidia-smi.sh /tmp/nvidia-bin/nvidia-smi
         
         # Add to PATH
@@ -40,7 +40,7 @@ jobs:
         echo ">>> Testing LD_PRELOAD mode"
 
         # Run the script with LD_PRELOAD option (shouldn't create symlinks)
-        output=$(./scripts/gpu_support/nvidia/link_nvidia_host_libraries.sh --show-ld-preload || echo "Script returned non-zero: $?")
+        output=$(./scripts/gpu_support/nvidia/link_nvidia_host_libraries.sh --show-ld-preload || { echo "Script returned non-zero: $?"; exit 1; })
         
         # Check for expected outputs
         echo "$output" | grep "export EESSI_GPU_COMPAT_LD_PRELOAD=" || { echo "EESSI_GPU_COMPAT_LD_PRELOAD not found in output"; exit 1; }
@@ -57,10 +57,12 @@ jobs:
 
     - name: Test normal run (first time)
       run: |
+        echo ">>> Testing normal run - first time"
+
         # Run with verbose mode
-        output=$(./scripts/gpu_support/nvidia/link_nvidia_host_libraries.sh --verbose || echo "Script returned non-zero: $?")
+        output=$(./scripts/gpu_support/nvidia/link_nvidia_host_libraries.sh --verbose || { echo "Script returned non-zero: $?"; exit 1; })
         
-        # Check if NVIDIA GPU was detected
+        # Check if NVIDIA GPU was detected - Driver version and CUDA version are hardcoded in `tests/nvidia-libs/mock-nvidia-smi.sh`
         echo "$output" | grep "Found NVIDIA GPU driver version 535.129.03" || { echo "Failed to detect NVIDIA driver version"; exit 1; }
         echo "$output" | grep "Found host CUDA version 8.0" || { echo "Failed to detect CUDA version"; exit 1; }
         
@@ -90,16 +92,59 @@ jobs:
         
         # Check if latest points to host
         readlink "/opt/eessi/nvidia/x86_64/latest" | grep "host" || { echo "latest doesn't point to host"; exit 1; }
+
+        # Check if symlinks to libraries were created and point to correct files
+        echo ">>> Checking library symlinks"
+
+        # List expected library names - list of libraries is hardcoded in `tests/nvidia-libs/mock-nvidia-libs.sh`
+        libraries=(
+          "libcuda.so"
+          "libcuda.so.1"
+          "libnvidia-ml.so"
+          "libnvidia-ml.so.1"
+          "libnvidia-ptxjitcompiler.so"
+          "libnvidia-ptxjitcompiler.so.1"
+          "libcudadebugger.so"
+          "libcudadebugger.so.1"
+        )
+
+        # Check each expected library symlink
+        for lib in "${libraries[@]}"; do
+          lib_path="/opt/eessi/nvidia/x86_64/host/$lib"
+          
+          # Check if the symlink exists
+          if [ ! -L "$lib_path" ]; then
+            echo "Error: Symlink for $lib was not created"
+            exit 1
+          fi
+          
+          # Check if symlink target exists
+          target=$(readlink "$lib_path")
+          if [ ! -e "$target" ]; then
+            echo "Error: Symlink $lib_path points to non-existent file: $target"
+            exit 1
+          fi
+          
+          # Verify it points to our mock library in /tmp/nvidia_libs
+          if [[ "$target" != "/tmp/nvidia_libs/$lib"* && "$target" != *"/tmp/nvidia_libs/"* ]]; then
+            echo "Error: Symlink $lib_path points to $target, which is not in our mock directory"
+            exit 1
+          fi
+          
+          echo ">>> Verified symlink: $lib -> $target"
+        done
         
         echo "First normal run test passed"
 
     - name: Test normal run (second time)
       run: |
+        echo ">>> Testing normal run - second time - should be idempotent"
+
         # Store file timestamps before second run
         stat_before=$(stat "/opt/eessi/nvidia/x86_64/host/driver_version.txt")
         
         # Run script again
-        output=$(./scripts/gpu_support/nvidia/link_nvidia_host_libraries.sh || echo "Script returned non-zero: $?")
+        output=$(./scripts/gpu_support/nvidia/link_nvidia_host_libraries.sh || { echo "Script returned non-zero: $?"; exit 1; })
         
         # Store file timestamps after second run
         stat_after=$(stat "/opt/eessi/nvidia/x86_64/host/driver_version.txt")
