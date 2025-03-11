@@ -40,7 +40,11 @@ jobs:
         echo ">>> Testing LD_PRELOAD mode"
 
         # Run the script with LD_PRELOAD option (shouldn't create symlinks)
-        output=$(./scripts/gpu_support/nvidia/link_nvidia_host_libraries.sh --show-ld-preload || { echo "Script returned non-zero: $?"; exit 1; })
+        output=$(./scripts/gpu_support/nvidia/link_nvidia_host_libraries.sh --show-ld-preload)
+        if [ $? -ne 0 ]; then
+          echo "Script returned non-zero exit code in LD_PRELOAD mode"
+          exit 1
+        fi
         
         # Check for expected outputs
         echo "$output" | grep "export EESSI_GPU_COMPAT_LD_PRELOAD=" || { echo "EESSI_GPU_COMPAT_LD_PRELOAD not found in output"; exit 1; }
@@ -60,7 +64,11 @@ jobs:
         echo ">>> Testing normal run - first time"
 
         # Run with verbose mode
-        output=$(./scripts/gpu_support/nvidia/link_nvidia_host_libraries.sh --verbose || { echo "Script returned non-zero: $?"; exit 1; })
+        output=$(./scripts/gpu_support/nvidia/link_nvidia_host_libraries.sh --verbose)
+        if [ $? -ne 0 ]; then
+          echo "Script returned non-zero exit code in normal run"
+          exit 1
+        fi
         
         # Check if NVIDIA GPU was detected - Driver version and CUDA version are hardcoded in `tests/nvidia-libs/mock-nvidia-smi.sh`
         echo "$output" | grep "Found NVIDIA GPU driver version 535.129.03" || { echo "Failed to detect NVIDIA driver version"; exit 1; }
@@ -144,7 +152,11 @@ jobs:
         stat_before=$(stat "/opt/eessi/nvidia/x86_64/host/driver_version.txt")
         
         # Run script again
-        output=$(./scripts/gpu_support/nvidia/link_nvidia_host_libraries.sh || { echo "Script returned non-zero: $?"; exit 1; })
+        output=$(./scripts/gpu_support/nvidia/link_nvidia_host_libraries.sh)
+        if [ $? -ne 0 ]; then
+          echo "Script returned non-zero exit code in second run"
+          exit 1
+        fi
         
         # Store file timestamps after second run
         stat_after=$(stat "/opt/eessi/nvidia/x86_64/host/driver_version.txt")
