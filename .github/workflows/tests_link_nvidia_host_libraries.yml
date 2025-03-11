@@ -23,7 +23,7 @@ jobs:
         ./tests/nvidia-libs/mock-nvidia-libs.sh
 
         # Create symlink to override host's ldconfig, since the script tries to use /sbin/ldconfig first.
-        echo "Symlinking ldconfig to /sbin/ldconfig
+        echo "Symlinking ldconfig to /sbin/ldconfig"
         sudo ln -sf /tmp/ldconfig/ldconfig /sbin/ldconfig
         
         # Verify the symlink was created correctly
