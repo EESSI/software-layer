@@ -40,14 +40,23 @@ cat > /tmp/ldconfig/ldconfig << 'EOF'
 if [ "$1" = "-p" ]; then
     # Simulate ldconfig -p output
     echo "libcuda.so.1 (libc6,x86-64) => /tmp/nvidia_libs/libcuda.so.1"
+    echo "libcuda.so (libc6,x86-64) => /tmp/nvidia_libs/libcuda.so"
     echo "libnvidia-ml.so.1 (libc6,x86-64) => /tmp/nvidia_libs/libnvidia-ml.so.1"
+    echo "libnvidia-ml.so (libc6,x86-64) => /tmp/nvidia_libs/libnvidia-ml.so"
     echo "libnvidia-ptxjitcompiler.so.1 (libc6,x86-64) => /tmp/nvidia_libs/libnvidia-ptxjitcompiler.so.1"
+    echo "libnvidia-ptxjitcompiler.so (libc6,x86-64) => /tmp/nvidia_libs/libnvidia-ptxjitcompiler.so"
     echo "libOpenCL.so.1 (libc6,x86-64) => /tmp/nvidia_libs/libOpenCL.so.1"
+    echo "libOpenCL.so (libc6,x86-64) => /tmp/nvidia_libs/libOpenCL.so"
     echo "libnvidia-fatbinaryloader.so.1 (libc6,x86-64) => /tmp/nvidia_libs/libnvidia-fatbinaryloader.so.1"
+    echo "libnvidia-fatbinaryloader.so (libc6,x86-64) => /tmp/nvidia_libs/libnvidia-fatbinaryloader.so"
     echo "libnvidia-opencl.so.1 (libc6,x86-64) => /tmp/nvidia_libs/libnvidia-opencl.so.1"
+    echo "libnvidia-opencl.so (libc6,x86-64) => /tmp/nvidia_libs/libnvidia-opencl.so"
     echo "libcudadebugger.so.1 (libc6,x86-64) => /tmp/nvidia_libs/libcudadebugger.so.1"
+    echo "libcudadebugger.so (libc6,x86-64) => /tmp/nvidia_libs/libcudadebugger.so"
     echo "libnvidia-compiler.so.1 (libc6,x86-64) => /tmp/nvidia_libs/libnvidia-compiler.so.1"
+    echo "libnvidia-compiler.so (libc6,x86-64) => /tmp/nvidia_libs/libnvidia-compiler.so"
     echo "libnvidia-nvvm.so.1 (libc6,x86-64) => /tmp/nvidia_libs/libnvidia-nvvm.so.1"
+    echo "libnvidia-nvvm.so (libc6,x86-64) => /tmp/nvidia_libs/libnvidia-nvvm.so"
 fi
 EOF
 chmod +x /tmp/ldconfig/ldconfig
