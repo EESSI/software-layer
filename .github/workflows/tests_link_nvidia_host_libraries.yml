@@ -22,6 +22,12 @@ jobs:
         echo ">>> Running ./tests/nvidia-libs/mock-nvidia-libs.sh"
         ./tests/nvidia-libs/mock-nvidia-libs.sh
 
+        # Create symlink to override host's ldconfig, since the script tries to use /sbin/ldconfig first.
+        ln -sf /tmp/ldconfig/ldconfig /sbin/ldconfig
+        
+        # Verify the symlink was created correctly
+        ls -la /sbin/ldconfig
+
     - name: Setup mock nvidia-smi
       run: |
         # Create directory for mock nvidia-smi
