@@ -2,7 +2,11 @@
 name: Test NVIDIA Host Libraries Linking
 on:
   push:
+    branches:
+      - '*-software.eessi.io'   # Matches any branch ending with '-software.eessi.io'
   pull_request:
+    paths:
+      - 'scripts/gpu_support/nvidia/link_nvidia_host_libraries.sh'  # PR changes only relevant for this specific file
 permissions:
   contents: read # to fetch code (actions/checkout)
 jobs:
