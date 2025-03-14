@@ -255,7 +255,7 @@ export EASYBUILD_INSTALLPATH=${EESSI_PREFIX}/software/${EESSI_OS_TYPE}/${EESSI_S
 
 # If in dev.eessi.io, allow building on top of software.eessi.io via EESSI-extend
 if [[ ! -z ${EESSI_DEV_PROJECT} ]]; then
-    # Need to unset $EESSI_CVMFS_INSTALL to use $EESSI_SITE_INSTALL
+    # Need to unset $EESSI_CVMFS_INSTALL to use $EESSI_PROJECT_INSTALL
     unset EESSI_CVMFS_INSTALL
     export EESSI_PROJECT_INSTALL=${EESSI_CVMFS_REPO_OVERRIDE}
     echo ">> \$EESSI_PROJECT_INSTALL set to ${EESSI_PROJECT_INSTALL}"
