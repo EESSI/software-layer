@@ -109,6 +109,26 @@ local function load_site_specific_hooks()
 
 end
 
+local function using_eessi_accel_stack (t)
+    if not os.getenv("EESSI_SKIP_ACCELERATOR_WARNING") then
+        local fullName = t.modFullName
+        local moduleFilePath = t.fn
+        -- Check if we are using an EESSI version 2023 accelerator stack by checking the moduleFilePath is
+        -- a path that starts with /cvmfs/software.eessi.io/versions and contains accel/nvidia/ccNN
+        if string.sub(moduleFilePath, 1, 33) == "/cvmfs/software.eessi.io/versions" then
+            if string.find(moduleFilePath, "accel/nvidia/cc%d%d") then
+                -- right now we print this for all cases, but eventually we should only
+                -- print this for accelerators we do _not_ test
+                local advice = fullName .. " has not been tested for " .. os.getenv("EESSI_SOFTWARE_SUBDIR")
+                advice = advice .. " with " .. string.match(moduleFilePath, "accel/nvidia/cc%d%d") 
+                advice = advice .. " but is likely to work.\\n" 
+                advice = advice .. "(Silence this message by setting the environment variable "
+                advice = advice .. "EESSI_SKIP_ACCELERATOR_WARNING)"
+                LmodMessage(advice)
+            end
+        end
+    end
+end
 
 local function eessi_cuda_and_libraries_enabled_load_hook(t)
     local frameStk  = require("FrameStk"):singleton()
@@ -182,6 +202,8 @@ local function eessi_cuda_and_libraries_enabled_load_hook(t)
             end
         end
     end
+    -- finally verify if we are loading the software from EESSI and print a warning about the extent of testing
+    using_eessi_accel_stack(t)
 end
 
 local function eessi_espresso_deprecated_message(t)
@@ -210,73 +232,6 @@ function eessi_load_hook(t)
     end
 end
 
-local function using_eessi_accel_stack ()
-    local modulepath = os.getenv("MODULEPATH") or ""
-    local accel_stack_in_modulepath = false
-
-    -- Check if we are using an EESSI version 2023 accelerator stack by checking if the $MODULEPATH contains
-    -- a path that starts with /cvmfs/software.eessi.io and contains accel/nvidia/ccNN
-    for path in string.gmatch(modulepath, '(.-):') do
-        if string.sub(path, 1, 41) == "/cvmfs/software.eessi.io/versions/2023.06" then
-            if string.find(path, "accel/nvidia/cc%d%d") then
-                accel_stack_in_modulepath = true
-                break
-            end
-        end
-    end
-    return accel_stack_in_modulepath
-end
-
-local function eessi_removed_module_warning_startup_hook(usrCmd)
-    if usrCmd == 'load' and not os.getenv("EESSI_SKIP_REMOVED_MODULES_CHECK") then
-        local CUDA_RELOCATION_MSG = [[All CUDA installations and modules depending on CUDA have been relocated to GPU-specific stacks.
-        Please see https://www.eessi.io/docs/site_specific_config/gpu/ for more information.]]
-
-        local RELOCATED_CUDA_MODULES = {
-            ['NCCL'] = CUDA_RELOCATION_MSG,
-            ['NCCL/2.18.3-GCCcore-12.3.0-CUDA-12.1.1'] = CUDA_RELOCATION_MSG,
-            ['UCX-CUDA'] = CUDA_RELOCATION_MSG,
-            ['UCX-CUDA/1.14.1-GCCcore-12.3.0-CUDA-12.1.1'] = CUDA_RELOCATION_MSG,
-            -- we also have non-CUDA versions of OSU Micro Benchmarks, so only match the CUDA version
-            ['OSU-Micro-Benchmarks/7.2-gompi-2023a-CUDA-12.1.1'] = CUDA_RELOCATION_MSG,
-            ['UCC-CUDA'] = CUDA_RELOCATION_MSG,
-            ['UCC-CUDA/1.2.0-GCCcore-12.3.0-CUDA-12.1.1'] = CUDA_RELOCATION_MSG,
-            ['CUDA'] = CUDA_RELOCATION_MSG,
-            ['CUDA/12.1.1'] = CUDA_RELOCATION_MSG,
-            ['CUDA-Samples'] = CUDA_RELOCATION_MSG,
-            ['CUDA-Samples/12.1-GCC-12.3.0-CUDA-12.1.1'] = CUDA_RELOCATION_MSG,
-        }
-
-        local REMOVED_MODULES = {
-            ['ipympl/0.9.3-foss-2023a'] = 'This module has been replaced by ipympl/0.9.3-gfbf-2023a',
-        }
-
-        local masterTbl = masterTbl()
-        local error_msg = ""
-        -- The CUDA messages should only be shown if the accelerator stack is NOT being used
-        if not using_eessi_accel_stack() then
-            for _, module in pairs(masterTbl.pargs) do
-                if RELOCATED_CUDA_MODULES[module] ~= nil then
-                    error_msg = error_msg .. module .. ': ' .. RELOCATED_CUDA_MODULES[module] .. '\\n\\n'
-                end
-            end
-        end
-        for _, module in pairs(masterTbl.pargs) do
-            if REMOVED_MODULES[module] ~= nil then
-                error_msg = error_msg .. module .. ': ' .. REMOVED_MODULES[module] .. '\\n\\n'
-            end
-        end
-        if error_msg ~= "" then
-            LmodError('\\n' .. error_msg .. 'If you know what you are doing and you want to ignore this check for removed/relocated modules, set $EESSI_SKIP_REMOVED_MODULES_CHECK to any value.')
-        end
-    end
-end
-
-function eessi_startup_hook(usrCmd)
-    eessi_removed_module_warning_startup_hook(usrCmd)
-end
-
-hook.register("startup", eessi_startup_hook)
 hook.register("load", eessi_load_hook)
 
 """

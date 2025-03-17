@@ -1,0 +1,30 @@
+easyconfigs:
+  - CUDA-12.1.1.eb
+  - cuDNN-8.9.2.26-CUDA-12.1.1.eb
+  - CUDA-12.4.0.eb:
+      options:
+        accept-eula-for: CUDA
+  - UCX-CUDA-1.15.0-GCCcore-13.2.0-CUDA-12.4.0.eb
+  - UCC-CUDA-1.2.0-GCCcore-13.2.0-CUDA-12.4.0.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/21565
+        from-commit: 46141a3f40e699433fac03af2d3ed81bd5a62da7
+  - OSU-Micro-Benchmarks-7.5-gompi-2023b-CUDA-12.4.0.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/21926
+        from-commit: de79ec74eb076e1aceda5e21235a73c05ed6764c
+  - LAMMPS-2Aug2023_update2-foss-2023a-kokkos-CUDA-12.1.1.eb
+  - ESPResSo-4.2.2-foss-2023a-CUDA-12.1.1.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/21440
+        from-commit: 5525968921d7b5eae54f7d16391201e17ffae13c
+  - GROMACS-2024.4-foss-2023b-CUDA-12.4.0.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/21549
+        from-commit: 12b53341343967ce5a402fe8190a3c85bce7d49b
+        # see https://github.com/easybuilders/easybuild-easyblocks/pull/3523
+        include-easyblocks-from-commit: 90495ed23d26b3d5fd8162bf5d7b4c073a0682fe
+  - LightGBM-4.5.0-foss-2023a-CUDA-12.1.1.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/21699
+        from-commit: e3407bd127d248c08960f6b09c973da0fdecc2c3
