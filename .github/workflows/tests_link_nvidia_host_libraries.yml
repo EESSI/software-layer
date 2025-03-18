@@ -166,7 +166,9 @@ jobs:
     - name: Test normal run (second time)
       run: |
         echo ">>> Testing normal run - second time - should be idempotent"
-
+        # Remove all write permissions on /opt/eessi so any attempts to write files fail
+        chmod -R a-w /opt/eessi
+        
         # Store file timestamps before second run
         stat_before=$(stat "/opt/eessi/nvidia/x86_64/host/driver_version.txt")
         
