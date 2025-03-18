@@ -7,6 +7,7 @@ on:
   pull_request:
     paths:
       - 'scripts/gpu_support/nvidia/link_nvidia_host_libraries.sh'  # PR changes only relevant for this specific file
+      - '.github/workflows/tests_link_nvidia_host_libraries.yml'  # Also test when changing the tests themselves
 permissions:
   contents: read # to fetch code (actions/checkout)
 jobs:
