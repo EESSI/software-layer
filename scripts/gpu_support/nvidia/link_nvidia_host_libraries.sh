@@ -512,7 +512,7 @@ symlink_mode () {
             # Force relinking the current link.
             # Need to remove the link first, otherwise this will follow existing symlink 
             # and create host directory one level down !
-            rm "$symlink"
+            rm "$symlink" || fatal_error "Failed to remove symlink ${symlink}"
             
             if ln -sf host "$symlink"
             then
