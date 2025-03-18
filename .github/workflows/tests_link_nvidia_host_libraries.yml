@@ -169,8 +169,8 @@ jobs:
         # Remove all write permissions on /opt/eessi so any attempts to write files fail
         chmod -R a-w /opt/eessi
         
-        # Store file timestamps before second run
-        stat_before=$(stat "/opt/eessi/nvidia/x86_64/host/driver_version.txt")
+        # Store file timestamps before second run (ignoring access time)
+        stat_before=$(stat --format="%n %s %y %U %G %m %i" "/opt/eessi/nvidia/x86_64/host/driver_version.txt")
         
         # Run script again
         output=$(./scripts/gpu_support/nvidia/link_nvidia_host_libraries.sh || { echo "Script returned non-zero: $?"; echo $output; exit 1; })
@@ -179,8 +179,8 @@ jobs:
 
         echo ">>> Running checks"
 
-        # Store file timestamps after second run
-        stat_after=$(stat "/opt/eessi/nvidia/x86_64/host/driver_version.txt")
+        # Store file timestamps after second run (ignoring access time)
+        stat_after=$(stat --format="%n %s %y %U %G %m %i" "/opt/eessi/nvidia/x86_64/host/driver_version.txt")
         
         # Compare timestamps - should be the same (files shouldn't be modified)
         if [[ "$stat_before" != "$stat_after" ]]; then
