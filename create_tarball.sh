@@ -28,7 +28,9 @@ if [ ! -d ${software_dir} ]; then
     exit 2
 fi
 
-cvmfs_repo_name=${cvmfs_repo#/cvmfs/}
+echo $cvmfs_repo | grep -o  -P '(?<=/cvmfs/).*(?=/)'
+cvmfs_repo_name=${cvmfs_repo%"${EESSI_DEV_PROJECT}"}
+cvmfs_repo_name=${cvmfs_repo_name#/cvmfs/}
 overlay_upper_dir="${eessi_tmpdir}/${cvmfs_repo_name}/overlay-upper${EESSI_DEV_PROJECT:+/$EESSI_DEV_PROJECT}"
 
 software_dir_overlay="${overlay_upper_dir}/versions/${eessi_version}"
