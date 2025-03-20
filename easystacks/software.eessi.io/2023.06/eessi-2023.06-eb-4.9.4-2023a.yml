@@ -50,7 +50,3 @@ easyconfigs:
         # see https://github.com/easybuilders/easybuild-easyconfigs/pull/22235
         from-commit: 01dd97ea62fe4d7d0df040ede3af03eb2f1b8641
   - OpenCV-4.8.1-foss-2023a-contrib.eb
-  - Siesta-5.2.2-foss-2023a.eb:
-      options:
-        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/22292
-        from-commit: fb0edb8c842fcf09f3af824e975bc972df41460b
