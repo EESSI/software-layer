@@ -120,6 +120,8 @@ jobs:
         # List dir with libraries
         echo "Showing content of /tmp/nvidia_libs"
         echo "$(ls -l /tmp/nvidia_libs)"
+        echo "Showing content of /tmp/nvidia_libs_duplicate"
+        echo "$(ls -l /tmp/nvidia_libs_duplicate)"
         echo "Showing content of /opt/eessi/nvidia/x86_64/host"
         echo "$(ls -l /opt/eessi/nvidia/x86_64/host)"
 
@@ -152,9 +154,9 @@ jobs:
             exit 1
           fi
           
-          # Verify it points to our mock library in /tmp/nvidia_libs
-          if [[ "$target" != "/tmp/nvidia_libs/$lib"* && "$target" != *"/tmp/nvidia_libs/"* ]]; then
-            echo "Error: Symlink $lib_path points to $target, which is not in our mock directory"
+          # Verify it points to our mock library in /tmp/nvidia_libs or /tmp/nvidia_libs_duplicate
+          if [[ "$target" != "/tmp/nvidia_libs/$lib"* && "$target" != "/tmp/nvidia_libs_duplicate/$lib"* ]]; then
+            echo "Error: Symlink $lib_path points to $target, which is not in our mock directories"
             exit 1
           fi
           
@@ -194,3 +196,44 @@ jobs:
         echo "$output" | grep "have already been linked" || { echo "Missing 'already linked' message"; exit 1; }
         
         echo "Second normal run test passed"
+        
+    - name: Test handling of duplicate libraries
+      run: |
+        echo ">>> Testing handling of duplicate libraries"
+        
+        # Remove existing symlinks to prepare for this test
+        rm -rf /opt/eessi/nvidia/x86_64/host
+        
+        # Run the script with verbose mode
+        output=$(./scripts/gpu_support/nvidia/link_nvidia_host_libraries.sh --verbose || { echo "Script returned non-zero: $?"; echo $output; exit 1; })
+        
+        echo "$output"
+        
+        # Check if libraries with duplicates were correctly handled
+        # For libcuda.so and libnvidia-ml.so, which have duplicates, there should be exactly one symlink
+        
+        # List all symlinks created in the host directory
+        echo ">>> Listing symlinks in host directory"
+        ls -la /opt/eessi/nvidia/x86_64/host/
+        
+        # Check for duplicate entries - there should be only one libcuda.so and one libnvidia-ml.so
+        duplicates=$(find /opt/eessi/nvidia/x86_64/host/ -name "libcuda.so" | wc -l)
+        if [ "$duplicates" -gt 1 ]; then
+          echo "Error: Found multiple libcuda.so symlinks, which indicates a failure in handling duplicates"
+          exit 1
+        fi
+        
+        duplicates=$(find /opt/eessi/nvidia/x86_64/host/ -name "libnvidia-ml.so" | wc -l)
+        if [ "$duplicates" -gt 1 ]; then
+          echo "Error: Found multiple libnvidia-ml.so symlinks, which indicates a failure in handling duplicates"
+          exit 1
+        fi
+        
+        # Verify that the script correctly prioritized one of the duplicates
+        libcuda_target=$(readlink /opt/eessi/nvidia/x86_64/host/libcuda.so)
+        echo "libcuda.so points to: $libcuda_target"
+        
+        libnvidia_ml_target=$(readlink /opt/eessi/nvidia/x86_64/host/libnvidia-ml.so)
+        echo "libnvidia-ml.so points to: $libnvidia_ml_target"
+        
+        echo "Duplicate libraries test passed"
