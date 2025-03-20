@@ -54,4 +54,4 @@ easyconfigs:
       options:
         # see https://github.com/easybuilders/easybuild-easyconfigs/pull/22292
         # and https://github.com/easybuilders/easybuild-easyconfigs/pull/22562
-        from-commit: 8a583f6e0f4d0623bc23658bb8df0875283401ab
+        from-commit: 5e77a95872b3cb2a8e5be5475318ffb058f13366
