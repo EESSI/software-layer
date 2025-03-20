@@ -20,12 +20,13 @@ easyconfigs:
       options:
         # see https://github.com/easybuilders/easybuild-easyconfigs/pull/21440
         from-commit: 5525968921d7b5eae54f7d16391201e17ffae13c
-  - GROMACS-2024.4-foss-2023b-CUDA-12.4.0.eb:
-      options:
-        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/21549
-        from-commit: 12b53341343967ce5a402fe8190a3c85bce7d49b
-        # see https://github.com/easybuilders/easybuild-easyblocks/pull/3523
-        include-easyblocks-from-commit: 90495ed23d26b3d5fd8162bf5d7b4c073a0682fe
+# GROMACS is problematic right now, will add it back later
+#  - GROMACS-2024.4-foss-2023b-CUDA-12.4.0.eb:
+#      options:
+#        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/21549
+#        from-commit: 12b53341343967ce5a402fe8190a3c85bce7d49b
+#        # see https://github.com/easybuilders/easybuild-easyblocks/pull/3523
+#        include-easyblocks-from-commit: 90495ed23d26b3d5fd8162bf5d7b4c073a0682fe
   - LightGBM-4.5.0-foss-2023a-CUDA-12.1.1.eb:
       options:
         # see https://github.com/easybuilders/easybuild-easyconfigs/pull/21699
