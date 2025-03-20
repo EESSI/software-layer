@@ -738,6 +738,38 @@ def pre_configure_hook_LAMMPS_zen4(self, *args, **kwargs):
         raise EasyBuildError("LAMMPS-specific hook triggered for non-LAMMPS easyconfig?!")
 
 
+def post_build_hook(self, *args, **kwargs):
+    """Main post-build hook: trigger custom functions based on software name."""
+    if self.name in POST_BUILD_HOOKS:
+        POST_BUILD_HOOKS[self.name](self, *args, **kwargs)
+
+
+def post_build_hook_add_shlib_dependency_in_libtorch_cuda_PyTorch(self, *args, **kwargs):
+    """Hook to add shared library dependency to libtorch_cuda.so."""
+    _add_dependencies = [ 'libcudnn_cnn_train.so.8' ]
+    if self.name == 'PyTorch':
+        with_cuda = 'CUDA' in self.cfg.dependency_names()
+        if self.version in ['2.1.2'] and with_cuda:
+            for dep in _add_dependencies:
+                # self.builddir/pytorch-v2.1.2/build/lib.linux-x86_64-cpython-311/torch/lib/libtorch_cuda.so
+                relative_library_path = 'pytorch-v2.1.2/build/lib.linux-x86_64-cpython-311/torch/lib'
+                libtorch_cuda_path = os.path.join(self.builddir, relative_library_path, 'libtorch_cuda.so')
+                print_msg("patching libtorch_cuda.so in directory '%s'", os.path.join(self.builddir, relative_library_path))
+                patch_command = "patchelf --add-needed %s %s" % (dep, libtorch_cuda_path)
+                print_msg("patching libtorch_cuda.so: patch_command (%s)", patch_command)
+                run_cmd(patch_command, log_all=True)
+                readelf_command = "readelf -d %s" % (libtorch_cuda_path)
+                print_msg("patching libtorch_cuda.so: verifying patched lib with readelf (%s)", readelf_command)
+                run_cmd(readelf_command, log_all=True)
+        else:
+            if self.version not in ['2.1.2',]:
+                print_msg("Skip patching libtorch_cuda.so: wrong easyconfig version (%s)", self.version)
+            if not with_cuda:
+                print_msg("Skip patching libtorch_cuda.so: easyconfig does not depend on CUDA")
+    else:
+        raise EasyBuildError("PyTorch-specific hook triggered for non-PyTorch easyconfig?!")
+
+
 def pre_test_hook(self, *args, **kwargs):
     """Main pre-test hook: trigger custom functions based on software name."""
     if self.name in PRE_TEST_HOOKS:
@@ -1153,6 +1185,10 @@ PRE_CONFIGURE_HOOKS = {
     'WRF': pre_configure_hook_wrf_aarch64,
     'LAMMPS': pre_configure_hook_LAMMPS_zen4,
     'Score-P': pre_configure_hook_score_p,
+}
+
+POST_BUILD_HOOKS = {
+    'PyTorch': post_build_hook_add_shlib_dependency_in_libtorch_cuda_PyTorch,
 }
 
 PRE_TEST_HOOKS = {
