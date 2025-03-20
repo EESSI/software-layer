@@ -731,8 +731,7 @@ do
         cvmfs_repo_name=$(cfg_get_value ${cfg_repo_id} "repo_name")
     fi
     # remove project subdir in container
-    cvmfs_repo_name=${cvmfs_repo%"/${EESSI_DEV_PROJECT}"}
-    cvmfs_repo_name=${cvmfs_repo_name#/cvmfs/}
+    cvmfs_repo_name=${cvmfs_repo_name%"/${EESSI_DEV_PROJECT}"}
 
     # always create a directory for the repository (e.g., to store settings, ...)
     mkdir -p ${EESSI_TMPDIR}/${cvmfs_repo_name}
