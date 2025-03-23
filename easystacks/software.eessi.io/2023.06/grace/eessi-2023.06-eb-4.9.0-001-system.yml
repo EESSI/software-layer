@@ -1,4 +1,0 @@
-easyconfigs:
-  - ReFrame-4.3.3.eb:
-      options:
-        from-pr: 22183
