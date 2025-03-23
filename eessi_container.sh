@@ -787,7 +787,7 @@ do
         mkdir -p ${EESSI_TMPDIR}/${cvmfs_repo_name}/overlay-upper${EESSI_DEV_PROJECT:+/$EESSI_DEV_PROJECT}
         mkdir -p ${EESSI_TMPDIR}/${cvmfs_repo_name}/overlay-work${EESSI_DEV_PROJECT:+/$EESSI_DEV_PROJECT}
         echo "Created overlay directories ${EESSI_TMPDIR}/${cvmfs_repo_name}/overlay-upper${EESSI_DEV_PROJECT:+/$EESSI_DEV_PROJECT}"
-        
+
         [[ ${VERBOSE} -eq 1 ]] && echo -e "TMP directory contents:\n$(ls -l ${EESSI_TMPDIR})"
 
         # set environment variables for fuse mounts in Singularity container
@@ -797,8 +797,8 @@ do
 
         EESSI_WRITABLE_OVERLAY="container:fuse-overlayfs"
         EESSI_WRITABLE_OVERLAY+=" -o lowerdir=/cvmfs_ro/${cvmfs_repo_name}"
-        EESSI_WRITABLE_OVERLAY+=" -o upperdir=${TMP_IN_CONTAINER}/${cvmfs_repo_name}/overlay-upper${EESSI_DEV_PROJECT:+/$EESSI_DEV_PROJECT}"
-        EESSI_WRITABLE_OVERLAY+=" -o workdir=${TMP_IN_CONTAINER}/${cvmfs_repo_name}/overlay-work${EESSI_DEV_PROJECT:+/$EESSI_DEV_PROJECT}"
+        EESSI_WRITABLE_OVERLAY+=" -o upperdir=${TMP_IN_CONTAINER}/${cvmfs_repo_name}/overlay-upper"
+        EESSI_WRITABLE_OVERLAY+=" -o workdir=${TMP_IN_CONTAINER}/${cvmfs_repo_name}/overlay-work"
         EESSI_WRITABLE_OVERLAY+=" /cvmfs/${cvmfs_repo_name}"
         export EESSI_WRITABLE_OVERLAY
 
