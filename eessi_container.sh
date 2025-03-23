@@ -732,9 +732,12 @@ do
     fi
     # remove project subdir in container
     cvmfs_repo_name=${cvmfs_repo_name%"/${EESSI_DEV_PROJECT}"}
+    echo "Adjusted cvmfs_repo_name: ${cvmfs_repo_name}"
 
     # always create a directory for the repository (e.g., to store settings, ...)
     mkdir -p ${EESSI_TMPDIR}/${cvmfs_repo_name}
+    echo "Created directory for repository: ${EESSI_TMPDIR}/${cvmfs_repo_name}"
+
 
     # add fusemount options depending on requested access mode ('ro' - read-only; 'rw' - read & write)
     if [[ ${cvmfs_repo_access} == "ro" ]] ; then
