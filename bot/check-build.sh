@@ -482,9 +482,9 @@ if [[ ! -z ${TARBALL} ]]; then
 
     # if building for dev.eessi.io is set, the prefix is different
     # it needs the project name in the path
-    if [ ! -z ${EESSI_DEV_PROJECT} ]; then
-        prefix="${repo_version}/${EESSI_DEV_PROJECT}/software/${os_type}/${software_subdir}"
-    fi
+    # if [ ! -z ${EESSI_DEV_PROJECT} ]; then
+    #     prefix="${repo_version}/${EESSI_DEV_PROJECT}/software/${os_type}/${software_subdir}"
+    # fi
 
     # if we build for an accelerator, the prefix is different
     if [[ ! -z ${accelerator} ]]; then
