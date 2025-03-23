@@ -792,8 +792,8 @@ do
 
         EESSI_WRITABLE_OVERLAY="container:fuse-overlayfs"
         EESSI_WRITABLE_OVERLAY+=" -o lowerdir=/cvmfs_ro/${cvmfs_repo_name}"
-        EESSI_WRITABLE_OVERLAY+=" -o upperdir=${TMP_IN_CONTAINER}/${cvmfs_repo_name}${EESSI_DEV_PROJECT:+/$EESSI_DEV_PROJECT}/overlay-upper"
-        EESSI_WRITABLE_OVERLAY+=" -o workdir=${TMP_IN_CONTAINER}/${cvmfs_repo_name}${EESSI_DEV_PROJECT:+/$EESSI_DEV_PROJECT}/overlay-work"
+        EESSI_WRITABLE_OVERLAY+=" -o upperdir=${TMP_IN_CONTAINER}/${cvmfs_repo_name}/overlay-upper${EESSI_DEV_PROJECT:+/$EESSI_DEV_PROJECT}"
+        EESSI_WRITABLE_OVERLAY+=" -o workdir=${TMP_IN_CONTAINER}/${cvmfs_repo_name}/overlay-work${EESSI_DEV_PROJECT:+/$EESSI_DEV_PROJECT}"
         EESSI_WRITABLE_OVERLAY+=" /cvmfs/${cvmfs_repo_name}"
         export EESSI_WRITABLE_OVERLAY
 
