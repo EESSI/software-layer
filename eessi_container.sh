@@ -786,6 +786,8 @@ do
         # use repo-specific overlay directories
         mkdir -p ${EESSI_TMPDIR}/${cvmfs_repo_name}/overlay-upper${EESSI_DEV_PROJECT:+/$EESSI_DEV_PROJECT}
         mkdir -p ${EESSI_TMPDIR}/${cvmfs_repo_name}/overlay-work${EESSI_DEV_PROJECT:+/$EESSI_DEV_PROJECT}
+        echo "Created overlay directories ${EESSI_TMPDIR}/${cvmfs_repo_name}/overlay-upper${EESSI_DEV_PROJECT:+/$EESSI_DEV_PROJECT}"
+        
         [[ ${VERBOSE} -eq 1 ]] && echo -e "TMP directory contents:\n$(ls -l ${EESSI_TMPDIR})"
 
         # set environment variables for fuse mounts in Singularity container
