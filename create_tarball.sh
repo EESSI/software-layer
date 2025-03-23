@@ -20,8 +20,9 @@ echo ">> tmpdir: $tmpdir"
 os="linux"
 source ${base_dir}/init/eessi_defaults
 cvmfs_repo=${EESSI_CVMFS_REPO}
-
+echo "create_tarball.sh: cvmfs_repo=${cvmfs_repo}"
 software_dir="${cvmfs_repo}/versions/${eessi_version}/software/${os}/${cpu_arch_subdir}"
+echo "create_tarball.sh: software_dir=${software_dir}"
 
 if [ ! -d ${software_dir} ]; then
     echo "Software directory ${software_dir} does not exist?!" >&2
@@ -31,6 +32,7 @@ fi
 cvmfs_repo_name=${cvmfs_repo%"/${EESSI_DEV_PROJECT}"}
 cvmfs_repo_name=${cvmfs_repo_name#/cvmfs/}
 overlay_upper_dir="${eessi_tmpdir}/${cvmfs_repo_name}/overlay-upper${EESSI_DEV_PROJECT:+/$EESSI_DEV_PROJECT}"
+echo "create_tarball.sh: overlay_upper_dir=${overlay_upper_dir}"
 
 software_dir_overlay="${overlay_upper_dir}/versions/${eessi_version}"
 if [ ! -d ${software_dir_overlay} ]; then
