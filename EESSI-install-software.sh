@@ -207,7 +207,6 @@ export PYTHONPYCACHEPREFIX=$TMPDIR/pycache
 # - .lmod/lmodrc.lua
 # - .lmod/SitePackage.lua
 _eessi_software_path=${EESSI_PREFIX}/software/${EESSI_OS_TYPE}/${EESSI_SOFTWARE_SUBDIR_OVERRIDE}
-echo "_eessi_software_path: ${_eessi_software_path}"  
 _lmod_cfg_dir=${_eessi_software_path}/.lmod
 _lmod_rc_file=${_lmod_cfg_dir}/lmodrc.lua
 if [ ! -f ${_lmod_rc_file} ]; then

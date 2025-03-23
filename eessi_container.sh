@@ -732,11 +732,9 @@ do
     fi
     # remove project subdir in container
     cvmfs_repo_name=${cvmfs_repo_name%"/${EESSI_DEV_PROJECT}"}
-    echo "Adjusted cvmfs_repo_name: ${cvmfs_repo_name}"
 
     # always create a directory for the repository (e.g., to store settings, ...)
     mkdir -p ${EESSI_TMPDIR}/${cvmfs_repo_name}
-    echo "Created directory for repository: ${EESSI_TMPDIR}/${cvmfs_repo_name}"
 
 
     # add fusemount options depending on requested access mode ('ro' - read-only; 'rw' - read & write)
@@ -786,7 +784,6 @@ do
         # use repo-specific overlay directories
         mkdir -p ${EESSI_TMPDIR}/${cvmfs_repo_name}/overlay-upper${EESSI_DEV_PROJECT:+/$EESSI_DEV_PROJECT}
         mkdir -p ${EESSI_TMPDIR}/${cvmfs_repo_name}/overlay-work${EESSI_DEV_PROJECT:+/$EESSI_DEV_PROJECT}
-        echo "Created overlay directories ${EESSI_TMPDIR}/${cvmfs_repo_name}/overlay-upper${EESSI_DEV_PROJECT:+/$EESSI_DEV_PROJECT}"
 
         [[ ${VERBOSE} -eq 1 ]] && echo -e "TMP directory contents:\n$(ls -l ${EESSI_TMPDIR})"
 
