@@ -1,0 +1,38 @@
+# 2025-03-24
+# A more recent version of easyconfig for GCCcore-13.2.0.eb 'leaked' into the build
+# by PR https://github.com/EESSI/software-layer/pull/977 due to the use of
+# 'from-pr'
+#
+# We aim to circumvent that issue by using EB 4.9.2 (instead of EB 4.9.0), but then
+# have to use from-commit and include-easyblocks-from-commit even if they haven't
+# been used for the original build (with EB 4.9.0)
+#
+# In general, we do the following
+# - if no 'include-easyblocks-from-pr' was used, add
+#   'include-easyblocks-from-commit: 5106dfadc10982c05abc782770478e1685090481'
+#   SHA corresponds to release of EB 4.9.0 in easyblocks repository
+# - if 'include-easyblocks-from-pr' was used, use the most recent commit of that PR
+# - if no 'from-pr' was used, add 'from-commit: bdcc586189fcb3e5a340cddebb50d0e188c63cdc'
+#   SHA corresponds to release of EB 4.9.0 in easyconfigs repository
+# - if 'from-pr' was used, use the most recent commit of that PR
+easyconfigs:
+  - GCCcore-13.2.0.eb:
+      options:
+        # from-pr: 19974
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/19974
+        from-commit: 63918e5798787056b58bac52b3e0b99ced2ba61e
+        include-easyblocks-from-commit: 5106dfadc10982c05abc782770478e1685090481
+  - GCC-13.2.0.eb:
+      options:
+        from-commit: bdcc586189fcb3e5a340cddebb50d0e188c63cdc
+        include-easyblocks-from-commit: 5106dfadc10982c05abc782770478e1685090481
+  - OpenMPI-4.1.6-GCC-13.2.0:
+      options:
+        # from-pr: 19940
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/19940
+        from-commit: 1ee886f9bc462edbbf56626449a3943f319a2d64
+        include-easyblocks-from-commit: 5106dfadc10982c05abc782770478e1685090481
+  - foss-2023b.eb:
+      options:
+        from-commit: bdcc586189fcb3e5a340cddebb50d0e188c63cdc
+        include-easyblocks-from-commit: 5106dfadc10982c05abc782770478e1685090481
