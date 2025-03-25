@@ -376,8 +376,10 @@ fi
 if [[ ! -z ${EESSI_DEV_PROJECT} ]]; then
     # Make sure .lmod files are not checked for dev.eeessi.io
     export LMOD_CONFIG_DIR="${EASYBUILD_INSTALLPATH_STANDARD}/.lmod"
+    export LMOD_PACKAGE_PATH="${EASYBUILD_INSTALLPATH_STANDARD}/.lmod"
 else
     export LMOD_CONFIG_DIR="${EASYBUILD_INSTALLPATH}/.lmod"
+    export LMOD_PACKAGE_PATH="${EASYBUILD_INSTALLPATH}/.lmod"
 fi
 
 lmod_rc_file="$LMOD_CONFIG_DIR/lmodrc.lua"
@@ -393,7 +395,6 @@ if [ ! -f $lmod_rc_file ] || [ ${lmodrc_changed} == '0' ]; then
     check_exit_code $? "$lmod_rc_file created" "Failed to create $lmod_rc_file"
 fi
 
-export LMOD_PACKAGE_PATH="${EASYBUILD_INSTALLPATH}/.lmod"
 lmod_sitepackage_file="$LMOD_PACKAGE_PATH/SitePackage.lua"
 if [[ ! -z ${EESSI_ACCELERATOR_TARGET} ]]; then
     # EESSI_ACCELERATOR_TARGET is set, so let's remove the accelerator path from $lmod_sitepackage_file
