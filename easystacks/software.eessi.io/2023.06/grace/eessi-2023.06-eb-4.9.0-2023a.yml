@@ -1,4 +1,0 @@
-easyconfigs:
-  - GCCcore-12.3.0.eb:
-      options:
-        from-pr: 20218
