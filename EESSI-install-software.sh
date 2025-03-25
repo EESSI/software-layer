@@ -254,6 +254,8 @@ export EASYBUILD_INSTALLPATH=${EESSI_PREFIX}/software/${EESSI_OS_TYPE}/${EESSI_S
 
 # If in dev.eessi.io, allow building on top of software.eessi.io via EESSI-extend
 if [[ ! -z ${EESSI_DEV_PROJECT} ]]; then
+    # We keep track of the old install path so the SitePackage.lua and .lmodrc later
+    EASYBUILD_INSTALLPATH_STANDARD=${EASYBUILD_INSTALLPATH}
     # Need to unset $EESSI_CVMFS_INSTALL to use $EESSI_PROJECT_INSTALL
     unset EESSI_CVMFS_INSTALL
     export EESSI_PROJECT_INSTALL=${EESSI_CVMFS_REPO_OVERRIDE}
@@ -371,7 +373,13 @@ else
     done
 fi
 
-export LMOD_CONFIG_DIR="${EASYBUILD_INSTALLPATH}/.lmod"
+if [[ ! -z ${EESSI_DEV_PROJECT} ]]; then
+    # Make sure .lmod files are not checked for dev.eeessi.io
+    export LMOD_CONFIG_DIR="${EASYBUILD_INSTALLPATH_STANDARD}/.lmod"
+else
+    export LMOD_CONFIG_DIR="${EASYBUILD_INSTALLPATH}/.lmod"
+fi
+
 lmod_rc_file="$LMOD_CONFIG_DIR/lmodrc.lua"
 if [[ ! -z ${EESSI_ACCELERATOR_TARGET} ]]; then
     # EESSI_ACCELERATOR_TARGET is set, so let's remove the accelerator path from $lmod_rc_file
