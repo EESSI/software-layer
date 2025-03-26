@@ -1,9 +1,0 @@
-easyconfigs:
-  - GCCcore-13.2.0.eb:
-      options:
-        from-pr: 19974
-  - GCC-13.2.0.eb
-  - OpenMPI-4.1.6-GCC-13.2.0:
-      options:
-        from-pr: 19940
-  - foss-2023b.eb
