@@ -1,0 +1,13 @@
+easyconfigs:
+# originally built with EB 4.9.0, PR was included since EB 4.9.1
+#  - GCCcore-13.2.0.eb:
+#      options:
+#        from-pr: 19974
+  - GCCcore-13.2.0.eb
+  - GCC-13.2.0.eb
+# originally built with EB 4.9.0, PR was included since EB 4.9.1
+#  - OpenMPI-4.1.6-GCC-13.2.0:
+#      options:
+#        from-pr: 19940
+  - OpenMPI-4.1.6-GCC-13.2.0.eb
+  - foss-2023b.eb
