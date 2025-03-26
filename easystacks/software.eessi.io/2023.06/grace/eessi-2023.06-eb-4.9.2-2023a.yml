@@ -1,7 +1,0 @@
-easyconfigs:
-  - GCCcore-12.3.0.eb:
-      options:
-        # from-pr: 20218
-        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/20218
-        from-commit: 5db39866520b1ffa40be855d97eb0ed90eb4b592
-        include-easyblocks-from-commit: 5106dfadc10982c05abc782770478e1685090481
