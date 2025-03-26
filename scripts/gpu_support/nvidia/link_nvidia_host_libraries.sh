@@ -418,15 +418,8 @@ find_cuda_libraries_on_host() {
                 for existing_lib in "${MATCHED_LIBRARIES[@]}"; do
                     existing_name=$(basename "$existing_lib")
                     if [ "$existing_name" = "$lib_name" ]; then
-                        log_verbose "Duplicate library found: $lib_name (existing: $existing_lib, new: $lib_path)"
-                        # Prioritize libraries in standard locations if possible
-                        if [[ "$lib_path" == "/usr/lib"* || "$lib_path" == "/lib"* ]]; then
-                            log_verbose "Prioritizing system library: $lib_path"
-                            # Remove the existing entry
-                            MATCHED_LIBRARIES=("${MATCHED_LIBRARIES[@]/$existing_lib}")
-                            # Add the new one
-                            MATCHED_LIBRARIES+=("$lib_path")
-                        fi
+                        log_verbose "Duplicate library found: $lib_name (existing: $existing_lib, currently processed: $lib_path)"
+                        log_verbose "Discarting $lib_path"
                         duplicate_found=1
                         break
                     fi
@@ -538,9 +531,7 @@ symlink_mode () {
             # and check if the symlink was created successfully
             if ! ln -s "$library" .
             then
-                echo_yellow "Warning: Failed to create symlink for library $library in $PWD"
-                # Continue instead of fatal_error to make the script more robust
-                continue
+                fatal_error "Error: Failed to create symlink for library $library in $PWD"
             fi
         done
 
