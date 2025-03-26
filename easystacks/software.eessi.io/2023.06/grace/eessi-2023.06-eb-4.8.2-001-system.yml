@@ -1,4 +1,0 @@
-easyconfigs:
-  - Nextflow-23.10.0.eb:
-      options:
-        from-pr: 19172
