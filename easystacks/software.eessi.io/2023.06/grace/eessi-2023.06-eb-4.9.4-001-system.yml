@@ -8,3 +8,6 @@ easyconfigs:
       options:
         # see https://github.com/easybuilders/easybuild-easyconfigs/pull/21465
         from-commit: 39cdebd7bd2cb4a9c170ee22439401316b2e7a25
+  - Nextflow-23.10.0.eb
+  - ReFrame-4.3.3.eb
+  - ReFrame-4.6.2.eb
