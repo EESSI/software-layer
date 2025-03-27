@@ -402,8 +402,34 @@ find_cuda_libraries_on_host() {
 
         if [ -n "$matched" ]; then
             log_verbose "Found matches for ${library}: $matched"
-            # Do not quote $matched, since it can contain multiple libraries split by \n!
-            MATCHED_LIBRARIES+=($matched)
+            
+            # Process each matched library and avoid duplicates by filename
+            # Used `while - read <<< $matched`` to handle whitespaces and special characters.
+            while IFS= read -r lib_path; do
+                # Skip empty lines
+                [ -z "$lib_path" ] && continue
+                
+                # Extract just the filename from the path
+                lib_name=$(basename "$lib_path")
+                echo "Checking library $lib_name for duplicates"
+                
+                # Check if we already have this library filename in our matched libraries
+                duplicate_found=0
+                for existing_lib in "${MATCHED_LIBRARIES[@]}"; do
+                    existing_name=$(basename "$existing_lib")
+                    if [ "$existing_name" = "$lib_name" ]; then
+                        log_verbose "Duplicate library found: $lib_name (existing: $existing_lib, currently processed: $lib_path)"
+                        log_verbose "Discarting $lib_path"
+                        duplicate_found=1
+                        break
+                    fi
+                done
+                
+                # If no duplicate found, add this library
+                if [ "$duplicate_found" -eq 0 ]; then
+                    MATCHED_LIBRARIES+=("$lib_path")
+                fi
+            done <<< "$matched"
         else
             # There are some libraries, that weren't matched/found on the system
             log_verbose "No matches found for ${library}"
@@ -484,6 +510,22 @@ symlink_mode () {
         # Loop over each matched library
         for library in "${MATCHED_LIBRARIES[@]}"; do
             log_verbose "Linking library: ${library}"
+            
+            # Get just the library filename
+            lib_name=$(basename "$library")
+            
+            # Check if the symlink already exists
+            if [ -L "$lib_name" ]; then
+                # Check if it's pointing to the same target
+                target=$(readlink "$lib_name")
+                if [ "$target" = "$library" ]; then
+                    log_verbose "Symlink for $lib_name already exists and points to correct target"
+                    continue
+                else
+                    log_verbose "Symlink for $lib_name exists but points to wrong target: $target, updating..."
+                    rm "$lib_name"
+                fi
+            fi
     
             # Create a symlink in the current directory
             # and check if the symlink was created successfully
