@@ -40,4 +40,4 @@ easyconfigs:
   - lit-18.1.7-GCCcore-13.2.0.eb:
       options:
         # see https://github.com/easybuilders/easybuild-easyconfigs/pull/20902
-        from-commit: a90842db7b39798ca49c9167a31aed2b59f60590
+        from-commit: 79f4cf21490f7f5b187af889be5426c1332a497d
