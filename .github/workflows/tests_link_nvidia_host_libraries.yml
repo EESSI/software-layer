@@ -120,6 +120,8 @@ jobs:
         # List dir with libraries
         echo "Showing content of /tmp/nvidia_libs"
         echo "$(ls -l /tmp/nvidia_libs)"
+        echo "Showing content of /tmp/nvidia_libs_duplicate"
+        echo "$(ls -l /tmp/nvidia_libs_duplicate)"
         echo "Showing content of /opt/eessi/nvidia/x86_64/host"
         echo "$(ls -l /opt/eessi/nvidia/x86_64/host)"
 
@@ -152,9 +154,9 @@ jobs:
             exit 1
           fi
           
-          # Verify it points to our mock library in /tmp/nvidia_libs
-          if [[ "$target" != "/tmp/nvidia_libs/$lib"* && "$target" != *"/tmp/nvidia_libs/"* ]]; then
-            echo "Error: Symlink $lib_path points to $target, which is not in our mock directory"
+          # Verify it points to our mock library in /tmp/nvidia_libs or /tmp/nvidia_libs_duplicate
+          if [[ "$target" != "/tmp/nvidia_libs/$lib"* && "$target" != "/tmp/nvidia_libs_duplicate/$lib"* ]]; then
+            echo "Error: Symlink $lib_path points to $target, which is not in our mock directories"
             exit 1
           fi
           
@@ -194,3 +196,4 @@ jobs:
         echo "$output" | grep "have already been linked" || { echo "Missing 'already linked' message"; exit 1; }
         
         echo "Second normal run test passed"
+        
