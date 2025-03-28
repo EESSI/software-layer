@@ -2,6 +2,9 @@
 
 set -e
 
+# needed since apptainer 1.4.x
+sudo apt-get install -y libsubid-dev
+
 # see https://github.com/apptainer/singularity/issues/5390#issuecomment-899111181
 sudo apt-get install alien
 alien --version
