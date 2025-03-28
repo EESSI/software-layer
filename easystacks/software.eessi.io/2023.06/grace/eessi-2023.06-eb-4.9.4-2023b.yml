@@ -86,3 +86,9 @@ easyconfigs:
 #        from-pr: 20201
   - Qt5-5.15.13-GCCcore-13.2.0.eb
   - OSU-Micro-Benchmarks-7.2-gompi-2023b.eb
+# JUST FOR TESTING WHETHER adding --contain removes lua error messages and lets
+# ReFrame tests run
+  - BWA-0.7.18-GCCcore-13.2.0.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/22025
+        from-commit: b5024368af15a9bdd18a92ea908d1f7595f87797
