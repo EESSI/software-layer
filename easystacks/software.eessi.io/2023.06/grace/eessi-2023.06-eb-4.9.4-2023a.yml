@@ -26,7 +26,7 @@ easyconfigs:
       options:
         # source URLs for Boost.* have changed, corresponding PR is
         # https://github.com/easybuilders/easybuild-easyconfigs/pull/22240
-        # # Boost.Python is a dependency of Boost
+        # Boost.Python is a dependency of Boost
         from-commit: e610fe1ac5393d1de668a466fdaaea74c580ee03
   - netCDF-4.9.2-gompi-2023a.eb
   - FFmpeg-6.0-GCCcore-12.3.0.eb
