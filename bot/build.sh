@@ -184,6 +184,10 @@ if [[ "${REPOSITORY_NAME}" == "dev.eessi.io" ]]; then
     COMMON_ARGS+=("--repository" "software.eessi.io,access=ro")
 fi
 
+# add $software_layer_dir as extra bind path; needed because of the result of
+# realpath this script may not yet be at a location bind mounted into the container
+COMMON_ARGS+=("--extra-bind-paths" "${software_layer_dir}")
+
 # make sure to use the same parent dir for storing tarballs of tmp
 PREVIOUS_TMP_DIR=${PWD}/previous_tmp
 
