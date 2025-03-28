@@ -842,6 +842,9 @@ if [ ! -z ${EESSI_SOFTWARE_SUBDIR_OVERRIDE} ]; then
     export APPTAINERENV_EESSI_SOFTWARE_SUBDIR_OVERRIDE=${EESSI_SOFTWARE_SUBDIR_OVERRIDE}
 fi
 
+# always add --contain option to further isolate container run from host
+ADDITIONAL_CONTAINER_OPTIONS+=("--contain")
+
 echo "Launching container with command (next line):"
 echo "singularity ${RUN_QUIET} ${MODE} ${ADDITIONAL_CONTAINER_OPTIONS[@]} ${EESSI_FUSE_MOUNTS[@]} ${CONTAINER} $@"
 singularity ${RUN_QUIET} ${MODE} "${ADDITIONAL_CONTAINER_OPTIONS[@]}" "${EESSI_FUSE_MOUNTS[@]}" ${CONTAINER} "$@"
