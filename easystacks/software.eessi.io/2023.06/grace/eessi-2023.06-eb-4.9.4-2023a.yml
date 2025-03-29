@@ -32,6 +32,12 @@ easyconfigs:
   - CGAL-5.6-GCCcore-12.3.0.eb
   - ParaView-5.11.2-foss-2023a.eb
   - gnuplot-5.4.8-GCCcore-12.3.0.eb
+  - Boost.MPI-1.82.0-gompi-2023a.eb: 
+      options:
+        # source URLs for Boost.MPI have changed, corresponding PR is
+        # https://github.com/easybuilders/easybuild-easyconfigs/pull/22240
+        # Boost.MPI is a dependency of ESPResSo
+        from-commit: e610fe1ac5393d1de668a466fdaaea74c580ee03
   - ESPResSo-4.2.1-foss-2023a.eb
   - Rivet-3.1.9-gompi-2023a-HepMC3-3.2.6.eb
   - Pillow-10.0.0-GCCcore-12.3.0.eb
