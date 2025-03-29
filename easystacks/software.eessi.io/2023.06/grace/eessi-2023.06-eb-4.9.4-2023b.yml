@@ -123,6 +123,12 @@ easyconfigs:
 #        # see https://github.com/easybuilders/easybuild-easyblocks/pull/3393
 #        include-easyblocks-from-commit: c4951c78d62fa5cf8e9f6fe0ead212d2a4d7cb9c
   - Extrae-4.2.0-gompi-2023b.eb
+  - Boost.MPI-1.83.0-gompi-2023b.eb:
+      options:
+        # source URLs for Boost.* have changed, corresponding PR is
+        # https://github.com/easybuilders/easybuild-easyconfigs/pull/22240
+        # Boost.MPI is a dependency of pyMBE
+        from-commit: e610fe1ac5393d1de668a466fdaaea74c580ee03
 # originally built with EB 4.9.2, PR 21034 was included since EB 4.9.3
 #  - pyMBE-0.8.0-foss-2023b.eb:
 #      options:
