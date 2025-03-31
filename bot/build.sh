@@ -184,6 +184,15 @@ if [[ "${REPOSITORY_NAME}" == "dev.eessi.io" ]]; then
     COMMON_ARGS+=("--repository" "software.eessi.io,access=ro")
 fi
 
+# add $software_layer_dir and /dev as extra bind paths
+#  - $software_layer_dir is needed because it is used as prefix for running scripts
+#  - /dev is needed to access /dev/fuse
+COMMON_ARGS+=("--extra-bind-paths" "${software_layer_dir},/dev")
+
+# pass through '--contain' to avoid leaking in scripts into the container session
+# note, --pass-through can be used multiple times if needed
+COMMON_ARGS+=("--pass-through" "--contain")
+
 # make sure to use the same parent dir for storing tarballs of tmp
 PREVIOUS_TMP_DIR=${PWD}/previous_tmp
 
