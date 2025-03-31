@@ -1,10 +1,4 @@
 easyconfigs:
-  - GCCcore-12.3.0.eb:
-      options:
-        from-pr: 20218
-  - OpenMPI-4.1.5-GCC-12.3.0:
-      options:
-        from-pr: 19940
   - METIS-5.1.0-GCCcore-12.3.0.eb
   - SCOTCH-7.0.3-gompi-2023a.eb
   - CGAL-5.6-GCCcore-12.3.0.eb
@@ -82,7 +76,11 @@ easyconfigs:
   - MODFLOW-6.4.4-foss-2023a.eb:
       options:
         from-pr: 20142
-  - R-bundle-CRAN-2023.12-foss-2023a.eb:
-      options:
-        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/20238
-        from-pr: 20238
+  # add all dependencies of R-bundle-CRAN-2023.12-foss-2023a.eb; due to a rebuild we will install the bundle itself with EB 4.9.4
+  - NLopt-2.7.1-GCCcore-12.3.0.eb
+  - nettle-3.9.1-GCCcore-12.3.0.eb
+  - Xvfb-21.1.8-GCCcore-12.3.0.eb
+  - libsndfile-1.2.2-GCCcore-12.3.0.eb
+  - PostgreSQL-16.1-GCCcore-12.3.0.eb
+  - ImageMagick-7.1.1-15-GCCcore-12.3.0.eb
+  - GDAL-3.7.1-foss-2023a.eb

@@ -110,36 +110,42 @@ local function load_site_specific_hooks()
 end
 
 
-local function eessi_cuda_enabled_load_hook(t)
+local function eessi_cuda_and_libraries_enabled_load_hook(t)
     local frameStk  = require("FrameStk"):singleton()
     local mt        = frameStk:mt()
     local simpleName = string.match(t.modFullName, "(.-)/")
-    -- If we try to load CUDA itself, check if the full CUDA SDK was installed on the host in host_injections.
-    -- This is required for end users to build additional CUDA software. If the full SDK isn't present, refuse
-    -- to load the CUDA module and print an informative message on how to set up GPU support for EESSI
+    local packagesList = { ["CUDA"] = true, ["cuDNN"] = true }
+    -- If we try to load any of the modules in packagesList, we check if the
+    -- full package was installed on the host in host_injections.
+    -- This is required for end users to build additional software that depends
+    -- on the package. If the full SDK isn't present, refuse
+    -- to load the module and print an informative message on how to set up GPU support for EESSI
     local refer_to_docs = "For more information on how to do this, see https://www.eessi.io/docs/site_specific_config/gpu/.\\n"
-    if simpleName == 'CUDA' then
+    if packagesList[simpleName] then
+        -- simpleName is a module in packagesList
         -- get the full host_injections path
         local hostInjections = string.gsub(os.getenv('EESSI_SOFTWARE_PATH') or "", 'versions', 'host_injections')
-        -- build final path where the CUDA software should be installed
-        local cudaEasyBuildDir = hostInjections .. "/software/" .. t.modFullName .. "/easybuild"
-        local cudaDirExists = isDir(cudaEasyBuildDir)
-        if not cudaDirExists then
+
+        -- build final path where the software should be installed
+        local packageEasyBuildDir = hostInjections .. "/software/" .. t.modFullName .. "/easybuild"
+        local packageDirExists = isDir(packageEasyBuildDir)
+        if not packageDirExists then
             local advice = "but while the module file exists, the actual software is not entirely shipped with EESSI "
-            advice = advice .. "due to licencing. You will need to install a full copy of the CUDA SDK where EESSI "
+            advice = advice .. "due to licencing. You will need to install a full copy of the " .. simpleName .. " package where EESSI "
             advice = advice .. "can find it.\\n"
             advice = advice .. refer_to_docs
             LmodError("\\nYou requested to load ", simpleName, " ", advice)
         end
     end
-    -- when loading CUDA enabled modules check if the necessary driver libraries are accessible to the EESSI linker,
+    -- when loading CUDA (and cu*) enabled modules check if the necessary driver libraries are accessible to the EESSI linker,
     -- otherwise, refuse to load the requested module and print error message
     local checkGpu = mt:haveProperty(simpleName,"arch","gpu")
     local overrideGpuCheck = os.getenv("EESSI_OVERRIDE_GPU_CHECK")
     if checkGpu and (overrideGpuCheck == nil) then
         local arch = os.getenv("EESSI_CPU_FAMILY") or ""
-        local cudaVersionFile = "/cvmfs/software.eessi.io/host_injections/nvidia/" .. arch .. "/latest/cuda_version.txt"
-        local cudaDriverFile = "/cvmfs/software.eessi.io/host_injections/nvidia/" .. arch .. "/latest/libcuda.so"
+        local cvmfs_repo = os.getenv("EESSI_CVMFS_REPO") or ""
+        local cudaVersionFile = cvmfs_repo .. "/host_injections/nvidia/" .. arch .. "/latest/cuda_version.txt"
+        local cudaDriverFile = cvmfs_repo .. "/host_injections/nvidia/" .. arch .. "/latest/libcuda.so"
         local cudaDriverExists = isFile(cudaDriverFile)
         local singularityCudaExists = isFile("/.singularity.d/libs/libcuda.so")
         if not (cudaDriverExists or singularityCudaExists)  then
@@ -197,13 +203,80 @@ end
 -- Also: make it non-local, so it can be imported and extended by other lmodrc files if needed
 function eessi_load_hook(t)
     eessi_espresso_deprecated_message(t)
-    -- Only apply CUDA hooks if the loaded module is in the EESSI prefix
-    -- This avoids getting an Lmod Error when trying to load a CUDA module from a local software stack
+    -- Only apply CUDA and cu*-library hooks if the loaded module is in the EESSI prefix
+    -- This avoids getting an Lmod Error when trying to load a CUDA or cu* module from a local software stack
     if from_eessi_prefix(t) then
-        eessi_cuda_enabled_load_hook(t)
+        eessi_cuda_and_libraries_enabled_load_hook(t)
     end
 end
 
+local function using_eessi_accel_stack ()
+    local modulepath = os.getenv("MODULEPATH") or ""
+    local accel_stack_in_modulepath = false
+
+    -- Check if we are using an EESSI version 2023 accelerator stack by checking if the $MODULEPATH contains
+    -- a path that starts with /cvmfs/software.eessi.io and contains accel/nvidia/ccNN
+    for path in string.gmatch(modulepath, '(.-):') do
+        if string.sub(path, 1, 41) == "/cvmfs/software.eessi.io/versions/2023.06" then
+            if string.find(path, "accel/nvidia/cc%d%d") then
+                accel_stack_in_modulepath = true
+                break
+            end
+        end
+    end
+    return accel_stack_in_modulepath
+end
+
+local function eessi_removed_module_warning_startup_hook(usrCmd)
+    if usrCmd == 'load' and not os.getenv("EESSI_SKIP_REMOVED_MODULES_CHECK") then
+        local CUDA_RELOCATION_MSG = [[All CUDA installations and modules depending on CUDA have been relocated to GPU-specific stacks.
+        Please see https://www.eessi.io/docs/site_specific_config/gpu/ for more information.]]
+
+        local RELOCATED_CUDA_MODULES = {
+            ['NCCL'] = CUDA_RELOCATION_MSG,
+            ['NCCL/2.18.3-GCCcore-12.3.0-CUDA-12.1.1'] = CUDA_RELOCATION_MSG,
+            ['UCX-CUDA'] = CUDA_RELOCATION_MSG,
+            ['UCX-CUDA/1.14.1-GCCcore-12.3.0-CUDA-12.1.1'] = CUDA_RELOCATION_MSG,
+            -- we also have non-CUDA versions of OSU Micro Benchmarks, so only match the CUDA version
+            ['OSU-Micro-Benchmarks/7.2-gompi-2023a-CUDA-12.1.1'] = CUDA_RELOCATION_MSG,
+            ['UCC-CUDA'] = CUDA_RELOCATION_MSG,
+            ['UCC-CUDA/1.2.0-GCCcore-12.3.0-CUDA-12.1.1'] = CUDA_RELOCATION_MSG,
+            ['CUDA'] = CUDA_RELOCATION_MSG,
+            ['CUDA/12.1.1'] = CUDA_RELOCATION_MSG,
+            ['CUDA-Samples'] = CUDA_RELOCATION_MSG,
+            ['CUDA-Samples/12.1-GCC-12.3.0-CUDA-12.1.1'] = CUDA_RELOCATION_MSG,
+        }
+
+        local REMOVED_MODULES = {
+            ['ipympl/0.9.3-foss-2023a'] = 'This module has been replaced by ipympl/0.9.3-gfbf-2023a',
+        }
+
+        local masterTbl = masterTbl()
+        local error_msg = ""
+        -- The CUDA messages should only be shown if the accelerator stack is NOT being used
+        if not using_eessi_accel_stack() then
+            for _, module in pairs(masterTbl.pargs) do
+                if RELOCATED_CUDA_MODULES[module] ~= nil then
+                    error_msg = error_msg .. module .. ': ' .. RELOCATED_CUDA_MODULES[module] .. '\\n\\n'
+                end
+            end
+        end
+        for _, module in pairs(masterTbl.pargs) do
+            if REMOVED_MODULES[module] ~= nil then
+                error_msg = error_msg .. module .. ': ' .. REMOVED_MODULES[module] .. '\\n\\n'
+            end
+        end
+        if error_msg ~= "" then
+            LmodError('\\n' .. error_msg .. 'If you know what you are doing and you want to ignore this check for removed/relocated modules, set $EESSI_SKIP_REMOVED_MODULES_CHECK to any value.')
+        end
+    end
+end
+
+function eessi_startup_hook(usrCmd)
+    eessi_removed_module_warning_startup_hook(usrCmd)
+end
+
+hook.register("startup", eessi_startup_hook)
 hook.register("load", eessi_load_hook)
 
 """

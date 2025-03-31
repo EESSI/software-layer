@@ -25,8 +25,9 @@ CPU_TARGET_NEOVERSE_N1 = 'aarch64/neoverse_n1'
 CPU_TARGET_NEOVERSE_V1 = 'aarch64/neoverse_v1'
 CPU_TARGET_AARCH64_GENERIC = 'aarch64/generic'
 CPU_TARGET_A64FX = 'aarch64/a64fx'
+CPU_TARGET_NVIDIA_GRACE = 'aarch64/nvidia/grace'
 
-CPU_TARGET_SAPPHIRE_RAPIDS = 'x86_64/intel/sapphire_rapids'
+CPU_TARGET_SAPPHIRE_RAPIDS = 'x86_64/intel/sapphirerapids'
 CPU_TARGET_ZEN4 = 'x86_64/amd/zen4'
 
 EESSI_RPATH_OVERRIDE_ATTR = 'orig_rpath_override_dirs'
@@ -790,15 +791,22 @@ def pre_test_hook_ignore_failing_tests_SciPybundle(self, *args, **kwargs):
         FAILED scipy/spatial/tests/test_distance.py::TestPdist::test_pdist_correlation_iris
         FAILED scipy/spatial/tests/test_distance.py::TestPdist::test_pdist_correlation_iris_float32
         = 4 failed, 54407 passed, 3016 skipped, 223 xfailed, 13 xpassed, 10917 warnings in 6068.43s (1:41:08) =
+    In version 2023.07 + 2023.11 on grace, 2 failing tests in scipy (versions 1.11.1,  1.11.4):
+        FAILED scipy/optimize/tests/test_linprog.py::TestLinprogIPSparse::test_bug_6139
+        FAILED scipy/optimize/tests/test_linprog.py::TestLinprogIPSparsePresolve::test_bug_6139
+        = 2 failed, 54876 passed, 3021 skipped, 223 xfailed, 13 xpassed in 581.85s (0:09:41) =
     (in previous versions we were not as strict yet on the numpy/SciPy tests)
     """
     cpu_target = get_eessi_envvar('EESSI_SOFTWARE_SUBDIR')
     scipy_bundle_versions_nv1 = ('2021.10', '2023.02', '2023.07', '2023.11')
     scipy_bundle_versions_a64fx = ('2023.07', '2023.11')
+    scipy_bundle_versions_nvidia_grace = ('2023.07', '2023.11')
     if self.name == 'SciPy-bundle':
         if cpu_target == CPU_TARGET_NEOVERSE_V1 and self.version in scipy_bundle_versions_nv1:
             self.cfg['testopts'] = "|| echo ignoring failing tests"
         elif cpu_target == CPU_TARGET_A64FX and self.version in scipy_bundle_versions_a64fx:
+            self.cfg['testopts'] = "|| echo ignoring failing tests"
+        elif cpu_target == CPU_TARGET_NVIDIA_GRACE and self.version in scipy_bundle_versions_nvidia_grace:
             self.cfg['testopts'] = "|| echo ignoring failing tests"
 
 

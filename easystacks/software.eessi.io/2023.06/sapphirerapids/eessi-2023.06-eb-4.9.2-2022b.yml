@@ -1,5 +1,4 @@
 easyconfigs:
-  - GObject-Introspection-1.74.0-GCCcore-12.2.0.eb
   - BLAST+-2.14.0-gompi-2022b.eb
   - BioPerl-1.7.8-GCCcore-12.2.0.eb:
       options:
