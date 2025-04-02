@@ -165,3 +165,51 @@ easyconfigs:
         from-commit: 9dc24e57880a8adb06ae10557c5315e66671a533
         # see https://github.com/easybuilders/easybuild-easyblocks/pull/3569
         include-easyblocks-from-commit: 362b4679193612e04abe336fa041e2a34d183991
+# from here on easyconfigs were originally built with EB 4.9.4
+  - SIONlib-1.7.7-GCCcore-13.2.0-tools.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/21752
+        # NOTE, commit is the last one before the merge commit for PR 21752
+        from-commit: 6b8b53493a1188a5baa56a133574daac239730e7
+  - Score-P-8.4-gompi-2023b.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyblocks/pull/3496
+        # NOTE, commit is the last one before the merge commit for PR 3496
+        include-easyblocks-from-commit: 60633b0acfd41a0732992d9e16800dae71a056eb
+  - Cython-3.0.10-GCCcore-13.2.0.eb
+  - Mustache-1.3.3-foss-2023b.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/21783
+        # NOTE, commit is the last one before the merge commit for PR 21783
+        from-commit: 5fa3db9eb36f91cba3fbf351549f8ba2849abc33
+  - GDRCopy-2.4-GCCcore-13.2.0.eb
+  - GROMACS-2024.4-foss-2023b.eb:
+      options:
+        # https://github.com/easybuilders/easybuild-easyconfigs/pull/21851
+        # NOTE, below commit is the merge commit for PR 21851
+        from-commit: f0fa64b440deaf5fb0a6d26ff1bb3e9f36626c8a
+  - SlurmViewer-1.0.1-GCCcore-13.2.0.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/21899
+        # NOTE, below commit is the merge commit for PR 21899
+        from-commit: 0bdeb23c9ea5a3caefd353ecd936919424c1bba4
+  - wxWidgets-3.2.6-GCC-13.2.0.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/21915
+        # NOTE, below commit is the merge commit for PR 21915
+        from-commit: 58f16c0caf8c5494c68e9eda8cbf19e9145d3cfa
+  - DP3-6.2-foss-2023b.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/21765
+        # NOTE, below commit is the merge commit for PR 21765
+        from-commit: c7e4bfe1a57cf9781ce346ba8ae9081644408c23
+  - WSClean-3.5-foss-2023b.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/21765
+        # NOTE, below commit is the merge commit for PR 21765
+        from-commit: c7e4bfe1a57cf9781ce346ba8ae9081644408c23
+  - EveryBeam-0.6.1-foss-2023b.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/21765
+        # NOTE, below commit is the merge commit for PR 21765
+        from-commit: c7e4bfe1a57cf9781ce346ba8ae9081644408c23
