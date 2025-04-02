@@ -408,19 +408,6 @@ else
   echo "Using ${EESSI_HOST_STORAGE} as tmp directory (to resume session add '--resume ${EESSI_HOST_STORAGE}')."
 fi
 
-# if ${RESUME} is a file, unpack it into ${EESSI_HOST_STORAGE}
-if [[ ! -z ${RESUME} && -f ${RESUME} ]]; then
-  if [[ "${RESUME}" == *.tgz ]]; then
-    tar xf ${RESUME} -C ${EESSI_HOST_STORAGE}
-  # Add support for resuming from zstd-compressed tarballs
-  elif [[ "${RESUME}" == *.zst && -x "$(command -v zstd)" ]]; then
-    zstd -dc ${RESUME} | tar -xf - -C ${EESSI_HOST_STORAGE}
-  elif [[ "${RESUME}" == *.zst && ! -x "$(command -v zstd)" ]]; then
-    fatal_error "Trying to resume from tarball ${RESUME} which was compressed using zstd, but zstd command not found"
-  fi
-  echo "Resuming from previous run using temporary storage ${RESUME} unpacked into ${EESSI_HOST_STORAGE}"
-fi
-
 # if ${RESUME} is a file (assume a tgz), unpack it into ${EESSI_HOST_STORAGE}
 if [[ ! -z ${RESUME} && -f ${RESUME} ]]; then
   tar xf ${RESUME} -C ${EESSI_HOST_STORAGE}
@@ -878,30 +865,17 @@ if [[ ! -z ${SAVE} ]]; then
   #   ARCH which might have been used internally, eg, when software packages
   #   were built ... we rather keep the script here "stupid" and leave the handling
   #   of these aspects to where the script is used
-  # Compression with zlib may be quite slow. On some systems, the pipeline takes ~20 mins for a 2 min build because of this.
-  # Check if zstd is present for faster compression and decompression
   if [[ -d ${SAVE} ]]; then
     # assume SAVE is name of a directory to which tarball shall be written to
     #   name format: tmp_storage-{TIMESTAMP}.tgz
     ts=$(date +%s)
-    if [[ -x "$(command -v zstd)" ]]; then
-      TARBALL=${SAVE}/tmp_storage-${ts}.zst
-      tar -cf - -C ${EESSI_TMPDIR} . | zstd -T0 > ${TARBALL}
-    else
-      TARBALL=${SAVE}/tmp_storage-${ts}.tgz
-      tar czf ${TARBALL} -C ${EESSI_TMPDIR} .
-    fi
+    TGZ=${SAVE}/tmp_storage-${ts}.tgz
   else
     # assume SAVE is the full path to a tarball's name
-    TARBALL=${SAVE}
-    # if zstd is present and a .zst extension is asked for, use it
-    if [[ "${SAVE}" == *.zst && -x "$(command -v zstd)" ]]; then
-      tar -cf - -C ${EESSI_TMPDIR} . | zstd -T0 > ${TARBALL}
-    else
-      tar czf ${TARBALL} -C ${EESSI_TMPDIR}
-    fi
+    TGZ=${SAVE}
   fi
-  echo "Saved contents of tmp directory '${EESSI_TMPDIR}' to tarball '${TARBALL}' (to resume session add '--resume ${TARBALL}')"
+  tar czf ${TGZ} -C ${EESSI_TMPDIR} .
+  echo "Saved contents of tmp directory '${EESSI_TMPDIR}' to tarball '${TGZ}' (to resume session add '--resume ${TGZ}')"
 fi
 
 # TODO clean up tmp by default? only retain if another option provided (--retain-tmp)
