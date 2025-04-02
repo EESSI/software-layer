@@ -149,3 +149,19 @@ easyconfigs:
 #        # we use a commit from the Brunsli PR here to get rid of the Highway dependency
 #        from-commit: 1736a123b1685836452587a5c51793257570bb2d
   - R-bundle-CRAN-2024.06-foss-2023b.eb
+# from here on easyconfigs were originally built with EB 4.9.3
+  - GROMACS-2024.3-foss-2023b.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/21430
+        from-commit: 8b509882d03402e2998ff9b22c154a6957e36d6b
+# originally built with EB 4.9.3, PR 21436 was merged into develop before EB
+# 4.9.4 was released, but maybe it wasn't included in EB 4.9.4, to be on the safe
+# side we just use the commit, PR 3569 was targetting Sapphire Rapids, so likely
+# that is not needed here, however we keep it to stay in sync with what was used
+# for Sapphire Rapids
+  - LAMMPS-29Aug2024-foss-2023b-kokkos.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/21436
+        from-commit: 9dc24e57880a8adb06ae10557c5315e66671a533
+        # see https://github.com/easybuilders/easybuild-easyblocks/pull/3569
+        include-easyblocks-from-commit: 362b4679193612e04abe336fa041e2a34d183991
