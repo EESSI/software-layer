@@ -89,8 +89,6 @@ display_help() {
   echo "  -n | --nvidia MODE      - configure the container to work with NVIDIA GPUs,"
   echo "                            MODE==install for a CUDA installation, MODE==run to"
   echo "                            attach a GPU, MODE==all for both [default: false]"
-  echo "  -p | --pass-through ARG - argument to pass through to the launch of the"
-  echo "                            container; can be given multiple times [default: not set]"
   echo "  -r | --repository CFG   - configuration file or identifier defining the"
   echo "                            repository to use; can be given multiple times;"
   echo "                            CFG may include a suffix ',access={ro,rw}' to"
@@ -128,7 +126,6 @@ VERBOSE=0
 STORAGE=
 LIST_REPOS=0
 MODE="shell"
-PASS_THROUGH=()
 SETUP_NVIDIA=0
 REPOSITORIES=()
 RESUME=
@@ -183,10 +180,6 @@ while [[ $# -gt 0 ]]; do
     -n|--nvidia)
       SETUP_NVIDIA=1
       NVIDIA_MODE="$2"
-      shift 2
-      ;;
-    -p|--pass-through)
-      PASS_THROUGH+=("$2")
       shift 2
       ;;
     -r|--repository)
@@ -370,47 +363,55 @@ fi
 # 2. set up host storage/tmp if necessary
 # if session to be resumed from a previous one (--resume ARG) and ARG is a directory
 #   just reuse ARG, define environment variables accordingly and skip creating a new
-#   tmp storage
+#    eessi.XXXXXXXXXXX tempdir within TMPDIR
+
+# But before we call mktemp, we need to potentially set or create TMPDIR
+# as location for temporary data use in the following order
+#   a. command line argument -l|--host-storage
+#   b. env var TMPDIR
+#   c. /tmp
+# note, we ensure that (a) takes precedence by setting TMPDIR to STORAGE
+#     if STORAGE is not empty
+# note, (b) & (c) are automatically ensured by using 'mktemp -d --tmpdir' to
+#     create a temporary directory
+if [[ ! -z ${STORAGE} ]]; then
+  export TMPDIR=${STORAGE}
+  # mktemp fails if TMPDIR does not exist, so let's create it
+  mkdir -p ${TMPDIR}
+fi
+if [[ ! -z ${TMPDIR} ]]; then
+  # TODO check if TMPDIR already exists
+  # mktemp fails if TMPDIR does not exist, so let's create it
+  mkdir -p ${TMPDIR}
+fi
+if [[ -z ${TMPDIR} ]]; then
+  # mktemp falls back to using /tmp if TMPDIR is empty
+  # TODO check if /tmp is writable, large enough and usable (different
+  #      features for ro-access and rw-access)
+  [[ ${VERBOSE} -eq 1 ]] && echo "skipping sanity checks for /tmp"
+fi
+
+# Now, set the EESSI_HOST_STORAGE either baed on the resumed directory, or create a new one with mktemp
 if [[ ! -z ${RESUME} && -d ${RESUME} ]]; then
   # resume from directory ${RESUME}
   #   skip creating a new tmp directory, just set environment variables
   echo "Resuming from previous run using temporary storage at ${RESUME}"
   EESSI_HOST_STORAGE=${RESUME}
 else
-  # we need a tmp location (and possibly init it with ${RESUME} if it was not
-  #   a directory
-
-  # as location for temporary data use in the following order
-  #   a. command line argument -l|--host-storage
-  #   b. env var TMPDIR
-  #   c. /tmp
-  # note, we ensure that (a) takes precedence by setting TMPDIR to STORAGE
-  #     if STORAGE is not empty
-  # note, (b) & (c) are automatically ensured by using 'mktemp -d --tmpdir' to
-  #     create a temporary directory
-  if [[ ! -z ${STORAGE} ]]; then
-    export TMPDIR=${STORAGE}
-    # mktemp fails if TMPDIR does not exist, so let's create it
-    mkdir -p ${TMPDIR}
-  fi
-  if [[ ! -z ${TMPDIR} ]]; then
-    # TODO check if TMPDIR already exists
-    # mktemp fails if TMPDIR does not exist, so let's create it
-    mkdir -p ${TMPDIR}
-  fi
-  if [[ -z ${TMPDIR} ]]; then
-    # mktemp falls back to using /tmp if TMPDIR is empty
-    # TODO check if /tmp is writable, large enough and usable (different
-    #      features for ro-access and rw-access)
-    [[ ${VERBOSE} -eq 1 ]] && echo "skipping sanity checks for /tmp"
-  fi
   EESSI_HOST_STORAGE=$(mktemp -d --tmpdir eessi.XXXXXXXXXX)
   echo "Using ${EESSI_HOST_STORAGE} as tmp directory (to resume session add '--resume ${EESSI_HOST_STORAGE}')."
 fi
 
-# if ${RESUME} is a file (assume a tgz), unpack it into ${EESSI_HOST_STORAGE}
+# if ${RESUME} is a file, unpack it into ${EESSI_HOST_STORAGE}
 if [[ ! -z ${RESUME} && -f ${RESUME} ]]; then
-  tar xf ${RESUME} -C ${EESSI_HOST_STORAGE}
+  if [[ "${RESUME}" == *.tgz ]]; then
+    tar xf ${RESUME} -C ${EESSI_HOST_STORAGE}
+  # Add support for resuming from zstd-compressed tarballs
+  elif [[ "${RESUME}" == *.zst && -x "$(command -v zstd)" ]]; then
+    zstd -dc ${RESUME} | tar -xf - -C ${EESSI_HOST_STORAGE}
+  elif [[ "${RESUME}" == *.zst && ! -x "$(command -v zstd)" ]]; then
+    fatal_error "Trying to resume from tarball ${RESUME} which was compressed using zstd, but zstd command not found"
+  fi
   echo "Resuming from previous run using temporary storage ${RESUME} unpacked into ${EESSI_HOST_STORAGE}"
 fi
 
@@ -849,11 +850,6 @@ if [ ! -z ${EESSI_SOFTWARE_SUBDIR_OVERRIDE} ]; then
     export APPTAINERENV_EESSI_SOFTWARE_SUBDIR_OVERRIDE=${EESSI_SOFTWARE_SUBDIR_OVERRIDE}
 fi
 
-# add pass through arguments
-for arg in "${PASS_THROUGH[@]}"; do
-    ADDITIONAL_CONTAINER_OPTIONS+=(${arg})
-done
-
 echo "Launching container with command (next line):"
 echo "singularity ${RUN_QUIET} ${MODE} ${ADDITIONAL_CONTAINER_OPTIONS[@]} ${EESSI_FUSE_MOUNTS[@]} ${CONTAINER} $@"
 singularity ${RUN_QUIET} ${MODE} "${ADDITIONAL_CONTAINER_OPTIONS[@]}" "${EESSI_FUSE_MOUNTS[@]}" ${CONTAINER} "$@"
@@ -865,17 +861,31 @@ if [[ ! -z ${SAVE} ]]; then
   #   ARCH which might have been used internally, eg, when software packages
   #   were built ... we rather keep the script here "stupid" and leave the handling
   #   of these aspects to where the script is used
+
+  # Compression with zlib may be quite slow. On some systems, the pipeline takes ~20 mins for a 2 min build because of this.
+  # Check if zstd is present for faster compression and decompression
   if [[ -d ${SAVE} ]]; then
     # assume SAVE is name of a directory to which tarball shall be written to
     #   name format: tmp_storage-{TIMESTAMP}.tgz
     ts=$(date +%s)
-    TGZ=${SAVE}/tmp_storage-${ts}.tgz
+    if [[ -x "$(command -v zstd)" ]]; then
+      TARBALL=${SAVE}/tmp_storage-${ts}.zst
+      tar -cf - -C ${EESSI_TMPDIR} . | zstd -T0 > ${TARBALL}
+    else
+      TARBALL=${SAVE}/tmp_storage-${ts}.tgz
+      tar czf ${TARBALL} -C ${EESSI_TMPDIR} .
+    fi
   else
     # assume SAVE is the full path to a tarball's name
-    TGZ=${SAVE}
+    TARBALL=${SAVE}
+    # if zstd is present and a .zst extension is asked for, use it
+    if [[ "${SAVE}" == *.zst && -x "$(command -v zstd)" ]]; then
+      tar -cf - -C ${EESSI_TMPDIR} . | zstd -T0 > ${TARBALL}
+    else
+      tar czf ${TARBALL} -C ${EESSI_TMPDIR}
+    fi
   fi
-  tar czf ${TGZ} -C ${EESSI_TMPDIR} .
-  echo "Saved contents of tmp directory '${EESSI_TMPDIR}' to tarball '${TGZ}' (to resume session add '--resume ${TGZ}')"
+  echo "Saved contents of tmp directory '${EESSI_TMPDIR}' to tarball '${TARBALL}' (to resume session add '--resume ${TARBALL}')"
 fi
 
 # TODO clean up tmp by default? only retain if another option provided (--retain-tmp)
