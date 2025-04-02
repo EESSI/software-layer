@@ -404,11 +404,12 @@ fi
 
 # if ${RESUME} is a file, unpack it into ${EESSI_HOST_STORAGE}
 if [[ ! -z ${RESUME} && -f ${RESUME} ]]; then
-  if [[ "${RESUME}" == *.tgz ]];
+  if [[ "${RESUME}" == *.tgz ]]; then
     tar xf ${RESUME} -C ${EESSI_HOST_STORAGE}
-  elif [[ "${RESUME}" == *.zst && -x "$(command -v zstd)" ]];  # Add support for resuming from zstd-compressed tarballs
+  # Add support for resuming from zstd-compressed tarballs
+  elif [[ "${RESUME}" == *.zst && -x "$(command -v zstd)" ]]; then
     zstd -dc ${RESUME} | tar -xf - -C ${EESSI_HOST_STORAGE}
-  elif [[ "${RESUME}" == *.zst && ! -x "$(command -v zstd)" ]];
+  elif [[ "${RESUME}" == *.zst && ! -x "$(command -v zstd)" ]]; then
     fatal_error "Trying to resume from tarball ${RESUME} which was compressed using zstd, but zstd command not found"
   fi
   echo "Resuming from previous run using temporary storage ${RESUME} unpacked into ${EESSI_HOST_STORAGE}"
@@ -867,9 +868,9 @@ if [[ ! -z ${SAVE} ]]; then
     # assume SAVE is name of a directory to which tarball shall be written to
     #   name format: tmp_storage-{TIMESTAMP}.tgz
     ts=$(date +%s)
-    if [[ -x "$(command -v zstd)" ]];
+    if [[ -x "$(command -v zstd)" ]]; then
       TARBALL=${SAVE}/tmp_storage-${ts}.zst
-      tar -cf - -C ${EESSI_TMPDIR} . | zstd > ${TARBALL}
+      tar -cf - -C ${EESSI_TMPDIR} . | zstd -T0 > ${TARBALL}
     else
       TARBALL=${SAVE}/tmp_storage-${ts}.tgz
       tar czf ${TARBALL} -C ${EESSI_TMPDIR} .
@@ -879,7 +880,7 @@ if [[ ! -z ${SAVE} ]]; then
     TARBALL=${SAVE}
     # if zstd is present and a .zst extension is asked for, use it
     if [[ "${SAVE}" == *.zst && -x "$(command -v zstd)" ]]; then
-      tar -cf - -C ${EESSI_TMPDIR} . | zstd > ${TARBALL}
+      tar -cf - -C ${EESSI_TMPDIR} . | zstd -T0 > ${TARBALL}
     else
       tar czf ${TARBALL} -C ${EESSI_TMPDIR}
     fi
