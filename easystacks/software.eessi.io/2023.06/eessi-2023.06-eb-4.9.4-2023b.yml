@@ -45,3 +45,4 @@ easyconfigs:
       options:
         # see https://github.com/easybuilders/easybuild-easyconfigs/pull/22469
         from-commit: fc22841fef99cbb2a221c18029b15e692e78c27c
+  - SAMtools-1.19.2-GCC-13.2.0.eb
