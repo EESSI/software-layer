@@ -70,6 +70,10 @@ easyconfigs:
   - Highway-1.0.4-GCCcore-12.3.0.eb
   - ELPA-2023.05.001-foss-2023a.eb
   - libxc-6.2.2-GCC-12.3.0.eb
+      options:
+        # possible change in gitlabs tarball packaging, affected by .gitattributes
+        # https://github.com/easybuilders/easybuild-easyconfigs/pull/22580
+        from-commit: 456d64bbeacf465e8f7e7ff378864e26352d045d
   - SuperLU_DIST-8.1.2-foss-2023a.eb
   - PETSc-3.20.3-foss-2023a.eb
   - MODFLOW-6.4.4-foss-2023a.eb
