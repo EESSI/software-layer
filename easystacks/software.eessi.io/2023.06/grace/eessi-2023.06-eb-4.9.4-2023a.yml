@@ -69,7 +69,7 @@ easyconfigs:
   - OpenJPEG-2.5.0-GCCcore-12.3.0.eb
   - Highway-1.0.4-GCCcore-12.3.0.eb
   - ELPA-2023.05.001-foss-2023a.eb
-  - libxc-6.2.2-GCC-12.3.0.eb
+  - libxc-6.2.2-GCC-12.3.0.eb:
       options:
         # possible change in gitlabs tarball packaging, affected by .gitattributes
         # https://github.com/easybuilders/easybuild-easyconfigs/pull/22580
