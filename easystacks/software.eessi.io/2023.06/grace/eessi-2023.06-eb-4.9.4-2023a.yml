@@ -57,3 +57,13 @@ easyconfigs:
         from-commit: 0437ff1ad34283398f55d4a6e01e6540b1ae9688
   - snakemake-8.4.2-foss-2023a.eb
   - LAMMPS-2Aug2023_update2-foss-2023a-kokkos.eb
+  - PyTorch-2.1.2-foss-2023a.eb
+  - matplotlib-3.7.2-gfbf-2023a.eb
+  - PyQt5-5.15.10-GCCcore-12.3.0.eb
+  - Pillow-SIMD-9.5.0-GCCcore-12.3.0.eb
+  - dask-2023.9.2-foss-2023a.eb
+  - JupyterNotebook-7.0.2-GCCcore-12.3.0.eb
+  - ImageMagick-7.1.1-15-GCCcore-12.3.0.eb
+  - Z3-4.12.2-GCCcore-12.3.0.eb
+  - PyOpenGL-3.1.7-GCCcore-12.3.0.eb
+  - OpenJPEG-2.5.0-GCCcore-12.3.0.eb
