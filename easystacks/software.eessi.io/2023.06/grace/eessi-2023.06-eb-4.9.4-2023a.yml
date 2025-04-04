@@ -90,3 +90,13 @@ easyconfigs:
   - PostgreSQL-16.1-GCCcore-12.3.0.eb
   - ImageMagick-7.1.1-15-GCCcore-12.3.0.eb
   - GDAL-3.7.1-foss-2023a.eb
+  - ncdu-1.18-GCC-12.3.0.eb
+  - SAMtools-1.18-GCC-12.3.0.eb
+  - R-bundle-Bioconductor-3.18-foss-2023a-R-4.3.2.eb
+  - ipympl-0.9.3-gfbf-2023a.eb
+  - ESPResSo-4.2.2-foss-2023a.eb
+  - GATK-4.5.0.0-GCCcore-12.3.0-Java-17.eb
+  - WhatsHap-2.2-foss-2023a.eb
+  - BLAST+-2.14.1-gompi-2023a.eb
+  - Valgrind-3.21.0-gompi-2023a.eb
+  - OrthoFinder-2.5.5-foss-2023a.eb
