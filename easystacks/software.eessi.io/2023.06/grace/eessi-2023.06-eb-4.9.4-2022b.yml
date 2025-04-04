@@ -18,7 +18,7 @@ easyconfigs:
   - OpenBLAS-0.3.21-GCC-12.2.0.eb:
       options:
         # see https://github.com/easybuilders/easybuild-easyblocks/pull/3492
-        include-easyblocks-from-pr: 3492
+        include-easyblocks-from-commit: 4cef6cea5badad0846be3f536d2af70433ff8c51
 # originally built with EB 4.8.2, PR 19940 was included since EB 4.9.1
 #  - OpenMPI-4.1.4-GCC-12.2.0.eb:
 #      options:
