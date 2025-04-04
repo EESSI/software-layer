@@ -67,3 +67,26 @@ easyconfigs:
   - Z3-4.12.2-GCCcore-12.3.0.eb
   - PyOpenGL-3.1.7-GCCcore-12.3.0.eb
   - OpenJPEG-2.5.0-GCCcore-12.3.0.eb
+  - Highway-1.0.4-GCCcore-12.3.0.eb
+  - ELPA-2023.05.001-foss-2023a.eb
+  - libxc-6.2.2-GCC-12.3.0.eb:
+      options:
+        # possible change in gitlabs tarball packaging, affected by .gitattributes
+        # https://github.com/easybuilders/easybuild-easyconfigs/pull/22580
+        from-commit: 456d64bbeacf465e8f7e7ff378864e26352d045d
+  - ParMETIS-4.0.3-gompi-2023a.eb: 
+      options:
+        # source URLs for ParMETIS-4.0.3 have changed, corresponding PR is
+        # https://github.com/easybuilders/easybuild-easyconfigs/pull/22579
+        # ParMETIS-4.0.3 is a dependency of SuperLU_DIST-8.1.2
+        from-commit: 977e5208a720f23ace41b83b84da8b717d0aeada
+  - SuperLU_DIST-8.1.2-foss-2023a.eb
+  - PETSc-3.20.3-foss-2023a.eb
+  - MODFLOW-6.4.4-foss-2023a.eb
+  - NLopt-2.7.1-GCCcore-12.3.0.eb
+  - nettle-3.9.1-GCCcore-12.3.0.eb
+  - Xvfb-21.1.8-GCCcore-12.3.0.eb
+  - libsndfile-1.2.2-GCCcore-12.3.0.eb
+  - PostgreSQL-16.1-GCCcore-12.3.0.eb
+  - ImageMagick-7.1.1-15-GCCcore-12.3.0.eb
+  - GDAL-3.7.1-foss-2023a.eb

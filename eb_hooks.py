@@ -502,7 +502,7 @@ def pre_prepare_hook_highway_handle_test_compilation_issues(self, *args, **kwarg
         # note: keep condition in sync with the one used in
         # post_prepare_hook_highway_handle_test_compilation_issues
         if self.version in ['1.0.4'] and tcname == 'GCCcore' and tcversion == '12.3.0':
-            if cpu_target in [CPU_TARGET_A64FX, CPU_TARGET_NEOVERSE_V1]:
+            if cpu_target in [CPU_TARGET_A64FX, CPU_TARGET_NEOVERSE_V1, CPU_TARGET_NVIDIA_GRACE]:
                 self.cfg.update('configopts', '-DHWY_ENABLE_TESTS=OFF')
             if cpu_target == CPU_TARGET_NEOVERSE_N1:
                 self.orig_optarch = build_option('optarch')
