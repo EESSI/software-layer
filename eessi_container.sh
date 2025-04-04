@@ -89,6 +89,8 @@ display_help() {
   echo "  -n | --nvidia MODE      - configure the container to work with NVIDIA GPUs,"
   echo "                            MODE==install for a CUDA installation, MODE==run to"
   echo "                            attach a GPU, MODE==all for both [default: false]"
+  echo "  -p | --pass-through ARG - argument to pass through to the launch of the"
+  echo "                            container; can be given multiple times [default: not set]"
   echo "  -r | --repository CFG   - configuration file or identifier defining the"
   echo "                            repository to use; can be given multiple times;"
   echo "                            CFG may include a suffix ',access={ro,rw}' to"
@@ -126,6 +128,7 @@ VERBOSE=0
 STORAGE=
 LIST_REPOS=0
 MODE="shell"
+PASS_THROUGH=()
 SETUP_NVIDIA=0
 REPOSITORIES=()
 RESUME=
@@ -180,6 +183,10 @@ while [[ $# -gt 0 ]]; do
     -n|--nvidia)
       SETUP_NVIDIA=1
       NVIDIA_MODE="$2"
+      shift 2
+      ;;
+    -p|--pass-through)
+      PASS_THROUGH+=("$2")
       shift 2
       ;;
     -r|--repository)
@@ -842,8 +849,10 @@ if [ ! -z ${EESSI_SOFTWARE_SUBDIR_OVERRIDE} ]; then
     export APPTAINERENV_EESSI_SOFTWARE_SUBDIR_OVERRIDE=${EESSI_SOFTWARE_SUBDIR_OVERRIDE}
 fi
 
-# always add --contain option to further isolate container run from host
-ADDITIONAL_CONTAINER_OPTIONS+=("--contain")
+# add pass through arguments
+for arg in "${PASS_THROUGH[@]}"; do
+    ADDITIONAL_CONTAINER_OPTIONS+=(${arg})
+done
 
 echo "Launching container with command (next line):"
 echo "singularity ${RUN_QUIET} ${MODE} ${ADDITIONAL_CONTAINER_OPTIONS[@]} ${EESSI_FUSE_MOUNTS[@]} ${CONTAINER} $@"
