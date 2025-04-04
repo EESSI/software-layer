@@ -271,6 +271,7 @@ fi
 
 # Install NVIDIA drivers in host_injections (if they exist)
 if command_exists "nvidia-smi"; then
+    export LD_LIBRARY_PATH="/.singularity.d/libs:${LD_LIBRARY_PATH}"
     nvidia-smi --version
     ec=$?
     if [ ${ec} -eq 0 ]; then 

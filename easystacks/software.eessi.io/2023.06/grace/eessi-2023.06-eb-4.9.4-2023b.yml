@@ -1,0 +1,224 @@
+easyconfigs:
+# originally built with EB 4.9.0, PR was included since EB 4.9.1
+#  - GCCcore-13.2.0.eb:
+#      options:
+#        from-pr: 19974
+  - GCCcore-13.2.0.eb
+  - GCC-13.2.0.eb
+# originally built with EB 4.9.0, PR was included since EB 4.9.1
+#  - OpenMPI-4.1.6-GCC-13.2.0:
+#      options:
+#        from-pr: 19940
+  - OpenMPI-4.1.6-GCC-13.2.0.eb
+  - foss-2023b.eb
+  - SciPy-bundle-2023.11-gfbf-2023b.eb
+# originally built with EB 4.9.0, PR was included since EB 4.9.1
+#  - netCDF-4.9.2-gompi-2023b.eb:
+#      options:
+#        from-pr: 19534
+  - netCDF-4.9.2-gompi-2023b.eb
+# originally built with EB 4.9.0, PR was included since EB 4.9.1
+#  - matplotlib-3.8.2-gfbf-2023b.eb:
+#      options:
+#        from-pr: 19552
+  - matplotlib-3.8.2-gfbf-2023b.eb
+  - Boost-1.83.0-GCC-13.2.0.eb:
+      options:
+        # source URLs for Boost have changed, corresponding PR is
+        # https://github.com/easybuilders/easybuild-easyconfigs/pull/22157
+        # Boost is a dependency of AOFlagger
+        from-commit: 5bebccf792ccf35a8ee3250bc8fed86dff5d5df9
+  - Boost.Python-1.83.0-GCC-13.2.0.eb:
+      options:
+        # source URLs for Boost.* have changed, corresponding PR is
+        # https://github.com/easybuilders/easybuild-easyconfigs/pull/22240
+        # Boost.Python is a dependency of AOFlagger
+        from-commit: e610fe1ac5393d1de668a466fdaaea74c580ee03
+  - wget-1.21.4-GCCcore-13.2.0.eb:
+      options:
+        # way to define source for wget has changed, corresponding PR is
+        # https://github.com/easybuilders/easybuild-easyconfigs/pull/22091
+        # wget is a dependency of AOFlagger
+        from-commit: 9487eb335902fae6c184f7ee03711fd6c09b1710
+# originally built with EB 4.9.0, PRs were included since EB 4.9.1
+#  - AOFlagger-3.4.0-foss-2023b.eb:
+#      options:
+#        from-pr: 19840
+#        include-easyblocks-from-pr: 3088
+  - AOFlagger-3.4.0-foss-2023b.eb
+# originally built with EB 4.9.0, PRs were included since EB 4.9.1, same as AOFlagger
+  - arpack-ng-3.9.0-foss-2023b.eb
+# originally built with EB 4.9.0, PRs were included since EB 4.9.1, same as AOFlagger
+  - Armadillo-12.8.0-foss-2023b.eb
+# originally built with EB 4.9.0, PRs were included since EB 4.9.1, same as AOFlagger
+  - casacore-3.5.0-foss-2023b.eb
+# originally built with EB 4.9.0, PRs were included since EB 4.9.1, same as AOFlagger
+  - IDG-1.2.0-foss-2023b.eb
+# originally built with EB 4.9.0, PRs were included since EB 4.9.1, same as AOFlagger
+  - EveryBeam-0.5.2-foss-2023b.eb
+# originally built with EB 4.9.0, PRs were included since EB 4.9.1, same as AOFlagger
+  - DP3-6.0-foss-2023b.eb
+# originally built with EB 4.9.0, PRs were included since EB 4.9.1, same as AOFlagger
+  - WSClean-3.4-foss-2023b.eb
+# originally built with EB 4.9.0, PR was included since EB 4.9.1
+#  - CDO-2.2.2-gompi-2023b.eb:
+#      options:
+#        from-pr: 19792
+  - CDO-2.2.2-gompi-2023b.eb
+# originally built with EB 4.9.0, PR was included since EB 4.9.1
+#  - python-casacore-3.5.2-foss-2023b.eb:
+#      options:
+#        from-pr: 20089
+  - python-casacore-3.5.2-foss-2023b.eb
+# originally built with EB 4.9.0, PR was included since EB 4.9.1
+#  - libspatialindex-1.9.3-GCCcore-13.2.0.eb:
+#      options:
+#        from-pr: 19922
+  - libspatialindex-1.9.3-GCCcore-13.2.0.eb
+  - LittleCMS-2.15-GCCcore-13.2.0.eb
+  - giflib-5.2.1-GCCcore-13.2.0.eb
+  - OpenJPEG-2.5.0-GCCcore-13.2.0.eb
+  - libwebp-1.3.2-GCCcore-13.2.0.eb
+  - Wayland-1.22.0-GCCcore-13.2.0.eb
+# originally built with EB 4.9.0, PR was included since EB 4.9.1
+#  - Qt5-5.15.13-GCCcore-13.2.0.eb:
+#      options:
+#        from-pr: 20201
+  - Qt5-5.15.13-GCCcore-13.2.0.eb
+  - OSU-Micro-Benchmarks-7.2-gompi-2023b.eb
+# from here on easyconfigs were originally built with EB 4.9.1
+  - scikit-build-core-0.9.3-GCCcore-13.2.0.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/21671
+        # we need to use from-commit because the PR was merged after EB 4.9.4 was
+        # released
+        from-commit: c38f0637504bcd66e6f7f80277552934e1b03127
+# originally built with EB 4.9.1, PR 20522 was included since EB 4.9.2
+#  - GROMACS-2024.1-foss-2023b.eb:
+#      options:
+#        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/20522
+#        from-commit: a0a467a88506c765a93a96b20d7a8fcb01d46b24
+  - GROMACS-2024.1-foss-2023b.eb
+  - NLTK-3.8.1-foss-2023b.eb
+# originally built with EB 4.9.1, PR 20792 was included since EB 4.9.2
+#  - Valgrind-3.23.0-gompi-2023b.eb:
+#      options:
+#        from-pr: 20792
+  - Valgrind-3.23.0-gompi-2023b.eb
+# from here on easyconfigs were originally built with EB 4.9.2
+  - IPython-8.17.2-GCCcore-13.2.0.eb
+  - dlb-3.4-gompi-2023b.eb
+# originally built with EB 4.9.2, PR 20889 was included since EB 4.9.3
+#  - pystencils-1.3.4-gfbf-2023b.eb:
+#      options:
+#        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/20889
+#        from-commit: c66c4788a17f7e4f55aa23f9fdb782aad97c9ce7
+  - pystencils-1.3.4-gfbf-2023b.eb
+# originally built with EB 4.9.2, PR 21017 was included since EB 4.9.3, PR 3393
+#   was included since EB 4.9.3
+#  - Extrae-4.2.0-gompi-2023b.eb:
+#      options:
+#        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/21017
+#        from-commit: 120f4d56efebd2bc61382db4c84a664a339c66cf
+#        # see https://github.com/easybuilders/easybuild-easyblocks/pull/3393
+#        include-easyblocks-from-commit: c4951c78d62fa5cf8e9f6fe0ead212d2a4d7cb9c
+  - Extrae-4.2.0-gompi-2023b.eb
+  - Boost.MPI-1.83.0-gompi-2023b.eb:
+      options:
+        # source URLs for Boost.* have changed, corresponding PR is
+        # https://github.com/easybuilders/easybuild-easyconfigs/pull/22240
+        # Boost.MPI is a dependency of pyMBE
+        from-commit: e610fe1ac5393d1de668a466fdaaea74c580ee03
+# originally built with EB 4.9.2, PR 21034 was included since EB 4.9.3
+#  - pyMBE-0.8.0-foss-2023b.eb:
+#      options:
+#        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/21034
+#        from-commit: 76e7fc6657bab64bfbec826540a3a8f0040258f2
+  - pyMBE-0.8.0-foss-2023b.eb
+# originally built with EB 4.9.2, PR 21200 was included since EB 4.9.3
+#  - STAR-2.7.11b-GCC-13.2.0.eb:
+#      options:
+#        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/21200
+#        from-commit: 765ba900daf5953e306c4dad896febe52fdd6c00
+  - STAR-2.7.11b-GCC-13.2.0.eb
+  - HPL-2.3-foss-2023b.eb
+# originally built with EB 4.9.2, PR 21366 was included since EB 4.9.3
+#  - R-bundle-CRAN-2024.06-foss-2023b.eb:
+#      options:
+#        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/21366
+#        # we use a commit from the Brunsli PR here to get rid of the Highway dependency
+#        from-commit: 1736a123b1685836452587a5c51793257570bb2d
+  - R-bundle-CRAN-2024.06-foss-2023b.eb
+# from here on easyconfigs were originally built with EB 4.9.3
+  - GROMACS-2024.3-foss-2023b.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/21430
+        from-commit: 8b509882d03402e2998ff9b22c154a6957e36d6b
+# originally built with EB 4.9.3, PR 21436 was merged into develop before EB
+# 4.9.4 was released, but maybe it wasn't included in EB 4.9.4, to be on the safe
+# side we just use the commit, PR 3569 was targetting Sapphire Rapids, so likely
+# that is not needed here, however we keep it to stay in sync with what was used
+# for Sapphire Rapids
+  - LAMMPS-29Aug2024-foss-2023b-kokkos.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/21436
+        from-commit: 9dc24e57880a8adb06ae10557c5315e66671a533
+        # see https://github.com/easybuilders/easybuild-easyblocks/pull/3569
+        include-easyblocks-from-commit: 362b4679193612e04abe336fa041e2a34d183991
+# from here on easyconfigs were originally built with EB 4.9.4
+  - SIONlib-1.7.7-GCCcore-13.2.0-tools.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/21752
+        # NOTE, commit is the last one before the merge commit for PR 21752
+        from-commit: 6b8b53493a1188a5baa56a133574daac239730e7
+  - Score-P-8.4-gompi-2023b.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyblocks/pull/3496
+        # NOTE, commit is the last one before the merge commit for PR 3496
+        include-easyblocks-from-commit: 60633b0acfd41a0732992d9e16800dae71a056eb
+  - Cython-3.0.10-GCCcore-13.2.0.eb
+  - Mustache-1.3.3-foss-2023b.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/21783
+        # NOTE, commit is the last one before the merge commit for PR 21783
+        from-commit: 5fa3db9eb36f91cba3fbf351549f8ba2849abc33
+  - GDRCopy-2.4-GCCcore-13.2.0.eb
+  - GROMACS-2024.4-foss-2023b.eb:
+      options:
+        # https://github.com/easybuilders/easybuild-easyconfigs/pull/21851
+        # NOTE, below commit is the merge commit for PR 21851
+        from-commit: f0fa64b440deaf5fb0a6d26ff1bb3e9f36626c8a
+  - SlurmViewer-1.0.1-GCCcore-13.2.0.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/21899
+        # NOTE, below commit is the merge commit for PR 21899
+        from-commit: 0bdeb23c9ea5a3caefd353ecd936919424c1bba4
+  - wxWidgets-3.2.6-GCC-13.2.0.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/21915
+        # NOTE, below commit is the merge commit for PR 21915
+        from-commit: 58f16c0caf8c5494c68e9eda8cbf19e9145d3cfa
+  - DP3-6.2-foss-2023b.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/21765
+        # NOTE, below commit is the merge commit for PR 21765
+        from-commit: c7e4bfe1a57cf9781ce346ba8ae9081644408c23
+  - WSClean-3.5-foss-2023b.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/21765
+        # NOTE, below commit is the merge commit for PR 21765
+        from-commit: c7e4bfe1a57cf9781ce346ba8ae9081644408c23
+  - EveryBeam-0.6.1-foss-2023b.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/21765
+        # NOTE, below commit is the merge commit for PR 21765
+        from-commit: c7e4bfe1a57cf9781ce346ba8ae9081644408c23
+# a few apps installed in late march/early april 2025
+  - lit-18.1.7-GCCcore-13.2.0.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/20902
+        from-commit: 79f4cf21490f7f5b187af889be5426c1332a497d
+  - astropy-7.0.0-gfbf-2023b.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/22469
+        from-commit: fc22841fef99cbb2a221c18029b15e692e78c27c

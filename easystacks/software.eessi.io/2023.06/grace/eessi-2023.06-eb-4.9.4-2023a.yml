@@ -1,0 +1,92 @@
+easyconfigs:
+  - GCCcore-12.3.0.eb
+  - OpenBLAS-0.3.23-GCC-12.3.0.eb
+  - Rust-1.70.0-GCCcore-12.3.0.eb
+  - OpenMPI-4.1.5-GCC-12.3.0
+  - foss-2023a.eb
+  - pybind11-2.11.1-GCCcore-12.3.0.eb
+  - SciPy-bundle-2023.07-gfbf-2023a.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/21693
+        from-commit: 7c5144d2c1a061cd9f08b5901970b7f6ec5eb5c0  
+  - TensorFlow-2.13.0-foss-2023a.eb
+  - X11-20230603-GCCcore-12.3.0.eb
+  - HarfBuzz-5.3.1-GCCcore-12.3.0.eb
+  - Qt5-5.15.10-GCCcore-12.3.0.eb
+  - OSU-Micro-Benchmarks-7.1-1-gompi-2023a.eb
+  - LHAPDF-6.5.4-GCC-12.3.0.eb
+  - LoopTools-2.15-GCC-12.3.0.eb
+  - R-4.3.2-gfbf-2023a.eb
+  - Boost-1.82.0-GCC-12.3.0.eb:
+      options:
+        # source URLs for Boost have changed, corresponding PR is
+        # https://github.com/easybuilders/easybuild-easyconfigs/pull/22157
+        from-commit: 5bebccf792ccf35a8ee3250bc8fed86dff5d5df9
+  - netCDF-4.9.2-gompi-2023a.eb
+  - FFmpeg-6.0-GCCcore-12.3.0.eb
+  - ALL-0.9.2-foss-2023a.eb
+  - CDO-2.2.2-gompi-2023a.eb
+  - BWA-0.7.17-20220923-GCCcore-12.3.0.eb
+  - METIS-5.1.0-GCCcore-12.3.0.eb
+  - SCOTCH-7.0.3-gompi-2023a.eb
+  - CGAL-5.6-GCCcore-12.3.0.eb
+  - ParaView-5.11.2-foss-2023a.eb
+  - gnuplot-5.4.8-GCCcore-12.3.0.eb
+  - Boost.MPI-1.82.0-gompi-2023a.eb: 
+      options:
+        # source URLs for Boost.MPI have changed, corresponding PR is
+        # https://github.com/easybuilders/easybuild-easyconfigs/pull/22240
+        # Boost.MPI is a dependency of ESPResSo
+        from-commit: e610fe1ac5393d1de668a466fdaaea74c580ee03
+  - ESPResSo-4.2.1-foss-2023a.eb
+  - Rivet-3.1.9-gompi-2023a-HepMC3-3.2.6.eb
+  - Pillow-10.0.0-GCCcore-12.3.0.eb
+  - sympy-1.12-gfbf-2023a.eb
+  - networkx-3.1-gfbf-2023a.eb
+  - expecttest-0.1.5-GCCcore-12.3.0.eb
+  - PyYAML-6.0-GCCcore-12.3.0.eb
+  - pytest-flakefinder-1.1.0-GCCcore-12.3.0.eb
+  - pytest-rerunfailures-12.0-GCCcore-12.3.0.eb
+  - pytest-shard-0.1.2-GCCcore-12.3.0.eb
+  - scikit-learn-1.3.1-gfbf-2023a.eb
+  - MUMPS-5.6.1-foss-2023a-metis.eb:
+      options:
+        # source URLs for MUMPS have changed, corresponding PR is
+        # https://github.com/easybuilders/easybuild-easyconfigs/pull/22582
+        # MUMPS is a dependency of snakemake
+        from-commit: 0437ff1ad34283398f55d4a6e01e6540b1ae9688
+  - snakemake-8.4.2-foss-2023a.eb
+  - LAMMPS-2Aug2023_update2-foss-2023a-kokkos.eb
+  - PyTorch-2.1.2-foss-2023a.eb
+  - matplotlib-3.7.2-gfbf-2023a.eb
+  - PyQt5-5.15.10-GCCcore-12.3.0.eb
+  - Pillow-SIMD-9.5.0-GCCcore-12.3.0.eb
+  - dask-2023.9.2-foss-2023a.eb
+  - JupyterNotebook-7.0.2-GCCcore-12.3.0.eb
+  - ImageMagick-7.1.1-15-GCCcore-12.3.0.eb
+  - Z3-4.12.2-GCCcore-12.3.0.eb
+  - PyOpenGL-3.1.7-GCCcore-12.3.0.eb
+  - OpenJPEG-2.5.0-GCCcore-12.3.0.eb
+  - Highway-1.0.4-GCCcore-12.3.0.eb
+  - ELPA-2023.05.001-foss-2023a.eb
+  - libxc-6.2.2-GCC-12.3.0.eb:
+      options:
+        # possible change in gitlabs tarball packaging, affected by .gitattributes
+        # https://github.com/easybuilders/easybuild-easyconfigs/pull/22580
+        from-commit: 456d64bbeacf465e8f7e7ff378864e26352d045d
+  - ParMETIS-4.0.3-gompi-2023a.eb: 
+      options:
+        # source URLs for ParMETIS-4.0.3 have changed, corresponding PR is
+        # https://github.com/easybuilders/easybuild-easyconfigs/pull/22579
+        # ParMETIS-4.0.3 is a dependency of SuperLU_DIST-8.1.2
+        from-commit: 977e5208a720f23ace41b83b84da8b717d0aeada
+  - SuperLU_DIST-8.1.2-foss-2023a.eb
+  - PETSc-3.20.3-foss-2023a.eb
+  - MODFLOW-6.4.4-foss-2023a.eb
+  - NLopt-2.7.1-GCCcore-12.3.0.eb
+  - nettle-3.9.1-GCCcore-12.3.0.eb
+  - Xvfb-21.1.8-GCCcore-12.3.0.eb
+  - libsndfile-1.2.2-GCCcore-12.3.0.eb
+  - PostgreSQL-16.1-GCCcore-12.3.0.eb
+  - ImageMagick-7.1.1-15-GCCcore-12.3.0.eb
+  - GDAL-3.7.1-foss-2023a.eb
