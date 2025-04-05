@@ -30,5 +30,5 @@ easyconfigs:
 #      options:
 #        from-pr: 19339
   - HarfBuzz-5.3.1-GCCcore-12.2.0.eb
-  - Qt5-5.15.7-GCCcore-12.2.0.eb
-  - QuantumESPRESSO-7.2-foss-2022b.eb
+#  - Qt5-5.15.7-GCCcore-12.2.0.eb
+#  - QuantumESPRESSO-7.2-foss-2022b.eb
