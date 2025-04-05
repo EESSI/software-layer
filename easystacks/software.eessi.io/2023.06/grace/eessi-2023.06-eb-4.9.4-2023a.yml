@@ -100,3 +100,37 @@ easyconfigs:
   - BLAST+-2.14.1-gompi-2023a.eb
   - Valgrind-3.21.0-gompi-2023a.eb
   - OrthoFinder-2.5.5-foss-2023a.eb
+  - OpenFOAM-10-foss-2023a.eb
+  - OpenFOAM-11-foss-2023a.eb
+  - BCFtools-1.18-GCC-12.3.0.eb
+  - BWA-0.7.18-GCCcore-12.3.0.eb
+  - CapnProto-1.0.1-GCCcore-12.3.0.eb
+  - DendroPy-4.6.1-GCCcore-12.3.0.eb
+  - DIAMOND-2.1.8-GCC-12.3.0.eb
+  - FastME-2.1.6.3-GCC-12.3.0.eb
+  - fastp-0.23.4-GCC-12.3.0.eb
+  - HMMER-3.4-gompi-2023a.eb
+  - IQ-TREE-2.3.5-gompi-2023a.eb
+  - KronaTools-2.8.1-GCCcore-12.3.0.eb
+  - LSD2-2.4.1-GCCcore-12.3.0.eb
+  - MAFFT-7.520-GCC-12.3.0-with-extensions.eb
+  - ncbi-vdb-3.0.10-gompi-2023a.eb
+  - MetalWalls-21.06.1-foss-2023a.eb
+  - QuantumESPRESSO-7.3.1-foss-2023a.eb
+  - CP2K-2023.1-foss-2023a.eb
+  - amdahl-0.3.1-gompi-2023a.eb
+  - LLVM-14.0.6-GCCcore-12.3.0-llvmlite.eb
+  - numba-0.58.1-foss-2023a.eb
+  - librosa-0.10.1-foss-2023a.eb
+  - xarray-2023.9.0-gfbf-2023a.eb
+  - SciTools-Iris-3.9.0-foss-2023a.eb
+  - OpenFOAM-v2312-foss-2023a.eb
+  - BioPerl-1.7.8-GCCcore-12.3.0.eb
+  - grpcio-1.57.0-GCCcore-12.3.0.eb
+  - orjson-3.9.15-GCCcore-12.3.0.eb
+  - wradlib-2.0.3-foss-2023a.eb
+  - MBX-1.1.0-foss-2023a.eb
+  - Transrate-1.0.3-GCC-12.3.0.eb
+  - Critic2-1.2-foss-2023a.eb
+  - LRBinner-0.1-foss-2023a.eb
+  - Redland-1.0.17-GCC-12.3.0.eb
