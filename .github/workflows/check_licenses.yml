@@ -5,8 +5,9 @@ on:
     branches: [ "*-software.eessi.io" ]
   pull_request:
     branches:  [ "*-software.eessi.io" ]
+    types: [opened, synchronized]
 permissions:
-  contents: write # set permissions for writing 
+  contents: read # we dont need to write
 
 jobs:
   license_update:
@@ -14,46 +15,18 @@ jobs:
 
     steps:
       - name: Checkout out software-layer repository
-        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 
+        uses: actions/checkout@v4
+        with: 
+          fetch-depth: 0
 
       - name: Set up Python
         uses: actions/setup-python@0a5c61591373683505ea898e09a3ea4f39ef2b9c
         with:
           python-version: '3.9' 
 
-      - name: Run license script and generate patch
-        id: check_licenses
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Check if an EasyStack has been modified 
+        id: diff
         run: |
-          python update_licenses.py --source=pypi TensorFlow
-          python update_licenses.py --source=github:easybuilders/easybuild EasyBuild
-          if [ -f license_update.patch ] && [ -s license_update.patch ]; then
-            PATCH_CONTENT=$(cat license_update.patch)
-            echo "patch=$PATCH_CONTENT" >> $GITHUB_OUTPUT
-          fi 
-
-      - name: Create a PR (if changes detected)
-        id: create_pull_request
-        uses: peter-evans/create-pull-request@5e914681df9dc83aa4e4905692ca88beb2f9e91f # v7.0.5
-        if: steps.check_licenses.outputs.patch != ''
-        with: 
-          commit-message: "Auto PR: Update licenses"
-          title: "Auto PR: Update licenses"
-          body: ${{ steps.check_licenses.outputs.patch }}
-          branch: update-licenses-${{ github.run_number }}
-          base: [ "*-software.eessi.io" ]
-
-      - name: Apply patch (if no PR created)
-        if: steps.create_pull_request.outputs.number == '' && steps.check_licenses.outputs.patch != ''        
-        run: |
-          if [ -f license_update.patch ] && [ -s license_update.patch ]; then
-            git apply license_update.patch
-          else
-            echo "No changes to apply"
-          fi
-          git add licenses.json
-          git diff --cached --exit-code || git commit -m "Update licenses.json"
-          git push
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          git fetch origin ${{ github.base_ref }}
+          echo "🔍 Files changed between PR and base branch:"
+          git diff --name-only origin/${{ github.base_ref }} HEAD | grep ".yml" 
