@@ -24,6 +24,7 @@ jobs:
         COMPARISON_ARCH:
         - aarch64/neoverse_n1
         - aarch64/neoverse_v1
+        - aarch64/nvidia/grace
         - x86_64/amd/zen2
         - x86_64/amd/zen3
         - x86_64/amd/zen4
