@@ -1,0 +1,5 @@
+easyconfigs:
+# from here on built originally with EB 4.8.2
+# need to keep building Qt5 with 4.8.2 because more recent versions include an
+# updated easyblock for python which doesn't work correctly for Python-2.7.18
+  - Qt5-5.15.7-GCCcore-12.2.0.eb

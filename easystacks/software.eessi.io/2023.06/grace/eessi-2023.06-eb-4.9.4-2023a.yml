@@ -92,7 +92,11 @@ easyconfigs:
   - GDAL-3.7.1-foss-2023a.eb
   - ncdu-1.18-GCC-12.3.0.eb
   - SAMtools-1.18-GCC-12.3.0.eb
-  - R-bundle-Bioconductor-3.18-foss-2023a-R-4.3.2.eb
+  - R-bundle-Bioconductor-3.18-foss-2023a-R-4.3.2.eb:
+      options:
+        # (additional extensions have been added)
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/21948
+        from-commit: f9cfe6ac7d9019970c2be3e8b09db4d846cf005a
   - ipympl-0.9.3-gfbf-2023a.eb
   - ESPResSo-4.2.2-foss-2023a.eb
   - GATK-4.5.0.0-GCCcore-12.3.0-Java-17.eb
