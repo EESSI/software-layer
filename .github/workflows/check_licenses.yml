@@ -1,0 +1,32 @@
+name: Check and update licenses
+
+on:
+  push:
+    branches: [ "*-software.eessi.io" ]
+  pull_request:
+    branches:  [ "*-software.eessi.io" ]
+    types: [opened, synchronized]
+permissions:
+  contents: read # we dont need to write
+
+jobs:
+  license_update:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout out software-layer repository
+        uses: actions/checkout@v4
+        with: 
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@0a5c61591373683505ea898e09a3ea4f39ef2b9c
+        with:
+          python-version: '3.9' 
+
+      - name: Check if an EasyStack has been modified 
+        id: diff
+        run: |
+          git fetch origin ${{ github.base_ref }}
+          echo "🔍 Files changed between PR and base branch:"
+          git diff --name-only origin/${{ github.base_ref }} HEAD | grep ".yml" 
