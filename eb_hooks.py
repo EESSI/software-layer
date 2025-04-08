@@ -802,12 +802,60 @@ def pre_test_hook_ignore_failing_tests_SciPybundle(self, *args, **kwargs):
         FAILED scipy/optimize/tests/test_linprog.py::TestLinprogIPSparse::test_bug_6139
         FAILED scipy/optimize/tests/test_linprog.py::TestLinprogIPSparsePresolve::test_bug_6139
         = 2 failed, 54876 passed, 3021 skipped, 223 xfailed, 13 xpassed in 581.85s (0:09:41) =
+    In version 2023.02 on grace, 46 failing tests in scipy (versions 1.10.1):
+        FAILED ../../linalg/tests/test_basic.py::TestOverwrite::test_pinv - RuntimeWa...
+        FAILED ../../linalg/tests/test_basic.py::TestOverwrite::test_pinvh - RuntimeW...
+        FAILED ../../linalg/tests/test_matfuncs.py::TestExpM::test_2x2_input - Runtim...
+        FAILED ../../optimize/tests/test_linprog.py::TestLinprogIPSparse::test_bug_6139
+        FAILED ../../optimize/tests/test_linprog.py::TestLinprogIPSparsePresolve::test_bug_6139
+        FAILED ../../optimize/tests/test_zeros.py::test_gh_9608_preserve_array_shape
+        FAILED ../../sparse/csgraph/tests/test_graph_laplacian.py::test_asymmetric_laplacian[True-True-True-coo_matrix-float32]
+        FAILED ../../sparse/csgraph/tests/test_graph_laplacian.py::test_asymmetric_laplacian[True-True-False-array-float32]
+        FAILED ../../sparse/csgraph/tests/test_graph_laplacian.py::test_asymmetric_laplacian[True-True-False-csr_matrix-float32]
+        FAILED ../../sparse/csgraph/tests/test_graph_laplacian.py::test_asymmetric_laplacian[True-True-False-coo_matrix-float32]
+        FAILED ../../sparse/csgraph/tests/test_graph_laplacian.py::test_asymmetric_laplacian[False-True-True-array-float32]
+        FAILED ../../sparse/csgraph/tests/test_graph_laplacian.py::test_asymmetric_laplacian[False-True-True-csr_matrix-float32]
+        FAILED ../../sparse/csgraph/tests/test_graph_laplacian.py::test_asymmetric_laplacian[False-True-True-coo_matrix-float32]
+        FAILED ../../sparse/csgraph/tests/test_graph_laplacian.py::test_asymmetric_laplacian[True-True-True-array-float32]
+        FAILED ../../sparse/csgraph/tests/test_graph_laplacian.py::test_format[function-True-False-True-float32-asarray]
+        FAILED ../../sparse/csgraph/tests/test_graph_laplacian.py::test_asymmetric_laplacian[False-True-False-array-float32]
+        FAILED ../../sparse/csgraph/tests/test_graph_laplacian.py::test_asymmetric_laplacian[True-True-True-csr_matrix-float32]
+        FAILED ../../sparse/csgraph/tests/test_graph_laplacian.py::test_format[function-True-False-True-float32-csr_matrix]
+        FAILED ../../sparse/csgraph/tests/test_graph_laplacian.py::test_format[function-True-True-True-float32-asarray]
+        FAILED ../../sparse/csgraph/tests/test_graph_laplacian.py::test_format[function-True-True-True-float32-csr_matrix]
+        FAILED ../../sparse/csgraph/tests/test_graph_laplacian.py::test_format[function-True-False-True-float32-coo_matrix]
+        FAILED ../../sparse/csgraph/tests/test_graph_laplacian.py::test_asymmetric_laplacian[False-True-False-csr_matrix-float32]
+        FAILED ../../sparse/csgraph/tests/test_graph_laplacian.py::test_format[function-True-True-True-float32-coo_matrix]
+        FAILED ../../sparse/csgraph/tests/test_graph_laplacian.py::test_format[lo-True-False-True-float32-asarray]
+        FAILED ../../sparse/csgraph/tests/test_graph_laplacian.py::test_format[function-False-False-True-float32-asarray]
+        FAILED ../../sparse/csgraph/tests/test_graph_laplacian.py::test_format[function-False-False-True-float32-csr_matrix]
+        FAILED ../../sparse/csgraph/tests/test_graph_laplacian.py::test_format[function-False-False-True-float32-coo_matrix]
+        FAILED ../../sparse/csgraph/tests/test_graph_laplacian.py::test_asymmetric_laplacian[False-True-False-coo_matrix-float32]
+        FAILED ../../sparse/csgraph/tests/test_graph_laplacian.py::test_format[lo-True-False-True-float32-csr_matrix]
+        FAILED ../../sparse/csgraph/tests/test_graph_laplacian.py::test_format[lo-True-False-True-float32-coo_matrix]
+        FAILED ../../sparse/linalg/_eigen/lobpcg/tests/test_lobpcg.py::test_tolerance_float32
+        FAILED ../../sparse/csgraph/tests/test_graph_laplacian.py::test_format[lo-True-True-True-float32-asarray]
+        FAILED ../../sparse/csgraph/tests/test_graph_laplacian.py::test_format[lo-False-False-True-float32-asarray]
+        FAILED ../../sparse/csgraph/tests/test_graph_laplacian.py::test_format[lo-False-False-True-float32-csr_matrix]
+        FAILED ../../sparse/csgraph/tests/test_graph_laplacian.py::test_format[lo-False-False-True-float32-coo_matrix]
+        FAILED ../../sparse/csgraph/tests/test_graph_laplacian.py::test_format[lo-True-True-True-float32-csr_matrix]
+        FAILED ../../sparse/csgraph/tests/test_graph_laplacian.py::test_format[lo-True-True-True-float32-coo_matrix]
+        FAILED ../../sparse/linalg/_eigen/lobpcg/tests/test_lobpcg.py::test_random_initial_float32
+        FAILED ../../sparse/csgraph/tests/test_graph_laplacian.py::test_format[function-False-True-True-float32-asarray]
+        FAILED ../../sparse/csgraph/tests/test_graph_laplacian.py::test_format[function-False-True-True-float32-csr_matrix]
+        FAILED ../../sparse/csgraph/tests/test_graph_laplacian.py::test_format[function-False-True-True-float32-coo_matrix]
+        FAILED ../../sparse/csgraph/tests/test_graph_laplacian.py::test_format[lo-False-True-True-float32-asarray]
+        FAILED ../../sparse/csgraph/tests/test_graph_laplacian.py::test_format[lo-False-True-True-float32-csr_matrix]
+        FAILED ../../sparse/csgraph/tests/test_graph_laplacian.py::test_format[lo-False-True-True-float32-coo_matrix]
+        FAILED ../../sparse/linalg/_isolve/tests/test_iterative.py::test_precond_dummy
+        FAILED ../../sparse/linalg/_eigen/arpack/tests/test_arpack.py::test_symmetric_modes
+        = 46 failed, 49971 passed, 2471 skipped, 231 xfailed, 11 xpassed in 65.91s (0:01:05) =
     (in previous versions we were not as strict yet on the numpy/SciPy tests)
     """
     cpu_target = get_eessi_envvar('EESSI_SOFTWARE_SUBDIR')
     scipy_bundle_versions_nv1 = ('2021.10', '2023.02', '2023.07', '2023.11')
     scipy_bundle_versions_a64fx = ('2023.07', '2023.11')
-    scipy_bundle_versions_nvidia_grace = ('2023.07', '2023.11')
+    scipy_bundle_versions_nvidia_grace = ('2023.02', '2023.07', '2023.11')
     if self.name == 'SciPy-bundle':
         if cpu_target == CPU_TARGET_NEOVERSE_V1 and self.version in scipy_bundle_versions_nv1:
             self.cfg['testopts'] = "|| echo ignoring failing tests"
