@@ -749,10 +749,17 @@ def pre_test_hook_exclude_failing_test_Highway(self, *args, **kwargs):
     """
     Pre-test hook for Highway: exclude failing TestAllShiftRightLanes/SVE_256 test on neoverse_v1
     cfr. https://github.com/EESSI/software-layer/issues/469
+    and exclude failing tests
+      HwyReductionTestGroup/HwyReductionTest.TestAllSumOfLanes/SVE2_128
+      HwyReductionTestGroup/HwyReductionTest.TestAllSumOfLanes/SVE2
+      HwyReductionTestGroup/HwyReductionTest.TestAllSumOfLanes/SVE
+    on nvidia/grace
     """
     cpu_target = get_eessi_envvar('EESSI_SOFTWARE_SUBDIR')
     if self.name == 'Highway' and self.version in ['1.0.3'] and cpu_target == CPU_TARGET_NEOVERSE_V1:
         self.cfg['runtest'] += ' ARGS="-E TestAllShiftRightLanes/SVE_256"'
+    if self.name == 'Highway' and self.version in ['1.0.3'] and cpu_target == CPU_TARGET_NVIDIA_GRACE:
+        self.cfg['runtest'] += ' ARGS="-E TestAllSumOfLanes"'
 
 
 def pre_test_hook_ignore_failing_tests_ESPResSo(self, *args, **kwargs):
