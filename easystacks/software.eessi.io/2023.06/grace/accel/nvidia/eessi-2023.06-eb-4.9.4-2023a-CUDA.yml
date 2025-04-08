@@ -17,3 +17,4 @@ easyconfigs:
       options:
         # see https://github.com/easybuilders/easybuild-easyconfigs/pull/21699
         from-commit: e3407bd127d248c08960f6b09c973da0fdecc2c3
+  - NCCL-2.18.3-GCCcore-12.3.0-CUDA-12.1.1.eb 
