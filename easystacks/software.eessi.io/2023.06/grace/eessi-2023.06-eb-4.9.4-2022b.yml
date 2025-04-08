@@ -1,0 +1,39 @@
+easyconfigs:
+# from here on built originally with EB 4.8.2
+# make sure Python-3.10.8-GCCcore-12.2.0-bare.eb is built from correct PR/commit
+# commit 1ee17c0f7726c69e97442f53c65c5f041d65c94f from
+# https://github.com/easybuilders/easybuild-easyblocks/pull/3352 was included
+# since EB 4.9.3 --> no special treating needed
+# same applies to Python-3.10.8-GCCcore-12.2.0
+#
+# originally built with EB 4.8.2, PR 19159 was included since EB 4.9.0, PR 3492
+# was included in EB 5.0.0 -> need to keep commit for easyblock
+#  - OpenBLAS-0.3.21-GCC-12.2.0.eb:
+#      options:
+#        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/19159
+#        # required for Sapphire Rapids support
+#        from-pr: 19159
+#        # see https://github.com/easybuilders/easybuild-easyblocks/pull/3492
+#        include-easyblocks-from-pr: 3492
+  - OpenBLAS-0.3.21-GCC-12.2.0.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyblocks/pull/3492
+        include-easyblocks-from-commit: 4cef6cea5badad0846be3f536d2af70433ff8c51
+# originally built with EB 4.8.2, PR 19940 was included since EB 4.9.1
+#  - OpenMPI-4.1.4-GCC-12.2.0.eb:
+#      options:
+#        from-pr: 19940
+  - OpenMPI-4.1.4-GCC-12.2.0.eb
+  - foss-2022b.eb
+# originally built with EB 4.8.2, PR 19339 was included since EB 4.9.0
+#  - HarfBuzz-5.3.1-GCCcore-12.2.0.eb:
+#      options:
+#        from-pr: 19339
+  - HarfBuzz-5.3.1-GCCcore-12.2.0.eb
+# moved Qt5 to easystack file used with EB 4.8.2 because it needs an older
+# version of the python easyblock
+#  - Qt5-5.15.7-GCCcore-12.2.0.eb
+# we try to build QE with EB 4.8.2 too, that worked; building with updated
+# easyconfigs (via EB 4.9.4) didn't work, and wasn't done for any of the other
+# supported CPU microarchitectures. Hence, we build QE with 4.8.2
+#  - QuantumESPRESSO-7.2-foss-2022b.eb

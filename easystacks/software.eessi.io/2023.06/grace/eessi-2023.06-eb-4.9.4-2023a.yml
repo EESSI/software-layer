@@ -90,3 +90,110 @@ easyconfigs:
   - PostgreSQL-16.1-GCCcore-12.3.0.eb
   - ImageMagick-7.1.1-15-GCCcore-12.3.0.eb
   - GDAL-3.7.1-foss-2023a.eb
+  - ncdu-1.18-GCC-12.3.0.eb
+  - SAMtools-1.18-GCC-12.3.0.eb
+  - R-bundle-Bioconductor-3.18-foss-2023a-R-4.3.2.eb:
+      options:
+        # (additional extensions have been added)
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/21948
+        from-commit: f9cfe6ac7d9019970c2be3e8b09db4d846cf005a
+  - ipympl-0.9.3-gfbf-2023a.eb
+  - ESPResSo-4.2.2-foss-2023a.eb
+  - GATK-4.5.0.0-GCCcore-12.3.0-Java-17.eb
+  - WhatsHap-2.2-foss-2023a.eb
+  - BLAST+-2.14.1-gompi-2023a.eb
+  - Valgrind-3.21.0-gompi-2023a.eb
+  - OrthoFinder-2.5.5-foss-2023a.eb
+  - OpenFOAM-10-foss-2023a.eb
+  - OpenFOAM-11-foss-2023a.eb
+  - BCFtools-1.18-GCC-12.3.0.eb
+  - BWA-0.7.18-GCCcore-12.3.0.eb
+  - CapnProto-1.0.1-GCCcore-12.3.0.eb
+  - DendroPy-4.6.1-GCCcore-12.3.0.eb
+  - DIAMOND-2.1.8-GCC-12.3.0.eb
+  - FastME-2.1.6.3-GCC-12.3.0.eb
+  - fastp-0.23.4-GCC-12.3.0.eb
+  - HMMER-3.4-gompi-2023a.eb
+  - IQ-TREE-2.3.5-gompi-2023a.eb
+  - KronaTools-2.8.1-GCCcore-12.3.0.eb
+  - LSD2-2.4.1-GCCcore-12.3.0.eb
+  - MAFFT-7.520-GCC-12.3.0-with-extensions.eb
+  - ncbi-vdb-3.0.10-gompi-2023a.eb
+  - MetalWalls-21.06.1-foss-2023a.eb
+  - QuantumESPRESSO-7.3.1-foss-2023a.eb
+  - CP2K-2023.1-foss-2023a.eb
+  - amdahl-0.3.1-gompi-2023a.eb
+  - LLVM-14.0.6-GCCcore-12.3.0-llvmlite.eb
+  - numba-0.58.1-foss-2023a.eb
+  - librosa-0.10.1-foss-2023a.eb
+  - xarray-2023.9.0-gfbf-2023a.eb
+  - SciTools-Iris-3.9.0-foss-2023a.eb
+  - OpenFOAM-v2312-foss-2023a.eb
+  - BioPerl-1.7.8-GCCcore-12.3.0.eb
+  - grpcio-1.57.0-GCCcore-12.3.0.eb
+  - orjson-3.9.15-GCCcore-12.3.0.eb
+  - wradlib-2.0.3-foss-2023a.eb
+  - MBX-1.1.0-foss-2023a.eb
+  - Transrate-1.0.3-GCC-12.3.0.eb
+  - Critic2-1.2-foss-2023a.eb
+  - LRBinner-0.1-foss-2023a.eb
+  - Redland-1.0.17-GCC-12.3.0.eb
+  - ccache-4.9-GCCcore-12.3.0.eb
+  - GDB-13.2-GCCcore-12.3.0.eb
+  - tmux-3.3a-GCCcore-12.3.0.eb
+  - Vim-9.1.0004-GCCcore-12.3.0.eb
+  - gmsh-4.12.2-foss-2023a.eb
+  - basemap-1.3.9-foss-2023a.eb
+  - geopandas-0.14.2-foss-2023a.eb
+  - R-bundle-CRAN-2023.12-foss-2023a.eb
+  - archspec-0.2.1-GCCcore-12.3.0.eb
+  - ROOT-6.30.06-foss-2023a.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/21526
+        from-commit: 6cbfbd7d7a55dc7243f46d0beea510278f4718df
+        # see https://github.com/easybuilders/easybuild-easyblocks/pull/3467
+        include-easyblocks-from-commit: c3aebe1f133d064a228c5d6c282e898b83d74601
+  - waLBerla-6.1-foss-2023a.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/21600
+        from-commit: 9b12318bcff1749781d9eb71c23e21bc3a79ed01
+  - mpl-ascii-0.10.0-gfbf-2023a.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/21679
+        from-commit: 7106f63160b1418d605882dd02ba151d099300bd
+  - jedi-0.19.0-GCCcore-12.3.0.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/21650
+        from-commit: 109998f6adcda7efb4174b1e5f73b41ee82d1f13
+  - Solids4foam-2.1-foss-2023a.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/21606
+        from-commit: 63562c58acf1be64407192b6862c3bd80253d2e0
+  - Cassiopeia-2.0.0-foss-2023a.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/21657
+        from-commit: 7f1f0e60487e7e1fcb5c4e6bc4fbc4f89994e3fd
+  - LightGBM-4.5.0-foss-2023a.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/21699
+        from-commit: e3407bd127d248c08960f6b09c973da0fdecc2c3
+  - OpenFOAM-v2406-foss-2023a.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyblocks/pull/3519
+        include-easyblocks-from-commit: e4a3ff1932350d575dffc7597435609fad6dd691
+  - Paraver-4.11.4-GCC-12.3.0.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/20230
+        from-commit: 91c8df6b4c0810061e9f325427c9c79e961bc4b0
+  - Tombo-1.5.1-foss-2023a.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/21925
+        from-commit: 522ca010ab11949ab9594037f72b975cf1cd0d33
+  - elfx86exts-0.6.2-GCC-12.3.0.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/22145
+        from-commit: 31478e5c9869de3add74d0a02dd5df01ea65b21e
+  - archspec-0.2.5-GCCcore-12.3.0.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/22235
+        from-commit: 01dd97ea62fe4d7d0df040ede3af03eb2f1b8641
