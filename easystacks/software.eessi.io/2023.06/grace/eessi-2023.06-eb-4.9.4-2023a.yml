@@ -197,3 +197,4 @@ easyconfigs:
       options:
         # see https://github.com/easybuilders/easybuild-easyconfigs/pull/22235
         from-commit: 01dd97ea62fe4d7d0df040ede3af03eb2f1b8641
+  - GDRCopy-2.3.1-GCCcore-12.3.0.eb 
