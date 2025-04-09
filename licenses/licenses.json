@@ -899,7 +899,6 @@
         "Permission to redistribute": true,
         "Retrieved from": "https://petsc.org/release/"
     },
-// doesn't specify license, need permission to redistribute
     "PGPLOT/5.2.2-GCCcore-13.2.0": {
         "License": "Not-Public domain",
         "Permission to redistribute": false,
@@ -965,7 +964,6 @@
         "Permission to redistribute": true,
         "Retrieved from": "https://github.com/uploadcare/pillow-simd"
     },
-// doesn't specify license
     "Pint/0.24-GCCcore-13.2.0": {
         "License": "Other",
         "Permission to redistribute": true,
