@@ -334,9 +334,8 @@
         "Permission to redistribute": true,
         "Retrieved from": "https://repos.ecosyste.ms/api/v1/hosts/GitHub/repositories/pallets%2Fflask"
     },
-# https://spdx.org/licenses/BSD-3-Clause-Open-MPI.html
     "FlexiBLAS/3.3.1-GCC-13.2.0": {
-        "License": "bsd-3-clause-open-mpi",
+        "License": "bsd-3-clause-open-mpi", 
         "Permission to redistribute": true,
         "Retrieved from": "https://repos.ecosyste.ms/api/v1/hosts/gitlab.mpi-magdeburg.mpg.de/repositories/software%2Fflexiblas-release"
     },
@@ -550,7 +549,6 @@
         "Permission to redistribute": true,
         "Retrieved from": "http://itstool.org/"
     },
-# needs proper attribution
     "ImageMagick/7.1.1-34-GCCcore-13.2.0": {
         "License": "ImageMagick",
         "Permission to redistribute": true,
@@ -581,7 +579,6 @@
         "Permission to redistribute": true,
         "Retrieved from": "http://judy.sourceforge.net/"
     },
-# true with copyright notice
     "JupyterLab/4.0.5-GCCcore-12.3.0": {
         "License": "BSD-3-Clause",
         "Permission to redistribute": true,
@@ -597,7 +594,6 @@
         "Permission to redistribute": true,
         "Retrieved from": "https://repos.ecosyste.ms/api/v1/hosts/GitHub/repositories/KaHIP%2FKaMinPar"
     },
-# true with copyright disclaimer
     "KronaTools/2.8.1-GCCcore-12.3.0": {
         "License": "BSD-3-Clause",
         "Permission to redistribute": true,
@@ -628,7 +624,6 @@
         "Permission to redistribute": true,
         "Retrieved from": "https://llvm.org/"
     },
-# true with copyright disclaimer
     "LMDB/0.9.31-GCCcore-12.3.0": {
         "License": "OpenLDAP Public Licese",
         "Permission to redistribute": true,
@@ -904,7 +899,7 @@
         "Permission to redistribute": true,
         "Retrieved from": "https://petsc.org/release/"
     },
-# doesn't specify license, need permission to redistribute
+// doesn't specify license, need permission to redistribute
     "PGPLOT/5.2.2-GCCcore-13.2.0": {
         "License": "Not-Public domain",
         "Permission to redistribute": false,
@@ -970,7 +965,7 @@
         "Permission to redistribute": true,
         "Retrieved from": "https://github.com/uploadcare/pillow-simd"
     },
-# doesn't specify license
+// doesn't specify license
     "Pint/0.24-GCCcore-13.2.0": {
         "License": "Other",
         "Permission to redistribute": true,
