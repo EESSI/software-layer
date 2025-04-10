@@ -5,7 +5,7 @@ on:
     branches: [ "*-software.eessi.io" ]
   pull_request:
     branches:  [ "*-software.eessi.io" ]
-    types: [opened, synchronized]
+      #    types: [opened, synchronized]
 permissions:
   contents: read # we dont need to write
 
