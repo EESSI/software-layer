@@ -33,4 +33,7 @@ easyconfigs:
 # moved Qt5 to easystack file used with EB 4.8.2 because it needs an older
 # version of the python easyblock
 #  - Qt5-5.15.7-GCCcore-12.2.0.eb
+# we try to build QE with EB 4.8.2 too, that worked; building with updated
+# easyconfigs (via EB 4.9.4) didn't work, and wasn't done for any of the other
+# supported CPU microarchitectures. Hence, we build QE with 4.8.2
 #  - QuantumESPRESSO-7.2-foss-2022b.eb
