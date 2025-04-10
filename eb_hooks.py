@@ -791,8 +791,9 @@ def post_build_hook_add_shlib_dependency_in_libtorch_cuda_PyTorch(self, *args, *
         with_cuda = 'CUDA' in self.cfg.dependency_names()
         if self.version in ['2.1.2'] and with_cuda:
             for dep in _add_dependencies:
-                # self.builddir/pytorch-v2.1.2/build/lib.linux-x86_64-cpython-311/torch/lib/libtorch_cuda.so
-                relative_library_path = 'pytorch-v2.1.2/build/lib.linux-x86_64-cpython-311/torch/lib'
+                eessi_cpu_family = os.getenv('EESSI_CPU_FAMILY')
+                # self.builddir/pytorch-v2.1.2/build/lib.linux-(eessi_cpu_family)-cpython-311/torch/lib/libtorch_cuda.so
+                relative_library_path = "pytorch-v2.1.2/build/lib.linux-%s-cpython-311/torch/lib" % eessi_cpu_family
                 libtorch_cuda_path = os.path.join(self.builddir, relative_library_path, 'libtorch_cuda.so')
                 print_msg("patching libtorch_cuda.so in directory '%s'", os.path.join(self.builddir, relative_library_path))
                 patch_command = "patchelf --add-needed %s %s" % (dep, libtorch_cuda_path)
