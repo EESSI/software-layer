@@ -1,6 +1,6 @@
 # 2025.04.10
-# Siesta-5.2.2-foss-2023a.eb easyconfig changed upstream to only use eb-sourced compilation options
-# see 
+# Siesta-5.2.2-foss-2023a.eb easyconfig changed upstream to only use
+# eb-sourced compilation options
 easyconfigs:
   - Siesta-5.2.2-foss-2023a.eb:
       options:
