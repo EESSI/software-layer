@@ -1,6 +1,5 @@
 easyconfigs:
   - Siesta-5.2.2-foss-2023a.eb:
       options:
-        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/22292
-        # and https://github.com/easybuilders/easybuild-easyconfigs/pull/22646
-        from-commit: b212c00fdc3983678037429719f1b210cb978b42
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/22731
+        from-commit: b5e36fe564794234cf2d79621ad2d61c3980e5a7
