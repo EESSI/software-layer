@@ -209,13 +209,13 @@ local function eessi_scipy_2022b_test_failures_message(t)
     -- test failures and recommend using other versions available via EESSI.
     -- A message and not a warning as the exit code would break CI runs otherwise.
         local simpleName = string.match(t.modFullName, "(.-)/")
-        local advice = 'The module ' .. t.modFullName .. ' will be loaded. However, note that\n'
-        advice = advice .. 'during its building for the CPU microarchitecture ' .. graceArch .. ' from a\n'
-        advice = advice .. 'total of 52.730 unit tests a larger number (46) than usually (2-4) failed. If\n'
-        advice = advice .. 'you encounter issues while using ' .. t.modFullName .. ', please,\n'
-        advice = advice .. 'consider using one of the other versions of ' .. simpleName .. ' that are also provided\n'
-        advice = advice .. 'for the same CPU microarchitecture.\n'
-        LmodMessage("\n", advice)
+        local advice = 'The module ' .. t.modFullName .. ' will be loaded. However, note that\\n'
+        advice = advice .. 'during its building for the CPU microarchitecture ' .. graceArch .. ' from a\\n'
+        advice = advice .. 'total of 52.730 unit tests a larger number (46) than usually (2-4) failed. If\\n'
+        advice = advice .. 'you encounter issues while using ' .. t.modFullName .. ', please,\\n'
+        advice = advice .. 'consider using one of the other versions of ' .. simpleName .. ' that are also provided\\n'
+        advice = advice .. 'for the same CPU microarchitecture.\\n'
+        LmodMessage("\\n", advice)
     end
 end
 
