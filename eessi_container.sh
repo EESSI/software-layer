@@ -735,8 +735,12 @@ fi
 
 declare -a EESSI_FUSE_MOUNTS=()
 
-# always mount cvmfs-config repo (to get access to EESSI repositories such as software.eessi.io)
-EESSI_FUSE_MOUNTS+=("--fusemount" "container:cvmfs2 cvmfs-config.cern.ch /cvmfs/cvmfs-config.cern.ch")
+# mount cvmfs-config repo (to get access to EESSI repositories such as software.eessi.io) unless env var
+# EESSI_DO_NOT_MOUNT_CVMFS_CONFIG_CERN_CH is defined
+if [ -z ${EESSI_DO_NOT_MOUNT_CVMFS_CONFIG_CERN_CH+x} ]; then
+    EESSI_FUSE_MOUNTS+=("--fusemount" "container:cvmfs2 cvmfs-config.cern.ch /cvmfs/cvmfs-config.cern.ch")
+fi
+
 
 # iterate over REPOSITORIES and either use repository-specific access mode or global setting (possibly a global default)
 for cvmfs_repo in "${REPOSITORIES[@]}"
