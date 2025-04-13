@@ -251,7 +251,9 @@ export EESSI_CVMFS_INSTALL=1
 # NOTE 3, we have to set a default for EASYBUILD_INSTALLPATH here in cases the
 #   EESSI-extend module itself needs to be installed.
 export EASYBUILD_INSTALLPATH=${EESSI_PREFIX}/software/${EESSI_OS_TYPE}/${EESSI_SOFTWARE_SUBDIR_OVERRIDE}
+echo "DEBUG: before loading EESSI-extend // EASYBUILD_INSTALLPATH='${EASYBUILD_INSTALLPATH}'"
 source load_eessi_extend_module.sh ${EESSI_VERSION}
+echo "DEBUG: after loading EESSI-extend //  EASYBUILD_INSTALLPATH='${EASYBUILD_INSTALLPATH}'"
 
 # Install full CUDA SDK and cu* libraries in host_injections
 # Hardcode this for now, see if it works
@@ -305,7 +307,9 @@ if [[ "${EESSI_CVMFS_REPO}" == /cvmfs/dev.eessi.io ]]; then
     module use /cvmfs/software.eessi.io/versions/$EESSI_VERSION/software/${EESSI_OS_TYPE}/${EESSI_SOFTWARE_SUBDIR_OVERRIDE}/modules/all
 fi
 
+echo "DEBUG: adding path '$EASYBUILD_INSTALLPATH/modules/all' to MODULEPATH='${MODULEPATH}'"
 module use $EASYBUILD_INSTALLPATH/modules/all
+echo "DEBUG: after adding module path // MODULEPATH='${MODULEPATH}'"
 
 if [[ -z ${MODULEPATH} ]]; then
     fatal_error "Failed to set up \$MODULEPATH?!"
@@ -373,8 +377,10 @@ else
     done
 fi
 
+echo "DEBUG: before creating/updating lmod config files // EASYBUILD_INSTALLPATH='${EASYBUILD_INSTALLPATH}'"
 export LMOD_CONFIG_DIR="${EASYBUILD_INSTALLPATH}/.lmod"
 lmod_rc_file="$LMOD_CONFIG_DIR/lmodrc.lua"
+echo "DEBUG: lmod_rc_file='${lmod_rc_file}'"
 if [[ ! -z ${EESSI_ACCELERATOR_TARGET} ]]; then
     # EESSI_ACCELERATOR_TARGET is set, so let's remove the accelerator path from $lmod_rc_file
     lmod_rc_file=$(echo ${lmod_rc_file} | sed "s@/accel/${EESSI_ACCELERATOR_TARGET}@@")
