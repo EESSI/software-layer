@@ -1,0 +1,20 @@
+easyconfigs:
+  - EasyBuild-4.8.2.eb
+  - EasyBuild-4.9.0.eb
+  - EasyBuild-4.9.1.eb
+  - EasyBuild-4.9.2.eb
+  - EasyBuild-4.9.3.eb
+  - EasyBuild-4.9.4.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/21465
+        from-commit: 39cdebd7bd2cb4a9c170ee22439401316b2e7a25
+  - Nextflow-23.10.0.eb
+  - ReFrame-4.3.3.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/22183
+        from-commit: 2b2fe53c885799cbf13b77ddfa9532c48b296e9d  
+  - ReFrame-4.6.2.eb
+  - Pandoc-3.6.2.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/22493
+        from-commit: da8ed20bad0dd1c6533c568f6c4fbb7c3d15342e
