@@ -53,6 +53,23 @@ function copy_build_log() {
     fi
 }
 
+function safe_module_use {
+    # add a given non-empty directory to $MODULEPATH if and only if it is not yet in
+    directory=${1}
+
+    if [[ -z ${directory+x} ]]; then
+        echo "safe_module_use: given directory unset or empty; not adding it to \$MODULEPATH (${MODULEPATH})"
+        return
+    fi
+    if [[ ":${MODULEPATH}:" == *":${directory}:"* ]]; then
+        echo "safe_module_use: directory '${directory}' is already in \$MODULEPATH (${MODULEPATH}); not adding it again"
+        return
+    else
+        echo "safe_module_use: directory '${directory}' is not yet in \$MODULEPATH (${MODULEPATH}); adding it"
+        module use ${directory}
+    fi
+}
+
 POSITIONAL_ARGS=()
 
 while [[ $# -gt 0 ]]; do
@@ -308,7 +325,8 @@ if [[ "${EESSI_CVMFS_REPO}" == /cvmfs/dev.eessi.io ]]; then
 fi
 
 echo "DEBUG: adding path '$EASYBUILD_INSTALLPATH/modules/all' to MODULEPATH='${MODULEPATH}'"
-module use $EASYBUILD_INSTALLPATH/modules/all
+#module use $EASYBUILD_INSTALLPATH/modules/all
+safe_module_use $EASYBUILD_INSTALLPATH/modules/all
 echo "DEBUG: after adding module path // MODULEPATH='${MODULEPATH}'"
 
 if [[ -z ${MODULEPATH} ]]; then
