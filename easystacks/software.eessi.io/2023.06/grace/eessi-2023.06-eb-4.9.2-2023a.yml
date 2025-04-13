@@ -1,0 +1,6 @@
+easyconfigs:
+# in the latest easyconfig, Time::HiRes extension has been removed
+# we need to build Perl-bundle-CPAN using EB 4.9.2 to stay in sync with builds for other archs in EESSI
+# see https://github.com/easybuilders/easybuild-easyconfigs/pull/21198
+# Perl-bundle-CPAN is a dependency of BioPerl
+  - Perl-bundle-CPAN-5.36.1-GCCcore-12.3.0.eb

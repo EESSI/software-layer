@@ -199,10 +199,31 @@ local function eessi_espresso_deprecated_message(t)
     end
 end
 
+local function eessi_scipy_2022b_test_failures_message(t)
+    local cpuArch = os.getenv("EESSI_SOFTWARE_SUBDIR")
+    local graceArch = 'aarch64/nvidia/grace'
+    local fullModuleName = 'SciPy-bundle/2023.02-gfbf-2022b'
+    local moduleVersionArchMatch = t.modFullName == fullModuleName and cpuArch == graceArch
+    if moduleVersionArchMatch and not os.getenv("EESSI_IGNORE_MODULE_WARNINGS") then
+    -- Print a message on loading SciPy-bundle version == 2023.02 informing about the higher number of
+    -- test failures and recommend using other versions available via EESSI.
+    -- A message and not a warning as the exit code would break CI runs otherwise.
+        local simpleName = string.match(t.modFullName, "(.-)/")
+        local advice = 'The module ' .. t.modFullName .. ' will be loaded. However, note that\\n'
+        advice = advice .. 'during its building for the CPU microarchitecture ' .. graceArch .. ' from a\\n'
+        advice = advice .. 'total of 52.730 unit tests a larger number (46) than usually (2-4) failed. If\\n'
+        advice = advice .. 'you encounter issues while using ' .. t.modFullName .. ', please,\\n'
+        advice = advice .. 'consider using one of the other versions of ' .. simpleName .. ' that are also provided\\n'
+        advice = advice .. 'for the same CPU microarchitecture.\\n'
+        LmodMessage("\\n", advice)
+    end
+end
+
 -- Combine both functions into a single one, as we can only register one function as load hook in lmod
 -- Also: make it non-local, so it can be imported and extended by other lmodrc files if needed
 function eessi_load_hook(t)
     eessi_espresso_deprecated_message(t)
+    eessi_scipy_2022b_test_failures_message(t)
     -- Only apply CUDA and cu*-library hooks if the loaded module is in the EESSI prefix
     -- This avoids getting an Lmod Error when trying to load a CUDA or cu* module from a local software stack
     if from_eessi_prefix(t) then
