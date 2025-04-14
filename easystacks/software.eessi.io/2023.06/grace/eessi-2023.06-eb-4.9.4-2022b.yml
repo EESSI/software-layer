@@ -87,3 +87,15 @@ easyconfigs:
 #      options:
 #        from-pr: 20238
   - R-4.2.2-foss-2022b.eb
+# from here on built originally with EB 4.9.0
+# originally built with EB 4.9.1, PR 20379 was included since 4.9.2; no more
+# updates to the easyconfig since then
+#  - R-bundle-Bioconductor-3.16-foss-2022b-R-4.2.2.eb:
+#      options:
+#        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/20379
+#        from-pr: 20379
+  - R-bundle-Bioconductor-3.16-foss-2022b-R-4.2.2.eb
+  - ParaView-5.11.1-foss-2022b.eb
+  - ASE-3.22.1-gfbf-2022b.eb
+  - SEPP-4.5.1-foss-2022b.eb
+  - Valgrind-3.21.0-gompi-2022b.eb
