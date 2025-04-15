@@ -1,6 +1,4 @@
 easyconfigs:
-  - GObject-Introspection-1.76.1-GCCcore-12.3.0.eb
-  - at-spi2-core-2.49.91-GCCcore-12.3.0.eb
   - OpenFOAM-10-foss-2023a.eb:
       options:
         # see https://github.com/easybuilders/easybuild-easyconfigs/pull/20958
@@ -20,7 +18,7 @@ easyconfigs:
   - IQ-TREE-2.3.5-gompi-2023a.eb:
       options:
         # see https://github.com/easybuilders/easybuild-easyconfigs/pull/20955
-        from-commit: 185f88b9a03d65a7fb74edc7acb4221e87e90784      
+        from-commit: 185f88b9a03d65a7fb74edc7acb4221e87e90784
   - KronaTools-2.8.1-GCCcore-12.3.0.eb
   - LSD2-2.4.1-GCCcore-12.3.0.eb
   - MAFFT-7.520-GCC-12.3.0-with-extensions.eb
@@ -37,6 +35,12 @@ easyconfigs:
         # see https://github.com/easybuilders/easybuild-easyconfigs/pull/20951
         from-commit: a92667fe32396bbd4106243658625f7ff2adcd68
   - amdahl-0.3.1-gompi-2023a.eb
+  - LLVM-14.0.6-GCCcore-12.3.0-llvmlite.eb
+  - numba-0.58.1-foss-2023a.eb
+  - librosa-0.10.1-foss-2023a.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/21434
+        from-commit: 4b6170603150c9c93602b0deb726869d19a390f0
   - xarray-2023.9.0-gfbf-2023a.eb
   - SciTools-Iris-3.9.0-foss-2023a.eb
   - OpenFOAM-v2312-foss-2023a.eb:

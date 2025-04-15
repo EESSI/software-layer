@@ -56,6 +56,13 @@
   - SciPy-bundle-2023.11-gfbf-2023b:
     - issue: https://github.com/EESSI/software-layer/issues/318
     - info: "2 failing tests (vs 54876 passed) in scipy test suite"
+- aarch64/nvidia/grace:
+  - Highway-1.0.4-GCCcore-12.3.0.eb:
+    - issue: https://github.com/EESSI/software-layer/issues/469
+    - info: "failing to build the tests"
+  - SciPy-bundle-2023.07-gfbf-2023a:
+    - issue: https://github.com/EESSI/software-layer/issues/318
+    - info: "2 failing tests (vs 54409 passed) in scipy test suite"
 - x86_64/intel/sapphire_rapids:
   - PyTorch-2.1.2-foss-2023a:
     - issue: https://github.com/EESSI/software-layer/issues/461

@@ -1,0 +1,25 @@
+easyconfigs:
+  - CUDA-12.4.0.eb:
+      options:
+        accept-eula-for: CUDA
+        # see https://github.com/easybuilders/easybuild-easyblocks/pull/3516
+        include-easyblocks-from-commit: 3469151ce7e4f85415c877dee555aeea7691c757
+  - UCX-CUDA-1.15.0-GCCcore-13.2.0-CUDA-12.4.0.eb
+  - UCC-CUDA-1.2.0-GCCcore-13.2.0-CUDA-12.4.0.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/21565
+        from-commit: 46141a3f40e699433fac03af2d3ed81bd5a62da7
+  - OSU-Micro-Benchmarks-7.5-gompi-2023b-CUDA-12.4.0.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/21926
+        # from-commit: de79ec74eb076e1aceda5e21235a73c05ed6764c
+        # use merge commit
+        from-commit: f3bd10b19f7caf4de3302bc7a73749341db9c7d8
+  - GROMACS-2024.4-foss-2023b-CUDA-12.4.0.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/21549
+        # commit below is the merge commit
+        from-commit: 12b53341343967ce5a402fe8190a3c85bce7d49b
+        # see https://github.com/easybuilders/easybuild-easyblocks/pull/3523
+        # commit below is last one before the merge commit
+        include-easyblocks-from-commit: 90495ed23d26b3d5fd8162bf5d7b4c073a0682fe

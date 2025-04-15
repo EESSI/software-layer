@@ -53,6 +53,23 @@ function copy_build_log() {
     fi
 }
 
+function safe_module_use {
+    # add a given non-empty directory to $MODULEPATH if and only if it is not yet in
+    directory=${1}
+
+    if [[ -z ${directory+x} ]]; then
+        echo "safe_module_use: given directory unset or empty; not adding it to \$MODULEPATH (${MODULEPATH})"
+        return
+    fi
+    if [[ ":${MODULEPATH}:" == *":${directory}:"* ]]; then
+        echo "safe_module_use: directory '${directory}' is already in \$MODULEPATH (${MODULEPATH}); not adding it again"
+        return
+    else
+        echo "safe_module_use: directory '${directory}' is not yet in \$MODULEPATH (${MODULEPATH}); adding it"
+        module use ${directory}
+    fi
+}
+
 POSITIONAL_ARGS=()
 
 while [[ $# -gt 0 ]]; do
@@ -251,7 +268,9 @@ export EESSI_CVMFS_INSTALL=1
 # NOTE 3, we have to set a default for EASYBUILD_INSTALLPATH here in cases the
 #   EESSI-extend module itself needs to be installed.
 export EASYBUILD_INSTALLPATH=${EESSI_PREFIX}/software/${EESSI_OS_TYPE}/${EESSI_SOFTWARE_SUBDIR_OVERRIDE}
+echo "DEBUG: before loading EESSI-extend // EASYBUILD_INSTALLPATH='${EASYBUILD_INSTALLPATH}'"
 source load_eessi_extend_module.sh ${EESSI_VERSION}
+echo "DEBUG: after loading EESSI-extend //  EASYBUILD_INSTALLPATH='${EASYBUILD_INSTALLPATH}'"
 
 # Install full CUDA SDK and cu* libraries in host_injections
 # Hardcode this for now, see if it works
@@ -271,6 +290,7 @@ fi
 
 # Install NVIDIA drivers in host_injections (if they exist)
 if command_exists "nvidia-smi"; then
+    export LD_LIBRARY_PATH="/.singularity.d/libs:${LD_LIBRARY_PATH}"
     nvidia-smi --version
     ec=$?
     if [ ${ec} -eq 0 ]; then 
@@ -304,7 +324,10 @@ if [[ "${EESSI_CVMFS_REPO}" == /cvmfs/dev.eessi.io ]]; then
     module use /cvmfs/software.eessi.io/versions/$EESSI_VERSION/software/${EESSI_OS_TYPE}/${EESSI_SOFTWARE_SUBDIR_OVERRIDE}/modules/all
 fi
 
-module use $EASYBUILD_INSTALLPATH/modules/all
+echo "DEBUG: adding path '$EASYBUILD_INSTALLPATH/modules/all' to MODULEPATH='${MODULEPATH}'"
+#module use $EASYBUILD_INSTALLPATH/modules/all
+safe_module_use $EASYBUILD_INSTALLPATH/modules/all
+echo "DEBUG: after adding module path // MODULEPATH='${MODULEPATH}'"
 
 if [[ -z ${MODULEPATH} ]]; then
     fatal_error "Failed to set up \$MODULEPATH?!"
@@ -372,8 +395,10 @@ else
     done
 fi
 
+echo "DEBUG: before creating/updating lmod config files // EASYBUILD_INSTALLPATH='${EASYBUILD_INSTALLPATH}'"
 export LMOD_CONFIG_DIR="${EASYBUILD_INSTALLPATH}/.lmod"
 lmod_rc_file="$LMOD_CONFIG_DIR/lmodrc.lua"
+echo "DEBUG: lmod_rc_file='${lmod_rc_file}'"
 if [[ ! -z ${EESSI_ACCELERATOR_TARGET} ]]; then
     # EESSI_ACCELERATOR_TARGET is set, so let's remove the accelerator path from $lmod_rc_file
     lmod_rc_file=$(echo ${lmod_rc_file} | sed "s@/accel/${EESSI_ACCELERATOR_TARGET}@@")

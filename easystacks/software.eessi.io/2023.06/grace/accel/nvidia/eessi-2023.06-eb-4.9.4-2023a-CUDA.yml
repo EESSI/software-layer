@@ -1,0 +1,20 @@
+easyconfigs:
+  - CUDA-12.1.1.eb:
+      options:
+        accept-eula-for: CUDA
+        # see https://github.com/easybuilders/easybuild-easyblocks/pull/3516
+        include-easyblocks-from-commit: 3469151ce7e4f85415c877dee555aeea7691c757
+  - CUDA-Samples-12.1-GCC-12.3.0-CUDA-12.1.1.eb
+  - UCX-CUDA-1.14.1-GCCcore-12.3.0-CUDA-12.1.1.eb
+  - UCC-CUDA-1.2.0-GCCcore-12.3.0-CUDA-12.1.1.eb
+  - OSU-Micro-Benchmarks-7.2-gompi-2023a-CUDA-12.1.1.eb
+  - ESPResSo-4.2.2-foss-2023a-CUDA-12.1.1.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/21440
+        from-commit: 5525968921d7b5eae54f7d16391201e17ffae13c
+  - cuDNN-8.9.2.26-CUDA-12.1.1.eb
+  - LightGBM-4.5.0-foss-2023a-CUDA-12.1.1.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/21699
+        from-commit: e3407bd127d248c08960f6b09c973da0fdecc2c3
+  - NCCL-2.18.3-GCCcore-12.3.0-CUDA-12.1.1.eb 

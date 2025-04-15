@@ -89,6 +89,8 @@ display_help() {
   echo "  -n | --nvidia MODE      - configure the container to work with NVIDIA GPUs,"
   echo "                            MODE==install for a CUDA installation, MODE==run to"
   echo "                            attach a GPU, MODE==all for both [default: false]"
+  echo "  -p | --pass-through ARG - argument to pass through to the launch of the"
+  echo "                            container; can be given multiple times [default: not set]"
   echo "  -r | --repository CFG   - configuration file or identifier defining the"
   echo "                            repository to use; can be given multiple times;"
   echo "                            CFG may include a suffix ',access={ro,rw}' to"
@@ -126,6 +128,7 @@ VERBOSE=0
 STORAGE=
 LIST_REPOS=0
 MODE="shell"
+PASS_THROUGH=()
 SETUP_NVIDIA=0
 REPOSITORIES=()
 RESUME=
@@ -180,6 +183,10 @@ while [[ $# -gt 0 ]]; do
     -n|--nvidia)
       SETUP_NVIDIA=1
       NVIDIA_MODE="$2"
+      shift 2
+      ;;
+    -p|--pass-through)
+      PASS_THROUGH+=("$2")
       shift 2
       ;;
     -r|--repository)
@@ -403,6 +410,19 @@ else
 fi
 
 # if ${RESUME} is a file, unpack it into ${EESSI_HOST_STORAGE}
+if [[ ! -z ${RESUME} && -f ${RESUME} ]]; then
+  if [[ "${RESUME}" == *.tgz ]]; then
+    tar xf ${RESUME} -C ${EESSI_HOST_STORAGE}
+  # Add support for resuming from zstd-compressed tarballs
+  elif [[ "${RESUME}" == *.zst && -x "$(command -v zstd)" ]]; then
+    zstd -dc ${RESUME} | tar -xf - -C ${EESSI_HOST_STORAGE}
+  elif [[ "${RESUME}" == *.zst && ! -x "$(command -v zstd)" ]]; then
+    fatal_error "Trying to resume from tarball ${RESUME} which was compressed using zstd, but zstd command not found"
+  fi
+  echo "Resuming from previous run using temporary storage ${RESUME} unpacked into ${EESSI_HOST_STORAGE}"
+fi
+
+# if ${RESUME} is a file (assume a tgz), unpack it into ${EESSI_HOST_STORAGE}
 if [[ ! -z ${RESUME} && -f ${RESUME} ]]; then
   if [[ "${RESUME}" == *.tgz ]]; then
     tar xf ${RESUME} -C ${EESSI_HOST_STORAGE}
@@ -723,8 +743,12 @@ fi
 
 declare -a EESSI_FUSE_MOUNTS=()
 
-# always mount cvmfs-config repo (to get access to EESSI repositories such as software.eessi.io)
-EESSI_FUSE_MOUNTS+=("--fusemount" "container:cvmfs2 cvmfs-config.cern.ch /cvmfs/cvmfs-config.cern.ch")
+# mount cvmfs-config repo (to get access to EESSI repositories such as software.eessi.io) unless env var
+# EESSI_DO_NOT_MOUNT_CVMFS_CONFIG_CERN_CH is defined
+if [ -z ${EESSI_DO_NOT_MOUNT_CVMFS_CONFIG_CERN_CH+x} ]; then
+    EESSI_FUSE_MOUNTS+=("--fusemount" "container:cvmfs2 cvmfs-config.cern.ch /cvmfs/cvmfs-config.cern.ch")
+fi
+
 
 # iterate over REPOSITORIES and either use repository-specific access mode or global setting (possibly a global default)
 for cvmfs_repo in "${REPOSITORIES[@]}"
@@ -850,6 +874,11 @@ if [ ! -z ${EESSI_SOFTWARE_SUBDIR_OVERRIDE} ]; then
     export APPTAINERENV_EESSI_SOFTWARE_SUBDIR_OVERRIDE=${EESSI_SOFTWARE_SUBDIR_OVERRIDE}
 fi
 
+# add pass through arguments
+for arg in "${PASS_THROUGH[@]}"; do
+    ADDITIONAL_CONTAINER_OPTIONS+=(${arg})
+done
+
 echo "Launching container with command (next line):"
 echo "singularity ${RUN_QUIET} ${MODE} ${ADDITIONAL_CONTAINER_OPTIONS[@]} ${EESSI_FUSE_MOUNTS[@]} ${CONTAINER} $@"
 singularity ${RUN_QUIET} ${MODE} "${ADDITIONAL_CONTAINER_OPTIONS[@]}" "${EESSI_FUSE_MOUNTS[@]}" ${CONTAINER} "$@"
@@ -861,7 +890,6 @@ if [[ ! -z ${SAVE} ]]; then
   #   ARCH which might have been used internally, eg, when software packages
   #   were built ... we rather keep the script here "stupid" and leave the handling
   #   of these aspects to where the script is used
-
   # Compression with zlib may be quite slow. On some systems, the pipeline takes ~20 mins for a 2 min build because of this.
   # Check if zstd is present for faster compression and decompression
   if [[ -d ${SAVE} ]]; then
