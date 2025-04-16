@@ -26,11 +26,15 @@ easyconfigs:
   - SciPy-bundle-2023.07-gfbf-2023a.eb:
       options:
         from-commit: 7c5144d2c1a061cd9f08b5901970b7f6ec5eb5c0
-# install Cython (new dependency of SciPy-bundle)
-  - Cython-3.0.8-GCCcore-12.3.0.eb:
-      options:
-        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/20578
-        from-commit: c4c2826ed8afe83885bba113b0aee36477d2948c
+# install Cython (new dependency of SciPy-bundle), PR 20578 is included since
+# EB 5.0.0; try a little older version from PR 20525 that is included since EB
+# 4.9.2
+#  - Cython-3.0.8-GCCcore-12.3.0.eb:
+#      options:
+#        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/20578
+#        from-commit: c4c2826ed8afe83885bba113b0aee36477d2948c
+# for the version from EB 4.9.2 we don't need any options because we use EB 4.9.4
+  - Cython-3.0.8-GCCcore-12.3.0.eb
 # install dependencies of TensorFlow
   - Bazel-6.3.1-GCCcore-12.3.0.eb
   - dill-0.3.7-GCCcore-12.3.0.eb
