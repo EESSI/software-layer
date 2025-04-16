@@ -76,7 +76,9 @@
             "Retrieved from": "https://github.com/DanielStutzbach/blist"
         },
         "CacheControl": {
-            "License": "not found",
+            "License": [
+                "Apache Software License"
+            ],
             "Permission to redistribute": false,
             "Retrieved from": "not found"
         },
