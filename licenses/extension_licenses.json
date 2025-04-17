@@ -17955,9 +17955,9 @@
             "Retrieved from": "https://github.com/hynek/argon2-cffi-bindings"
         },
         "argon2_cffi": {
-            "License": "not found",
-            "Permission to redistribute": false,
-            "Retrieved from": "not found"
+            "License": "MIT",
+            "Permission to redistribute": true,
+            "Retrieved from": "https://pypi.org/project/argon2-cffi"
         },
         "arrow": {
             "License": [
@@ -17975,9 +17975,9 @@
         },
         "comm": {
             "License": [
-                "Other"
+                "BSD-3-Clause"
             ],
-            "Permission to redistribute": false,
+            "Permission to redistribute": true,
             "Retrieved from": "https://github.com/ipython/comm"
         },
         "debugpy": {
@@ -18009,20 +18009,20 @@
             "Retrieved from": "https://github.com/horejsek/python-fastjsonschema"
         },
         "hatch_jupyter_builder": {
-            "License": "not found",
-            "Permission to redistribute": false,
-            "Retrieved from": "not found"
+            "License": "BSD-3-Clause",
+            "Permission to redistribute": true,
+            "Retrieved from": "https://github.com/jupyterlab/hatch-jupyter-builder"
         },
         "hatch_nodejs_version": {
-            "License": "not found",
-            "Permission to redistribute": false,
-            "Retrieved from": "not found"
+            "License": "MIT",
+            "Permission to redistribute": true,
+            "Retrieved from": "https://pypi.org/project/hatch-nodejs-version"
         },
         "ipykernel": {
             "License": [
-                "Other"
+                "BSD-3-Clause"
             ],
-            "Permission to redistribute": false,
+            "Permission to redistribute": true,
             "Retrieved from": "https://github.com/ipython/ipykernel"
         },
         "ipython_genutils": {
@@ -18030,7 +18030,7 @@
                 "BSD-3-Clause"
             ],
             "Permission to redistribute": true,
-            "Retrieved from": null
+            "Retrieved from": "https://pypi.org/project/ipython_genutils"
         },
         "ipywidgets": {
             "License": [
@@ -39595,28 +39595,28 @@
     "GROMACS/2024.1-foss-2023b": {
         "gmxapi": {
             "License": [
-                "Other"
+                "LGPL-2.1-or-later"
             ],
-            "Permission to redistribute": false,
-            "Retrieved from": null
+            "Permission to redistribute": true,
+            "Retrieved from": "https://github.com/kassonlab/gromacs-gmxapi"
         }
     },
     "GROMACS/2024.3-foss-2023b": {
         "gmxapi": {
             "License": [
-                "Other"
+                "LGPL-2.1-or-later"
             ],
-            "Permission to redistribute": false,
-            "Retrieved from": null
+            "Permission to redistribute": true,
+            "Retrieved from": "https://github.com/kassonlab/gromacs-gmxapi"
         }
     },
     "GROMACS/2024.4-foss-2023b": {
         "gmxapi": {
             "License": [
-                "Other"
+                "LGPL-2.1-or-later"
             ],
-            "Permission to redistribute": false,
-            "Retrieved from": null
+            "Permission to redistribute": true,
+            "Retrieved from": "https://github.com/kassonlab/gromacs-gmxapi"
         }
     },
     "scikit-build-core/0.9.3-GCCcore-12.3.0": {
@@ -39628,9 +39628,9 @@
             "Retrieved from": "https://github.com/pypa/pyproject-metadata"
         },
         "scikit_build_core": {
-            "License": "not found",
-            "Permission to redistribute": false,
-            "Retrieved from": "not found"
+            "License": "Apache-2.0",
+            "Permission to redistribute": true,
+            "Retrieved from": "https://github.com/scikit-build/scikit-build-core"
         }
     },
     "scikit-build-core/0.9.3-GCCcore-13.2.0": {
@@ -39642,16 +39642,16 @@
             "Retrieved from": "https://github.com/pypa/pyproject-metadata"
         },
         "scikit_build_core": {
-            "License": "not found",
-            "Permission to redistribute": false,
-            "Retrieved from": "not found"
+            "License": "Apache-2.0",
+            "Permission to redistribute": true,
+            "Retrieved from": "https://github.com/scikit-build/scikit-build-core"
         }
     },
     "pyfaidx/0.8.1.1-GCCcore-12.3.0": {
         "importlib_metadata": {
-            "License": "not found",
-            "Permission to redistribute": false,
-            "Retrieved from": "not found"
+            "License": "Apache-2.0",
+            "Permission to redistribute": true,
+            "Retrieved from": "https://github.com/python/importlib_metadata"
         },
         "pyfaidx": {
             "License": [
@@ -39670,9 +39670,9 @@
     },
     "WhatsHap/2.2-foss-2023a": {
         "PuLP": {
-            "License": "not found",
-            "Permission to redistribute": false,
-            "Retrieved from": "not found"
+            "License": "MIT",
+            "Permission to redistribute": true,
+            "Retrieved from": "https://pypi.org/project/PuLP"
         },
         "whatshap": {
             "License": [
@@ -39698,9 +39698,9 @@
             "Retrieved from": "https://github.com/coin-or/pulp"
         },
         "WhatsHap": {
-            "License": "not found",
-            "Permission to redistribute": false,
-            "Retrieved from": "not found"
+            "License": "MIT",
+            "Permission to redistribute": true,
+            "Retrieved from": "https://pypi.org/project/whatshap"
         },
         "xopen": {
             "License": [
@@ -39726,19 +39726,19 @@
             "Retrieved from": "https://github.com/pallets-eco/cachelib"
         },
         "Flask-Cors": {
-            "License": "not found",
-            "Permission to redistribute": false,
-            "Retrieved from": "not found"
+            "License": "MIT",
+            "Permission to redistribute": true,
+            "Retrieved from": "https://github.com/corydolphin/flask-cors"
         },
         "Flask-Session": {
-            "License": "not found",
-            "Permission to redistribute": false,
-            "Retrieved from": "not found"
+            "License": "BSD-3-Clause",
+            "Permission to redistribute": true,
+            "Retrieved from": "https://github.com/pallets-eco/flask-session"
         },
         "Flask": {
-            "License": "not found",
-            "Permission to redistribute": false,
-            "Retrieved from": "not found"
+            "License": "BSD-3-Clause",
+            "Permission to redistribute": true,
+            "Retrieved from": "https://github.com/pallets/flask"
         },
         "itsdangerous": {
             "License": [
@@ -39748,9 +39748,9 @@
             "Retrieved from": "https://github.com/pallets/itsdangerous"
         },
         "Werkzeug": {
-            "License": "not found",
-            "Permission to redistribute": false,
-            "Retrieved from": "not found"
+            "License": "BSD-3-Clause",
+            "Permission to redistribute": true,
+            "Retrieved from": "https://github.com/pallets/werkzeug"
         }
     },
     "ASE/3.22.1-gfbf-2022b": {
@@ -39778,9 +39778,9 @@
     },
     "NLTK/3.8.1-foss-2023b": {
         "NLTK": {
-            "License": "not found",
-            "Permission to redistribute": false,
-            "Retrieved from": "not found"
+            "License": "Apache-2.0",
+            "Permission to redistribute": true,
+            "Retrieved from": "https://pypi.org/project/nltk"
         },
         "python-crfsuite": {
             "License": [
@@ -39832,10 +39832,10 @@
     "pystencils/1.3.4-gfbf-2023b": {
         "pystencils": {
             "License": [
-                "Other"
+                "AGPL-3.0-or-later"
             ],
-            "Permission to redistribute": false,
-            "Retrieved from": null
+            "Permission to redistribute": true,
+            "Retrieved from": "https://pypi.org/project/pystencils"
         }
     },
     "pyMBE/0.8.0-foss-2023b": {
@@ -39848,9 +39848,9 @@
         },
         "looseversion": {
             "License": [
-                "Other"
+                "Python-2.0"
             ],
-            "Permission to redistribute": false,
+            "Permission to redistribute": true,
             "Retrieved from": "https://github.com/effigies/looseversion"
         },
         "mmtf-python": {
@@ -39861,14 +39861,14 @@
             "Retrieved from": "https://github.com/rcsb/mmtf-python"
         },
         "Pint-Pandas": {
-            "License": "not found",
-            "Permission to redistribute": false,
-            "Retrieved from": "not found"
+            "License": "BSD",
+            "Permission to redistribute": true,
+            "Retrieved from": "https://pypi.org/project/Pint-Pandas"
         },
         "pyMBE": {
-            "License": "not found",
-            "Permission to redistribute": false,
-            "Retrieved from": "not found"
+            "License": "GPL-3.0",
+            "Permission to redistribute": true,
+            "Retrieved from": "https://github.com/pyMBE-dev/pyMBE/blob/main/LICENSE.txt"
         }
     },
     "numba/0.58.1-foss-2023a": {
@@ -39884,7 +39884,7 @@
                 "BSD-3-Clause"
             ],
             "Permission to redistribute": true,
-            "Retrieved from": null
+            "Retrieved from": "https://pypi.org/project/numba"
         }
     },
     "librosa/0.10.1-foss-2023a": {
@@ -39896,9 +39896,9 @@
             "Retrieved from": "https://github.com/beetbox/audioread"
         },
         "lazy_loader": {
-            "License": "not found",
-            "Permission to redistribute": false,
-            "Retrieved from": "not found"
+            "License": "BSD-3-Clause",
+            "Permission to redistribute": true,
+            "Retrieved from": "https://pypi.org/project/lazy-loader"
         },
         "librosa": {
             "License": [
@@ -39948,9 +39948,9 @@
             "Retrieved from": "https://github.com/Unidata/cftime"
         },
         "netcdf4-python": {
-            "License": "not found",
-            "Permission to redistribute": false,
-            "Retrieved from": "not found"
+            "License": "MIT",
+            "Permission to redistribute": true,
+            "Retrieved from": "https://github.com/Unidata/netcdf4-python"
         }
     },
     "netcdf4-python/1.6.3-foss-2022b": {
@@ -39962,9 +39962,9 @@
             "Retrieved from": "https://github.com/Unidata/cftime"
         },
         "netcdf4-python": {
-            "License": "not found",
-            "Permission to redistribute": false,
-            "Retrieved from": "not found"
+            "License": "MIT",
+            "Permission to redistribute": true,
+            "Retrieved from": "https://github.com/Unidata/netcdf4-python"
         }
     },
     "python-xxhash/3.4.1-GCCcore-12.3.0": {
@@ -40008,14 +40008,14 @@
     },
     "Cartopy/0.22.0-foss-2023a": {
         "Cartopy": {
-            "License": "not found",
-            "Permission to redistribute": false,
-            "Retrieved from": "not found"
+            "License": "BSD-3-Clause",
+            "Permission to redistribute": true,
+            "Retrieved from": "https://pypi.org/project/Cartopy"
         },
         "OWSLib": {
-            "License": "not found",
-            "Permission to redistribute": false,
-            "Retrieved from": "not found"
+            "License": "BSD-3-Clause",
+            "Permission to redistribute": true,
+            "Retrieved from": "https://pypi.org/project/OWSLib"
         },
         "pyepsg": {
             "License": [
@@ -40045,19 +40045,19 @@
                 "BSD-3-Clause"
             ],
             "Permission to redistribute": true,
-            "Retrieved from": null
+            "Retrieved from": "https://pypi.org/project/antlr3-python-runtime"
         },
         "cf-units": {
             "License": [
-                "Other"
+                "BSD-3-Clause"
             ],
-            "Permission to redistribute": false,
+            "Permission to redistribute": true,
             "Retrieved from": "https://github.com/SciTools/cf-units"
         },
         "scitools_iris": {
-            "License": "not found",
-            "Permission to redistribute": false,
-            "Retrieved from": "not found"
+            "License": "BSD-3-Clause",
+            "Permission to redistribute": true,
+            "Retrieved from": "https://pypi.org/project/scitools-iris"
         }
     },
     "XML-LibXML/2.0209-GCCcore-12.3.0": {
@@ -40214,7 +40214,7 @@
         },
         "Array::Utils": {
             "License": [
-                "Other"
+                "Unknown"
             ],
             "Permission to redistribute": false,
             "Retrieved from": "https://packages.ecosyste.ms/api/v1/registries/metacpan.org/lookup?name=Array-Utils"
@@ -40598,7 +40598,7 @@
         },
         "Date::Handler": {
             "License": [
-                "Other"
+                "Uknown"
             ],
             "Permission to redistribute": false,
             "Retrieved from": "https://packages.ecosyste.ms/api/v1/registries/metacpan.org/lookup?name=Date-Handler"
@@ -41051,9 +41051,9 @@
         },
         "Git": {
             "License": [
-                "Other"
+                "GPL-2.0-only"
             ],
-            "Permission to redistribute": false,
+            "Permission to redistribute": true,
             "Retrieved from": "https://packages.ecosyste.ms/api/v1/registries/metacpan.org/lookup?name=Git"
         },
         "GO": {
@@ -41489,7 +41489,7 @@
         },
         "Math::CDF": {
             "License": [
-                "Other"
+                "Unknown"
             ],
             "Permission to redistribute": false,
             "Retrieved from": "https://packages.ecosyste.ms/api/v1/registries/metacpan.org/lookup?name=Math-CDF"
@@ -41512,7 +41512,7 @@
             "License": [
                 "Artistic-1.0-Perl"
             ],
-            "Permission to redistribute": false,
+            "Permission to redistribute": true,
             "Retrieved from": "https://packages.ecosyste.ms/api/v1/registries/metacpan.org/lookup?name=Math-VecStat"
         },
         "MCE::Mutex": {
@@ -43022,9 +43022,9 @@
             "Retrieved from": "https://github.com/testing-cabal/funcsigs"
         },
         "GridDataFormats": {
-            "License": "not found",
-            "Permission to redistribute": false,
-            "Retrieved from": "not found"
+            "License": "LGPL-3.0-only",
+            "Permission to redistribute": true,
+            "Retrieved from": "https://pypi.org/project/GridDataFormats"
         },
         "gsd": {
             "License": [
@@ -43034,9 +43034,9 @@
             "Retrieved from": "https://github.com/glotzerlab/gsd"
         },
         "MDAnalysis": {
-            "License": "not found",
-            "Permission to redistribute": false,
-            "Retrieved from": "not found"
+            "License": "LGPL-3.0-or-later",
+            "Permission to redistribute": true,
+            "Retrieved from": "https://pypi.org/project/MDAnalysis"
         },
         "mmtf-python": {
             "License": [
@@ -43069,9 +43069,9 @@
             "Retrieved from": "https://github.com/python/mypy"
         },
         "mypy_extensions": {
-            "License": "not found",
-            "Permission to redistribute": false,
-            "Retrieved from": "not found"
+            "License": "MIT",
+            "Permission to redistribute": true,
+            "Retrieved from": "https://pypi.org/project/mypy-extensions"
         },
         "orjson": {
             "License": [
