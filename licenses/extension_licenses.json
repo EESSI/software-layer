@@ -192,7 +192,7 @@
             "License": [
                 "PSF-2.0"
             ],
-            "Permission to redistribute": false,
+            "Permission to redistribute": true,
             "Retrieved from": "https://github.com/pypa/distlib"
         },
         "docopt": {
@@ -386,7 +386,7 @@
             "License": [
                 "PSF-2.0"
             ],
-            "Permission to redistribute": false,
+            "Permission to redistribute": true,
             "Retrieved from": "https://github.com/phihag/ipaddress"
         },
         "jaraco.classes": {
@@ -1005,7 +1005,7 @@
             "License": [
                 "PSF-2.0"
             ],
-            "Permission to redistribute": false,
+            "Permission to redistribute": true,
             "Retrieved from": "https://gitlab.com/takluyver/zipfile36"
         },
         "zipp": {
@@ -1171,13 +1171,13 @@
             "Retrieved from": "https://github.com/jkeenan/File-Path"
         },
         "File::Spec": {
-            "License": "not found",
-            "Permission to redistribute": false,
-            "Retrieved from": "not found"
+            "License": "Artistic-1.0-Perl",
+            "Permission to redistribute": true,
+            "Retrieved from": "https://metacpan.org/pod/File::Spec#COPYRIGHT"
         },
         "Getopt::Long": {
             "License": [
-                "Other"
+                "Artistic-1.0-Perl"
             ],
             "Permission to redistribute": false,
             "Retrieved from": "https://github.com/sciurius/perl-Getopt-Long"
@@ -2451,28 +2451,28 @@
             "Retrieved from": "https://github.com/libwww-perl/LWP-Protocol-https"
         },
         "LWP::Simple": {
-            "License": "not found",
-            "Permission to redistribute": false,
-            "Retrieved from": "not found"
+            "License": "Artistic-1.0-Perl",
+            "Permission to redistribute": true,
+            "Retrieved from": "https://metacpan.org/pod/LWP::Simple"
         },
         "Mail::Util": {
-            "License": "not found",
-            "Permission to redistribute": false,
-            "Retrieved from": "not found"
+            "License": "Artistic-1.0-Perl",
+            "Permission to redistribute": true,
+            "Retrieved from": "https://metacpan.org/pod/Mail::Util"
         },
         "Math::Bezier": {
             "License": [
-                "Other"
+                "Unknown"
             ],
             "Permission to redistribute": false,
-            "Retrieved from": "https://packages.ecosyste.ms/api/v1/registries/metacpan.org/lookup?name=Math-Bezier"
+            "Retrieved from": "https://metacpan.org/pod/Math::Bezier"
         },
         "Math::CDF": {
             "License": [
-                "Other"
+                "Unknown"
             ],
             "Permission to redistribute": false,
-            "Retrieved from": "https://packages.ecosyste.ms/api/v1/registries/metacpan.org/lookup?name=Math-CDF"
+            "Retrieved from": "https://metacpan.org/pod/Math::CDF"
         },
         "Math::Round": {
             "License": [
@@ -2490,15 +2490,15 @@
         },
         "Math::VecStat": {
             "License": [
-                "Other"
+                "Artistic-1.0-Perl"
             ],
             "Permission to redistribute": false,
             "Retrieved from": "https://packages.ecosyste.ms/api/v1/registries/metacpan.org/lookup?name=Math-VecStat"
         },
         "MCE::Mutex": {
-            "License": "not found",
-            "Permission to redistribute": false,
-            "Retrieved from": "not found"
+            "License": "Artistic-1.0-Perl",
+            "Permission to redistribute": true,
+            "Retrieved from": "https://metacpan.org/pod/MCE::Mutex"
         },
         "Meta::Builder": {
             "License": [
@@ -2536,9 +2536,9 @@
             "Retrieved from": "https://github.com/markov2/perl5-MIME-Types"
         },
         "Mixin::Linewise::Readers": {
-            "License": "not found",
-            "Permission to redistribute": false,
-            "Retrieved from": "not found"
+            "License": "Artistic-1.0-Perl",
+            "Permission to redistribute": true,
+            "Retrieved from": "https://metacpan.org/pod/Mixin::Linewise::Readers#COPYRIGHT-AND-LICENSE"
         },
         "Mock::Quick": {
             "License": [
@@ -2703,9 +2703,9 @@
         },
         "Mozilla::CA": {
             "License": [
-                "Other"
+                "MPL-2.0"
             ],
-            "Permission to redistribute": false,
+            "Permission to redistribute": true,
             "Retrieved from": "https://github.com/libwww-perl/Mozilla-CA"
         },
         "MRO::Compat": {
@@ -2730,9 +2730,9 @@
             "Retrieved from": "https://github.com/p5sagit/namespace-clean"
         },
         "Net::Domain": {
-            "License": "not found",
-            "Permission to redistribute": false,
-            "Retrieved from": "not found"
+            "License": "Artistic-1.0-Perl",
+            "Permission to redistribute": true,
+            "Retrieved from": "https://metacpan.org/pod/Net::Domain"
         },
         "Net::HTTP": {
             "License": [
@@ -2743,10 +2743,10 @@
         },
         "Net::SMTP::SSL": {
             "License": [
-                "Other"
+                "Artistic-1.0-Perl"
             ],
-            "Permission to redistribute": false,
-            "Retrieved from": "https://packages.ecosyste.ms/api/v1/registries/metacpan.org/lookup?name=Net-SMTP-SSL"
+            "Permission to redistribute": true,
+            "Retrieved from": "https://metacpan.org/pod/Net::SMTP::SSL#COPYRIGHT"
         },
         "Net::SNMP": {
             "License": [
@@ -2764,10 +2764,10 @@
         },
         "Number::Compare": {
             "License": [
-                "Other"
+                "Artistic-1.0-Perl"
             ],
-            "Permission to redistribute": false,
-            "Retrieved from": "https://packages.ecosyste.ms/api/v1/registries/metacpan.org/lookup?name=Number-Compare"
+            "Permission to redistribute": true,
+            "Retrieved from": "https://metacpan.org/pod/Net::SMTP::SSL#COPYRIGHT"
         },
         "Number::Format": {
             "License": [
@@ -2820,9 +2820,9 @@
         },
         "PadWalker": {
             "License": [
-                "Other"
+                "Artistic-1.0-Perl"
             ],
-            "Permission to redistribute": false,
+            "Permission to redistribute": true,
             "Retrieved from": "https://packages.ecosyste.ms/api/v1/registries/metacpan.org/lookup?name=PadWalker"
         },
         "Parallel::ForkManager": {
@@ -2931,16 +2931,16 @@
             "Retrieved from": "https://github.com/timj/perl-Pod-LaTeX"
         },
         "Pod::Man": {
-            "License": "not found",
-            "Permission to redistribute": false,
-            "Retrieved from": "not found"
+            "License": "Artistic-1.0-Perl",
+            "Permission to redistribute": true,
+            "Retrieved from": "https://metacpan.org/pod/Pod::Man"
         },
         "Pod::Parser": {
             "License": [
-                "Other"
+                "Artistic-1.0-Perl"
             ],
-            "Permission to redistribute": false,
-            "Retrieved from": "https://packages.ecosyste.ms/api/v1/registries/metacpan.org/lookup?name=Pod-Parser"
+            "Permission to redistribute": true,
+            "Retrieved from": "https://metacpan.org/release/MAREKR/Pod-Parser-1.67/source/README"
         },
         "Pod::Plainer": {
             "License": [
@@ -2996,9 +2996,9 @@
             "Retrieved from": "https://github.com/rjbs/Role-HasMessage"
         },
         "Role::Identifiable::HasIdent": {
-            "License": "not found",
-            "Permission to redistribute": false,
-            "Retrieved from": "not found"
+            "License": "Artistic-1.0-Perl",
+            "Permission to redistribute": true,
+            "Retrieved from": "https://metacpan.org/pod/Role::Identifiable::HasIdent"
         },
         "Role::Tiny": {
             "License": [
@@ -3008,9 +3008,9 @@
             "Retrieved from": "https://github.com/moose/Role-Tiny"
         },
         "Scalar::Util": {
-            "License": "not found",
-            "Permission to redistribute": false,
-            "Retrieved from": "not found"
+            "License": "Artistic-1.0-Perl",
+            "Permission to redistribute": true,
+            "Retrieved from": "https://metacpan.org/pod/Scalar::Util#COPYRIGHT"
         },
         "Scalar::Util::Numeric": {
             "License": [
@@ -3042,10 +3042,10 @@
         },
         "Set::IntSpan": {
             "License": [
-                "Other"
+                "Artistic-1.0-Perl"
             ],
-            "Permission to redistribute": false,
-            "Retrieved from": "https://packages.ecosyste.ms/api/v1/registries/metacpan.org/lookup?name=Set-IntSpan"
+            "Permission to redistribute": true,
+            "Retrieved from": "https://metacpan.org/pod/Set::IntSpan#COPYRIGHT"
         },
         "Set::IntSpan::Fast": {
             "License": [
@@ -3112,10 +3112,10 @@
         },
         "Statistics::Basic": {
             "License": [
-                "Other"
+                "LGPL-2.0"
             ],
-            "Permission to redistribute": false,
-            "Retrieved from": "https://packages.ecosyste.ms/api/v1/registries/metacpan.org/lookup?name=Statistics-Basic"
+            "Permission to redistribute": true,
+            "Retrieved from": "https://metacpan.org/pod/Statistics::Basic#COPYRIGHT"
         },
         "Statistics::Descriptive": {
             "License": [
@@ -3272,16 +3272,16 @@
             "Retrieved from": "https://github.com/burak/CPAN-Sys-Info-Driver-Unknown"
         },
         "Template": {
-            "License": "not found",
-            "Permission to redistribute": false,
-            "Retrieved from": "not found"
+            "License": "Artistic-1.0-Perl",
+            "Permission to redistribute": true,
+            "Retrieved from": "https://metacpan.org/pod/Template#COPYRIGHT"
         },
         "Template::Plugin::Number::Format": {
             "License": [
-                "Other"
+                "Unknown"
             ],
             "Permission to redistribute": false,
-            "Retrieved from": "https://packages.ecosyste.ms/api/v1/registries/metacpan.org/lookup?name=Template-Plugin-Number-Format"
+            "Retrieved from": "https://metacpan.org/release/DARREN/Template-Plugin-Number-Format-1.06/source/README"
         },
         "Term::Encoding": {
             "License": [
@@ -3291,9 +3291,9 @@
             "Retrieved from": "https://github.com/miyagawa/Term-Encoding"
         },
         "Term::ReadKey": {
-            "License": "not found",
-            "Permission to redistribute": false,
-            "Retrieved from": "not found"
+            "License": "Artistic-1.0-Perl",
+            "Permission to redistribute": true,
+            "Retrieved from": "https://metacpan.org/pod/Term::ReadKey#LICENSE"
         },
         "Term::ReadLine::Gnu": {
             "License": [
@@ -3318,10 +3318,10 @@
         },
         "Test": {
             "License": [
-                "Other"
+                "Artistic-1.0-Perl"
             ],
-            "Permission to redistribute": false,
-            "Retrieved from": "https://packages.ecosyste.ms/api/v1/registries/metacpan.org/lookup?name=Test"
+            "Permission to redistribute": true,
+            "Retrieved from": "https://metacpan.org/release/JESSE/Test-1.26/source/README"
         },
         "Test2::Plugin::NoWarnings": {
             "License": [
@@ -3331,9 +3331,9 @@
             "Retrieved from": "https://github.com/houseabsolute/Test2-Plugin-NoWarnings"
         },
         "Test2::Require::Module": {
-            "License": "not found",
-            "Permission to redistribute": false,
-            "Retrieved from": "not found"
+            "License": "Artistic-1.0-Perl",
+            "Permission to redistribute": true,
+            "Retrieved from": "https://metacpan.org/pod/Test2::Require::Module#COPYRIGHT"
         },
         "Test::ClassAPI": {
             "License": [
@@ -3379,9 +3379,9 @@
             "Retrieved from": "https://github.com/rjbs/Test-Fatal"
         },
         "Test::File::ShareDir::Dist": {
-            "License": "not found",
-            "Permission to redistribute": false,
-            "Retrieved from": "not found"
+            "License": "Artistic-1.0-Perl",
+            "Permission to redistribute": true,
+            "Retrieved from": "https://metacpan.org/pod/Test::File::ShareDir::Dist#COPYRIGHT-AND-LICENSE"
         },
         "Test::Harness": {
             "License": [
@@ -3399,15 +3399,15 @@
         },
         "Test::Memory::Cycle": {
             "License": [
-                "Other"
+                "Artistic-2.0"
             ],
-            "Permission to redistribute": false,
-            "Retrieved from": "https://packages.ecosyste.ms/api/v1/registries/metacpan.org/lookup?name=Test-Memory-Cycle"
+            "Permission to redistribute": true,
+            "Retrieved from": "https://metacpan.org/pod/Test::Memory::Cycle#COPYRIGHT"
         },
         "Test::More": {
-            "License": "not found",
-            "Permission to redistribute": false,
-            "Retrieved from": "not found"
+            "License": "Artistic-1.0-Perl",
+            "Permission to redistribute": true,
+            "Retrieved from": "https://metacpan.org/pod/Test::More#COPYRIGHT"
         },
         "Test::More::UTF8": {
             "License": [
@@ -3502,9 +3502,9 @@
         },
         "Text::Aligner": {
             "License": [
-                "Other"
+                "ISC"
             ],
-            "Permission to redistribute": false,
+            "Permission to redistribute": true,
             "Retrieved from": "https://github.com/shlomif/text-aligner"
         },
         "Text::Balanced": {
@@ -3551,10 +3551,10 @@
         },
         "Text::Iconv": {
             "License": [
-                "Other"
+                "Artistic-1.0-Perl"
             ],
-            "Permission to redistribute": false,
-            "Retrieved from": "https://packages.ecosyste.ms/api/v1/registries/metacpan.org/lookup?name=Text-Iconv"
+            "Permission to redistribute": true,
+            "Retrieved from": "https://metacpan.org/release/MPIOTR/Text-Iconv-1.7/source/README"
         },
         "Text::ParseWords": {
             "License": [
@@ -3572,10 +3572,10 @@
         },
         "Text::Table": {
             "License": [
-                "Other"
+                "ISC"
             ],
-            "Permission to redistribute": false,
-            "Retrieved from": "https://github.com/shlomif/Text-Table"
+            "Permission to redistribute": true,
+            "Retrieved from": "https://metacpan.org/pod/Text::Table#COPYRIGHT"
         },
         "Text::Template": {
             "License": [
@@ -3600,10 +3600,10 @@
         },
         "Tie::Function": {
             "License": [
-                "Other"
+                "Unknown"
             ],
             "Permission to redistribute": false,
-            "Retrieved from": "https://packages.ecosyste.ms/api/v1/registries/metacpan.org/lookup?name=Tie-Function"
+            "Retrieved from": "https://metacpan.org/release/DAVIDNICO/Tie-Function-0.02/source/README"
         },
         "Tie::IxHash": {
             "License": [
@@ -3635,10 +3635,10 @@
         },
         "Time::Piece::MySQL": {
             "License": [
-                "Other"
+                "Artistic-1.0-Perl"
             ],
-            "Permission to redistribute": false,
-            "Retrieved from": "https://packages.ecosyste.ms/api/v1/registries/metacpan.org/lookup?name=Time-Piece-MySQL"
+            "Permission to redistribute": true,
+            "Retrieved from": "https://metacpan.org/pod/Time::Piece::MySQL#COPYRIGHT"
         },
         "Tree::DAG_Node": {
             "License": [
@@ -3656,10 +3656,10 @@
         },
         "Types::Serialiser": {
             "License": [
-                "Other"
+                "Artistic-1.0-Perl"
             ],
-            "Permission to redistribute": false,
-            "Retrieved from": "https://packages.ecosyste.ms/api/v1/registries/metacpan.org/lookup?name=Types-Serialiser"
+            "Permission to redistribute": true,
+            "Retrieved from": "https://metacpan.org/release/MLEHMANN/Types-Serialiser-1.01/source/COPYING"
         },
         "Unicode::LineBreak": {
             "License": [
@@ -3670,10 +3670,10 @@
         },
         "UNIVERSAL::moniker": {
             "License": [
-                "Other"
+                "Artistic-1.0-Perl"
             ],
-            "Permission to redistribute": false,
-            "Retrieved from": "https://packages.ecosyste.ms/api/v1/registries/metacpan.org/lookup?name=UNIVERSAL-moniker"
+            "Permission to redistribute": true,
+            "Retrieved from": "https://metacpan.org/pod/UNIVERSAL::moniker#COPYRIGHT"
         },
         "Unix::Processors": {
             "License": [
@@ -3690,9 +3690,9 @@
             "Retrieved from": "https://github.com/libwww-perl/URI"
         },
         "URI::Escape": {
-            "License": "not found",
-            "Permission to redistribute": false,
-            "Retrieved from": "not found"
+            "License": "Artistic-1.0-Perl",
+            "Permission to redistribute": true,
+            "Retrieved from": "https://metacpan.org/pod/URI::Escape#COPYRIGHT"
         },
         "Variable::Magic": {
             "License": [
@@ -3710,10 +3710,10 @@
         },
         "Want": {
             "License": [
-                "Other"
+                "Artistic-1.0-Perl"
             ],
-            "Permission to redistribute": false,
-            "Retrieved from": "https://packages.ecosyste.ms/api/v1/registries/metacpan.org/lookup?name=Want"
+            "Permission to redistribute": true,
+            "Retrieved from": "https://metacpan.org/pod/Want#COPYRIGHT"
         },
         "WWW::RobotRules": {
             "License": [
@@ -3738,10 +3738,10 @@
         },
         "XML::Filter::BufferText": {
             "License": [
-                "Other"
+                "Artistic-1.0-Perl"
             ],
-            "Permission to redistribute": false,
-            "Retrieved from": "https://packages.ecosyste.ms/api/v1/registries/metacpan.org/lookup?name=XML-Filter-BufferText"
+            "Permission to redistribute": true,
+            "Retrieved from": "https://metacpan.org/pod/XML::Filter::BufferText#COPYRIGHT"
         },
         "XML::NamespaceSupport": {
             "License": [
@@ -3759,17 +3759,17 @@
         },
         "XML::RegExp": {
             "License": [
-                "Other"
+                "Artistic-1.0-Perl"
             ],
-            "Permission to redistribute": false,
-            "Retrieved from": "https://packages.ecosyste.ms/api/v1/registries/metacpan.org/lookup?name=XML-RegExp"
+            "Permission to redistribute": true,
+            "Retrieved from": "https://metacpan.org/release/TJMATHER/XML-RegExp-0.04/source/README"
         },
         "XML::SAX": {
             "License": [
-                "Other"
+                "Artistic-1.0-Perl"
             ],
-            "Permission to redistribute": false,
-            "Retrieved from": "https://github.com/grantm/xml-sax"
+            "Permission to redistribute": true,
+            "Retrieved from": "https://metacpan.org/pod/XML::SAX#LICENSE"
         },
         "XML::SAX::Base": {
             "License": [
@@ -3801,10 +3801,10 @@
         },
         "XML::Tiny": {
             "License": [
-                "Other"
+                "GPL-2.0"
             ],
-            "Permission to redistribute": false,
-            "Retrieved from": "https://packages.ecosyste.ms/api/v1/registries/metacpan.org/lookup?name=XML-Tiny"
+            "Permission to redistribute": true,
+            "Retrieved from": "https://metacpan.org/pod/XML::SAX#LICENSE"
         },
         "XML::Twig": {
             "License": [
@@ -3879,21 +3879,21 @@
             "Retrieved from": "https://github.com/jkeenan/File-Path"
         },
         "File::Spec": {
-            "License": "not found",
-            "Permission to redistribute": false,
-            "Retrieved from": "not found"
+            "License": "Artistic-1.0-Perl",
+            "Permission to redistribute": true,
+            "Retrieved from": "https://metacpan.org/pod/File::Spec#COPYRIGHT"
         },
         "Getopt::Long": {
             "License": [
-                "Other"
+                "Artistic-1.0-Perl"
             ],
-            "Permission to redistribute": false,
+            "Permission to redistribute": true,
             "Retrieved from": "https://github.com/sciurius/perl-Getopt-Long"
         },
         "IO::File": {
-            "License": "not found",
+            "License": "unknown",
             "Permission to redistribute": false,
-            "Retrieved from": "not found"
+            "Retrieved from": "https://metacpan.org/pod/IO::File"
         },
         "Text::ParseWords": {
             "License": [
@@ -3926,14 +3926,14 @@
             "Retrieved from": "https://github.com/pfmoore/editables"
         },
         "hatch_fancy_pypi_readme": {
-            "License": "not found",
-            "Permission to redistribute": false,
-            "Retrieved from": "not found"
+            "License": "MIT",
+            "Permission to redistribute": true,
+            "Retrieved from": "https://pypi.org/project/hatch-fancy-pypi-readme/"
         },
         "hatch_vcs": {
-            "License": "not found",
-            "Permission to redistribute": false,
-            "Retrieved from": "not found"
+            "License": "MIT",
+            "Permission to redistribute": true,
+            "Retrieved from": "https://pypi.org/project/hatch-vcs/"
         },
         "hatchling": {
             "License": [
@@ -3957,9 +3957,9 @@
             "Retrieved from": "https://github.com/pytest-dev/pluggy"
         },
         "trove_classifiers": {
-            "License": "not found",
-            "Permission to redistribute": false,
-            "Retrieved from": "not found"
+            "License": "Apache-1.0",
+            "Permission to redistribute": true,
+            "Retrieved from": "https://pypi.org/project/trove-classifiers/"
         }
     },
     "hatchling/1.18.0-GCCcore-12.3.0": {
@@ -3972,20 +3972,20 @@
         },
         "hatch-requirements-txt": {
             "License": [
-                "Other"
+                "MIT"
             ],
-            "Permission to redistribute": false,
+            "Permission to redistribute": true,
             "Retrieved from": "https://github.com/repo-helper/hatch-requirements-txt"
         },
         "hatch_fancy_pypi_readme": {
-            "License": "not found",
-            "Permission to redistribute": false,
-            "Retrieved from": "not found"
+            "License": "MIT",
+            "Permission to redistribute": true,
+            "Retrieved from": "https://pypi.org/project/hatch-fancy-pypi-readme/"
         },
         "hatch_vcs": {
-            "License": "not found",
-            "Permission to redistribute": false,
-            "Retrieved from": "not found"
+            "License": "MIT",
+            "Permission to redistribute": true,
+            "Retrieved from": "https://pypi.org/project/hatch-vcs/"
         },
         "hatchling": {
             "License": [
@@ -4009,9 +4009,9 @@
             "Retrieved from": "https://github.com/pytest-dev/pluggy"
         },
         "trove_classifiers": {
-            "License": "not found",
-            "Permission to redistribute": false,
-            "Retrieved from": "not found"
+            "License": "Apache-1.0",
+            "Permission to redistribute": true,
+            "Retrieved from": "https://pypi.org/project/trove-classifiers/"
         }
     },
     "scikit-build/0.17.6-GCCcore-12.3.0": {
@@ -4031,9 +4031,9 @@
             "Retrieved from": "https://github.com/pypa/packaging"
         },
         "scikit_build": {
-            "License": "not found",
-            "Permission to redistribute": false,
-            "Retrieved from": "not found"
+            "License": "MIT",
+            "Permission to redistribute": true,
+            "Retrieved from": "https://pypi.org/project/scikit-build/"
         }
     },
     "scikit-build/0.17.6-GCCcore-13.2.0": {
@@ -4053,9 +4053,9 @@
             "Retrieved from": "https://github.com/pypa/packaging"
         },
         "scikit_build": {
-            "License": "not found",
-            "Permission to redistribute": false,
-            "Retrieved from": "not found"
+            "License": "MIT",
+            "Permission to redistribute": true,
+            "Retrieved from": "https://pypi.org/project/scikit-build/"
         }
     },
     "flit/3.9.0-GCCcore-12.3.0": {
@@ -4081,7 +4081,7 @@
                 "Unlicense"
             ],
             "Permission to redistribute": true,
-            "Retrieved from": null
+            "Retrieved from": "https://pypi.org/project/docutils/"
         },
         "flit": {
             "License": [
@@ -4091,9 +4091,9 @@
             "Retrieved from": "https://github.com/pypa/flit"
         },
         "flit_scm": {
-            "License": "not found",
-            "Permission to redistribute": false,
-            "Retrieved from": "not found"
+            "License": "MIT",
+            "Permission to redistribute": true,
+            "Retrieved from": "https://pypi.org/project/flit-scm/"
         },
         "idna": {
             "License": [
@@ -4118,19 +4118,21 @@
             "Retrieved from": "https://github.com/psf/requests"
         },
         "setuptools_scm": {
-            "License": "not found",
-            "Permission to redistribute": false,
-            "Retrieved from": "not found"
+            "License": "MIT",
+            "Permission to redistribute": true,
+            "Retrieved from": "https://pypi.org/project/setuptools-scm/"
         },
         "tomli_w": {
-            "License": "not found",
-            "Permission to redistribute": false,
-            "Retrieved from": "not found"
+            "License": "MIT",
+            "Permission to redistribute": true,
+            "Retrieved from": "https://pypi.org/project/tomli-w/"
         },
-        "typing_extensions": {
-            "License": "not found",
-            "Permission to redistribute": false,
-            "Retrieved from": "not found"
+        "typing-extensions": {
+            "License": [
+                "GPL-1.0+"
+            ],
+            "Permission to redistribute": true,
+            "Retrieved from": "https://github.com/python/typing_extensions"
         },
         "urllib3": {
             "License": [
@@ -4138,7 +4140,7 @@
             ],
             "Permission to redistribute": true,
             "Retrieved from": "https://github.com/urllib3/urllib3"
-        }
+        },
     },
     "flit/3.9.0-GCCcore-13.2.0": {
         "certifi": {
@@ -4163,7 +4165,7 @@
                 "Unlicense"
             ],
             "Permission to redistribute": true,
-            "Retrieved from": null
+            "Retrieved from": "https://pypi.org/project/docutils/"
         },
         "flit": {
             "License": [
@@ -4173,9 +4175,9 @@
             "Retrieved from": "https://github.com/pypa/flit"
         },
         "flit_scm": {
-            "License": "not found",
-            "Permission to redistribute": false,
-            "Retrieved from": "not found"
+            "License": "MIT",
+            "Permission to redistribute": true,
+            "Retrieved from": "https://pypi.org/project/flit-scm/"
         },
         "idna": {
             "License": [
@@ -4199,22 +4201,22 @@
             "Permission to redistribute": true,
             "Retrieved from": "https://github.com/psf/requests"
         },
-        "setuptools-scm": {
-            "License": [
-                "Other"
-            ],
-            "Permission to redistribute": false,
-            "Retrieved from": "https://github.com/pypa/setuptools-scm"
+        "setuptools_scm": {
+            "License": "MIT",
+            "Permission to redistribute": true,
+            "Retrieved from": "https://pypi.org/project/setuptools-scm/"
         },
         "tomli_w": {
-            "License": "not found",
-            "Permission to redistribute": false,
-            "Retrieved from": "not found"
+            "License": "MIT",
+            "Permission to redistribute": true,
+            "Retrieved from": "https://pypi.org/project/tomli-w/"
         },
-        "typing_extensions": {
-            "License": "not found",
-            "Permission to redistribute": false,
-            "Retrieved from": "not found"
+        "typing-extensions": {
+            "License": [
+                "GPL-1.0+"
+            ],
+            "Permission to redistribute": true,
+            "Retrieved from": "https://github.com/python/typing_extensions"
         },
         "urllib3": {
             "License": [
@@ -4229,7 +4231,7 @@
             "License": [
                 "PSF-2.0"
             ],
-            "Permission to redistribute": false,
+            "Permission to redistribute": true,
             "Retrieved from": "https://github.com/pypa/distlib"
         },
         "filelock": {
@@ -4259,7 +4261,7 @@
             "License": [
                 "PSF-2.0"
             ],
-            "Permission to redistribute": false,
+            "Permission to redistribute": true,
             "Retrieved from": "https://github.com/pypa/distlib"
         },
         "filelock": {
@@ -4286,9 +4288,9 @@
     },
     "setuptools-rust/1.6.0-GCCcore-12.3.0": {
         "semantic_version": {
-            "License": "not found",
-            "Permission to redistribute": false,
-            "Retrieved from": "not found"
+            "License": "BSD",
+            "Permission to redistribute": true,
+            "Retrieved from": "https://pypi.org/project/semantic-version/"
         },
         "setuptools-rust": {
             "License": [
@@ -4297,17 +4299,19 @@
             "Permission to redistribute": true,
             "Retrieved from": "https://github.com/PyO3/setuptools-rust"
         },
-        "typing_extensions": {
-            "License": "not found",
-            "Permission to redistribute": false,
-            "Retrieved from": "not found"
-        }
+        "typing-extensions": {
+            "License": [
+                "GPL-1.0+"
+            ],
+            "Permission to redistribute": true,
+            "Retrieved from": "https://github.com/python/typing_extensions"
+        },
     },
     "setuptools-rust/1.8.0-GCCcore-13.2.0": {
         "semantic_version": {
-            "License": "not found",
-            "Permission to redistribute": false,
-            "Retrieved from": "not found"
+            "License": "BSD",
+            "Permission to redistribute": true,
+            "Retrieved from": "https://pypi.org/project/semantic-version/"
         },
         "setuptools-rust": {
             "License": [
@@ -4316,11 +4320,13 @@
             "Permission to redistribute": true,
             "Retrieved from": "https://github.com/PyO3/setuptools-rust"
         },
-        "typing_extensions": {
-            "License": "not found",
-            "Permission to redistribute": false,
-            "Retrieved from": "not found"
-        }
+        "typing-extensions": {
+            "License": [
+                "GPL-1.0+"
+            ],
+            "Permission to redistribute": true,
+            "Retrieved from": "https://github.com/python/typing_extensions"
+        },
     },
     "cffi/1.15.1-GCCcore-12.3.0": {
         "cffi": {
@@ -4369,10 +4375,12 @@
             "Permission to redistribute": true,
             "Retrieved from": "https://github.com/pypa/build"
         },
-        "CacheControl": {
-            "License": "not found",
-            "Permission to redistribute": false,
-            "Retrieved from": "not found"
+        "cachecontrol": {
+            "License": [
+                "Apache-2.0"
+            ],
+            "Permission to redistribute": true,
+            "Retrieved from": "https://github.com/psf/cachecontrol"
         },
         "certifi": {
             "License": [
@@ -4425,10 +4433,12 @@
             "Permission to redistribute": true,
             "Retrieved from": "https://github.com/kjd/idna"
         },
-        "importlib_metadata": {
-            "License": "not found",
-            "Permission to redistribute": false,
-            "Retrieved from": "not found"
+        "importlib-metadata": {
+            "License": [
+                "Apache-2.0"
+            ],
+            "Permission to redistribute": true,
+            "Retrieved from": "https://github.com/python/importlib_metadata"
         },
         "installer": {
             "License": [
@@ -4470,7 +4480,7 @@
                 "MIT"
             ],
             "Permission to redistribute": true,
-            "Retrieved from": null
+            "Retrieved from": "https://pypi.org/project/lockfile/"
         },
         "more-itertools": {
             "License": [
@@ -4498,7 +4508,7 @@
                 "MIT"
             ],
             "Permission to redistribute": true,
-            "Retrieved from": null
+            "Retrieved from": "https://pypi.org/project/pkginfo/"
         },
         "platformdirs": {
             "License": [
@@ -4515,14 +4525,14 @@
             "Retrieved from": "https://github.com/python-poetry/poetry"
         },
         "poetry_core": {
-            "License": "not found",
-            "Permission to redistribute": false,
-            "Retrieved from": "not found"
+            "License": "MIT",
+            "Permission to redistribute": true,
+            "Retrieved from": "https://pypi.org/project/poetry-core/"
         },
         "poetry_plugin_export": {
-            "License": "not found",
-            "Permission to redistribute": false,
-            "Retrieved from": "not found"
+            "License": "MIT",
+            "Permission to redistribute": true,
+            "Retrieved from": "https://pypi.org/project/poetry-plugin-export/"
         },
         "ptyprocess": {
             "License": [
@@ -4532,9 +4542,9 @@
             "Retrieved from": "https://github.com/pexpect/ptyprocess"
         },
         "pyproject_hooks": {
-            "License": "not found",
-            "Permission to redistribute": false,
-            "Retrieved from": "not found"
+            "License": "MIT",
+            "Permission to redistribute": true,
+            "Retrieved from": "https://pypi.org/project/pyproject-hooks/"
         },
         "pyrsistent": {
             "License": [
@@ -4565,9 +4575,9 @@
             "Retrieved from": "https://github.com/psf/requests"
         },
         "SecretStorage": {
-            "License": "not found",
-            "Permission to redistribute": false,
-            "Retrieved from": "not found"
+            "License": "BSD-3-Clause",
+            "Permission to redistribute": true,
+            "Retrieved from": "https://pypi.org/pypi/SecretStorage/json"
         },
         "shellingham": {
             "License": [
@@ -4685,10 +4695,12 @@
             "Permission to redistribute": true,
             "Retrieved from": "https://github.com/kjd/idna"
         },
-        "importlib_metadata": {
-            "License": "not found",
-            "Permission to redistribute": false,
-            "Retrieved from": "not found"
+        "importlib-metadata": {
+            "License": [
+                "Apache-2.0"
+            ],
+            "Permission to redistribute": true,
+            "Retrieved from": "https://github.com/python/importlib_metadata"
         },
         "installer": {
             "License": [
@@ -4730,7 +4742,7 @@
                 "MIT"
             ],
             "Permission to redistribute": true,
-            "Retrieved from": null
+            "Retrieved from": "https://pypi.org/project/lockfile/"
         },
         "more-itertools": {
             "License": [
@@ -4758,7 +4770,7 @@
                 "MIT"
             ],
             "Permission to redistribute": true,
-            "Retrieved from": null
+            "Retrieved from": "https://pypi.org/project/pkginfo"
         },
         "platformdirs": {
             "License": [
@@ -4775,14 +4787,14 @@
             "Retrieved from": "https://github.com/python-poetry/poetry"
         },
         "poetry_core": {
-            "License": "not found",
-            "Permission to redistribute": false,
-            "Retrieved from": "not found"
+            "License": "MIT",
+            "Permission to redistribute": true,
+            "Retrieved from": "https://pypi.org/project/poetry-core/"
         },
         "poetry_plugin_export": {
-            "License": "not found",
-            "Permission to redistribute": false,
-            "Retrieved from": "not found"
+            "License": "MIT",
+            "Permission to redistribute": true,
+            "Retrieved from": "https://pypi.org/project/poetry-plugin-export/"
         },
         "ptyprocess": {
             "License": [
@@ -4792,9 +4804,9 @@
             "Retrieved from": "https://github.com/pexpect/ptyprocess"
         },
         "pyproject_hooks": {
-            "License": "not found",
-            "Permission to redistribute": false,
-            "Retrieved from": "not found"
+            "License": "MIT",
+            "Permission to redistribute": true,
+            "Retrieved from": "https://pypi.org/project/pyproject-hooks/"
         },
         "pyrsistent": {
             "License": [
@@ -4825,9 +4837,9 @@
             "Retrieved from": "https://github.com/psf/requests"
         },
         "SecretStorage": {
-            "License": "not found",
-            "Permission to redistribute": false,
-            "Retrieved from": "not found"
+            "License": "BSD-3-Clause",
+            "Permission to redistribute": true,
+            "Retrieved from": "https://pypi.org/pypi/SecretStorage/json"
         },
         "shellingham": {
             "License": [
@@ -5039,7 +5051,7 @@
             "License": [
                 "PSF-2.0"
             ],
-            "Permission to redistribute": false,
+            "Permission to redistribute": true,
             "Retrieved from": "https://github.com/pypa/distlib"
         },
         "distro": {
@@ -5198,7 +5210,7 @@
             "License": [
                 "PSF-2.0"
             ],
-            "Permission to redistribute": false,
+            "Permission to redistribute": true,
             "Retrieved from": "https://github.com/phihag/ipaddress"
         },
         "jaraco.classes": {
@@ -5761,7 +5773,7 @@
             "License": [
                 "PSF-2.0"
             ],
-            "Permission to redistribute": false,
+            "Permission to redistribute": true,
             "Retrieved from": "https://gitlab.com/takluyver/zipfile36"
         },
         "zipp": {
@@ -5831,7 +5843,7 @@
             "License": [
                 "PSF-2.0"
             ],
-            "Permission to redistribute": false,
+            "Permission to redistribute": true,
             "Retrieved from": "https://github.com/ilanschnell/bitarray"
         },
         "bitstring": {
@@ -5948,7 +5960,7 @@
             "License": [
                 "PSF-2.0"
             ],
-            "Permission to redistribute": false,
+            "Permission to redistribute": true,
             "Retrieved from": "https://github.com/pypa/distlib"
         },
         "distro": {
@@ -6107,7 +6119,7 @@
             "License": [
                 "PSF-2.0"
             ],
-            "Permission to redistribute": false,
+            "Permission to redistribute": true,
             "Retrieved from": "https://github.com/phihag/ipaddress"
         },
         "jaraco.classes": {
@@ -6668,7 +6680,7 @@
             "License": [
                 "PSF-2.0"
             ],
-            "Permission to redistribute": false,
+            "Permission to redistribute": true,
             "Retrieved from": "https://gitlab.com/takluyver/zipfile36"
         },
         "zipp": {
@@ -7046,9 +7058,9 @@
             "Retrieved from": "https://github.com/keras-team/keras"
         },
         "Markdown": {
-            "License": "not found",
-            "Permission to redistribute": false,
-            "Retrieved from": "not found"
+            "License": "BSD-3-Clause",
+            "Permission to redistribute": true,
+            "Retrieved from": "https://pypi.org/project/Markdown/"
         },
         "oauthlib": {
             "License": [
@@ -7135,9 +7147,9 @@
             "Retrieved from": "https://github.com/tensorflow/estimator"
         },
         "TensorFlow": {
-            "License": "not found",
-            "Permission to redistribute": false,
-            "Retrieved from": "not found"
+            "License": "Apache-2.0",
+            "Permission to redistribute": true,
+            "Retrieved from": "https://pypi.org/project/tensorflow/"
         },
         "termcolor": {
             "License": [
@@ -7147,9 +7159,9 @@
             "Retrieved from": "https://github.com/termcolor/termcolor"
         },
         "Werkzeug": {
-            "License": "not found",
-            "Permission to redistribute": false,
-            "Retrieved from": "not found"
+            "License": "BSD",
+            "Permission to redistribute": true,
+            "Retrieved from": "https://pypi.org/project/Werkzeug/"
         },
         "wrapt": {
             "License": [
@@ -7161,26 +7173,26 @@
     },
     "Mako/1.2.4-GCCcore-12.3.0": {
         "Mako": {
-            "License": "not found",
-            "Permission to redistribute": false,
-            "Retrieved from": "not found"
+            "License": "MIT",
+            "Permission to redistribute": true,
+            "Retrieved from": "https://pypi.org/project/Mako/"
         },
         "MarkupSafe": {
-            "License": "not found",
-            "Permission to redistribute": false,
-            "Retrieved from": "not found"
+            "License": "BSD",
+            "Permission to redistribute": true,
+            "Retrieved from": "https://pypi.org/project/MarkupSafe/"
         }
     },
     "Mako/1.2.4-GCCcore-13.2.0": {
         "Mako": {
-            "License": "not found",
-            "Permission to redistribute": false,
-            "Retrieved from": "not found"
+            "License": "MIT",
+            "Permission to redistribute": true,
+            "Retrieved from": "https://pypi.org/project/Mako/"
         },
         "MarkupSafe": {
-            "License": "not found",
-            "Permission to redistribute": false,
-            "Retrieved from": "not found"
+            "License": "BSD",
+            "Permission to redistribute": true,
+            "Retrieved from": "https://pypi.org/project/MarkupSafe/"
         }
     },
     "R/4.3.2-gfbf-2023a": {
@@ -7192,9 +7204,9 @@
             "Retrieved from": "https://r-lib.r-universe.dev/askpass"
         },
         "base": {
-            "License": "not found",
-            "Permission to redistribute": false,
-            "Retrieved from": "not found"
+            "License": "GPL-2.0-or-later",
+            "Permission to redistribute": true,
+            "Retrieved from": "https://search.r-project.org/R/refmans/base/html/base-package.html"
         },
         "base64enc": {
             "License": [
@@ -7260,9 +7272,9 @@
             "Retrieved from": "https://docs.ropensci.org/commonmark/\nhttps://ropensci.r-universe.dev/commonmark"
         },
         "compiler": {
-            "License": "not found",
-            "Permission to redistribute": false,
-            "Retrieved from": "not found"
+            "License": "GPL-2.0-or-later",
+            "Permission to redistribute": true,
+            "Retrieved from": "https://search.r-project.org/R/refmans/compiler/html/  compiler-package.html"
         },
         "cpp11": {
             "License": [
@@ -7293,9 +7305,9 @@
             "Retrieved from": "https://jeroen.r-universe.dev/curl"
         },
         "datasets": {
-            "License": "not found",
-            "Permission to redistribute": false,
-            "Retrieved from": "not found"
+            "License": "GPL-2.0-or-later",
+            "Permission to redistribute": true,
+            "Retrieved from": "https://search.r-project.org/R/refmans/datasets/html/datasets-package.html"
         },
         "desc": {
             "License": [
@@ -7403,19 +7415,19 @@
             "Retrieved from": "https://github.com/tidyverse/glue"
         },
         "graphics": {
-            "License": "not found",
-            "Permission to redistribute": false,
-            "Retrieved from": "not found"
+            "License": "GPL-2.0-or-later",
+            "Permission to redistribute": true,
+            "Retrieved from": "https://search.r-project.org/R/refmans/graphics/html/graphics-package.html"
         },
         "grDevices": {
-            "License": "not found",
-            "Permission to redistribute": false,
-            "Retrieved from": "not found"
+            "License": "GPL-2.0-or-later",
+            "Permission to redistribute": true,
+            "Retrieved from": "https://search.r-project.org/R/refmans/grDevices/html/grDevices-package.html"
         },
         "grid": {
-            "License": "not found",
-            "Permission to redistribute": false,
-            "Retrieved from": "not found"
+            "License": "GPL-2.0-or-later",
+            "Permission to redistribute": true,
+            "Retrieved from": "https://search.r-project.org/R/refmans/grid/html/grid-package.html"
         },
         "highr": {
             "License": [
@@ -7442,7 +7454,7 @@
             "License": [
                 "Sendmail"
             ],
-            "Permission to redistribute": false,
+            "Permission to redistribute": true,
             "Retrieved from": "https://github.com/rstudio/httpuv"
         },
         "httr": {
@@ -7516,9 +7528,9 @@
             "Retrieved from": "https://github.com/r-lib/memoise"
         },
         "methods": {
-            "License": "not found",
-            "Permission to redistribute": false,
-            "Retrieved from": "not found"
+            "License": "GPL-2.0-or-later",
+            "Permission to redistribute": true,
+            "Retrieved from": "https://search.r-project.org/R/refmans/methods/html/methods-package.html"
         },
         "mime": {
             "License": [
@@ -7542,9 +7554,9 @@
             "Retrieved from": "https://jeroen.r-universe.dev/openssl"
         },
         "parallel": {
-            "License": "not found",
-            "Permission to redistribute": false,
-            "Retrieved from": "not found"
+            "License": "GPL-2.0-or-later",
+            "Permission to redistribute": true,
+            "Retrieved from": "https://search.r-project.org/R/refmans/parallel/html/parallel-package.html"
         },
         "pillar": {
             "License": [
@@ -7750,25 +7762,25 @@
             "Retrieved from": "https://github.com/kevinushey/sourcetools"
         },
         "splines": {
-            "License": "not found",
-            "Permission to redistribute": false,
-            "Retrieved from": "not found"
+            "License": "GPL-2.0-or-later",
+            "Permission to redistribute": true,
+            "Retrieved from": "https://search.r-project.org/R/refmans/splines/html/splines-package.html"
         },
         "stats": {
-            "License": "not found",
-            "Permission to redistribute": false,
-            "Retrieved from": "not found"
+            "License": "GPL-2.0-or-later",
+            "Permission to redistribute": true,
+            "Retrieved from": "https://search.r-project.org/R/refmans/stats/html/stats-package.html"
         },
         "stats4": {
-            "License": "not found",
-            "Permission to redistribute": false,
-            "Retrieved from": "not found"
+            "License": "GPL-2.0-or-later",
+            "Permission to redistribute": true,
+            "Retrieved from": "https://search.r-project.org/R/refmans/stats4/html/stats4-package.html"
         },
         "stringi": {
             "License": [
                 "MIT-feh"
             ],
-            "Permission to redistribute": false,
+            "Permission to redistribute": true,
             "Retrieved from": "https://stringi.gagolewski.com/"
         },
         "stringr": {
@@ -7793,9 +7805,9 @@
             "Retrieved from": "https://github.com/r-lib/systemfonts"
         },
         "tcltk": {
-            "License": "not found",
-            "Permission to redistribute": false,
-            "Retrieved from": "not found"
+            "License": "GPL-2.0-or-later",
+            "Permission to redistribute": true,
+            "Retrieved from": "https://search.r-project.org/R/refmans/tcltk/html/tcltk-package.html"
         },
         "testthat": {
             "License": [
@@ -7826,9 +7838,9 @@
             "Retrieved from": "https://github.com/rstudio/tinytex"
         },
         "tools": {
-            "License": "not found",
-            "Permission to redistribute": false,
-            "Retrieved from": "not found"
+            "License": "GPL-2.0-or-later",
+            "Permission to redistribute": true,
+            "Retrieved from": "https://search.r-project.org/R/refmans/tools/html/tools-package.html"
         },
         "urlchecker": {
             "License": [
@@ -7852,9 +7864,9 @@
             "Retrieved from": "https://github.com/patperry/r-utf8"
         },
         "utils": {
-            "License": "not found",
-            "Permission to redistribute": false,
-            "Retrieved from": "not found"
+            "License": "GPL-2.0-or-later",
+            "Permission to redistribute": true,
+            "Retrieved from": "https://search.r-project.org/R/refmans/utils/html/utils-package.html"
         },
         "vctrs": {
             "License": [
@@ -17040,9 +17052,9 @@
     "meson-python/0.15.0-GCCcore-13.2.0": {
         "meson-python": {
             "License": [
-                "Other"
+                "MIT"
             ],
-            "Permission to redistribute": false,
+            "Permission to redistribute": true,
             "Retrieved from": "https://github.com/mesonbuild/meson-python"
         },
         "pyproject-metadata": {
@@ -17056,9 +17068,9 @@
     "meson-python/0.13.2-GCCcore-12.3.0": {
         "meson-python": {
             "License": [
-                "Other"
+                "MIT"
             ],
-            "Permission to redistribute": false,
+            "Permission to redistribute": true,
             "Retrieved from": "https://github.com/mesonbuild/meson-python"
         },
         "pyproject-metadata": {
@@ -17072,9 +17084,9 @@
     "meson-python/0.15.0-GCCcore-12.3.0": {
         "meson-python": {
             "License": [
-                "Other"
+                "MIT"
             ],
-            "Permission to redistribute": false,
+            "Permission to redistribute": true,
             "Retrieved from": "https://github.com/mesonbuild/meson-python"
         },
         "pyproject-metadata": {
@@ -17088,9 +17100,9 @@
     "meson-python/0.11.0-GCCcore-12.2.0": {
         "meson-python": {
             "License": [
-                "Other"
+                "MIT"
             ],
-            "Permission to redistribute": false,
+            "Permission to redistribute": true,
             "Retrieved from": "https://github.com/mesonbuild/meson-python"
         },
         "pyproject-metadata": {
@@ -17124,16 +17136,16 @@
             "Retrieved from": "https://github.com/hgrecco/flexparser"
         },
         "Pint": {
-            "License": "not found",
-            "Permission to redistribute": false,
-            "Retrieved from": "not found"
+            "License": "BSD",
+            "Permission to redistribute": true,
+            "Retrieved from": "https://pypi.org/project/Pint/"
         }
     },
     "BeautifulSoup/4.12.2-GCCcore-12.3.0": {
         "BeautifulSoup": {
-            "License": "not found",
+            "License": "MIT",
             "Permission to redistribute": false,
-            "Retrieved from": "not found"
+            "Retrieved from": "https://pypi.org/project/BeautifulSoup/"
         },
         "soupsieve": {
             "License": [
@@ -17181,9 +17193,9 @@
         },
         "matplotlib-inline": {
             "License": [
-                "Other"
+                "BSD-3-Clause"
             ],
-            "Permission to redistribute": false,
+            "Permission to redistribute": true,
             "Retrieved from": "https://github.com/ipython/matplotlib-inline"
         },
         "parso": {
@@ -17201,19 +17213,19 @@
             "Retrieved from": "https://github.com/pickleshare/pickleshare"
         },
         "prompt_toolkit": {
-            "License": "not found",
+            "License": "BSD",
             "Permission to redistribute": false,
-            "Retrieved from": "not found"
+            "Retrieved from": "https://pypi.org/project/prompt-toolkit/"
         },
         "pure_eval": {
-            "License": "not found",
-            "Permission to redistribute": false,
-            "Retrieved from": "not found"
+            "License": "MIT",
+            "Permission to redistribute": true,
+            "Retrieved from": "https://pypi.org/project/pure-eval/"
         },
         "stack_data": {
-            "License": "not found",
+            "License": "MIT",
             "Permission to redistribute": false,
-            "Retrieved from": "not found"
+            "Retrieved from": "https://pypi.org/project/stack-data/"
         },
         "traitlets": {
             "License": [
@@ -17254,9 +17266,9 @@
         },
         "matplotlib-inline": {
             "License": [
-                "Other"
+                "BSD-3-Clause"
             ],
-            "Permission to redistribute": false,
+            "Permission to redistribute": true,
             "Retrieved from": "https://github.com/ipython/matplotlib-inline"
         },
         "pickleshare": {
@@ -17267,19 +17279,19 @@
             "Retrieved from": "https://github.com/pickleshare/pickleshare"
         },
         "prompt_toolkit": {
-            "License": "not found",
+            "License": "BSD",
             "Permission to redistribute": false,
-            "Retrieved from": "not found"
+            "Retrieved from": "https://pypi.org/project/prompt-toolkit/"
         },
         "pure_eval": {
-            "License": "not found",
-            "Permission to redistribute": false,
-            "Retrieved from": "not found"
+            "License": "MIT",
+            "Permission to redistribute": true,
+            "Retrieved from": "https://pypi.org/project/pure-eval/"
         },
         "stack_data": {
-            "License": "not found",
+            "License": "MIT",
             "Permission to redistribute": false,
-            "Retrieved from": "not found"
+            "Retrieved from": "https://pypi.org/project/stack-data/"
         },
         "traitlets": {
             "License": [
@@ -17345,15 +17357,15 @@
     "matplotlib/3.8.2-gfbf-2023b": {
         "contourpy": {
             "License": [
-                "Other"
+                "BSD-3-Clause"
             ],
-            "Permission to redistribute": false,
+            "Permission to redistribute": true,
             "Retrieved from": "https://github.com/contourpy/contourpy"
         },
         "Cycler": {
-            "License": "not found",
-            "Permission to redistribute": false,
-            "Retrieved from": "not found"
+            "License": "BSD",
+            "Permission to redistribute": true,
+            "Retrieved from": "https://pypi.org/project/cycler/"
         },
         "fonttools": {
             "License": [
@@ -17364,31 +17376,31 @@
         },
         "kiwisolver": {
             "License": [
-                "Other"
+                "BSD"
             ],
-            "Permission to redistribute": false,
+            "Permission to redistribute": true,
             "Retrieved from": "https://github.com/nucleic/kiwi"
         },
         "matplotlib": {
             "License": [
-                "Other"
+                "PSF-2.0"
             ],
-            "Permission to redistribute": false,
+            "Permission to redistribute": true,
             "Retrieved from": "https://github.com/matplotlib/matplotlib"
         }
     },
     "matplotlib/3.7.2-gfbf-2023a": {
         "contourpy": {
             "License": [
-                "Other"
+                "BSD-3-Clause"
             ],
-            "Permission to redistribute": false,
+            "Permission to redistribute": true,
             "Retrieved from": "https://github.com/contourpy/contourpy"
         },
         "Cycler": {
-            "License": "not found",
-            "Permission to redistribute": false,
-            "Retrieved from": "not found"
+            "License": "BSD",
+            "Permission to redistribute": true,
+            "Retrieved from": "https://pypi.org/project/cycler/"
         },
         "fonttools": {
             "License": [
@@ -17399,31 +17411,31 @@
         },
         "kiwisolver": {
             "License": [
-                "Other"
+                "BSD"
             ],
-            "Permission to redistribute": false,
+            "Permission to redistribute": true,
             "Retrieved from": "https://github.com/nucleic/kiwi"
         },
         "matplotlib": {
             "License": [
-                "Other"
+                "PSF-2.0"
             ],
-            "Permission to redistribute": false,
+            "Permission to redistribute": true,
             "Retrieved from": "https://github.com/matplotlib/matplotlib"
         }
     },
     "matplotlib/3.7.0-gfbf-2022b": {
         "contourpy": {
             "License": [
-                "Other"
+                "BSD-3-Clause"
             ],
-            "Permission to redistribute": false,
+            "Permission to redistribute": true,
             "Retrieved from": "https://github.com/contourpy/contourpy"
         },
         "Cycler": {
-            "License": "not found",
-            "Permission to redistribute": false,
-            "Retrieved from": "not found"
+            "License": "BSD",
+            "Permission to redistribute": true,
+            "Retrieved from": "https://pypi.org/project/cycler/"
         },
         "fonttools": {
             "License": [
@@ -17434,16 +17446,16 @@
         },
         "kiwisolver": {
             "License": [
-                "Other"
+                "BSD"
             ],
-            "Permission to redistribute": false,
+            "Permission to redistribute": true,
             "Retrieved from": "https://github.com/nucleic/kiwi"
         },
         "matplotlib": {
             "License": [
-                "Other"
+                "PSF-2.0"
             ],
-            "Permission to redistribute": false,
+            "Permission to redistribute": true,
             "Retrieved from": "https://github.com/matplotlib/matplotlib"
         }
     },
@@ -17468,29 +17480,29 @@
     "scikit-learn/1.3.1-gfbf-2023a": {
         "scikit-learn": {
             "License": [
-                "Other"
+                "BSD-3-Clause"
             ],
-            "Permission to redistribute": false,
+            "Permission to redistribute": true,
             "Retrieved from": "https://github.com/scikit-learn/scikit-learn"
         },
         "sklearn": {
-            "License": [],
-            "Permission to redistribute": false,
-            "Retrieved from": null
+            "License": ["BSD-3-Clause"],
+            "Permission to redistribute": true,
+            "Retrieved from": "https://pypi.org/project/sklearn/"
         }
     },
     "scikit-learn/1.4.0-gfbf-2023b": {
         "scikit-learn": {
             "License": [
-                "Other"
+                "BSD-3-Clause"
             ],
-            "Permission to redistribute": false,
+            "Permission to redistribute": true,
             "Retrieved from": "https://github.com/scikit-learn/scikit-learn"
         },
         "sklearn": {
-            "License": [],
-            "Permission to redistribute": false,
-            "Retrieved from": null
+            "License": ["BSD-3-Clause"],
+            "Permission to redistribute": true,
+            "Retrieved from": "https://pypi.org/project/sklearn/"
         }
     },
     "GitPython/3.1.40-GCCcore-12.3.0": {
@@ -17502,9 +17514,9 @@
             "Retrieved from": "https://github.com/gitpython-developers/gitdb"
         },
         "GitPython": {
-            "License": "not found",
-            "Permission to redistribute": false,
-            "Retrieved from": "not found"
+            "License": "BSD-3-Clause",
+            "Permission to redistribute": true,
+            "Retrieved from": "https://pypi.org/project/GitPython/"
         },
         "smmap": {
             "License": [
@@ -17532,19 +17544,19 @@
             "Retrieved from": "https://github.com/mivade/argparse_dataclass"
         },
         "conda-inject": {
-            "License": [],
+            "License": ["unknown"],
             "Permission to redistribute": false,
-            "Retrieved from": null
+            "Retrieved from": "https://pypi.org/project/conda-inject/"
         },
         "ConfigArgParse": {
-            "License": "not found",
-            "Permission to redistribute": false,
-            "Retrieved from": "not found"
+            "License": "MIT",
+            "Permission to redistribute": true,
+            "Retrieved from": "https://pypi.org/project/ConfigArgParse/"
         },
         "connection-pool": {
-            "License": "not found",
-            "Permission to redistribute": false,
-            "Retrieved from": "not found"
+            "License": "MIT",
+            "Permission to redistribute": true,
+            "Retrieved from": "https://pypi.org/project/connection_pool/"
         },
         "datrie": {
             "License": [
@@ -17583,16 +17595,16 @@
         },
         "jupyter-core": {
             "License": [
-                "Other"
+                "BSD-3-Clause"
             ],
-            "Permission to redistribute": false,
+            "Permission to redistribute": true,
             "Retrieved from": "https://github.com/jupyter/jupyter_core"
         },
         "nbformat": {
             "License": [
-                "Other"
+                "BSD-3-Clause"
             ],
-            "Permission to redistribute": false,
+            "Permission to redistribute": true,
             "Retrieved from": "https://github.com/jupyter/nbformat"
         },
         "plac": {
@@ -17652,9 +17664,9 @@
             "Retrieved from": "https://github.com/snakemake/snakemake-plugin-catalog"
         },
         "snakemake-interface-common": {
-            "License": [],
-            "Permission to redistribute": false,
-            "Retrieved from": null
+            "License": ["MIT"],
+            "Permission to redistribute": true,
+            "Retrieved from": "https://anaconda.org/bioconda/snakemake-interface-common"
         },
         "snakemake-interface-executor-plugins": {
             "License": [
@@ -17708,24 +17720,24 @@
     },
     "PyQt-builder/1.15.4-GCCcore-12.3.0": {
         "PyQt-builder": {
-            "License": "not found",
-            "Permission to redistribute": false,
-            "Retrieved from": "not found"
+            "License": "BSD",
+            "Permission to redistribute": true,
+            "Retrieved from": "https://pypi.org/project/PyQt-builder/"
         }
     },
     "bokeh/3.2.2-foss-2023a": {
         "bokeh": {
             "License": [
-                "Other"
+                "BSD"
             ],
-            "Permission to redistribute": false,
+            "Permission to redistribute": true,
             "Retrieved from": "https://github.com/bokeh/bokeh"
         },
         "contourpy": {
             "License": [
-                "Other"
+                "BSD-3-Clause"
             ],
-            "Permission to redistribute": false,
+            "Permission to redistribute": true,
             "Retrieved from": "https://github.com/contourpy/contourpy"
         },
         "xyzservices": {
@@ -17739,16 +17751,16 @@
     "bokeh/3.2.1-foss-2022b": {
         "bokeh": {
             "License": [
-                "Other"
+                "BSD"
             ],
-            "Permission to redistribute": false,
+            "Permission to redistribute": true,
             "Retrieved from": "https://github.com/bokeh/bokeh"
         },
         "contourpy": {
             "License": [
-                "Other"
+                "BSD-3-Clause"
             ],
-            "Permission to redistribute": false,
+            "Permission to redistribute": true,
             "Retrieved from": "https://github.com/contourpy/contourpy"
         },
         "tornado": {
@@ -17803,9 +17815,9 @@
             "Retrieved from": "https://github.com/Chilipp/docrep"
         },
         "HeapDict": {
-            "License": "not found",
-            "Permission to redistribute": false,
-            "Retrieved from": "not found"
+            "License": "BSD",
+            "Permission to redistribute": true,
+            "Retrieved from": "https://pypi.org/project/HeapDict/"
         },
         "locket": {
             "License": [
@@ -17840,7 +17852,7 @@
                 "BSD-3-Clause"
             ],
             "Permission to redistribute": true,
-            "Retrieved from": null
+            "Retrieved from": "https://pypi.org/project/zict/"
         }
     },
     "dask/2023.7.1-foss-2022b": {
@@ -17880,9 +17892,9 @@
             "Retrieved from": "https://github.com/Chilipp/docrep"
         },
         "HeapDict": {
-            "License": "not found",
-            "Permission to redistribute": false,
-            "Retrieved from": "not found"
+            "License": "BSD",
+            "Permission to redistribute": true,
+            "Retrieved from": "https://pypi.org/project/HeapDict/"
         },
         "locket": {
             "License": [
@@ -17914,9 +17926,9 @@
         },
         "versioneer": {
             "License": [
-                "Other"
+                "Unlicense"
             ],
-            "Permission to redistribute": false,
+            "Permission to redistribute": true,
             "Retrieved from": "https://github.com/python-versioneer/python-versioneer"
         },
         "zict": {
@@ -17924,7 +17936,7 @@
                 "BSD-3-Clause"
             ],
             "Permission to redistribute": true,
-            "Retrieved from": null
+            "Retrieved from": "https://pypi.org/project/zict/"
         }
     },
     "jupyter-server/2.7.2-GCCcore-12.3.0": {
