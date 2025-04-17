@@ -1,0 +1,14 @@
+# 2025.02.15
+# We need to update the module files for all CUDA installations to add
+# additional directories to LIBRARY_PATH.
+# See https://github.com/easybuilders/easybuild-easyblocks/pull/3516
+easyconfigs:
+  - CUDA-12.1.1.eb:
+      options:
+        accept-eula-for: CUDA
+        force: True
+        include-easyblocks-from-commit: 3469151ce7e4f85415c877dee555aeea7691c757
+  - CUDA-12.4.0.eb:
+      options:
+        accept-eula-for: CUDA
+        include-easyblocks-from-commit: 3469151ce7e4f85415c877dee555aeea7691c757

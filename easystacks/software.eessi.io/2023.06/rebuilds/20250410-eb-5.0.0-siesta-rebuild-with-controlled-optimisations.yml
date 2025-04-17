@@ -1,0 +1,8 @@
+# 2025.04.10
+# Siesta-5.2.2-foss-2023a.eb easyconfig changed upstream to only use
+# eb-sourced compilation options
+easyconfigs:
+  - Siesta-5.2.2-foss-2023a.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/22731
+        from-commit: b5e36fe564794234cf2d79621ad2d61c3980e5a7

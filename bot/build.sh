@@ -90,11 +90,15 @@ if [[ ! -z ${SINGULARITY_CACHEDIR} ]]; then
     export SINGULARITY_CACHEDIR
 fi
 
-echo -n "setting \$STORAGE by replacing any var in '${LOCAL_TMP}' -> "
-# replace any env variable in ${LOCAL_TMP} with its
-#   current value (e.g., a value that is local to the job)
-STORAGE=$(envsubst <<< ${LOCAL_TMP})
-echo "'${STORAGE}'"
+if [[ -z "${TMPDIR}" ]]; then
+    echo -n "setting \$STORAGE by replacing any var in '${LOCAL_TMP}' -> "
+    # replace any env variable in ${LOCAL_TMP} with its
+    #   current value (e.g., a value that is local to the job)
+    STORAGE=$(envsubst <<< ${LOCAL_TMP})
+else
+    STORAGE=${TMPDIR}
+fi
+echo "bot/build.sh: STORAGE='${STORAGE}'"
 
 # make sure ${STORAGE} exists
 mkdir -p ${STORAGE}
@@ -115,7 +119,8 @@ mkdir -p ${SINGULARITY_TMPDIR}
 
 # load modules if LOAD_MODULES is not empty
 if [[ ! -z ${LOAD_MODULES} ]]; then
-    for mod in $(echo ${LOAD_MODULES} | tr ',' '\n')
+    IFS=',' read -r -a modules <<< "$(echo "${LOAD_MODULES}")"
+    for mod in "${modules[@]}";
     do
         echo "bot/build.sh: loading module '${mod}'"
         module load ${mod}
@@ -178,6 +183,15 @@ COMMON_ARGS+=("--mode" "run")
 if [[ "${REPOSITORY_NAME}" == "dev.eessi.io" ]]; then
     COMMON_ARGS+=("--repository" "software.eessi.io,access=ro")
 fi
+
+# add $software_layer_dir and /dev as extra bind paths
+#  - $software_layer_dir is needed because it is used as prefix for running scripts
+#  - /dev is needed to access /dev/fuse
+COMMON_ARGS+=("--extra-bind-paths" "${software_layer_dir},/dev")
+
+# pass through '--contain' to avoid leaking in scripts into the container session
+# note, --pass-through can be used multiple times if needed
+COMMON_ARGS+=("--pass-through" "--contain")
 
 # make sure to use the same parent dir for storing tarballs of tmp
 PREVIOUS_TMP_DIR=${PWD}/previous_tmp
@@ -243,14 +257,28 @@ mkdir -p ${TARBALL_TMP_BUILD_STEP_DIR}
 # prepare arguments to eessi_container.sh specific to build step
 BUILD_STEP_ARGS+=("--save" "${TARBALL_TMP_BUILD_STEP_DIR}")
 BUILD_STEP_ARGS+=("--storage" "${STORAGE}")
+
 # add options required to handle NVIDIA support
 if command_exists "nvidia-smi"; then
-    echo "Command 'nvidia-smi' found, using available GPU"
-    BUILD_STEP_ARGS+=("--nvidia" "all")
+    # Accept that this may fail
+    set +e
+    nvidia-smi --version
+    ec=$?
+    set -e
+    if [ ${ec} -eq 0 ]; then
+        echo "Command 'nvidia-smi' found, using available GPU"
+        BUILD_STEP_ARGS+=("--nvidia" "all")
+    else
+        echo "Warning: command 'nvidia-smi' found, but 'nvidia-smi --version' did not run succesfully."
+        echo "This script now assumes this is NOT a GPU node."
+        echo "If, and only if, the current node actually does contain Nvidia GPUs, this should be considered an error."
+        BUILD_STEP_ARGS+=("--nvidia" "install")
+    fi
 else
     echo "No 'nvidia-smi' found, no available GPU but allowing overriding this check"
     BUILD_STEP_ARGS+=("--nvidia" "install")
 fi
+
 # Retain location for host injections so we don't reinstall CUDA
 # (Always need to run the driver installation as available driver may change)
 if [[ ! -z ${SHARED_FS_PATH} ]]; then

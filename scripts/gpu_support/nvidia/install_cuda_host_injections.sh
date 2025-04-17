@@ -147,9 +147,9 @@ else
   fi
   avail_space=$(df --output=avail "${tmpdir}"/ | tail -n 1 | awk '{print $1}')
   if (( avail_space < required_space_in_tmpdir )); then
-    error="Need at least ${required_space_in_tmpdir} disk space under ${tmpdir}.\n"
-    error="${error}Set the environment variable CUDA_TEMP_DIR to a location with adequate space to pass this check."
-    error="${error}You can alternatively set EASYBUILD_BUILDPATH and/or EASYBUILD_SOURCEPATH "
+    error="Need at least ${required_space_in_tmpdir}GB disk space under ${tmpdir}.\n"
+    error="${error}Set the environment variable CUDA_TEMP_DIR to a location with adequate space to pass this check.\n"
+    error="${error}You can alternatively set EASYBUILD_BUILDPATH and/or EASYBUILD_SOURCEPATH\n"
     error="${error}to reduce this requirement. Exiting now..."
     fatal_error "${error}"
   fi

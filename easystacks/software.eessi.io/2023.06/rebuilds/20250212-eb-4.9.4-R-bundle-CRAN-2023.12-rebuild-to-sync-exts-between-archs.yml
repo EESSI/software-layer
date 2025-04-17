@@ -1,0 +1,6 @@
+# 2025.02.12
+# Rebuild R-bundle-CRAN to synchronise the extensions between archs.
+# This is necessary because the Zen4 version was not built with the same EB
+# version (and exts had changed)
+easyconfigs:
+  - R-bundle-CRAN-2023.12-foss-2023a.eb
