@@ -37,7 +37,7 @@
         },
         "Babel": {
             "License": "BSD-3-Clause",
-            "Permission to redistribute": false,
+            "Permission to redistribute": true,
             "Retrieved from": "https://pypi.org/pypi/Babel/json"
         },
         "backports.entry-points-selectable": {
@@ -77,10 +77,10 @@
         },
         "CacheControl": {
             "License": [
-                "Apache Software License"
+                "Apache-2.0"
             ],
-            "Permission to redistribute": false,
-            "Retrieved from": "not found"
+            "Permission to redistribute": true,
+            "Retrieved from": "https://github.com/psf/cachecontrol"
         },
         "cachy": {
             "License": [
@@ -105,9 +105,9 @@
         },
         "chardet": {
             "License": [
-                "Other"
+                "LGPL-2.1-only"
             ],
-            "Permission to redistribute": false,
+            "Permission to redistribute": true,
             "Retrieved from": "https://github.com/chardet/chardet"
         },
         "charset-normalizer": {
@@ -175,8 +175,10 @@
             "Retrieved from": "https://github.com/pyca/cryptography"
         },
         "Cython": {
-            "License": "Apache-2.0",
-            "Permission to redistribute": false,
+            "License": [
+                "Apache-2.0",
+            ],
+            "Permission to redistribute": true,
             "Retrieved from": "https://pypi.org/pypi/Cython/json"
         },
         "decorator": {
@@ -208,7 +210,7 @@
                 "Unlicense"
             ],
             "Permission to redistribute": true,
-            "Retrieved from": null
+            "Retrieved from": "https://pypi.org/project/docutils"
         },
         "doit": {
             "License": [
@@ -284,9 +286,9 @@
         },
         "fsspec": {
             "License": [
-                "Other"
+                "BSD-3-Clause"
             ],
-            "Permission to redistribute": false,
+            "Permission to redistribute": true,
             "Retrieved from": "https://github.com/fsspec/filesystem_spec"
         },
         "future": {
@@ -402,9 +404,11 @@
             "Retrieved from": "https://gitlab.com/takluyver/jeepney"
         },
         "Jinja2": {
-            "License": "not found",
-            "Permission to redistribute": false,
-            "Retrieved from": "not found"
+            "License": [
+                "BSD-3-Clause"
+            ],
+            "Permission to redistribute": true,
+            "Retrieved from": "https://github.com/pallets/jinja"
         },
         "joblib": {
             "License": [
@@ -446,11 +450,13 @@
                 "MIT"
             ],
             "Permission to redistribute": true,
-            "Retrieved from": null
+            "Retrieved from": "https://pypi.org/project/lockfile"
         },
         "MarkupSafe": {
-            "License": "Copyright 2010 Pallets  Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:  1.  Redistributions of source code must retain the above copyright notice, this list of conditions and the following disclaimer.  2.  Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following disclaimer in the documentation and/or other materials provided with the distribution.  3.  Neither the name of the copyright holder nor the names of its contributors may be used to endorse or promote products derived from this software without specific prior written permission.  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS \"AS IS\" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.",
-            "Permission to redistribute": false,
+            "License": [
+                "BSD-3-Clause"
+            ],
+            "Permission to redistribute": true,
             "Retrieved from": "https://pypi.org/pypi/MarkupSafe/json"
         },
         "mock": {
@@ -498,9 +504,9 @@
         },
         "paramiko": {
             "License": [
-                "Other"
+                "LGPL-2.1-only"
             ],
-            "Permission to redistribute": false,
+            "Permission to redistribute": true,
             "Retrieved from": "https://github.com/paramiko/paramiko"
         },
         "pastel": {
@@ -529,7 +535,7 @@
                 "Apache-2.0"
             ],
             "Permission to redistribute": true,
-            "Retrieved from": null
+            "Retrieved from": "https://pypi.org/project/pbr"
         },
         "pexpect": {
             "License": [
@@ -550,7 +556,7 @@
                 "MIT"
             ],
             "Permission to redistribute": true,
-            "Retrieved from": null
+            "Retrieved from": "https://pypi.org/project/pkginfo"
         },
         "platformdirs": {
             "License": [
@@ -653,7 +659,7 @@
         },
         "Pygments": {
             "License": "BSD-2-Clause",
-            "Permission to redistribute": false,
+            "Permission to redistribute": true,
             "Retrieved from": "https://pypi.org/pypi/Pygments/json"
         },
         "pylev": {
@@ -665,7 +671,7 @@
         },
         "PyNaCl": {
             "License": "Apache License 2.0",
-            "Permission to redistribute": false,
+            "Permission to redistribute": true,
             "Retrieved from": "https://pypi.org/pypi/PyNaCl/json"
         },
         "pyparsing": {
@@ -684,9 +690,9 @@
         },
         "pytest-xdist": {
             "License": [
-                "Other"
+                "MIT"
             ],
-            "Permission to redistribute": false,
+            "Permission to redistribute": true,
             "Retrieved from": "https://github.com/pytest-dev/pytest-xdist"
         },
         "pytest": {
@@ -740,9 +746,9 @@
         },
         "rich-click": {
             "License": [
-                "Other"
+                "MIT"
             ],
-            "Permission to redistribute": false,
+            "Permission to redistribute": true,
             "Retrieved from": "https://github.com/ewels/rich-click"
         },
         "rich": {
@@ -760,8 +766,8 @@
             "Retrieved from": "https://github.com/benhoyt/scandir"
         },
         "SecretStorage": {
-            "License": "BSD 3-Clause License",
-            "Permission to redistribute": false,
+            "License": "BSD-3-Clause",
+            "Permission to redistribute": true,
             "Retrieved from": "https://pypi.org/pypi/SecretStorage/json"
         },
         "semantic-version": {
@@ -787,9 +793,9 @@
         },
         "setuptools-scm": {
             "License": [
-                "Other"
+                "MIT"
             ],
-            "Permission to redistribute": false,
+            "Permission to redistribute": true,
             "Retrieved from": "https://github.com/pypa/setuptools-scm"
         },
         "shellingham": {
@@ -804,7 +810,7 @@
                 "ZPL-2.1"
             ],
             "Permission to redistribute": true,
-            "Retrieved from": null
+            "Retrieved from": "https://pypi.org/project/simplegeneric"
         },
         "simplejson": {
             "License": [
@@ -842,9 +848,11 @@
             "Retrieved from": "https://github.com/ryan-roemer/sphinx-bootstrap-theme"
         },
         "Sphinx": {
-            "License": "not found",
-            "Permission to redistribute": false,
-            "Retrieved from": "not found"
+            "License": [
+                "BSD-2-Clause"
+            ],
+            "Permission to redistribute": true,
+            "Retrieved from": "https://pypi.org/project/Sphinx"
         },
         "sphinxcontrib-applehelp": {
             "License": [
@@ -872,7 +880,7 @@
                 "BSD-3-Clause"
             ],
             "Permission to redistribute": true,
-            "Retrieved from": null
+            "Retrieved from": "https://pypi.org/project/sphinxcontrib-jsmath"
         },
         "sphinxcontrib-qthelp": {
             "License": [
@@ -918,9 +926,9 @@
         },
         "tomli": {
             "License": [
-                "Other"
+                "MIT"
             ],
-            "Permission to redistribute": false,
+            "Permission to redistribute": true,
             "Retrieved from": "https://github.com/hukkin/tomli"
         },
         "tomli-w": {
@@ -941,7 +949,7 @@
             "License": [
                 "GPL-1.0+"
             ],
-            "Permission to redistribute": false,
+            "Permission to redistribute": true,
             "Retrieved from": "https://github.com/python/typing_extensions"
         },
         "ujson": {
@@ -991,7 +999,7 @@
                 "BSD-3-Clause"
             ],
             "Permission to redistribute": true,
-            "Retrieved from": null
+            "Retrieved from": "https://pypi.org/project/xlrd"
         },
         "zipfile36": {
             "License": [
@@ -1040,23 +1048,23 @@
         },
         "setuptools-scm": {
             "License": [
-                "Other"
+                "MIT"
             ],
-            "Permission to redistribute": false,
+            "Permission to redistribute": true,
             "Retrieved from": "https://github.com/pypa/setuptools-scm"
         },
         "tomli": {
             "License": [
-                "Other"
+                "MIT"
             ],
-            "Permission to redistribute": false,
+            "Permission to redistribute": true,
             "Retrieved from": "https://github.com/hukkin/tomli"
         },
         "typing-extensions": {
             "License": [
                 "GPL-1.0+"
             ],
-            "Permission to redistribute": false,
+            "Permission to redistribute": true,
             "Retrieved from": "https://github.com/python/typing_extensions"
         },
         "wheel": {
@@ -1092,9 +1100,9 @@
         },
         "setuptools-scm": {
             "License": [
-                "Other"
+                "MIT"
             ],
-            "Permission to redistribute": false,
+            "Permission to redistribute": true,
             "Retrieved from": "https://github.com/pypa/setuptools-scm"
         },
         "setuptools": {
@@ -1106,16 +1114,16 @@
         },
         "tomli": {
             "License": [
-                "Other"
+                "MIT"
             ],
-            "Permission to redistribute": false,
+            "Permission to redistribute": true,
             "Retrieved from": "https://github.com/hukkin/tomli"
         },
         "typing-extensions": {
             "License": [
                 "GPL-1.0+"
             ],
-            "Permission to redistribute": false,
+            "Permission to redistribute": true,
             "Retrieved from": "https://github.com/python/typing_extensions"
         },
         "wheel": {
@@ -4902,7 +4910,7 @@
         },
         "Babel": {
             "License": "BSD-3-Clause",
-            "Permission to redistribute": false,
+            "Permission to redistribute": true,
             "Retrieved from": "https://pypi.org/pypi/Babel/json"
         },
         "backports.entry-points-selectable": {
@@ -4934,9 +4942,9 @@
             "Retrieved from": "https://github.com/DanielStutzbach/blist"
         },
         "CacheControl": {
-            "License": "not found",
-            "Permission to redistribute": false,
-            "Retrieved from": "not found"
+            "License": "Apache-2.0",
+            "Permission to redistribute": true,
+            "Retrieved from": "https://github.com/psf/cachecontrol"
         },
         "cachy": {
             "License": [
@@ -4961,9 +4969,9 @@
         },
         "chardet": {
             "License": [
-                "Other"
+                "LGPL-2.1-only"
             ],
-            "Permission to redistribute": false,
+            "Permission to redistribute": true,
             "Retrieved from": "https://github.com/chardet/chardet"
         },
         "charset-normalizer": {
@@ -5017,7 +5025,7 @@
         },
         "Cython": {
             "License": "Apache-2.0",
-            "Permission to redistribute": false,
+            "Permission to redistribute": true,
             "Retrieved from": "https://pypi.org/pypi/Cython/json"
         },
         "decorator": {
@@ -5056,7 +5064,7 @@
                 "Unlicense"
             ],
             "Permission to redistribute": true,
-            "Retrieved from": null
+            "Retrieved from": "https://pypi.org/project/docutils"
         },
         "doit": {
             "License": [
@@ -5111,9 +5119,9 @@
         },
         "fsspec": {
             "License": [
-                "Other"
+                "BSD-3-Clause"
             ],
-            "Permission to redistribute": false,
+            "Permission to redistribute": true,
             "Retrieved from": "https://github.com/fsspec/filesystem_spec"
         },
         "future": {
@@ -5208,9 +5216,11 @@
             "Retrieved from": "https://gitlab.com/takluyver/jeepney"
         },
         "Jinja2": {
-            "License": "not found",
-            "Permission to redistribute": false,
-            "Retrieved from": "not found"
+            "License": [
+                "BSD-3-Clause"
+            ],
+            "Permission to redistribute": true,
+            "Retrieved from": "https://github.com/pallets/jinja"
         },
         "joblib": {
             "License": [
@@ -5252,7 +5262,7 @@
                 "MIT"
             ],
             "Permission to redistribute": true,
-            "Retrieved from": null
+            "Retrieved from": "https://pypi.org/project/lockfile"
         },
         "markdown-it-py": {
             "License": [
@@ -5262,9 +5272,11 @@
             "Retrieved from": "https://github.com/executablebooks/markdown-it-py"
         },
         "MarkupSafe": {
-            "License": "Copyright 2010 Pallets  Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:  1.  Redistributions of source code must retain the above copyright notice, this list of conditions and the following disclaimer.  2.  Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following disclaimer in the documentation and/or other materials provided with the distribution.  3.  Neither the name of the copyright holder nor the names of its contributors may be used to endorse or promote products derived from this software without specific prior written permission.  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS \"AS IS\" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.",
-            "Permission to redistribute": false,
-            "Retrieved from": "https://pypi.org/pypi/MarkupSafe/json"
+            "License": [
+                "BSD-3-Clause"
+            ],
+            "Permission to redistribute": true,
+            "Retrieved from": "https://github.com/pallets/markupsafe"
         },
         "mdurl": {
             "License": [
@@ -5342,7 +5354,7 @@
                 "Apache-2.0"
             ],
             "Permission to redistribute": true,
-            "Retrieved from": null
+            "Retrieved from": "https://pypi.org/project/pbr"
         },
         "pexpect": {
             "License": [
@@ -5356,7 +5368,7 @@
                 "MIT"
             ],
             "Permission to redistribute": true,
-            "Retrieved from": null
+            "Retrieved from": "https://pypi.org/project/pkginfo"
         },
         "platformdirs": {
             "License": [
@@ -5438,7 +5450,7 @@
         },
         "Pygments": {
             "License": "BSD-2-Clause",
-            "Permission to redistribute": false,
+            "Permission to redistribute": true,
             "Retrieved from": "https://pypi.org/pypi/Pygments/json"
         },
         "pylev": {
@@ -5450,7 +5462,7 @@
         },
         "PyNaCl": {
             "License": "Apache License 2.0",
-            "Permission to redistribute": false,
+            "Permission to redistribute": true,
             "Retrieved from": "https://pypi.org/pypi/PyNaCl/json"
         },
         "pyparsing": {
@@ -5469,9 +5481,9 @@
         },
         "pytest-xdist": {
             "License": [
-                "Other"
+                "MIT"
             ],
-            "Permission to redistribute": false,
+            "Permission to redistribute": true,
             "Retrieved from": "https://github.com/pytest-dev/pytest-xdist"
         },
         "pytest": {
@@ -5532,9 +5544,9 @@
         },
         "rich-click": {
             "License": [
-                "Other"
+                "MIT"
             ],
-            "Permission to redistribute": false,
+            "Permission to redistribute": true,
             "Retrieved from": "https://github.com/ewels/rich-click"
         },
         "rich": {
@@ -5552,8 +5564,8 @@
             "Retrieved from": "https://github.com/benhoyt/scandir"
         },
         "SecretStorage": {
-            "License": "BSD 3-Clause License",
-            "Permission to redistribute": false,
+            "License": "BSD-3-Clause",
+            "Permission to redistribute": true,
             "Retrieved from": "https://pypi.org/pypi/SecretStorage/json"
         },
         "semantic-version": {
@@ -5575,7 +5587,7 @@
                 "ZPL-2.1"
             ],
             "Permission to redistribute": true,
-            "Retrieved from": null
+            "Retrieved from": "https://pypi.org/project/simplegeneric"
         },
         "simplejson": {
             "License": [
@@ -5613,9 +5625,11 @@
             "Retrieved from": "https://github.com/ryan-roemer/sphinx-bootstrap-theme"
         },
         "Sphinx": {
-            "License": "not found",
-            "Permission to redistribute": false,
-            "Retrieved from": "not found"
+            "License": [
+                "BSD-2-Clause"
+            ],
+            "Permission to redistribute": true,
+            "Retrieved from": "https://github.com/sphinx-doc/sphinx"
         },
         "sphinxcontrib-applehelp": {
             "License": [
@@ -5643,7 +5657,7 @@
                 "BSD-3-Clause"
             ],
             "Permission to redistribute": true,
-            "Retrieved from": null
+            "Retrieved from": "https://pypi.org/project/sphinxcontrib-jsmath"
         },
         "sphinxcontrib-qthelp": {
             "License": [
@@ -5689,9 +5703,9 @@
         },
         "tomli": {
             "License": [
-                "Other"
+                "MIT"
             ],
-            "Permission to redistribute": false,
+            "Permission to redistribute": true,
             "Retrieved from": "https://github.com/hukkin/tomli"
         },
         "tomli-w": {
@@ -5741,7 +5755,7 @@
                 "BSD-3-Clause"
             ],
             "Permission to redistribute": true,
-            "Retrieved from": null
+            "Retrieved from": "https://pypi.org/project/xlrd"
         },
         "zipfile36": {
             "License": [
@@ -5796,7 +5810,7 @@
         },
         "Babel": {
             "License": "BSD-3-Clause",
-            "Permission to redistribute": false,
+            "Permission to redistribute": true,
             "Retrieved from": "https://pypi.org/pypi/Babel/json"
         },
         "backports.entry-points-selectable": {
@@ -5864,9 +5878,9 @@
         },
         "chardet": {
             "License": [
-                "Other"
+                "LGPL-2.1-only"
             ],
-            "Permission to redistribute": false,
+            "Permission to redistribute": true,
             "Retrieved from": "https://github.com/chardet/chardet"
         },
         "charset-normalizer": {
@@ -5920,7 +5934,7 @@
         },
         "Cython": {
             "License": "Apache-2.0",
-            "Permission to redistribute": false,
+            "Permission to redistribute": true,
             "Retrieved from": "https://pypi.org/pypi/Cython/json"
         },
         "decorator": {
@@ -5959,7 +5973,7 @@
                 "Unlicense"
             ],
             "Permission to redistribute": true,
-            "Retrieved from": null
+            "Retrieved from": "https://pypi.org/project/docutils"
         },
         "doit": {
             "License": [
@@ -6014,9 +6028,9 @@
         },
         "fsspec": {
             "License": [
-                "Other"
+                "BSD-3-Clause"
             ],
-            "Permission to redistribute": false,
+            "Permission to redistribute": true,
             "Retrieved from": "https://github.com/fsspec/filesystem_spec"
         },
         "future": {
@@ -6111,9 +6125,9 @@
             "Retrieved from": "https://gitlab.com/takluyver/jeepney"
         },
         "Jinja2": {
-            "License": "not found",
-            "Permission to redistribute": false,
-            "Retrieved from": "not found"
+            "License": "BSD-3-Clause",
+            "Permission to redistribute": true,
+            "Retrieved from": "https://github.com/pallets/jinja"
         },
         "joblib": {
             "License": [
@@ -6155,7 +6169,7 @@
                 "MIT"
             ],
             "Permission to redistribute": true,
-            "Retrieved from": null
+            "Retrieved from": "https://pypi.org/project/lockfile"
         },
         "markdown-it-py": {
             "License": [
@@ -6165,9 +6179,11 @@
             "Retrieved from": "https://github.com/executablebooks/markdown-it-py"
         },
         "MarkupSafe": {
-            "License": "Copyright 2010 Pallets  Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:  1.  Redistributions of source code must retain the above copyright notice, this list of conditions and the following disclaimer.  2.  Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following disclaimer in the documentation and/or other materials provided with the distribution.  3.  Neither the name of the copyright holder nor the names of its contributors may be used to endorse or promote products derived from this software without specific prior written permission.  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS \"AS IS\" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.",
-            "Permission to redistribute": false,
-            "Retrieved from": "https://pypi.org/pypi/MarkupSafe/json"
+            "License": [
+                "BSD-3-Clause"
+            ],
+            "Permission to redistribute": true,
+            "Retrieved from": "https://github.com/pallets/markupsafe"
         },
         "mdurl": {
             "License": [
@@ -6245,7 +6261,7 @@
                 "Apache-2.0"
             ],
             "Permission to redistribute": true,
-            "Retrieved from": null
+            "Retrieved from": "https://pypi.org/project/pbr"
         },
         "pexpect": {
             "License": [
@@ -6259,7 +6275,7 @@
                 "MIT"
             ],
             "Permission to redistribute": true,
-            "Retrieved from": null
+            "Retrieved from": "https://pypi.org/project/pkginfo"
         },
         "platformdirs": {
             "License": [
@@ -6341,7 +6357,7 @@
         },
         "Pygments": {
             "License": "BSD-2-Clause",
-            "Permission to redistribute": false,
+            "Permission to redistribute": true,
             "Retrieved from": "https://pypi.org/pypi/Pygments/json"
         },
         "pylev": {
@@ -6353,7 +6369,7 @@
         },
         "PyNaCl": {
             "License": "Apache License 2.0",
-            "Permission to redistribute": false,
+            "Permission to redistribute": true,
             "Retrieved from": "https://pypi.org/pypi/PyNaCl/json"
         },
         "pyparsing": {
@@ -6372,9 +6388,9 @@
         },
         "pytest-xdist": {
             "License": [
-                "Other"
+                "MIT"
             ],
-            "Permission to redistribute": false,
+            "Permission to redistribute": true,
             "Retrieved from": "https://github.com/pytest-dev/pytest-xdist"
         },
         "pytest": {
@@ -6435,9 +6451,9 @@
         },
         "rich-click": {
             "License": [
-                "Other"
+                "MIT"
             ],
-            "Permission to redistribute": false,
+            "Permission to redistribute": true,
             "Retrieved from": "https://github.com/ewels/rich-click"
         },
         "rich": {
@@ -6455,8 +6471,8 @@
             "Retrieved from": "https://github.com/benhoyt/scandir"
         },
         "SecretStorage": {
-            "License": "BSD 3-Clause License",
-            "Permission to redistribute": false,
+            "License": "BSD-3-Clause",
+            "Permission to redistribute": true,
             "Retrieved from": "https://pypi.org/pypi/SecretStorage/json"
         },
         "semantic-version": {
@@ -6478,7 +6494,7 @@
                 "ZPL-2.1"
             ],
             "Permission to redistribute": true,
-            "Retrieved from": null
+            "Retrieved from": "https://pypi.org/project/simplegeneric"
         },
         "simplejson": {
             "License": [
@@ -6519,7 +6535,7 @@
             "License": [
                 "GPL-1.0+"
             ],
-            "Permission to redistribute": false,
+            "Permission to redistribute": true,
             "Retrieved from": "https://github.com/sphinx-doc/sphinx"
         },
         "sphinxcontrib-jsmath": {
@@ -6527,7 +6543,7 @@
                 "BSD-3-Clause"
             ],
             "Permission to redistribute": true,
-            "Retrieved from": null
+            "Retrieved from": "https://pypi.org/project/sphinxcontrib-jsmath"
         },
         "sphinxcontrib-applehelp": {
             "License": [
@@ -6594,9 +6610,9 @@
         },
         "tomli": {
             "License": [
-                "Other"
+                "MIT"
             ],
-            "Permission to redistribute": false,
+            "Permission to redistribute": true,
             "Retrieved from": "https://github.com/hukkin/tomli"
         },
         "tomli-w": {
@@ -6646,7 +6662,7 @@
                 "BSD-3-Clause"
             ],
             "Permission to redistribute": true,
-            "Retrieved from": null
+            "Retrieved from": "https://pypi.org/project/xlrd"
         },
         "zipfile36": {
             "License": [
@@ -6672,15 +6688,15 @@
             "Retrieved from": "https://github.com/serge-sans-paille/beniget"
         },
         "Bottleneck": {
-            "License": "not found",
-            "Permission to redistribute": false,
-            "Retrieved from": "not found"
+            "License": "BSD-2-Clause",
+            "Permission to redistribute": true,
+            "Retrieved from": "https://github.com/pydata/bottleneck"
         },
         "deap": {
             "License": [
-                "Other"
+                "MIT"
             ],
-            "Permission to redistribute": false,
+            "Permission to redistribute": true,
             "Retrieved from": "https://github.com/rodrigo-arenas/Sklearn-genetic-opt,"
         },
         "gast": {
@@ -6706,16 +6722,19 @@
         },
         "numpy": {
             "License": [
-                "Other"
+                "BSD-3-Clause",
+                "MIT",
+                "Zlib",
+                "Apache-2.0",
             ],
-            "Permission to redistribute": false,
+            "Permission to redistribute": true,
             "Retrieved from": "https://github.com/numpy/numpy"
         },
         "pandas": {
             "License": [
-                "Other"
+                "BSD-3-Clause"
             ],
-            "Permission to redistribute": false,
+            "Permission to redistribute": true,
             "Retrieved from": "https://github.com/pandas-dev/pandas"
         },
         "ply": {
@@ -6723,20 +6742,20 @@
                 "BSD-3-Clause"
             ],
             "Permission to redistribute": true,
-            "Retrieved from": null
+            "Retrieved from": "https://pypi.org/project/ply"
         },
         "pythran": {
             "License": [
-                "Other"
+                "BSD-3-Clause"
             ],
-            "Permission to redistribute": false,
+            "Permission to redistribute": true,
             "Retrieved from": "https://github.com/serge-sans-paille/pythran"
         },
         "scipy": {
             "License": [
-                "Other"
+                "BSD-3-Clause"
             ],
-            "Permission to redistribute": false,
+            "Permission to redistribute": true,
             "Retrieved from": "https://github.com/scipy/scipy"
         },
         "tzdata": {
@@ -6748,9 +6767,9 @@
         },
         "versioneer": {
             "License": [
-                "Other"
+                "Unlicense"
             ],
-            "Permission to redistribute": false,
+            "Permission to redistribute": true,
             "Retrieved from": "https://github.com/python-versioneer/python-versioneer"
         }
     },
@@ -6763,15 +6782,15 @@
             "Retrieved from": "https://github.com/serge-sans-paille/beniget"
         },
         "Bottleneck": {
-            "License": "not found",
-            "Permission to redistribute": false,
-            "Retrieved from": "not found"
+            "License": "BSD-2-Clause",
+            "Permission to redistribute": true,
+            "Retrieved from": "https://github.com/pydata/bottleneck"
         },
         "deap": {
             "License": [
-                "Other"
+                "MIT"
             ],
-            "Permission to redistribute": false,
+            "Permission to redistribute": true,
             "Retrieved from": "https://github.com/rodrigo-arenas/Sklearn-genetic-opt,"
         },
         "gast": {
@@ -6797,16 +6816,19 @@
         },
         "numpy": {
             "License": [
-                "Other"
+                "BSD-3-Clause",
+                "MIT",
+                "Zlib",
+                "Apache-2.0",
             ],
-            "Permission to redistribute": false,
+            "Permission to redistribute": true,
             "Retrieved from": "https://github.com/numpy/numpy"
         },
         "pandas": {
             "License": [
-                "Other"
+                "BSD-3-Clause"
             ],
-            "Permission to redistribute": false,
+            "Permission to redistribute": true,
             "Retrieved from": "https://github.com/pandas-dev/pandas"
         },
         "ply": {
@@ -6814,20 +6836,20 @@
                 "BSD-3-Clause"
             ],
             "Permission to redistribute": true,
-            "Retrieved from": null
+            "Retrieved from": "https://pypi.org/project/ply"
         },
         "pythran": {
             "License": [
-                "Other"
+                "BSD-3-Clause"
             ],
-            "Permission to redistribute": false,
+            "Permission to redistribute": true,
             "Retrieved from": "https://github.com/serge-sans-paille/pythran"
         },
         "scipy": {
             "License": [
-                "Other"
+                "BSD-3-Clause"
             ],
-            "Permission to redistribute": false,
+            "Permission to redistribute": true,
             "Retrieved from": "https://github.com/scipy/scipy"
         }
     },
@@ -6840,15 +6862,15 @@
             "Retrieved from": "https://github.com/serge-sans-paille/beniget"
         },
         "Bottleneck": {
-            "License": "not found",
-            "Permission to redistribute": false,
-            "Retrieved from": "not found"
+            "License": "BSD-2-Clause",
+            "Permission to redistribute": true,
+            "Retrieved from": "https://github.com/pydata/bottleneck"
         },
         "deap": {
             "License": [
-                "Other"
+                "MIT"
             ],
-            "Permission to redistribute": false,
+            "Permission to redistribute": true,
             "Retrieved from": "https://github.com/rodrigo-arenas/Sklearn-genetic-opt,"
         },
         "gast": {
@@ -6874,16 +6896,19 @@
         },
         "numpy": {
             "License": [
-                "Other"
+                "BSD-3-Clause",
+                "MIT",
+                "Zlib",
+                "Apache-2.0",
             ],
-            "Permission to redistribute": false,
+            "Permission to redistribute": true,
             "Retrieved from": "https://github.com/numpy/numpy"
         },
         "pandas": {
             "License": [
-                "Other"
+                "BSD-3-Clause"
             ],
-            "Permission to redistribute": false,
+            "Permission to redistribute": true,
             "Retrieved from": "https://github.com/pandas-dev/pandas"
         },
         "ply": {
@@ -6891,20 +6916,20 @@
                 "BSD-3-Clause"
             ],
             "Permission to redistribute": true,
-            "Retrieved from": null
+            "Retrieved from": "https://pypi.org/project/ply"
         },
         "pythran": {
             "License": [
-                "Other"
+                "BSD-3-Clause"
             ],
-            "Permission to redistribute": false,
+            "Permission to redistribute": true,
             "Retrieved from": "https://github.com/serge-sans-paille/pythran"
         },
         "scipy": {
             "License": [
-                "Other"
+                "BSD-3-Clause"
             ],
-            "Permission to redistribute": false,
+            "Permission to redistribute": true,
             "Retrieved from": "https://github.com/scipy/scipy"
         },
         "tzdata": {
@@ -6916,9 +6941,9 @@
         },
         "versioneer": {
             "License": [
-                "Other"
+                "Unlicense"
             ],
-            "Permission to redistribute": false,
+            "Permission to redistribute": true,
             "Retrieved from": "https://github.com/python-versioneer/python-versioneer"
         }
     },
