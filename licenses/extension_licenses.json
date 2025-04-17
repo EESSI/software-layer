@@ -1179,13 +1179,13 @@
             "License": [
                 "Artistic-1.0-Perl"
             ],
-            "Permission to redistribute": false,
+            "Permission to redistribute": true,
             "Retrieved from": "https://github.com/sciurius/perl-Getopt-Long"
         },
         "IO::File": {
-            "License": "not found",
+            "License": "unknown",
             "Permission to redistribute": false,
-            "Retrieved from": "not found"
+            "Retrieved from": "https://metacpan.org/pod/IO::File"
         },
         "Text::ParseWords": {
             "License": [
@@ -2081,14 +2081,14 @@
             "Retrieved from": "https://metacpan.org/pod/Git#COPYRIGHT"
         },
         "GO": {
-            "License": "not found",
+            "License": "Unknown",
             "Permission to redistribute": false,
-            "Retrieved from": "not found"
+            "Retrieved from": "https://metacpan.org/pod/GO"
         },
         "GO::Utils": {
-            "License": "not found",
-            "Permission to redistribute": false,
-            "Retrieved from": "not found"
+            "License": "MIT",
+            "Permission to redistribute": true,
+            "Retrieved from": "https://metacpan.org/pod/GO::Utils::File"
         },
         "Graph": {
             "License": [
@@ -40062,90 +40062,90 @@
     },
     "XML-LibXML/2.0209-GCCcore-12.3.0": {
         "Alien::Base": {
-            "License": "not found",
-            "Permission to redistribute": false,
-            "Retrieved from": "not found"
+            "License": "Artistic-1.0-Perl",
+            "Permission to redistribute": true,
+            "Retrieved from": "https://metacpan.org/pod/Alien::Base"
         },
         "Alien::Build::Plugin::Download::GitLab": {
-            "License": "not found",
-            "Permission to redistribute": false,
-            "Retrieved from": "not found"
+            "License": "Artistic-1.0-Perl",
+            "Permission to redistribute": true,
+            "Retrieved from": "https://metacpan.org/pod/Alien::Build::Plugin::Download::GitLab"
         },
         "Alien::Libxml2": {
-            "License": "not found",
-            "Permission to redistribute": false,
-            "Retrieved from": "not found"
+            "License": "Artistic-1.0-Perl",
+            "Permission to redistribute": true,
+            "Retrieved from": "https://metacpan.org/pod/Alien::Libxml2"
         },
         "File::chdir": {
-            "License": "not found",
-            "Permission to redistribute": false,
-            "Retrieved from": "not found"
+            "License": "Artistic-1.0-Perl",
+            "Permission to redistribute": true,
+            "Retrieved from": "https://metacpan.org/pod/File::chdir"
         },
         "XML::LibXML": {
-            "License": "not found",
-            "Permission to redistribute": false,
-            "Retrieved from": "not found"
+            "License": "Artistic-1.0-Perl",
+            "Permission to redistribute": true,
+            "Retrieved from": "https://metacpan.org/pod/XML::LibXML"
         }
     },
     "XML-LibXML/2.0208-GCCcore-12.2.0": {
         "Alien::Base": {
-            "License": "not found",
-            "Permission to redistribute": false,
-            "Retrieved from": "not found"
+            "License": "Artistic-1.0-Perl",
+            "Permission to redistribute": true,
+            "Retrieved from": "https://metacpan.org/pod/Alien::Base"
         },
         "Alien::Build::Plugin::Download::GitLab": {
-            "License": "not found",
-            "Permission to redistribute": false,
-            "Retrieved from": "not found"
+            "License": "Artistic-1.0-Perl",
+            "Permission to redistribute": true,
+            "Retrieved from": "https://metacpan.org/pod/Alien::Build::Plugin::Download::GitLab"
         },
         "Alien::Libxml2": {
-            "License": "not found",
-            "Permission to redistribute": false,
-            "Retrieved from": "not found"
+            "License": "Artistic-1.0-Perl",
+            "Permission to redistribute": true,
+            "Retrieved from": "https://metacpan.org/pod/Alien::Libxml2"
         },
         "File::chdir": {
-            "License": "not found",
-            "Permission to redistribute": false,
-            "Retrieved from": "not found"
+            "License": "Artistic-1.0-Perl",
+            "Permission to redistribute": true,
+            "Retrieved from": "https://metacpan.org/pod/File::chdir"
         },
         "XML::LibXML": {
-            "License": "not found",
-            "Permission to redistribute": false,
-            "Retrieved from": "not found"
+            "License": "Artistic-1.0-Perl",
+            "Permission to redistribute": true,
+            "Retrieved from": "https://metacpan.org/pod/XML::LibXML"
         }
     },
     "BioPerl/1.7.8-GCCcore-12.2.0": {
         "Bio::Procedural": {
-            "License": "not found",
-            "Permission to redistribute": false,
-            "Retrieved from": "not found"
+            "License": "Artistic-1.0-Perl",
+            "Permission to redistribute": true,
+            "Retrieved from": "https://metacpan.org/pod/Bio::Procedural"
         },
         "BioPerl": {
-            "License": "not found",
-            "Permission to redistribute": false,
-            "Retrieved from": "not found"
+            "License": "Artistic-1.0-Perl",
+            "Permission to redistribute": true,
+            "Retrieved from": "https://metacpan.org/pod/BioPerl"
         },
         "XML::Writer": {
-            "License": "not found",
-            "Permission to redistribute": false,
-            "Retrieved from": "not found"
+            "License": "Unrestricted",
+            "Permission to redistribute": true,
+            "Retrieved from": "https://metacpan.org/pod/XML::Writer#COPYRIGHT-AND-LICENSE"
         }
     },
     "BioPerl/1.7.8-GCCcore-12.3.0": {
         "Bio::Procedural": {
-            "License": "not found",
-            "Permission to redistribute": false,
-            "Retrieved from": "not found"
+            "License": "Artistic-1.0-Perl",
+            "Permission to redistribute": true,
+            "Retrieved from": "https://metacpan.org/pod/Bio::Procedural"
         },
         "BioPerl": {
-            "License": "not found",
-            "Permission to redistribute": false,
-            "Retrieved from": "not found"
+            "License": "Artistic-1.0-Perl",
+            "Permission to redistribute": true,
+            "Retrieved from": "https://metacpan.org/pod/BioPerl"
         },
         "XML::Writer": {
-            "License": "not found",
-            "Permission to redistribute": false,
-            "Retrieved from": "not found"
+            "License": "Unrestricted",
+            "Permission to redistribute": true,
+            "Retrieved from": "https://metacpan.org/pod/XML::Writer#COPYRIGHT-AND-LICENSE"
         }
     },
     "Perl-bundle-CPAN/5.36.1-GCCcore-12.3.0": {
@@ -40158,10 +40158,10 @@
         },
         "Algorithm::Diff": {
             "License": [
-                "Other"
+                "Artistic-1.0-Perl"
             ],
-            "Permission to redistribute": false,
-            "Retrieved from": "https://packages.ecosyste.ms/api/v1/registries/metacpan.org/lookup?name=Algorithm-Diff"
+            "Permission to redistribute": true,
+            "Retrieved from": "https://metacpan.org/pod/Algorithm::Diff#LICENSE"
         },
         "aliased": {
             "License": [
@@ -40172,10 +40172,10 @@
         },
         "AnyEvent": {
             "License": [
-                "Other"
+                "Artistic-1.0-Perl"
             ],
-            "Permission to redistribute": false,
-            "Retrieved from": "https://packages.ecosyste.ms/api/v1/registries/metacpan.org/lookup?name=AnyEvent"
+            "Permission to redistribute": true,
+            "Retrieved from": "https://metacpan.org/release/MLEHMANN/AnyEvent-7.17/source/COPYING"
         },
         "App::Cmd": {
             "License": [
@@ -40220,9 +40220,9 @@
             "Retrieved from": "https://packages.ecosyste.ms/api/v1/registries/metacpan.org/lookup?name=Array-Utils"
         },
         "Authen::NTLM": {
-            "License": "not found",
-            "Permission to redistribute": false,
-            "Retrieved from": "not found"
+            "License": "Artistic-1.0-Perl",
+            "Permission to redistribute": true,
+            "Retrieved from": "https://metacpan.org/pod/Authen::NTLM#HISTORY"
         },
         "Authen::SASL": {
             "License": [
@@ -40282,10 +40282,10 @@
         },
         "Canary::Stability": {
             "License": [
-                "Other"
+                "Artistic-1.0-Perl"
             ],
-            "Permission to redistribute": false,
-            "Retrieved from": "https://packages.ecosyste.ms/api/v1/registries/metacpan.org/lookup?name=Canary-Stability"
+            "Permission to redistribute": true,
+            "Retrieved from": "https://metacpan.org/release/MLEHMANN/Canary-Stability-2013/source/COPYING"
         },
         "Capture::Tiny": {
             "License": [
@@ -40302,9 +40302,9 @@
             "Retrieved from": "https://github.com/karenetheridge/Carp-Clan"
         },
         "Carp::Heavy": {
-            "License": "not found",
-            "Permission to redistribute": false,
-            "Retrieved from": "not found"
+            "License": "Artistic-1.0-Perl",
+            "Permission to redistribute": true,
+            "Retrieved from": "https://metacpan.org/release/XSAWYERX/Carp-1.50/source/README"
         },
         "CGI": {
             "License": [
@@ -40329,17 +40329,17 @@
         },
         "Class::DBI": {
             "License": [
-                "Other"
+                "Artistic-1.0-Perl"
             ],
-            "Permission to redistribute": false,
-            "Retrieved from": "https://packages.ecosyste.ms/api/v1/registries/metacpan.org/lookup?name=Class-DBI"
+            "Permission to redistribute": true,
+            "Retrieved from": "https://metacpan.org/pod/Class::DBI#LICENSE"
         },
         "Class::DBI::SQLite": {
             "License": [
-                "Other"
+                "Artistic-1.0-Perl"
             ],
-            "Permission to redistribute": false,
-            "Retrieved from": "https://packages.ecosyste.ms/api/v1/registries/metacpan.org/lookup?name=Class-DBI-SQLite"
+            "Permission to redistribute": true,
+            "Retrieved from": "https://metacpan.org/pod/Class::DBI#LICENSE",
         },
         "Class::Inspector": {
             "License": [
@@ -40350,10 +40350,10 @@
         },
         "Class::ISA": {
             "License": [
-                "Other"
+                "Artistic-1.0-Perl"
             ],
-            "Permission to redistribute": false,
-            "Retrieved from": "https://packages.ecosyste.ms/api/v1/registries/metacpan.org/lookup?name=Class-ISA"
+            "Permission to redistribute": true,
+            "Retrieved from": "https://metacpan.org/pod/Class::Inspector#COPYRIGHT-AND-LICENSE"
         },
         "Class::Load": {
             "License": [
@@ -40420,10 +40420,10 @@
         },
         "common::sense": {
             "License": [
-                "Other"
+                "Artistic-1.0-Perl"
             ],
-            "Permission to redistribute": false,
-            "Retrieved from": "https://packages.ecosyste.ms/api/v1/registries/metacpan.org/lookup?name=common-sense"
+            "Permission to redistribute": true,
+            "Retrieved from": "https://metacpan.org/release/MLEHMANN/common-sense-3.75/source/LICENSE"
         },
         "Compress::Raw::Zlib": {
             "License": [
@@ -40462,10 +40462,10 @@
         },
         "Config::Simple": {
             "License": [
-                "Other"
+                "Artistic-1.0-Perl"
             ],
-            "Permission to redistribute": false,
-            "Retrieved from": "https://packages.ecosyste.ms/api/v1/registries/metacpan.org/lookup?name=Config-Simple"
+            "Permission to redistribute": true,
+            "Retrieved from": "https://metacpan.org/pod/Config::Simple#COPYRIGHT"
         },
         "Config::Tiny": {
             "License": [
@@ -40514,19 +40514,19 @@
                 "Other"
             ],
             "Permission to redistribute": false,
-            "Retrieved from": "https://packages.ecosyste.ms/api/v1/registries/metacpan.org/lookup?name=Crypt-DES"
+            "Retrieved from": "https://metacpan.org/pod/Crypt::DES#COPYRIGHT"
         },
         "Crypt::Rijndael": {
             "License": [
-                "Other"
+                "LGPL-3.0-only"
             ],
-            "Permission to redistribute": false,
+            "Permission to redistribute": true,
             "Retrieved from": "https://github.com/leont/crypt-rijndael"
         },
         "Cwd": {
-            "License": "not found",
-            "Permission to redistribute": false,
-            "Retrieved from": "not found"
+            "License": "Artistic-1.0-Perl",
+            "Permission to redistribute": true,
+            "Retrieved from": "https://metacpan.org/pod/Cwd#COPYRIGHT"
         },
         "Cwd::Guard": {
             "License": [
@@ -40550,9 +40550,9 @@
             "Retrieved from": "https://github.com/p5sagit/Data-Dumper-Concise"
         },
         "Data::Grove": {
-            "License": "not found",
-            "Permission to redistribute": false,
-            "Retrieved from": "not found"
+            "License": "Artistic-1.0-Perl",
+            "Permission to redistribute": true,
+            "Retrieved from": "https://metacpan.org/release/KMACLEOD/libxml-perl-0.08/source/README"
         },
         "Data::OptList": {
             "License": [
@@ -40577,10 +40577,10 @@
         },
         "Data::Stag": {
             "License": [
-                "Other"
+                "Artistic-1.0-Perl"
             ],
-            "Permission to redistribute": false,
-            "Retrieved from": "https://packages.ecosyste.ms/api/v1/registries/metacpan.org/lookup?name=Data-Stag"
+            "Permission to redistribute": true,
+            "Retrieved from": "https://metacpan.org/pod/Data::Stag#COPYRIGHT"
         },
         "Data::Types": {
             "License": [
@@ -40604,9 +40604,9 @@
             "Retrieved from": "https://packages.ecosyste.ms/api/v1/registries/metacpan.org/lookup?name=Date-Handler"
         },
         "Date::Language": {
-            "License": "not found",
-            "Permission to redistribute": false,
-            "Retrieved from": "not found"
+            "License": "Artistic-1.0-Perl",
+            "Permission to redistribute": true,
+            "Retrieved from": "https://metacpan.org/release/ATOOMIC/TimeDate-2.33/source/README"
         },
         "DateTime": {
             "License": [
@@ -40680,17 +40680,17 @@
         },
         "DBIx::ContextualFetch": {
             "License": [
-                "Other"
+                "Artistic-1.0-Perl"
             ],
-            "Permission to redistribute": false,
-            "Retrieved from": "https://packages.ecosyste.ms/api/v1/registries/metacpan.org/lookup?name=DBIx-ContextualFetch"
+            "Permission to redistribute": true,
+            "Retrieved from": "https://metacpan.org/pod/DBIx::ContextualFetch#LICENSE"
         },
         "DBIx::Simple": {
             "License": [
                 "Other"
             ],
-            "Permission to redistribute": false,
-            "Retrieved from": "https://packages.ecosyste.ms/api/v1/registries/metacpan.org/lookup?name=DBIx-Simple"
+            "Permission to redistribute": true,
+            "Retrieved from": "https://metacpan.org/pod/DBIx::Simple#LICENSE"
         },
         "Devel::CheckCompiler": {
             "License": [
@@ -40708,10 +40708,10 @@
         },
         "Devel::Cycle": {
             "License": [
-                "Other"
+                "Artistic-1.0-Perl"
             ],
-            "Permission to redistribute": false,
-            "Retrieved from": "https://packages.ecosyste.ms/api/v1/registries/metacpan.org/lookup?name=Devel-Cycle"
+            "Permission to redistribute": true,
+            "Retrieved from": "https://metacpan.org/pod/Devel::Cycle#COPYRIGHT-AND-LICENSE"
         },
         "Devel::FindPerl": {
             "License": [
@@ -40757,10 +40757,10 @@
         },
         "Digest::MD5::File": {
             "License": [
-                "Other"
+                "Artistic-1.0-Perl"
             ],
-            "Permission to redistribute": false,
-            "Retrieved from": "https://packages.ecosyste.ms/api/v1/registries/metacpan.org/lookup?name=Digest-MD5-File"
+            "Permission to redistribute": true,
+            "Retrieved from": "https://metacpan.org/pod/Digest::MD5::File#COPYRIGHT-AND-LICENSE"
         },
         "Digest::SHA1": {
             "License": [
@@ -40862,10 +40862,10 @@
         },
         "ExtUtils::Constant": {
             "License": [
-                "Other"
+                "Artistic-1.0-Perl"
             ],
-            "Permission to redistribute": false,
-            "Retrieved from": "https://packages.ecosyste.ms/api/v1/registries/metacpan.org/lookup?name=ExtUtils-Constant"
+            "Permission to redistribute": true,
+            "Retrieved from": "https://metacpan.org/release/NWCLARK/ExtUtils-Constant-0.25/source/README"
         },
         "ExtUtils::CppGuess": {
             "License": [
@@ -40897,10 +40897,10 @@
         },
         "ExtUtils::ParseXS": {
             "License": [
-                "Other"
+                "Artistic-1.0-Perl"
             ],
-            "Permission to redistribute": false,
-            "Retrieved from": "https://github.com/Perl/perl5"
+            "Permission to redistribute": true,
+            "Retrieved from": "https://metacpan.org/pod/ExtUtils::ParseXS#COPYRIGHT"
         },
         "Fennec::Lite": {
             "License": [
@@ -40932,10 +40932,10 @@
         },
         "File::Find::Rule": {
             "License": [
-                "Other"
+                "Artistic-1.0-Perl"
             ],
-            "Permission to redistribute": false,
-            "Retrieved from": "https://packages.ecosyste.ms/api/v1/registries/metacpan.org/lookup?name=File-Find-Rule"
+            "Permission to redistribute": true,
+            "Retrieved from": "https://metacpan.org/pod/File::Find::Rule#COPYRIGHT"
         },
         "File::Find::Rule::Perl": {
             "License": [
@@ -40946,10 +40946,10 @@
         },
         "File::Grep": {
             "License": [
-                "Other"
+                "Artistic-1.0-Perl"
             ],
-            "Permission to redistribute": false,
-            "Retrieved from": "https://packages.ecosyste.ms/api/v1/registries/metacpan.org/lookup?name=File-Grep"
+            "Permission to redistribute": true,
+            "Retrieved from": "https://metacpan.org/release/MNEYLON/File-Grep-0.02/source/README"
         },
         "File::HomeDir": {
             "License": [
@@ -41057,14 +41057,14 @@
             "Retrieved from": "https://packages.ecosyste.ms/api/v1/registries/metacpan.org/lookup?name=Git"
         },
         "GO": {
-            "License": "not found",
+            "License": "Unknown",
             "Permission to redistribute": false,
-            "Retrieved from": "not found"
+            "Retrieved from": "https://metacpan.org/pod/GO"
         },
         "GO::Utils": {
-            "License": "not found",
-            "Permission to redistribute": false,
-            "Retrieved from": "not found"
+            "License": "MIT",
+            "Permission to redistribute": true,
+            "Retrieved from": "https://metacpan.org/pod/GO::Utils::File"
         },
         "Graph": {
             "License": [
@@ -41096,10 +41096,10 @@
         },
         "Heap": {
             "License": [
-                "Other"
+                "Artistic-1.0-Perl"
             ],
-            "Permission to redistribute": false,
-            "Retrieved from": "https://packages.ecosyste.ms/api/v1/registries/metacpan.org/lookup?name=Heap"
+            "Permission to redistribute": true,
+            "Retrieved from": "https://metacpan.org/pod/Heap#COPYRIGHT"
         },
         "Hook::LexWrap": {
             "License": [
@@ -41208,10 +41208,10 @@
         },
         "Ima::DBI": {
             "License": [
-                "Other"
+                "Artistic-1.0-Perl"
             ],
-            "Permission to redistribute": false,
-            "Retrieved from": "https://packages.ecosyste.ms/api/v1/registries/metacpan.org/lookup?name=Ima-DBI"
+            "Permission to redistribute": true,
+            "Retrieved from": "https://metacpan.org/pod/Ima::DBI#LICENSE"
         },
         "Import::Into": {
             "License": [
@@ -41235,9 +41235,9 @@
             "Retrieved from": "https://github.com/ingydotnet/inline-pm"
         },
         "IO::Compress::Zip": {
-            "License": "not found",
-            "Permission to redistribute": false,
-            "Retrieved from": "not found"
+            "License": "Artistic-1.0-Perl",
+            "Permission to redistribute": true,
+            "Retrieved from": "https://metacpan.org/pod/IO::Compress::Zip"
         },
         "IO::HTML": {
             "License": [
@@ -41255,10 +41255,10 @@
         },
         "IO::String": {
             "License": [
-                "Other"
+                "Artistic-1.0-Perl"
             ],
-            "Permission to redistribute": false,
-            "Retrieved from": "https://packages.ecosyste.ms/api/v1/registries/metacpan.org/lookup?name=IO-String"
+            "Permission to redistribute": true,
+            "Retrieved from": "https://metacpan.org/pod/IO::String#COPYRIGHT"
         },
         "IO::Stringy": {
             "License": [
@@ -41297,10 +41297,10 @@
         },
         "IPC::Run3": {
             "License": [
-                "Other"
+                "Artistic-1.0-Perl"
             ],
-            "Permission to redistribute": false,
-            "Retrieved from": "https://packages.ecosyste.ms/api/v1/registries/metacpan.org/lookup?name=IPC-Run3"
+            "Permission to redistribute": true,
+            "Retrieved from": "https://metacpan.org/pod/IPC::Run3#LICENSE"
         },
         "IPC::System::Simple": {
             "License": [
@@ -41325,10 +41325,10 @@
         },
         "JSON::XS": {
             "License": [
-                "Other"
+                "Artistic-1.0-Perl"
             ],
-            "Permission to redistribute": false,
-            "Retrieved from": "https://packages.ecosyste.ms/api/v1/registries/metacpan.org/lookup?name=JSON-XS"
+            "Permission to redistribute": true,
+            "Retrieved from": "https://metacpan.org/release/MLEHMANN/JSON-XS-4.03/source/COPYING"
         },
         "Lingua::EN::PluralToSingular": {
             "License": [
@@ -41451,10 +41451,10 @@
         },
         "Logger::Simple": {
             "License": [
-                "Other"
+                "Artistic-1.0-Perl"
             ],
-            "Permission to redistribute": false,
-            "Retrieved from": "https://packages.ecosyste.ms/api/v1/registries/metacpan.org/lookup?name=Logger-Simple"
+            "Permission to redistribute": true,
+            "Retrieved from": "https://metacpan.org/pod/Logger::Simple#COPYRIGHT"
         },
         "LWP::MediaTypes": {
             "License": [
@@ -41471,21 +41471,21 @@
             "Retrieved from": "https://github.com/libwww-perl/LWP-Protocol-https"
         },
         "LWP::Simple": {
-            "License": "not found",
-            "Permission to redistribute": false,
-            "Retrieved from": "not found"
+            "License": "Artistic-1.0-Perl",
+            "Permission to redistribute": true,
+            "Retrieved from": "https://metacpan.org/pod/LWP::Simple"
         },
         "Mail::Util": {
-            "License": "not found",
-            "Permission to redistribute": false,
-            "Retrieved from": "not found"
+            "License": "Artistic-1.0-Perl",
+            "Permission to redistribute": true,
+            "Retrieved from": "https://metacpan.org/pod/Mail::Util"
         },
         "Math::Bezier": {
             "License": [
-                "Other"
+                "Unknown"
             ],
             "Permission to redistribute": false,
-            "Retrieved from": "https://packages.ecosyste.ms/api/v1/registries/metacpan.org/lookup?name=Math-Bezier"
+            "Retrieved from": "https://metacpan.org/pod/Math::Bezier"
         },
         "Math::CDF": {
             "License": [
@@ -41510,15 +41510,15 @@
         },
         "Math::VecStat": {
             "License": [
-                "Other"
+                "Artistic-1.0-Perl"
             ],
             "Permission to redistribute": false,
             "Retrieved from": "https://packages.ecosyste.ms/api/v1/registries/metacpan.org/lookup?name=Math-VecStat"
         },
         "MCE::Mutex": {
-            "License": "not found",
-            "Permission to redistribute": false,
-            "Retrieved from": "not found"
+            "License": "Artistic-1.0-Perl",
+            "Permission to redistribute": true,
+            "Retrieved from": "https://metacpan.org/pod/MCE::Mutex"
         },
         "Meta::Builder": {
             "License": [
@@ -41556,9 +41556,9 @@
             "Retrieved from": "https://github.com/markov2/perl5-MIME-Types"
         },
         "Mixin::Linewise::Readers": {
-            "License": "not found",
-            "Permission to redistribute": false,
-            "Retrieved from": "not found"
+            "License": "Artistic-1.0-Perl",
+            "Permission to redistribute": true,
+            "Retrieved from": "https://metacpan.org/pod/Mixin::Linewise::Readers#COPYRIGHT-AND-LICENSE"
         },
         "Mock::Quick": {
             "License": [
@@ -41723,9 +41723,9 @@
         },
         "Mozilla::CA": {
             "License": [
-                "Other"
+                "MPL-2.0"
             ],
-            "Permission to redistribute": false,
+            "Permission to redistribute": true,
             "Retrieved from": "https://github.com/libwww-perl/Mozilla-CA"
         },
         "MRO::Compat": {
@@ -41750,9 +41750,9 @@
             "Retrieved from": "https://github.com/p5sagit/namespace-clean"
         },
         "Net::Domain": {
-            "License": "not found",
-            "Permission to redistribute": false,
-            "Retrieved from": "not found"
+            "License": "Artistic-1.0-Perl",
+            "Permission to redistribute": true,
+            "Retrieved from": "https://metacpan.org/pod/Net::Domain"
         },
         "Net::HTTP": {
             "License": [
@@ -41763,10 +41763,10 @@
         },
         "Net::SMTP::SSL": {
             "License": [
-                "Other"
+                "Artistic-1.0-Perl"
             ],
-            "Permission to redistribute": false,
-            "Retrieved from": "https://packages.ecosyste.ms/api/v1/registries/metacpan.org/lookup?name=Net-SMTP-SSL"
+            "Permission to redistribute": true,
+            "Retrieved from": "https://metacpan.org/pod/Net::SMTP::SSL#COPYRIGHT"
         },
         "Net::SNMP": {
             "License": [
@@ -41784,10 +41784,10 @@
         },
         "Number::Compare": {
             "License": [
-                "Other"
+                "Artistic-1.0-Perl"
             ],
-            "Permission to redistribute": false,
-            "Retrieved from": "https://packages.ecosyste.ms/api/v1/registries/metacpan.org/lookup?name=Number-Compare"
+            "Permission to redistribute": true,
+            "Retrieved from": "https://metacpan.org/pod/Net::SMTP::SSL#COPYRIGHT"
         },
         "Number::Format": {
             "License": [
@@ -41840,9 +41840,9 @@
         },
         "PadWalker": {
             "License": [
-                "Other"
+                "Artistic-1.0-Perl"
             ],
-            "Permission to redistribute": false,
+            "Permission to redistribute": true,
             "Retrieved from": "https://packages.ecosyste.ms/api/v1/registries/metacpan.org/lookup?name=PadWalker"
         },
         "Parallel::ForkManager": {
@@ -41896,10 +41896,10 @@
         },
         "Parse::Yapp": {
             "License": [
-                "Other"
+                "Artistic-1.0-Perl"
             ],
-            "Permission to redistribute": false,
-            "Retrieved from": "https://packages.ecosyste.ms/api/v1/registries/metacpan.org/lookup?name=Parse-Yapp"
+            "Permission to redistribute": true,
+            "Retrieved from": "https://metacpan.org/pod/Parse::Yapp#COPYRIGHT"
         },
         "Path::Tiny": {
             "License": [
@@ -41965,16 +41965,16 @@
             "Retrieved from": "https://github.com/timj/perl-Pod-LaTeX"
         },
         "Pod::Man": {
-            "License": "not found",
-            "Permission to redistribute": false,
-            "Retrieved from": "not found"
+            "License": "Artistic-1.0-Perl",
+            "Permission to redistribute": true,
+            "Retrieved from": "https://metacpan.org/pod/Pod::Man"
         },
         "Pod::Parser": {
             "License": [
-                "Other"
+                "Artistic-1.0-Perl"
             ],
-            "Permission to redistribute": false,
-            "Retrieved from": "https://packages.ecosyste.ms/api/v1/registries/metacpan.org/lookup?name=Pod-Parser"
+            "Permission to redistribute": true,
+            "Retrieved from": "https://metacpan.org/release/MAREKR/Pod-Parser-1.67/source/README"
         },
         "Pod::Plainer": {
             "License": [
@@ -42044,9 +42044,9 @@
             "Retrieved from": "https://github.com/rjbs/Role-HasMessage"
         },
         "Role::Identifiable::HasIdent": {
-            "License": "not found",
-            "Permission to redistribute": false,
-            "Retrieved from": "not found"
+            "License": "Artistic-1.0-Perl",
+            "Permission to redistribute": true,
+            "Retrieved from": "https://metacpan.org/pod/Role::Identifiable::HasIdent"
         },
         "Role::Tiny": {
             "License": [
@@ -42056,9 +42056,9 @@
             "Retrieved from": "https://github.com/moose/Role-Tiny"
         },
         "Scalar::Util": {
-            "License": "not found",
-            "Permission to redistribute": false,
-            "Retrieved from": "not found"
+            "License": "Artistic-1.0-Perl",
+            "Permission to redistribute": true,
+            "Retrieved from": "https://metacpan.org/pod/Scalar::Util#COPYRIGHT"
         },
         "Scalar::Util::Numeric": {
             "License": [
@@ -42090,10 +42090,10 @@
         },
         "Set::IntSpan": {
             "License": [
-                "Other"
+                "Artistic-1.0-Perl"
             ],
-            "Permission to redistribute": false,
-            "Retrieved from": "https://packages.ecosyste.ms/api/v1/registries/metacpan.org/lookup?name=Set-IntSpan"
+            "Permission to redistribute": true,
+            "Retrieved from": "https://metacpan.org/pod/Set::IntSpan#COPYRIGHT"
         },
         "Set::IntSpan::Fast": {
             "License": [
@@ -42167,10 +42167,10 @@
         },
         "Statistics::Basic": {
             "License": [
-                "Other"
+                "LGPL-2.0"
             ],
-            "Permission to redistribute": false,
-            "Retrieved from": "https://packages.ecosyste.ms/api/v1/registries/metacpan.org/lookup?name=Statistics-Basic"
+            "Permission to redistribute": true,
+            "Retrieved from": "https://metacpan.org/pod/Statistics::Basic#COPYRIGHT"
         },
         "Statistics::Descriptive": {
             "License": [
@@ -42348,9 +42348,9 @@
             "Retrieved from": "https://github.com/burak/CPAN-Sys-Info-Driver-Linux"
         },
         "Sys::Info::Driver::Linux::Device::CPU": {
-            "License": "not found",
-            "Permission to redistribute": false,
-            "Retrieved from": "not found"
+            "License": "Artistic-1.0-Perl",
+            "Permission to redistribute": true,
+            "Retrieved from": "https://metacpan.org/pod/Sys::Info::Driver::Linux::Device::CPU"
         },
         "Sys::Info::Driver::Unknown": {
             "License": [
@@ -42360,21 +42360,21 @@
             "Retrieved from": "https://github.com/burak/CPAN-Sys-Info-Driver-Unknown"
         },
         "Sys::Info::Driver::Unknown::Device::CPU": {
-            "License": "not found",
-            "Permission to redistribute": false,
-            "Retrieved from": "not found"
+            "License": "Artistic-1.0-Perl",
+            "Permission to redistribute": true,
+            "Retrieved from": "https://metacpan.org/pod/Sys::Info::Driver::Unknown::Device::CPU"
         },
         "Template": {
-            "License": "not found",
-            "Permission to redistribute": false,
-            "Retrieved from": "not found"
+            "License": "Artistic-1.0-Perl",
+            "Permission to redistribute": true,
+            "Retrieved from": "https://metacpan.org/pod/Template#COPYRIGHT"
         },
         "Template::Plugin::Number::Format": {
             "License": [
-                "Other"
+                "Unknown"
             ],
             "Permission to redistribute": false,
-            "Retrieved from": "https://packages.ecosyste.ms/api/v1/registries/metacpan.org/lookup?name=Template-Plugin-Number-Format"
+            "Retrieved from": "https://metacpan.org/release/DARREN/Template-Plugin-Number-Format-1.06/source/README"
         },
         "Term::Encoding": {
             "License": [
@@ -42384,9 +42384,9 @@
             "Retrieved from": "https://github.com/miyagawa/Term-Encoding"
         },
         "Term::ReadKey": {
-            "License": "not found",
-            "Permission to redistribute": false,
-            "Retrieved from": "not found"
+            "License": "Artistic-1.0-Perl",
+            "Permission to redistribute": true,
+            "Retrieved from": "https://metacpan.org/pod/Term::ReadKey#LICENSE"
         },
         "Term::ReadLine::Gnu": {
             "License": [
@@ -42411,10 +42411,10 @@
         },
         "Test": {
             "License": [
-                "Other"
+                "Artistic-1.0-Perl"
             ],
-            "Permission to redistribute": false,
-            "Retrieved from": "https://packages.ecosyste.ms/api/v1/registries/metacpan.org/lookup?name=Test"
+            "Permission to redistribute": true,
+            "Retrieved from": "https://metacpan.org/release/JESSE/Test-1.26/source/README"
         },
         "Test2::Plugin::NoWarnings": {
             "License": [
@@ -42423,10 +42423,12 @@
             "Permission to redistribute": true,
             "Retrieved from": "https://github.com/houseabsolute/Test2-Plugin-NoWarnings"
         },
-        "Test2::Require::Module": {
-            "License": "not found",
-            "Permission to redistribute": false,
-            "Retrieved from": "not found"
+        "Test2::Plugin::NoWarnings": {
+            "License": [
+                "Artistic-2.0"
+            ],
+            "Permission to redistribute": true,
+            "Retrieved from": "https://github.com/houseabsolute/Test2-Plugin-NoWarnings"
         },
         "Test::Base": {
             "License": [
@@ -42500,9 +42502,9 @@
             "Retrieved from": "https://github.com/briandfoy/test-file"
         },
         "Test::File::ShareDir::Dist": {
-            "License": "not found",
-            "Permission to redistribute": false,
-            "Retrieved from": "not found"
+            "License": "Artistic-1.0-Perl",
+            "Permission to redistribute": true,
+            "Retrieved from": "https://metacpan.org/pod/Test::File::ShareDir::Dist#COPYRIGHT-AND-LICENSE"
         },
         "Test::Harness": {
             "License": [
@@ -42520,10 +42522,10 @@
         },
         "Test::Memory::Cycle": {
             "License": [
-                "Other"
+                "Artistic-2.0"
             ],
-            "Permission to redistribute": false,
-            "Retrieved from": "https://packages.ecosyste.ms/api/v1/registries/metacpan.org/lookup?name=Test-Memory-Cycle"
+            "Permission to redistribute": true,
+            "Retrieved from": "https://metacpan.org/pod/Test::Memory::Cycle#COPYRIGHT"
         },
         "Test::More::UTF8": {
             "License": [
@@ -42646,9 +42648,9 @@
         },
         "Text::Aligner": {
             "License": [
-                "Other"
+                "ISC"
             ],
-            "Permission to redistribute": false,
+            "Permission to redistribute": true,
             "Retrieved from": "https://github.com/shlomif/text-aligner"
         },
         "Text::Balanced": {
@@ -42695,10 +42697,10 @@
         },
         "Text::Iconv": {
             "License": [
-                "Other"
+                "Artistic-1.0-Perl"
             ],
-            "Permission to redistribute": false,
-            "Retrieved from": "https://packages.ecosyste.ms/api/v1/registries/metacpan.org/lookup?name=Text-Iconv"
+            "Permission to redistribute": true,
+            "Retrieved from": "https://metacpan.org/release/MPIOTR/Text-Iconv-1.7/source/README"
         },
         "Text::Soundex": {
             "License": [
@@ -42709,10 +42711,10 @@
         },
         "Text::Table": {
             "License": [
-                "Other"
+                "ISC"
             ],
-            "Permission to redistribute": false,
-            "Retrieved from": "https://github.com/shlomif/Text-Table"
+            "Permission to redistribute": true,
+            "Retrieved from": "https://metacpan.org/pod/Text::Table#COPYRIGHT"
         },
         "Text::Table::Manifold": {
             "License": [
@@ -42737,10 +42739,10 @@
         },
         "Tie::Function": {
             "License": [
-                "Other"
+                "Unknown"
             ],
             "Permission to redistribute": false,
-            "Retrieved from": "https://packages.ecosyste.ms/api/v1/registries/metacpan.org/lookup?name=Tie-Function"
+            "Retrieved from": "https://metacpan.org/release/DAVIDNICO/Tie-Function-0.02/source/README"
         },
         "Tie::IxHash": {
             "License": [
@@ -42772,10 +42774,10 @@
         },
         "Time::Piece::MySQL": {
             "License": [
-                "Other"
+                "Artistic-1.0-Perl"
             ],
-            "Permission to redistribute": false,
-            "Retrieved from": "https://packages.ecosyste.ms/api/v1/registries/metacpan.org/lookup?name=Time-Piece-MySQL"
+            "Permission to redistribute": true,
+            "Retrieved from": "https://metacpan.org/pod/Time::Piece::MySQL#COPYRIGHT"
         },
         "Tree::DAG_Node": {
             "License": [
@@ -42800,16 +42802,16 @@
         },
         "Types::Serialiser": {
             "License": [
-                "Other"
+                "Artistic-1.0-Perl"
             ],
-            "Permission to redistribute": false,
-            "Retrieved from": "https://packages.ecosyste.ms/api/v1/registries/metacpan.org/lookup?name=Types-Serialiser"
+            "Permission to redistribute": true,
+            "Retrieved from": "https://metacpan.org/release/MLEHMANN/Types-Serialiser-1.01/source/COPYING"
         },
         "Unicode::EastAsianWidth": {
             "License": [
-                "Other"
+                "CC0-1.0"
             ],
-            "Permission to redistribute": false,
+            "Permission to redistribute": true,
             "Retrieved from": "https://github.com/audreyt/Unicode-EastAsianWidth"
         },
         "Unicode::LineBreak": {
@@ -42821,10 +42823,10 @@
         },
         "UNIVERSAL::moniker": {
             "License": [
-                "Other"
+                "Artistic-1.0-Perl"
             ],
-            "Permission to redistribute": false,
-            "Retrieved from": "https://packages.ecosyste.ms/api/v1/registries/metacpan.org/lookup?name=UNIVERSAL-moniker"
+            "Permission to redistribute": true,
+            "Retrieved from": "https://metacpan.org/pod/UNIVERSAL::moniker#COPYRIGHT"
         },
         "Unix::Processors": {
             "License": [
@@ -42856,10 +42858,10 @@
         },
         "Want": {
             "License": [
-                "Other"
+                "Artistic-1.0-Perl"
             ],
-            "Permission to redistribute": false,
-            "Retrieved from": "https://packages.ecosyste.ms/api/v1/registries/metacpan.org/lookup?name=Want"
+            "Permission to redistribute": true,
+            "Retrieved from": "https://metacpan.org/pod/Want#COPYRIGHT"
         },
         "WWW::RobotRules": {
             "License": [
@@ -42877,17 +42879,17 @@
         },
         "XML::DOM": {
             "License": [
-                "Other"
+                "Unknown"
             ],
             "Permission to redistribute": false,
-            "Retrieved from": "https://packages.ecosyste.ms/api/v1/registries/metacpan.org/lookup?name=XML-DOM"
+            "Retrieved from": "https://metacpan.org/pod/XML::DOM"
         },
         "XML::Filter::BufferText": {
             "License": [
-                "Other"
+                "Artistic-1.0-Perl"
             ],
-            "Permission to redistribute": false,
-            "Retrieved from": "https://packages.ecosyste.ms/api/v1/registries/metacpan.org/lookup?name=XML-Filter-BufferText"
+            "Permission to redistribute": true,
+            "Retrieved from": "https://metacpan.org/pod/XML::Filter::BufferText#COPYRIGHT"
         },
         "XML::NamespaceSupport": {
             "License": [
@@ -42905,17 +42907,17 @@
         },
         "XML::RegExp": {
             "License": [
-                "Other"
+                "Artistic-1.0-Perl"
             ],
-            "Permission to redistribute": false,
-            "Retrieved from": "https://packages.ecosyste.ms/api/v1/registries/metacpan.org/lookup?name=XML-RegExp"
+            "Permission to redistribute": true,
+            "Retrieved from": "https://metacpan.org/release/TJMATHER/XML-RegExp-0.04/source/README"
         },
         "XML::SAX": {
             "License": [
-                "Other"
+                "Artistic-1.0-Perl"
             ],
-            "Permission to redistribute": false,
-            "Retrieved from": "https://github.com/grantm/xml-sax"
+            "Permission to redistribute": true,
+            "Retrieved from": "https://metacpan.org/pod/XML::SAX#LICENSE"
         },
         "XML::SAX::Base": {
             "License": [
@@ -42947,10 +42949,10 @@
         },
         "XML::Tiny": {
             "License": [
-                "Other"
+                "GPL-2.0"
             ],
-            "Permission to redistribute": false,
-            "Retrieved from": "https://packages.ecosyste.ms/api/v1/registries/metacpan.org/lookup?name=XML-Tiny"
+            "Permission to redistribute": true,
+            "Retrieved from": "https://metacpan.org/pod/XML::SAX#LICENSE"
         },
         "XML::Twig": {
             "License": [
@@ -42961,10 +42963,10 @@
         },
         "XML::Writer": {
             "License": [
-                "Other"
+                "Unrestricted"
             ],
-            "Permission to redistribute": false,
-            "Retrieved from": "https://packages.ecosyste.ms/api/v1/registries/metacpan.org/lookup?name=XML-Writer"
+            "Permission to redistribute": true,
+            "Retrieved from": "https://metacpan.org/pod/XML::Writer"
         },
         "XML::XPath": {
             "License": [
@@ -43089,9 +43091,9 @@
     },
     "Ruby/3.2.2-GCCcore-12.2.0": {
         "activesupport": {
-            "License": "not found",
-            "Permission to redistribute": false,
-            "Retrieved from": "not found"
+            "License": ["MIT"],
+            "Permission to redistribute": true,
+            "Retrieved from": "https://rubygems.org/gems/activesupport"
         },
         "addressable": {
             "License": [
@@ -43101,9 +43103,9 @@
             "Retrieved from": "https://github.com/debrouwere/python-addressable"
         },
         "arr-pm": {
-            "License": "not found",
-            "Permission to redistribute": false,
-            "Retrieved from": "not found"
+            "License": ["MIT"],
+            "Permission to redistribute": true,
+            "Retrieved from": "https://rubygems.org/gems/arr-pm"
         },
         "backports": {
             "License": [
@@ -43113,9 +43115,9 @@
             "Retrieved from": "https://github.com/brandon-rhodes/backports"
         },
         "bundler": {
-            "License": [],
-            "Permission to redistribute": false,
-            "Retrieved from": null
+            "License": ["MIT"],
+            "Permission to redistribute": true,
+            "Retrieved from": "https://rubygems.org/gems/bundler"
         },
         "cabin": {
             "License": [
@@ -43126,9 +43128,9 @@
             "Retrieved from": "https://github.com/scipp-atlas/cabin"
         },
         "childprocess": {
-            "License": "not found",
-            "Permission to redistribute": false,
-            "Retrieved from": "not found"
+            "License": ["MIT"],
+            "Permission to redistribute": true,
+            "Retrieved from": "https://rubygems.org/gems/childprocess"
         },
         "clamp": {
             "License": [
@@ -43138,9 +43140,9 @@
             "Retrieved from": null
         },
         "concurrent-ruby": {
-            "License": "not found",
-            "Permission to redistribute": false,
-            "Retrieved from": "not found"
+            "License": ["MIT"],
+            "Permission to redistribute": true,
+            "Retrieved from": "https://rubygems.org/gems/concurrent-ruby"
         },
         "connection_pool": {
             "License": [
@@ -43150,9 +43152,9 @@
             "Retrieved from": "https://github.com/zhouyl/ConnectionPool"
         },
         "diff-lcs": {
-            "License": "not found",
-            "Permission to redistribute": false,
-            "Retrieved from": "not found"
+            "License": ["MIT"],
+            "Permission to redistribute": true,
+            "Retrieved from": "https://rubygems.org/gems/diff-lcs"
         },
         "ethon": {
             "License": [
@@ -43162,9 +43164,9 @@
             "Retrieved from": "https://github.com/vasusen-code/ethon"
         },
         "faraday-net_http": {
-            "License": "not found",
-            "Permission to redistribute": false,
-            "Retrieved from": "not found"
+            "License": ["MIT"],
+            "Permission to redistribute": true,
+            "Retrieved from": "https://rubygems.org/gems/faraday-net_http"
         },
         "faraday": {
             "License": [
@@ -43174,14 +43176,14 @@
             "Retrieved from": "https://github.com/FaradayRF/Faraday-Software"
         },
         "faraday_middleware": {
-            "License": "not found",
-            "Permission to redistribute": false,
-            "Retrieved from": "not found"
+            "License": ["MIT"],
+            "Permission to redistribute": true,
+            "Retrieved from": "https://rubygems.org/gems/faraday_middleware"
         },
-        "ffi": {
-            "License": "not found",
-            "Permission to redistribute": false,
-            "Retrieved from": "not found"
+            "ffi": {
+            "License": ["MIT"],
+            "Permission to redistribute": true,
+            "Retrieved from": "https://rubygems.org/gems/   ffi"
         },
         "gh": {
             "License": [
@@ -43191,9 +43193,9 @@
             "Retrieved from": "https://github.com/danielwhatmuff/gh"
         },
         "highline": {
-            "License": "not found",
-            "Permission to redistribute": false,
-            "Retrieved from": "not found"
+            "License": ["GPL-2.0"],
+            "Permission to redistribute": true,
+            "Retrieved from": "https://rubygems.org/gems/highline"
         },
         "i18n": {
             "License": [
@@ -43203,16 +43205,16 @@
             "Retrieved from": "https://bitbucket.org/antocuni/i18n"
         },
         "json": {
-            "License": "not found",
-            "Permission to redistribute": false,
-            "Retrieved from": "not found"
+            "License": ["Ruby"],
+            "Permission to redistribute": true,
+            "Retrieved from": "https://rubygems.org/gems/json"
         },
         "launchy": {
             "License": [
-                "MIT"
+                "ISC"
             ],
             "Permission to redistribute": true,
-            "Retrieved from": null
+            "Retrieved from": "https://rubygems.org/gems/launchy"
         },
         "minitest": {
             "License": [
@@ -43222,76 +43224,74 @@
             "Retrieved from": "https://github.com/jichen3000/minitest"
         },
         "multi_json": {
-            "License": "not found",
-            "Permission to redistribute": false,
-            "Retrieved from": "not found"
+            "License": ["MIT"],
+            "Permission to redistribute": true,
+            "Retrieved from": "https://rubygems.org/gems/multi_json"
         },
         "multipart-post": {
-            "License": "not found",
-            "Permission to redistribute": false,
-            "Retrieved from": "not found"
+            "License": ["MIT"],
+            "Permission to redistribute": true,
+            "Retrieved from": "https://rubygems.org/gems/multipart-post"
         },
         "mustermann": {
-            "License": "not found",
-            "Permission to redistribute": false,
-            "Retrieved from": "not found"
+            "License": ["MIT"],
+            "Permission to redistribute": true,
+            "Retrieved from": "https://rubygems.org/gems/mustermann"
         },
         "net-http-persistent": {
-            "License": "not found",
-            "Permission to redistribute": false,
-            "Retrieved from": "not found"
+            "License": ["MIT"],
+            "Permission to redistribute": true,
+            "Retrieved from": "https://rubygems.org/gems/net-http-persistent"
         },
         "net-http-pipeline": {
-            "License": "not found",
-            "Permission to redistribute": false,
-            "Retrieved from": "not found"
+            "License": ["MIT"],
+            "Permission to redistribute": true,
+            "Retrieved from": "https://rubygems.org/gems/net-http-pipeline"
         },
         "public_suffix": {
-            "License": "not found",
-            "Permission to redistribute": false,
-            "Retrieved from": "not found"
+            "License": ["MIT"],
+            "Permission to redistribute": true,
+            "Retrieved from": "https://rubygems.org/gems/public_suffix"
         },
         "pusher-client": {
-            "License": "not found",
-            "Permission to redistribute": false,
-            "Retrieved from": "not found"
+            "License": ["MIT"],
+            "Permission to redistribute": true,
+            "Retrieved from": "https://rubygems.org/gems/pusher-client"
         },
         "rack-protection": {
-            "License": "not found",
-            "Permission to redistribute": false,
-            "Retrieved from": "not found"
+            "License": ["MIT"],
+            "Permission to redistribute": true,
+            "Retrieved from": "https://rubygems.org/gems/rack-protection"
         },
         "rack-test": {
-            "License": "not found",
-            "Permission to redistribute": false,
-            "Retrieved from": "not found"
+            "License": ["MIT"],
+            "Permission to redistribute": true,
+            "Retrieved from": "https://rubygems.org/gems/rack-test"
         },
         "rack": {
-            "License": [
-                "Other"
-            ],
-            "Permission to redistribute": false,
-            "Retrieved from": "https://gitlab.com/cJ/rack"
+            "License": ["MIT"],
+            "Permission to redistribute": true,
+            "Retrieved from": "https://rubygems.org/gems/rack"
         },
         "rspec-core": {
-            "License": "not found",
-            "Permission to redistribute": false,
-            "Retrieved from": "not found"
+            "License": ["MIT"],
+            "Permission to redistribute": true,
+            "Retrieved from": "https://rubygems.org/gems/rspec-core"
         },
         "rspec-expectations": {
-            "License": "not found",
-            "Permission to redistribute": false,
-            "Retrieved from": "not found"
+            "License": ["MIT"],
+            "Permission to redistribute": true,
+            "Retrieved from": "https://rubygems.org/gems/rspec-expectations"
         },
         "rspec-mocks": {
-            "License": "not found",
-            "Permission to redistribute": false,
-            "Retrieved from": "not found"
+            "License": ["MIT"],
+            "Permission to redistribute": true,
+            "Retrieved from": "https://rubygems.org/gems/rspec-mocks"
         },
         "rspec-support": {
-            "License": "not found",
-            "Permission to redistribute": false,
-            "Retrieved from": "not found"
+            "License": ["MIT"],
+            "Permission to redistribute": true,
+            "Retrieved from": "https://rubygems.org/gems/rspec-support"
         },
         "rspec": {
             "License": [
@@ -43301,9 +43301,9 @@
             "Retrieved from": "https://github.com/liuyenting/rspec"
         },
         "ruby2_keywords": {
-            "License": "not found",
-            "Permission to redistribute": false,
-            "Retrieved from": "not found"
+            "License": ["MIT"],
+            "Permission to redistribute": true,
+            "Retrieved from": "https://rubygems.org/gems/ruby2_keywords"
         },
         "sinatra": {
             "License": [
@@ -43313,9 +43313,9 @@
             "Retrieved from": null
         },
         "thread_safe": {
-            "License": "not found",
-            "Permission to redistribute": false,
-            "Retrieved from": "not found"
+            "License": ["MIT"],
+            "Permission to redistribute": true,
+            "Retrieved from": "https://rubygems.org/gems/thread_safe"
         },
         "tilt": {
             "License": [
@@ -43325,26 +43325,24 @@
             "Retrieved from": "https://github.com/Transparency-Information-Language/python-tilt"
         },
         "typhoeus": {
-            "License": "not found",
-            "Permission to redistribute": false,
-            "Retrieved from": "not found"
+            "License": ["MIT"],
+            "Permission to redistribute": true,
+            "Retrieved from": "https://rubygems.org/gems/typhoeus"
         },
         "tzinfo": {
-            "License": "not found",
-            "Permission to redistribute": false,
-            "Retrieved from": "not found"
+            "License": ["MIT"],
+            "Permission to redistribute": true,
+            "Retrieved from": "https://rubygems.org/gems/tzinfo"
         },
         "websocket": {
-            "License": [
-                "Other"
-            ],
-            "Permission to redistribute": false,
-            "Retrieved from": null
+            "License": ["MIT"],
+            "Permission to redistribute": true,
+            "Retrieved from": "https://rubygems.org/gems/websocket"
         },
         "zeitwerk": {
-            "License": "not found",
-            "Permission to redistribute": false,
-            "Retrieved from": "not found"
+            "License": ["MIT"],
+            "Permission to redistribute": true,
+            "Retrieved from": "https://rubygems.org/gems/zeitwerk"
         }
     },
     "crb-blast/0.6.9-GCC-12.3.0": {
