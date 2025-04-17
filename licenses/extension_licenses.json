@@ -43349,9 +43349,9 @@
     },
     "crb-blast/0.6.9-GCC-12.3.0": {
         "bindeps": {
-            "License": "not found",
-            "Permission to redistribute": false,
-            "Retrieved from": "not found"
+            "License": "MIT",
+            "Permission to redistribute": true,
+            "Retrieved from": "https://github.com/cboursnell/bindeps"
         },
         "bio": {
             "License": [
@@ -43361,9 +43361,9 @@
             "Retrieved from": "https://github.com/ialbert/bio"
         },
         "crb-blast": {
-            "License": "not found",
-            "Permission to redistribute": false,
-            "Retrieved from": "not found"
+            "License": "MIT",
+            "Permission to redistribute": true,
+            "Retrieved from": "https://github.com/cboursnell/crb-blast"
         },
         "facade": {
             "License": [
@@ -43373,34 +43373,34 @@
             "Retrieved from": "https://github.com/oakfang/facade"
         },
         "fixwhich": {
-            "License": "not found",
-            "Permission to redistribute": false,
-            "Retrieved from": "not found"
+            "License": "MIT",
+            "Permission to redistribute": true,
+            "Retrieved from": "https://rubygems.org/gems/fixwhich"
         },
         "pathname2": {
-            "License": "not found",
-            "Permission to redistribute": false,
-            "Retrieved from": "not found"
+            "License": "Apache-2.0",
+            "Permission to redistribute": true,
+            "Retrieved from": "https://rubygems.org/gems/pathname2"
         },
         "threach": {
-            "License": "not found",
+            "License": "unknown",
             "Permission to redistribute": false,
-            "Retrieved from": "not found"
+            "Retrieved from": "https://rubygems.org/gems/threach"
         },
         "trollop": {
             "License": [
-                "Other"
+                "MIT"
             ],
-            "Permission to redistribute": false,
+            "Permission to redistribute": true,
             "Retrieved from": "https://bitbucket.org/btubbs/trollop"
         }
     },
     "h5netcdf/1.2.0-foss-2023a": {
         "h5netcdf": {
             "License": [
-                "Other"
+                "BSD-3-Clause"
             ],
-            "Permission to redistribute": false,
+            "Permission to redistribute": true,
             "Retrieved from": "https://github.com/h5netcdf/h5netcdf"
         }
     },
@@ -43443,9 +43443,9 @@
             "Retrieved from": "https://github.com/python-greenlet/greenlet"
         },
         "SQLAlchemy": {
-            "License": "not found",
-            "Permission to redistribute": false,
-            "Retrieved from": "not found"
+            "License": "MIT",
+            "Permission to redistribute": true,
+            "Retrieved from": "https://pypi.org/project/SQLAlchemy"
         }
     },
     "geopandas/0.14.2-foss-2023a": {
@@ -43480,15 +43480,15 @@
             "Retrieved from": "https://github.com/briancurtin/deprecation"
         },
         "lat_lon_parser": {
-            "License": "not found",
-            "Permission to redistribute": false,
-            "Retrieved from": "not found"
+            "License": "CC0-1.0",
+            "Permission to redistribute": true,
+            "Retrieved from": "https://pypi.org/project/lat-lon-parser/"
         },
         "wradlib": {
             "License": [
-                "Other"
+                "MIT"
             ],
-            "Permission to redistribute": false,
+            "Permission to redistribute": true,
             "Retrieved from": "https://github.com/wradlib/wradlib"
         },
         "xarray-datatree": {
@@ -43507,17 +43507,17 @@
         },
         "xradar": {
             "License": [
-                "Other"
+                "MIT"
             ],
-            "Permission to redistribute": false,
+            "Permission to redistribute": true,
             "Retrieved from": "https://github.com/openradar/xradar"
         }
     },
     "LRBinner/0.1-foss-2023a": {
         "LRBinner": {
-            "License": "not found",
-            "Permission to redistribute": false,
-            "Retrieved from": "not found"
+            "License": "GPL-2.0-only",
+            "Permission to redistribute": true,
+            "Retrieved from": "https://github.com/anuradhawick/LRBinner"
         },
         "tabulate": {
             "License": [
@@ -43571,9 +43571,9 @@
             "Retrieved from": "https://github.com/executablebooks/markdown-it-py"
         },
         "Markdown": {
-            "License": "not found",
-            "Permission to redistribute": false,
-            "Retrieved from": "not found"
+            "License": "BSD-3-Clause",
+            "Permission to redistribute": true,
+            "Retrieved from": "https://github.com/Python-Markdown/markdown"
         },
         "mdurl": {
             "License": [
@@ -43584,21 +43584,21 @@
         },
         "multiqc": {
             "License": [
-                "Other"
+                "GPL-3.0-only"
             ],
-            "Permission to redistribute": false,
+            "Permission to redistribute": true,
             "Retrieved from": "https://github.com/MultiQC/MultiQC"
         },
         "Pygments": {
-            "License": "not found",
-            "Permission to redistribute": false,
-            "Retrieved from": "not found"
+            "License": "BSD-2-Clause",
+            "Permission to redistribute": true,
+            "Retrieved from": "https://pypi.org/project/Pygments"
         },
         "rich-click": {
             "License": [
-                "Other"
+                "MIT"
             ],
-            "Permission to redistribute": false,
+            "Permission to redistribute": true,
             "Retrieved from": "https://github.com/ewels/rich-click"
         },
         "rich": {
@@ -43625,9 +43625,9 @@
             "Retrieved from": "https://github.com/matplotlib/basemap"
         },
         "basemap_data": {
-            "License": "not found",
-            "Permission to redistribute": false,
-            "Retrieved from": "not found"
+            "License": "GPL-3.0-or-later",
+            "Permission to redistribute": true,
+            "Retrieved from": "https://pypi.org/project/basemap-data"
         },
         "pyshp": {
             "License": [
@@ -43648,14 +43648,14 @@
     },
     "hatch-jupyter-builder/0.9.1-GCCcore-12.3.0": {
         "hatch_jupyter_builder": {
-            "License": "not found",
-            "Permission to redistribute": false,
-            "Retrieved from": "not found"
+            "License": "BSD-3-Clause",
+            "Permission to redistribute": true,
+            "Retrieved from": "https://github.com/jupyterlab/hatch-jupyter-builder"
         },
         "hatch_nodejs_version": {
-            "License": "not found",
-            "Permission to redistribute": false,
-            "Retrieved from": "not found"
+            "License": "MIT",
+            "Permission to redistribute": true,
+            "Retrieved from": "https://github.com/agoose77/hatch-nodejs-version"
         }
     },
     "statsmodels/0.14.1-gfbf-2023a": {
@@ -43699,15 +43699,15 @@
             "Retrieved from": "https://github.com/mozilla/bleach"
         },
         "Cassiopeia": {
-            "License": "not found",
-            "Permission to redistribute": false,
-            "Retrieved from": "not found"
+            "License": "MIT",
+            "Permission to redistribute": true,
+            "Retrieved from": "https://pypi.org/project/cassiopeia"
         },
         "comm": {
             "License": [
-                "Other"
+                "BSD-3-Clause"
             ],
-            "Permission to redistribute": false,
+            "Permission to redistribute": true,
             "Retrieved from": "https://github.com/ipython/comm"
         },
         "defusedxml": {
@@ -43753,34 +43753,34 @@
             "Retrieved from": "https://github.com/albertyw/itolapi"
         },
         "jupyter_client": {
-            "License": "not found",
-            "Permission to redistribute": false,
-            "Retrieved from": "not found"
+            "License": "BSD-3-Clause",
+            "Permission to redistribute": true,
+            "Retrieved from": "https://github.com/jupyter/jupyter_client"
         },
         "jupyter_core": {
-            "License": "not found",
-            "Permission to redistribute": false,
-            "Retrieved from": "not found"
+            "License": "BSD-3-Clause",
+            "Permission to redistribute": true,
+            "Retrieved from": "https://github.com/jupyter/jupyter_core"
         },
         "jupyter_packaging": {
-            "License": "not found",
-            "Permission to redistribute": false,
-            "Retrieved from": "not found"
+            "License": "BSD-3-Clause",
+            "Permission to redistribute": true,
+            "Retrieved from": "https://github.com/jupyter/jupyter-packaging"
         },
         "jupyterlab_pygments": {
-            "License": "not found",
-            "Permission to redistribute": false,
-            "Retrieved from": "not found"
+            "License": "BSD-3-Clause",
+            "Permission to redistribute": true,
+            "Retrieved from": "https://github.com/jupyterlab/jupyterlab_pygments"
         },
         "jupyterlab_widgets": {
-            "License": "not found",
-            "Permission to redistribute": false,
-            "Retrieved from": "not found"
+            "License": "BSD-3-Clause",
+            "Permission to redistribute": true,
+            "Retrieved from": "https://pypi.org/project/jupyterlab-widgets"
         },
         "Levenshtein": {
-            "License": "not found",
-            "Permission to redistribute": false,
-            "Retrieved from": "not found"
+            "License": "GPL-2.0-or-later",
+            "Permission to redistribute": true,
+            "Retrieved from": "https://pypi.org/project/Levenshtein"
         },
         "mistune": {
             "License": [
@@ -43791,23 +43791,23 @@
         },
         "nbclient": {
             "License": [
-                "Other"
+                "BSD-3-Clause"
             ],
-            "Permission to redistribute": false,
+            "Permission to redistribute": true,
             "Retrieved from": "https://github.com/jupyter/nbclient"
         },
         "nbconvert": {
             "License": [
-                "Other"
+                "BSD-3-Clause"
             ],
-            "Permission to redistribute": false,
+            "Permission to redistribute": true,
             "Retrieved from": "https://github.com/jupyter/nbconvert"
         },
         "nbformat": {
             "License": [
-                "Other"
+                "BSD-3-Clause"
             ],
-            "Permission to redistribute": false,
+            "Permission to redistribute": true,
             "Retrieved from": "https://github.com/jupyter/nbformat"
         },
         "ngs-tools": {
@@ -43825,9 +43825,9 @@
             "Retrieved from": "https://github.com/jgm/pandocfilters"
         },
         "python-Levenshtein": {
-            "License": "not found",
-            "Permission to redistribute": false,
-            "Retrieved from": "not found"
+            "License": "GPL-2.0-or-later",
+            "Permission to redistribute": true,
+            "Retrieved from": "https://pypi.org/project/python-Levenshtein"
         },
         "shortuuid": {
             "License": [
@@ -43845,9 +43845,9 @@
         },
         "traitlets": {
             "License": [
-                "Other"
+                "BSD-3-Clause"
             ],
-            "Permission to redistribute": false,
+            "Permission to redistribute": true,
             "Retrieved from": "https://github.com/ipython/traitlets"
         },
         "widgetsnbextension": {
@@ -43855,7 +43855,7 @@
                 "BSD-1-Clause"
             ],
             "Permission to redistribute": true,
-            "Retrieved from": null
+            "Retrieved from": "https://pypi.org/project/widgetsnbextension"
         }
     },
     "cooler/0.10.2-foss-2023b": {
@@ -43891,17 +43891,17 @@
     "LightGBM/4.5.0-foss-2023a": {
         "lightgbm": {
             "License": [
-                "Other"
+                "MIT"
             ],
-            "Permission to redistribute": false,
+            "Permission to redistribute": true,
             "Retrieved from": "https://github.com/microsoft/LightGBM"
         }
     },
     "pydantic/2.7.4-GCCcore-13.2.0": {
         "annotated_types": {
-            "License": "not found",
-            "Permission to redistribute": false,
-            "Retrieved from": "not found"
+            "License": "MIT",
+            "Permission to redistribute": true,
+            "Retrieved from": "https://github.com/annotated-types/annotated-types"
         },
         "pydantic": {
             "License": [
@@ -43911,9 +43911,9 @@
             "Retrieved from": "https://github.com/pydantic/pydantic"
         },
         "pydantic_core": {
-            "License": "not found",
-            "Permission to redistribute": false,
-            "Retrieved from": "not found"
+            "License": "MIT",
+            "Permission to redistribute": true,
+            "Retrieved from": "https://github.com/pydantic/pydantic-core"
         }
     },
     "SlurmViewer/1.0.1-GCCcore-13.2.0": {
@@ -44139,9 +44139,9 @@
     "astropy/7.0.0-gfbf-2023b": {
         "astropy-iers-data": {
             "License": [
-                "Other"
+                "BSD-3-Clause"
             ],
-            "Permission to redistribute": false,
+            "Permission to redistribute": true,
             "Retrieved from": "https://github.com/astropy/astropy-iers-data"
         },
         "astropy": {
@@ -44193,21 +44193,21 @@
                 "CERN-OHL-P-2.0"
             ],
             "Permission to redistribute": true,
-            "Retrieved from": null
+            "Retrieved from": "https://pypi.org/project/ruamel.yaml.base"
         },
         "ruamel.yaml.clib": {
             "License": [
                 "MIT"
             ],
             "Permission to redistribute": true,
-            "Retrieved from": null
+            "Retrieved from": "https://pypi.org/project/ruamel.yaml.clib"
         },
         "ruamel.yaml.cmd": {
             "License": [
                 "MIT"
             ],
             "Permission to redistribute": true,
-            "Retrieved from": null
+            "Retrieved from": "https://pypi.org/project/ruamel.yaml.cmd"
         },
         "ruamel.yaml.convert": {
             "License": [
