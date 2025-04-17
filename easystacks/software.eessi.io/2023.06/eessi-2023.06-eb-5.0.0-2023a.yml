@@ -4,3 +4,8 @@ easyconfigs:
         # see https://github.com/easybuilders/easybuild-easyconfigs/pull/22292
         # and https://github.com/easybuilders/easybuild-easyconfigs/pull/22646
         from-commit: b212c00fdc3983678037429719f1b210cb978b42
+  - bcgTree-1.2.1-foss-2023a.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/22707
+        # and https://github.com/easybuilders/easybuild-easyconfigs/pull/22540
+        from-commit: 608956e04994b97114af69ff370532a4386ae3d6
