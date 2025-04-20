@@ -134,7 +134,7 @@ def post_ready_hook(self, *args, **kwargs):
         parallel = self.cfg['parallel']
         if cpu_target == CPU_TARGET_A64FX and self.name in ['TensorFlow']:
             if parallel > 1:
-                self.cfg['parallel'] = 8
+                self.cfg['parallel'] = 12
                 msg = "limiting parallelism to %s (was %s) for %s on %s to avoid out-of-memory failures during building/testing"
                 print_msg(msg % (self.cfg['parallel'], parallel, self.name, cpu_target), log=self.log)
         elif parallel > 1:
