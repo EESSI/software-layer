@@ -18047,49 +18047,49 @@
             "Retrieved from": "https://github.com/python-jsonschema/jsonschema"
         },
         "jsonschema_specifications": {
-            "License": "not found",
-            "Permission to redistribute": false,
-            "Retrieved from": "not found"
+            "License": "MIT",
+            "Permission to redistribute": true,
+            "Retrieved from": "https://github.com/python-jsonschema/jsonschema-specifications"
         },
         "jupyter_client": {
-            "License": "not found",
-            "Permission to redistribute": false,
-            "Retrieved from": "not found"
+            "License": "BSD-3-Clause",
+            "Permission to redistribute": true,
+            "Retrieved from": "https://github.com/jupyter/jupyter_client"
         },
         "jupyter_core": {
-            "License": "not found",
-            "Permission to redistribute": false,
-            "Retrieved from": "not found"
+            "License": "BSD-3-Clause",
+            "Permission to redistribute": true,
+            "Retrieved from": "https://github.com/jupyter/jupyter_core"
         },
         "jupyter_events": {
-            "License": "not found",
-            "Permission to redistribute": false,
-            "Retrieved from": "not found"
+            "License": "BSD-3-Clause",
+            "Permission to redistribute": true,
+            "Retrieved from": "https://github.com/jupyter/jupyter_events"
         },
         "jupyter_packaging": {
-            "License": "not found",
-            "Permission to redistribute": false,
-            "Retrieved from": "not found"
+            "License": "BSD-3-Clause",
+            "Permission to redistribute": true,
+            "Retrieved from": "https://github.com/jupyter/jupyter-packaging"
         },
         "jupyter_server": {
-            "License": "not found",
-            "Permission to redistribute": false,
-            "Retrieved from": "not found"
+            "License": "BSD-3-Clause",
+            "Permission to redistribute": true,
+            "Retrieved from": "https://pypi.org/project/jupyter-server"
         },
         "jupyter_server_terminals": {
-            "License": "not found",
-            "Permission to redistribute": false,
-            "Retrieved from": "not found"
+            "License": "BSD-3-Clause",
+            "Permission to redistribute": true,
+            "Retrieved from": "https://pypi.org/project/jupyter-server-terminals"
         },
         "jupyterlab_pygments": {
-            "License": "not found",
-            "Permission to redistribute": false,
-            "Retrieved from": "not found"
+            "License": "BSD-3-Clause",
+            "Permission to redistribute": true,
+            "Retrieved from": "https://github.com/jupyterlab/jupyterlab_pygments"
         },
         "jupyterlab_widgets": {
-            "License": "not found",
-            "Permission to redistribute": false,
-            "Retrieved from": "not found"
+            "License": "BSD-3-Clause",
+            "Permission to redistribute": true,
+            "Retrieved from": "https://pypi.org/project/jupyterlab-widgets"
         },
         "mistune": {
             "License": [
@@ -18100,34 +18100,34 @@
         },
         "nbclient": {
             "License": [
-                "Other"
+                "BSD-3-Clause"
             ],
-            "Permission to redistribute": false,
+            "Permission to redistribute": true,
             "Retrieved from": "https://github.com/jupyter/nbclient"
         },
         "nbconvert": {
             "License": [
-                "Other"
+                "BSD-3-Clause"
             ],
-            "Permission to redistribute": false,
+            "Permission to redistribute": true,
             "Retrieved from": "https://github.com/jupyter/nbconvert"
         },
         "nbformat": {
             "License": [
-                "Other"
+                "BSD-3-Clause"
             ],
-            "Permission to redistribute": false,
+            "Permission to redistribute": true,
             "Retrieved from": "https://github.com/jupyter/nbformat"
         },
         "nest_asyncio": {
-            "License": "not found",
-            "Permission to redistribute": false,
-            "Retrieved from": "not found"
+            "License": "BSD-2-Clause",
+            "Permission to redistribute": true,
+            "Retrieved from": "https://pypi.org/project/nest-asyncio"
         },
         "notebook_shim": {
-            "License": "not found",
-            "Permission to redistribute": false,
-            "Retrieved from": "not found"
+            "License": "BSD-3-Clause",
+            "Permission to redistribute": true,
+            "Retrieved from": "https://pypi.org/project/notebook-shim"
         },
         "overrides": {
             "License": [
@@ -18144,9 +18144,9 @@
             "Retrieved from": "https://github.com/jgm/pandocfilters"
         },
         "prometheus_client": {
-            "License": "not found",
-            "Permission to redistribute": false,
-            "Retrieved from": "not found"
+            "License": "Apache-2.0",
+            "Permission to redistribute": true,
+            "Retrieved from": "https://pypi.org/project/prometheus-client"
         },
         "python-json-logger": {
             "License": [
@@ -18163,24 +18163,24 @@
             "Retrieved from": "https://github.com/python-jsonschema/referencing"
         },
         "rfc3339_validator": {
-            "License": "not found",
-            "Permission to redistribute": false,
-            "Retrieved from": "not found"
+            "License": "MIT",
+            "Permission to redistribute": true,
+            "Retrieved from": "https://pypi.org/project/rfc3339-validator"
         },
         "rfc3986_validator": {
-            "License": "not found",
-            "Permission to redistribute": false,
-            "Retrieved from": "not found"
+            "License": "MIT",
+            "Permission to redistribute": true,
+            "Retrieved from": "https://pypi.org/project/rfc3339-validator"
         },
         "rpds_py": {
-            "License": "not found",
-            "Permission to redistribute": false,
-            "Retrieved from": "not found"
+            "License": "MIT",
+            "Permission to redistribute": true,
+            "Retrieved from": "https://github.com/crate-py/rpds"
         },
         "Send2Trash": {
-            "License": "not found",
-            "Permission to redistribute": false,
-            "Retrieved from": "not found"
+            "License": "BSD-3-Clause",
+            "Permission to redistribute": true,
+            "Retrieved from": "https://github.com/arsenetar/send2trash"
         },
         "sniffio": {
             "License": [
@@ -18192,9 +18192,9 @@
         },
         "terminado": {
             "License": [
-                "Other"
+                "BSD-2-Clause"
             ],
-            "Permission to redistribute": false,
+            "Permission to redistribute": true,
             "Retrieved from": "https://github.com/jupyter/terminado"
         },
         "tinycss2": {
