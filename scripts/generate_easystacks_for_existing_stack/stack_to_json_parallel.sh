@@ -4,7 +4,7 @@
 MAX_JOBS=${1:-4}  # Default to 4 concurrent jobs if not specified
 DEBUG=0
 BASE_STACK=/cvmfs/software.eessi.io/versions/2023.06/software/linux/x86_64/intel/haswell/software
-EB_BOOTSTRAP=4.9.4
+EB_BOOTSTRAP=5.0.0
 TMPDIR=$(mktemp -d)
 
 declare -A gcc_to_foss=( ["12.2.0"]="2022b" ["12.3.0"]="2023a" ["13.2.0"]="2023b" )
@@ -50,9 +50,9 @@ run_limited
   build_duration=$(( ($(date +%s -d "${build_time_end}") - $(date +%s -d "${build_time_start}")) / 60 ))
 
   eb_version=$(bzgrep -oP "This is EasyBuild \K([0-9]+\.[0-9]+\.[0-9]+)" "${log_file}" | head -n 1)
-#   if [[ ${app_name} == "EasyBuild" ]] && [[ ${app_version} == ${eb_version} ]]; then
-#     eb_version=${EB_BOOTSTRAP}
-#   fi
+  if [[ ${app_name} == "EasyBuild" ]] && [[ ${app_version} == ${eb_version} ]]; then
+    eb_version=${EB_BOOTSTRAP}
+  fi
 
   if [[ ${app_version} != *-* ]]; then
     toolchain="SYSTEM"
