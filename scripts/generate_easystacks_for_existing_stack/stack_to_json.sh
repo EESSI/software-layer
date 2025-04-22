@@ -11,7 +11,7 @@ if [[ ! -d ${BASE_STACK} ]]; then
   exit 1
 fi
 
-apps=$(find ${BASE_STACK} -mindepth 2 -maxdepth 2 -type d | head -n 3)
+apps=$(find ${BASE_STACK} -mindepth 2 -maxdepth 2 -type d)
 
 json_output="["
 for app_dir in $apps; do
