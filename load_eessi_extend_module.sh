@@ -88,12 +88,21 @@ else
         echo ">> Final installation in ${EASYBUILD_INSTALLPATH}..."
         export PATH=${EB_TMPDIR}/bin:${PATH}
         export PYTHONPATH=$(ls -d ${EB_TMPDIR}/lib/python*/site-packages):${PYTHONPATH}
+        # EESSI-extend DOES need some EasyBuild module to be available. However, we don't install that here
+        # anymore. It is up to the person deploying a stack in a new prefix to make sure that at least a single
+        # EasyBuild version is available - but that is normally the first thing you deploy anyway, since we need
+        # it to deploy anything else anyway
+        # By NOT installing it here, the person installing the new stack has control over WHICH EasyBuild version is
+        # Installed first
+        # Note that in the build pipeline, load_easybuild_module.sh will simply install an EasyBuild version in a
+        # temporary prefix in order to be used by EESSI-extend to install the FIRST EasyBuild version in a new prefix
+        # That is, thus, the bootstrap procedure.
         # EESSI-extend also needs EasyBuild to be installed as a module, so install the latest release
-        eb_install_out=${TMPDIR}/eb_install.out
-        ok_msg="Latest EasyBuild installed, let's go!"
-        fail_msg="Installing latest EasyBuild failed, that's not good... (output: ${eb_install_out})"
-        ${EB} --install-latest-eb-release 2>&1 | tee ${eb_install_out}
-        check_exit_code $? "${ok_msg}" "${fail_msg}"
+        # eb_install_out=${TMPDIR}/eb_install.out
+        # ok_msg="Latest EasyBuild installed, let's go!"
+        # fail_msg="Installing latest EasyBuild failed, that's not good... (output: ${eb_install_out})"
+        # ${EB} --install-latest-eb-release 2>&1 | tee ${eb_install_out}
+        # check_exit_code $? "${ok_msg}" "${fail_msg}"
         # Now install EESSI-extend
         eessi_install_out=${TMPDIR}/eessi_install.out
         ok_msg="EESSI-extend/${EESSI_EXTEND_VERSION} installed, let's go!"
