@@ -52,50 +52,50 @@ easyconfigs:
 #      options:
 #        from-pr: 19268
   - TensorFlow-2.13.0-foss-2023a.eb
-#  - X11-20230603-GCCcore-12.3.0.eb
-## originally built with EB 4.8.2; PR 19339 included since EB 4.9.0
-## - HarfBuzz-5.3.1-GCCcore-12.3.0.eb:
-##      options:
-##        from-pr: 19339
-#  - HarfBuzz-5.3.1-GCCcore-12.3.0.eb
-#  - Qt5-5.15.10-GCCcore-12.3.0.eb
-#  - OSU-Micro-Benchmarks-7.1-1-gompi-2023a.eb
-## originally built with EB 4.8.2; PR 19363 included since EB 4.9.0
-##  - LHAPDF-6.5.4-GCC-12.3.0.eb:
-##      options:
-##        from-pr: 19363
-#  - LHAPDF-6.5.4-GCC-12.3.0.eb
-## originally built with EB 4.8.2; PR 19397 included since EB 4.9.0
-##  - LoopTools-2.15-GCC-12.3.0.eb:
-##      options:
-##        from-pr: 19397
-#  - LoopTools-2.15-GCC-12.3.0.eb
-## originally built with EB 4.8.2; PR 19185 included since EB 4.9.0
-##  - R-4.3.2-gfbf-2023a.eb:
-##      options:
-##        from-pr: 19185
-#  - R-4.3.2-gfbf-2023a.eb
-## originally built with EB 4.8.2; source URL has changed recently
-##  - Boost-1.82.0-GCC-12.3.0.eb
-#  - Boost-1.82.0-GCC-12.3.0.eb:
+  - X11-20230603-GCCcore-12.3.0.eb
+# originally built with EB 4.8.2; PR 19339 included since EB 4.9.0
+# - HarfBuzz-5.3.1-GCCcore-12.3.0.eb:
 #      options:
-#        # source URLs for Boost have changed, corresponding PR is
-#        # https://github.com/easybuilders/easybuild-easyconfigs/pull/22157
-#        from-commit: 5bebccf792ccf35a8ee3250bc8fed86dff5d5df9
-#  - netCDF-4.9.2-gompi-2023a.eb
-#  - FFmpeg-6.0-GCCcore-12.3.0.eb
-## originally built with EB 4.8.2; PR 19455 included since EB 4.9.0
-##  - ALL-0.9.2-foss-2023a.eb:
-##      options:
-##        from-pr: 19455
-#  - ALL-0.9.2-foss-2023a.eb
-## originally built with EB 4.8.2; PR 19735 included since EB 4.9.1
-##  - CDO-2.2.2-gompi-2023a.eb:
-##      options:
-##        from-pr: 19735
-#  - CDO-2.2.2-gompi-2023a.eb
-## originally built with EB 4.8.2; PR 19820 included since EB 4.9.1
-##  - BWA-0.7.17-20220923-GCCcore-12.3.0.eb:
-##      options:
-##        from-pr: 19820
-#  - BWA-0.7.17-20220923-GCCcore-12.3.0.eb
+#        from-pr: 19339
+  - HarfBuzz-5.3.1-GCCcore-12.3.0.eb
+  - Qt5-5.15.10-GCCcore-12.3.0.eb
+  - OSU-Micro-Benchmarks-7.1-1-gompi-2023a.eb
+# originally built with EB 4.8.2; PR 19363 included since EB 4.9.0
+#  - LHAPDF-6.5.4-GCC-12.3.0.eb:
+#      options:
+#        from-pr: 19363
+  - LHAPDF-6.5.4-GCC-12.3.0.eb
+# originally built with EB 4.8.2; PR 19397 included since EB 4.9.0
+#  - LoopTools-2.15-GCC-12.3.0.eb:
+#      options:
+#        from-pr: 19397
+  - LoopTools-2.15-GCC-12.3.0.eb
+# originally built with EB 4.8.2; PR 19185 included since EB 4.9.0
+#  - R-4.3.2-gfbf-2023a.eb:
+#      options:
+#        from-pr: 19185
+  - R-4.3.2-gfbf-2023a.eb
+# originally built with EB 4.8.2; source URL has changed recently
+#  - Boost-1.82.0-GCC-12.3.0.eb
+  - Boost-1.82.0-GCC-12.3.0.eb:
+      options:
+        # source URLs for Boost have changed, corresponding PR is
+        # https://github.com/easybuilders/easybuild-easyconfigs/pull/22157
+        from-commit: 5bebccf792ccf35a8ee3250bc8fed86dff5d5df9
+  - netCDF-4.9.2-gompi-2023a.eb
+  - FFmpeg-6.0-GCCcore-12.3.0.eb
+# originally built with EB 4.8.2; PR 19455 included since EB 4.9.0
+#  - ALL-0.9.2-foss-2023a.eb:
+#      options:
+#        from-pr: 19455
+  - ALL-0.9.2-foss-2023a.eb
+# originally built with EB 4.8.2; PR 19735 included since EB 4.9.1
+#  - CDO-2.2.2-gompi-2023a.eb:
+#      options:
+#        from-pr: 19735
+  - CDO-2.2.2-gompi-2023a.eb
+# originally built with EB 4.8.2; PR 19820 included since EB 4.9.1
+#  - BWA-0.7.17-20220923-GCCcore-12.3.0.eb:
+#      options:
+#        from-pr: 19820
+  - BWA-0.7.17-20220923-GCCcore-12.3.0.eb
