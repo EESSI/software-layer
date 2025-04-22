@@ -106,7 +106,7 @@ else
         # Add this temp installpath to the modulepath. This is needed for the EESSI-extend sanity check step to succeed
         # As loading the EESSI-extend module requires loading the 'latest' EasyBuild module - which means there should
         # be at least one on the MODULEPATH
-        module use ${TMPDIR}/eb_tmp_installpath
+        module use ${TMPDIR}/eb_tmp_installpath/modules/all
         # Now install EESSI-extend
         eessi_install_out=${TMPDIR}/eessi_install.out
         ok_msg="EESSI-extend/${EESSI_EXTEND_VERSION} installed, let's go!"
@@ -115,7 +115,7 @@ else
         # an attempt to figure out if it is needed, e.g., when we are rebuilding
         ${EB} "EESSI-extend-easybuild.eb" --try-amend=keeppreviousinstall=True 2>&1 | tee ${eessi_install_out}
         check_exit_code $? "${ok_msg}" "${fail_msg}"
-        module unuse ${TMPDIR}/eb_tmp_installpath
+        module unuse ${TMPDIR}/eb_tmp_installpath/modules/all
     )
 
     # restore origin $PATH and $PYTHONPATH values, and clean up environment variables that are no longer needed
