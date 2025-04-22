@@ -108,7 +108,7 @@ if [ $EUID -eq 0 ]; then
     else
         for easystack_file in ${changed_easystacks_rebuilds}; do
             # determine version of EasyBuild module to load based on EasyBuild version included in name of easystack file
-            eb_version=$(echo ${easystack_file} | sed 's/.*eb-\([0-9.]*\).*/\1/g')
+            eb_version=$(echo ${easystack_file} | sed 's/.*eb-\([0-9.]*\).*.yml/\1/g')
 
             # load EasyBuild module (will be installed if it's not available yet)
             source ${TOPDIR}/load_easybuild_module.sh ${eb_version}
