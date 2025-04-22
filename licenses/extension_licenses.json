@@ -34539,16 +34539,16 @@
         },
         "EBImage": {
             "License": [
-                "Other"
+                "LGPL"
             ],
-            "Permission to redistribute": false,
-            "Retrieved from": "https://github.com/aoles/EBImage"
+            "Permission to redistribute": true,
+            "Retrieved from": "https://bioconductor.org/packages/release/bioc/html/EBImage.html"
         },
         "edgeR": {
             "License": [
                 "CNRI-Python-GPL-Compatible"
             ],
-            "Permission to redistribute": false,
+            "Permission to redistribute": true,
             "Retrieved from": "https://bioinf.wehi.edu.au/edgeR/ https://bioconductor.org/packages/edgeR "
         },
         "egg": {
@@ -34573,26 +34573,24 @@
             "Retrieved from": "https://yulab-smu.top/biomedical-knowledge-mining-book/ "
         },
         "EnsDb.Hsapiens.v75": {
-            "License": "not found",
-            "Permission to redistribute": false,
-            "Retrieved from": "not found"
+            "License": "Artistic-2.0",
+            "Permission to redistribute": true,
+            "Retrieved from": "https://bioconductor.org/packages/EnsDb.Hsapiens.v75"
         },
         "EnsDb.Hsapiens.v79": {
-            "License": "not found",
-            "Permission to redistribute": false,
-            "Retrieved from": "not found"
+            "License": "Artistic-2.0",
+            "Permission to redistribute": true,
+            "Retrieved from": "https://bioconductor.org/packages/EnsDb.Hsapiens.v79"
         },
         "EnsDb.Hsapiens.v86": {
-            "License": "not found",
-            "Permission to redistribute": false,
-            "Retrieved from": "not found"
+            "License": "Artistic-2.0",
+            "Permission to redistribute": true,
+            "Retrieved from": "https://bioconductor.org/packages/EnsDb.Hsapiens.v86"
         },
         "ensembldb": {
-            "License": [
-                "Other"
-            ],
-            "Permission to redistribute": false,
-            "Retrieved from": "https://github.com/jorainer/ensembldb"
+            "License": "LGPL",
+            "Permission to redistribute": true,
+        "Retrieved from": "https://bioconductor.org/packages/ensembldb"
         },
         "escape": {
             "License": [
@@ -34605,7 +34603,7 @@
             "License": [
                 "CNRI-Python-GPL-Compatible"
             ],
-            "Permission to redistribute": false,
+            "Permission to redistribute": true,
             "Retrieved from": "https://github.com/rvlenth/estimability"
         },
         "ExperimentHub": {
@@ -34637,9 +34635,9 @@
             "Retrieved from": "http://www.functionaldata.org"
         },
         "FDb.InfiniumMethylation.hg19": {
-            "License": "not found",
-            "Permission to redistribute": false,
-            "Retrieved from": "not found"
+            "License": "Artistic-2.0",
+            "Permission to redistribute": true,
+            "Retrieved from": "https://bioconductor.org/packages/FDb.InfiniumMethylation.hg19/"
         },
         "fds": {
             "License": [
@@ -34673,7 +34671,7 @@
             "License": [
                 "CNRI-Python-GPL-Compatible"
             ],
-            "Permission to redistribute": false,
+            "Permission to redistribute": true,
             "Retrieved from": "https://packages.ecosyste.ms/api/v1/registries/bioconductor.org/lookup?name=flowAI"
         },
         "flowClean": {
@@ -34729,18 +34727,18 @@
             "License": [
                 "CNRI-Python-GPL-Compatible"
             ],
-            "Permission to redistribute": false,
+            "Permission to redistribute": true,
             "Retrieved from": "http://www.r-project.org http://dambi.ugent.be "
         },
         "FlowSorted.Blood.EPIC": {
-            "License": "not found",
-            "Permission to redistribute": false,
-            "Retrieved from": "not found"
+            "License": "GPL-3.0",
+            "Permission to redistribute": true,
+            "Retrieved from": "https://bioconductor.org/packages/FlowSorted.Blood.EPIC"
         },
         "FlowSorted.CordBloodCombined.450k": {
-            "License": "not found",
-            "Permission to redistribute": false,
-            "Retrieved from": "not found"
+            "License": "GPL-3.0",
+            "Permission to redistribute": true,
+            "Retrieved from": "https://bioconductor.org/packages/FlowSorted.CordBloodCombined.450k"
         },
         "flowStats": {
             "License": [
@@ -34779,10 +34777,10 @@
         },
         "gcrma": {
             "License": [
-                "Other"
+                "LGPL"
             ],
-            "Permission to redistribute": false,
-            "Retrieved from": "https://packages.ecosyste.ms/api/v1/registries/bioconductor.org/lookup?name=gcrma"
+            "Permission to redistribute": true,
+            "Retrieved from": "https://bioconductor.org/packages/release/bioc/html/gcrma.html"
         },
         "gdsfmt": {
             "License": [
@@ -34799,9 +34797,9 @@
             "Retrieved from": "https://packages.ecosyste.ms/api/v1/registries/bioconductor.org/lookup?name=genefilter"
         },
         "geneLenDataBase": {
-            "License": "not found",
-            "Permission to redistribute": false,
-            "Retrieved from": "not found"
+            "License": "LGPL-2.0-or-later",
+            "Permission to redistribute": true,
+            "Retrieved from": "https://bioconductor.org/packages/geneLenDataBase"
         },
         "geneplotter": {
             "License": [
@@ -34821,7 +34819,7 @@
             "License": [
                 "CNRI-Python-GPL-Compatible"
             ],
-            "Permission to redistribute": false,
+            "Permission to redistribute": true,
             "Retrieved from": "https://packages.ecosyste.ms/api/v1/registries/bioconductor.org/lookup?name=GENIE3"
         },
         "GenomeInfoDb": {
@@ -34832,9 +34830,9 @@
             "Retrieved from": "https://bioconductor.org/packages/GenomeInfoDb "
         },
         "GenomeInfoDbData": {
-            "License": "not found",
-            "Permission to redistribute": false,
-            "Retrieved from": "not found"
+            "License": "Artistic-2.0",
+            "Permission to redistribute": true,
+            "Retrieved from": "https://bioconductor.org/packages/GenomeInfoDbData"
         },
         "GenomicAlignments": {
             "License": [
@@ -34966,20 +34964,20 @@
             "License": [
                 "CNRI-Python-GPL-Compatible"
             ],
-            "Permission to redistribute": false,
+            "Permission to redistribute": true,
             "Retrieved from": "https://packages.ecosyste.ms/api/v1/registries/bioconductor.org/lookup?name=GlobalAncova"
         },
         "globaltest": {
             "License": [
                 "CNRI-Python-GPL-Compatible"
             ],
-            "Permission to redistribute": false,
+            "Permission to redistribute": true,
             "Retrieved from": "https://packages.ecosyste.ms/api/v1/registries/bioconductor.org/lookup?name=globaltest"
         },
         "GO.db": {
-            "License": "not found",
-            "Permission to redistribute": false,
-            "Retrieved from": "not found"
+            "License": "Artistic-2.0",
+            "Permission to redistribute": true,
+            "Retrieved from": "https://bioconductor.org/packages/GO.db"
         },
         "GOSemSim": {
             "License": [
@@ -34992,7 +34990,7 @@
             "License": [
                 "libpng-2.0"
             ],
-            "Permission to redistribute": false,
+            "Permission to redistribute": true,
             "Retrieved from": "https://github.com/federicomarini/goseq"
         },
         "GOstats": {
@@ -35041,7 +35039,7 @@
             "License": [
                 "CNRI-Python-GPL-Compatible"
             ],
-            "Permission to redistribute": false,
+            "Permission to redistribute": true,
             "Retrieved from": "https://github.com/rcastelo/GSVA"
         },
         "Gviz": {
@@ -35073,9 +35071,9 @@
             "Retrieved from": "https://bioconductor.org/packages/HDF5Array "
         },
         "HDO.db": {
-            "License": "not found",
-            "Permission to redistribute": false,
-            "Retrieved from": "not found"
+            "License": "Artistic-2.0",
+            "Permission to redistribute": true,
+            "Retrieved from": "https://bioconductor.org/packages/HDO.db"
         },
         "hdrcde": {
             "License": [
@@ -35092,9 +35090,9 @@
             "Retrieved from": "https://github.com/talgalili/heatmaply"
         },
         "hgu133plus2.db": {
-            "License": "not found",
-            "Permission to redistribute": false,
-            "Retrieved from": "not found"
+            "License": "Artistic-2.0",
+            "Permission to redistribute": true,
+            "Retrieved from": "https://bioconductor.org/packages/hgu133plus2.db"
         },
         "HiCBricks": {
             "License": [
@@ -35118,9 +35116,9 @@
             "Retrieved from": "https://packages.ecosyste.ms/api/v1/registries/bioconductor.org/lookup?name=HMMcopy"
         },
         "Homo.sapiens": {
-            "License": "not found",
-            "Permission to redistribute": false,
-            "Retrieved from": "not found"
+            "License": "Artistic-2.0",
+            "Permission to redistribute": true,
+            "Retrieved from": "https://bioconductor.org/packages/Homo.sapiens"
         },
         "IHW": {
             "License": [
@@ -35130,30 +35128,30 @@
             "Retrieved from": "https://packages.ecosyste.ms/api/v1/registries/bioconductor.org/lookup?name=IHW"
         },
         "IlluminaHumanMethylation450kanno.ilmn12.hg19": {
-            "License": "not found",
-            "Permission to redistribute": false,
-            "Retrieved from": "not found"
+            "License": "Artistic-2.0",
+            "Permission to redistribute": true,
+            "Retrieved from": "https://bioconductor.org/packages/IlluminaHumanMethylation450kanno.ilmn12.hg19"
         },
         "IlluminaHumanMethylation450kmanifest": {
-            "License": "not found",
-            "Permission to redistribute": false,
-            "Retrieved from": "not found"
+            "License": "Artistic-2.0",
+            "Permission to redistribute": true,
+            "Retrieved from": "https://bioconductor.org/packages/IlluminaHumanMethylation450kmanifest"
         },
         "IlluminaHumanMethylationEPICanno.ilm10b2.hg19": {
-            "License": "not found",
-            "Permission to redistribute": false,
-            "Retrieved from": "not found"
+            "License": "Artistic-2.0",
+            "Permission to redistribute": true,
+            "Retrieved from": "https://bioconductor.org/packages/IlluminaHumanMethylationEPICanno.ilm10b2.hg19"
         },
         "IlluminaHumanMethylationEPICanno.ilm10b4.hg19": {
-            "License": "not found",
-            "Permission to redistribute": false,
-            "Retrieved from": "not found"
+            "License": "Artistic-2.0",
+            "Permission to redistribute": true,
+            "Retrieved from": "https://bioconductor.org/packages/IlluminaHumanMethylationEPICanno.ilm10b4.hg19"
         },
         "IlluminaHumanMethylationEPICmanifest": {
-            "License": "not found",
-            "Permission to redistribute": false,
-            "Retrieved from": "not found"
-        },
+            "License": "Artistic-2.0",
+            "Permission to redistribute": true,
+            "Retrieved from": "https://bioconductor.org/packages/IlluminaHumanMethylationEPICmanifest"
+        }
         "illuminaio": {
             "License": [
                 "GPL-2.0"
@@ -35204,15 +35202,15 @@
             "Retrieved from": "https://packages.ecosyste.ms/api/v1/registries/cran.r-project.org/lookup?name=isva"
         },
         "JASPAR2020": {
-            "License": "not found",
-            "Permission to redistribute": false,
-            "Retrieved from": "not found"
+            "License": "Artistic-2.0",
+            "Permission to redistribute": true,
+            "Retrieved from": "https://bioconductor.org/packages/JASPAR2020"
         },
         "KEGGgraph": {
             "License": [
                 "CNRI-Python-GPL-Compatible"
             ],
-            "Permission to redistribute": false,
+            "Permission to redistribute": true,
             "Retrieved from": "http://www.nextbiomotif.com "
         },
         "KEGGREST": {
@@ -35233,7 +35231,7 @@
             "License": [
                 "CNRI-Python-GPL-Compatible"
             ],
-            "Permission to redistribute": false,
+            "Permission to redistribute": true,
             "Retrieved from": "https://bioinf.wehi.edu.au/limma/ "
         },
         "log4r": {
@@ -35261,35 +35259,33 @@
             "License": [
                 "libpng-2.0"
             ],
-            "Permission to redistribute": false,
+            "Permission to redistribute": true,
             "Retrieved from": "https://packages.ecosyste.ms/api/v1/registries/bioconductor.org/lookup?name=lumi"
         },
         "M3Drop": {
             "License": [
                 "CNRI-Python-GPL-Compatible"
             ],
-            "Permission to redistribute": false,
+            "Permission to redistribute": true,
             "Retrieved from": "https://github.com/tallulandrews/M3Drop"
         },
         "marray": {
-            "License": [
-                "Other"
-            ],
-            "Permission to redistribute": false,
-            "Retrieved from": "http://www.maths.usyd.edu.au/u/jeany/ "
+            "License": "LGPL-2.0-or-later",
+            "Permission to redistribute": true,
+            "Retrieved from": "https://bioconductor.org/packages/marray"
         },
         "maSigPro": {
             "License": [
                 "CNRI-Python-GPL-Compatible"
             ],
-            "Permission to redistribute": false,
+            "Permission to redistribute": true,
             "Retrieved from": "https://packages.ecosyste.ms/api/v1/registries/bioconductor.org/lookup?name=maSigPro"
         },
         "MassSpecWavelet": {
             "License": [
                 "libpng-2.0"
             ],
-            "Permission to redistribute": false,
+            "Permission to redistribute": true,
             "Retrieved from": "https://github.com/zeehio/MassSpecWavelet"
         },
         "MatrixGenerics": {
@@ -35310,7 +35306,7 @@
             "License": [
                 "CNRI-Python-GPL-Compatible"
             ],
-            "Permission to redistribute": false,
+            "Permission to redistribute": true,
             "Retrieved from": "https://packages.ecosyste.ms/api/v1/registries/bioconductor.org/lookup?name=MEDIPS"
         },
         "metagenomeSeq": {
@@ -35345,7 +35341,7 @@
             "License": [
                 "CNRI-Python-GPL-Compatible"
             ],
-            "Permission to redistribute": false,
+            "Permission to redistribute": true,
             "Retrieved from": "https://packages.ecosyste.ms/api/v1/registries/bioconductor.org/lookup?name=MethylSeekR"
         },
         "methylumi": {
@@ -35387,7 +35383,7 @@
             "License": [
                 "CNRI-Python-GPL-Compatible"
             ],
-            "Permission to redistribute": false,
+            "Permission to redistribute": true,
             "Retrieved from": "http://www.mixOmics.org "
         },
         "mixsqp": {
@@ -35398,11 +35394,9 @@
             "Retrieved from": "https://github.com/stephenslab/mixsqp"
         },
         "MLInterfaces": {
-            "License": [
-                "Other"
-            ],
-            "Permission to redistribute": false,
-            "Retrieved from": "https://packages.ecosyste.ms/api/v1/registries/bioconductor.org/lookup?name=MLInterfaces"
+            "License": "LGPL",
+            "Permission to redistribute": true,
+            "Retrieved from": "https://bioconductor.org/packages/MLInterfaces"
         },
         "MotifDb": {
             "License": [
@@ -35415,14 +35409,14 @@
             "License": [
                 "AML"
             ],
-            "Permission to redistribute": false,
+            "Permission to redistribute": true,
             "Retrieved from": "https://packages.ecosyste.ms/api/v1/registries/bioconductor.org/lookup?name=motifmatchr"
         },
         "motifStack": {
             "License": [
                 "CNRI-Python-GPL-Compatible"
             ],
-            "Permission to redistribute": false,
+            "Permission to redistribute": true,
             "Retrieved from": "https://packages.ecosyste.ms/api/v1/registries/bioconductor.org/lookup?name=motifStack"
         },
         "MsCoreUtils": {
@@ -35499,14 +35493,14 @@
             "License": [
                 "MIT-feh"
             ],
-            "Permission to redistribute": false,
+            "Permission to redistribute": true,
             "Retrieved from": "https://packages.ecosyste.ms/api/v1/registries/bioconductor.org/lookup?name=MultiDataSet"
         },
         "multtest": {
             "License": [
-                "Other"
+                "LGPL"
             ],
-            "Permission to redistribute": false,
+            "Permission to redistribute": true,
             "Retrieved from": "https://packages.ecosyste.ms/api/v1/registries/bioconductor.org/lookup?name=multtest"
         },
         "muscat": {
@@ -35527,7 +35521,7 @@
             "License": [
                 "CNRI-Python-GPL-Compatible"
             ],
-            "Permission to redistribute": false,
+            "Permission to redistribute": true,
             "Retrieved from": "https://packages.ecosyste.ms/api/v1/registries/bioconductor.org/lookup?name=mzID"
         },
         "mzR": {
@@ -35576,14 +35570,14 @@
             "License": [
                 "libpng-2.0"
             ],
-            "Permission to redistribute": false,
+            "Permission to redistribute": true,
             "Retrieved from": "https://github.com/benilton/oligo"
         },
         "oligoClasses": {
             "License": [
                 "CNRI-Python-GPL-Compatible"
             ],
-            "Permission to redistribute": false,
+            "Permission to redistribute": true,
             "Retrieved from": "https://packages.ecosyste.ms/api/v1/registries/bioconductor.org/lookup?name=oligoClasses"
         },
         "ontologyIndex": {
@@ -35615,19 +35609,19 @@
             "Retrieved from": "https://packages.ecosyste.ms/api/v1/registries/bioconductor.org/lookup?name=openCyto"
         },
         "org.Hs.eg.db": {
-            "License": "not found",
-            "Permission to redistribute": false,
-            "Retrieved from": "not found"
+            "License": "Artistic-2.0",
+            "Permission to redistribute": true,
+            "Retrieved from": "https://bioconductor.org/packages/org.Hs.eg.db"
         },
         "org.Mm.eg.db": {
-            "License": "not found",
-            "Permission to redistribute": false,
-            "Retrieved from": "not found"
+            "License": "Artistic-2.0",
+            "Permission to redistribute": true,
+            "Retrieved from": "https://bioconductor.org/packages/org.Mm.eg.db"
         },
         "org.Rn.eg.db": {
-            "License": "not found",
-            "Permission to redistribute": false,
-            "Retrieved from": "not found"
+            "License": "Artistic-2.0",
+            "Permission to redistribute": true,
+            "Retrieved from": "https://bioconductor.org/packages/org.Rn.eg.db"
         },
         "OrganismDbi": {
             "License": [
@@ -35647,14 +35641,14 @@
             "License": [
                 "CNRI-Python-GPL-Compatible"
             ],
-            "Permission to redistribute": false,
+            "Permission to redistribute": true,
             "Retrieved from": "https://github.com/datapplab/pathview"
         },
         "pcaMethods": {
             "License": [
                 "CNRI-Python-GPL-Compatible"
             ],
-            "Permission to redistribute": false,
+            "Permission to redistribute": true,
             "Retrieved from": "https://github.com/hredestig/pcamethods"
         },
         "perm": {
@@ -35665,9 +35659,9 @@
             "Retrieved from": "https://packages.ecosyste.ms/api/v1/registries/cran.r-project.org/lookup?name=perm"
         },
         "PFAM.db": {
-            "License": "not found",
-            "Permission to redistribute": false,
-            "Retrieved from": "not found"
+            "License": "Artistic-2.0",
+            "Permission to redistribute": true,
+            "Retrieved from": "https://bioconductor.org/packages/PFAM.db"
         },
         "phyloseq": {
             "License": [
@@ -35701,7 +35695,7 @@
             "License": [
                 "libpng-2.0"
             ],
-            "Permission to redistribute": false,
+            "Permission to redistribute": true,
             "Retrieved from": "https://github.com/bmbolstad/preprocessCore"
         },
         "pRoloc": {
@@ -35712,9 +35706,9 @@
             "Retrieved from": "https://github.com/lgatto/pRoloc"
         },
         "pRolocdata": {
-            "License": "not found",
-            "Permission to redistribute": false,
-            "Retrieved from": "not found"
+            "License": "Artistic-2.0",
+            "Permission to redistribute": true,
+            "Retrieved from": "https://bioconductor.org/packages/pRolocdata"
         },
         "pRolocGUI": {
             "License": [
@@ -35787,11 +35781,9 @@
             "Retrieved from": "https://packages.ecosyste.ms/api/v1/registries/bioconductor.org/lookup?name=quantsmooth"
         },
         "qvalue": {
-            "License": [
-                "Other"
-            ],
-            "Permission to redistribute": false,
-            "Retrieved from": "https://github.com/jdstorey/qvalue"
+            "License": "GPL-3.0-or-later",
+            "Permission to redistribute": true,
+            "Retrieved from": "https://bioconductor.org/packages/qvalue"
         },
         "R.devices": {
             "License": [
@@ -35860,7 +35852,7 @@
             "License": [
                 "CNRI-Python-GPL-Compatible"
             ],
-            "Permission to redistribute": false,
+            "Permission to redistribute": true,
             "Retrieved from": "https://github.com/jlmelville/rcpphnsw"
         },
         "RcppML": {
@@ -35878,9 +35870,9 @@
             "Retrieved from": "https://github.com/eddelbuettel/rcppziggurat"
         },
         "reactome.db": {
-            "License": "not found",
-            "Permission to redistribute": false,
-            "Retrieved from": "not found"
+            "License": "Artistic-2.0",
+            "Permission to redistribute": true,
+            "Retrieved from": "https://bioconductor.org/packages/reactome.db"
         },
         "ReactomePA": {
             "License": [
@@ -35900,7 +35892,7 @@
             "License": [
                 "AML"
             ],
-            "Permission to redistribute": false,
+            "Permission to redistribute": true,
             "Retrieved from": "http://www.stat.ucla.edu/~handcock/RelDist/"
         },
         "remaCor": {
@@ -35914,7 +35906,7 @@
             "License": [
                 "libpng-2.0"
             ],
-            "Permission to redistribute": false,
+            "Permission to redistribute": true,
             "Retrieved from": "https://packages.ecosyste.ms/api/v1/registries/bioconductor.org/lookup?name=Repitools"
         },
         "ReportingTools": {
@@ -35991,7 +35983,7 @@
             "License": [
                 "libpng-2.0"
             ],
-            "Permission to redistribute": false,
+            "Permission to redistribute": true,
             "Retrieved from": "https://bioconductor.org/packages/Rhtslib http://www.htslib.org/ "
         },
         "Ringo": {
@@ -36005,33 +35997,33 @@
             "License": [
                 "libpng-2.0"
             ],
-            "Permission to redistribute": false,
+            "Permission to redistribute": true,
             "Retrieved from": "https://packages.ecosyste.ms/api/v1/registries/bioconductor.org/lookup?name=RNASeqPower"
         },
         "RnBeads.hg19": {
-            "License": "not found",
-            "Permission to redistribute": false,
-            "Retrieved from": "not found"
+            "License": "GPL-3.0-or-later",
+            "Permission to redistribute": true,
+            "Retrieved from": "https://bioconductor.org/packages/RnBeads.hg19"
         },
         "RnBeads.hg38": {
-            "License": "not found",
-            "Permission to redistribute": false,
-            "Retrieved from": "not found"
+            "License": "GPL-3.0-or-later",
+            "Permission to redistribute": true,
+            "Retrieved from": "https://bioconductor.org/packages/RnBeads.hg38"
         },
         "RnBeads.mm10": {
-            "License": "not found",
-            "Permission to redistribute": false,
-            "Retrieved from": "not found"
+            "License": "GPL-3.0-or-later",
+            "Permission to redistribute": true,
+            "Retrieved from": "https://bioconductor.org/packages/RnBeads.mm10"
         },
         "RnBeads.mm9": {
-            "License": "not found",
-            "Permission to redistribute": false,
-            "Retrieved from": "not found"
+            "License": "GPL-3.0-or-later",
+            "Permission to redistribute": true,
+            "Retrieved from": "https://bioconductor.org/packages/RnBeads.mm9"
         },
         "RnBeads.rn5": {
-            "License": "not found",
-            "Permission to redistribute": false,
-            "Retrieved from": "not found"
+            "License": "GPL-3.0-or-later",
+            "Permission to redistribute": true,
+            "Retrieved from": "https://bioconductor.org/packages/RnBeads.rn5"
         },
         "RnBeads": {
             "License": [
@@ -36079,7 +36071,7 @@
             "License": [
                 "Other"
             ],
-            "Permission to redistribute": false,
+            "Permission to redistribute": true,
             "Retrieved from": "https://packages.ecosyste.ms/api/v1/registries/bioconductor.org/lookup?name=RProtoBufLib"
         },
         "Rsamtools": {
@@ -36100,14 +36092,14 @@
             "License": [
                 "CNRI-Python-GPL-Compatible"
             ],
-            "Permission to redistribute": false,
+            "Permission to redistribute": true,
             "Retrieved from": "http://bioconductor.org/packages/Rsubread "
         },
         "rsvd": {
             "License": [
                 "CNRI-Python-GPL-Compatible"
             ],
-            "Permission to redistribute": false,
+            "Permission to redistribute": true,
             "Retrieved from": "https://github.com/erichson/rSVD"
         },
         "rtracklayer": {
@@ -36142,7 +36134,7 @@
             "License": [
                 "CNRI-Python-GPL-Compatible"
             ],
-            "Permission to redistribute": false,
+            "Permission to redistribute": true,
             "Retrieved from": "https://packages.ecosyste.ms/api/v1/registries/bioconductor.org/lookup?name=SamSPECTRAL"
         },
         "SC3": {
@@ -36163,7 +36155,7 @@
             "License": [
                 "MIT-feh"
             ],
-            "Permission to redistribute": false,
+            "Permission to redistribute": true,
             "Retrieved from": "https://packages.ecosyste.ms/api/v1/registries/bioconductor.org/lookup?name=SCANVIS"
         },
         "scater": {
@@ -36177,14 +36169,14 @@
             "License": [
                 "CNRI-Python-GPL-Compatible"
             ],
-            "Permission to redistribute": false,
+            "Permission to redistribute": true,
             "Retrieved from": "https://packages.ecosyste.ms/api/v1/registries/cran.r-project.org/lookup?name=scattermore"
         },
         "scDblFinder": {
             "License": [
                 "AML"
             ],
-            "Permission to redistribute": false,
+            "Permission to redistribute": true,
             "Retrieved from": "https://github.com/plger/scDblFinder"
         },
         "scistreer": {
@@ -36226,7 +36218,7 @@
             "License": [
                 "libpng-2.0"
             ],
-            "Permission to redistribute": false,
+            "Permission to redistribute": true,
             "Retrieved from": "https://packages.ecosyste.ms/api/v1/registries/bioconductor.org/lookup?name=seqLogo"
         },
         "SeqVarTools": {
@@ -36268,7 +36260,7 @@
             "License": [
                 "Sendmail"
             ],
-            "Permission to redistribute": false,
+            "Permission to redistribute": true,
             "Retrieved from": "https://github.com/RinteRface/shinydashboardPlus"
         },
         "shinyFiles": {
@@ -36310,7 +36302,7 @@
             "License": [
                 "libpng-2.0"
             ],
-            "Permission to redistribute": false,
+            "Permission to redistribute": true,
             "Retrieved from": "https://packages.ecosyste.ms/api/v1/registries/bioconductor.org/lookup?name=siggenes"
         },
         "Signac": {
@@ -36401,7 +36393,7 @@
             "License": [
                 "MIT-feh"
             ],
-            "Permission to redistribute": false,
+            "Permission to redistribute": true,
             "Retrieved from": "http://bioinformatics.oxfordjournals.org/cgi/reprint/btn577v1 "
         },
         "splancs": {
@@ -36506,7 +36498,7 @@
             "License": [
                 "CNRI-Python-GPL-Compatible"
             ],
-            "Permission to redistribute": false,
+            "Permission to redistribute": true,
             "Retrieved from": "https://packages.ecosyste.ms/api/v1/registries/bioconductor.org/lookup?name=TreeSummarizedExperiment"
         },
         "TSP": {
@@ -36517,34 +36509,34 @@
             "Retrieved from": "https://github.com/mhahsler/TSP"
         },
         "TxDb.Hsapiens.UCSC.hg19.knownGene": {
-            "License": "not found",
-            "Permission to redistribute": false,
-            "Retrieved from": "not found"
+            "License": "Artistic-2.0",
+            "Permission to redistribute": true,
+            "Retrieved from": "https://bioconductor.org/packages/   TxDb.Hsapiens.UCSC.hg19.knownGene"
         },
         "TxDb.Mmusculus.UCSC.mm10.knownGene": {
-            "License": "not found",
-            "Permission to redistribute": false,
-            "Retrieved from": "not found"
+            "License": "Artistic-2.0",
+            "Permission to redistribute": true,
+            "Retrieved from": "https://bioconductor.org/packages/TxDb.Mmusculus.UCSC.mm10.knownGene"
         },
         "tximport": {
             "License": [
                 "libpng-2.0"
             ],
-            "Permission to redistribute": false,
+            "Permission to redistribute": true,
             "Retrieved from": "https://github.com/thelovelab/tximport"
         },
         "UCell": {
             "License": [
                 "AML"
             ],
-            "Permission to redistribute": false,
+            "Permission to redistribute": true,
             "Retrieved from": "https://github.com/carmonalab/UCell"
         },
         "uwot": {
             "License": [
                 "CNRI-Python-GPL-Compatible"
             ],
-            "Permission to redistribute": false,
+            "Permission to redistribute": true,
             "Retrieved from": "https://github.com/jlmelville/uwot"
         },
         "variancePartition": {
@@ -36565,7 +36557,7 @@
             "License": [
                 "CNRI-Python-GPL-Compatible"
             ],
-            "Permission to redistribute": false,
+            "Permission to redistribute": true,
             "Retrieved from": "https://github.com/dusadrian/venn"
         },
         "vsn": {
@@ -36597,11 +36589,9 @@
             "Retrieved from": "https://packages.ecosyste.ms/api/v1/registries/cran.r-project.org/lookup?name=WGCNA"
         },
         "widgetTools": {
-            "License": [
-                "Other"
-            ],
-            "Permission to redistribute": false,
-            "Retrieved from": "https://packages.ecosyste.ms/api/v1/registries/bioconductor.org/lookup?name=widgetTools"
+            "License": "LGPL-2.0-or-later",
+            "Permission to redistribute": true,
+            "Retrieved from": "https://bioconductor.org/packages/widgetTools"
         },
         "Wrench": {
             "License": [
@@ -36614,7 +36604,7 @@
             "License": [
                 "AML"
             ],
-            "Permission to redistribute": false,
+            "Permission to redistribute": true,
             "Retrieved from": "https://github.com/sneumann/xcms"
         },
         "XVector": {
@@ -36651,7 +36641,7 @@
             "License": [
                 "libpng-2.0"
             ],
-            "Permission to redistribute": false,
+            "Permission to redistribute": true,
             "Retrieved from": "https://github.com/HenrikBengtsson/affxparser"
         },
         "affy": {
@@ -36672,7 +36662,7 @@
             "License": [
                 "libpng-2.0"
             ],
-            "Permission to redistribute": false,
+            "Permission to redistribute": true,
             "Retrieved from": "https://github.com/bmbolstad/affyio"
         },
         "AgiMicroRna": {
@@ -36693,13 +36683,13 @@
             "License": [
                 "CNRI-Python-GPL-Compatible"
             ],
-            "Permission to redistribute": false,
+            "Permission to redistribute": true,
             "Retrieved from": "https://github.com/ggloor/ALDEx_bioc"
         },
         "ALL": {
-            "License": "not found",
-            "Permission to redistribute": false,
-            "Retrieved from": "not found"
+            "License": "Artistic-2.0",
+            "Permission to redistribute": true,
+            "Retrieved from": "https://www.bioconductor.org/packages/release/data/experiment/html/ALL.html"
         },
         "ANCOMBC": {
             "License": [
@@ -36710,9 +36700,9 @@
         },
         "annaffy": {
             "License": [
-                "Other"
+                "LGPL"
             ],
-            "Permission to redistribute": false,
+            "Permission to redistribute": true,
             "Retrieved from": "https://packages.ecosyste.ms/api/v1/registries/bioconductor.org/lookup?name=annaffy"
         },
         "annotate": {
@@ -36782,7 +36772,7 @@
             "License": [
                 "CNRI-Python-GPL-Compatible"
             ],
-            "Permission to redistribute": false,
+            "Permission to redistribute": true,
             "Retrieved from": "https://github.com/HenrikBengtsson/aroma.light"
         },
         "ash": {
@@ -36796,7 +36786,7 @@
             "License": [
                 "CNRI-Python-GPL-Compatible"
             ],
-            "Permission to redistribute": false,
+            "Permission to redistribute": true,
             "Retrieved from": "https://packages.ecosyste.ms/api/v1/registries/bioconductor.org/lookup?name=ATACseqQC"
         },
         "AUCell": {
@@ -37003,24 +36993,24 @@
             "Retrieved from": "https://github.com/rstudio/bookdown"
         },
         "BSgenome.Cfamiliaris.UCSC.canFam3": {
-            "License": "not found",
-            "Permission to redistribute": false,
-            "Retrieved from": "not found"
+            "License": "Artistic-2.0",
+            "Permission to redistribute": true,
+            "Retrieved from": "https://www.bioconductor.org/packages/release/data/annotation/html/BSgenome.Cfamiliaris.UCSC.canFam3.html"
         },
         "BSgenome.Hsapiens.UCSC.hg19": {
-            "License": "not found",
-            "Permission to redistribute": false,
-            "Retrieved from": "not found"
+            "License": "Artistic-2.0",
+                "Permission to redistribute": true,
+            "Retrieved from": "https://bioconductor.org/packages/release/data/annotation/html/BSgenome.Hsapiens.UCSC.hg19.html"
         },
         "BSgenome.Hsapiens.UCSC.hg38": {
-            "License": "not found",
-            "Permission to redistribute": false,
-            "Retrieved from": "not found"
+            "License": "Artistic-2.0",
+            "Permission to redistribute": true,
+            "Retrieved from": "https://bioconductor.org/packages/release/data/annotation/html/BSgenome.Hsapiens.UCSC.hg38.html"
         },
         "BSgenome.Mmusculus.UCSC.mm10": {
-            "License": "not found",
-            "Permission to redistribute": false,
-            "Retrieved from": "not found"
+            "License": "Artistic-2.0",
+            "Permission to redistribute": true,
+            "Retrieved from": "https://www.bioconductor.org/packages/release/data/annotation/html/BSgenome.Mmusculus.UCSC.mm10.html"
         },
         "BSgenome": {
             "License": [
@@ -37054,7 +37044,7 @@
             "License": [
                 "AML"
             ],
-            "Permission to redistribute": false,
+            "Permission to redistribute": true,
             "Retrieved from": "https://github.com/MalteThodberg/CAGEfightR"
         },
         "CAGEr": {
@@ -37068,7 +37058,7 @@
             "License": [
                 "CNRI-Python-GPL-Compatible"
             ],
-            "Permission to redistribute": false,
+            "Permission to redistribute": true,
             "Retrieved from": "http://msbi.ipb-halle.de/msbi/CAMERA/ "
         },
         "Category": {
@@ -37079,9 +37069,9 @@
             "Retrieved from": "https://packages.ecosyste.ms/api/v1/registries/bioconductor.org/lookup?name=Category"
         },
         "ccdata": {
-            "License": "not found",
-            "Permission to redistribute": false,
-            "Retrieved from": "not found"
+            "License": "MIT + file LICENSE",
+            "Permission to redistribute": true,
+            "Retrieved from": "https://www.bioconductor.org/packages/release/data/experiment/html/ccdata.html"
         },
         "ccmap": {
             "License": [
@@ -37102,14 +37092,14 @@
                 "CNRI-Python-GPL-Compatible",
                 "MPL-2.0-no-copyleft-exception"
             ],
-            "Permission to redistribute": false,
+            "Permission to redistribute": true,
             "Retrieved from": "https://packages.ecosyste.ms/api/v1/registries/bioconductor.org/lookup?name=CGHcall"
         },
         "ChIPpeakAnno": {
             "License": [
                 "CNRI-Python-GPL-Compatible"
             ],
-            "Permission to redistribute": false,
+            "Permission to redistribute": true,
             "Retrieved from": "https://packages.ecosyste.ms/api/v1/registries/bioconductor.org/lookup?name=ChIPpeakAnno"
         },
         "ChIPseeker": {
@@ -37137,7 +37127,7 @@
             "License": [
                 "AML"
             ],
-            "Permission to redistribute": false,
+            "Permission to redistribute": true,
             "Retrieved from": "https://github.com/ge11232002/CNEr"
         },
         "coloc": {
@@ -37165,14 +37155,14 @@
             "License": [
                 "CNRI-Python-GPL-Compatible"
             ],
-            "Permission to redistribute": false,
+            "Permission to redistribute": true,
             "Retrieved from": "https://packages.ecosyste.ms/api/v1/registries/bioconductor.org/lookup?name=ConsensusClusterPlus"
         },
         "conumee": {
             "License": [
                 "CNRI-Python-GPL-Compatible"
             ],
-            "Permission to redistribute": false,
+            "Permission to redistribute": true,
             "Retrieved from": "https://packages.ecosyste.ms/api/v1/registries/bioconductor.org/lookup?name=conumee"
         },
         "crossmeta": {
@@ -37242,14 +37232,14 @@
             "License": [
                 "AML"
             ],
-            "Permission to redistribute": false,
+            "Permission to redistribute": true,
             "Retrieved from": "https://github.com/saezlab/decoupleR"
         },
         "DEGseq": {
             "License": [
                 "libpng-2.0"
             ],
-            "Permission to redistribute": false,
+            "Permission to redistribute": true,
             "Retrieved from": "https://packages.ecosyste.ms/api/v1/registries/bioconductor.org/lookup?name=DEGseq"
         },
         "DelayedArray": {
@@ -37289,9 +37279,9 @@
         },
         "DESeq2": {
             "License": [
-                "Other"
+                "Unknown"
             ],
-            "Permission to redistribute": false,
+            "Permission to redistribute": true,
             "Retrieved from": "https://github.com/thelovelab/DESeq2"
         },
         "diffcyt": {
@@ -37333,13 +37323,13 @@
             "License": [
                 "CNRI-Python-GPL-Compatible"
             ],
-            "Permission to redistribute": false,
+            "Permission to redistribute": true,
             "Retrieved from": "https://packages.ecosyste.ms/api/v1/registries/bioconductor.org/lookup?name=DNAcopy"
         },
         "DO.db": {
-            "License": "not found",
-            "Permission to redistribute": false,
-            "Retrieved from": "not found"
+            "License": "Artistic-2.0",
+            "Permission to redistribute": true,
+            "Retrieved from": "https://bioconductor.org/packages/release/data/annotation/html/DO.db.html"
         },
         "docopt": {
             "License": [
@@ -37366,7 +37356,7 @@
             "License": [
                 "CNRI-Python-GPL-Compatible"
             ],
-            "Permission to redistribute": false,
+            "Permission to redistribute": true,
             "Retrieved from": "https://packages.ecosyste.ms/api/v1/registries/bioconductor.org/lookup?name=DRIMSeq"
         },
         "DropletUtils": {
@@ -37399,16 +37389,16 @@
         },
         "EBImage": {
             "License": [
-                "Other"
+                "LGPL"
             ],
-            "Permission to redistribute": false,
-            "Retrieved from": "https://github.com/aoles/EBImage"
+            "Permission to redistribute": true,
+            "Retrieved from": "https://bioconductor.org/packages/release/bioc/html/EBImage.html"
         },
         "edgeR": {
             "License": [
                 "CNRI-Python-GPL-Compatible"
             ],
-            "Permission to redistribute": false,
+            "Permission to redistribute": true,
             "Retrieved from": "https://bioinf.wehi.edu.au/edgeR/ https://bioconductor.org/packages/edgeR "
         },
         "egg": {
@@ -37433,26 +37423,24 @@
             "Retrieved from": "https://yulab-smu.top/biomedical-knowledge-mining-book/ "
         },
         "EnsDb.Hsapiens.v75": {
-            "License": "not found",
-            "Permission to redistribute": false,
-            "Retrieved from": "not found"
+            "License": "Artistic-2.0",
+            "Permission to redistribute": true,
+            "Retrieved from": "https://bioconductor.org/packages/EnsDb.Hsapiens.v75"
         },
         "EnsDb.Hsapiens.v79": {
-            "License": "not found",
-            "Permission to redistribute": false,
-            "Retrieved from": "not found"
+            "License": "Artistic-2.0",
+            "Permission to redistribute": true,
+            "Retrieved from": "https://bioconductor.org/packages/EnsDb.Hsapiens.v79"
         },
         "EnsDb.Hsapiens.v86": {
-            "License": "not found",
-            "Permission to redistribute": false,
-            "Retrieved from": "not found"
+            "License": "Artistic-2.0",
+            "Permission to redistribute": true,
+            "Retrieved from": "https://bioconductor.org/packages/EnsDb.Hsapiens.v86"
         },
         "ensembldb": {
-            "License": [
-                "Other"
-            ],
-            "Permission to redistribute": false,
-            "Retrieved from": "https://github.com/jorainer/ensembldb"
+            "License": "LGPL",
+            "Permission to redistribute": true,
+        "Retrieved from": "https://bioconductor.org/packages/ensembldb"
         },
         "escape": {
             "License": [
@@ -37465,7 +37453,7 @@
             "License": [
                 "CNRI-Python-GPL-Compatible"
             ],
-            "Permission to redistribute": false,
+            "Permission to redistribute": true,
             "Retrieved from": "https://github.com/rvlenth/estimability"
         },
         "ExperimentHub": {
@@ -37504,9 +37492,9 @@
             "Retrieved from": "http://www.functionaldata.org"
         },
         "FDb.InfiniumMethylation.hg19": {
-            "License": "not found",
-            "Permission to redistribute": false,
-            "Retrieved from": "not found"
+            "License": "Artistic-2.0",
+            "Permission to redistribute": true,
+            "Retrieved from": "https://bioconductor.org/packages/FDb.InfiniumMethylation.hg19/"
         },
         "fds": {
             "License": [
@@ -37540,7 +37528,7 @@
             "License": [
                 "CNRI-Python-GPL-Compatible"
             ],
-            "Permission to redistribute": false,
+            "Permission to redistribute": true,
             "Retrieved from": "https://packages.ecosyste.ms/api/v1/registries/bioconductor.org/lookup?name=flowAI"
         },
         "flowClean": {
@@ -37596,18 +37584,18 @@
             "License": [
                 "CNRI-Python-GPL-Compatible"
             ],
-            "Permission to redistribute": false,
+            "Permission to redistribute": true,
             "Retrieved from": "http://www.r-project.org http://dambi.ugent.be "
         },
         "FlowSorted.Blood.EPIC": {
-            "License": "not found",
-            "Permission to redistribute": false,
-            "Retrieved from": "not found"
+            "License": "GPL-3.0",
+            "Permission to redistribute": true,
+            "Retrieved from": "https://bioconductor.org/packages/FlowSorted.Blood.EPIC"
         },
         "FlowSorted.CordBloodCombined.450k": {
-            "License": "not found",
-            "Permission to redistribute": false,
-            "Retrieved from": "not found"
+            "License": "GPL-3.0",
+            "Permission to redistribute": true,
+            "Retrieved from": "https://bioconductor.org/packages/FlowSorted.CordBloodCombined.450k"
         },
         "flowStats": {
             "License": [
@@ -37646,10 +37634,10 @@
         },
         "gcrma": {
             "License": [
-                "Other"
+                "LGPL"
             ],
-            "Permission to redistribute": false,
-            "Retrieved from": "https://packages.ecosyste.ms/api/v1/registries/bioconductor.org/lookup?name=gcrma"
+            "Permission to redistribute": true,
+            "Retrieved from": "https://bioconductor.org/packages/release/bioc/html/gcrma.html"
         },
         "gdsfmt": {
             "License": [
@@ -37666,9 +37654,9 @@
             "Retrieved from": "https://packages.ecosyste.ms/api/v1/registries/bioconductor.org/lookup?name=genefilter"
         },
         "geneLenDataBase": {
-            "License": "not found",
-            "Permission to redistribute": false,
-            "Retrieved from": "not found"
+            "License": "LGPL-2.0-or-later",
+            "Permission to redistribute": true,
+            "Retrieved from": "https://bioconductor.org/packages/geneLenDataBase"
         },
         "geneplotter": {
             "License": [
@@ -37688,7 +37676,7 @@
             "License": [
                 "CNRI-Python-GPL-Compatible"
             ],
-            "Permission to redistribute": false,
+            "Permission to redistribute": true,
             "Retrieved from": "https://packages.ecosyste.ms/api/v1/registries/bioconductor.org/lookup?name=GENIE3"
         },
         "genomation": {
@@ -37706,9 +37694,9 @@
             "Retrieved from": "https://bioconductor.org/packages/GenomeInfoDb "
         },
         "GenomeInfoDbData": {
-            "License": "not found",
-            "Permission to redistribute": false,
-            "Retrieved from": "not found"
+            "License": "Artistic-2.0",
+            "Permission to redistribute": true,
+            "Retrieved from": "https://bioconductor.org/packages/GenomeInfoDbData"
         },
         "GenomicAlignments": {
             "License": [
@@ -37777,7 +37765,7 @@
             "License": [
                 "MIT-feh"
             ],
-            "Permission to redistribute": false,
+            "Permission to redistribute": true,
             "Retrieved from": "https://github.com/RGLab/ggcyto"
         },
         "ggdendro": {
@@ -37798,7 +37786,7 @@
             "License": [
                 "AML"
             ],
-            "Permission to redistribute": false,
+            "Permission to redistribute": true,
             "Retrieved from": "https://github.com/LKremer/ggpointdensity"
         },
         "ggrastr": {
@@ -37847,20 +37835,20 @@
             "License": [
                 "CNRI-Python-GPL-Compatible"
             ],
-            "Permission to redistribute": false,
+            "Permission to redistribute": true,
             "Retrieved from": "https://packages.ecosyste.ms/api/v1/registries/bioconductor.org/lookup?name=GlobalAncova"
         },
         "globaltest": {
             "License": [
                 "CNRI-Python-GPL-Compatible"
             ],
-            "Permission to redistribute": false,
+            "Permission to redistribute": true,
             "Retrieved from": "https://packages.ecosyste.ms/api/v1/registries/bioconductor.org/lookup?name=globaltest"
         },
         "GO.db": {
-            "License": "not found",
-            "Permission to redistribute": false,
-            "Retrieved from": "not found"
+            "License": "Artistic-2.0",
+            "Permission to redistribute": true,
+            "Retrieved from": "https://bioconductor.org/packages/GO.db"
         },
         "GOSemSim": {
             "License": [
@@ -37873,7 +37861,7 @@
             "License": [
                 "libpng-2.0"
             ],
-            "Permission to redistribute": false,
+            "Permission to redistribute": true,
             "Retrieved from": "https://github.com/federicomarini/goseq"
         },
         "GOstats": {
@@ -37922,7 +37910,7 @@
             "License": [
                 "CNRI-Python-GPL-Compatible"
             ],
-            "Permission to redistribute": false,
+            "Permission to redistribute": true,
             "Retrieved from": "https://github.com/rcastelo/GSVA"
         },
         "Gviz": {
@@ -37954,9 +37942,9 @@
             "Retrieved from": "https://bioconductor.org/packages/HDF5Array "
         },
         "HDO.db": {
-            "License": "not found",
-            "Permission to redistribute": false,
-            "Retrieved from": "not found"
+            "License": "Artistic-2.0",
+            "Permission to redistribute": true,
+            "Retrieved from": "https://bioconductor.org/packages/HDO.db"
         },
         "hdrcde": {
             "License": [
@@ -37973,9 +37961,9 @@
             "Retrieved from": "https://github.com/talgalili/heatmaply"
         },
         "hgu133plus2.db": {
-            "License": "not found",
-            "Permission to redistribute": false,
-            "Retrieved from": "not found"
+            "License": "Artistic-2.0",
+            "Permission to redistribute": true,
+            "Retrieved from": "https://bioconductor.org/packages/hgu133plus2.db"
         },
         "HiCBricks": {
             "License": [
@@ -37999,9 +37987,9 @@
             "Retrieved from": "https://packages.ecosyste.ms/api/v1/registries/bioconductor.org/lookup?name=HMMcopy"
         },
         "Homo.sapiens": {
-            "License": "not found",
-            "Permission to redistribute": false,
-            "Retrieved from": "not found"
+            "License": "Artistic-2.0",
+            "Permission to redistribute": true,
+            "Retrieved from": "https://bioconductor.org/packages/Homo.sapiens"
         },
         "IHW": {
             "License": [
@@ -38011,29 +37999,29 @@
             "Retrieved from": "https://packages.ecosyste.ms/api/v1/registries/bioconductor.org/lookup?name=IHW"
         },
         "IlluminaHumanMethylation450kanno.ilmn12.hg19": {
-            "License": "not found",
-            "Permission to redistribute": false,
-            "Retrieved from": "not found"
+            "License": "Artistic-2.0",
+            "Permission to redistribute": true,
+            "Retrieved from": "https://bioconductor.org/packages/IlluminaHumanMethylation450kanno.ilmn12.hg19"
         },
         "IlluminaHumanMethylation450kmanifest": {
-            "License": "not found",
-            "Permission to redistribute": false,
-            "Retrieved from": "not found"
+            "License": "Artistic-2.0",
+            "Permission to redistribute": true,
+            "Retrieved from": "https://bioconductor.org/packages/IlluminaHumanMethylation450kmanifest"
         },
         "IlluminaHumanMethylationEPICanno.ilm10b2.hg19": {
-            "License": "not found",
-            "Permission to redistribute": false,
-            "Retrieved from": "not found"
+            "License": "Artistic-2.0",
+            "Permission to redistribute": true,
+            "Retrieved from": "https://bioconductor.org/packages/IlluminaHumanMethylationEPICanno.ilm10b2.hg19"
         },
         "IlluminaHumanMethylationEPICanno.ilm10b4.hg19": {
-            "License": "not found",
-            "Permission to redistribute": false,
-            "Retrieved from": "not found"
+            "License": "Artistic-2.0",
+            "Permission to redistribute": true,
+            "Retrieved from": "https://bioconductor.org/packages/IlluminaHumanMethylationEPICanno.ilm10b4.hg19"
         },
         "IlluminaHumanMethylationEPICmanifest": {
-            "License": "not found",
-            "Permission to redistribute": false,
-            "Retrieved from": "not found"
+            "License": "Artistic-2.0",
+            "Permission to redistribute": true,
+            "Retrieved from": "https://bioconductor.org/packages/IlluminaHumanMethylationEPICmanifest"
         },
         "illuminaio": {
             "License": [
@@ -38085,15 +38073,15 @@
             "Retrieved from": "https://packages.ecosyste.ms/api/v1/registries/cran.r-project.org/lookup?name=isva"
         },
         "JASPAR2020": {
-            "License": "not found",
-            "Permission to redistribute": false,
-            "Retrieved from": "not found"
+            "License": "Artistic-2.0",
+            "Permission to redistribute": true,
+            "Retrieved from": "https://bioconductor.org/packages/JASPAR2020"
         },
         "KEGGgraph": {
             "License": [
                 "CNRI-Python-GPL-Compatible"
             ],
-            "Permission to redistribute": false,
+            "Permission to redistribute": true,
             "Retrieved from": "http://www.nextbiomotif.com "
         },
         "KEGGREST": {
@@ -38114,7 +38102,7 @@
             "License": [
                 "CNRI-Python-GPL-Compatible"
             ],
-            "Permission to redistribute": false,
+            "Permission to redistribute": true,
             "Retrieved from": "https://bioinf.wehi.edu.au/limma/ "
         },
         "log4r": {
@@ -38142,35 +38130,33 @@
             "License": [
                 "libpng-2.0"
             ],
-            "Permission to redistribute": false,
+            "Permission to redistribute": true,
             "Retrieved from": "https://packages.ecosyste.ms/api/v1/registries/bioconductor.org/lookup?name=lumi"
         },
         "M3Drop": {
             "License": [
                 "CNRI-Python-GPL-Compatible"
             ],
-            "Permission to redistribute": false,
+            "Permission to redistribute": true,
             "Retrieved from": "https://github.com/tallulandrews/M3Drop"
         },
         "marray": {
-            "License": [
-                "Other"
-            ],
-            "Permission to redistribute": false,
-            "Retrieved from": "http://www.maths.usyd.edu.au/u/jeany/ "
+            "License": "LGPL-2.0-or-later",
+            "Permission to redistribute": true,
+            "Retrieved from": "https://bioconductor.org/packages/marray"
         },
         "maSigPro": {
             "License": [
                 "CNRI-Python-GPL-Compatible"
             ],
-            "Permission to redistribute": false,
+            "Permission to redistribute": true,
             "Retrieved from": "https://packages.ecosyste.ms/api/v1/registries/bioconductor.org/lookup?name=maSigPro"
         },
         "MassSpecWavelet": {
             "License": [
                 "libpng-2.0"
             ],
-            "Permission to redistribute": false,
+            "Permission to redistribute": true,
             "Retrieved from": "https://github.com/zeehio/MassSpecWavelet"
         },
         "MatrixGenerics": {
@@ -38191,7 +38177,7 @@
             "License": [
                 "CNRI-Python-GPL-Compatible"
             ],
-            "Permission to redistribute": false,
+            "Permission to redistribute": true,
             "Retrieved from": "https://packages.ecosyste.ms/api/v1/registries/bioconductor.org/lookup?name=MEDIPS"
         },
         "MetaboCoreUtils": {
@@ -38233,7 +38219,7 @@
             "License": [
                 "CNRI-Python-GPL-Compatible"
             ],
-            "Permission to redistribute": false,
+            "Permission to redistribute": true,
             "Retrieved from": "https://packages.ecosyste.ms/api/v1/registries/bioconductor.org/lookup?name=MethylSeekR"
         },
         "methylumi": {
@@ -38275,7 +38261,7 @@
             "License": [
                 "CNRI-Python-GPL-Compatible"
             ],
-            "Permission to redistribute": false,
+            "Permission to redistribute": true,
             "Retrieved from": "http://www.mixOmics.org "
         },
         "mixsqp": {
@@ -38286,11 +38272,9 @@
             "Retrieved from": "https://github.com/stephenslab/mixsqp"
         },
         "MLInterfaces": {
-            "License": [
-                "Other"
-            ],
-            "Permission to redistribute": false,
-            "Retrieved from": "https://packages.ecosyste.ms/api/v1/registries/bioconductor.org/lookup?name=MLInterfaces"
+            "License": "LGPL",
+            "Permission to redistribute": true,
+            "Retrieved from": "https://bioconductor.org/packages/MLInterfaces"
         },
         "MotifDb": {
             "License": [
@@ -38303,14 +38287,14 @@
             "License": [
                 "AML"
             ],
-            "Permission to redistribute": false,
+            "Permission to redistribute": true,
             "Retrieved from": "https://packages.ecosyste.ms/api/v1/registries/bioconductor.org/lookup?name=motifmatchr"
         },
         "motifStack": {
             "License": [
                 "CNRI-Python-GPL-Compatible"
             ],
-            "Permission to redistribute": false,
+            "Permission to redistribute": true,
             "Retrieved from": "https://packages.ecosyste.ms/api/v1/registries/bioconductor.org/lookup?name=motifStack"
         },
         "MsCoreUtils": {
@@ -38394,14 +38378,14 @@
             "License": [
                 "MIT-feh"
             ],
-            "Permission to redistribute": false,
+            "Permission to redistribute": true,
             "Retrieved from": "https://packages.ecosyste.ms/api/v1/registries/bioconductor.org/lookup?name=MultiDataSet"
         },
         "multtest": {
             "License": [
-                "Other"
+                "LGPL"
             ],
-            "Permission to redistribute": false,
+            "Permission to redistribute": true,
             "Retrieved from": "https://packages.ecosyste.ms/api/v1/registries/bioconductor.org/lookup?name=multtest"
         },
         "muscat": {
@@ -38422,7 +38406,7 @@
             "License": [
                 "CNRI-Python-GPL-Compatible"
             ],
-            "Permission to redistribute": false,
+            "Permission to redistribute": true,
             "Retrieved from": "https://packages.ecosyste.ms/api/v1/registries/bioconductor.org/lookup?name=mzID"
         },
         "mzR": {
@@ -38471,14 +38455,14 @@
             "License": [
                 "libpng-2.0"
             ],
-            "Permission to redistribute": false,
+            "Permission to redistribute": true,
             "Retrieved from": "https://github.com/benilton/oligo"
         },
         "oligoClasses": {
             "License": [
                 "CNRI-Python-GPL-Compatible"
             ],
-            "Permission to redistribute": false,
+            "Permission to redistribute": true,
             "Retrieved from": "https://packages.ecosyste.ms/api/v1/registries/bioconductor.org/lookup?name=oligoClasses"
         },
         "ontologyIndex": {
@@ -38510,19 +38494,19 @@
             "Retrieved from": "https://packages.ecosyste.ms/api/v1/registries/bioconductor.org/lookup?name=openCyto"
         },
         "org.Hs.eg.db": {
-            "License": "not found",
-            "Permission to redistribute": false,
-            "Retrieved from": "not found"
+            "License": "Artistic-2.0",
+            "Permission to redistribute": true,
+            "Retrieved from": "https://bioconductor.org/packages/org.Hs.eg.db"
         },
         "org.Mm.eg.db": {
-            "License": "not found",
-            "Permission to redistribute": false,
-            "Retrieved from": "not found"
+            "License": "Artistic-2.0",
+            "Permission to redistribute": true,
+            "Retrieved from": "https://bioconductor.org/packages/org.Mm.eg.db"
         },
         "org.Rn.eg.db": {
-            "License": "not found",
-            "Permission to redistribute": false,
-            "Retrieved from": "not found"
+            "License": "Artistic-2.0",
+            "Permission to redistribute": true,
+            "Retrieved from": "https://bioconductor.org/packages/org.Rn.eg.db"
         },
         "OrganismDbi": {
             "License": [
@@ -38542,14 +38526,14 @@
             "License": [
                 "CNRI-Python-GPL-Compatible"
             ],
-            "Permission to redistribute": false,
+            "Permission to redistribute": true,
             "Retrieved from": "https://github.com/datapplab/pathview"
         },
         "pcaMethods": {
             "License": [
                 "CNRI-Python-GPL-Compatible"
             ],
-            "Permission to redistribute": false,
+            "Permission to redistribute": true,
             "Retrieved from": "https://github.com/hredestig/pcamethods"
         },
         "perm": {
@@ -38560,9 +38544,9 @@
             "Retrieved from": "https://packages.ecosyste.ms/api/v1/registries/cran.r-project.org/lookup?name=perm"
         },
         "PFAM.db": {
-            "License": "not found",
-            "Permission to redistribute": false,
-            "Retrieved from": "not found"
+            "License": "Artistic-2.0",
+            "Permission to redistribute": true,
+            "Retrieved from": "https://bioconductor.org/packages/PFAM.db"
         },
         "phyloseq": {
             "License": [
@@ -38603,7 +38587,7 @@
             "License": [
                 "libpng-2.0"
             ],
-            "Permission to redistribute": false,
+            "Permission to redistribute": true,
             "Retrieved from": "https://github.com/bmbolstad/preprocessCore"
         },
         "pRoloc": {
@@ -38614,9 +38598,9 @@
             "Retrieved from": "https://github.com/lgatto/pRoloc"
         },
         "pRolocdata": {
-            "License": "not found",
-            "Permission to redistribute": false,
-            "Retrieved from": "not found"
+            "License": "Artistic-2.0",
+            "Permission to redistribute": true,
+            "Retrieved from": "https://bioconductor.org/packages/pRolocdata"
         },
         "pRolocGUI": {
             "License": [
@@ -38696,11 +38680,9 @@
             "Retrieved from": "https://packages.ecosyste.ms/api/v1/registries/bioconductor.org/lookup?name=quantsmooth"
         },
         "qvalue": {
-            "License": [
-                "Other"
-            ],
-            "Permission to redistribute": false,
-            "Retrieved from": "https://github.com/jdstorey/qvalue"
+            "License": "GPL-3.0-or-later",
+            "Permission to redistribute": true,
+            "Retrieved from": "https://bioconductor.org/packages/qvalue"
         },
         "R.devices": {
             "License": [
@@ -38769,7 +38751,7 @@
             "License": [
                 "CNRI-Python-GPL-Compatible"
             ],
-            "Permission to redistribute": false,
+            "Permission to redistribute": true,
             "Retrieved from": "https://github.com/jlmelville/rcpphnsw"
         },
         "RcppML": {
@@ -38787,9 +38769,9 @@
             "Retrieved from": "https://github.com/eddelbuettel/rcppziggurat"
         },
         "reactome.db": {
-            "License": "not found",
-            "Permission to redistribute": false,
-            "Retrieved from": "not found"
+            "License": "Artistic-2.0",
+            "Permission to redistribute": true,
+            "Retrieved from": "https://bioconductor.org/packages/reactome.db"
         },
         "ReactomePA": {
             "License": [
@@ -38809,7 +38791,7 @@
             "License": [
                 "AML"
             ],
-            "Permission to redistribute": false,
+            "Permission to redistribute": true,
             "Retrieved from": "http://www.stat.ucla.edu/~handcock/RelDist/"
         },
         "remaCor": {
@@ -38823,7 +38805,7 @@
             "License": [
                 "libpng-2.0"
             ],
-            "Permission to redistribute": false,
+            "Permission to redistribute": true,
             "Retrieved from": "https://packages.ecosyste.ms/api/v1/registries/bioconductor.org/lookup?name=Repitools"
         },
         "ReportingTools": {
@@ -38900,7 +38882,7 @@
             "License": [
                 "libpng-2.0"
             ],
-            "Permission to redistribute": false,
+            "Permission to redistribute": true,
             "Retrieved from": "https://bioconductor.org/packages/Rhtslib http://www.htslib.org/ "
         },
         "Ringo": {
@@ -38914,33 +38896,33 @@
             "License": [
                 "libpng-2.0"
             ],
-            "Permission to redistribute": false,
+            "Permission to redistribute": true,
             "Retrieved from": "https://packages.ecosyste.ms/api/v1/registries/bioconductor.org/lookup?name=RNASeqPower"
         },
         "RnBeads.hg19": {
-            "License": "not found",
-            "Permission to redistribute": false,
-            "Retrieved from": "not found"
+            "License": "GPL-3.0-or-later",
+            "Permission to redistribute": true,
+            "Retrieved from": "https://bioconductor.org/packages/RnBeads.hg19"
         },
         "RnBeads.hg38": {
-            "License": "not found",
-            "Permission to redistribute": false,
-            "Retrieved from": "not found"
+            "License": "GPL-3.0-or-later",
+            "Permission to redistribute": true,
+            "Retrieved from": "https://bioconductor.org/packages/RnBeads.hg38"
         },
         "RnBeads.mm10": {
-            "License": "not found",
-            "Permission to redistribute": false,
-            "Retrieved from": "not found"
+            "License": "GPL-3.0-or-later",
+            "Permission to redistribute": true,
+            "Retrieved from": "https://bioconductor.org/packages/RnBeads.mm10"
         },
         "RnBeads.mm9": {
-            "License": "not found",
-            "Permission to redistribute": false,
-            "Retrieved from": "not found"
+            "License": "GPL-3.0-or-later",
+            "Permission to redistribute": true,
+            "Retrieved from": "https://bioconductor.org/packages/RnBeads.mm9"
         },
         "RnBeads.rn5": {
-            "License": "not found",
-            "Permission to redistribute": false,
-            "Retrieved from": "not found"
+            "License": "GPL-3.0-or-later",
+            "Permission to redistribute": true,
+            "Retrieved from": "https://bioconductor.org/packages/RnBeads.rn5"
         },
         "RnBeads": {
             "License": [
@@ -38988,7 +38970,7 @@
             "License": [
                 "Other"
             ],
-            "Permission to redistribute": false,
+            "Permission to redistribute": true,
             "Retrieved from": "https://packages.ecosyste.ms/api/v1/registries/bioconductor.org/lookup?name=RProtoBufLib"
         },
         "Rsamtools": {
@@ -39009,14 +38991,14 @@
             "License": [
                 "CNRI-Python-GPL-Compatible"
             ],
-            "Permission to redistribute": false,
+            "Permission to redistribute": true,
             "Retrieved from": "http://bioconductor.org/packages/Rsubread "
         },
         "rsvd": {
             "License": [
                 "CNRI-Python-GPL-Compatible"
             ],
-            "Permission to redistribute": false,
+            "Permission to redistribute": true,
             "Retrieved from": "https://github.com/erichson/rSVD"
         },
         "rtracklayer": {
@@ -39058,7 +39040,7 @@
             "License": [
                 "CNRI-Python-GPL-Compatible"
             ],
-            "Permission to redistribute": false,
+            "Permission to redistribute": true,
             "Retrieved from": "https://packages.ecosyste.ms/api/v1/registries/bioconductor.org/lookup?name=SamSPECTRAL"
         },
         "SC3": {
@@ -39079,7 +39061,7 @@
             "License": [
                 "MIT-feh"
             ],
-            "Permission to redistribute": false,
+            "Permission to redistribute": true,
             "Retrieved from": "https://packages.ecosyste.ms/api/v1/registries/bioconductor.org/lookup?name=SCANVIS"
         },
         "scater": {
@@ -39093,14 +39075,14 @@
             "License": [
                 "CNRI-Python-GPL-Compatible"
             ],
-            "Permission to redistribute": false,
+            "Permission to redistribute": true,
             "Retrieved from": "https://packages.ecosyste.ms/api/v1/registries/cran.r-project.org/lookup?name=scattermore"
         },
         "scDblFinder": {
             "License": [
                 "AML"
             ],
-            "Permission to redistribute": false,
+            "Permission to redistribute": true,
             "Retrieved from": "https://github.com/plger/scDblFinder"
         },
         "scistreer": {
@@ -39142,7 +39124,7 @@
             "License": [
                 "libpng-2.0"
             ],
-            "Permission to redistribute": false,
+            "Permission to redistribute": true,
             "Retrieved from": "https://packages.ecosyste.ms/api/v1/registries/bioconductor.org/lookup?name=seqLogo"
         },
         "seqPattern": {
@@ -39191,7 +39173,7 @@
             "License": [
                 "Sendmail"
             ],
-            "Permission to redistribute": false,
+            "Permission to redistribute": true,
             "Retrieved from": "https://github.com/RinteRface/shinydashboardPlus"
         },
         "shinyFiles": {
@@ -39233,7 +39215,7 @@
             "License": [
                 "libpng-2.0"
             ],
-            "Permission to redistribute": false,
+            "Permission to redistribute": true,
             "Retrieved from": "https://packages.ecosyste.ms/api/v1/registries/bioconductor.org/lookup?name=siggenes"
         },
         "Signac": {
@@ -39247,7 +39229,7 @@
             "License": [
                 "AML"
             ],
-            "Permission to redistribute": false,
+            "Permission to redistribute": true,
             "Retrieved from": "https://github.com/omnideconv/SimBu"
         },
         "simplifyEnrichment": {
@@ -39345,7 +39327,7 @@
             "License": [
                 "MIT-feh"
             ],
-            "Permission to redistribute": false,
+            "Permission to redistribute": true,
             "Retrieved from": "http://bioinformatics.oxfordjournals.org/cgi/reprint/btn577v1 "
         },
         "splancs": {
@@ -39450,7 +39432,7 @@
             "License": [
                 "CNRI-Python-GPL-Compatible"
             ],
-            "Permission to redistribute": false,
+            "Permission to redistribute": true,
             "Retrieved from": "https://packages.ecosyste.ms/api/v1/registries/bioconductor.org/lookup?name=TreeSummarizedExperiment"
         },
         "TSP": {
@@ -39461,34 +39443,34 @@
             "Retrieved from": "https://github.com/mhahsler/TSP"
         },
         "TxDb.Hsapiens.UCSC.hg19.knownGene": {
-            "License": "not found",
-            "Permission to redistribute": false,
-            "Retrieved from": "not found"
+            "License": "Artistic-2.0",
+            "Permission to redistribute": true,
+            "Retrieved from": "https://bioconductor.org/packages/   TxDb.Hsapiens.UCSC.hg19.knownGene"
         },
         "TxDb.Mmusculus.UCSC.mm10.knownGene": {
-            "License": "not found",
-            "Permission to redistribute": false,
-            "Retrieved from": "not found"
+            "License": "Artistic-2.0",
+            "Permission to redistribute": true,
+            "Retrieved from": "https://bioconductor.org/packages/TxDb.Mmusculus.UCSC.mm10.knownGene"
         },
         "tximport": {
             "License": [
                 "libpng-2.0"
             ],
-            "Permission to redistribute": false,
+            "Permission to redistribute": true,
             "Retrieved from": "https://github.com/thelovelab/tximport"
         },
         "UCell": {
             "License": [
                 "AML"
             ],
-            "Permission to redistribute": false,
+            "Permission to redistribute": true,
             "Retrieved from": "https://github.com/carmonalab/UCell"
         },
         "uwot": {
             "License": [
                 "CNRI-Python-GPL-Compatible"
             ],
-            "Permission to redistribute": false,
+            "Permission to redistribute": true,
             "Retrieved from": "https://github.com/jlmelville/uwot"
         },
         "variancePartition": {
@@ -39509,7 +39491,7 @@
             "License": [
                 "CNRI-Python-GPL-Compatible"
             ],
-            "Permission to redistribute": false,
+            "Permission to redistribute": true,
             "Retrieved from": "https://github.com/dusadrian/venn"
         },
         "vsn": {
@@ -39541,11 +39523,9 @@
             "Retrieved from": "https://packages.ecosyste.ms/api/v1/registries/cran.r-project.org/lookup?name=WGCNA"
         },
         "widgetTools": {
-            "License": [
-                "Other"
-            ],
-            "Permission to redistribute": false,
-            "Retrieved from": "https://packages.ecosyste.ms/api/v1/registries/bioconductor.org/lookup?name=widgetTools"
+            "License": "LGPL-2.0-or-later",
+            "Permission to redistribute": true,
+            "Retrieved from": "https://bioconductor.org/packages/widgetTools"
         },
         "Wrench": {
             "License": [
@@ -39558,7 +39538,7 @@
             "License": [
                 "AML"
             ],
-            "Permission to redistribute": false,
+            "Permission to redistribute": true,
             "Retrieved from": "https://github.com/sneumann/xcms"
         },
         "XVector": {
