@@ -67,8 +67,11 @@ else
     eb_install_out=${TMPDIR}/eb_install.out
     ok_msg="Latest EasyBuild release installed, let's go!"
     fail_msg="Installing latest EasyBuild release failed, that's not good... (output: ${eb_install_out})"
-    ${EB} --install-latest-eb-release 2>&1 | tee ${eb_install_out}
+    # Install in a temporary prefix, and disable read-only-installdir, so that we don't get errors when TMPDIR is cleaned up
+    ${EB} --install-latest-eb-release --installpath ${TMPDIR}/eb_tmp_installpath --disable-read-only-installdir 2>&1 | tee ${eb_install_out}
     check_exit_code $? "${ok_msg}" "${fail_msg}"
+    # Make sure the temporary module prefix is on the MODULEPATH
+    module use ${TMPDIR}/eb_tmp_installpath/modules/all
 
     # maybe the module obtained with --install-latest-eb-release is exactly the EasyBuild version we wanted?
     IGNORE_CACHE=''
@@ -93,6 +96,8 @@ else
             else
                 fatal_error "No easyconfig found for EasyBuild v${EB_VERSION}"
             fi
+            # Since we now reinstalled the EasyBuild we REALLY needed, we can unuse the tempdir from the MODULEPATH
+            module unuse ${TMPDIR}/eb_tmp_installpath/modules/all
         fi
     fi
 

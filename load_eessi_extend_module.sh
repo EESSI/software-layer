@@ -101,7 +101,8 @@ else
         eb_install_out=${TMPDIR}/eb_install.out
         ok_msg="Latest EasyBuild installed, let's go!"
         fail_msg="Installing latest EasyBuild failed, that's not good... (output: ${eb_install_out})"
-        ${EB} --install-latest-eb-release --installpath ${TMPDIR}/eb_tmp_installpath 2>&1 | tee ${eb_install_out}
+        # Install in a temporary prefix, and disable read-only-installdir, so that we don't get errors when TMPDIR is cleaned up
+        ${EB} --install-latest-eb-release --installpath ${TMPDIR}/eb_tmp_installpath --disable-read-only-installdir 2>&1 | tee ${eb_install_out}
         check_exit_code $? "${ok_msg}" "${fail_msg}"
         # Add this temp installpath to the modulepath. This is needed for the EESSI-extend sanity check step to succeed
         # As loading the EESSI-extend module requires loading the 'latest' EasyBuild module - which means there should
