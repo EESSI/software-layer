@@ -97,12 +97,16 @@ else
         # Note that in the build pipeline, load_easybuild_module.sh will simply install an EasyBuild version in a
         # temporary prefix in order to be used by EESSI-extend to install the FIRST EasyBuild version in a new prefix
         # That is, thus, the bootstrap procedure.
-        # EESSI-extend also needs EasyBuild to be installed as a module, so install the latest release
-        # eb_install_out=${TMPDIR}/eb_install.out
-        # ok_msg="Latest EasyBuild installed, let's go!"
-        # fail_msg="Installing latest EasyBuild failed, that's not good... (output: ${eb_install_out})"
-        # ${EB} --install-latest-eb-release 2>&1 | tee ${eb_install_out}
-        # check_exit_code $? "${ok_msg}" "${fail_msg}"
+        # EESSI-extend also needs EasyBuild to be installed as a module, so install the latest release in a temporary prefix
+        eb_install_out=${TMPDIR}/eb_install.out
+        ok_msg="Latest EasyBuild installed, let's go!"
+        fail_msg="Installing latest EasyBuild failed, that's not good... (output: ${eb_install_out})"
+        ${EB} --install-latest-eb-release --installpath ${TMPDIR}/eb_tmp_installpath 2>&1 | tee ${eb_install_out}
+        check_exit_code $? "${ok_msg}" "${fail_msg}"
+        # Add this temp installpath to the modulepath. This is needed for the EESSI-extend sanity check step to succeed
+        # As loading the EESSI-extend module requires loading the 'latest' EasyBuild module - which means there should
+        # be at least one on the MODULEPATH
+        module use ${TMPDIR}/eb_tmp_installpath
         # Now install EESSI-extend
         eessi_install_out=${TMPDIR}/eessi_install.out
         ok_msg="EESSI-extend/${EESSI_EXTEND_VERSION} installed, let's go!"
@@ -111,6 +115,7 @@ else
         # an attempt to figure out if it is needed, e.g., when we are rebuilding
         ${EB} "EESSI-extend-easybuild.eb" --try-amend=keeppreviousinstall=True 2>&1 | tee ${eessi_install_out}
         check_exit_code $? "${ok_msg}" "${fail_msg}"
+        module unuse ${TMPDIR}/eb_tmp_installpath
     )
 
     # restore origin $PATH and $PYTHONPATH values, and clean up environment variables that are no longer needed
