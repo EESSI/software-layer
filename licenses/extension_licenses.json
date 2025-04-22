@@ -18227,9 +18227,9 @@
         },
         "json5": {
             "License": [
-                "Other"
+                "Apache-2.0"
             ],
-            "Permission to redistribute": false,
+            "Permission to redistribute": true,
             "Retrieved from": "https://github.com/dpranke/pyjson5"
         },
         "jupyter-lsp": {
@@ -18241,23 +18241,23 @@
         },
         "jupyterlab": {
             "License": [
-                "Other"
+                "MIT"
             ],
-            "Permission to redistribute": false,
+            "Permission to redistribute": true,
             "Retrieved from": "https://github.com/jupyterlab/jupyterlab"
         },
         "jupyterlab_server": {
-            "License": "not found",
-            "Permission to redistribute": false,
-            "Retrieved from": "not found"
+            "License": "BSD-3-Clause",
+            "Permission to redistribute": true,
+            "Retrieved from": "https://github.com/jupyterlab/jupyterlab_server"
         }
     },
     "python-casacore/3.5.2-foss-2023b": {
         "python-casacore": {
             "License": [
-                "Other"
+                "LGPL-3.0-only"
             ],
-            "Permission to redistribute": false,
+            "Permission to redistribute": true,
             "Retrieved from": "https://github.com/casacore/python-casacore"
         },
         "setuptools": {
@@ -18270,22 +18270,22 @@
     },
     "PyOpenGL/3.1.7-GCCcore-12.3.0": {
         "PyOpenGL-accelerate": {
-            "License": "not found",
-            "Permission to redistribute": false,
-            "Retrieved from": "not found"
+            "License": "BSD-3-Clause",
+            "Permission to redistribute": true,
+            "Retrieved from": "https://pypi.org/project/PyOpenGL-accelerate"
         },
         "PyOpenGL": {
-            "License": "not found",
-            "Permission to redistribute": false,
-            "Retrieved from": "not found"
+            "License": "BSD-3-Clause",
+            "Permission to redistribute": true,
+            "Retrieved from": "https://pypi.org/project/PyOpenGL"
         }
     },
     "ipympl/0.9.3-gfbf-2023a": {
         "ipympl": {
             "License": [
-                "Other"
+                "BSD-3-Clause"
             ],
-            "Permission to redistribute": false,
+            "Permission to redistribute": true,
             "Retrieved from": "https://github.com/matplotlib/ipympl"
         }
     },
