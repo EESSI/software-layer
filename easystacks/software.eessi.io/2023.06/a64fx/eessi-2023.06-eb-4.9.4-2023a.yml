@@ -99,3 +99,66 @@ easyconfigs:
 #      options:
 #        from-pr: 19820
   - BWA-0.7.17-20220923-GCCcore-12.3.0.eb
+# from here on apps were originally built with EB 4.9.0
+  - METIS-5.1.0-GCCcore-12.3.0.eb
+  - SCOTCH-7.0.3-gompi-2023a.eb
+  - CGAL-5.6-GCCcore-12.3.0.eb
+  - ParaView-5.11.2-foss-2023a.eb
+  - gnuplot-5.4.8-GCCcore-12.3.0.eb
+  - Boost.MPI-1.82.0-gompi-2023a.eb:
+      options:
+        # source URLs for Boost.MPI have changed, corresponding PR is
+        # https://github.com/easybuilders/easybuild-easyconfigs/pull/22240
+        # Boost.MPI is a dependency of ESPResSo
+        from-commit: e610fe1ac5393d1de668a466fdaaea74c580ee03
+# PR 19592 was included since EB 4.9.1
+#  - ESPResSo-4.2.1-foss-2023a.eb:
+#      # see https://github.com/easybuilders/easybuild-easyconfigs/pull/19592
+#      options:
+#        from-pr: 19592
+  - ESPResSo-4.2.1-foss-2023a.eb
+# PR 19679 was included since EB 4.9.1
+#  - Rivet-3.1.9-gompi-2023a-HepMC3-3.2.6.eb:
+#      # see https://github.com/easybuilders/easybuild-easyconfigs/pull/19679
+#      options:
+#        from-pr: 19679
+  - Rivet-3.1.9-gompi-2023a-HepMC3-3.2.6.eb
+  - Pillow-10.0.0-GCCcore-12.3.0.eb
+  - sympy-1.12-gfbf-2023a.eb
+  - networkx-3.1-gfbf-2023a.eb
+  - expecttest-0.1.5-GCCcore-12.3.0.eb
+  - PyYAML-6.0-GCCcore-12.3.0.eb
+# PR 19480 was included since EB 4.9.1
+#  - pytest-flakefinder-1.1.0-GCCcore-12.3.0.eb:
+#      options:
+#        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/19480
+#        from-pr: 19480
+  - pytest-flakefinder-1.1.0-GCCcore-12.3.0.eb
+  - pytest-rerunfailures-12.0-GCCcore-12.3.0.eb
+# PR 19480 was included since EB 4.9.1
+#  - pytest-shard-0.1.2-GCCcore-12.3.0.eb:
+#      options:
+#        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/19480
+#        from-pr: 19480
+  - pytest-shard-0.1.2-GCCcore-12.3.0.eb
+  - scikit-learn-1.3.1-gfbf-2023a.eb
+  - MUMPS-5.6.1-foss-2023a-metis.eb:
+      options:
+        # source URLs for MUMPS have changed, corresponding PR is
+        # https://github.com/easybuilders/easybuild-easyconfigs/pull/22582
+        # MUMPS is a dependency of snakemake
+        from-commit: 0437ff1ad34283398f55d4a6e01e6540b1ae9688
+# PR 19646 was included since EB 4.9.1
+#  - snakemake-8.4.2-foss-2023a.eb:
+#      # see https://github.com/easybuilders/easybuild-easyconfigs/pull/19646
+#      options:
+#        from-pr: 19646
+  - snakemake-8.4.2-foss-2023a.eb
+# PRs 19471 and 3036 were included since EB 4.9.1
+#  - LAMMPS-2Aug2023_update2-foss-2023a-kokkos.eb:
+#      # see https://github.com/easybuilders/easybuild-easyconfigs/pull/19471
+#      # see https://github.com/easybuilders/easybuild-easyblocks/pull/3036
+#      options:
+#        from-pr: 19471
+#        include-easyblocks-from-pr: 3036
+  - LAMMPS-2Aug2023_update2-foss-2023a-kokkos.eb
