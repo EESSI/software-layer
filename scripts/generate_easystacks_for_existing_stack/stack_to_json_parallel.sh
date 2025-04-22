@@ -50,9 +50,9 @@ run_limited
   build_duration=$(( ($(date +%s -d "${build_time_end}") - $(date +%s -d "${build_time_start}")) / 60 ))
 
   eb_version=$(bzgrep -oP "This is EasyBuild \K([0-9]+\.[0-9]+\.[0-9]+)" "${log_file}" | head -n 1)
-  if [[ ${app_name} == "EasyBuild" ]] && [[ ${app_version} == ${eb_version} ]]; then
-    eb_version=${EB_BOOTSTRAP}
-  fi
+#   if [[ ${app_name} == "EasyBuild" ]] && [[ ${app_version} == ${eb_version} ]]; then
+#     eb_version=${EB_BOOTSTRAP}
+#   fi
 
   if [[ ${app_version} != *-* ]]; then
     toolchain="SYSTEM"
