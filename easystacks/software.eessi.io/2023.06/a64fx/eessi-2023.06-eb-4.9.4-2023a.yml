@@ -45,13 +45,13 @@ easyconfigs:
   - nsync-1.26.0-GCCcore-12.3.0.eb
   - RE2-2023-08-01-GCCcore-12.3.0.eb
   - protobuf-python-4.24.0-GCCcore-12.3.0.eb
-## originally built with EB 4.8.2; PR 19268 included since EB 4.9.0
-##  - TensorFlow-2.13.0-foss-2023a.eb:
-##      # patch setup.py for grpcio extension in TensorFlow 2.13.0 easyconfigs to take into account alternate sysroot;
-##      # see https://github.com/easybuilders/easybuild-easyconfigs/pull/19268
-##      options:
-##        from-pr: 19268
-#  - TensorFlow-2.13.0-foss-2023a.eb
+# originally built with EB 4.8.2; PR 19268 included since EB 4.9.0
+#  - TensorFlow-2.13.0-foss-2023a.eb:
+#      # patch setup.py for grpcio extension in TensorFlow 2.13.0 easyconfigs to take into account alternate sysroot;
+#      # see https://github.com/easybuilders/easybuild-easyconfigs/pull/19268
+#      options:
+#        from-pr: 19268
+  - TensorFlow-2.13.0-foss-2023a.eb
   - X11-20230603-GCCcore-12.3.0.eb
 # originally built with EB 4.8.2; PR 19339 included since EB 4.9.0
 # - HarfBuzz-5.3.1-GCCcore-12.3.0.eb:
