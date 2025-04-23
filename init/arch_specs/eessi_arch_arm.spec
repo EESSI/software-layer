@@ -7,3 +7,4 @@
 "aarch64/neoverse_n1"	"0x41"		"asimddp"		# AWS Graviton2
 "aarch64/neoverse_v1"	"ARM"		"asimddp svei8mm"
 "aarch64/neoverse_v1"	"0x41"		"asimddp svei8mm"	# AWS Graviton3
+"aarch64/nvidia/grace"	"0x41"		"svesm4"		# NVIDIA Grace
