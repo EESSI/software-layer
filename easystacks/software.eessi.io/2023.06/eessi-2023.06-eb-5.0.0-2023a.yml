@@ -7,9 +7,9 @@ easyconfigs:
   - MUSCLE-5.1.0-GCCcore-12.3.0.eb:
       options:
         # See https://github.com/easybuilders/easybuild-easyconfigs/pull/22780
-        from-commit: c18be9031082633f22e1e0eed86f5eb110565e61
+        from-commit: ff159780fbaa881fb442b0ee1b37cd9e3d981ca9
   - bcgTree-1.2.1-foss-2023a.eb:
       options:
         # see https://github.com/easybuilders/easybuild-easyconfigs/pull/22707
         # and https://github.com/easybuilders/easybuild-easyconfigs/pull/22540
-        from-commit: 99e573396fb566985f67315e66db5bb45e59979c
+        from-commit: 720c5b5b8280bf342d827617ee14738f3d231097
