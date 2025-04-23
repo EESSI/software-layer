@@ -1,4 +1,0 @@
-easyconfigs:
-  - /cvmfs/software.eessi.io/versions/2023.06/software/linux/x86_64/intel/haswell/software/EasyBuild/4.9.0/easybuild/reprod/EasyBuild-4.9.0.eb:
-      options:
-        include-easyblocks: /cvmfs/software.eessi.io/versions/2023.06/software/linux/x86_64/intel/haswell/software/EasyBuild/4.9.0/easybuild/reprod/easyblocks/*.py
