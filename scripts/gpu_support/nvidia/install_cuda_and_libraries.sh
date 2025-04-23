@@ -92,6 +92,14 @@ echo "Created temporary directory '${tmpdir}'"
 # Store MODULEPATH so it can be restored at the end of each loop iteration
 SAVE_MODULEPATH=${MODULEPATH}
 
+# Ignore the LMOD error that CUDA modules have been removed from the CPU prefixes, as that is not relevant for
+# people doing host_injection installations: they are installing their own CUDA's, and without this env var
+# they get failures when the EB sanity check tries to load the CUDA module in the host_injection prefix
+# Setting this environment variable is only needed temporarily, and can be removed once this
+# https://github.com/EESSI/software-layer/blob/59a4c822c6066e1560e292a24191bed9e2f6792c/create_lmodsitepackage.py#L251
+# startup hook is removed again from the LMOD sitepackage.lua
+export EESSI_SKIP_REMOVED_MODULES_CHECK=1
+
 for EASYSTACK_FILE in ${TOPDIR}/easystacks/eessi-*CUDA*.yml; do
     echo -e "Processing easystack file ${easystack_file}...\n\n"
 
