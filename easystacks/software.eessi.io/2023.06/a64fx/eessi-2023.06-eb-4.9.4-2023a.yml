@@ -170,12 +170,12 @@ easyconfigs:
 #        # see https://github.com/easybuilders/easybuild-easyblocks/pull/3036
 #        include-easyblocks-from-pr: 3036
   - LAMMPS-2Aug2023_update2-foss-2023a-kokkos.eb
-# PR 19573 was included since EB 4.9.1
-#  - PyTorch-2.1.2-foss-2023a.eb:
-#      options:
-#        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/19573
-#        from-pr: 19573
-  - PyTorch-2.1.2-foss-2023a.eb
+## PR 19573 was included since EB 4.9.1
+##  - PyTorch-2.1.2-foss-2023a.eb:
+##      options:
+##        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/19573
+##        from-pr: 19573
+#  - PyTorch-2.1.2-foss-2023a.eb
   - matplotlib-3.7.2-gfbf-2023a.eb
 # PR 19554 was included since EB 4.9.1
 #  - PyQt5-5.15.10-GCCcore-12.3.0.eb:
