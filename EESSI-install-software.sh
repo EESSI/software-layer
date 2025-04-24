@@ -271,7 +271,7 @@ export EASYBUILD_INSTALLPATH=${EESSI_PREFIX}/software/${EESSI_OS_TYPE}/${EESSI_S
 
 # If in dev.eessi.io, allow building on top of software.eessi.io via EESSI-extend
 if [[ ! -z ${EESSI_DEV_PROJECT} ]]; then
-    # We keep track of the old install path so the SitePackage.lua and .lmodrc later
+    # We keep track of the old install path for settings paths to SitePackage.lua and .lmodrc later
     EASYBUILD_INSTALLPATH_STANDARD=${EASYBUILD_INSTALLPATH}
     # Need to unset $EESSI_CVMFS_INSTALL to use $EESSI_PROJECT_INSTALL
     unset EESSI_CVMFS_INSTALL
