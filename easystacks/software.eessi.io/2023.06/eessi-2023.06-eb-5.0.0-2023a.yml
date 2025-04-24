@@ -12,4 +12,5 @@ easyconfigs:
       options:
         # see https://github.com/easybuilders/easybuild-easyconfigs/pull/22707
         # and https://github.com/easybuilders/easybuild-easyconfigs/pull/22540
+        # and https://github.com/easybuilders/easybuild-easyconfigs/pull/22781
         from-commit: 720c5b5b8280bf342d827617ee14738f3d231097
