@@ -43,5 +43,9 @@ if [[ ${current_stack_name} != "" ]]; then
   { echo "# ${current_stack_name}: total build duration = ${current_duration_sum} minutes"; cat "${easystack}"; } > temp && mv temp "${easystack}"
 fi
 
+for file in *.yml; do
+  cat "$file" | head -n 1
+done
+
 # Print overall total
 echo "Overall total build duration = ${total_duration_sum} minutes"
