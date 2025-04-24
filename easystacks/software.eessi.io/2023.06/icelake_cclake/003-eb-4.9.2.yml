@@ -1,3 +1,4 @@
+# 003-eb-4.9.2.yml: total build duration = 1 minutes
 easyconfigs:
   - /cvmfs/software.eessi.io/versions/2023.06/software/linux/x86_64/intel/haswell/software/EasyBuild/4.9.3/easybuild/reprod/EasyBuild-4.9.3.eb:
       options:
