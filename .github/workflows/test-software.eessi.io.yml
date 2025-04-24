@@ -8,6 +8,7 @@ on:
 permissions:
   contents: read # to fetch code (actions/checkout)
 env:
+  EESSI_VERSION: '2023.06'
   EESSI_ACCELERATOR_TARGETS: |
     x86_64/amd/zen2:
       - nvidia/cc80
@@ -15,23 +16,33 @@ env:
       - nvidia/cc80
 jobs:
   check_missing:
-    runs-on: ubuntu-24.04
     strategy:
       fail-fast: false
       matrix:
-        EESSI_VERSION:
-        - 2023.06
-        EESSI_SOFTWARE_SUBDIR_OVERRIDE:
-        - aarch64/generic
-        - aarch64/neoverse_n1
-        - aarch64/neoverse_v1
-        - x86_64/amd/zen2
-        - x86_64/amd/zen3
-        - x86_64/amd/zen4
-        - x86_64/intel/haswell
-        - x86_64/intel/sapphirerapids
-        - x86_64/intel/skylake_avx512
-        - x86_64/generic
+        include:
+          # Arm CPU targets
+          - runs_on: ubuntu-24.04-arm
+            EESSI_SOFTWARE_SUBDIR_OVERRIDE: aarch64/generic
+          - runs_on: ubuntu-24.04-arm
+            EESSI_SOFTWARE_SUBDIR_OVERRIDE: aarch64/neoverse_n1
+          - runs_on: ubuntu-24.04-arm
+            EESSI_SOFTWARE_SUBDIR_OVERRIDE: aarch64/neoverse_v1
+          # x86_64 CPU targets
+          - runs_on: ubuntu-24.04
+            EESSI_SOFTWARE_SUBDIR_OVERRIDE: x86_64/amd/zen2
+          - runs_on: ubuntu-24.04
+            EESSI_SOFTWARE_SUBDIR_OVERRIDE: x86_64/amd/zen3
+          - runs_on: ubuntu-24.04
+            EESSI_SOFTWARE_SUBDIR_OVERRIDE: x86_64/amd/zen4
+          - runs_on: ubuntu-24.04
+            EESSI_SOFTWARE_SUBDIR_OVERRIDE: x86_64/intel/haswell
+          - runs_on: ubuntu-24.04
+            EESSI_SOFTWARE_SUBDIR_OVERRIDE: x86_64/intel/sapphirerapids
+          - runs_on: ubuntu-24.04
+            EESSI_SOFTWARE_SUBDIR_OVERRIDE: x86_64/intel/skylake_avx512
+          - runs_on: ubuntu-24.04
+            EESSI_SOFTWARE_SUBDIR_OVERRIDE: x86_64/generic
+    runs-on: ${{ matrix.runs_on }}
     steps:
         - name: Check out software-layer repository
           uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
@@ -46,20 +57,20 @@ jobs:
         - name: Test check_missing_installations.sh script
           run: |
               export EESSI_SOFTWARE_SUBDIR_OVERRIDE=${{matrix.EESSI_SOFTWARE_SUBDIR_OVERRIDE}}
-              source /cvmfs/software.eessi.io/versions/${{matrix.EESSI_VERSION}}/init/bash
+              source /cvmfs/software.eessi.io/versions/${EESSI_VERSION}/init/bash
               # set $EESSI_CPU_FAMILY to the CPU architecture that corresponds to $EESSI_SOFTWARE_SUBDIR_OVERRIDE (part before the first slash),
               # to prevent issues with checks in the Easybuild configuration that use this variable
               export EESSI_CPU_FAMILY=${EESSI_SOFTWARE_SUBDIR_OVERRIDE%%/*}
               module load EasyBuild
               which eb
               eb --version
-              export EESSI_PREFIX=/cvmfs/software.eessi.io/versions/${{matrix.EESSI_VERSION}}
+              export EESSI_PREFIX=/cvmfs/software.eessi.io/versions/${EESSI_VERSION}
               export EESSI_OS_TYPE=linux
               env | grep ^EESSI | sort
 
               # first check the CPU-only builds for this CPU target
-              echo "just run check_missing_installations.sh (should use easystacks/software.eessi.io/${{matrix.EESSI_VERSION}}/eessi-${{matrix.EESSI_VERSION}}-*.yml with latest EasyBuild release)"
-              for easystack_file in $(EESSI_VERSION=${{matrix.EESSI_VERSION}} .github/workflows/scripts/only_latest_easystacks.sh); do
+              echo "just run check_missing_installations.sh (should use easystacks/software.eessi.io/${EESSI_VERSION}/eessi-${EESSI_VERSION}-*.yml with latest EasyBuild release)"
+              for easystack_file in $(EESSI_VERSION=${EESSI_VERSION} .github/workflows/scripts/only_latest_easystacks.sh); do
                   echo "check missing installations for ${easystack_file}..."
                   ./check_missing_installations.sh ${easystack_file}
                   ec=$?
@@ -74,7 +85,7 @@ jobs:
                   for accel in ${accelerators}; do
                       module use ${EESSI_SOFTWARE_PATH}/accel/${accel}/modules/all
                       echo "checking missing installations for accelerator ${accel} using modulepath: ${MODULEPATH}"
-                      for easystack_file in $(EESSI_VERSION=${{matrix.EESSI_VERSION}} ACCEL_EASYSTACKS=1 .github/workflows/scripts/only_latest_easystacks.sh); do
+                      for easystack_file in $(EESSI_VERSION=${EESSI_VERSION} ACCEL_EASYSTACKS=1 .github/workflows/scripts/only_latest_easystacks.sh); do
                           echo "check missing installations for ${easystack_file}..."
                           ./check_missing_installations.sh ${easystack_file}
                           ec=$?
@@ -87,14 +98,14 @@ jobs:
         - name: Test check_missing_installations.sh with missing package (GCC/8.3.0)
           run: |
               export EESSI_SOFTWARE_SUBDIR_OVERRIDE=${{matrix.EESSI_SOFTWARE_SUBDIR_OVERRIDE}}
-              source /cvmfs/software.eessi.io/versions/${{matrix.EESSI_VERSION}}/init/bash
+              source /cvmfs/software.eessi.io/versions/${EESSI_VERSION}/init/bash
               # set $EESSI_CPU_FAMILY to the CPU architecture that corresponds to $EESSI_SOFTWARE_SUBDIR_OVERRIDE (part before the first slash),
               # to prevent issues with checks in the Easybuild configuration that use this variable
               export EESSI_CPU_FAMILY=${EESSI_SOFTWARE_SUBDIR_OVERRIDE%%/*}
               module load EasyBuild
               which eb
               eb --version
-              export EESSI_PREFIX=/cvmfs/software.eessi.io/versions/${{matrix.EESSI_VERSION}}
+              export EESSI_PREFIX=/cvmfs/software.eessi.io/versions/${EESSI_VERSION}
               export EESSI_OS_TYPE=linux
               env | grep ^EESSI | sort
               # create dummy easystack file with a single entry (something that is not installed in EESSI)
