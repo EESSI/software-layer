@@ -147,6 +147,8 @@ echo "bot/build.sh: EESSI_VERSION_OVERRIDE='${EESSI_VERSION_OVERRIDE}'"
 # determine CVMFS repo to be used from .repository.repo_name in ${JOB_CFG_FILE}
 # here, just set EESSI_CVMFS_REPO_OVERRIDE, a bit further down
 # "source init/eessi_defaults" via sourcing init/minimal_eessi_env
+# Note: iff ${EESSI_DEV_PROJECT} is defined (building for dev.eessi.io), then we 
+# append the project subdirectory to ${EESSI_CVMFS_REPO_OVERRIDE}
 export EESSI_CVMFS_REPO_OVERRIDE=/cvmfs/${REPOSITORY_NAME}${EESSI_DEV_PROJECT:+/$EESSI_DEV_PROJECT}
 echo "bot/build.sh: EESSI_CVMFS_REPO_OVERRIDE='${EESSI_CVMFS_REPO_OVERRIDE}'"
 
@@ -318,6 +320,10 @@ fi
 timestamp=$(date +%s)
 # to set EESSI_VERSION we need to source init/eessi_defaults now
 source $software_layer_dir/init/eessi_defaults
+# Note: iff ${EESSI_DEV_PROJECT} is defined (building for dev.eessi.io), then we 
+# append the project (subdirectory) name to the end tarball name. This is information
+# then used at the ingestion stage. If ${EESSI_DEV_PROJECT} is not defined, nothing is
+# appended
 export TGZ=$(printf "eessi-%s-software-%s-%s-%b%d.tar.gz" ${EESSI_VERSION} ${EESSI_OS_TYPE} ${EESSI_SOFTWARE_SUBDIR_OVERRIDE//\//-} ${EESSI_DEV_PROJECT:+$EESSI_DEV_PROJECT-} ${timestamp})
 
 # Export EESSI_DEV_PROJECT to use it (if needed) when making tarball
