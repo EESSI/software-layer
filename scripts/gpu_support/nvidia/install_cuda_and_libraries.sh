@@ -92,10 +92,6 @@ echo "Created temporary directory '${tmpdir}'"
 # Store MODULEPATH so it can be restored at the end of each loop iteration
 SAVE_MODULEPATH=${MODULEPATH}
 
-# THIS EXPORT SHOULD NEVER MAKE IT INTO THE REPO, it's just used temporarily to make host-injections
-# install for icelake in https://github.com/EESSI/software-layer/pull/1044
-export EESSI_SKIP_REMOVED_MODULES_CHECK=1
-
 for EASYSTACK_FILE in ${TOPDIR}/easystacks/eessi-*CUDA*.yml; do
     echo -e "Processing easystack file ${easystack_file}...\n\n"
 
