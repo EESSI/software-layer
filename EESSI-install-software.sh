@@ -277,10 +277,6 @@ if [[ ! -z ${EESSI_DEV_PROJECT} ]]; then
     unset EESSI_CVMFS_INSTALL
     export EESSI_PROJECT_INSTALL=${EESSI_CVMFS_REPO_OVERRIDE}
     echo ">> \$EESSI_PROJECT_INSTALL set to ${EESSI_PROJECT_INSTALL}"
-    # Consider removing this (created in eessi_container.sh)
-    mkdir -p ${EESSI_PROJECT_INSTALL}
-    # Need to export EESSI_DEV_PROJECT for eessi_container.sh
-    export ${EESSI_DEV_PROJECT}
 fi
 
 echo "DEBUG: before loading EESSI-extend // EASYBUILD_INSTALLPATH='${EASYBUILD_INSTALLPATH}'"
