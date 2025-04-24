@@ -16,7 +16,7 @@ while read app; do
   # Check if we need to start a new easystack
   if [[ ${prev_eb_version} != ${easybuild} ]] || (( current_duration_sum + build_duration_minutes > duration_threshold )); then
     if [[ ${current_stack_name} != "" ]]; then
-      echo "${current_stack_name}: total build duration = ${current_duration_sum} minutes"
+      { echo "# ${current_stack_name}: total build duration = ${current_duration_sum} minutes"; cat "${easystack}"; } > temp && mv temp "${easystack}"
     fi
     easystack_num=$(( easystack_num + 1 ))
     prev_eb_version=${easybuild}
@@ -40,7 +40,7 @@ done < <(jq -c '.[]' "${input_file}")
 
 # Print final stack duration
 if [[ ${current_stack_name} != "" ]]; then
-  echo "${current_stack_name}: total build duration = ${current_duration_sum} minutes"
+  { echo "# ${current_stack_name}: total build duration = ${current_duration_sum} minutes"; cat "${easystack}"; } > temp && mv temp "${easystack}"
 fi
 
 # Print overall total
