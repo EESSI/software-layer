@@ -744,6 +744,26 @@ def pre_configure_hook_LAMMPS_zen4(self, *args, **kwargs):
     else:
         raise EasyBuildError("LAMMPS-specific hook triggered for non-LAMMPS easyconfig?!")
 
+def pre_configure_hook_nvhpc_x86_64(self, *args, **kwargs):
+    """
+    pre-configure hook for nvhpc
+    - search and replace operations in the ec dict
+    """
+    if self.name == "NVHPC":
+        eprefix = get_eessi_envvar("EPREFIX")
+        new_opts = f'''installdir=%(installdir)s/Linux_x86_64/%(version)s
+            EPREFIX={eprefix}
+            EBROOTGENTOO={eprefix}/usr
+            sed -i "s@\(set LDSO=.*\);@\\1 --sysroot=$EPREFIX;@" $installdir/compilers/bin/localrc
+            echo "set DEFLIBDIR=$EBROOTGENTOO/lib64;" >> $installdir/compilers/bin/localrc
+            echo "set DEFSTDOBJDIR=$EBROOTGENTOO/lib64;" >> $installdir/compilers/bin/localrc'''
+        old_opts = self.cfg['postinstallcmds']
+        self.cfg.update('postinstallcmds', new_opts)
+        print_msg("Updated postinstall cmds from %s to %s", old_opts, new_opts)
+    else:
+        raise EasyBuildError("NVHPC-specific hook triggered for non-NVHPC easyconfig?!")
+
+
 
 def pre_test_hook(self, *args, **kwargs):
     """Main pre-test hook: trigger custom functions based on software name."""
@@ -1218,6 +1238,7 @@ PRE_CONFIGURE_HOOKS = {
     'GROMACS': pre_configure_hook_gromacs,
     'libfabric': pre_configure_hook_libfabric_disable_psm3_x86_64_generic,
     'MetaBAT': pre_configure_hook_metabat_filtered_zlib_dep,
+    'NVHPC': pre_configure_hook_nvhpc_x86_64,
     'OpenBLAS': pre_configure_hook_openblas_optarch_generic,
     'WRF': pre_configure_hook_wrf_aarch64,
     'LAMMPS': pre_configure_hook_LAMMPS_zen4,
