@@ -231,23 +231,6 @@ function eessi_load_hook(t)
     end
 end
 
-local function using_eessi_accel_stack ()
-    local modulepath = os.getenv("MODULEPATH") or ""
-    local accel_stack_in_modulepath = false
-
-    -- Check if we are using an EESSI version 2023 accelerator stack by checking if the $MODULEPATH contains
-    -- a path that starts with /cvmfs/software.eessi.io and contains accel/nvidia/ccNN
-    for path in string.gmatch(modulepath, '(.-):') do
-        if string.sub(path, 1, 41) == "/cvmfs/software.eessi.io/versions/2023.06" then
-            if string.find(path, "accel/nvidia/cc%d%d") then
-                accel_stack_in_modulepath = true
-                break
-            end
-        end
-    end
-    return accel_stack_in_modulepath
-end
-
 hook.register("load", eessi_load_hook)
 
 """
