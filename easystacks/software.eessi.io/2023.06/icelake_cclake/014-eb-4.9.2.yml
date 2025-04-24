@@ -1,0 +1,5 @@
+# 014-eb-4.9.2.yml: total build duration = 3 minutes
+easyconfigs:
+  - /cvmfs/software.eessi.io/versions/2023.06/software/linux/x86_64/intel/haswell/software/Cython/3.0.8-GCCcore-12.3.0/easybuild/reprod/Cython-3.0.8-GCCcore-12.3.0.eb:
+      options:
+        include-easyblocks: /cvmfs/software.eessi.io/versions/2023.06/software/linux/x86_64/intel/haswell/software/Cython/3.0.8-GCCcore-12.3.0/easybuild/reprod/easyblocks/*.py
