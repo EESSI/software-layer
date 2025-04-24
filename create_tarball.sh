@@ -26,6 +26,9 @@ if [ ! -d ${software_dir} ]; then
     exit 2
 fi
 
+# Need to extract the cvmfs_repo_name from the cvmfs_repo variable
+# - remove /${EESSI_DEV_PROJECT} from the end (if it exists)
+# - remove /cvmfs/ from the beginning
 cvmfs_repo_name=${cvmfs_repo%"/${EESSI_DEV_PROJECT}"}
 cvmfs_repo_name=${cvmfs_repo_name#/cvmfs/}
 overlay_upper_dir="${eessi_tmpdir}/${cvmfs_repo_name}/overlay-upper${EESSI_DEV_PROJECT:+/$EESSI_DEV_PROJECT}"

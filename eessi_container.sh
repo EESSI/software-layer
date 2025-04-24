@@ -769,7 +769,6 @@ do
     # always create a directory for the repository (e.g., to store settings, ...)
     mkdir -p ${EESSI_TMPDIR}/${cvmfs_repo_name}
 
-
     # add fusemount options depending on requested access mode ('ro' - read-only; 'rw' - read & write)
     if [[ ${cvmfs_repo_access} == "ro" ]] ; then
         # need to distinguish between basic "ro" access and "ro" after a "rw" session
