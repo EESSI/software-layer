@@ -1,0 +1,4 @@
+easyconfigs:
+#This is an outdated version of the Z3-4.12.2-GCCcore-12.3.0 easyconfig, adding it to keep sync with the other stacks
+#see https://github.com/easybuilders/easybuild-easyconfigs/pull/20050
+  - Z3-4.12.2-GCCcore-12.3.0-Python-3.11.3.eb
