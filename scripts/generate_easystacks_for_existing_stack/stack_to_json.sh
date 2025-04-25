@@ -24,7 +24,7 @@ for app_dir in $apps; do
   fi
 
   easyblocks=${app_dir}/easybuild/reprod/easyblocks/*.py
-  easyconfig=${app_dir}/easybuild/reprod/${app_name}-${app_version}.eb
+  easyconfig=${app_dir}/easybuild/${app_name}-${app_version}.eb
   if [[ ! -f ${easyconfig} ]]; then
     echo "ERROR: cannot find easyconfig for ${app_name}/${app_version}"
   fi
