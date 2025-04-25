@@ -735,8 +735,12 @@ fi
 
 declare -a EESSI_FUSE_MOUNTS=()
 
-# always mount cvmfs-config repo (to get access to EESSI repositories such as software.eessi.io)
-EESSI_FUSE_MOUNTS+=("--fusemount" "container:cvmfs2 cvmfs-config.cern.ch /cvmfs/cvmfs-config.cern.ch")
+# mount cvmfs-config repo (to get access to EESSI repositories such as software.eessi.io) unless env var
+# EESSI_DO_NOT_MOUNT_CVMFS_CONFIG_CERN_CH is defined
+if [ -z ${EESSI_DO_NOT_MOUNT_CVMFS_CONFIG_CERN_CH+x} ]; then
+    EESSI_FUSE_MOUNTS+=("--fusemount" "container:cvmfs2 cvmfs-config.cern.ch /cvmfs/cvmfs-config.cern.ch")
+fi
+
 
 # iterate over REPOSITORIES and either use repository-specific access mode or global setting (possibly a global default)
 for cvmfs_repo in "${REPOSITORIES[@]}"
@@ -759,6 +763,8 @@ do
         cfg_repo_id=${cvmfs_repo_name}
         cvmfs_repo_name=$(cfg_get_value ${cfg_repo_id} "repo_name")
     fi
+    # remove project subdir in container
+    cvmfs_repo_name=${cvmfs_repo_name%"/${EESSI_DEV_PROJECT}"}
 
     # always create a directory for the repository (e.g., to store settings, ...)
     mkdir -p ${EESSI_TMPDIR}/${cvmfs_repo_name}
@@ -808,8 +814,9 @@ do
         fi
     elif [[ ${cvmfs_repo_access} == "rw" ]] ; then
         # use repo-specific overlay directories
-        mkdir -p ${EESSI_TMPDIR}/${cvmfs_repo_name}/overlay-upper
-        mkdir -p ${EESSI_TMPDIR}/${cvmfs_repo_name}/overlay-work
+        mkdir -p ${EESSI_TMPDIR}/${cvmfs_repo_name}/overlay-upper${EESSI_DEV_PROJECT:+/$EESSI_DEV_PROJECT}
+        mkdir -p ${EESSI_TMPDIR}/${cvmfs_repo_name}/overlay-work${EESSI_DEV_PROJECT:+/$EESSI_DEV_PROJECT}
+
         [[ ${VERBOSE} -eq 1 ]] && echo -e "TMP directory contents:\n$(ls -l ${EESSI_TMPDIR})"
 
         # set environment variables for fuse mounts in Singularity container

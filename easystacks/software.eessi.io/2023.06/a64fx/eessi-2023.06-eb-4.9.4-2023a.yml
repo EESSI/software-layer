@@ -9,3 +9,156 @@ easyconfigs:
       options:
         # see https://github.com/easybuilders/easybuild-easyconfigs/pull/21600
         from-commit: 9b12318bcff1749781d9eb71c23e21bc3a79ed01
+# from here continuing building up the stack; first apps originally built with EB
+# 4.8.2
+# originally built with EB 4.8.2; PR 19270 included since EB 4.9.0
+#  - pybind11-2.11.1-GCCcore-12.3.0.eb:
+#      # avoid indirect dependency on old CMake version built with GCCcore/10.2.0 via Catch2 build dependency;
+#      # see https://github.com/easybuilders/easybuild-easyconfigs/pull/19270
+#      options:
+#        from-pr: 19270
+  - pybind11-2.11.1-GCCcore-12.3.0.eb
+# the package SciPy-bundle itself has to be rebuilt; here we use the commit to add the dependency
+# Cython; PR 21693 is included since EB 5.0.0
+#  - SciPy-bundle-2023.07-gfbf-2023a.eb:
+#      options:
+#        from-pr: 21693
+  - SciPy-bundle-2023.07-gfbf-2023a.eb:
+      options:
+        from-commit: 7c5144d2c1a061cd9f08b5901970b7f6ec5eb5c0
+# install Cython (new dependency of SciPy-bundle), PR 20578 is included since
+# EB 5.0.0; try a little older version from PR 20525 that is included since EB
+# 4.9.2
+#  - Cython-3.0.8-GCCcore-12.3.0.eb:
+#      options:
+#        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/20578
+#        from-commit: c4c2826ed8afe83885bba113b0aee36477d2948c
+# for the version from EB 4.9.2 we don't need any options because we use EB 4.9.4
+  - Cython-3.0.8-GCCcore-12.3.0.eb
+# install dependencies of TensorFlow
+  - Bazel-6.3.1-GCCcore-12.3.0.eb
+  - dill-0.3.7-GCCcore-12.3.0.eb
+  - flatbuffers-23.5.26-GCCcore-12.3.0.eb
+  - h5py-3.9.0-foss-2023a.eb
+  - flatbuffers-python-23.5.26-GCCcore-12.3.0.eb
+  - JsonCpp-1.9.5-GCCcore-12.3.0.eb
+  - nsync-1.26.0-GCCcore-12.3.0.eb
+  - RE2-2023-08-01-GCCcore-12.3.0.eb
+  - protobuf-python-4.24.0-GCCcore-12.3.0.eb
+# originally built with EB 4.8.2; PR 19268 included since EB 4.9.0
+#  - TensorFlow-2.13.0-foss-2023a.eb:
+#      # patch setup.py for grpcio extension in TensorFlow 2.13.0 easyconfigs to take into account alternate sysroot;
+#      # see https://github.com/easybuilders/easybuild-easyconfigs/pull/19268
+#      options:
+#        from-pr: 19268
+  - TensorFlow-2.13.0-foss-2023a.eb
+  - X11-20230603-GCCcore-12.3.0.eb
+# originally built with EB 4.8.2; PR 19339 included since EB 4.9.0
+# - HarfBuzz-5.3.1-GCCcore-12.3.0.eb:
+#      options:
+#        from-pr: 19339
+  - HarfBuzz-5.3.1-GCCcore-12.3.0.eb
+  - Qt5-5.15.10-GCCcore-12.3.0.eb
+  - OSU-Micro-Benchmarks-7.1-1-gompi-2023a.eb
+# originally built with EB 4.8.2; PR 19363 included since EB 4.9.0
+#  - LHAPDF-6.5.4-GCC-12.3.0.eb:
+#      options:
+#        from-pr: 19363
+  - LHAPDF-6.5.4-GCC-12.3.0.eb
+# originally built with EB 4.8.2; PR 19397 included since EB 4.9.0
+#  - LoopTools-2.15-GCC-12.3.0.eb:
+#      options:
+#        from-pr: 19397
+  - LoopTools-2.15-GCC-12.3.0.eb
+# originally built with EB 4.8.2; PR 19185 included since EB 4.9.0
+#  - R-4.3.2-gfbf-2023a.eb:
+#      options:
+#        from-pr: 19185
+  - R-4.3.2-gfbf-2023a.eb
+# originally built with EB 4.8.2; source URL has changed recently
+#  - Boost-1.82.0-GCC-12.3.0.eb
+  - Boost-1.82.0-GCC-12.3.0.eb:
+      options:
+        # source URLs for Boost have changed, corresponding PR is
+        # https://github.com/easybuilders/easybuild-easyconfigs/pull/22157
+        from-commit: 5bebccf792ccf35a8ee3250bc8fed86dff5d5df9
+  - netCDF-4.9.2-gompi-2023a.eb
+  - FFmpeg-6.0-GCCcore-12.3.0.eb
+# originally built with EB 4.8.2; PR 19455 included since EB 4.9.0
+#  - ALL-0.9.2-foss-2023a.eb:
+#      options:
+#        from-pr: 19455
+  - ALL-0.9.2-foss-2023a.eb
+# originally built with EB 4.8.2; PR 19735 included since EB 4.9.1
+#  - CDO-2.2.2-gompi-2023a.eb:
+#      options:
+#        from-pr: 19735
+  - CDO-2.2.2-gompi-2023a.eb
+# originally built with EB 4.8.2; PR 19820 included since EB 4.9.1
+#  - BWA-0.7.17-20220923-GCCcore-12.3.0.eb:
+#      options:
+#        from-pr: 19820
+  - BWA-0.7.17-20220923-GCCcore-12.3.0.eb
+# from here on apps were originally built with EB 4.9.0
+  - METIS-5.1.0-GCCcore-12.3.0.eb
+  - SCOTCH-7.0.3-gompi-2023a.eb
+  - CGAL-5.6-GCCcore-12.3.0.eb
+  - ParaView-5.11.2-foss-2023a.eb
+  - gnuplot-5.4.8-GCCcore-12.3.0.eb
+  - Boost.MPI-1.82.0-gompi-2023a.eb:
+      options:
+        # source URLs for Boost.MPI have changed, corresponding PR is
+        # https://github.com/easybuilders/easybuild-easyconfigs/pull/22240
+        # Boost.MPI is a dependency of ESPResSo
+        from-commit: e610fe1ac5393d1de668a466fdaaea74c580ee03
+# PR 19592 was included since EB 4.9.1
+#  - ESPResSo-4.2.1-foss-2023a.eb:
+#      # see https://github.com/easybuilders/easybuild-easyconfigs/pull/19592
+#      options:
+#        from-pr: 19592
+  - ESPResSo-4.2.1-foss-2023a.eb
+# PR 19679 was included since EB 4.9.1
+#  - Rivet-3.1.9-gompi-2023a-HepMC3-3.2.6.eb:
+#      # see https://github.com/easybuilders/easybuild-easyconfigs/pull/19679
+#      options:
+#        from-pr: 19679
+  - Rivet-3.1.9-gompi-2023a-HepMC3-3.2.6.eb
+  - Pillow-10.0.0-GCCcore-12.3.0.eb
+  - sympy-1.12-gfbf-2023a.eb
+  - networkx-3.1-gfbf-2023a.eb
+  - expecttest-0.1.5-GCCcore-12.3.0.eb
+  - PyYAML-6.0-GCCcore-12.3.0.eb
+# PR 19480 was included since EB 4.9.1
+#  - pytest-flakefinder-1.1.0-GCCcore-12.3.0.eb:
+#      options:
+#        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/19480
+#        from-pr: 19480
+  - pytest-flakefinder-1.1.0-GCCcore-12.3.0.eb
+  - pytest-rerunfailures-12.0-GCCcore-12.3.0.eb
+# PR 19480 was included since EB 4.9.1
+#  - pytest-shard-0.1.2-GCCcore-12.3.0.eb:
+#      options:
+#        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/19480
+#        from-pr: 19480
+  - pytest-shard-0.1.2-GCCcore-12.3.0.eb
+  - scikit-learn-1.3.1-gfbf-2023a.eb
+  - MUMPS-5.6.1-foss-2023a-metis.eb:
+      options:
+        # source URLs for MUMPS have changed, corresponding PR is
+        # https://github.com/easybuilders/easybuild-easyconfigs/pull/22582
+        # MUMPS is a dependency of snakemake
+        from-commit: 0437ff1ad34283398f55d4a6e01e6540b1ae9688
+# PR 19646 was included since EB 4.9.1
+#  - snakemake-8.4.2-foss-2023a.eb:
+#      # see https://github.com/easybuilders/easybuild-easyconfigs/pull/19646
+#      options:
+#        from-pr: 19646
+  - snakemake-8.4.2-foss-2023a.eb
+# PRs 19471 and 3036 were included since EB 4.9.1
+#  - LAMMPS-2Aug2023_update2-foss-2023a-kokkos.eb:
+#      # see https://github.com/easybuilders/easybuild-easyconfigs/pull/19471
+#      # see https://github.com/easybuilders/easybuild-easyblocks/pull/3036
+#      options:
+#        from-pr: 19471
+#        include-easyblocks-from-pr: 3036
+  - LAMMPS-2Aug2023_update2-foss-2023a-kokkos.eb
