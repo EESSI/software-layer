@@ -199,10 +199,31 @@ local function eessi_espresso_deprecated_message(t)
     end
 end
 
+local function eessi_scipy_2022b_test_failures_message(t)
+    local cpuArch = os.getenv("EESSI_SOFTWARE_SUBDIR")
+    local graceArch = 'aarch64/nvidia/grace'
+    local fullModuleName = 'SciPy-bundle/2023.02-gfbf-2022b'
+    local moduleVersionArchMatch = t.modFullName == fullModuleName and cpuArch == graceArch
+    if moduleVersionArchMatch and not os.getenv("EESSI_IGNORE_MODULE_WARNINGS") then
+    -- Print a message on loading SciPy-bundle version == 2023.02 informing about the higher number of
+    -- test failures and recommend using other versions available via EESSI.
+    -- A message and not a warning as the exit code would break CI runs otherwise.
+        local simpleName = string.match(t.modFullName, "(.-)/")
+        local advice = 'The module ' .. t.modFullName .. ' will be loaded. However, note that\\n'
+        advice = advice .. 'during its building for the CPU microarchitecture ' .. graceArch .. ' from a\\n'
+        advice = advice .. 'total of 52.730 unit tests a larger number (46) than usually (2-4) failed. If\\n'
+        advice = advice .. 'you encounter issues while using ' .. t.modFullName .. ', please,\\n'
+        advice = advice .. 'consider using one of the other versions of ' .. simpleName .. ' that are also provided\\n'
+        advice = advice .. 'for the same CPU microarchitecture.\\n'
+        LmodMessage("\\n", advice)
+    end
+end
+
 -- Combine both functions into a single one, as we can only register one function as load hook in lmod
 -- Also: make it non-local, so it can be imported and extended by other lmodrc files if needed
 function eessi_load_hook(t)
     eessi_espresso_deprecated_message(t)
+    eessi_scipy_2022b_test_failures_message(t)
     -- Only apply CUDA and cu*-library hooks if the loaded module is in the EESSI prefix
     -- This avoids getting an Lmod Error when trying to load a CUDA or cu* module from a local software stack
     if from_eessi_prefix(t) then
@@ -210,73 +231,6 @@ function eessi_load_hook(t)
     end
 end
 
-local function using_eessi_accel_stack ()
-    local modulepath = os.getenv("MODULEPATH") or ""
-    local accel_stack_in_modulepath = false
-
-    -- Check if we are using an EESSI version 2023 accelerator stack by checking if the $MODULEPATH contains
-    -- a path that starts with /cvmfs/software.eessi.io and contains accel/nvidia/ccNN
-    for path in string.gmatch(modulepath, '(.-):') do
-        if string.sub(path, 1, 41) == "/cvmfs/software.eessi.io/versions/2023.06" then
-            if string.find(path, "accel/nvidia/cc%d%d") then
-                accel_stack_in_modulepath = true
-                break
-            end
-        end
-    end
-    return accel_stack_in_modulepath
-end
-
-local function eessi_removed_module_warning_startup_hook(usrCmd)
-    if usrCmd == 'load' and not os.getenv("EESSI_SKIP_REMOVED_MODULES_CHECK") then
-        local CUDA_RELOCATION_MSG = [[All CUDA installations and modules depending on CUDA have been relocated to GPU-specific stacks.
-        Please see https://www.eessi.io/docs/site_specific_config/gpu/ for more information.]]
-
-        local RELOCATED_CUDA_MODULES = {
-            ['NCCL'] = CUDA_RELOCATION_MSG,
-            ['NCCL/2.18.3-GCCcore-12.3.0-CUDA-12.1.1'] = CUDA_RELOCATION_MSG,
-            ['UCX-CUDA'] = CUDA_RELOCATION_MSG,
-            ['UCX-CUDA/1.14.1-GCCcore-12.3.0-CUDA-12.1.1'] = CUDA_RELOCATION_MSG,
-            -- we also have non-CUDA versions of OSU Micro Benchmarks, so only match the CUDA version
-            ['OSU-Micro-Benchmarks/7.2-gompi-2023a-CUDA-12.1.1'] = CUDA_RELOCATION_MSG,
-            ['UCC-CUDA'] = CUDA_RELOCATION_MSG,
-            ['UCC-CUDA/1.2.0-GCCcore-12.3.0-CUDA-12.1.1'] = CUDA_RELOCATION_MSG,
-            ['CUDA'] = CUDA_RELOCATION_MSG,
-            ['CUDA/12.1.1'] = CUDA_RELOCATION_MSG,
-            ['CUDA-Samples'] = CUDA_RELOCATION_MSG,
-            ['CUDA-Samples/12.1-GCC-12.3.0-CUDA-12.1.1'] = CUDA_RELOCATION_MSG,
-        }
-
-        local REMOVED_MODULES = {
-            ['ipympl/0.9.3-foss-2023a'] = 'This module has been replaced by ipympl/0.9.3-gfbf-2023a',
-        }
-
-        local masterTbl = masterTbl()
-        local error_msg = ""
-        -- The CUDA messages should only be shown if the accelerator stack is NOT being used
-        if not using_eessi_accel_stack() then
-            for _, module in pairs(masterTbl.pargs) do
-                if RELOCATED_CUDA_MODULES[module] ~= nil then
-                    error_msg = error_msg .. module .. ': ' .. RELOCATED_CUDA_MODULES[module] .. '\\n\\n'
-                end
-            end
-        end
-        for _, module in pairs(masterTbl.pargs) do
-            if REMOVED_MODULES[module] ~= nil then
-                error_msg = error_msg .. module .. ': ' .. REMOVED_MODULES[module] .. '\\n\\n'
-            end
-        end
-        if error_msg ~= "" then
-            LmodError('\\n' .. error_msg .. 'If you know what you are doing and you want to ignore this check for removed/relocated modules, set $EESSI_SKIP_REMOVED_MODULES_CHECK to any value.')
-        end
-    end
-end
-
-function eessi_startup_hook(usrCmd)
-    eessi_removed_module_warning_startup_hook(usrCmd)
-end
-
-hook.register("startup", eessi_startup_hook)
 hook.register("load", eessi_load_hook)
 
 """
@@ -299,7 +253,7 @@ local function hide_2022b_modules(modT)
                   modT.fullName:match("GCC%-([0-9]*.[0-9]*.[0-9]*)") or
                   modT.fullName:match("GCCcore%-([0-9]*.[0-9]*.[0-9]*)")
 
-    -- if nothing matches, return              
+    -- if nothing matches, return
     if tcver == nil then return end
 
     -- if we have matches, check if the toolchain version is either 2022b or 12.2.0

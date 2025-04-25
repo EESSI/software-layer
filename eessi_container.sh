@@ -408,6 +408,19 @@ else
   echo "Using ${EESSI_HOST_STORAGE} as tmp directory (to resume session add '--resume ${EESSI_HOST_STORAGE}')."
 fi
 
+# if ${RESUME} is a file, unpack it into ${EESSI_HOST_STORAGE}
+if [[ ! -z ${RESUME} && -f ${RESUME} ]]; then
+  if [[ "${RESUME}" == *.tgz ]]; then
+    tar xf ${RESUME} -C ${EESSI_HOST_STORAGE}
+  # Add support for resuming from zstd-compressed tarballs
+  elif [[ "${RESUME}" == *.zst && -x "$(command -v zstd)" ]]; then
+    zstd -dc ${RESUME} | tar -xf - -C ${EESSI_HOST_STORAGE}
+  elif [[ "${RESUME}" == *.zst && ! -x "$(command -v zstd)" ]]; then
+    fatal_error "Trying to resume from tarball ${RESUME} which was compressed using zstd, but zstd command not found"
+  fi
+  echo "Resuming from previous run using temporary storage ${RESUME} unpacked into ${EESSI_HOST_STORAGE}"
+fi
+
 # if ${RESUME} is a file (assume a tgz), unpack it into ${EESSI_HOST_STORAGE}
 if [[ ! -z ${RESUME} && -f ${RESUME} ]]; then
   tar xf ${RESUME} -C ${EESSI_HOST_STORAGE}
@@ -722,8 +735,12 @@ fi
 
 declare -a EESSI_FUSE_MOUNTS=()
 
-# always mount cvmfs-config repo (to get access to EESSI repositories such as software.eessi.io)
-EESSI_FUSE_MOUNTS+=("--fusemount" "container:cvmfs2 cvmfs-config.cern.ch /cvmfs/cvmfs-config.cern.ch")
+# mount cvmfs-config repo (to get access to EESSI repositories such as software.eessi.io) unless env var
+# EESSI_DO_NOT_MOUNT_CVMFS_CONFIG_CERN_CH is defined
+if [ -z ${EESSI_DO_NOT_MOUNT_CVMFS_CONFIG_CERN_CH+x} ]; then
+    EESSI_FUSE_MOUNTS+=("--fusemount" "container:cvmfs2 cvmfs-config.cern.ch /cvmfs/cvmfs-config.cern.ch")
+fi
+
 
 # iterate over REPOSITORIES and either use repository-specific access mode or global setting (possibly a global default)
 for cvmfs_repo in "${REPOSITORIES[@]}"
@@ -746,6 +763,8 @@ do
         cfg_repo_id=${cvmfs_repo_name}
         cvmfs_repo_name=$(cfg_get_value ${cfg_repo_id} "repo_name")
     fi
+    # remove project subdir in container
+    cvmfs_repo_name=${cvmfs_repo_name%"/${EESSI_DEV_PROJECT}"}
 
     # always create a directory for the repository (e.g., to store settings, ...)
     mkdir -p ${EESSI_TMPDIR}/${cvmfs_repo_name}
@@ -795,8 +814,9 @@ do
         fi
     elif [[ ${cvmfs_repo_access} == "rw" ]] ; then
         # use repo-specific overlay directories
-        mkdir -p ${EESSI_TMPDIR}/${cvmfs_repo_name}/overlay-upper
-        mkdir -p ${EESSI_TMPDIR}/${cvmfs_repo_name}/overlay-work
+        mkdir -p ${EESSI_TMPDIR}/${cvmfs_repo_name}/overlay-upper${EESSI_DEV_PROJECT:+/$EESSI_DEV_PROJECT}
+        mkdir -p ${EESSI_TMPDIR}/${cvmfs_repo_name}/overlay-work${EESSI_DEV_PROJECT:+/$EESSI_DEV_PROJECT}
+
         [[ ${VERBOSE} -eq 1 ]] && echo -e "TMP directory contents:\n$(ls -l ${EESSI_TMPDIR})"
 
         # set environment variables for fuse mounts in Singularity container
@@ -865,17 +885,30 @@ if [[ ! -z ${SAVE} ]]; then
   #   ARCH which might have been used internally, eg, when software packages
   #   were built ... we rather keep the script here "stupid" and leave the handling
   #   of these aspects to where the script is used
+  # Compression with zlib may be quite slow. On some systems, the pipeline takes ~20 mins for a 2 min build because of this.
+  # Check if zstd is present for faster compression and decompression
   if [[ -d ${SAVE} ]]; then
     # assume SAVE is name of a directory to which tarball shall be written to
     #   name format: tmp_storage-{TIMESTAMP}.tgz
     ts=$(date +%s)
-    TGZ=${SAVE}/tmp_storage-${ts}.tgz
+    if [[ -x "$(command -v zstd)" ]]; then
+      TARBALL=${SAVE}/tmp_storage-${ts}.zst
+      tar -cf - -C ${EESSI_TMPDIR} . | zstd -T0 > ${TARBALL}
+    else
+      TARBALL=${SAVE}/tmp_storage-${ts}.tgz
+      tar czf ${TARBALL} -C ${EESSI_TMPDIR} .
+    fi
   else
     # assume SAVE is the full path to a tarball's name
-    TGZ=${SAVE}
+    TARBALL=${SAVE}
+    # if zstd is present and a .zst extension is asked for, use it
+    if [[ "${SAVE}" == *.zst && -x "$(command -v zstd)" ]]; then
+      tar -cf - -C ${EESSI_TMPDIR} . | zstd -T0 > ${TARBALL}
+    else
+      tar czf ${TARBALL} -C ${EESSI_TMPDIR}
+    fi
   fi
-  tar czf ${TGZ} -C ${EESSI_TMPDIR} .
-  echo "Saved contents of tmp directory '${EESSI_TMPDIR}' to tarball '${TGZ}' (to resume session add '--resume ${TGZ}')"
+  echo "Saved contents of tmp directory '${EESSI_TMPDIR}' to tarball '${TARBALL}' (to resume session add '--resume ${TARBALL}')"
 fi
 
 # TODO clean up tmp by default? only retain if another option provided (--retain-tmp)
