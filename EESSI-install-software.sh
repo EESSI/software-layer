@@ -242,8 +242,8 @@ fi
 # order is important: these are needed to install a full CUDA SDK in host_injections
 # for now, this just reinstalls all scripts. Note the most elegant, but works
 
-# Only run install_scripts.sh if not dev.eessi.io for security
-if [[ "${EESSI_CVMFS_REPO}" != /cvmfs/dev.eessi.io ]]; then
+# Only run install_scripts.sh if not in dev.eessi.io for security
+if [[ -z ${EESSI_DEV_PROJECT} ]]; then
     ${TOPDIR}/install_scripts.sh --prefix ${EESSI_PREFIX}
 fi
 
@@ -268,8 +268,19 @@ export EESSI_CVMFS_INSTALL=1
 # NOTE 3, we have to set a default for EASYBUILD_INSTALLPATH here in cases the
 #   EESSI-extend module itself needs to be installed.
 export EASYBUILD_INSTALLPATH=${EESSI_PREFIX}/software/${EESSI_OS_TYPE}/${EESSI_SOFTWARE_SUBDIR_OVERRIDE}
+
+# If in dev.eessi.io, allow building on top of software.eessi.io via EESSI-extend
+if [[ ! -z ${EESSI_DEV_PROJECT} ]]; then
+    # We keep track of the old install path for settings paths to SitePackage.lua and .lmodrc later
+    EASYBUILD_INSTALLPATH_STANDARD=${EASYBUILD_INSTALLPATH}
+    # Need to unset $EESSI_CVMFS_INSTALL to use $EESSI_PROJECT_INSTALL
+    unset EESSI_CVMFS_INSTALL
+    export EESSI_PROJECT_INSTALL=${EESSI_CVMFS_REPO_OVERRIDE}
+    echo ">> \$EESSI_PROJECT_INSTALL set to ${EESSI_PROJECT_INSTALL}"
+fi
+
 echo "DEBUG: before loading EESSI-extend // EASYBUILD_INSTALLPATH='${EASYBUILD_INSTALLPATH}'"
-source load_eessi_extend_module.sh ${EESSI_VERSION}
+source $TOPDIR/load_eessi_extend_module.sh ${EESSI_VERSION}
 echo "DEBUG: after loading EESSI-extend //  EASYBUILD_INSTALLPATH='${EASYBUILD_INSTALLPATH}'"
 
 # Install full CUDA SDK and cu* libraries in host_injections
@@ -319,11 +330,6 @@ if [ ! -z ${EESSI_ACCELERATOR_TARGET} ]; then
     fi
 fi
 
-# If in dev.eessi.io, allow building on top of software.eessi.io
-if [[ "${EESSI_CVMFS_REPO}" == /cvmfs/dev.eessi.io ]]; then
-    module use /cvmfs/software.eessi.io/versions/$EESSI_VERSION/software/${EESSI_OS_TYPE}/${EESSI_SOFTWARE_SUBDIR_OVERRIDE}/modules/all
-fi
-
 echo "DEBUG: adding path '$EASYBUILD_INSTALLPATH/modules/all' to MODULEPATH='${MODULEPATH}'"
 #module use $EASYBUILD_INSTALLPATH/modules/all
 safe_module_use $EASYBUILD_INSTALLPATH/modules/all
@@ -354,7 +360,7 @@ else
         echo -e "Processing easystack file ${easystack_file}...\n\n"
 
         # determine version of EasyBuild module to load based on EasyBuild version included in name of easystack file
-        eb_version=$(echo ${easystack_file} | sed 's/.*eb-\([0-9.]*\).*/\1/g')
+        eb_version=$(echo ${easystack_file} | sed 's/.*eb-\([0-9.]*\).*.yml/\1/g')
 
         # load EasyBuild module (will be installed if it's not available yet)
         source ${TOPDIR}/load_easybuild_module.sh ${eb_version}
@@ -396,7 +402,15 @@ else
 fi
 
 echo "DEBUG: before creating/updating lmod config files // EASYBUILD_INSTALLPATH='${EASYBUILD_INSTALLPATH}'"
-export LMOD_CONFIG_DIR="${EASYBUILD_INSTALLPATH}/.lmod"
+if [[ ! -z ${EESSI_DEV_PROJECT} ]]; then
+    # Make sure .lmod files are not checked for dev.eeessi.io
+    export LMOD_CONFIG_DIR="${EASYBUILD_INSTALLPATH_STANDARD}/.lmod"
+    export LMOD_PACKAGE_PATH="${EASYBUILD_INSTALLPATH_STANDARD}/.lmod"
+else
+    export LMOD_CONFIG_DIR="${EASYBUILD_INSTALLPATH}/.lmod"
+    export LMOD_PACKAGE_PATH="${EASYBUILD_INSTALLPATH}/.lmod"
+fi
+
 lmod_rc_file="$LMOD_CONFIG_DIR/lmodrc.lua"
 echo "DEBUG: lmod_rc_file='${lmod_rc_file}'"
 if [[ ! -z ${EESSI_ACCELERATOR_TARGET} ]]; then
@@ -411,7 +425,6 @@ if [ ! -f $lmod_rc_file ] || [ ${lmodrc_changed} == '0' ]; then
     check_exit_code $? "$lmod_rc_file created" "Failed to create $lmod_rc_file"
 fi
 
-export LMOD_PACKAGE_PATH="${EASYBUILD_INSTALLPATH}/.lmod"
 lmod_sitepackage_file="$LMOD_PACKAGE_PATH/SitePackage.lua"
 if [[ ! -z ${EESSI_ACCELERATOR_TARGET} ]]; then
     # EESSI_ACCELERATOR_TARGET is set, so let's remove the accelerator path from $lmod_sitepackage_file

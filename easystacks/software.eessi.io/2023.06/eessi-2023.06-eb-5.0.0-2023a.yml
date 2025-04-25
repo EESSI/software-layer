@@ -4,3 +4,13 @@ easyconfigs:
         # see https://github.com/easybuilders/easybuild-easyconfigs/pull/22292
         # and https://github.com/easybuilders/easybuild-easyconfigs/pull/22646
         from-commit: b212c00fdc3983678037429719f1b210cb978b42
+  - MUSCLE-5.1.0-GCCcore-12.3.0.eb:
+      options:
+        # See https://github.com/easybuilders/easybuild-easyconfigs/pull/22780
+        from-commit: ff159780fbaa881fb442b0ee1b37cd9e3d981ca9
+  - bcgTree-1.2.1-foss-2023a.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/22707
+        # and https://github.com/easybuilders/easybuild-easyconfigs/pull/22540
+        # and https://github.com/easybuilders/easybuild-easyconfigs/pull/22781
+        from-commit: 720c5b5b8280bf342d827617ee14738f3d231097
