@@ -1,6 +1,7 @@
 # ARM CPU architecture specifications (see https://gpages.juszkiewicz.com.pl/arm-socs-table/arm-socs.html for guidance)
 # CPU implementers: 0x41 (ARM), 0x46 (Fujitsu) - also see https://github.com/hrw/arm-socs-table/blob/main/data/socs.yml
-# Flipping the order of nvidia/grace and google/axion results in nvidia/grace being the "top" on Axion systems
+# To ensure that archdetect produces the correct ordering, CPU targets should be listed from the most specific
+# to the most general. In particular, if CPU target A is a subset of CPU target B, then A must be listed before B
 
 # Software path in EESSI 	| 'Vendor ID' or 'CPU implementer' 	| List of defining CPU features
 "aarch64/a64fx"		"0x46"		"asimdhp sve"		# Fujitsu A64FX
