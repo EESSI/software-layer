@@ -121,27 +121,38 @@ def parse_hook(ec, *args, **kwargs):
 
 def post_ready_hook(self, *args, **kwargs):
     """
-    Post-ready hook: limit parallellism for selected builds, because they require a lot of memory per used core.
+    Post-ready hook: limit parallellism for selected builds based on software name and CPU target.
+                     parallelism needs to be limited because some builds require a lot of memory per used core.
     """
     # 'parallel' easyconfig parameter is set via EasyBlock.set_parallel in ready step based on available cores.
-    # here we reduce parallellism to only use half of that for selected software,
-    # to avoid failing builds/tests due to out-of-memory problems;
-    memory_hungry_build = self.name in ['libxc', 'MBX', 'TensorFlow']
-    # on A64FX systems, (HBM) memory is typically scarce, so we need to use fewer cores for some builds
+    # get current parallelism setting
+    parallel = self.cfg['parallel']
+    if parallel == 1:
+        return  # no need to limit if already using 1 core
+
+    # get CPU target
     cpu_target = get_eessi_envvar('EESSI_SOFTWARE_SUBDIR')
-    memory_hungry_build_a64fx = cpu_target == CPU_TARGET_A64FX and self.name in ['Qt5', 'ROOT']
-    if memory_hungry_build or memory_hungry_build_a64fx:
-        parallel = self.cfg['parallel']
-        if cpu_target == CPU_TARGET_A64FX and self.name in ['TensorFlow']:
-            # limit parallelism to 8, builds with 12 and 16 failed on Deucalion
-            if parallel > 8:
-                self.cfg['parallel'] = 8
-                msg = "limiting parallelism to %s (was %s) for %s on %s to avoid out-of-memory failures during building/testing"
-                print_msg(msg % (self.cfg['parallel'], parallel, self.name, cpu_target), log=self.log)
-        elif parallel > 1:
-            self.cfg['parallel'] = parallel // 2
-            msg = "limiting parallelism to %s (was %s) for %s to avoid out-of-memory failures during building/testing"
-            print_msg(msg % (self.cfg['parallel'], parallel, self.name), log=self.log)
+
+    # check if we have limits defined for this software
+    if self.name in PARALLELISM_LIMITS:
+        limits = PARALLELISM_LIMITS[self.name]
+
+        # first check for CPU-specific limit
+        if cpu_target in limits:
+            operation_func, operation_args = limits[cpu_target]
+            new_parallel = operation_func(parallel, operation_args)
+        # then check for generic limit (applies to all CPU targets)
+        elif '*' in limits:
+            operation_func, operation_args = limits['*']
+            new_parallel = operation_func(parallel, operation_args)
+        else:
+            return  # no applicable limits found
+
+        # apply the limit if it's different from current
+        if new_parallel != parallel:
+            self.cfg['parallel'] = new_parallel
+            msg = "limiting parallelism to %s (was %s) for %s on %s to avoid out-of-memory failures during building/testing"
+            print_msg(msg % (new_parallel, parallel, self.name, cpu_target), log=self.log)
 
 
 def pre_prepare_hook(self, *args, **kwargs):
@@ -1213,3 +1224,38 @@ POST_POSTPROC_HOOKS = {
 }
 
 POST_MODULE_HOOKS = {}
+
+# Define parallelism limit operations
+def divide_by_factor(parallel, factor):
+    """Divide parallelism by given factor"""
+    return max(1, parallel // factor)
+
+def set_maximum(parallel, max_value):
+    """Set parallelism to maximum value"""
+    return min(parallel, max_value)
+
+# Data structure defining parallelism limits for different software and CPU targets
+# Format: {software_name: {cpu_target: (operation_function, operation_args)}}
+#         '*' for a CPU target means the operation applies to all CPU targets
+# Information is processed in the post_ready_hook function. First it checks if the
+# specific CPU target is defined in the data structure below. If not, it checks for
+# the generic '*' entry.
+PARALLELISM_LIMITS = {
+    'libxc': {
+        '*': (divide_by_factor, 2),
+        CPU_TARGET_A64FX: (set_maximum, 12),
+    },
+    'MBX': {
+        '*': (divide_by_factor, 2),
+    },
+    'TensorFlow': {
+        '*': (divide_by_factor, 2),
+        CPU_TARGET_A64FX: (set_maximum, 8),
+    },
+    'Qt5': {
+        CPU_TARGET_A64FX: (divide_by_factor, 2),
+    },
+    'ROOT': {
+        CPU_TARGET_A64FX: (divide_by_factor, 2),
+    },
+}
