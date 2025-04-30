@@ -1,0 +1,6 @@
+easyconfigs:
+  - PyTorch-2.3.0-foss-2023b.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/20489
+        # commit below is the merge commit for PR 20489
+        from-commit: 44919f542686081a34d8f029c222a4ef16419236
