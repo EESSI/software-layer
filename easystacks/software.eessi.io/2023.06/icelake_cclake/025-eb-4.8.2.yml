@@ -1,0 +1,23 @@
+# 025-eb-4.8.2.yml: total build duration = 23 minutes
+easyconfigs:
+  - /cvmfs/software.eessi.io/versions/2023.06/software/linux/x86_64/intel/haswell/software/Meson/0.64.0-GCCcore-12.2.0/easybuild/Meson-0.64.0-GCCcore-12.2.0.eb:
+      options:
+        include-easyblocks: /cvmfs/software.eessi.io/versions/2023.06/software/linux/x86_64/intel/haswell/software/Meson/0.64.0-GCCcore-12.2.0/easybuild/reprod/easyblocks/*.py
+  - /cvmfs/software.eessi.io/versions/2023.06/software/linux/x86_64/intel/haswell/software/GLib/2.75.0-GCCcore-12.2.0/easybuild/GLib-2.75.0-GCCcore-12.2.0.eb:
+      options:
+        include-easyblocks: /cvmfs/software.eessi.io/versions/2023.06/software/linux/x86_64/intel/haswell/software/GLib/2.75.0-GCCcore-12.2.0/easybuild/reprod/easyblocks/*.py
+  - /cvmfs/software.eessi.io/versions/2023.06/software/linux/x86_64/intel/haswell/software/fontconfig/2.14.1-GCCcore-12.2.0/easybuild/fontconfig-2.14.1-GCCcore-12.2.0.eb:
+      options:
+        include-easyblocks: /cvmfs/software.eessi.io/versions/2023.06/software/linux/x86_64/intel/haswell/software/fontconfig/2.14.1-GCCcore-12.2.0/easybuild/reprod/easyblocks/*.py
+  - /cvmfs/software.eessi.io/versions/2023.06/software/linux/x86_64/intel/haswell/software/libiconv/1.17-GCCcore-12.2.0/easybuild/libiconv-1.17-GCCcore-12.2.0.eb:
+      options:
+        include-easyblocks: /cvmfs/software.eessi.io/versions/2023.06/software/linux/x86_64/intel/haswell/software/libiconv/1.17-GCCcore-12.2.0/easybuild/reprod/easyblocks/*.py
+  - /cvmfs/software.eessi.io/versions/2023.06/software/linux/x86_64/intel/haswell/software/Doxygen/1.9.5-GCCcore-12.2.0/easybuild/Doxygen-1.9.5-GCCcore-12.2.0.eb:
+      options:
+        include-easyblocks: /cvmfs/software.eessi.io/versions/2023.06/software/linux/x86_64/intel/haswell/software/Doxygen/1.9.5-GCCcore-12.2.0/easybuild/reprod/easyblocks/*.py
+  - /cvmfs/software.eessi.io/versions/2023.06/software/linux/x86_64/intel/haswell/software/X11/20221110-GCCcore-12.2.0/easybuild/X11-20221110-GCCcore-12.2.0.eb:
+      options:
+        include-easyblocks: /cvmfs/software.eessi.io/versions/2023.06/software/linux/x86_64/intel/haswell/software/X11/20221110-GCCcore-12.2.0/easybuild/reprod/easyblocks/*.py
+  - /cvmfs/software.eessi.io/versions/2023.06/software/linux/x86_64/intel/haswell/software/cairo/1.17.4-GCCcore-12.2.0/easybuild/cairo-1.17.4-GCCcore-12.2.0.eb:
+      options:
+        include-easyblocks: /cvmfs/software.eessi.io/versions/2023.06/software/linux/x86_64/intel/haswell/software/cairo/1.17.4-GCCcore-12.2.0/easybuild/reprod/easyblocks/*.py
