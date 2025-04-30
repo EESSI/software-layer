@@ -1258,7 +1258,4 @@ PARALLELISM_LIMITS = {
     'ROOT': {
         CPU_TARGET_A64FX: (divide_by_factor, 2),
     },
-    'Rust': {
-        CPU_TARGET_A64FX: (divide_by_factor, 2),
-    },
 }
