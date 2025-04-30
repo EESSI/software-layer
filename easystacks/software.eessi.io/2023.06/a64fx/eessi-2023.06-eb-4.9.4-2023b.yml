@@ -80,10 +80,12 @@ easyconfigs:
   - OpenJPEG-2.5.0-GCCcore-13.2.0.eb
   - libwebp-1.3.2-GCCcore-13.2.0.eb
   - Wayland-1.22.0-GCCcore-13.2.0.eb
-# originally built with EB 4.9.0, PR was included since EB 4.9.1
-#  - Qt5-5.15.13-GCCcore-13.2.0.eb:
-#      options:
-#        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/20201
-#        from-pr: 20201
-  - Qt5-5.15.13-GCCcore-13.2.0.eb
+# building nodejs (dependency of Qt5) failed in a first attempt, so we build the
+# other packages and pick that up later
+## originally built with EB 4.9.0, PR was included since EB 4.9.1
+##  - Qt5-5.15.13-GCCcore-13.2.0.eb:
+##      options:
+##        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/20201
+##        from-pr: 20201
+#  - Qt5-5.15.13-GCCcore-13.2.0.eb
   - OSU-Micro-Benchmarks-7.2-gompi-2023b.eb
