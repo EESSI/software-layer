@@ -1,0 +1,5 @@
+# 2025.05.01
+# Rebuild of R 4.2.2 to include patch for CVE,
+# see https://github.com/easybuilders/easybuild-easyconfigs/pull/20462 
+easyconfigs:
+  - R-4.2.2-foss-2022b.eb
