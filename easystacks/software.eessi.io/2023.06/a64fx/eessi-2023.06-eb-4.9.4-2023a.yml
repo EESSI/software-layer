@@ -258,3 +258,42 @@ easyconfigs:
   - PostgreSQL-16.1-GCCcore-12.3.0.eb
   - ImageMagick-7.1.1-15-GCCcore-12.3.0.eb
   - GDAL-3.7.1-foss-2023a.eb
+# from here on apps were originally built with EB 4.9.1 (except for
+# R-bundle-CRAN-2023.12-foss-2023a, which was originally built with 4.9.4)
+  - ncdu-1.18-GCC-12.3.0.eb
+  - SAMtools-1.18-GCC-12.3.0.eb
+  - R-bundle-CRAN-2023.12-foss-2023a.eb
+# R-bundle-CRAN requires a lot of time. We first build that one and afterwards
+# continue with the ones below.
+#
+## while PR 20379 is included since EB 4.9.2, we need to use a commit to avoid
+## rebuilding R-bundle-Bioconductor due to the later PR 21948 which was only made
+## available with EB 5.0.0
+##  - R-bundle-Bioconductor-3.18-foss-2023a-R-4.3.2.eb:
+##      options:
+##        from-pr: 20379
+#  - R-bundle-Bioconductor-3.18-foss-2023a-R-4.3.2.eb:
+#      options:
+#        # (additional extensions have been added)
+#        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/21948
+#        from-commit: f9cfe6ac7d9019970c2be3e8b09db4d846cf005a
+## PR 18852 is included since EB 4.9.2
+##  - ipympl-0.9.3-gfbf-2023a.eb:
+##      options:
+##        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/18852
+##        from-pr: 18852
+#  - ipympl-0.9.3-gfbf-2023a.eb
+## PR 20595 is included since EB 4.9.2
+##  - ESPResSo-4.2.2-foss-2023a.eb:
+##      options:
+##        from-pr: 20595
+#  - ESPResSo-4.2.2-foss-2023a.eb
+#  - GATK-4.5.0.0-GCCcore-12.3.0-Java-17.eb
+#  - WhatsHap-2.2-foss-2023a.eb
+## PR 20784 is included since EB 4.9.2
+##  - BLAST+-2.14.1-gompi-2023a.eb:
+##      options:
+##        from-pr: 20784
+#  - BLAST+-2.14.1-gompi-2023a.eb
+#  - Valgrind-3.21.0-gompi-2023a.eb
+#  - OrthoFinder-2.5.5-foss-2023a.eb
