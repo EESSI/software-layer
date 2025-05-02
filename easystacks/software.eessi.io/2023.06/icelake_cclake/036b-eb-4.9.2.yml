@@ -1,5 +1,6 @@
 easyconfigs:
   - ReFrame-4.3.3.eb:
       options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/22183
         from-commit: e6289fb1c0982f7b7311039b7f4038756a950a5c
         include-easyblocks: /cvmfs/software.eessi.io/versions/2023.06/software/linux/x86_64/intel/haswell/software/ReFrame/4.3.3/easybuild/reprod/easyblocks/*.py
