@@ -1,0 +1,5 @@
+# 049-eb-4.9.1.yml: total build duration = 512 minutes
+easyconfigs:
+  - /cvmfs/software.eessi.io/versions/2023.06/software/linux/x86_64/intel/haswell/software/R/4.2.2-foss-2022b/easybuild/R-4.2.2-foss-2022b.eb:
+      options:
+        include-easyblocks: /cvmfs/software.eessi.io/versions/2023.06/software/linux/x86_64/intel/haswell/software/R/4.2.2-foss-2022b/easybuild/reprod/easyblocks/*.py
