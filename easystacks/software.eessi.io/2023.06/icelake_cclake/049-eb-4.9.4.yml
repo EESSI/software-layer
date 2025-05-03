@@ -1,3 +1,3 @@
-# 049-eb-4.9.1.yml: total build duration = 512 minutes
+# 049-eb-4.9.4.yml: total build duration = 512 minutes
 easyconfigs:
   - R-4.2.2-foss-2022b.eb
