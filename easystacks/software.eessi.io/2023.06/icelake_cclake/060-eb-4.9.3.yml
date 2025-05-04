@@ -1,0 +1,5 @@
+# 060-eb-4.9.3.yml: total build duration = 42 minutes
+easyconfigs:
+  - /cvmfs/software.eessi.io/versions/2023.06/software/linux/x86_64/intel/haswell/software/GROMACS/2024.3-foss-2023b/easybuild/GROMACS-2024.3-foss-2023b.eb:
+      options:
+        include-easyblocks: /cvmfs/software.eessi.io/versions/2023.06/software/linux/x86_64/intel/haswell/software/GROMACS/2024.3-foss-2023b/easybuild/reprod/easyblocks/*.py
