@@ -615,7 +615,7 @@ def pre_configure_hook_gromacs(self, *args, **kwargs):
     """
     if self.name == 'GROMACS':
         cpu_target = get_eessi_envvar('EESSI_SOFTWARE_SUBDIR')
-        if LooseVersion(self.version) <= LooseVersion('2024.1') and cpu_target == CPU_TARGET_NEOVERSE_V1 or LooseVersion(self.version) <= LooseVersion('2024.4') and CPU_TARGET_NVIDIA_GRACE:
+        if (LooseVersion(self.version) <= LooseVersion('2024.1') and cpu_target == CPU_TARGET_NEOVERSE_V1) or (LooseVersion(self.version) <= LooseVersion('2024.4') and CPU_TARGET_NVIDIA_GRACE):
             self.cfg.update('configopts', '-DGMX_SIMD=ARM_NEON_ASIMD')
             print_msg(
                 "Avoiding use of SVE instructions for GROMACS %s by using ARM_NEON_ASIMD as GMX_SIMD value",
