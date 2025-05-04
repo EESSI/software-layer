@@ -1,0 +1,5 @@
+# 052-eb-4.9.4.yml: total build duration = 381 minutes
+easyconfigs:
+  - /cvmfs/software.eessi.io/versions/2023.06/software/linux/x86_64/intel/haswell/software/R-bundle-CRAN/2023.12-foss-2023a/easybuild/R-bundle-CRAN-2023.12-foss-2023a.eb:
+      options:
+        include-easyblocks: /cvmfs/software.eessi.io/versions/2023.06/software/linux/x86_64/intel/haswell/software/R-bundle-CRAN/2023.12-foss-2023a/easybuild/reprod/easyblocks/*.py
