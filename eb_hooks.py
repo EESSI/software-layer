@@ -754,7 +754,7 @@ def pre_configure_hook_nvhpc_x86_64(self, *args, **kwargs):
         new_opts = f'''installdir=%(installdir)s/Linux_x86_64/%(version)s
             EPREFIX={eprefix}
             sed -i "s@\(set LDSO=.*\);@\\1 --sysroot=$EPREFIX;@" $installdir/compilers/bin/localrc
-            echo "set DEFLIBDIR=$EPREFIX/usr/lib64;" >> $installdir/compilers/bin/localrc
+            echo "set DEFLIBDIR=$EPREFIX/lib64:$EPREFIX/usr/lib64;" >> $installdir/compilers/bin/localrc
             echo "set DEFSTDOBJDIR=$EPREFIX/usr/lib64;" >> $installdir/compilers/bin/localrc'''
         old_opts = self.cfg['postinstallcmds']
         self.cfg.update('postinstallcmds', new_opts)
