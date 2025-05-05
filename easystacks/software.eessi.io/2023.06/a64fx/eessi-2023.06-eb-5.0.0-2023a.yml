@@ -6,4 +6,6 @@ easyconfigs:
         # Siesta testsuite fails in Deucalion's a64fx EESSI build environment
         # but skipping the tests during build and then running them with the
         # installed module works, so skipping the tests only in this case
+        # (the test command is triggered via `buildopts` in the easyconfig,
+        # so we clear it)
         try-amend: buildopts=""
