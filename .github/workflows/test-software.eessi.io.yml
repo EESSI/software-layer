@@ -128,3 +128,27 @@ jobs:
                 echo "captured missing package; test PASSED"
                 exit 0
               fi
+
+        - name: Check that EasyBuild hook is up to date
+          run: |
+              FILE="eb_hooks.py"
+              TEMP_FILE=$(mktemp)
+
+              # Fetch base branch
+              git fetch origin ${{ github.base_ref }}
+
+              # Check if the hooks has changed in the PR
+              if git diff --name-only origin/${{ github.base_ref }}...HEAD | grep -q "^$FILE$"; then
+                echo "Hooks changed in PR. Using PR version."
+                cp "$FILE" "$TEMP_FILE"
+              else
+                echo "File not changed in PR. Using default branch version."
+                git show origin/${{ github.base_ref }}:$FILE > "$TEMP_FILE"
+              fi
+
+              # Compare the hooks to what is shipped in the repository
+              # (it is overkill, but harmless, to do this for every architecture)
+              export EESSI_SOFTWARE_SUBDIR_OVERRIDE=${{matrix.EESSI_SOFTWARE_SUBDIR_OVERRIDE}}
+              source /cvmfs/software.eessi.io/versions/${EESSI_VERSION}/init/bash
+              module load EESSI-extend
+              diff "$TEMP_FILE" $EASYBUILD_HOOKS
