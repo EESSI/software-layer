@@ -1,4 +1,7 @@
 easyconfigs:
+  - /cvmfs/software.eessi.io/versions/2023.06/software/linux/x86_64/intel/haswell/software/Pillow/10.2.0-GCCcore-13.2.0/easybuild/Pillow-10.2.0-GCCcore-13.2.0.eb:
+      options:
+        include-easyblocks: /cvmfs/software.eessi.io/versions/2023.06/software/linux/x86_64/intel/haswell/software/Pillow/10.2.0-GCCcore-13.2.0/easybuild/reprod/easyblocks/*.py
   - matplotlib-3.8.2-gfbf-2023b.eb:
       options:
         include-easyblocks: /cvmfs/software.eessi.io/versions/2023.06/software/linux/x86_64/intel/haswell/software/matplotlib/3.8.2-gfbf-2023b/easybuild/reprod/easyblocks/*.py
