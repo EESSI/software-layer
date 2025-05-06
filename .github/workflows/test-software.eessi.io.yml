@@ -132,7 +132,7 @@ jobs:
         - name: Check that EasyBuild hook is up to date
           run: |
               FILE="eb_hooks.py"
-              TEMP_FILE=$(mktemp)
+              TEMP_FILE="$(mktemp)"
 
               # Fetch base branch
               git fetch origin ${{ github.base_ref }}
@@ -151,4 +151,4 @@ jobs:
               export EESSI_SOFTWARE_SUBDIR_OVERRIDE=${{matrix.EESSI_SOFTWARE_SUBDIR_OVERRIDE}}
               source /cvmfs/software.eessi.io/versions/${EESSI_VERSION}/init/bash
               module load EESSI-extend
-              diff "$TEMP_FILE" $EASYBUILD_HOOKS
+              diff "$TEMP_FILE" "$EASYBUILD_HOOKS"
