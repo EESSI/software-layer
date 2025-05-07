@@ -9295,7 +9295,7 @@
             "License": [
                 "SSPL-1.0"
             ],
-            "Permission to redistribute": false,
+            "Permission to redistribute": true,
             "Retrieved from": "https://github.com/r-dbi/DBI"
         },
         "dbplyr": {
@@ -10278,7 +10278,7 @@
             "License": [
                 "SSPL-1.0"
             ],
-            "Permission to redistribute": false,
+            "Permission to redistribute": true,
             "Retrieved from": "https://github.com/futureverse/future"
         },
         "gam": {
@@ -10775,7 +10775,7 @@
             "License": [
                 "SSPL-1.0"
             ],
-            "Permission to redistribute": false,
+            "Permission to redistribute": true,
             "Retrieved from": "https://github.com/futureverse/globals"
         },
         "glue": {
@@ -10930,7 +10930,7 @@
             "License": [
                 "SSPL-1.0"
             ],
-            "Permission to redistribute": false,
+            "Permission to redistribute": true,
             "Retrieved from": "https://tibshirani.su.domains/GSA/"
         },
         "gsalib": {
@@ -11313,7 +11313,7 @@
             "License": [
                 "SSPL-1.0"
             ],
-            "Permission to redistribute": false,
+            "Permission to redistribute": true,
             "Retrieved from": "https://github.com/eddelbuettel/inline"
         },
         "intergraph": {
@@ -11694,7 +11694,7 @@
             "License": [
                 "SSPL-1.0"
             ],
-            "Permission to redistribute": false,
+            "Permission to redistribute": true,
             "Retrieved from": "https://packages.ecosyste.ms/api/v1/registries/cran.r-project.org/lookup?name=lda"
         },
         "ldbounds": {
@@ -11804,7 +11804,7 @@
             "License": [
                 "SSPL-1.0"
             ],
-            "Permission to redistribute": false,
+            "Permission to redistribute": true,
             "Retrieved from": "https://github.com/HenrikBengtsson/listenv"
         },
         "lme4": {
@@ -12557,7 +12557,7 @@
             "License": [
                 "SSPL-1.0"
             ],
-            "Permission to redistribute": false,
+            "Permission to redistribute": true,
             "Retrieved from": "https://packages.ecosyste.ms/api/v1/registries/cran.r-project.org/lookup?name=mvabund"
         },
         "mvnfast": {
@@ -12975,7 +12975,7 @@
             "License": [
                 "SSPL-1.0"
             ],
-            "Permission to redistribute": false,
+            "Permission to redistribute": true,
             "Retrieved from": "https://github.com/futureverse/parallelly"
         },
         "parallelMap": {
@@ -13624,42 +13624,42 @@
             "License": [
                 "SSPL-1.0"
             ],
-            "Permission to redistribute": false,
+            "Permission to redistribute": true,
             "Retrieved from": "https://github.com/HenrikBengtsson/R.cache"
         },
         "R.matlab": {
             "License": [
                 "SSPL-1.0"
             ],
-            "Permission to redistribute": false,
+            "Permission to redistribute": true,
             "Retrieved from": "https://github.com/HenrikBengtsson/R.matlab"
         },
         "R.methodsS3": {
             "License": [
                 "SSPL-1.0"
             ],
-            "Permission to redistribute": false,
+            "Permission to redistribute": true,
             "Retrieved from": "https://github.com/HenrikBengtsson/R.methodsS3"
         },
         "R.oo": {
             "License": [
                 "SSPL-1.0"
             ],
-            "Permission to redistribute": false,
+            "Permission to redistribute": true,
             "Retrieved from": "https://github.com/HenrikBengtsson/R.oo"
         },
         "R.rsp": {
             "License": [
                 "SSPL-1.0"
             ],
-            "Permission to redistribute": false,
+            "Permission to redistribute": true,
             "Retrieved from": "https://github.com/henrikbengtsson/R.rsp"
         },
         "R.utils": {
             "License": [
                 "SSPL-1.0"
             ],
-            "Permission to redistribute": false,
+            "Permission to redistribute": true,
             "Retrieved from": "https://github.com/henrikbengtsson/R.utils"
         },
         "R2WinBUGS": {
@@ -15329,7 +15329,7 @@
             "License": [
                 "SSPL-1.0"
             ],
-            "Permission to redistribute": false,
+            "Permission to redistribute": true,
             "Retrieved from": "https://github.com/therneau/survival"
         },
         "survivalROC": {
@@ -17142,7 +17142,7 @@
     "BeautifulSoup/4.12.2-GCCcore-12.3.0": {
         "BeautifulSoup": {
             "License": "MIT",
-            "Permission to redistribute": false,
+            "Permission to redistribute": true,
             "Retrieved from": "https://pypi.org/project/BeautifulSoup/"
         },
         "soupsieve": {
@@ -17212,7 +17212,7 @@
         },
         "prompt_toolkit": {
             "License": "BSD",
-            "Permission to redistribute": false,
+            "Permission to redistribute": true,
             "Retrieved from": "https://pypi.org/project/prompt-toolkit/"
         },
         "pure_eval": {
@@ -17222,7 +17222,7 @@
         },
         "stack_data": {
             "License": "MIT",
-            "Permission to redistribute": false,
+            "Permission to redistribute": true,
             "Retrieved from": "https://pypi.org/project/stack-data/"
         },
         "traitlets": {
@@ -17278,7 +17278,7 @@
         },
         "prompt_toolkit": {
             "License": "BSD",
-            "Permission to redistribute": false,
+            "Permission to redistribute": true,
             "Retrieved from": "https://pypi.org/project/prompt-toolkit/"
         },
         "pure_eval": {
@@ -17288,7 +17288,7 @@
         },
         "stack_data": {
             "License": "MIT",
-            "Permission to redistribute": false,
+            "Permission to redistribute": true,
             "Retrieved from": "https://pypi.org/project/stack-data/"
         },
         "traitlets": {
@@ -19581,7 +19581,7 @@
             "License": [
                 "SSPL-1.0"
             ],
-            "Permission to redistribute": false,
+            "Permission to redistribute": true,
             "Retrieved from": "https://github.com/r-dbi/DBI"
         },
         "dbplyr": {
@@ -19665,7 +19665,7 @@
             "License": [
                 "CNRI-Python-GPL-Compatible"
             ],
-            "Permission to redistribute": false,
+            "Permission to redistribute": true,
             "Retrieved from": "https://github.com/sgsokol/Deriv"
         },
         "DescTools": {
@@ -20503,7 +20503,7 @@
             "License": [
                 "SSPL-1.0"
             ],
-            "Permission to redistribute": false,
+            "Permission to redistribute": true,
             "Retrieved from": "https://github.com/futureverse/future"
         },
         "gam": {
@@ -20972,7 +20972,7 @@
             "License": [
                 "SSPL-1.0"
             ],
-            "Permission to redistribute": false,
+            "Permission to redistribute": true,
             "Retrieved from": "https://github.com/futureverse/globals"
         },
         "gmm": {
@@ -21105,7 +21105,7 @@
             "License": [
                 "SSPL-1.0"
             ],
-            "Permission to redistribute": false,
+            "Permission to redistribute": true,
             "Retrieved from": "https://tibshirani.su.domains/GSA/"
         },
         "gsalib": {
@@ -21439,7 +21439,7 @@
             "License": [
                 "SSPL-1.0"
             ],
-            "Permission to redistribute": false,
+            "Permission to redistribute": true,
             "Retrieved from": "https://github.com/eddelbuettel/inline"
         },
         "insight": {
@@ -21792,7 +21792,7 @@
             "License": [
                 "SSPL-1.0"
             ],
-            "Permission to redistribute": false,
+            "Permission to redistribute": true,
             "Retrieved from": "https://packages.ecosyste.ms/api/v1/registries/cran.r-project.org/lookup?name=lda"
         },
         "ldbounds": {
@@ -21895,7 +21895,7 @@
             "License": [
                 "SSPL-1.0"
             ],
-            "Permission to redistribute": false,
+            "Permission to redistribute": true,
             "Retrieved from": "https://github.com/HenrikBengtsson/listenv"
         },
         "lme4": {
@@ -22629,7 +22629,7 @@
             "License": [
                 "SSPL-1.0"
             ],
-            "Permission to redistribute": false,
+            "Permission to redistribute": true,
             "Retrieved from": "https://packages.ecosyste.ms/api/v1/registries/cran.r-project.org/lookup?name=mvabund"
         },
         "mvnfast": {
@@ -23035,7 +23035,7 @@
             "License": [
                 "SSPL-1.0"
             ],
-            "Permission to redistribute": false,
+            "Permission to redistribute": true,
             "Retrieved from": "https://github.com/futureverse/parallelly"
         },
         "parallelMap": {
@@ -23614,42 +23614,42 @@
             "License": [
                 "SSPL-1.0"
             ],
-            "Permission to redistribute": false,
+            "Permission to redistribute": true,
             "Retrieved from": "https://github.com/HenrikBengtsson/R.cache"
         },
         "R.matlab": {
             "License": [
                 "SSPL-1.0"
             ],
-            "Permission to redistribute": false,
+            "Permission to redistribute": true,
             "Retrieved from": "https://github.com/HenrikBengtsson/R.matlab"
         },
         "R.methodsS3": {
             "License": [
                 "SSPL-1.0"
             ],
-            "Permission to redistribute": false,
+            "Permission to redistribute": true,
             "Retrieved from": "https://github.com/HenrikBengtsson/R.methodsS3"
         },
         "R.oo": {
             "License": [
                 "SSPL-1.0"
             ],
-            "Permission to redistribute": false,
+            "Permission to redistribute": true,
             "Retrieved from": "https://github.com/HenrikBengtsson/R.oo"
         },
         "R.rsp": {
             "License": [
                 "SSPL-1.0"
             ],
-            "Permission to redistribute": false,
+            "Permission to redistribute": true,
             "Retrieved from": "https://github.com/henrikbengtsson/R.rsp"
         },
         "R.utils": {
             "License": [
                 "SSPL-1.0"
             ],
-            "Permission to redistribute": false,
+            "Permission to redistribute": true,
             "Retrieved from": "https://github.com/henrikbengtsson/R.utils"
         },
         "R2WinBUGS": {
@@ -24419,7 +24419,7 @@
             "License": [
                 "SSPL-1.0"
             ],
-            "Permission to redistribute": false,
+            "Permission to redistribute": true,
             "Retrieved from": "https://github.com/r-dbi/RSQLite"
         },
         "Rssa": {
@@ -24433,7 +24433,7 @@
             "License": [
                 "CNRI-Python-GPL-Compatible"
             ],
-            "Permission to redistribute": false,
+            "Permission to redistribute": true,
             "Retrieved from": "https://mc-stan.org/rstan/"
         },
         "rstantools": {
@@ -25213,7 +25213,7 @@
             "License": [
                 "SSPL-1.0"
             ],
-            "Permission to redistribute": false,
+            "Permission to redistribute": true,
             "Retrieved from": "https://github.com/therneau/survival"
         },
         "survivalROC": {
@@ -27345,7 +27345,7 @@
             "License": [
                 "SSPL-1.0"
             ],
-            "Permission to redistribute": false,
+            "Permission to redistribute": true,
             "Retrieved from": "https://github.com/r-dbi/DBI"
         },
         "dbplyr": {
@@ -28267,7 +28267,7 @@
             "License": [
                 "SSPL-1.0"
             ],
-            "Permission to redistribute": false,
+            "Permission to redistribute": true,
             "Retrieved from": "https://github.com/futureverse/future"
         },
         "gam": {
@@ -28736,7 +28736,7 @@
             "License": [
                 "SSPL-1.0"
             ],
-            "Permission to redistribute": false,
+            "Permission to redistribute": true,
             "Retrieved from": "https://github.com/futureverse/globals"
         },
         "gmm": {
@@ -28869,7 +28869,7 @@
             "License": [
                 "SSPL-1.0"
             ],
-            "Permission to redistribute": false,
+            "Permission to redistribute": true,
             "Retrieved from": "https://tibshirani.su.domains/GSA/"
         },
         "gsalib": {
@@ -29203,7 +29203,7 @@
             "License": [
                 "SSPL-1.0"
             ],
-            "Permission to redistribute": false,
+            "Permission to redistribute": true,
             "Retrieved from": "https://github.com/eddelbuettel/inline"
         },
         "intergraph": {
@@ -29549,7 +29549,7 @@
             "License": [
                 "SSPL-1.0"
             ],
-            "Permission to redistribute": false,
+            "Permission to redistribute": true,
             "Retrieved from": "https://packages.ecosyste.ms/api/v1/registries/cran.r-project.org/lookup?name=lda"
         },
         "ldbounds": {
@@ -29652,7 +29652,7 @@
             "License": [
                 "SSPL-1.0"
             ],
-            "Permission to redistribute": false,
+            "Permission to redistribute": true,
             "Retrieved from": "https://github.com/HenrikBengtsson/listenv"
         },
         "lme4": {
@@ -30372,7 +30372,7 @@
             "License": [
                 "SSPL-1.0"
             ],
-            "Permission to redistribute": false,
+            "Permission to redistribute": true,
             "Retrieved from": "https://packages.ecosyste.ms/api/v1/registries/cran.r-project.org/lookup?name=mvabund"
         },
         "mvnfast": {
@@ -30778,7 +30778,7 @@
             "License": [
                 "SSPL-1.0"
             ],
-            "Permission to redistribute": false,
+            "Permission to redistribute": true,
             "Retrieved from": "https://github.com/futureverse/parallelly"
         },
         "parallelMap": {
@@ -31343,7 +31343,7 @@
             "License": [
                 "SSPL-1.0"
             ],
-            "Permission to redistribute": false,
+            "Permission to redistribute": true,
             "Retrieved from": "https://github.com/HenrikBengtsson/R.cache"
         },
         "R.matlab": {
@@ -32148,7 +32148,7 @@
             "License": [
                 "SSPL-1.0"
             ],
-            "Permission to redistribute": false,
+            "Permission to redistribute": true,
             "Retrieved from": "https://github.com/r-dbi/RSQLite"
         },
         "Rssa": {
@@ -32162,7 +32162,7 @@
             "License": [
                 "CNRI-Python-GPL-Compatible"
             ],
-            "Permission to redistribute": false,
+            "Permission to redistribute": true,
             "Retrieved from": "https://mc-stan.org/rstan/"
         },
         "rstantools": {
@@ -32942,7 +32942,7 @@
             "License": [
                 "SSPL-1.0"
             ],
-            "Permission to redistribute": false,
+            "Permission to redistribute": true,
             "Retrieved from": "https://github.com/therneau/survival"
         },
         "survivalROC": {
@@ -33929,21 +33929,21 @@
             "License": [
                 "SSPL-1.0"
             ],
-            "Permission to redistribute": false,
+            "Permission to redistribute": true,
             "Retrieved from": "https://github.com/HenrikBengtsson/aroma.affymetrix"
         },
         "aroma.apd": {
             "License": [
                 "SSPL-1.0"
             ],
-            "Permission to redistribute": false,
+            "Permission to redistribute": true,
             "Retrieved from": "https://github.com/HenrikBengtsson/aroma.apd"
         },
         "aroma.core": {
             "License": [
                 "SSPL-1.0"
             ],
-            "Permission to redistribute": false,
+            "Permission to redistribute": true,
             "Retrieved from": "https://github.com/HenrikBengtsson/aroma.core"
         },
         "aroma.light": {
@@ -34506,7 +34506,7 @@
             "License": [
                 "CNRI-Python-GPL-Compatible"
             ],
-            "Permission to redistribute": false,
+            "Permission to redistribute": true,
             "Retrieved from": "https://packages.ecosyste.ms/api/v1/registries/bioconductor.org/lookup?name=DRIMSeq"
         },
         "DropletUtils": {
@@ -34894,7 +34894,7 @@
             "License": [
                 "MIT-feh"
             ],
-            "Permission to redistribute": false,
+            "Permission to redistribute": true,
             "Retrieved from": "https://github.com/RGLab/ggcyto"
         },
         "ggdendro": {
@@ -34915,7 +34915,7 @@
             "License": [
                 "AML"
             ],
-            "Permission to redistribute": false,
+            "Permission to redistribute": true,
             "Retrieved from": "https://github.com/LKremer/ggpointdensity"
         },
         "ggrastr": {
@@ -34929,7 +34929,7 @@
             "License": [
                 "SSPL-1.0"
             ],
-            "Permission to redistribute": false,
+            "Permission to redistribute": true,
             "Retrieved from": "https://github.com/omarwagih/ggseqlogo"
         },
         "ggthemes": {
@@ -35025,7 +35025,7 @@
             "License": [
                 "SSPL-1.0"
             ],
-            "Permission to redistribute": false,
+            "Permission to redistribute": true,
             "Retrieved from": "https://packages.ecosyste.ms/api/v1/registries/cran.r-project.org/lookup?name=gsmoothr"
         },
         "gson": {
@@ -35789,21 +35789,21 @@
             "License": [
                 "SSPL-1.0"
             ],
-            "Permission to redistribute": false,
+            "Permission to redistribute": true,
             "Retrieved from": "https://github.com/henrikbengtsson/R.devices"
         },
         "R.filesets": {
             "License": [
                 "SSPL-1.0"
             ],
-            "Permission to redistribute": false,
+            "Permission to redistribute": true,
             "Retrieved from": "https://github.com/HenrikBengtsson/R.filesets"
         },
         "R.huge": {
             "License": [
                 "SSPL-1.0"
             ],
-            "Permission to redistribute": false,
+            "Permission to redistribute": true,
             "Retrieved from": "https://github.com/HenrikBengtsson/R.huge"
         },
         "rainbow": {
@@ -36127,7 +36127,7 @@
             "License": [
                 "SSPL-1.0"
             ],
-            "Permission to redistribute": false,
+            "Permission to redistribute": true,
             "Retrieved from": "https://statweb.stanford.edu/~tibs/SAM"
         },
         "SamSPECTRAL": {
@@ -36751,21 +36751,21 @@
             "License": [
                 "SSPL-1.0"
             ],
-            "Permission to redistribute": false,
+            "Permission to redistribute": true,
             "Retrieved from": "https://github.com/HenrikBengtsson/aroma.affymetrix"
         },
         "aroma.apd": {
             "License": [
                 "SSPL-1.0"
             ],
-            "Permission to redistribute": false,
+            "Permission to redistribute": true,
             "Retrieved from": "https://github.com/HenrikBengtsson/aroma.apd"
         },
         "aroma.core": {
             "License": [
                 "SSPL-1.0"
             ],
-            "Permission to redistribute": false,
+            "Permission to redistribute": true,
             "Retrieved from": "https://github.com/HenrikBengtsson/aroma.core"
         },
         "aroma.light": {
@@ -37800,7 +37800,7 @@
             "License": [
                 "SSPL-1.0"
             ],
-            "Permission to redistribute": false,
+            "Permission to redistribute": true,
             "Retrieved from": "https://github.com/omarwagih/ggseqlogo"
         },
         "ggthemes": {
@@ -37896,7 +37896,7 @@
             "License": [
                 "SSPL-1.0"
             ],
-            "Permission to redistribute": false,
+            "Permission to redistribute": true,
             "Retrieved from": "https://packages.ecosyste.ms/api/v1/registries/cran.r-project.org/lookup?name=gsmoothr"
         },
         "gson": {
@@ -38688,21 +38688,21 @@
             "License": [
                 "SSPL-1.0"
             ],
-            "Permission to redistribute": false,
+            "Permission to redistribute": true,
             "Retrieved from": "https://github.com/henrikbengtsson/R.devices"
         },
         "R.filesets": {
             "License": [
                 "SSPL-1.0"
             ],
-            "Permission to redistribute": false,
+            "Permission to redistribute": true,
             "Retrieved from": "https://github.com/HenrikBengtsson/R.filesets"
         },
         "R.huge": {
             "License": [
                 "SSPL-1.0"
             ],
-            "Permission to redistribute": false,
+            "Permission to redistribute": true,
             "Retrieved from": "https://github.com/HenrikBengtsson/R.huge"
         },
         "rainbow": {
@@ -39033,7 +39033,7 @@
             "License": [
                 "SSPL-1.0"
             ],
-            "Permission to redistribute": false,
+            "Permission to redistribute": true,
             "Retrieved from": "https://statweb.stanford.edu/~tibs/SAM"
         },
         "SamSPECTRAL": {
@@ -39922,7 +39922,7 @@
             "License": [
                 "AML"
             ],
-            "Permission to redistribute": false,
+            "Permission to redistribute": true,
             "Retrieved from": "https://github.com/Unidata/cftime"
         },
         "netcdf4-python": {
@@ -39936,7 +39936,7 @@
             "License": [
                 "AML"
             ],
-            "Permission to redistribute": false,
+            "Permission to redistribute": true,
             "Retrieved from": "https://github.com/Unidata/cftime"
         },
         "netcdf4-python": {
@@ -43385,7 +43385,7 @@
             "License": [
                 "BSD-3-Clause-Attribution"
             ],
-            "Permission to redistribute": false,
+            "Permission to redistribute": true,
             "Retrieved from": "https://github.com/psycopg/psycopg2"
         }
     },
