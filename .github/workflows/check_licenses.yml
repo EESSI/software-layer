@@ -28,13 +28,13 @@ jobs:
         run: |
           git fetch origin ${{ github.base_ref }}
           #          FILES=$(git diff --name-only origin/${{ github.base_ref }} HEAD | grep "eessi-*.yml" ) 
-          git diff --name-only origin/${{ github.base_ref }} HEAD | grep "easystacks*eessi-*.yml"
-          echo "Easystacks between PR and base branch:"
-          echo $FILES
-          for FILE in "${FILES[@]}"; do
-            echo "Diff for $FILE:"
-            git diff origin/${{ github.base_ref }} HEAD -- "$FILE" >> new.${FILE}
-          done
+          git diff --name-only origin/${{ github.base_ref }} HEAD | grep -E 'easystacks/.*/eessi-.*\.yml'
+          # echo "Easystacks between PR and base branch:"
+          #echo $FILES
+          #for FILE in "${FILES[@]}"; do
+          #  echo "Diff for $FILE:"
+          #  git diff origin/${{ github.base_ref }} HEAD -- "$FILE" >> new.${FILE}
+          #done
 
       - name: Parse this EasyStack 
         run: | 
