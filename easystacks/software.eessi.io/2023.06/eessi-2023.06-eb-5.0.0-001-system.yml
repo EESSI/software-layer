@@ -3,4 +3,5 @@ easyconfigs:
   - MAQAO-2.21.1.eb:
       options:
         # See https://github.com/easybuilders/easybuild-easyconfigs/pull/22860
-        from-commit: 6c9ed2af1b33ee6a564e9be1869fb33dd318e24d
+        # and https://github.com/easybuilders/easybuild-easyconfigs/pull/22864
+        from-commit: 4121d62b00120cc23197f26bc830f5d13b19997b
