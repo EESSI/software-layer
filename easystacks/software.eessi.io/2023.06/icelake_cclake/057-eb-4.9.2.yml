@@ -51,8 +51,10 @@ easyconfigs:
   - /cvmfs/software.eessi.io/versions/2023.06/software/linux/x86_64/intel/haswell/software/numba/0.58.1-foss-2023a/easybuild/numba-0.58.1-foss-2023a.eb:
       options:
         include-easyblocks: /cvmfs/software.eessi.io/versions/2023.06/software/linux/x86_64/intel/haswell/software/numba/0.58.1-foss-2023a/easybuild/reprod/easyblocks/*.py
-  - /cvmfs/software.eessi.io/versions/2023.06/software/linux/x86_64/intel/haswell/software/librosa/0.10.1-foss-2023a/easybuild/librosa-0.10.1-foss-2023a.eb:
+  - librosa-0.10.1-foss-2023a.eb:
       options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/21434
+        from-commit: 4b6170603150c9c93602b0deb726869d19a390f0
         include-easyblocks: /cvmfs/software.eessi.io/versions/2023.06/software/linux/x86_64/intel/haswell/software/librosa/0.10.1-foss-2023a/easybuild/reprod/easyblocks/*.py
   - /cvmfs/software.eessi.io/versions/2023.06/software/linux/x86_64/intel/haswell/software/xarray/2023.9.0-gfbf-2023a/easybuild/xarray-2023.9.0-gfbf-2023a.eb:
       options:
