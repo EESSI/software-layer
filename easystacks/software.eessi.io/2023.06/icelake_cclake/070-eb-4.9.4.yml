@@ -59,6 +59,8 @@ easyconfigs:
         include-easyblocks: /cvmfs/software.eessi.io/versions/2023.06/software/linux/x86_64/intel/haswell/software/astropy-testing/7.0.0-gfbf-2023b/easybuild/reprod/easyblocks/*.py
   - /cvmfs/software.eessi.io/versions/2023.06/software/linux/x86_64/intel/haswell/software/astropy/7.0.0-gfbf-2023b/easybuild/astropy-7.0.0-gfbf-2023b.eb:
       options:
+        # See https://github.com/easybuilders/easybuild-easyconfigs/pull/22469
+        from-commit: 2a391f473595bf895f950cfdd5f2bbb2995e96fd
         include-easyblocks: /cvmfs/software.eessi.io/versions/2023.06/software/linux/x86_64/intel/haswell/software/astropy/7.0.0-gfbf-2023b/easybuild/reprod/easyblocks/*.py
   - /cvmfs/software.eessi.io/versions/2023.06/software/linux/x86_64/intel/haswell/software/Pandoc/3.6.2/easybuild/Pandoc-3.6.2.eb:
       options:
