@@ -6,7 +6,7 @@ easyconfigs:
         accept-eula-for: CUDA
         # see https://github.com/easybuilders/easybuild-easyblocks/pull/3516
         include-easyblocks-from-commit: 3469151ce7e4f85415c877dee555aeea7691c757
-#  - CUDA-Samples-12.1-GCC-12.3.0-CUDA-12.1.1.eb
+  - CUDA-Samples-12.1-GCC-12.3.0-CUDA-12.1.1.eb
   - UCX-CUDA-1.14.1-GCCcore-12.3.0-CUDA-12.1.1.eb
   - UCC-CUDA-1.2.0-GCCcore-12.3.0-CUDA-12.1.1.eb
   - OSU-Micro-Benchmarks-7.2-gompi-2023a-CUDA-12.1.1.eb
