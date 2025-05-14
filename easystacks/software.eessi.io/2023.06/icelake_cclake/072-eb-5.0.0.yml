@@ -15,9 +15,3 @@ easyconfigs:
   - Java-21.eb:
       options:
         include-easyblocks: /cvmfs/software.eessi.io/versions/2023.06/software/linux/x86_64/intel/haswell/software/Java/21.0.5/easybuild/reprod/easyblocks/*.py
-  - /cvmfs/software.eessi.io/versions/2023.06/software/linux/x86_64/intel/haswell/software/Java/21.0.5/easybuild/Java-21.0.5.eb:
-      options:
-        include-easyblocks: /cvmfs/software.eessi.io/versions/2023.06/software/linux/x86_64/intel/haswell/software/Java/21.0.5/easybuild/reprod/easyblocks/*.py
-  - /cvmfs/software.eessi.io/versions/2023.06/software/linux/x86_64/intel/haswell/software/Nextflow/24.10.2/easybuild/Nextflow-24.10.2.eb:
-      options:
-        include-easyblocks: /cvmfs/software.eessi.io/versions/2023.06/software/linux/x86_64/intel/haswell/software/Nextflow/24.10.2/easybuild/reprod/easyblocks/*.py
