@@ -42,6 +42,10 @@ jobs:
             EESSI_SOFTWARE_SUBDIR_OVERRIDE: x86_64/intel/sapphirerapids
           - runs_on: ubuntu-24.04
             EESSI_SOFTWARE_SUBDIR_OVERRIDE: x86_64/intel/skylake_avx512
+          - runs_on: ubunut-24.04
+            EESSI_SOFTWARE_SUBDIR_OVERRIDE: x86_64/intel/icelake
+          - runs_on: ubunut-24.04
+            EESSI_SOFTWARE_SUBDIR_OVERRIDE: x86_64/intel/cascadelake
           - runs_on: ubuntu-24.04
             EESSI_SOFTWARE_SUBDIR_OVERRIDE: x86_64/generic
     runs-on: ${{ matrix.runs_on }}
