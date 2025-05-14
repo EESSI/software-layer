@@ -6,9 +6,6 @@ easyconfigs:
   - /cvmfs/software.eessi.io/versions/2023.06/software/linux/x86_64/intel/haswell/software/Gblocks/0.91b/easybuild/Gblocks-0.91b.eb:
       options:
         include-easyblocks: /cvmfs/software.eessi.io/versions/2023.06/software/linux/x86_64/intel/haswell/software/Gblocks/0.91b/easybuild/reprod/easyblocks/*.py
-  - /cvmfs/software.eessi.io/versions/2023.06/software/linux/x86_64/intel/haswell/software/RAxML/8.2.13-gompi-2023a-avx2/easybuild/RAxML-8.2.13-gompi-2023a-avx2.eb:
-      options:
-        include-easyblocks: /cvmfs/software.eessi.io/versions/2023.06/software/linux/x86_64/intel/haswell/software/RAxML/8.2.13-gompi-2023a-avx2/easybuild/reprod/easyblocks/*.py
   - /cvmfs/software.eessi.io/versions/2023.06/software/linux/x86_64/intel/haswell/software/bcgTree/1.2.1-foss-2023a/easybuild/bcgTree-1.2.1-foss-2023a.eb:
       options:
         include-easyblocks: /cvmfs/software.eessi.io/versions/2023.06/software/linux/x86_64/intel/haswell/software/bcgTree/1.2.1-foss-2023a/easybuild/reprod/easyblocks/*.py
