@@ -534,6 +534,25 @@ def pre_configure_hook_BLIS_a64fx(self, *args, **kwargs):
         raise EasyBuildError("BLIS-specific hook triggered for non-BLIS easyconfig?!")
 
 
+def pre_configure_hook_CUDA_Samples_test_remove(self, *args, **kwargs):
+    """skip immaTensorCoreGemm in CUDA-Samples for compute capability 7.0."""
+    if self.name == 'CUDA-Samples' and self.version in ['12.1']:
+        # Get compute capability from build option
+        cuda_caps = build_option('cuda_compute_capabilities')
+        # Check if compute capability 7.0 is in the list
+        if cuda_caps and '7.0' in cuda_caps:
+            print_msg("Applying hook for CUDA-Samples %s with compute capability 7.0", self.version)
+            # local_filters is set by the easyblock, remove path to the Makefile instead
+            makefile_path = os.path.join(self.start_dir, 'Samples/3_CUDA_Features/immaTensorCoreGemm/Makefile')
+            if os.path.exists(makefile_path):
+                remove_file(makefile_path)
+                print_msg("Removed Makefile at %s to skip immaTensorCoreGemm build", makefile_path)
+            else:
+                print_msg("Makefile not found at %s", makefile_path)
+    else:
+        raise EasyBuildError("CUDA-Samples-specific hook triggered for non-CUDA-Samples easyconfig?!")
+
+
 def pre_configure_hook_score_p(self, *args, **kwargs):
     """
     Pre-configure hook for Score-p
@@ -1192,6 +1211,7 @@ POST_PREPARE_HOOKS = {
 
 PRE_CONFIGURE_HOOKS = {
     'BLIS': pre_configure_hook_BLIS_a64fx,
+    'CUDA-Samples': pre_configure_hook_CUDA_Samples_test_remove,
     'GObject-Introspection': pre_configure_hook_gobject_introspection,
     'Extrae': pre_configure_hook_extrae,
     'GROMACS': pre_configure_hook_gromacs,
