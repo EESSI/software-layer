@@ -1,0 +1,7 @@
+# 2025.05.02
+# Rebuild Pillow 10.x versions to account for upstream easyconfig changes
+# that enable support for LittleCMS2 and WebP.
+# See https://github.com/easybuilders/easybuild-easyconfigs/pull/20195
+easyconfigs:
+  - Pillow-10.0.0-GCCcore-12.3.0.eb
+  - Pillow-10.2.0-GCCcore-13.2.0.eb
