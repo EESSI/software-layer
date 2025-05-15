@@ -48,6 +48,8 @@ jobs:
     steps:
         - name: Check out software-layer repository
           uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
+          with:
+              fetch-depth: 0  # Fetch all history for all branches and tags
 
         - name: Mount EESSI CernVM-FS pilot repository
           uses: cvmfs-contrib/github-action-cvmfs@55899ca74cf78ab874bdf47f5a804e47c198743c # v4.0
