@@ -965,52 +965,56 @@ def post_postproc_cuda(self, *args, **kwargs):
     Remove files from CUDA installation that we are not allowed to ship,
     and replace them with a symlink to a corresponding installation under host_injections.
     """
+    if self.name == 'CUDA':
+        # This hook only acts on an installation under repositories that _we_ ship (*.eessi.io/versions) 
+        eessi_installation = bool(re.search(EESSI_INSTALLATION_REGEX, self.installdir))
 
-    # We need to check if we are doing an EESSI-distributed installation
-    eessi_installation = bool(re.search(EESSI_INSTALLATION_REGEX, self.installdir))
+        if eessi_installation:
+            print_msg("Replacing files in CUDA installation that we can not ship with symlinks to host_injections...")
 
-    if self.name == 'CUDA' and eessi_installation:
-        print_msg("Replacing files in CUDA installation that we can not ship with symlinks to host_injections...")
+            # read CUDA EULA, construct allowlist based on section 2.6 that specifies list of files that can be shipped
+            eula_path = os.path.join(self.installdir, 'EULA.txt')
+            relevant_eula_lines = []
+            with open(eula_path) as infile:
+                copy = False
+                for line in infile:
+                    if line.strip() == "2.6. Attachment A":
+                        copy = True
+                        continue
+                    elif line.strip() == "2.7. Attachment B":
+                        copy = False
+                        continue
+                    elif copy:
+                        relevant_eula_lines.append(line)
 
-        # read CUDA EULA, construct allowlist based on section 2.6 that specifies list of files that can be shipped
-        eula_path = os.path.join(self.installdir, 'EULA.txt')
-        relevant_eula_lines = []
-        with open(eula_path) as infile:
-            copy = False
-            for line in infile:
-                if line.strip() == "2.6. Attachment A":
-                    copy = True
-                    continue
-                elif line.strip() == "2.7. Attachment B":
-                    copy = False
-                    continue
-                elif copy:
-                    relevant_eula_lines.append(line)
+            # create list without file extensions, they're not really needed and they only complicate things
+            allowlist = ['EULA', 'README']
+            file_extensions = ['.so', '.a', '.h', '.bc']
+            for line in relevant_eula_lines:
+                for word in line.split():
+                    if any(ext in word for ext in file_extensions):
+                        allowlist.append(os.path.splitext(word)[0])
+            # The EULA of CUDA 12.4 introduced a typo (confirmed by NVIDIA):
+            # libnvrtx-builtins_static.so should be libnvrtc-builtins_static.so
+            if 'libnvrtx-builtins_static' in allowlist:
+                allowlist.remove('libnvrtx-builtins_static')
+                allowlist.append('libnvrtc-builtins_static')
+            allowlist = sorted(set(allowlist))
+            self.log.info(
+                "Allowlist for files in CUDA installation that can be redistributed: " + ', '.join(allowlist)
+                )
 
-        # create list without file extensions, they're not really needed and they only complicate things
-        allowlist = ['EULA', 'README']
-        file_extensions = ['.so', '.a', '.h', '.bc']
-        for line in relevant_eula_lines:
-            for word in line.split():
-                if any(ext in word for ext in file_extensions):
-                    allowlist.append(os.path.splitext(word)[0])
-        # The EULA of CUDA 12.4 introduced a typo (confirmed by NVIDIA):
-        # libnvrtx-builtins_static.so should be libnvrtc-builtins_static.so
-        if 'libnvrtx-builtins_static' in allowlist:
-            allowlist.remove('libnvrtx-builtins_static')
-            allowlist.append('libnvrtc-builtins_static')
-        allowlist = sorted(set(allowlist))
-        self.log.info("Allowlist for files in CUDA installation that can be redistributed: " + ', '.join(allowlist))
+            # Do some quick sanity checks for things we should or shouldn't have in the list
+            if 'nvcc' in allowlist:
+                raise EasyBuildError("Found 'nvcc' in allowlist: %s" % allowlist)
+            if 'libcudart' not in allowlist:
+                raise EasyBuildError("Did not find 'libcudart' in allowlist: %s" % allowlist)
 
-        # Do some quick sanity checks for things we should or shouldn't have in the list
-        if 'nvcc' in allowlist:
-            raise EasyBuildError("Found 'nvcc' in allowlist: %s" % allowlist)
-        if 'libcudart' not in allowlist:
-            raise EasyBuildError("Did not find 'libcudart' in allowlist: %s" % allowlist)
-
-        # replace files that are not distributable with symlinks into
-        # host_injections
-        replace_non_distributable_files_with_symlinks(self.log, self.installdir, self.name, allowlist)
+            # replace files that are not distributable with symlinks into
+            # host_injections
+            replace_non_distributable_files_with_symlinks(self.log, self.installdir, self.name, allowlist)
+        else:
+            print_msg(f"EESSI hook to respect CUDA license not triggered for installation path {self.installdir}")
     else:
         raise EasyBuildError("CUDA-specific hook triggered for non-CUDA easyconfig?!")
 
