@@ -1,0 +1,5 @@
+# 039-eb-4.8.2.yml: total build duration = 18 minutes
+easyconfigs:
+  - /cvmfs/software.eessi.io/versions/2023.06/software/linux/x86_64/intel/haswell/software/QuantumESPRESSO/7.2-foss-2022b/easybuild/QuantumESPRESSO-7.2-foss-2022b.eb:
+      options:
+        include-easyblocks: /cvmfs/software.eessi.io/versions/2023.06/software/linux/x86_64/intel/haswell/software/QuantumESPRESSO/7.2-foss-2022b/easybuild/reprod/easyblocks/*.py

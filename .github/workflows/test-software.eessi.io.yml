@@ -27,6 +27,8 @@ jobs:
             EESSI_SOFTWARE_SUBDIR_OVERRIDE: aarch64/neoverse_n1
           - runs_on: ubuntu-24.04-arm
             EESSI_SOFTWARE_SUBDIR_OVERRIDE: aarch64/neoverse_v1
+          - runs_on: ubuntu-24.04-arm
+            EESSI_SOFTWARE_SUBDIR_OVERRIDE: aarch64/nvidia/grace
           # x86_64 CPU targets
           - runs_on: ubuntu-24.04
             EESSI_SOFTWARE_SUBDIR_OVERRIDE: x86_64/amd/zen2
@@ -40,6 +42,10 @@ jobs:
             EESSI_SOFTWARE_SUBDIR_OVERRIDE: x86_64/intel/sapphirerapids
           - runs_on: ubuntu-24.04
             EESSI_SOFTWARE_SUBDIR_OVERRIDE: x86_64/intel/skylake_avx512
+          - runs_on: ubuntu-24.04
+            EESSI_SOFTWARE_SUBDIR_OVERRIDE: x86_64/intel/icelake
+          - runs_on: ubuntu-24.04
+            EESSI_SOFTWARE_SUBDIR_OVERRIDE: x86_64/intel/cascadelake
           - runs_on: ubuntu-24.04
             EESSI_SOFTWARE_SUBDIR_OVERRIDE: x86_64/generic
     runs-on: ${{ matrix.runs_on }}
