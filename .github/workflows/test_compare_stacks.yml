@@ -56,6 +56,7 @@ jobs:
               # (which assumes the structure /cvmfs/software.eessi.io/versions/2023.06/software/linux/$COMPARISON_ARCH/accel/nvidia/$cc/modules/all)
               
               # Parse the yaml we use to make the compute capabilities arch-dependent
-              CUDA_COMPUTE_CAPABILITIES=$(echo "${CUDA_COMPUTE_CAPABILITIES_YAML}" | yq ".\"${COMPARISON_ARCH}\" // .default | .[]" | tr '\n' ' ')
-              CUDA_COMPUTE_CAPABILITIES=${CUDA_COMPUTE_CAPABILITIES%% }  # trim trailing space
+              CUDA_COMPUTE_CAPABILITIES=$(echo "${CUDA_COMPUTE_CAPABILITIES_YAML}" | yq ".\"${{matrix.COMPARISON_ARCH}}\" // .default | .[]" | tr '\n' ' ')
+              export CUDA_COMPUTE_CAPABILITIES=${CUDA_COMPUTE_CAPABILITIES%% }  # trim trailing space
+              
               .github/workflows/scripts/compare_to_generic.sh ${EESSI_PREFIX}/software/${EESSI_OS_TYPE} ${{matrix.COMPARISON_ARCH}}
