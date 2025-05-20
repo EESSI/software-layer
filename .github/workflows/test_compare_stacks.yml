@@ -17,7 +17,6 @@ env:
       - cc70
       - cc80
       - cc90
-      - ccfake
 jobs:
   compare_stacks:
     runs-on: ubuntu-24.04
@@ -56,7 +55,7 @@ jobs:
               # and include a check for CUDA-enabled software using the environment variable CUDA_COMPUTE_CAPABILITIES
               # (which assumes the structure /cvmfs/software.eessi.io/versions/2023.06/software/linux/$COMPARISON_ARCH/accel/nvidia/$cc/modules/all)
               
-              # Parse the yaml we use to make the compute capabilities arch-dependent
+              # Parse the yaml that makes the compute capabilities arch-dependent
               CUDA_COMPUTE_CAPABILITIES=$(echo "${CUDA_COMPUTE_CAPABILITIES_YAML}" | yq ".\"${{matrix.COMPARISON_ARCH}}\" // .default | .[]" | tr '\n' ' ')
               export CUDA_COMPUTE_CAPABILITIES=${CUDA_COMPUTE_CAPABILITIES%% }  # trim trailing space
               
