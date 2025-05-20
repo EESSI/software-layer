@@ -9,11 +9,11 @@ permissions:
   contents: read # to fetch code (actions/checkout)
 env:
   CUDA_COMPUTE_CAPABILITIES: |
-    # provide them as something that can be parsed as an array by bash
     default:
+      # provide them as something that can be parsed as an array by bash
       - "cc70 cc80 cc90"
-    # Can have exceptional values for specific architectures
     x86_64/amd/zen2:
+      # Can have exceptional values for specific architectures
       - "cc70 cc80 cc90"
 jobs:
   compare_stacks:
