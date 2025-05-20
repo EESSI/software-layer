@@ -9,10 +9,12 @@ permissions:
   contents: read # to fetch code (actions/checkout)
 env:
   CUDA_COMPUTE_CAPABILITIES_YAML: |
+    # Provide a default set of compute capabilities
     default:
       - cc70
       - cc80
       - cc90
+    # and then allow for special cases for specific architectures
     x86_64/amd/zen2:
       - cc70
       - cc80
