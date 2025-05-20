@@ -8,11 +8,13 @@ on:
 permissions:
   contents: read # to fetch code (actions/checkout)
 env:
-  EESSI_ACCELERATOR_TARGETS: |
+  CUDA_COMPUTE_CAPABILITIES: |
+    # provide them as something that can be parsed as an array by bash
+    default:
+      - "cc70 cc80 cc90"
+    # Can have exceptional values for specific architectures
     x86_64/amd/zen2:
-      - nvidia/cc80
-    x86_64/amd/zen3:
-      - nvidia/cc80
+      - "cc70 cc80 cc90"
 jobs:
   compare_stacks:
     runs-on: ubuntu-24.04
@@ -48,4 +50,6 @@ jobs:
 
               # Compare the requested architecture to the generic stack
               # (assumes the general structure /cvmfs/software.eessi.io/versions/2023.06/software/linux/$COMPARISON_ARCH/modules/all)
+              # and include a check for CUDA-enabled software using the environment variable CUDA_COMPUTE_CAPABILITIES
+              # (which assumes the structure /cvmfs/software.eessi.io/versions/2023.06/software/linux/$COMPARISON_ARCH/accel/nvidia/$cc/modules/all)
               .github/workflows/scripts/compare_to_generic.sh ${EESSI_PREFIX}/software/${EESSI_OS_TYPE} ${{matrix.COMPARISON_ARCH}}
