@@ -17,6 +17,7 @@ env:
       - cc70
       - cc80
       - cc90
+      - ccfake
 jobs:
   compare_stacks:
     runs-on: ubuntu-24.04
