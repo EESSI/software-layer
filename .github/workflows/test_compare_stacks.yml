@@ -10,9 +10,13 @@ permissions:
 env:
   CUDA_COMPUTE_CAPABILITIES_YAML: |
     default:
-      - "cc70 cc80 cc90"
+      - cc70
+      - cc80
+      - cc90
     x86_64/amd/zen2:
-      - "cc70 cc80 cc90"
+      - cc70
+      - cc80
+      - cc90
 jobs:
   compare_stacks:
     runs-on: ubuntu-24.04
@@ -50,5 +54,8 @@ jobs:
               # (assumes the general structure /cvmfs/software.eessi.io/versions/2023.06/software/linux/$COMPARISON_ARCH/modules/all)
               # and include a check for CUDA-enabled software using the environment variable CUDA_COMPUTE_CAPABILITIES
               # (which assumes the structure /cvmfs/software.eessi.io/versions/2023.06/software/linux/$COMPARISON_ARCH/accel/nvidia/$cc/modules/all)
-              CUDA_COMPUTE_CAPABILITIES=$(echo "${CUDA_COMPUTE_CAPABILITIES_YAML}" | yq ".${COMPARISON_ARCH} // .default | .[]")
+              
+              # Parse the yaml we use to make the compute capabilities arch-dependent
+              CUDA_COMPUTE_CAPABILITIES=$(echo "${CUDA_COMPUTE_CAPABILITIES_YAML}" | yq ".\"${COMPARISON_ARCH}\" // .default | .[]" | tr '\n' ' ')
+              CUDA_COMPUTE_CAPABILITIES=${CUDA_COMPUTE_CAPABILITIES%% }  # trim trailing space
               .github/workflows/scripts/compare_to_generic.sh ${EESSI_PREFIX}/software/${EESSI_OS_TYPE} ${{matrix.COMPARISON_ARCH}}
