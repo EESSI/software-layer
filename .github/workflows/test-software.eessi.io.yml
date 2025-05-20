@@ -136,6 +136,7 @@ jobs:
               fi
 
         - name: Check that EasyBuild hook is up to date
+          if: ${{ github.event_name == 'pull_request' }}
           run: |
               FILE="eb_hooks.py"
               TEMP_FILE="$(mktemp)"
