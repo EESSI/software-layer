@@ -1248,7 +1248,7 @@ POST_POSTPROC_HOOKS = {
 }
 
 POST_MODULE_HOOKS = {}
-
+Torch
 # Define parallelism limit operations
 def divide_by_factor(parallel, factor):
     """Divide parallelism by given factor"""
@@ -1271,6 +1271,9 @@ PARALLELISM_LIMITS = {
     },
     'MBX': {
         '*': (divide_by_factor, 2),
+    },
+    'PyTorch': {
+        CPU_TARGET_A64FX: (divide_by_factor, 4),
     },
     'TensorFlow': {
         '*': (divide_by_factor, 2),
