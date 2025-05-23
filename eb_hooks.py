@@ -13,6 +13,7 @@ from easybuild.tools.filetools import apply_regex_substitutions, copy_file, remo
 from easybuild.tools.run import run_cmd
 from easybuild.tools.systemtools import AARCH64, POWER, X86_64, get_cpu_architecture, get_cpu_features
 from easybuild.tools.toolchain.compiler import OPTARCH_GENERIC
+from easybuild.tools.version import VERSION as EASYBUILD_VERSION
 
 # prefer importing LooseVersion from easybuild.tools, but fall back to distuils in case EasyBuild <= 4.7.0 is used
 try:
@@ -126,9 +127,15 @@ def post_ready_hook(self, *args, **kwargs):
     Post-ready hook: limit parallellism for selected builds based on software name and CPU target.
                      parallelism needs to be limited because some builds require a lot of memory per used core.
     """
-    # 'parallel' easyconfig parameter is set via EasyBlock.set_parallel in ready step based on available cores.
+    # 'parallel' (EB4) or 'max_parallel' (EB5) easyconfig parameter is set via EasyBlock.set_parallel in ready step
+    # based on available cores.
+
+    # Check whether we have EasyBuild 4 or 5
+    parallel_param = 'parallel'
+    if EASYBUILD_VERSION >= '5':
+        parallel_param = 'max_parallel'
     # get current parallelism setting
-    parallel = self.cfg['parallel']
+    parallel = self.cfg[parallel_param]
     if parallel == 1:
         return  # no need to limit if already using 1 core
 
@@ -152,7 +159,7 @@ def post_ready_hook(self, *args, **kwargs):
 
         # apply the limit if it's different from current
         if new_parallel != parallel:
-            self.cfg['parallel'] = new_parallel
+            self.cfg[parallel_param] = new_parallel
             msg = "limiting parallelism to %s (was %s) for %s on %s to avoid out-of-memory failures during building/testing"
             print_msg(msg % (new_parallel, parallel, self.name, cpu_target), log=self.log)
 
