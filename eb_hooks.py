@@ -27,6 +27,8 @@ CPU_TARGET_AARCH64_GENERIC = 'aarch64/generic'
 CPU_TARGET_A64FX = 'aarch64/a64fx'
 CPU_TARGET_NVIDIA_GRACE = 'aarch64/nvidia/grace'
 
+CPU_TARGET_CASCADELAKE = 'x86_64/intel/cascadelake'
+CPU_TARGET_ICELAKE = 'x86_64/intel/icelake'
 CPU_TARGET_SAPPHIRE_RAPIDS = 'x86_64/intel/sapphirerapids'
 CPU_TARGET_ZEN4 = 'x86_64/amd/zen4'
 
@@ -532,6 +534,25 @@ def pre_configure_hook_BLIS_a64fx(self, *args, **kwargs):
         raise EasyBuildError("BLIS-specific hook triggered for non-BLIS easyconfig?!")
 
 
+def pre_configure_hook_CUDA_Samples_test_remove(self, *args, **kwargs):
+    """skip immaTensorCoreGemm in CUDA-Samples for compute capability 7.0."""
+    if self.name == 'CUDA-Samples' and self.version in ['12.1']:
+        # Get compute capability from build option
+        cuda_caps = build_option('cuda_compute_capabilities')
+        # Check if compute capability 7.0 is in the list
+        if cuda_caps and '7.0' in cuda_caps:
+            print_msg("Applying hook for CUDA-Samples %s with compute capability 7.0", self.version)
+            # local_filters is set by the easyblock, remove path to the Makefile instead
+            makefile_path = os.path.join(self.start_dir, 'Samples/3_CUDA_Features/immaTensorCoreGemm/Makefile')
+            if os.path.exists(makefile_path):
+                remove_file(makefile_path)
+                print_msg("Removed Makefile at %s to skip immaTensorCoreGemm build", makefile_path)
+            else:
+                print_msg("Makefile not found at %s", makefile_path)
+    else:
+        raise EasyBuildError("CUDA-Samples-specific hook triggered for non-CUDA-Samples easyconfig?!")
+
+
 def pre_configure_hook_score_p(self, *args, **kwargs):
     """
     Pre-configure hook for Score-p
@@ -613,7 +634,10 @@ def pre_configure_hook_gromacs(self, *args, **kwargs):
     """
     if self.name == 'GROMACS':
         cpu_target = get_eessi_envvar('EESSI_SOFTWARE_SUBDIR')
-        if LooseVersion(self.version) <= LooseVersion('2024.1') and cpu_target == CPU_TARGET_NEOVERSE_V1 or LooseVersion(self.version) <= LooseVersion('2024.4') and CPU_TARGET_NVIDIA_GRACE:
+        if (
+            (LooseVersion(self.version) <= LooseVersion('2024.1') and cpu_target == CPU_TARGET_NEOVERSE_V1) or
+            (LooseVersion(self.version) <= LooseVersion('2024.4') and cpu_target == CPU_TARGET_NVIDIA_GRACE)
+        ):
             self.cfg.update('configopts', '-DGMX_SIMD=ARM_NEON_ASIMD')
             print_msg(
                 "Avoiding use of SVE instructions for GROMACS %s by using ARM_NEON_ASIMD as GMX_SIMD value",
@@ -864,15 +888,14 @@ def pre_test_hook_ignore_failing_tests_netCDF(self, *args, **kwargs):
 
 def pre_test_hook_increase_max_failed_tests_arm_PyTorch(self, *args, **kwargs):
     """
-    Pre-test hook for PyTorch: increase max failing tests for ARM and Intel Sapphire Rapids for PyTorch 2.1.2
-    See https://github.com/EESSI/software-layer/pull/444#issuecomment-1890416171 and
-    https://github.com/EESSI/software-layer/pull/875#issuecomment-2606854400
+    Pre-test hook for PyTorch: increase the number of max failing tests
+    See https://github.com/EESSI/software-layer/issues/461
     """
     cpu_target = get_eessi_envvar('EESSI_SOFTWARE_SUBDIR')
     if self.name == 'PyTorch' and self.version == '2.1.2':
         if get_cpu_architecture() == AARCH64:
             self.cfg['max_failed_tests'] = 10
-        if cpu_target == CPU_TARGET_SAPPHIRE_RAPIDS:
+        if cpu_target in [CPU_TARGET_CASCADELAKE, CPU_TARGET_ICELAKE, CPU_TARGET_SAPPHIRE_RAPIDS]:
             self.cfg['max_failed_tests'] = 4
 
 
@@ -942,52 +965,56 @@ def post_postproc_cuda(self, *args, **kwargs):
     Remove files from CUDA installation that we are not allowed to ship,
     and replace them with a symlink to a corresponding installation under host_injections.
     """
+    if self.name == 'CUDA':
+        # This hook only acts on an installation under repositories that _we_ ship (*.eessi.io/versions) 
+        eessi_installation = bool(re.search(EESSI_INSTALLATION_REGEX, self.installdir))
 
-    # We need to check if we are doing an EESSI-distributed installation
-    eessi_installation = bool(re.search(EESSI_INSTALLATION_REGEX, self.installdir))
+        if eessi_installation:
+            print_msg("Replacing files in CUDA installation that we can not ship with symlinks to host_injections...")
 
-    if self.name == 'CUDA' and eessi_installation:
-        print_msg("Replacing files in CUDA installation that we can not ship with symlinks to host_injections...")
+            # read CUDA EULA, construct allowlist based on section 2.6 that specifies list of files that can be shipped
+            eula_path = os.path.join(self.installdir, 'EULA.txt')
+            relevant_eula_lines = []
+            with open(eula_path) as infile:
+                copy = False
+                for line in infile:
+                    if line.strip() == "2.6. Attachment A":
+                        copy = True
+                        continue
+                    elif line.strip() == "2.7. Attachment B":
+                        copy = False
+                        continue
+                    elif copy:
+                        relevant_eula_lines.append(line)
 
-        # read CUDA EULA, construct allowlist based on section 2.6 that specifies list of files that can be shipped
-        eula_path = os.path.join(self.installdir, 'EULA.txt')
-        relevant_eula_lines = []
-        with open(eula_path) as infile:
-            copy = False
-            for line in infile:
-                if line.strip() == "2.6. Attachment A":
-                    copy = True
-                    continue
-                elif line.strip() == "2.7. Attachment B":
-                    copy = False
-                    continue
-                elif copy:
-                    relevant_eula_lines.append(line)
+            # create list without file extensions, they're not really needed and they only complicate things
+            allowlist = ['EULA', 'README']
+            file_extensions = ['.so', '.a', '.h', '.bc']
+            for line in relevant_eula_lines:
+                for word in line.split():
+                    if any(ext in word for ext in file_extensions):
+                        allowlist.append(os.path.splitext(word)[0])
+            # The EULA of CUDA 12.4 introduced a typo (confirmed by NVIDIA):
+            # libnvrtx-builtins_static.so should be libnvrtc-builtins_static.so
+            if 'libnvrtx-builtins_static' in allowlist:
+                allowlist.remove('libnvrtx-builtins_static')
+                allowlist.append('libnvrtc-builtins_static')
+            allowlist = sorted(set(allowlist))
+            self.log.info(
+                "Allowlist for files in CUDA installation that can be redistributed: " + ', '.join(allowlist)
+                )
 
-        # create list without file extensions, they're not really needed and they only complicate things
-        allowlist = ['EULA', 'README']
-        file_extensions = ['.so', '.a', '.h', '.bc']
-        for line in relevant_eula_lines:
-            for word in line.split():
-                if any(ext in word for ext in file_extensions):
-                    allowlist.append(os.path.splitext(word)[0])
-        # The EULA of CUDA 12.4 introduced a typo (confirmed by NVIDIA):
-        # libnvrtx-builtins_static.so should be libnvrtc-builtins_static.so
-        if 'libnvrtx-builtins_static' in allowlist:
-            allowlist.remove('libnvrtx-builtins_static')
-            allowlist.append('libnvrtc-builtins_static')
-        allowlist = sorted(set(allowlist))
-        self.log.info("Allowlist for files in CUDA installation that can be redistributed: " + ', '.join(allowlist))
+            # Do some quick sanity checks for things we should or shouldn't have in the list
+            if 'nvcc' in allowlist:
+                raise EasyBuildError("Found 'nvcc' in allowlist: %s" % allowlist)
+            if 'libcudart' not in allowlist:
+                raise EasyBuildError("Did not find 'libcudart' in allowlist: %s" % allowlist)
 
-        # Do some quick sanity checks for things we should or shouldn't have in the list
-        if 'nvcc' in allowlist:
-            raise EasyBuildError("Found 'nvcc' in allowlist: %s" % allowlist)
-        if 'libcudart' not in allowlist:
-            raise EasyBuildError("Did not find 'libcudart' in allowlist: %s" % allowlist)
-
-        # replace files that are not distributable with symlinks into
-        # host_injections
-        replace_non_distributable_files_with_symlinks(self.log, self.installdir, self.name, allowlist)
+            # replace files that are not distributable with symlinks into
+            # host_injections
+            replace_non_distributable_files_with_symlinks(self.log, self.installdir, self.name, allowlist)
+        else:
+            print_msg(f"EESSI hook to respect CUDA license not triggered for installation path {self.installdir}")
     else:
         raise EasyBuildError("CUDA-specific hook triggered for non-CUDA easyconfig?!")
 
@@ -1188,6 +1215,7 @@ POST_PREPARE_HOOKS = {
 
 PRE_CONFIGURE_HOOKS = {
     'BLIS': pre_configure_hook_BLIS_a64fx,
+    'CUDA-Samples': pre_configure_hook_CUDA_Samples_test_remove,
     'GObject-Introspection': pre_configure_hook_gobject_introspection,
     'Extrae': pre_configure_hook_extrae,
     'GROMACS': pre_configure_hook_gromacs,

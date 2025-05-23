@@ -31,6 +31,8 @@ jobs:
         - x86_64/intel/haswell
         - x86_64/intel/skylake_avx512
         - x86_64/intel/sapphirerapids
+        - x86_64/intel/icelake
+        - x86_64/intel/cascadelake
     steps:
         - name: Check out software-layer repository
           uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1

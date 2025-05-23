@@ -1,0 +1,20 @@
+# 044-eb-4.9.0.yml: total build duration = 5 minutes
+easyconfigs:
+  - /cvmfs/software.eessi.io/versions/2023.06/software/linux/x86_64/intel/haswell/software/at-spi2-atk/2.38.0-GCCcore-12.3.0/easybuild/at-spi2-atk-2.38.0-GCCcore-12.3.0.eb:
+      options:
+        include-easyblocks: /cvmfs/software.eessi.io/versions/2023.06/software/linux/x86_64/intel/haswell/software/at-spi2-atk/2.38.0-GCCcore-12.3.0/easybuild/reprod/easyblocks/*.py
+  - /cvmfs/software.eessi.io/versions/2023.06/software/linux/x86_64/intel/haswell/software/Gdk-Pixbuf/2.42.10-GCCcore-12.3.0/easybuild/Gdk-Pixbuf-2.42.10-GCCcore-12.3.0.eb:
+      options:
+        include-easyblocks: /cvmfs/software.eessi.io/versions/2023.06/software/linux/x86_64/intel/haswell/software/Gdk-Pixbuf/2.42.10-GCCcore-12.3.0/easybuild/reprod/easyblocks/*.py
+  - /cvmfs/software.eessi.io/versions/2023.06/software/linux/x86_64/intel/haswell/software/Gdk-Pixbuf/2.42.10-GCCcore-12.2.0/easybuild/Gdk-Pixbuf-2.42.10-GCCcore-12.2.0.eb:
+      options:
+        include-easyblocks: /cvmfs/software.eessi.io/versions/2023.06/software/linux/x86_64/intel/haswell/software/Gdk-Pixbuf/2.42.10-GCCcore-12.2.0/easybuild/reprod/easyblocks/*.py
+  - /cvmfs/software.eessi.io/versions/2023.06/software/linux/x86_64/intel/haswell/software/libepoxy/1.5.10-GCCcore-12.3.0/easybuild/libepoxy-1.5.10-GCCcore-12.3.0.eb:
+      options:
+        include-easyblocks: /cvmfs/software.eessi.io/versions/2023.06/software/linux/x86_64/intel/haswell/software/libepoxy/1.5.10-GCCcore-12.3.0/easybuild/reprod/easyblocks/*.py
+  - /cvmfs/software.eessi.io/versions/2023.06/software/linux/x86_64/intel/haswell/software/Wayland/1.22.0-GCCcore-12.3.0/easybuild/Wayland-1.22.0-GCCcore-12.3.0.eb:
+      options:
+        include-easyblocks: /cvmfs/software.eessi.io/versions/2023.06/software/linux/x86_64/intel/haswell/software/Wayland/1.22.0-GCCcore-12.3.0/easybuild/reprod/easyblocks/*.py
+  - /cvmfs/software.eessi.io/versions/2023.06/software/linux/x86_64/intel/haswell/software/GTK3/3.24.37-GCCcore-12.3.0/easybuild/GTK3-3.24.37-GCCcore-12.3.0.eb:
+      options:
+        include-easyblocks: /cvmfs/software.eessi.io/versions/2023.06/software/linux/x86_64/intel/haswell/software/GTK3/3.24.37-GCCcore-12.3.0/easybuild/reprod/easyblocks/*.py

@@ -1,0 +1,11 @@
+# 037-eb-4.8.2.yml: total build duration = 44 minutes
+easyconfigs:
+  - /cvmfs/software.eessi.io/versions/2023.06/software/linux/x86_64/intel/haswell/software/ELPA/2022.05.001-foss-2022b/easybuild/ELPA-2022.05.001-foss-2022b.eb:
+      options:
+        include-easyblocks: /cvmfs/software.eessi.io/versions/2023.06/software/linux/x86_64/intel/haswell/software/ELPA/2022.05.001-foss-2022b/easybuild/reprod/easyblocks/*.py
+  - /cvmfs/software.eessi.io/versions/2023.06/software/linux/x86_64/intel/haswell/software/Szip/2.1.1-GCCcore-12.2.0/easybuild/Szip-2.1.1-GCCcore-12.2.0.eb:
+      options:
+        include-easyblocks: /cvmfs/software.eessi.io/versions/2023.06/software/linux/x86_64/intel/haswell/software/Szip/2.1.1-GCCcore-12.2.0/easybuild/reprod/easyblocks/*.py
+  - /cvmfs/software.eessi.io/versions/2023.06/software/linux/x86_64/intel/haswell/software/HDF5/1.14.0-gompi-2022b/easybuild/HDF5-1.14.0-gompi-2022b.eb:
+      options:
+        include-easyblocks: /cvmfs/software.eessi.io/versions/2023.06/software/linux/x86_64/intel/haswell/software/HDF5/1.14.0-gompi-2022b/easybuild/reprod/easyblocks/*.py
