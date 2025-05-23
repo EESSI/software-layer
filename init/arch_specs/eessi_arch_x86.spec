@@ -1,5 +1,5 @@
 # x86_64 CPU architecture specifications
-# The overview at https://github.com/InstLatx64/InstLatX64_Misc/tree/4802ff02415ed1ecdefddfd540615a27b617349c/SIMD_Euler may be helpful in defining this list
+# The overview at https://github.com/InstLatx64/InstLatX64_Misc/tree/main/SIMD_Euler may be helpful in defining this list
 # Software path in EESSI 	| Vendor ID 	| List of defining CPU features
 "x86_64/intel/haswell"		"GenuineIntel"	"avx2 fma"									# Intel Haswell, Broadwell
 "x86_64/intel/skylake_avx512"	"GenuineIntel"	"avx2 fma avx512f avx512bw avx512cd avx512dq avx512vl"				# Intel Skylake
