@@ -1252,7 +1252,7 @@ POST_POSTPROC_HOOKS = {
 }
 
 POST_MODULE_HOOKS = {}
-Torch
+
 # Define parallelism limit operations
 def divide_by_factor(parallel, factor):
     """Divide parallelism by given factor"""
