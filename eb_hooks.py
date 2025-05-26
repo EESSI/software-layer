@@ -1280,6 +1280,9 @@ PARALLELISM_LIMITS = {
         '*': (divide_by_factor, 2),
         CPU_TARGET_A64FX: (set_maximum, 12),
     },
+    'nodejs': {
+        CPU_TARGET_A64FX: (divide_by_factor, 2),
+    },
     'MBX': {
         '*': (divide_by_factor, 2),
     },
@@ -1288,7 +1291,7 @@ PARALLELISM_LIMITS = {
         CPU_TARGET_A64FX: (set_maximum, 8),
     },
     'Qt5': {
-        CPU_TARGET_A64FX: (divide_by_factor, 2),
+        CPU_TARGET_A64FX: (set_maximum, 8),
     },
     'ROOT': {
         CPU_TARGET_A64FX: (divide_by_factor, 2),
