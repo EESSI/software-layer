@@ -300,15 +300,15 @@ easyconfigs:
 # from here on apps were originally built with EB 4.9.2
 # PR 20958 is included since EB 4.9.3
 #  - OpenFOAM-10-foss-2023a.eb:
-#       options:
-#         # see https://github.com/easybuilders/easybuild-easyconfigs/pull/20958
-#         from-commit: dbadb2074464d816740ee0e95595c2cb31b6338f
+#      options:
+#        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/20958
+#        from-commit: dbadb2074464d816740ee0e95595c2cb31b6338f
   - OpenFOAM-10-foss-2023a.eb
 # PR 20958 is included since EB 4.9.3
-#   - OpenFOAM-11-foss-2023a.eb:
-#       options:
-#         # see https://github.com/easybuilders/easybuild-easyconfigs/pull/20958
-#         from-commit: dbadb2074464d816740ee0e95595c2cb31b6338f
+#  - OpenFOAM-11-foss-2023a.eb:
+#      options:
+#        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/20958
+#        from-commit: dbadb2074464d816740ee0e95595c2cb31b6338f
   - OpenFOAM-11-foss-2023a.eb
   - BCFtools-1.18-GCC-12.3.0.eb
   - BWA-0.7.18-GCCcore-12.3.0.eb
@@ -356,60 +356,60 @@ easyconfigs:
   - SciTools-Iris-3.9.0-foss-2023a.eb
 # PRs 20841 and 3338 were included since EB 4.9.3
 #  - OpenFOAM-v2312-foss-2023a.eb:
-#       options:
-#         # https://github.com/easybuilders/easybuild-easyblocks/pull/3388
-#         include-easyblocks-from-commit: c8256a36e7062bc09f5ce30552a9de9827054c9e
-#         # https://github.com/easybuilders/easybuild-easyconfigs/pull/20841
-#         from-commit: f0e91e6e430ebf902f7788ebb47f0203dee60649
+#      options:
+#        # https://github.com/easybuilders/easybuild-easyblocks/pull/3388
+#        include-easyblocks-from-commit: c8256a36e7062bc09f5ce30552a9de9827054c9e
+#        # https://github.com/easybuilders/easybuild-easyconfigs/pull/20841
+#        from-commit: f0e91e6e430ebf902f7788ebb47f0203dee60649
   - OpenFOAM-v2312-foss-2023a.eb
 # PR 21136 is included since EB 4.9.3
-#   - BioPerl-1.7.8-GCCcore-12.3.0.eb:
-#       options:
-#         # see https://github.com/easybuilders/easybuild-easyconfigs/pull/21136
-#         from-commit: d8076ebaf8cb915762adebf88d385cc672b350dc
-   - BioPerl-1.7.8-GCCcore-12.3.0.eb
-   - grpcio-1.57.0-GCCcore-12.3.0.eb
+#  - BioPerl-1.7.8-GCCcore-12.3.0.eb:
+#      options:
+#        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/21136
+#        from-commit: d8076ebaf8cb915762adebf88d385cc672b350dc
+  - BioPerl-1.7.8-GCCcore-12.3.0.eb
+  - grpcio-1.57.0-GCCcore-12.3.0.eb
 # PR 20880 is included since EB 4.9.3
-#   - orjson-3.9.15-GCCcore-12.3.0.eb:
-#       options:
-#         # see https://github.com/easybuilders/easybuild-easyconfigs/pull/20880
-#         from-commit: bc6e08f89759b8b70166de5bfcb5056b9db8ec90
-   - orjson-3.9.15-GCCcore-12.3.0.eb
+#  - orjson-3.9.15-GCCcore-12.3.0.eb:
+#      options:
+#        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/20880
+#        from-commit: bc6e08f89759b8b70166de5bfcb5056b9db8ec90
+  - orjson-3.9.15-GCCcore-12.3.0.eb
 # PR 21094 is included since EB 4.9.3
-#   - wradlib-2.0.3-foss-2023a.eb:
-#       options:
-#         # see https://github.com/easybuilders/easybuild-easyconfigs/pull/21094
-#         from-commit: 3a2e0b8e6ee45277d01fb7e2eb93027a28c9461a
-   - wradlib-2.0.3-foss-2023a.eb
+#  - wradlib-2.0.3-foss-2023a.eb:
+#      options:
+#        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/21094
+#        from-commit: 3a2e0b8e6ee45277d01fb7e2eb93027a28c9461a
+  - wradlib-2.0.3-foss-2023a.eb
 # PR 21155 is included since EB 4.9.3
-#   - MBX-1.1.0-foss-2023a.eb:
-#       options:
-#         # see https://github.com/easybuilders/easybuild-easyconfigs/pull/21155
-#         from-commit: 6929a67401f2a2ec58f91fb306332a77497d73ff
-   - MBX-1.1.0-foss-2023a.eb
+#  - MBX-1.1.0-foss-2023a.eb:
+#      options:
+#        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/21155
+#        from-commit: 6929a67401f2a2ec58f91fb306332a77497d73ff
+  - MBX-1.1.0-foss-2023a.eb
 # PRs 20964 and 3381 are included since EB 4.9.3
-#   - Transrate-1.0.3-GCC-12.3.0.eb:
-#       options:
-#         # https://github.com/easybuilders/easybuild-easyblocks/pull/3381
-#         include-easyblocks-from-commit: bb86f05d4917b29e022023f152efdf0ca5c14ded
-#         # see https://github.com/easybuilders/easybuild-easyconfigs/pull/20964
-#         from-commit: 7d539a9e599d8bc5ac2bda6ee9587ef62351ee03
-   - Transrate-1.0.3-GCC-12.3.0.eb
+#  - Transrate-1.0.3-GCC-12.3.0.eb:
+#      options:
+#        # https://github.com/easybuilders/easybuild-easyblocks/pull/3381
+#        include-easyblocks-from-commit: bb86f05d4917b29e022023f152efdf0ca5c14ded
+#        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/20964
+#        from-commit: 7d539a9e599d8bc5ac2bda6ee9587ef62351ee03
+  - Transrate-1.0.3-GCC-12.3.0.eb
 # PR 20833 is included since EB 4.9.3
-#   - Critic2-1.2-foss-2023a.eb:
-#       options:
-#         # see https://github.com/easybuilders/easybuild-easyconfigs/pull/20833
-#         from-commit: 78426c2383fc7e4b9b9e77d7a77f336e1bee3843
-   - Critic2-1.2-foss-2023a.eb
+#  - Critic2-1.2-foss-2023a.eb:
+#      options:
+#        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/20833
+#        from-commit: 78426c2383fc7e4b9b9e77d7a77f336e1bee3843
+  - Critic2-1.2-foss-2023a.eb
 # PR 21310 is included since EB 4.9.3
-#   - LRBinner-0.1-foss-2023a.eb:
-#       options:
-#         # see https://github.com/easybuilders/easybuild-easyconfigs/pull/21310
-#         from-commit: 799d9101df2cf81aabe252f00cc82a7246363f53
-   - LRBinner-0.1-foss-2023a.eb
+#  - LRBinner-0.1-foss-2023a.eb:
+#      options:
+#        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/21310
+#        from-commit: 799d9101df2cf81aabe252f00cc82a7246363f53
+  - LRBinner-0.1-foss-2023a.eb
 # PR 21227 is included since EB 4.9.3
-#   - Redland-1.0.17-GCC-12.3.0.eb:
-#       options:
-#         # see https://github.com/easybuilders/easybuild-easyconfigs/pull/21227
-#         from-commit: 4c5e3455dec31e68e8383c7fd86d1f80c434676d
-   - Redland-1.0.17-GCC-12.3.0.eb
+#  - Redland-1.0.17-GCC-12.3.0.eb:
+#      options:
+#        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/21227
+#        from-commit: 4c5e3455dec31e68e8383c7fd86d1f80c434676d
+  - Redland-1.0.17-GCC-12.3.0.eb
