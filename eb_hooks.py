@@ -661,27 +661,6 @@ def pre_configure_hook_gromacs(self, *args, **kwargs):
         raise EasyBuildError("GROMACS-specific hook triggered for non-GROMACS easyconfig?!")
 
 
-def pre_configure_hook_llvm(self, *args, **kwargs):
-    """Adjust internal configure options for the LLVM EasyBlock to reinstate filtered out dependencies.
-    In the LLVM EasyBlock, most checks concerning loaded modules are performed at the configure_step.
-    The EB uses a global `general_opts` dict to keep track of options that needs to be reused across stages.
-    The way the EB is structured does allow to inject a CMAKE option through `self._cfgopts` which is a splitted list
-    of the `configure_opts` passed through the EC, but does not allow to override as the `general_opts` dict will
-    take precedence over the `self._cfgopts` list.
-
-    We can instead set the environment variable that EasyBuild uses for `get_software_root` to trick the EB into
-    into pointing to the compat layer.
-    """
-    if self.name == 'LLVM':
-        eprefix = get_eessi_envvar('EPREFIX')
-
-        for software in ('zlib', 'ncurses'):
-            var_name = get_software_root_env_var_name(software)
-            env.setvar(var_name, os.path.join(eprefix, 'usr'))
-    else:
-        raise EasyBuildError("LLVM-specific hook triggered for non-LLVM easyconfig?!")
-
-
 def pre_configure_hook_openblas_optarch_generic(self, *args, **kwargs):
     """
     Pre-configure hook for OpenBLAS: add DYNAMIC_ARCH=1 to build/test/install options when using --optarch=GENERIC
