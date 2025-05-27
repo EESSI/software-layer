@@ -444,6 +444,15 @@ def pre_fetch_hook_zen4_gcccore1220(self, *args, **kwargs):
         print_msg("Updated build option 'force' to 'True'")
 
 
+def pre_module_hook_zen4_gcccore1220(self, *args, **kwargs):
+    """Revert changes from pre_fetch_hook_zen4_gcccore1220"""
+    if is_gcccore_1220_based(ecname=self.name, ecversion=self.version, tcname=self.toolchain.name,
+                             tcversion=self.toolchain.version):
+        if hasattr(self, EESSI_MODULE_ONLY_ATTR):
+            # Allow the module to be loaded in the module step
+            os.environ[EESSI_IGNORE_ZEN4_GCC1220_ENVVAR] = "1"
+
+
 def post_module_hook_zen4_gcccore1220(self, *args, **kwargs):
     """Revert changes from pre_fetch_hook_zen4_gcccore1220"""
     if is_gcccore_1220_based(ecname=self.name, ecversion=self.version, tcname=self.toolchain.name,
@@ -461,6 +470,10 @@ def post_module_hook_zen4_gcccore1220(self, *args, **kwargs):
         else:
             raise EasyBuildError("Cannot restore force to it's original value: 'self' is misisng attribute %s.",
                                  EESSI_FORCE_ATTR)
+
+        # If the variable to allow loading is set, remove it
+        if os.environ.get(EESSI_IGNORE_ZEN4_GCC1220_ENVVAR, False):
+            del os.environ[EESSI_IGNORE_ZEN4_GCC1220_ENVVAR]
 
 
 # Modules for dependencies are loaded in the prepare step. Thus, that's where we need this variable to be set
@@ -1186,10 +1199,21 @@ def inject_gpu_property(ec):
     return ec
 
 
+def pre_module_hook(self, *args, **kwargs):
+    """Main pre module hook: trigger custom functions based on software name."""
+    if self.name in POST_MODULE_HOOKS:
+        POST_MODULE_HOOKS[self.name](self, *args, **kwargs)
+
+    # Always trigger this one, regardless of self.name
+    cpu_target = get_eessi_envvar('EESSI_SOFTWARE_SUBDIR')
+    if cpu_target == CPU_TARGET_ZEN4:
+        pre_module_hook_zen4_gcccore1220(self, *args, **kwargs)
+
+
 def post_module_hook(self, *args, **kwargs):
     """Main post module hook: trigger custom functions based on software name."""
     if self.name in POST_MODULE_HOOKS:
-        POST_MODULE_HOOKS[ec.name](self, *args, **kwargs)
+        POST_MODULE_HOOKS[self.name](self, *args, **kwargs)
 
     # Always trigger this one, regardless of self.name
     cpu_target = get_eessi_envvar('EESSI_SOFTWARE_SUBDIR')
@@ -1257,6 +1281,8 @@ POST_POSTPROC_HOOKS = {
     'CUDA': post_postproc_cuda,
     'cuDNN': post_postproc_cudnn,
 }
+
+PRE_MODULE_HOOKS = {}
 
 POST_MODULE_HOOKS = {}
 
