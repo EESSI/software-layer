@@ -14,6 +14,7 @@ from easybuild.tools.run import run_cmd
 from easybuild.tools.systemtools import AARCH64, POWER, X86_64, get_cpu_architecture, get_cpu_features
 from easybuild.tools.toolchain.compiler import OPTARCH_GENERIC
 from easybuild.tools.version import VERSION as EASYBUILD_VERSION
+from easybuild.tools.modules import get_software_root_env_var_name
 
 # prefer importing LooseVersion from easybuild.tools, but fall back to distuils in case EasyBuild <= 4.7.0 is used
 try:
@@ -654,6 +655,27 @@ def pre_configure_hook_gromacs(self, *args, **kwargs):
         raise EasyBuildError("GROMACS-specific hook triggered for non-GROMACS easyconfig?!")
 
 
+def pre_configure_hook_llvm(self, *args, **kwargs):
+    """Adjust internal configure options for the LLVM EasyBlock to reinstate filtered out dependencies.
+    In the LLVM EasyBlock, most checks concerning loaded modules are performed at the configure_step.
+    The EB uses a global `general_opts` dict to keep track of options that needs to be reused across stages.
+    The way the EB is structured does allow to inject a CMAKE option through `self._cfgopts` which is a splitted list
+    of the `configure_opts` passed through the EC, but does not allow to override as the `general_opts` dict will
+    take precedence over the `self._cfgopts` list.
+
+    We can instead set the environment variable that EasyBuild uses for `get_software_root` to trick the EB into
+    into pointing to the compat layer.
+    """
+    if self.name == 'LLVM':
+        eprefix = get_eessi_envvar('EPREFIX')
+
+        for software in ('zlib', 'ncurses'):
+            var_name = get_software_root_env_var_name(software)
+            env.setvar(var_name, os.path.join(eprefix, 'usr'))
+    else:
+        raise EasyBuildError("LLVM-specific hook triggered for non-LLVM easyconfig?!")
+
+
 def pre_configure_hook_openblas_optarch_generic(self, *args, **kwargs):
     """
     Pre-configure hook for OpenBLAS: add DYNAMIC_ARCH=1 to build/test/install options when using --optarch=GENERIC
@@ -1227,6 +1249,7 @@ PRE_CONFIGURE_HOOKS = {
     'Extrae': pre_configure_hook_extrae,
     'GROMACS': pre_configure_hook_gromacs,
     'libfabric': pre_configure_hook_libfabric_disable_psm3_x86_64_generic,
+    'LLVM': pre_configure_hook_llvm,
     'MetaBAT': pre_configure_hook_metabat_filtered_zlib_dep,
     'OpenBLAS': pre_configure_hook_openblas_optarch_generic,
     'WRF': pre_configure_hook_wrf_aarch64,
