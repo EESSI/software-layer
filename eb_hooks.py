@@ -445,11 +445,11 @@ def pre_fetch_hook_zen4_gcccore1220(self, *args, **kwargs):
 
 
 def pre_module_hook_zen4_gcccore1220(self, *args, **kwargs):
-    """Revert changes from pre_fetch_hook_zen4_gcccore1220"""
+    """Make module load-able during module step"""
     if is_gcccore_1220_based(ecname=self.name, ecversion=self.version, tcname=self.toolchain.name,
                              tcversion=self.toolchain.version):
-        if hasattr(self, EESSI_MODULE_ONLY_ATTR):
-            # Allow the module to be loaded in the module step
+        if hasattr(self, 'initial_environ'):
+            # Allow the module to be loaded in the module step (which uses initial environment)
             print_msg(f"Setting {EESSI_IGNORE_ZEN4_GCC1220_ENVVAR} in initial environment")
             self.initial_environ[EESSI_IGNORE_ZEN4_GCC1220_ENVVAR] = "1"
 
@@ -473,9 +473,10 @@ def post_module_hook_zen4_gcccore1220(self, *args, **kwargs):
                                  EESSI_FORCE_ATTR)
 
         # If the variable to allow loading is set, remove it
-        if self.initial_environ.get(EESSI_IGNORE_ZEN4_GCC1220_ENVVAR, False):
-            print_msg(f"Removing {EESSI_IGNORE_ZEN4_GCC1220_ENVVAR} in initial environment")
-            del self.initial_environ[EESSI_IGNORE_ZEN4_GCC1220_ENVVAR]
+        if hasattr(self, 'initial_environ'):
+            if self.initial_environ.get(EESSI_IGNORE_ZEN4_GCC1220_ENVVAR, False):
+                print_msg(f"Removing {EESSI_IGNORE_ZEN4_GCC1220_ENVVAR} in initial environment")
+                del self.initial_environ[EESSI_IGNORE_ZEN4_GCC1220_ENVVAR]
 
 
 # Modules for dependencies are loaded in the prepare step. Thus, that's where we need this variable to be set
