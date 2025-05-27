@@ -1201,8 +1201,8 @@ def inject_gpu_property(ec):
 
 def pre_module_hook(self, *args, **kwargs):
     """Main pre module hook: trigger custom functions based on software name."""
-    if self.name in POST_MODULE_HOOKS:
-        POST_MODULE_HOOKS[self.name](self, *args, **kwargs)
+    if self.name in PRE_MODULE_HOOKS:
+        PRE_MODULE_HOOKS[self.name](self, *args, **kwargs)
 
     # Always trigger this one, regardless of self.name
     cpu_target = get_eessi_envvar('EESSI_SOFTWARE_SUBDIR')
