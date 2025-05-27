@@ -28,10 +28,10 @@ easyconfigs:
 # building Rust (a dependency of HarfBuzz) repeatedly failed. We skip it in this
 # PR.
 #
-## originally built with EB 4.8.2, PR 19339 was included since EB 4.9.0
-##  - HarfBuzz-5.3.1-GCCcore-12.2.0.eb:
-##      options:
-##        from-pr: 19339
-#  - HarfBuzz-5.3.1-GCCcore-12.2.0.eb
+# originally built with EB 4.8.2, PR 19339 was included since EB 4.9.0
+#  - HarfBuzz-5.3.1-GCCcore-12.2.0.eb:
+#      options:
+#        from-pr: 19339
+  - HarfBuzz-5.3.1-GCCcore-12.2.0.eb
 ##  - Qt5-5.15.7-GCCcore-12.2.0.eb
 ##  - QuantumESPRESSO-7.2-foss-2022b.eb
