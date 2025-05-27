@@ -69,17 +69,19 @@ jobs:
               # set $EESSI_CPU_FAMILY to the CPU architecture that corresponds to $EESSI_SOFTWARE_SUBDIR_OVERRIDE (part before the first slash),
               # to prevent issues with checks in the Easybuild configuration that use this variable
               export EESSI_CPU_FAMILY=${EESSI_SOFTWARE_SUBDIR_OVERRIDE%%/*}
-              module load EasyBuild
-              which eb
-              eb --version
               export EESSI_PREFIX=/cvmfs/software.eessi.io/versions/${EESSI_VERSION}
               export EESSI_OS_TYPE=linux
               env | grep ^EESSI | sort
 
               # first check the CPU-only builds for this CPU target
-              echo "just run check_missing_installations.sh (should use easystacks/software.eessi.io/${EESSI_VERSION}/eessi-${EESSI_VERSION}-*.yml with latest EasyBuild release)"
+              echo "first run check_missing_installations.sh for CPU-only builds"
               for easystack_file in $(EESSI_VERSION=${EESSI_VERSION} .github/workflows/scripts/only_latest_easystacks.sh); do
-                  echo "check missing installations for ${easystack_file}..."
+                  eb_version=$(echo ${easystack_file} | sed 's/.*eb-\([0-9.]*\).*.yml/\1/g')
+                  echo "check missing installations for ${easystack_file} with EasyBuild ${eb_version}..."
+                  module purge
+                  module load EasyBuild/${eb_version}
+                  which eb
+                  eb --version
                   ./check_missing_installations.sh ${easystack_file}
                   ec=$?
                   if [[ ${ec} -ne 0 ]]; then echo "missing installations found for ${easystack_file}!" >&2; exit ${ec}; fi
@@ -94,7 +96,12 @@ jobs:
                       module use ${EESSI_SOFTWARE_PATH}/accel/${accel}/modules/all
                       echo "checking missing installations for accelerator ${accel} using modulepath: ${MODULEPATH}"
                       for easystack_file in $(EESSI_VERSION=${EESSI_VERSION} ACCEL_EASYSTACKS=1 .github/workflows/scripts/only_latest_easystacks.sh); do
-                          echo "check missing installations for ${easystack_file}..."
+                          eb_version=$(echo ${easystack_file} | sed 's/.*eb-\([0-9.]*\).*.yml/\1/g')
+                          echo "check missing installations for ${easystack_file} with EasyBuild ${eb_version}..."
+                          module purge
+                          module load EasyBuild/${eb_version}
+                          which eb
+                          eb --version
                           ./check_missing_installations.sh ${easystack_file}
                           ec=$?
                           if [[ ${ec} -ne 0 ]]; then echo "missing installations found for ${easystack_file}!" >&2; exit ${ec}; fi
