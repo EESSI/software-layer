@@ -13,6 +13,7 @@ from easybuild.tools.filetools import apply_regex_substitutions, copy_file, remo
 from easybuild.tools.run import run_cmd
 from easybuild.tools.systemtools import AARCH64, POWER, X86_64, get_cpu_architecture, get_cpu_features
 from easybuild.tools.toolchain.compiler import OPTARCH_GENERIC
+from easybuild.tools.version import VERSION as EASYBUILD_VERSION
 
 # prefer importing LooseVersion from easybuild.tools, but fall back to distuils in case EasyBuild <= 4.7.0 is used
 try:
@@ -126,9 +127,15 @@ def post_ready_hook(self, *args, **kwargs):
     Post-ready hook: limit parallellism for selected builds based on software name and CPU target.
                      parallelism needs to be limited because some builds require a lot of memory per used core.
     """
-    # 'parallel' easyconfig parameter is set via EasyBlock.set_parallel in ready step based on available cores.
+    # 'parallel' (EB4) or 'max_parallel' (EB5) easyconfig parameter is set via EasyBlock.set_parallel in ready step
+    # based on available cores.
+
+    # Check whether we have EasyBuild 4 or 5
+    parallel_param = 'parallel'
+    if EASYBUILD_VERSION >= '5':
+        parallel_param = 'max_parallel'
     # get current parallelism setting
-    parallel = self.cfg['parallel']
+    parallel = self.cfg[parallel_param]
     if parallel == 1:
         return  # no need to limit if already using 1 core
 
@@ -152,7 +159,7 @@ def post_ready_hook(self, *args, **kwargs):
 
         # apply the limit if it's different from current
         if new_parallel != parallel:
-            self.cfg['parallel'] = new_parallel
+            self.cfg[parallel_param] = new_parallel
             msg = "limiting parallelism to %s (was %s) for %s on %s to avoid out-of-memory failures during building/testing"
             print_msg(msg % (new_parallel, parallel, self.name, cpu_target), log=self.log)
 
@@ -965,52 +972,56 @@ def post_postproc_cuda(self, *args, **kwargs):
     Remove files from CUDA installation that we are not allowed to ship,
     and replace them with a symlink to a corresponding installation under host_injections.
     """
+    if self.name == 'CUDA':
+        # This hook only acts on an installation under repositories that _we_ ship (*.eessi.io/versions) 
+        eessi_installation = bool(re.search(EESSI_INSTALLATION_REGEX, self.installdir))
 
-    # We need to check if we are doing an EESSI-distributed installation
-    eessi_installation = bool(re.search(EESSI_INSTALLATION_REGEX, self.installdir))
+        if eessi_installation:
+            print_msg("Replacing files in CUDA installation that we can not ship with symlinks to host_injections...")
 
-    if self.name == 'CUDA' and eessi_installation:
-        print_msg("Replacing files in CUDA installation that we can not ship with symlinks to host_injections...")
+            # read CUDA EULA, construct allowlist based on section 2.6 that specifies list of files that can be shipped
+            eula_path = os.path.join(self.installdir, 'EULA.txt')
+            relevant_eula_lines = []
+            with open(eula_path) as infile:
+                copy = False
+                for line in infile:
+                    if line.strip() == "2.6. Attachment A":
+                        copy = True
+                        continue
+                    elif line.strip() == "2.7. Attachment B":
+                        copy = False
+                        continue
+                    elif copy:
+                        relevant_eula_lines.append(line)
 
-        # read CUDA EULA, construct allowlist based on section 2.6 that specifies list of files that can be shipped
-        eula_path = os.path.join(self.installdir, 'EULA.txt')
-        relevant_eula_lines = []
-        with open(eula_path) as infile:
-            copy = False
-            for line in infile:
-                if line.strip() == "2.6. Attachment A":
-                    copy = True
-                    continue
-                elif line.strip() == "2.7. Attachment B":
-                    copy = False
-                    continue
-                elif copy:
-                    relevant_eula_lines.append(line)
+            # create list without file extensions, they're not really needed and they only complicate things
+            allowlist = ['EULA', 'README']
+            file_extensions = ['.so', '.a', '.h', '.bc']
+            for line in relevant_eula_lines:
+                for word in line.split():
+                    if any(ext in word for ext in file_extensions):
+                        allowlist.append(os.path.splitext(word)[0])
+            # The EULA of CUDA 12.4 introduced a typo (confirmed by NVIDIA):
+            # libnvrtx-builtins_static.so should be libnvrtc-builtins_static.so
+            if 'libnvrtx-builtins_static' in allowlist:
+                allowlist.remove('libnvrtx-builtins_static')
+                allowlist.append('libnvrtc-builtins_static')
+            allowlist = sorted(set(allowlist))
+            self.log.info(
+                "Allowlist for files in CUDA installation that can be redistributed: " + ', '.join(allowlist)
+                )
 
-        # create list without file extensions, they're not really needed and they only complicate things
-        allowlist = ['EULA', 'README']
-        file_extensions = ['.so', '.a', '.h', '.bc']
-        for line in relevant_eula_lines:
-            for word in line.split():
-                if any(ext in word for ext in file_extensions):
-                    allowlist.append(os.path.splitext(word)[0])
-        # The EULA of CUDA 12.4 introduced a typo (confirmed by NVIDIA):
-        # libnvrtx-builtins_static.so should be libnvrtc-builtins_static.so
-        if 'libnvrtx-builtins_static' in allowlist:
-            allowlist.remove('libnvrtx-builtins_static')
-            allowlist.append('libnvrtc-builtins_static')
-        allowlist = sorted(set(allowlist))
-        self.log.info("Allowlist for files in CUDA installation that can be redistributed: " + ', '.join(allowlist))
+            # Do some quick sanity checks for things we should or shouldn't have in the list
+            if 'nvcc' in allowlist:
+                raise EasyBuildError("Found 'nvcc' in allowlist: %s" % allowlist)
+            if 'libcudart' not in allowlist:
+                raise EasyBuildError("Did not find 'libcudart' in allowlist: %s" % allowlist)
 
-        # Do some quick sanity checks for things we should or shouldn't have in the list
-        if 'nvcc' in allowlist:
-            raise EasyBuildError("Found 'nvcc' in allowlist: %s" % allowlist)
-        if 'libcudart' not in allowlist:
-            raise EasyBuildError("Did not find 'libcudart' in allowlist: %s" % allowlist)
-
-        # replace files that are not distributable with symlinks into
-        # host_injections
-        replace_non_distributable_files_with_symlinks(self.log, self.installdir, self.name, allowlist)
+            # replace files that are not distributable with symlinks into
+            # host_injections
+            replace_non_distributable_files_with_symlinks(self.log, self.installdir, self.name, allowlist)
+        else:
+            print_msg(f"EESSI hook to respect CUDA license not triggered for installation path {self.installdir}")
     else:
         raise EasyBuildError("CUDA-specific hook triggered for non-CUDA easyconfig?!")
 
@@ -1269,15 +1280,21 @@ PARALLELISM_LIMITS = {
         '*': (divide_by_factor, 2),
         CPU_TARGET_A64FX: (set_maximum, 12),
     },
+    'nodejs': {
+        CPU_TARGET_A64FX: (divide_by_factor, 2),
+    },
     'MBX': {
         '*': (divide_by_factor, 2),
+    },
+    'PyTorch': {
+        CPU_TARGET_A64FX: (divide_by_factor, 4),
     },
     'TensorFlow': {
         '*': (divide_by_factor, 2),
         CPU_TARGET_A64FX: (set_maximum, 8),
     },
     'Qt5': {
-        CPU_TARGET_A64FX: (divide_by_factor, 2),
+        CPU_TARGET_A64FX: (set_maximum, 8),
     },
     'ROOT': {
         CPU_TARGET_A64FX: (divide_by_factor, 2),
