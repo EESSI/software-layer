@@ -390,7 +390,7 @@ def parse_hook_freeimage_aarch64(ec, *args, **kwargs):
                 ec['toolchainopts'] = {}
             ec['toolchainopts']['pic'] = True
             ec['toolchainopts']['extra_cflags'] = '-DPNG_ARM_NEON_OPT=0'
-            print_msg("Changed toolchainopts for %s: %s", ec.name, ec['toolchainopts']) 
+            print_msg("Changed toolchainopts for %s: %s", ec.name, ec['toolchainopts'])
 
 
 def parse_hook_zen4_module_only(ec, eprefix):
@@ -989,7 +989,7 @@ def post_postproc_cuda(self, *args, **kwargs):
     and replace them with a symlink to a corresponding installation under host_injections.
     """
     if self.name == 'CUDA':
-        # This hook only acts on an installation under repositories that _we_ ship (*.eessi.io/versions) 
+        # This hook only acts on an installation under repositories that _we_ ship (*.eessi.io/versions)
         eessi_installation = bool(re.search(EESSI_INSTALLATION_REGEX, self.installdir))
 
         if eessi_installation:
@@ -1048,43 +1048,46 @@ def post_postproc_cudnn(self, *args, **kwargs):
     and replace them with a symlink to a corresponding installation under host_injections.
     """
 
-    # We need to check if we are doing an EESSI-distributed installation
-    eessi_installation = bool(re.search(EESSI_INSTALLATION_REGEX, self.installdir))
+    if self.name == 'cuDNN':
+        # This hook only acts on an installation under repositories that _we_ ship (*.eessi.io/versions)
+        eessi_installation = bool(re.search(EESSI_INSTALLATION_REGEX, self.installdir))
 
-    if self.name == 'cuDNN' and eessi_installation:
-        print_msg("Replacing files in cuDNN installation that we can not ship with symlinks to host_injections...")
+        if eessi_installation:
+            print_msg("Replacing files in cuDNN installation that we can not ship with symlinks to host_injections...")
 
-        allowlist = ['LICENSE']
+            allowlist = ['LICENSE']
 
-        # read cuDNN LICENSE, construct allowlist based on section "2. Distribution" that specifies list of files that can be shipped
-        license_path = os.path.join(self.installdir, 'LICENSE')
-        search_string = "2. Distribution. The following portions of the SDK are distributable under the Agreement:"
-        found_search_string = False
-        with open(license_path) as infile:
-            for line in infile:
-                if line.strip().startswith(search_string):
-                    found_search_string = True
-                    # remove search string, split into words, remove trailing
-                    # dots '.' and only retain words starting with a dot '.'
-                    distributable = line[len(search_string):]
-                    # distributable looks like ' the runtime files .so and .dll.'
-                    # note the '.' after '.dll'
-                    for word in distributable.split():
-                        if word[0] == '.':
-                            # rstrip is used to remove the '.' after '.dll'
-                            allowlist.append(word.rstrip('.'))
-        if not found_search_string:
-            # search string wasn't found in LICENSE file
-            raise EasyBuildError("search string '%s' was not found in license file '%s';"
-                                 "hence installation may be replaced by symlinks only",
-                                 search_string, license_path)
+            # read cuDNN LICENSE, construct allowlist based on section "2. Distribution" that specifies list of files that can be shipped
+            license_path = os.path.join(self.installdir, 'LICENSE')
+            search_string = "2. Distribution. The following portions of the SDK are distributable under the Agreement:"
+            found_search_string = False
+            with open(license_path) as infile:
+                for line in infile:
+                    if line.strip().startswith(search_string):
+                        found_search_string = True
+                        # remove search string, split into words, remove trailing
+                        # dots '.' and only retain words starting with a dot '.'
+                        distributable = line[len(search_string):]
+                        # distributable looks like ' the runtime files .so and .dll.'
+                        # note the '.' after '.dll'
+                        for word in distributable.split():
+                            if word[0] == '.':
+                                # rstrip is used to remove the '.' after '.dll'
+                                allowlist.append(word.rstrip('.'))
+            if not found_search_string:
+                # search string wasn't found in LICENSE file
+                raise EasyBuildError("search string '%s' was not found in license file '%s';"
+                                     "hence installation may be replaced by symlinks only",
+                                     search_string, license_path)
 
-        allowlist = sorted(set(allowlist))
-        self.log.info("Allowlist for files in cuDNN installation that can be redistributed: " + ', '.join(allowlist))
+            allowlist = sorted(set(allowlist))
+            self.log.info("Allowlist for files in cuDNN installation that can be redistributed: " + ', '.join(allowlist))
 
-        # replace files that are not distributable with symlinks into
-        # host_injections
-        replace_non_distributable_files_with_symlinks(self.log, self.installdir, self.name, allowlist)
+            # replace files that are not distributable with symlinks into
+            # host_injections
+            replace_non_distributable_files_with_symlinks(self.log, self.installdir, self.name, allowlist)
+        else:
+            print_msg(f"EESSI hook to respect cuDDN license not triggered for installation path {self.installdir}")
     else:
         raise EasyBuildError("cuDNN-specific hook triggered for non-cuDNN easyconfig?!")
 
