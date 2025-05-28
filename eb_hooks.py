@@ -133,7 +133,8 @@ def post_ready_hook(self, *args, **kwargs):
     # Check whether we have EasyBuild 4 or 5
     parallel_param = 'parallel'
     if EASYBUILD_VERSION >= '5':
-        parallel_param = 'max_parallel'
+        # parallel_param = 'max_parallel'  # EasyBlock.set_parallel sets 'parallel'
+        parallel_param = 'parallel'
     # get current parallelism setting
     parallel = self.cfg[parallel_param]
     if parallel == 1:
