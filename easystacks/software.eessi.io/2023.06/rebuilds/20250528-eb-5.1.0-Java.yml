@@ -1,0 +1,7 @@
+# 2025.05.28
+# - rebuild Java wrapper modules to update to latest Java patch versions,
+#   see https://github.com/easybuilders/easybuild-easyconfigs/pull/22840
+easyconfigs:
+  - Java-11.eb
+  - Java-17.eb
+  - Java-21.eb
