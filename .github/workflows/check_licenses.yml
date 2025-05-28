@@ -14,29 +14,27 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout out software-layer repository
-        uses: actions/checkout@v4
-        with: 
-          fetch-depth: 0
-
-      - name: Set up Python
-        uses: actions/setup-python@0a5c61591373683505ea898e09a3ea4f39ef2b9c
-        with:
-          python-version: '3.9' 
+      -  uses: actions/checkout@v4
+      -  uses: eessi/github-action-eessi@v3
 
       - name: If an EasyStack has been modified, create a mini EasyStack file to parse
         run: |
-          git fetch origin ${{ github.base_ref }}
-          #          FILES=$(git diff --name-only origin/${{ github.base_ref }} HEAD | grep "eessi-*.yml" ) 
-          FILES=$(git diff --name-only origin/${{ github.base_ref }} HEAD | grep -E 'easystacks/.*/eessi-.*\.yml')
-          # echo "Easystacks between PR and base branch:"
-          echo $FILES
-          #for FILE in "${FILES[@]}"; do
-          #  echo "Diff for $FILE:"
-          #  git diff origin/${{ github.base_ref }} HEAD -- "$FILE" >> new.${FILE}
-          #done
+          git fetch https://github.com/${{ github.repository }} ${{ github.base_ref }}
+          FILES=$(git diff --name-only FETCH_HEAD HEAD | grep -E 'easystacks/.*/eessi-.*\.yml') 
+       
+          echo "$FILES" | while read -r FILE; do
+            echo "Diff for $FILE:"
+            git diff --unified=0 --no-color FETCH_HEAD HEAD -- "$FILE" | grep '^+' | grep -v '^+++' >> new.added_lines.yml
+          done
 
       - name: Parse this EasyStack 
         run: | 
-          cat new.*
+          cat new.added_lines.yml
+          module load EasyBuild 
+          if [ -s new.added_lines.yml ]; then
+            echo "Parsing the EasyStack file..."
+            python licenses/parse_easystack.py new.added_lines.yml
+          else
+            echo "No changes detected in the EasyStack file."
+          fi
 
