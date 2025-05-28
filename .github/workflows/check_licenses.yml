@@ -24,7 +24,7 @@ jobs:
        
           echo "$FILES" | while read -r FILE; do
             echo "Diff for $FILE:"
-            git diff --unified=0 --no-color FETCH_HEAD HEAD -- "$FILE" | grep '^+' | grep -v '^+++' >> new.added_lines.yml
+            git diff --unified=0 --no-color FETCH_HEAD HEAD -- "$FILE" | grep '^+' | grep -v '^+++' | cut -c2- >> new.added_lines.yml
           done
 
       - name: Parse this EasyStack 
