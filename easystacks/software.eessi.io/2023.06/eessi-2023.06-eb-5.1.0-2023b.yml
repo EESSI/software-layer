@@ -1,2 +1,8 @@
 easyconfigs:
-  - buildenv-default-foss-2023b.eb 
+  - buildenv-default-foss-2023b.eb
+  - Flux-0.74.0-GCC-13.2.0.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/22979
+        # and https://github.com/easybuilders/easybuild-easyblocks/pull/3748
+        from-commit: c4f4963a0c73614c83ea89598f30e02296c282b8
+        include-easyblocks-from-commit: b818b835d4e78ab440e20d6ac5624c924c4d0fcf
