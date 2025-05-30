@@ -45,3 +45,7 @@ easyconfigs:
       options:
         # see https://github.com/easybuilders/easybuild-easyconfigs/pull/22469
         from-commit: fc22841fef99cbb2a221c18029b15e692e78c27c
+  - Ginkgo-1.9.0-gompi-2023b.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/22719
+        from-commit: a4fbfabbb5a518ecd744004b006763a7d44bf251
