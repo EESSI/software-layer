@@ -55,6 +55,14 @@ jobs:
           with:
               fetch-depth: 0  # Fetch all history for all branches and tags
 
+        - name: Show host system info
+          run: |
+            echo "/proc/cpuinfo:"
+            cat /proc/cpuinfo
+            echo
+            echo "lscpu:"
+            lscpu
+
         - name: Mount EESSI CernVM-FS pilot repository
           uses: cvmfs-contrib/github-action-cvmfs@55899ca74cf78ab874bdf47f5a804e47c198743c # v4.0
           with:
