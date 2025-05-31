@@ -109,6 +109,26 @@ local function load_site_specific_hooks()
 
 end
 
+local function using_eessi_accel_stack (t)
+    if not os.getenv("EESSI_SKIP_ACCELERATOR_WARNING") then
+        local fullName = t.modFullName
+        local moduleFilePath = t.fn
+        -- Check if we are using an EESSI version 2023 accelerator stack by checking the moduleFilePath is
+        -- a path that starts with /cvmfs/software.eessi.io/versions and contains accel/nvidia/ccNN
+        if string.sub(moduleFilePath, 1, 33) == "/cvmfs/software.eessi.io/versions" then
+            if string.find(moduleFilePath, "accel/nvidia/cc%d%d") then
+                -- right now we print this for all cases, but eventually we should only
+                -- print this for accelerators we do _not_ test
+                local advice = fullName .. " has not been tested for " .. os.getenv("EESSI_SOFTWARE_SUBDIR")
+                advice = advice .. " with " .. string.match(moduleFilePath, "accel/nvidia/cc%d%d") 
+                advice = advice .. " but is likely to work.\\n" 
+                advice = advice .. "(Silence this message by setting the environment variable "
+                advice = advice .. "EESSI_SKIP_ACCELERATOR_WARNING)"
+                LmodMessage(advice)
+            end
+        end
+    end
+end
 
 local function eessi_cuda_and_libraries_enabled_load_hook(t)
     local frameStk  = require("FrameStk"):singleton()
@@ -182,6 +202,8 @@ local function eessi_cuda_and_libraries_enabled_load_hook(t)
             end
         end
     end
+    -- finally verify if we are loading the software from EESSI and print a warning about the extent of testing
+    using_eessi_accel_stack(t)
 end
 
 local function eessi_espresso_deprecated_message(t)
