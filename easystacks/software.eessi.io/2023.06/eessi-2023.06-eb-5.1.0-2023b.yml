@@ -4,5 +4,7 @@ easyconfigs:
       options:
         # see https://github.com/easybuilders/easybuild-easyconfigs/pull/22979
         # and https://github.com/easybuilders/easybuild-easyblocks/pull/3748
-        from-commit: a51dc6e02b9724e4e8d80dfa823f313134379846
+        # from-commit: a51dc6e02b9724e4e8d80dfa823f313134379846
+        # patch is not being picked up, let's test
+        from-pr: 22979
         include-easyblocks-from-commit: b818b835d4e78ab440e20d6ac5624c924c4d0fcf
