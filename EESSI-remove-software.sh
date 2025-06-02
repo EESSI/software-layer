@@ -108,7 +108,7 @@ if [ $EUID -eq 0 ]; then
     else
         for easystack_file in ${changed_easystacks_rebuilds}; do
             # determine version of EasyBuild module to load based on EasyBuild version included in name of easystack file
-            eb_version=$(echo ${easystack_file} | sed 's/.*eb-\([0-9.]*\).*/\1/g')
+            eb_version=$(echo ${easystack_file} | sed 's/.*eb-\([0-9.]*\).*.yml/\1/g')
 
             # load EasyBuild module (will be installed if it's not available yet)
             source ${TOPDIR}/load_easybuild_module.sh ${eb_version}
@@ -116,9 +116,12 @@ if [ $EUID -eq 0 ]; then
             if [ -f ${easystack_file} ]; then
                 echo_green "Software rebuild(s) requested in ${easystack_file}, so determining which existing installation have to be removed..."
                 # we need to remove existing installation directories first,
-                # so let's figure out which modules have to be rebuilt by doing a dry-run and grepping "someapp/someversion" for the relevant lines (with [R])
+                # so let's figure out which modules have to be rebuilt by doing a
+                # dry-run and grepping "someapp/someversion" for the relevant
+                # lines (with [R] or [F])
+                #  * [F] $CFGS/s/someapp/someapp-someversion.eb (module: someapp/someversion)
                 #  * [R] $CFGS/s/someapp/someapp-someversion.eb (module: someapp/someversion)
-                rebuild_apps=$(eb --allow-use-as-root-and-accept-consequences --dry-run-short --rebuild --easystack ${easystack_file} | grep "^ \* \[R\]" | grep -o "module: .*[^)]" | awk '{print $2}')
+                rebuild_apps=$(eb --allow-use-as-root-and-accept-consequences --dry-run-short --rebuild --easystack ${easystack_file} | grep "^ \* \[[FR]\]" | grep -o "module: .*[^)]" | awk '{print $2}')
                 for app in ${rebuild_apps}; do
                     # Returns e.g. /cvmfs/software.eessi.io/versions/2023.06/software/linux/x86_64/amd/zen2/modules/all:
                     app_modulepath=$(module --terse av ${app} 2>&1 | head -n 1 | sed 's/://')

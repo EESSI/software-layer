@@ -1,0 +1,5 @@
+# 047-eb-4.9.2.yml: total build duration = 0 minutes
+easyconfigs:
+  - /cvmfs/software.eessi.io/versions/2023.06/software/linux/x86_64/intel/haswell/software/GObject-Introspection/1.78.1-GCCcore-13.2.0/easybuild/GObject-Introspection-1.78.1-GCCcore-13.2.0.eb:
+      options:
+        include-easyblocks: /cvmfs/software.eessi.io/versions/2023.06/software/linux/x86_64/intel/haswell/software/GObject-Introspection/1.78.1-GCCcore-13.2.0/easybuild/reprod/easyblocks/*.py

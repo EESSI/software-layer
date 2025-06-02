@@ -192,6 +192,10 @@ COMMON_ARGS+=("--mode" "run")
 [[ ! -z ${HTTPS_PROXY} ]] && COMMON_ARGS+=("--https-proxy" "${HTTPS_PROXY}")
 [[ ! -z ${REPOSITORY} ]] && COMMON_ARGS+=("--repository" "${REPOSITORY}")
 
+# pass through '--contain' to avoid leaking in scripts into the container session
+# note, --pass-through can be used multiple times if needed
+COMMON_ARGS+=("--pass-through" "--contain")
+
 # make sure to use the same parent dir for storing tarballs of tmp
 PREVIOUS_TMP_DIR=${PWD}/previous_tmp
 

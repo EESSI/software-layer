@@ -96,7 +96,7 @@ for EASYSTACK_FILE in ${TOPDIR}/easystacks/eessi-*CUDA*.yml; do
     echo -e "Processing easystack file ${easystack_file}...\n\n"
 
     # determine version of EasyBuild module to load based on EasyBuild version included in name of easystack file
-    eb_version=$(echo ${EASYSTACK_FILE} | sed 's/.*eb-\([0-9.]*\).*/\1/g')
+    eb_version=$(echo ${EASYSTACK_FILE} | sed 's/.*eb-\([0-9.]*\).*.yml/\1/g')
 
     # Load EasyBuild version for this easystack file _before_ loading EESSI-extend
     module_avail_out=${tmpdir}/ml.out

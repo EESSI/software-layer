@@ -90,11 +90,15 @@ if [[ ! -z ${SINGULARITY_CACHEDIR} ]]; then
     export SINGULARITY_CACHEDIR
 fi
 
-echo -n "setting \$STORAGE by replacing any var in '${LOCAL_TMP}' -> "
-# replace any env variable in ${LOCAL_TMP} with its
-#   current value (e.g., a value that is local to the job)
-STORAGE=$(envsubst <<< ${LOCAL_TMP})
-echo "'${STORAGE}'"
+if [[ -z "${TMPDIR}" ]]; then
+    echo -n "setting \$STORAGE by replacing any var in '${LOCAL_TMP}' -> "
+    # replace any env variable in ${LOCAL_TMP} with its
+    #   current value (e.g., a value that is local to the job)
+    STORAGE=$(envsubst <<< ${LOCAL_TMP})
+else
+    STORAGE=${TMPDIR}
+fi
+echo "bot/build.sh: STORAGE='${STORAGE}'"
 
 # make sure ${STORAGE} exists
 mkdir -p ${STORAGE}
@@ -143,7 +147,9 @@ echo "bot/build.sh: EESSI_VERSION_OVERRIDE='${EESSI_VERSION_OVERRIDE}'"
 # determine CVMFS repo to be used from .repository.repo_name in ${JOB_CFG_FILE}
 # here, just set EESSI_CVMFS_REPO_OVERRIDE, a bit further down
 # "source init/eessi_defaults" via sourcing init/minimal_eessi_env
-export EESSI_CVMFS_REPO_OVERRIDE=/cvmfs/${REPOSITORY_NAME}
+# Note: iff ${EESSI_DEV_PROJECT} is defined (building for dev.eessi.io), then we 
+# append the project subdirectory to ${EESSI_CVMFS_REPO_OVERRIDE}
+export EESSI_CVMFS_REPO_OVERRIDE=/cvmfs/${REPOSITORY_NAME}${EESSI_DEV_PROJECT:+/$EESSI_DEV_PROJECT}
 echo "bot/build.sh: EESSI_CVMFS_REPO_OVERRIDE='${EESSI_CVMFS_REPO_OVERRIDE}'"
 
 # determine CPU architecture to be used from entry .architecture in ${JOB_CFG_FILE}
@@ -179,6 +185,15 @@ COMMON_ARGS+=("--mode" "run")
 if [[ "${REPOSITORY_NAME}" == "dev.eessi.io" ]]; then
     COMMON_ARGS+=("--repository" "software.eessi.io,access=ro")
 fi
+
+# add $software_layer_dir and /dev as extra bind paths
+#  - $software_layer_dir is needed because it is used as prefix for running scripts
+#  - /dev is needed to access /dev/fuse
+COMMON_ARGS+=("--extra-bind-paths" "${software_layer_dir},/dev")
+
+# pass through '--contain' to avoid leaking in scripts into the container session
+# note, --pass-through can be used multiple times if needed
+COMMON_ARGS+=("--pass-through" "--contain")
 
 # make sure to use the same parent dir for storing tarballs of tmp
 PREVIOUS_TMP_DIR=${PWD}/previous_tmp
@@ -295,7 +310,15 @@ fi
 timestamp=$(date +%s)
 # to set EESSI_VERSION we need to source init/eessi_defaults now
 source $software_layer_dir/init/eessi_defaults
-export TGZ=$(printf "eessi-%s-software-%s-%s-%d.tar.gz" ${EESSI_VERSION} ${EESSI_OS_TYPE} ${EESSI_SOFTWARE_SUBDIR_OVERRIDE//\//-} ${timestamp})
+# Note: iff ${EESSI_DEV_PROJECT} is defined (building for dev.eessi.io), then we 
+# append the project (subdirectory) name to the end tarball name. This is information
+# then used at the ingestion stage. If ${EESSI_DEV_PROJECT} is not defined, nothing is
+# appended
+export TGZ=$(printf "eessi-%s-software-%s-%s-%b%d.tar.gz" ${EESSI_VERSION} ${EESSI_OS_TYPE} ${EESSI_SOFTWARE_SUBDIR_OVERRIDE//\//-} ${EESSI_DEV_PROJECT:+$EESSI_DEV_PROJECT-} ${timestamp})
+
+# Export EESSI_DEV_PROJECT to use it (if needed) when making tarball
+echo "bot/build.sh: EESSI_DEV_PROJECT='${EESSI_DEV_PROJECT}'"
+export EESSI_DEV_PROJECT=${EESSI_DEV_PROJECT}
 
 # value of first parameter to create_tarball.sh - TMP_IN_CONTAINER - needs to be
 # synchronised with setting of TMP_IN_CONTAINER in eessi_container.sh
