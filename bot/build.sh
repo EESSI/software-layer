@@ -249,18 +249,8 @@ BUILD_STEP_ARGS+=("--storage" "${STORAGE}")
 if command_exists "nvidia-smi"; then
     # Accept that this may fail
     set +e
-    nvidia-smi --version
-    ec=$?
+    check_nvidia-smi_installation
     set -e
-    if [ ${ec} -eq 0 ]; then
-        echo "Command 'nvidia-smi' found, using available GPU"
-        BUILD_STEP_ARGS+=("--nvidia" "all")
-    else
-        echo "Warning: command 'nvidia-smi' found, but 'nvidia-smi --version' did not run succesfully."
-        echo "This script now assumes this is NOT a GPU node."
-        echo "If, and only if, the current node actually does contain Nvidia GPUs, this should be considered an error."
-        BUILD_STEP_ARGS+=("--nvidia" "install")
-    fi
 else
     echo "No 'nvidia-smi' found, no available GPU but allowing overriding this check"
     BUILD_STEP_ARGS+=("--nvidia" "install")
