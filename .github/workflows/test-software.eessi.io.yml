@@ -75,6 +75,7 @@ jobs:
                       echo "checking missing installations for accelerator ${accel} using modulepath: ${MODULEPATH}"
                       for easystack_file in $(EESSI_VERSION=${{matrix.EESSI_VERSION}} ACCEL_EASYSTACKS=1 .github/workflows/scripts/only_latest_easystacks.sh); do
                           echo "check missing installations for ${easystack_file}..."
+                          ec=0
                           ./check_missing_installations.sh ${easystack_file} || ec=$?
                           if [[ ${ec} -ne 0 ]]; then echo "missing installations found for ${easystack_file}!" >&2; exit ${ec}; fi
                       done
