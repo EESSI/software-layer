@@ -39,7 +39,7 @@ jobs:
 #              cvmfs_http_proxy: DIRECT
 #              cvmfs_repositories: software.eessi.io
         - name: find changed easystacks
-          uses: laraPPr/test_easystack_filter_action@fae97752de3f3c85572007d4cc4efbc063fee59b
+          uses: laraPPr/test_easystack_filter_action@1192f54b78d8e9d5b0d9d333a839e5bf3270f7d6
 #          uses: dorny/paths-filter@v3
           id: changes
           with:
