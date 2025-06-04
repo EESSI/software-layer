@@ -1,0 +1,55 @@
+easyconfigs:
+  - /cvmfs/software.eessi.io/versions/2023.06/software/linux/x86_64/intel/haswell/software/cppy/1.2.1-GCCcore-13.2.0/easybuild/cppy-1.2.1-GCCcore-13.2.0.eb:
+      options:
+        include-easyblocks: /cvmfs/software.eessi.io/versions/2023.06/software/linux/x86_64/intel/haswell/software/cppy/1.2.1-GCCcore-13.2.0/easybuild/reprod/easyblocks/*.py
+  - /cvmfs/software.eessi.io/versions/2023.06/software/linux/x86_64/intel/haswell/software/libpng/1.6.40-GCCcore-13.2.0/easybuild/libpng-1.6.40-GCCcore-13.2.0.eb:
+      options:
+        include-easyblocks: /cvmfs/software.eessi.io/versions/2023.06/software/linux/x86_64/intel/haswell/software/libpng/1.6.40-GCCcore-13.2.0/easybuild/reprod/easyblocks/*.py
+  - /cvmfs/software.eessi.io/versions/2023.06/software/linux/x86_64/intel/haswell/software/Brotli/1.1.0-GCCcore-13.2.0/easybuild/Brotli-1.1.0-GCCcore-13.2.0.eb:
+      options:
+        include-easyblocks: /cvmfs/software.eessi.io/versions/2023.06/software/linux/x86_64/intel/haswell/software/Brotli/1.1.0-GCCcore-13.2.0/easybuild/reprod/easyblocks/*.py
+  - /cvmfs/software.eessi.io/versions/2023.06/software/linux/x86_64/intel/haswell/software/freetype/2.13.2-GCCcore-13.2.0/easybuild/freetype-2.13.2-GCCcore-13.2.0.eb:
+      options:
+        include-easyblocks: /cvmfs/software.eessi.io/versions/2023.06/software/linux/x86_64/intel/haswell/software/freetype/2.13.2-GCCcore-13.2.0/easybuild/reprod/easyblocks/*.py
+  - /cvmfs/software.eessi.io/versions/2023.06/software/linux/x86_64/intel/haswell/software/Qhull/2020.2-GCCcore-13.2.0/easybuild/Qhull-2020.2-GCCcore-13.2.0.eb:
+      options:
+        include-easyblocks: /cvmfs/software.eessi.io/versions/2023.06/software/linux/x86_64/intel/haswell/software/Qhull/2020.2-GCCcore-13.2.0/easybuild/reprod/easyblocks/*.py
+  - /cvmfs/software.eessi.io/versions/2023.06/software/linux/x86_64/intel/haswell/software/NASM/2.16.01-GCCcore-13.2.0/easybuild/NASM-2.16.01-GCCcore-13.2.0.eb:
+      options:
+        include-easyblocks: /cvmfs/software.eessi.io/versions/2023.06/software/linux/x86_64/intel/haswell/software/NASM/2.16.01-GCCcore-13.2.0/easybuild/reprod/easyblocks/*.py
+  - /cvmfs/software.eessi.io/versions/2023.06/software/linux/x86_64/intel/haswell/software/fontconfig/2.14.2-GCCcore-13.2.0/easybuild/fontconfig-2.14.2-GCCcore-13.2.0.eb:
+      options:
+        include-easyblocks: /cvmfs/software.eessi.io/versions/2023.06/software/linux/x86_64/intel/haswell/software/fontconfig/2.14.2-GCCcore-13.2.0/easybuild/reprod/easyblocks/*.py
+  - /cvmfs/software.eessi.io/versions/2023.06/software/linux/x86_64/intel/haswell/software/libjpeg-turbo/3.0.1-GCCcore-13.2.0/easybuild/libjpeg-turbo-3.0.1-GCCcore-13.2.0.eb:
+      options:
+        include-easyblocks: /cvmfs/software.eessi.io/versions/2023.06/software/linux/x86_64/intel/haswell/software/libjpeg-turbo/3.0.1-GCCcore-13.2.0/easybuild/reprod/easyblocks/*.py
+  - /cvmfs/software.eessi.io/versions/2023.06/software/linux/x86_64/intel/haswell/software/X11/20231019-GCCcore-13.2.0/easybuild/X11-20231019-GCCcore-13.2.0.eb:
+      options:
+        include-easyblocks: /cvmfs/software.eessi.io/versions/2023.06/software/linux/x86_64/intel/haswell/software/X11/20231019-GCCcore-13.2.0/easybuild/reprod/easyblocks/*.py
+  - /cvmfs/software.eessi.io/versions/2023.06/software/linux/x86_64/intel/haswell/software/Tk/8.6.13-GCCcore-13.2.0/easybuild/Tk-8.6.13-GCCcore-13.2.0.eb:
+      options:
+        include-easyblocks: /cvmfs/software.eessi.io/versions/2023.06/software/linux/x86_64/intel/haswell/software/Tk/8.6.13-GCCcore-13.2.0/easybuild/reprod/easyblocks/*.py
+  - /cvmfs/software.eessi.io/versions/2023.06/software/linux/x86_64/intel/haswell/software/Tkinter/3.11.5-GCCcore-13.2.0/easybuild/Tkinter-3.11.5-GCCcore-13.2.0.eb:
+      options:
+        include-easyblocks: /cvmfs/software.eessi.io/versions/2023.06/software/linux/x86_64/intel/haswell/software/Tkinter/3.11.5-GCCcore-13.2.0/easybuild/reprod/easyblocks/*.py
+  - /cvmfs/software.eessi.io/versions/2023.06/software/linux/x86_64/intel/haswell/software/jbigkit/2.1-GCCcore-13.2.0/easybuild/jbigkit-2.1-GCCcore-13.2.0.eb:
+      options:
+        include-easyblocks: /cvmfs/software.eessi.io/versions/2023.06/software/linux/x86_64/intel/haswell/software/jbigkit/2.1-GCCcore-13.2.0/easybuild/reprod/easyblocks/*.py
+  - /cvmfs/software.eessi.io/versions/2023.06/software/linux/x86_64/intel/haswell/software/libdeflate/1.19-GCCcore-13.2.0/easybuild/libdeflate-1.19-GCCcore-13.2.0.eb:
+      options:
+        include-easyblocks: /cvmfs/software.eessi.io/versions/2023.06/software/linux/x86_64/intel/haswell/software/libdeflate/1.19-GCCcore-13.2.0/easybuild/reprod/easyblocks/*.py
+  - /cvmfs/software.eessi.io/versions/2023.06/software/linux/x86_64/intel/haswell/software/LibTIFF/4.6.0-GCCcore-13.2.0/easybuild/LibTIFF-4.6.0-GCCcore-13.2.0.eb:
+      options:
+        include-easyblocks: /cvmfs/software.eessi.io/versions/2023.06/software/linux/x86_64/intel/haswell/software/LibTIFF/4.6.0-GCCcore-13.2.0/easybuild/reprod/easyblocks/*.py
+  - /cvmfs/software.eessi.io/versions/2023.06/software/linux/x86_64/intel/haswell/software/LittleCMS/2.15-GCCcore-13.2.0/easybuild/LittleCMS-2.15-GCCcore-13.2.0.eb:
+      options:
+        include-easyblocks: /cvmfs/software.eessi.io/versions/2023.06/software/linux/x86_64/intel/haswell/software/LittleCMS/2.15-GCCcore-13.2.0/easybuild/reprod/easyblocks/*.py
+  - /cvmfs/software.eessi.io/versions/2023.06/software/linux/x86_64/intel/haswell/software/giflib/5.2.1-GCCcore-13.2.0/easybuild/giflib-5.2.1-GCCcore-13.2.0.eb:
+      options:
+        include-easyblocks: /cvmfs/software.eessi.io/versions/2023.06/software/linux/x86_64/intel/haswell/software/giflib/5.2.1-GCCcore-13.2.0/easybuild/reprod/easyblocks/*.py
+  - /cvmfs/software.eessi.io/versions/2023.06/software/linux/x86_64/intel/haswell/software/OpenJPEG/2.5.0-GCCcore-13.2.0/easybuild/OpenJPEG-2.5.0-GCCcore-13.2.0.eb:
+      options:
+        include-easyblocks: /cvmfs/software.eessi.io/versions/2023.06/software/linux/x86_64/intel/haswell/software/OpenJPEG/2.5.0-GCCcore-13.2.0/easybuild/reprod/easyblocks/*.py
+  - /cvmfs/software.eessi.io/versions/2023.06/software/linux/x86_64/intel/haswell/software/libwebp/1.3.2-GCCcore-13.2.0/easybuild/libwebp-1.3.2-GCCcore-13.2.0.eb:
+      options:
+        include-easyblocks: /cvmfs/software.eessi.io/versions/2023.06/software/linux/x86_64/intel/haswell/software/libwebp/1.3.2-GCCcore-13.2.0/easybuild/reprod/easyblocks/*.py

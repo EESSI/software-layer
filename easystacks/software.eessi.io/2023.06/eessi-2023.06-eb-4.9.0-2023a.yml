@@ -73,3 +73,5 @@ easyconfigs:
       options:
         # see https://github.com/easybuilders/easybuild-easyconfigs/pull/20238
         from-pr: 20238
+  - Z3-4.12.2-GCCcore-12.3.0-Python-3.11.3.eb
+  - GDRCopy-2.3.1-GCCcore-12.3.0.eb

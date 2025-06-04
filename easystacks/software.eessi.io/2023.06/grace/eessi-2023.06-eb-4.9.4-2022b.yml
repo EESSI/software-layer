@@ -1,0 +1,156 @@
+easyconfigs:
+# from here on built originally with EB 4.8.2
+# make sure Python-3.10.8-GCCcore-12.2.0-bare.eb is built from correct PR/commit
+# commit 1ee17c0f7726c69e97442f53c65c5f041d65c94f from
+# https://github.com/easybuilders/easybuild-easyblocks/pull/3352 was included
+# since EB 4.9.3 --> no special treating needed
+# same applies to Python-3.10.8-GCCcore-12.2.0
+#
+# originally built with EB 4.8.2, PR 19159 was included since EB 4.9.0, PR 3492
+# was included in EB 5.0.0 -> need to keep commit for easyblock
+#  - OpenBLAS-0.3.21-GCC-12.2.0.eb:
+#      options:
+#        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/19159
+#        # required for Sapphire Rapids support
+#        from-pr: 19159
+#        # see https://github.com/easybuilders/easybuild-easyblocks/pull/3492
+#        include-easyblocks-from-pr: 3492
+  - OpenBLAS-0.3.21-GCC-12.2.0.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyblocks/pull/3492
+        include-easyblocks-from-commit: 4cef6cea5badad0846be3f536d2af70433ff8c51
+# originally built with EB 4.8.2, PR 19940 was included since EB 4.9.1
+#  - OpenMPI-4.1.4-GCC-12.2.0.eb:
+#      options:
+#        from-pr: 19940
+  - OpenMPI-4.1.4-GCC-12.2.0.eb
+  - foss-2022b.eb
+# originally built with EB 4.8.2, PR 19339 was included since EB 4.9.0
+#  - HarfBuzz-5.3.1-GCCcore-12.2.0.eb:
+#      options:
+#        from-pr: 19339
+  - HarfBuzz-5.3.1-GCCcore-12.2.0.eb
+# moved Qt5 to easystack file used with EB 4.8.2 because it needs an older
+# version of the python easyblock
+#  - Qt5-5.15.7-GCCcore-12.2.0.eb
+# we try to build QE with EB 4.8.2 too, that worked; building with updated
+# easyconfigs (via EB 4.9.4) didn't work, and wasn't done for any of the other
+# supported CPU microarchitectures. Hence, we build QE with 4.8.2
+#  - QuantumESPRESSO-7.2-foss-2022b.eb
+#
+# from here on built originally with EB 4.9.0
+# includes dependencies Boost/1.81.0 and Boost.MPI/1.81.0 for which we have to
+# use updated easyconfigs (via from-commit) because the download URLs have
+# changed
+#
+# originally built with EB 4.9.0, PR 20298 was included since 4.9.2 and no more
+# updates to it since then
+#  - Highway-1.0.3-GCCcore-12.2.0.eb:
+#      options:
+#        from-pr: 20298
+  - Highway-1.0.3-GCCcore-12.2.0.eb
+  - SciPy-bundle-2023.02-gfbf-2022b.eb
+# Boost-1.81.0-GCC-12.2.0.eb is a dependency for GDAL and the sources URL for Boost
+# has recently changed by PR 22157
+# see https://github.com/easybuilders/easybuild-easyconfigs/pull/22157
+  - Boost-1.81.0-GCC-12.2.0.eb:
+      options:
+        from-commit: 5bebccf792ccf35a8ee3250bc8fed86dff5d5df9
+  - GDAL-3.6.2-foss-2022b.eb
+# originally built with EB 4.9.0, PR 19324 was included since 4.9.1; there were a
+# few additional changes to the easyconfig, hence we use the merge commit for 19324
+#  - waLBerla-6.1-foss-2022b.eb:
+#      options:
+#        from-pr: 19324
+# Boost.MPI-1.81.0-gompi-2022b.eb is a dependency for waLBerla and the sources URL for
+# Boost.MPI has recently changed by PR 22240
+# see https://github.com/easybuilders/easybuild-easyconfigs/pull/22240
+  - Boost.MPI-1.81.0-gompi-2022b.eb:
+      options:
+        from-commit: e610fe1ac5393d1de668a466fdaaea74c580ee03
+  - waLBerla-6.1-foss-2022b.eb:
+      options:
+        from-commit: 11daa230014b22387c28712d2ce93c45618058f6
+  - WRF-4.4.1-foss-2022b-dmpar.eb
+# originally built with EB 4.9.0, PR 20086 was included since 4.9.1; there were a
+# few additional changes to the easyconfig, hence we use the merge commit for 20086
+#  - ImageMagick-7.1.0-53-GCCcore-12.2.0.eb:
+#      options:
+#        from-pr: 20086
+  - ImageMagick-7.1.0-53-GCCcore-12.2.0.eb:
+      options:
+        from-commit: a0eff4515ecad4fe37d7c018c95526ad4a777de7
+# originally built with EB 4.9.0, PR 20238 was included since 4.9.1; there were
+# additional changes, particularly addressing CVE 2024-27322 that was included
+# since EB 4.9.2, hence we simply use the easyconfig available with EB 4.9.4
+#  - R-4.2.2-foss-2022b.eb:
+#      options:
+#        from-pr: 20238
+  - R-4.2.2-foss-2022b.eb
+# from here on built originally with EB 4.9.1
+# originally built with EB 4.9.1, PR 20379 was included since 4.9.2; no more
+# updates to the easyconfig since then
+#  - R-bundle-Bioconductor-3.16-foss-2022b-R-4.2.2.eb:
+#      options:
+#        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/20379
+#        from-pr: 20379
+  - R-bundle-Bioconductor-3.16-foss-2022b-R-4.2.2.eb
+  - ParaView-5.11.1-foss-2022b.eb
+  - ASE-3.22.1-gfbf-2022b.eb
+  - SEPP-4.5.1-foss-2022b.eb
+  - Valgrind-3.21.0-gompi-2022b.eb
+# from here on built originally with EB 4.9.2
+  - BLAST+-2.14.0-gompi-2022b.eb
+# originally built with EB 4.9.2; PR 21136 included since EB 4.9.3
+#  - BioPerl-1.7.8-GCCcore-12.2.0.eb:
+#      options:
+#        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/21136
+#        from-commit: d8076ebaf8cb915762adebf88d385cc672b350dc
+  - BioPerl-1.7.8-GCCcore-12.2.0.eb
+  - gnuplot-5.4.6-GCCcore-12.2.0.eb
+  - h5py-3.8.0-foss-2022b.eb
+  - MDAnalysis-2.4.2-foss-2022b.eb
+  - ncbi-vdb-3.0.5-gompi-2022b.eb
+  - Bio-DB-HTS-3.01-GCC-12.2.0.eb
+  - MAFFT-7.505-GCC-12.2.0-with-extensions.eb
+  - MetaEuk-6-GCC-12.2.0.eb
+  - BamTools-2.5.2-GCC-12.2.0.eb
+  - Bio-SearchIO-hmmer-1.7.3-GCC-12.2.0.eb
+  - Mash-2.3-GCC-12.2.0.eb
+  - CapnProto-0.10.3-GCCcore-12.2.0.eb
+  - WhatsHap-2.1-foss-2022b.eb
+  - SAMtools-1.17-GCC-12.2.0.eb
+  - Bowtie2-2.5.1-GCC-12.2.0.eb
+  - CD-HIT-4.8.1-GCC-12.2.0.eb
+  - VCFtools-0.1.16-GCC-12.2.0.eb
+  - GenomeTools-1.6.2-GCC-12.2.0.eb
+  - Bio-SearchIO-hmmer-1.7.3-GCC-12.2.0.eb
+  - parallel-20230722-GCCcore-12.2.0.eb
+  - BCFtools-1.17-GCC-12.2.0.eb
+  - lpsolve-5.5.2.11-GCC-12.2.0.eb
+  - fastp-0.23.4-GCC-12.2.0.eb
+  - KronaTools-2.8.1-GCCcore-12.2.0.eb
+  - MultiQC-1.14-foss-2022b.eb
+  - CGAL-5.5.2-GCCcore-12.2.0.eb
+  - KaHIP-3.14-gompi-2022b.eb
+  - MPC-1.3.1-GCCcore-12.2.0.eb
+  - MUMPS-5.6.1-foss-2022b-metis.eb
+  - GL2PS-1.4.2-GCCcore-12.2.0.eb
+  - GST-plugins-base-1.22.1-GCC-12.2.0.eb
+  - wxWidgets-3.2.2.1-GCC-12.2.0.eb
+  - Archive-Zip-1.68-GCCcore-12.2.0.eb
+  - jemalloc-5.3.0-GCCcore-12.2.0.eb
+  - Judy-1.0.5-GCCcore-12.2.0.eb
+  - libaio-0.3.113-GCCcore-12.2.0.eb
+  - Z3-4.12.2-GCCcore-12.2.0.eb
+  - tbb-2021.10.0-GCCcore-12.2.0.eb
+  - dask-2023.7.1-foss-2022b.eb
+  - netcdf4-python-1.6.3-foss-2022b.eb
+  - Ruby-3.2.2-GCCcore-12.2.0.eb
+# originally built with EB 4.9.2; PR 21526 and PR 3467 included since EB 5.0.0, thus need to use *from-commit
+  - ROOT-6.26.10-foss-2022b.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/21526
+        from-commit: 6cbfbd7d7a55dc7243f46d0beea510278f4718df
+        # see https://github.com/easybuilders/easybuild-easyblocks/pull/3467
+        include-easyblocks-from-commit: c3aebe1f133d064a228c5d6c282e898b83d74601

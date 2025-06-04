@@ -1,0 +1,9 @@
+easyconfigs:
+  - Siesta-5.2.2-foss-2023a.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/22799
+        from-commit: 0f843163c223d8c5397d1945123913108ed2e0f5
+        # Siesta testsuite fails in Deucalion's a64fx EESSI build environment
+        # but skipping the tests during build and then running them with the
+        # installed module works, so skipping the tests only in this case
+        skip-test-step: True

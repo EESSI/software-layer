@@ -1,0 +1,17 @@
+# 2025.05.28
+# buildenv was successfully installed but the rpath wrappers by default only
+# give execute permission to the current user. The easyblock update extends
+# those permissions
+easyconfigs:
+  - buildenv-default-foss-2022b.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyblocks/pull/3743
+        include-easyblocks-from-commit: 4875615107fd46541e5cf1b83f092dda5284aa95
+  - buildenv-default-foss-2023a.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyblocks/pull/3743
+        include-easyblocks-from-commit: 4875615107fd46541e5cf1b83f092dda5284aa95
+  - buildenv-default-foss-2023b.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyblocks/pull/3743
+        include-easyblocks-from-commit: 4875615107fd46541e5cf1b83f092dda5284aa95
