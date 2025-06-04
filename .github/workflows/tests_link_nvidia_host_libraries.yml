@@ -1,0 +1,199 @@
+# documentation: https://help.github.com/en/articles/workflow-syntax-for-github-actions
+name: Test NVIDIA Host Libraries Linking
+on:
+  push:
+    branches:
+      - '*-software.eessi.io'   # Matches any branch ending with '-software.eessi.io'
+  pull_request:
+    paths:
+      - 'scripts/gpu_support/nvidia/link_nvidia_host_libraries.sh'  # PR changes only relevant for this specific file
+      - '.github/workflows/tests_link_nvidia_host_libraries.yml'  # Also test when changing the tests themselves
+permissions:
+  contents: read # to fetch code (actions/checkout)
+jobs:
+  build:
+    runs-on: ubuntu-24.04
+    steps:
+    - name: checkout
+      uses: actions/checkout@d632683dd7b4114ad314bca15554477dd762a938 # v4.2.0
+
+    - name: Initialize EESSI
+      uses: eessi/github-action-eessi@v3
+      
+    - name: Setup mock NVIDIA libraries
+      run: |
+        # Run the script to create mock libraries
+        chmod +x ./tests/nvidia-libs/mock-nvidia-libs.sh
+        echo ">>> Running ./tests/nvidia-libs/mock-nvidia-libs.sh"
+        ./tests/nvidia-libs/mock-nvidia-libs.sh
+
+        # Create symlink to override host's ldconfig, since the script tries to use /sbin/ldconfig first.
+        echo "Symlinking ldconfig to /sbin/ldconfig"
+        sudo ln -sf /tmp/ldconfig/ldconfig /sbin/ldconfig
+        
+        # Verify the symlink was created correctly
+        ls -la /sbin/ldconfig
+
+    - name: Setup mock nvidia-smi
+      run: |
+        # Create directory for mock nvidia-smi
+        mkdir -p /tmp/nvidia-bin
+        
+        # Copy the mock script
+        chmod +x ./tests/nvidia-libs/mock-nvidia-smi.sh
+        echo ">>> Copying ./tests/nvidia-libs/mock-nvidia-smi.sh"
+        cp ./tests/nvidia-libs/mock-nvidia-smi.sh /tmp/nvidia-bin/nvidia-smi
+        
+        # Add to PATH
+        echo "Updating PATH"
+        echo "PATH=/tmp/nvidia-bin:$PATH" >> $GITHUB_ENV
+
+    - name: Test LD_PRELOAD mode
+      run: |
+        echo ">>> Testing LD_PRELOAD mode"
+
+        # Run the script with LD_PRELOAD option (shouldn't create symlinks)
+        output=$(./scripts/gpu_support/nvidia/link_nvidia_host_libraries.sh --show-ld-preload || { echo "Script returned non-zero: $?"; echo $output; exit 1; })
+        
+        echo "$output"
+
+        echo ">>> Running checks"
+
+        # Check for expected outputs
+        echo "$output" | grep "export EESSI_GPU_COMPAT_LD_PRELOAD=" || { echo "EESSI_GPU_COMPAT_LD_PRELOAD not found in output"; exit 1; }
+        echo "$output" | grep "export EESSI_GPU_LD_PRELOAD=" || { echo "EESSI_GPU_LD_PRELOAD not found in output"; exit 1; }
+        echo "$output" | grep "export EESSI_OVERRIDE_GPU_CHECK=" || { echo "EESSI_OVERRIDE_GPU_CHECK not found in output"; exit 1; }
+        
+        # Verify that no symlinks were created
+        if [ -e "/opt/eessi/nvidia/x86_64/host/driver_version.txt" ]; then
+          echo "Error: symlinks were created in LD_PRELOAD mode"
+          exit 1
+        fi
+        
+        echo "LD_PRELOAD mode test passed."
+
+    - name: Test normal run (first time)
+      run: |
+        echo ">>> Testing normal run - first time"
+
+        # Run with verbose mode
+        output=$(./scripts/gpu_support/nvidia/link_nvidia_host_libraries.sh --verbose || { echo "Script returned non-zero: $?"; echo $output; exit 1; })
+
+        echo "$output"
+
+        echo ">>> Running checks"
+        
+        # Check if NVIDIA GPU was detected - Driver version and CUDA version are hardcoded in `tests/nvidia-libs/mock-nvidia-smi.sh`
+        echo "$output" | grep "Found NVIDIA GPU driver version 535.129.03" || { echo "Failed to detect NVIDIA driver version"; exit 1; }
+        echo "$output" | grep "Found host CUDA version 8.0" || { echo "Failed to detect CUDA version"; exit 1; }
+        
+        # Check if libraries were found
+        echo "$output" | grep "Matched.*CUDA Libraries" || { echo "Failed to match CUDA libraries"; exit 1; }
+        
+        # Verify symlinks were created
+        if [ ! -d "/opt/eessi/nvidia/x86_64/host" ]; then
+          echo "Error: host directory wasn't created"
+          exit 1
+        fi
+        
+        # Check if version files were created
+        if [ ! -f "/opt/eessi/nvidia/x86_64/host/driver_version.txt" ]; then
+          echo "Error: driver_version.txt wasn't created"
+          exit 1
+        fi
+        
+        # Check driver version content
+        grep "535.129.03" "/opt/eessi/nvidia/x86_64/host/driver_version.txt" || { echo "Incorrect driver version"; exit 1; }
+        
+        # Check if latest symlink was created
+        if [ ! -L "/opt/eessi/nvidia/x86_64/latest" ]; then
+          echo "Error: 'latest' symlink wasn't created"
+          exit 1
+        fi
+        
+        # Check if latest points to host
+        readlink "/opt/eessi/nvidia/x86_64/latest" | grep "host" || { echo "latest doesn't point to host"; exit 1; }
+
+        # Check if symlinks to libraries were created and point to correct files
+        echo ">>> Checking library symlinks"
+
+        # List dir with libraries
+        echo "Showing content of /tmp/nvidia_libs"
+        echo "$(ls -l /tmp/nvidia_libs)"
+        echo "Showing content of /tmp/nvidia_libs_duplicate"
+        echo "$(ls -l /tmp/nvidia_libs_duplicate)"
+        echo "Showing content of /opt/eessi/nvidia/x86_64/host"
+        echo "$(ls -l /opt/eessi/nvidia/x86_64/host)"
+
+        # List expected library names - list of libraries is hardcoded in `tests/nvidia-libs/mock-nvidia-libs.sh`
+        libraries=(
+          "libcuda.so"
+          "libcuda.so.1"
+          "libnvidia-ml.so"
+          "libnvidia-ml.so.1"
+          "libnvidia-ptxjitcompiler.so"
+          "libnvidia-ptxjitcompiler.so.1"
+          "libcudadebugger.so"
+          "libcudadebugger.so.1"
+        )
+
+        # Check each expected library symlink
+        for lib in "${libraries[@]}"; do
+          lib_path="/opt/eessi/nvidia/x86_64/host/$lib"
+          
+          # Check if the symlink exists
+          if [ ! -L "$lib_path" ]; then
+            echo "Error: Symlink for $lib was not created"
+            exit 1
+          fi
+          
+          # Check if symlink target exists
+          target=$(readlink "$lib_path")
+          if [ ! -e "$target" ]; then
+            echo "Error: Symlink $lib_path points to non-existent file: $target"
+            exit 1
+          fi
+          
+          # Verify it points to our mock library in /tmp/nvidia_libs or /tmp/nvidia_libs_duplicate
+          if [[ "$target" != "/tmp/nvidia_libs/$lib"* && "$target" != "/tmp/nvidia_libs_duplicate/$lib"* ]]; then
+            echo "Error: Symlink $lib_path points to $target, which is not in our mock directories"
+            exit 1
+          fi
+          
+          echo ">>> Verified symlink: $lib -> $target"
+        done
+        
+        echo "First normal run test passed"
+
+    - name: Test normal run (second time)
+      run: |
+        echo ">>> Testing normal run - second time - should be idempotent"
+        # Remove all write permissions on /opt/eessi so any attempts to write files fail
+        chmod -R a-w /opt/eessi
+        
+        # Store file timestamps before second run (ignoring access time)
+        stat_before=$(stat --format="%n %s %y %U %G %m %i" "/opt/eessi/nvidia/x86_64/host/driver_version.txt")
+        
+        # Run script again
+        output=$(./scripts/gpu_support/nvidia/link_nvidia_host_libraries.sh || { echo "Script returned non-zero: $?"; echo $output; exit 1; })
+        
+        echo "$output"
+
+        echo ">>> Running checks"
+
+        # Store file timestamps after second run (ignoring access time)
+        stat_after=$(stat --format="%n %s %y %U %G %m %i" "/opt/eessi/nvidia/x86_64/host/driver_version.txt")
+        
+        # Compare timestamps - should be the same (files shouldn't be modified)
+        if [[ "$stat_before" != "$stat_after" ]]; then
+          echo "Error: files were modified on second run when they shouldn't have been"
+          echo "Before: $stat_before"
+          echo "After: $stat_after"
+          exit 1
+        fi
+        
+        # Check for message indicating that libraries are already linked
+        echo "$output" | grep "have already been linked" || { echo "Missing 'already linked' message"; exit 1; }
+        
+        echo "Second normal run test passed"
+        

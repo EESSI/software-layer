@@ -110,36 +110,42 @@ local function load_site_specific_hooks()
 end
 
 
-local function eessi_cuda_enabled_load_hook(t)
+local function eessi_cuda_and_libraries_enabled_load_hook(t)
     local frameStk  = require("FrameStk"):singleton()
     local mt        = frameStk:mt()
     local simpleName = string.match(t.modFullName, "(.-)/")
-    -- If we try to load CUDA itself, check if the full CUDA SDK was installed on the host in host_injections.
-    -- This is required for end users to build additional CUDA software. If the full SDK isn't present, refuse
-    -- to load the CUDA module and print an informative message on how to set up GPU support for EESSI
+    local packagesList = { ["CUDA"] = true, ["cuDNN"] = true }
+    -- If we try to load any of the modules in packagesList, we check if the
+    -- full package was installed on the host in host_injections.
+    -- This is required for end users to build additional software that depends
+    -- on the package. If the full SDK isn't present, refuse
+    -- to load the module and print an informative message on how to set up GPU support for EESSI
     local refer_to_docs = "For more information on how to do this, see https://www.eessi.io/docs/site_specific_config/gpu/.\\n"
-    if simpleName == 'CUDA' then
+    if packagesList[simpleName] then
+        -- simpleName is a module in packagesList
         -- get the full host_injections path
         local hostInjections = string.gsub(os.getenv('EESSI_SOFTWARE_PATH') or "", 'versions', 'host_injections')
-        -- build final path where the CUDA software should be installed
-        local cudaEasyBuildDir = hostInjections .. "/software/" .. t.modFullName .. "/easybuild"
-        local cudaDirExists = isDir(cudaEasyBuildDir)
-        if not cudaDirExists then
+
+        -- build final path where the software should be installed
+        local packageEasyBuildDir = hostInjections .. "/software/" .. t.modFullName .. "/easybuild"
+        local packageDirExists = isDir(packageEasyBuildDir)
+        if not packageDirExists then
             local advice = "but while the module file exists, the actual software is not entirely shipped with EESSI "
-            advice = advice .. "due to licencing. You will need to install a full copy of the CUDA SDK where EESSI "
+            advice = advice .. "due to licencing. You will need to install a full copy of the " .. simpleName .. " package where EESSI "
             advice = advice .. "can find it.\\n"
             advice = advice .. refer_to_docs
             LmodError("\\nYou requested to load ", simpleName, " ", advice)
         end
     end
-    -- when loading CUDA enabled modules check if the necessary driver libraries are accessible to the EESSI linker,
+    -- when loading CUDA (and cu*) enabled modules check if the necessary driver libraries are accessible to the EESSI linker,
     -- otherwise, refuse to load the requested module and print error message
     local checkGpu = mt:haveProperty(simpleName,"arch","gpu")
     local overrideGpuCheck = os.getenv("EESSI_OVERRIDE_GPU_CHECK")
     if checkGpu and (overrideGpuCheck == nil) then
         local arch = os.getenv("EESSI_CPU_FAMILY") or ""
-        local cudaVersionFile = "/cvmfs/software.eessi.io/host_injections/nvidia/" .. arch .. "/latest/cuda_version.txt"
-        local cudaDriverFile = "/cvmfs/software.eessi.io/host_injections/nvidia/" .. arch .. "/latest/libcuda.so"
+        local cvmfs_repo = os.getenv("EESSI_CVMFS_REPO") or ""
+        local cudaVersionFile = cvmfs_repo .. "/host_injections/nvidia/" .. arch .. "/latest/cuda_version.txt"
+        local cudaDriverFile = cvmfs_repo .. "/host_injections/nvidia/" .. arch .. "/latest/libcuda.so"
         local cudaDriverExists = isFile(cudaDriverFile)
         local singularityCudaExists = isFile("/.singularity.d/libs/libcuda.so")
         if not (cudaDriverExists or singularityCudaExists)  then
@@ -193,14 +199,35 @@ local function eessi_espresso_deprecated_message(t)
     end
 end
 
+local function eessi_scipy_2022b_test_failures_message(t)
+    local cpuArch = os.getenv("EESSI_SOFTWARE_SUBDIR")
+    local graceArch = 'aarch64/nvidia/grace'
+    local fullModuleName = 'SciPy-bundle/2023.02-gfbf-2022b'
+    local moduleVersionArchMatch = t.modFullName == fullModuleName and cpuArch == graceArch
+    if moduleVersionArchMatch and not os.getenv("EESSI_IGNORE_MODULE_WARNINGS") then
+    -- Print a message on loading SciPy-bundle version == 2023.02 informing about the higher number of
+    -- test failures and recommend using other versions available via EESSI.
+    -- A message and not a warning as the exit code would break CI runs otherwise.
+        local simpleName = string.match(t.modFullName, "(.-)/")
+        local advice = 'The module ' .. t.modFullName .. ' will be loaded. However, note that\\n'
+        advice = advice .. 'during its building for the CPU microarchitecture ' .. graceArch .. ' from a\\n'
+        advice = advice .. 'total of 52.730 unit tests a larger number (46) than usually (2-4) failed. If\\n'
+        advice = advice .. 'you encounter issues while using ' .. t.modFullName .. ', please,\\n'
+        advice = advice .. 'consider using one of the other versions of ' .. simpleName .. ' that are also provided\\n'
+        advice = advice .. 'for the same CPU microarchitecture.\\n'
+        LmodMessage("\\n", advice)
+    end
+end
+
 -- Combine both functions into a single one, as we can only register one function as load hook in lmod
 -- Also: make it non-local, so it can be imported and extended by other lmodrc files if needed
 function eessi_load_hook(t)
     eessi_espresso_deprecated_message(t)
-    -- Only apply CUDA hooks if the loaded module is in the EESSI prefix
-    -- This avoids getting an Lmod Error when trying to load a CUDA module from a local software stack
+    eessi_scipy_2022b_test_failures_message(t)
+    -- Only apply CUDA and cu*-library hooks if the loaded module is in the EESSI prefix
+    -- This avoids getting an Lmod Error when trying to load a CUDA or cu* module from a local software stack
     if from_eessi_prefix(t) then
-        eessi_cuda_enabled_load_hook(t)
+        eessi_cuda_and_libraries_enabled_load_hook(t)
     end
 end
 
@@ -226,7 +253,7 @@ local function hide_2022b_modules(modT)
                   modT.fullName:match("GCC%-([0-9]*.[0-9]*.[0-9]*)") or
                   modT.fullName:match("GCCcore%-([0-9]*.[0-9]*.[0-9]*)")
 
-    -- if nothing matches, return              
+    -- if nothing matches, return
     if tcver == nil then return end
 
     -- if we have matches, check if the toolchain version is either 2022b or 12.2.0
