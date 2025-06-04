@@ -50,3 +50,12 @@ easyconfigs:
         # see https://github.com/easybuilders/easybuild-easyconfigs/pull/22235
         from-commit: 01dd97ea62fe4d7d0df040ede3af03eb2f1b8641
   - OpenCV-4.8.1-foss-2023a-contrib.eb
+  - FALL3D-9.0.1-gompi-2023a.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/22610
+        from-commit: 10e47e2fdd4f23fd5a52ae167771f8e9c78da411
+  - lit-18.1.2-GCCcore-12.3.0.eb
+      # needed due to changed/new dependencies for R-bundle-CRAN-2023.12-foss-2023a.eb
+      # without any from-commit this will use a version from April 6, 2024
+      # https://github.com/easybuilders/easybuild-easyconfigs/blob/88f6f9c7439c535e62461e6e71b1961c7be118b8/easybuild/easyconfigs/l/lit/lit-18.1.2-GCCcore-12.3.0.eb
+      # EB 5.0.0 has a few changes to that

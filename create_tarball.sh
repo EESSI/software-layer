@@ -20,15 +20,18 @@ echo ">> tmpdir: $tmpdir"
 os="linux"
 source ${base_dir}/init/eessi_defaults
 cvmfs_repo=${EESSI_CVMFS_REPO}
-
 software_dir="${cvmfs_repo}/versions/${eessi_version}/software/${os}/${cpu_arch_subdir}"
 if [ ! -d ${software_dir} ]; then
     echo "Software directory ${software_dir} does not exist?!" >&2
     exit 2
 fi
 
-cvmfs_repo_name=${cvmfs_repo#/cvmfs/}
-overlay_upper_dir="${eessi_tmpdir}/${cvmfs_repo_name}/overlay-upper"
+# Need to extract the cvmfs_repo_name from the cvmfs_repo variable
+# - remove /${EESSI_DEV_PROJECT} from the end (if it exists)
+# - remove /cvmfs/ from the beginning
+cvmfs_repo_name=${cvmfs_repo%"/${EESSI_DEV_PROJECT}"}
+cvmfs_repo_name=${cvmfs_repo_name#/cvmfs/}
+overlay_upper_dir="${eessi_tmpdir}/${cvmfs_repo_name}/overlay-upper${EESSI_DEV_PROJECT:+/$EESSI_DEV_PROJECT}"
 
 software_dir_overlay="${overlay_upper_dir}/versions/${eessi_version}"
 if [ ! -d ${software_dir_overlay} ]; then

@@ -24,12 +24,15 @@ jobs:
         COMPARISON_ARCH:
         - aarch64/neoverse_n1
         - aarch64/neoverse_v1
+        - aarch64/nvidia/grace
         - x86_64/amd/zen2
         - x86_64/amd/zen3
         - x86_64/amd/zen4
         - x86_64/intel/haswell
         - x86_64/intel/skylake_avx512
         - x86_64/intel/sapphirerapids
+        - x86_64/intel/icelake
+        - x86_64/intel/cascadelake
     steps:
         - name: Check out software-layer repository
           uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1

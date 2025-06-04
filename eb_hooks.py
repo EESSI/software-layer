@@ -13,6 +13,7 @@ from easybuild.tools.filetools import apply_regex_substitutions, copy_file, remo
 from easybuild.tools.run import run_cmd
 from easybuild.tools.systemtools import AARCH64, POWER, X86_64, get_cpu_architecture, get_cpu_features
 from easybuild.tools.toolchain.compiler import OPTARCH_GENERIC
+from easybuild.tools.version import VERSION as EASYBUILD_VERSION
 
 # prefer importing LooseVersion from easybuild.tools, but fall back to distuils in case EasyBuild <= 4.7.0 is used
 try:
@@ -25,7 +26,10 @@ CPU_TARGET_NEOVERSE_N1 = 'aarch64/neoverse_n1'
 CPU_TARGET_NEOVERSE_V1 = 'aarch64/neoverse_v1'
 CPU_TARGET_AARCH64_GENERIC = 'aarch64/generic'
 CPU_TARGET_A64FX = 'aarch64/a64fx'
+CPU_TARGET_NVIDIA_GRACE = 'aarch64/nvidia/grace'
 
+CPU_TARGET_CASCADELAKE = 'x86_64/intel/cascadelake'
+CPU_TARGET_ICELAKE = 'x86_64/intel/icelake'
 CPU_TARGET_SAPPHIRE_RAPIDS = 'x86_64/intel/sapphirerapids'
 CPU_TARGET_ZEN4 = 'x86_64/amd/zen4'
 
@@ -120,21 +124,44 @@ def parse_hook(ec, *args, **kwargs):
 
 def post_ready_hook(self, *args, **kwargs):
     """
-    Post-ready hook: limit parallellism for selected builds, because they require a lot of memory per used core.
+    Post-ready hook: limit parallellism for selected builds based on software name and CPU target.
+                     parallelism needs to be limited because some builds require a lot of memory per used core.
     """
-    # 'parallel' easyconfig parameter is set via EasyBlock.set_parallel in ready step based on available cores.
-    # here we reduce parallellism to only use half of that for selected software,
-    # to avoid failing builds/tests due to out-of-memory problems;
-    memory_hungry_build = self.name in ['libxc', 'MBX', 'TensorFlow']
-    # on A64FX systems, (HBM) memory is typically scarce, so we need to use fewer cores for some builds
+    # 'parallel' (EB4) or 'max_parallel' (EB5) easyconfig parameter is set via EasyBlock.set_parallel in ready step
+    # based on available cores.
+
+    # Check whether we have EasyBuild 4 or 5
+    parallel_param = 'parallel'
+    if EASYBUILD_VERSION >= '5':
+        parallel_param = 'max_parallel'
+    # get current parallelism setting
+    parallel = self.cfg[parallel_param]
+    if parallel == 1:
+        return  # no need to limit if already using 1 core
+
+    # get CPU target
     cpu_target = get_eessi_envvar('EESSI_SOFTWARE_SUBDIR')
-    memory_hungry_build_a64fx = cpu_target == CPU_TARGET_A64FX and self.name in ['Qt5', 'ROOT']
-    if memory_hungry_build or memory_hungry_build_a64fx:
-        parallel = self.cfg['parallel']
-        if parallel > 1:
-            self.cfg['parallel'] = parallel // 2
-            msg = "limiting parallelism to %s (was %s) for %s to avoid out-of-memory failures during building/testing"
-            print_msg(msg % (self.cfg['parallel'], parallel, self.name), log=self.log)
+
+    # check if we have limits defined for this software
+    if self.name in PARALLELISM_LIMITS:
+        limits = PARALLELISM_LIMITS[self.name]
+
+        # first check for CPU-specific limit
+        if cpu_target in limits:
+            operation_func, operation_args = limits[cpu_target]
+            new_parallel = operation_func(parallel, operation_args)
+        # then check for generic limit (applies to all CPU targets)
+        elif '*' in limits:
+            operation_func, operation_args = limits['*']
+            new_parallel = operation_func(parallel, operation_args)
+        else:
+            return  # no applicable limits found
+
+        # apply the limit if it's different from current
+        if new_parallel != parallel:
+            self.cfg[parallel_param] = new_parallel
+            msg = "limiting parallelism to %s (was %s) for %s on %s to avoid out-of-memory failures during building/testing"
+            print_msg(msg % (new_parallel, parallel, self.name, cpu_target), log=self.log)
 
 
 def pre_prepare_hook(self, *args, **kwargs):
@@ -403,41 +430,7 @@ def parse_hook_freeimage_aarch64(ec, *args, **kwargs):
                 ec['toolchainopts'] = {}
             ec['toolchainopts']['pic'] = True
             ec['toolchainopts']['extra_cflags'] = '-DPNG_ARM_NEON_OPT=0'
-            print_msg("Changed toolchainopts for %s: %s", ec.name, ec['toolchainopts']) 
-
-
-def parse_hook_lammps_remove_deps_for_aarch64(ec, *args, **kwargs):
-    """
-    Remove x86_64 specific dependencies for the CI and missing installations to pass on aarch64
-    """
-    if ec.name == 'LAMMPS':
-        if ec.version in ('2Aug2023_update2', '29Aug2024'):
-            if os.getenv('EESSI_CPU_FAMILY') == 'aarch64':
-                # ScaFaCoS and tbb are not compatible with aarch64/* CPU targets,
-                # so remove them as dependencies for LAMMPS (they're optional);
-                # see also https://github.com/easybuilders/easybuild-easyconfigs/pull/19164 +
-                # https://github.com/easybuilders/easybuild-easyconfigs/pull/19000;
-                # we need this hook because we check for missing installations for all CPU targets
-                # on an x86_64 VM in GitHub Actions (so condition based on ARCH in LAMMPS easyconfig is always true)
-                ec['dependencies'] = [dep for dep in ec['dependencies'] if dep[0] not in ('ScaFaCoS', 'tbb',)]
-    else:
-        raise EasyBuildError("LAMMPS-specific hook triggered for non-LAMMPS easyconfig?!")
-
-
-def parse_hook_CP2K_remove_deps_for_aarch64(ec, *args, **kwargs):
-    """
-    Remove x86_64 specific dependencies for the CI and missing installations to pass on aarch64
-    """
-    if ec.name == 'CP2K' and ec.version in ('2023.1',):
-        if os.getenv('EESSI_CPU_FAMILY') == 'aarch64':
-            # LIBXSMM is not supported on ARM with GCC 12.2.0 and 12.3.0
-            # See https://www.cp2k.org/dev:compiler_support
-            # See https://github.com/easybuilders/easybuild-easyconfigs/pull/20951
-            # we need this hook because we check for missing installations for all CPU targets
-            # on an x86_64 VM in GitHub Actions (so condition based on ARCH in LAMMPS easyconfig is always true)
-            ec['dependencies'] = [dep for dep in ec['dependencies'] if dep[0] not in ('libxsmm',)]
-    else:
-        raise EasyBuildError("CP2K-specific hook triggered for non-CP2K easyconfig?!")
+            print_msg("Changed toolchainopts for %s: %s", ec.name, ec['toolchainopts'])
 
 
 def parse_hook_zen4_module_only(ec, eprefix):
@@ -491,6 +484,16 @@ def pre_fetch_hook_zen4_gcccore1220(self, *args, **kwargs):
         print_msg("Updated build option 'force' to 'True'")
 
 
+def pre_module_hook_zen4_gcccore1220(self, *args, **kwargs):
+    """Make module load-able during module step"""
+    if is_gcccore_1220_based(ecname=self.name, ecversion=self.version, tcname=self.toolchain.name,
+                             tcversion=self.toolchain.version):
+        if hasattr(self, 'initial_environ'):
+            # Allow the module to be loaded in the module step (which uses initial environment)
+            print_msg(f"Setting {EESSI_IGNORE_ZEN4_GCC1220_ENVVAR} in initial environment")
+            self.initial_environ[EESSI_IGNORE_ZEN4_GCC1220_ENVVAR] = "1"
+
+
 def post_module_hook_zen4_gcccore1220(self, *args, **kwargs):
     """Revert changes from pre_fetch_hook_zen4_gcccore1220"""
     if is_gcccore_1220_based(ecname=self.name, ecversion=self.version, tcname=self.toolchain.name,
@@ -508,6 +511,12 @@ def post_module_hook_zen4_gcccore1220(self, *args, **kwargs):
         else:
             raise EasyBuildError("Cannot restore force to it's original value: 'self' is misisng attribute %s.",
                                  EESSI_FORCE_ATTR)
+
+        # If the variable to allow loading is set, remove it
+        if hasattr(self, 'initial_environ'):
+            if self.initial_environ.get(EESSI_IGNORE_ZEN4_GCC1220_ENVVAR, False):
+                print_msg(f"Removing {EESSI_IGNORE_ZEN4_GCC1220_ENVVAR} in initial environment")
+                del self.initial_environ[EESSI_IGNORE_ZEN4_GCC1220_ENVVAR]
 
 
 # Modules for dependencies are loaded in the prepare step. Thus, that's where we need this variable to be set
@@ -541,7 +550,7 @@ def pre_prepare_hook_highway_handle_test_compilation_issues(self, *args, **kwarg
         # note: keep condition in sync with the one used in
         # post_prepare_hook_highway_handle_test_compilation_issues
         if self.version in ['1.0.4'] and tcname == 'GCCcore' and tcversion == '12.3.0':
-            if cpu_target in [CPU_TARGET_A64FX, CPU_TARGET_NEOVERSE_V1]:
+            if cpu_target in [CPU_TARGET_A64FX, CPU_TARGET_NEOVERSE_V1, CPU_TARGET_NVIDIA_GRACE]:
                 self.cfg.update('configopts', '-DHWY_ENABLE_TESTS=OFF')
             if cpu_target == CPU_TARGET_NEOVERSE_N1:
                 self.orig_optarch = build_option('optarch')
@@ -586,6 +595,25 @@ def pre_configure_hook_BLIS_a64fx(self, *args, **kwargs):
             self.cfg['configopts'] = ' '.join(config_opts[:-1] + [cflags_var, config_target])
     else:
         raise EasyBuildError("BLIS-specific hook triggered for non-BLIS easyconfig?!")
+
+
+def pre_configure_hook_CUDA_Samples_test_remove(self, *args, **kwargs):
+    """skip immaTensorCoreGemm in CUDA-Samples for compute capability 7.0."""
+    if self.name == 'CUDA-Samples' and self.version in ['12.1']:
+        # Get compute capability from build option
+        cuda_caps = build_option('cuda_compute_capabilities')
+        # Check if compute capability 7.0 is in the list
+        if cuda_caps and '7.0' in cuda_caps:
+            print_msg("Applying hook for CUDA-Samples %s with compute capability 7.0", self.version)
+            # local_filters is set by the easyblock, remove path to the Makefile instead
+            makefile_path = os.path.join(self.start_dir, 'Samples/3_CUDA_Features/immaTensorCoreGemm/Makefile')
+            if os.path.exists(makefile_path):
+                remove_file(makefile_path)
+                print_msg("Removed Makefile at %s to skip immaTensorCoreGemm build", makefile_path)
+            else:
+                print_msg("Makefile not found at %s", makefile_path)
+    else:
+        raise EasyBuildError("CUDA-Samples-specific hook triggered for non-CUDA-Samples easyconfig?!")
 
 
 def pre_configure_hook_score_p(self, *args, **kwargs):
@@ -669,7 +697,10 @@ def pre_configure_hook_gromacs(self, *args, **kwargs):
     """
     if self.name == 'GROMACS':
         cpu_target = get_eessi_envvar('EESSI_SOFTWARE_SUBDIR')
-        if LooseVersion(self.version) <= LooseVersion('2024.1') and cpu_target == CPU_TARGET_NEOVERSE_V1:
+        if (
+            (LooseVersion(self.version) <= LooseVersion('2024.1') and cpu_target == CPU_TARGET_NEOVERSE_V1) or
+            (LooseVersion(self.version) <= LooseVersion('2024.4') and cpu_target == CPU_TARGET_NVIDIA_GRACE)
+        ):
             self.cfg.update('configopts', '-DGMX_SIMD=ARM_NEON_ASIMD')
             print_msg(
                 "Avoiding use of SVE instructions for GROMACS %s by using ARM_NEON_ASIMD as GMX_SIMD value",
@@ -821,10 +852,17 @@ def pre_test_hook_exclude_failing_test_Highway(self, *args, **kwargs):
     """
     Pre-test hook for Highway: exclude failing TestAllShiftRightLanes/SVE_256 test on neoverse_v1
     cfr. https://github.com/EESSI/software-layer/issues/469
+    and exclude failing tests
+      HwyReductionTestGroup/HwyReductionTest.TestAllSumOfLanes/SVE2_128
+      HwyReductionTestGroup/HwyReductionTest.TestAllSumOfLanes/SVE2
+      HwyReductionTestGroup/HwyReductionTest.TestAllSumOfLanes/SVE
+    on nvidia/grace
     """
     cpu_target = get_eessi_envvar('EESSI_SOFTWARE_SUBDIR')
     if self.name == 'Highway' and self.version in ['1.0.3'] and cpu_target == CPU_TARGET_NEOVERSE_V1:
         self.cfg['runtest'] += ' ARGS="-E TestAllShiftRightLanes/SVE_256"'
+    if self.name == 'Highway' and self.version in ['1.0.3'] and cpu_target == CPU_TARGET_NVIDIA_GRACE:
+        self.cfg['runtest'] += ' ARGS="-E TestAllSumOfLanes"'
 
 
 def pre_test_hook_ignore_failing_tests_ESPResSo(self, *args, **kwargs):
@@ -863,15 +901,70 @@ def pre_test_hook_ignore_failing_tests_SciPybundle(self, *args, **kwargs):
         FAILED scipy/spatial/tests/test_distance.py::TestPdist::test_pdist_correlation_iris
         FAILED scipy/spatial/tests/test_distance.py::TestPdist::test_pdist_correlation_iris_float32
         = 4 failed, 54407 passed, 3016 skipped, 223 xfailed, 13 xpassed, 10917 warnings in 6068.43s (1:41:08) =
+    In version 2023.07 + 2023.11 on grace, 2 failing tests in scipy (versions 1.11.1,  1.11.4):
+        FAILED scipy/optimize/tests/test_linprog.py::TestLinprogIPSparse::test_bug_6139
+        FAILED scipy/optimize/tests/test_linprog.py::TestLinprogIPSparsePresolve::test_bug_6139
+        = 2 failed, 54876 passed, 3021 skipped, 223 xfailed, 13 xpassed in 581.85s (0:09:41) =
+    In version 2023.02 on grace, 46 failing tests in scipy (versions 1.10.1):
+        FAILED ../../linalg/tests/test_basic.py::TestOverwrite::test_pinv - RuntimeWa...
+        FAILED ../../linalg/tests/test_basic.py::TestOverwrite::test_pinvh - RuntimeW...
+        FAILED ../../linalg/tests/test_matfuncs.py::TestExpM::test_2x2_input - Runtim...
+        FAILED ../../optimize/tests/test_linprog.py::TestLinprogIPSparse::test_bug_6139
+        FAILED ../../optimize/tests/test_linprog.py::TestLinprogIPSparsePresolve::test_bug_6139
+        FAILED ../../optimize/tests/test_zeros.py::test_gh_9608_preserve_array_shape
+        FAILED ../../sparse/csgraph/tests/test_graph_laplacian.py::test_asymmetric_laplacian[True-True-True-coo_matrix-float32]
+        FAILED ../../sparse/csgraph/tests/test_graph_laplacian.py::test_asymmetric_laplacian[True-True-False-array-float32]
+        FAILED ../../sparse/csgraph/tests/test_graph_laplacian.py::test_asymmetric_laplacian[True-True-False-csr_matrix-float32]
+        FAILED ../../sparse/csgraph/tests/test_graph_laplacian.py::test_asymmetric_laplacian[True-True-False-coo_matrix-float32]
+        FAILED ../../sparse/csgraph/tests/test_graph_laplacian.py::test_asymmetric_laplacian[False-True-True-array-float32]
+        FAILED ../../sparse/csgraph/tests/test_graph_laplacian.py::test_asymmetric_laplacian[False-True-True-csr_matrix-float32]
+        FAILED ../../sparse/csgraph/tests/test_graph_laplacian.py::test_asymmetric_laplacian[False-True-True-coo_matrix-float32]
+        FAILED ../../sparse/csgraph/tests/test_graph_laplacian.py::test_asymmetric_laplacian[True-True-True-array-float32]
+        FAILED ../../sparse/csgraph/tests/test_graph_laplacian.py::test_format[function-True-False-True-float32-asarray]
+        FAILED ../../sparse/csgraph/tests/test_graph_laplacian.py::test_asymmetric_laplacian[False-True-False-array-float32]
+        FAILED ../../sparse/csgraph/tests/test_graph_laplacian.py::test_asymmetric_laplacian[True-True-True-csr_matrix-float32]
+        FAILED ../../sparse/csgraph/tests/test_graph_laplacian.py::test_format[function-True-False-True-float32-csr_matrix]
+        FAILED ../../sparse/csgraph/tests/test_graph_laplacian.py::test_format[function-True-True-True-float32-asarray]
+        FAILED ../../sparse/csgraph/tests/test_graph_laplacian.py::test_format[function-True-True-True-float32-csr_matrix]
+        FAILED ../../sparse/csgraph/tests/test_graph_laplacian.py::test_format[function-True-False-True-float32-coo_matrix]
+        FAILED ../../sparse/csgraph/tests/test_graph_laplacian.py::test_asymmetric_laplacian[False-True-False-csr_matrix-float32]
+        FAILED ../../sparse/csgraph/tests/test_graph_laplacian.py::test_format[function-True-True-True-float32-coo_matrix]
+        FAILED ../../sparse/csgraph/tests/test_graph_laplacian.py::test_format[lo-True-False-True-float32-asarray]
+        FAILED ../../sparse/csgraph/tests/test_graph_laplacian.py::test_format[function-False-False-True-float32-asarray]
+        FAILED ../../sparse/csgraph/tests/test_graph_laplacian.py::test_format[function-False-False-True-float32-csr_matrix]
+        FAILED ../../sparse/csgraph/tests/test_graph_laplacian.py::test_format[function-False-False-True-float32-coo_matrix]
+        FAILED ../../sparse/csgraph/tests/test_graph_laplacian.py::test_asymmetric_laplacian[False-True-False-coo_matrix-float32]
+        FAILED ../../sparse/csgraph/tests/test_graph_laplacian.py::test_format[lo-True-False-True-float32-csr_matrix]
+        FAILED ../../sparse/csgraph/tests/test_graph_laplacian.py::test_format[lo-True-False-True-float32-coo_matrix]
+        FAILED ../../sparse/linalg/_eigen/lobpcg/tests/test_lobpcg.py::test_tolerance_float32
+        FAILED ../../sparse/csgraph/tests/test_graph_laplacian.py::test_format[lo-True-True-True-float32-asarray]
+        FAILED ../../sparse/csgraph/tests/test_graph_laplacian.py::test_format[lo-False-False-True-float32-asarray]
+        FAILED ../../sparse/csgraph/tests/test_graph_laplacian.py::test_format[lo-False-False-True-float32-csr_matrix]
+        FAILED ../../sparse/csgraph/tests/test_graph_laplacian.py::test_format[lo-False-False-True-float32-coo_matrix]
+        FAILED ../../sparse/csgraph/tests/test_graph_laplacian.py::test_format[lo-True-True-True-float32-csr_matrix]
+        FAILED ../../sparse/csgraph/tests/test_graph_laplacian.py::test_format[lo-True-True-True-float32-coo_matrix]
+        FAILED ../../sparse/linalg/_eigen/lobpcg/tests/test_lobpcg.py::test_random_initial_float32
+        FAILED ../../sparse/csgraph/tests/test_graph_laplacian.py::test_format[function-False-True-True-float32-asarray]
+        FAILED ../../sparse/csgraph/tests/test_graph_laplacian.py::test_format[function-False-True-True-float32-csr_matrix]
+        FAILED ../../sparse/csgraph/tests/test_graph_laplacian.py::test_format[function-False-True-True-float32-coo_matrix]
+        FAILED ../../sparse/csgraph/tests/test_graph_laplacian.py::test_format[lo-False-True-True-float32-asarray]
+        FAILED ../../sparse/csgraph/tests/test_graph_laplacian.py::test_format[lo-False-True-True-float32-csr_matrix]
+        FAILED ../../sparse/csgraph/tests/test_graph_laplacian.py::test_format[lo-False-True-True-float32-coo_matrix]
+        FAILED ../../sparse/linalg/_isolve/tests/test_iterative.py::test_precond_dummy
+        FAILED ../../sparse/linalg/_eigen/arpack/tests/test_arpack.py::test_symmetric_modes
+        = 46 failed, 49971 passed, 2471 skipped, 231 xfailed, 11 xpassed in 65.91s (0:01:05) =
     (in previous versions we were not as strict yet on the numpy/SciPy tests)
     """
     cpu_target = get_eessi_envvar('EESSI_SOFTWARE_SUBDIR')
     scipy_bundle_versions_nv1 = ('2021.10', '2023.02', '2023.07', '2023.11')
     scipy_bundle_versions_a64fx = ('2023.07', '2023.11')
+    scipy_bundle_versions_nvidia_grace = ('2023.02', '2023.07', '2023.11')
     if self.name == 'SciPy-bundle':
         if cpu_target == CPU_TARGET_NEOVERSE_V1 and self.version in scipy_bundle_versions_nv1:
             self.cfg['testopts'] = "|| echo ignoring failing tests"
         elif cpu_target == CPU_TARGET_A64FX and self.version in scipy_bundle_versions_a64fx:
+            self.cfg['testopts'] = "|| echo ignoring failing tests"
+        elif cpu_target == CPU_TARGET_NVIDIA_GRACE and self.version in scipy_bundle_versions_nvidia_grace:
             self.cfg['testopts'] = "|| echo ignoring failing tests"
 
 
@@ -891,15 +984,14 @@ def pre_test_hook_ignore_failing_tests_netCDF(self, *args, **kwargs):
 
 def pre_test_hook_increase_max_failed_tests_arm_PyTorch(self, *args, **kwargs):
     """
-    Pre-test hook for PyTorch: increase max failing tests for ARM and Intel Sapphire Rapids for PyTorch 2.1.2
-    See https://github.com/EESSI/software-layer/pull/444#issuecomment-1890416171 and
-    https://github.com/EESSI/software-layer/pull/875#issuecomment-2606854400
+    Pre-test hook for PyTorch: increase the number of max failing tests
+    See https://github.com/EESSI/software-layer/issues/461
     """
     cpu_target = get_eessi_envvar('EESSI_SOFTWARE_SUBDIR')
     if self.name == 'PyTorch' and self.version == '2.1.2':
         if get_cpu_architecture() == AARCH64:
             self.cfg['max_failed_tests'] = 10
-        if cpu_target == CPU_TARGET_SAPPHIRE_RAPIDS:
+        if cpu_target in [CPU_TARGET_CASCADELAKE, CPU_TARGET_ICELAKE, CPU_TARGET_SAPPHIRE_RAPIDS]:
             self.cfg['max_failed_tests'] = 4
 
 
@@ -969,52 +1061,56 @@ def post_postproc_cuda(self, *args, **kwargs):
     Remove files from CUDA installation that we are not allowed to ship,
     and replace them with a symlink to a corresponding installation under host_injections.
     """
+    if self.name == 'CUDA':
+        # This hook only acts on an installation under repositories that _we_ ship (*.eessi.io/versions)
+        eessi_installation = bool(re.search(EESSI_INSTALLATION_REGEX, self.installdir))
 
-    # We need to check if we are doing an EESSI-distributed installation
-    eessi_installation = bool(re.search(EESSI_INSTALLATION_REGEX, self.installdir))
+        if eessi_installation:
+            print_msg("Replacing files in CUDA installation that we can not ship with symlinks to host_injections...")
 
-    if self.name == 'CUDA' and eessi_installation:
-        print_msg("Replacing files in CUDA installation that we can not ship with symlinks to host_injections...")
+            # read CUDA EULA, construct allowlist based on section 2.6 that specifies list of files that can be shipped
+            eula_path = os.path.join(self.installdir, 'EULA.txt')
+            relevant_eula_lines = []
+            with open(eula_path) as infile:
+                copy = False
+                for line in infile:
+                    if line.strip() == "2.6. Attachment A":
+                        copy = True
+                        continue
+                    elif line.strip() == "2.7. Attachment B":
+                        copy = False
+                        continue
+                    elif copy:
+                        relevant_eula_lines.append(line)
 
-        # read CUDA EULA, construct allowlist based on section 2.6 that specifies list of files that can be shipped
-        eula_path = os.path.join(self.installdir, 'EULA.txt')
-        relevant_eula_lines = []
-        with open(eula_path) as infile:
-            copy = False
-            for line in infile:
-                if line.strip() == "2.6. Attachment A":
-                    copy = True
-                    continue
-                elif line.strip() == "2.7. Attachment B":
-                    copy = False
-                    continue
-                elif copy:
-                    relevant_eula_lines.append(line)
+            # create list without file extensions, they're not really needed and they only complicate things
+            allowlist = ['EULA', 'README']
+            file_extensions = ['.so', '.a', '.h', '.bc']
+            for line in relevant_eula_lines:
+                for word in line.split():
+                    if any(ext in word for ext in file_extensions):
+                        allowlist.append(os.path.splitext(word)[0])
+            # The EULA of CUDA 12.4 introduced a typo (confirmed by NVIDIA):
+            # libnvrtx-builtins_static.so should be libnvrtc-builtins_static.so
+            if 'libnvrtx-builtins_static' in allowlist:
+                allowlist.remove('libnvrtx-builtins_static')
+                allowlist.append('libnvrtc-builtins_static')
+            allowlist = sorted(set(allowlist))
+            self.log.info(
+                "Allowlist for files in CUDA installation that can be redistributed: " + ', '.join(allowlist)
+                )
 
-        # create list without file extensions, they're not really needed and they only complicate things
-        allowlist = ['EULA', 'README']
-        file_extensions = ['.so', '.a', '.h', '.bc']
-        for line in relevant_eula_lines:
-            for word in line.split():
-                if any(ext in word for ext in file_extensions):
-                    allowlist.append(os.path.splitext(word)[0])
-        # The EULA of CUDA 12.4 introduced a typo (confirmed by NVIDIA):
-        # libnvrtx-builtins_static.so should be libnvrtc-builtins_static.so
-        if 'libnvrtx-builtins_static' in allowlist:
-            allowlist.remove('libnvrtx-builtins_static')
-            allowlist.append('libnvrtc-builtins_static')
-        allowlist = sorted(set(allowlist))
-        self.log.info("Allowlist for files in CUDA installation that can be redistributed: " + ', '.join(allowlist))
+            # Do some quick sanity checks for things we should or shouldn't have in the list
+            if 'nvcc' in allowlist:
+                raise EasyBuildError("Found 'nvcc' in allowlist: %s" % allowlist)
+            if 'libcudart' not in allowlist:
+                raise EasyBuildError("Did not find 'libcudart' in allowlist: %s" % allowlist)
 
-        # Do some quick sanity checks for things we should or shouldn't have in the list
-        if 'nvcc' in allowlist:
-            raise EasyBuildError("Found 'nvcc' in allowlist: %s" % allowlist)
-        if 'libcudart' not in allowlist:
-            raise EasyBuildError("Did not find 'libcudart' in allowlist: %s" % allowlist)
-
-        # replace files that are not distributable with symlinks into
-        # host_injections
-        replace_non_distributable_files_with_symlinks(self.log, self.installdir, self.name, allowlist)
+            # replace files that are not distributable with symlinks into
+            # host_injections
+            replace_non_distributable_files_with_symlinks(self.log, self.installdir, self.name, allowlist)
+        else:
+            print_msg(f"EESSI hook to respect CUDA license not triggered for installation path {self.installdir}")
     else:
         raise EasyBuildError("CUDA-specific hook triggered for non-CUDA easyconfig?!")
 
@@ -1025,43 +1121,46 @@ def post_postproc_cudnn(self, *args, **kwargs):
     and replace them with a symlink to a corresponding installation under host_injections.
     """
 
-    # We need to check if we are doing an EESSI-distributed installation
-    eessi_installation = bool(re.search(EESSI_INSTALLATION_REGEX, self.installdir))
+    if self.name == 'cuDNN':
+        # This hook only acts on an installation under repositories that _we_ ship (*.eessi.io/versions)
+        eessi_installation = bool(re.search(EESSI_INSTALLATION_REGEX, self.installdir))
 
-    if self.name == 'cuDNN' and eessi_installation:
-        print_msg("Replacing files in cuDNN installation that we can not ship with symlinks to host_injections...")
+        if eessi_installation:
+            print_msg("Replacing files in cuDNN installation that we can not ship with symlinks to host_injections...")
 
-        allowlist = ['LICENSE']
+            allowlist = ['LICENSE']
 
-        # read cuDNN LICENSE, construct allowlist based on section "2. Distribution" that specifies list of files that can be shipped
-        license_path = os.path.join(self.installdir, 'LICENSE')
-        search_string = "2. Distribution. The following portions of the SDK are distributable under the Agreement:"
-        found_search_string = False
-        with open(license_path) as infile:
-            for line in infile:
-                if line.strip().startswith(search_string):
-                    found_search_string = True
-                    # remove search string, split into words, remove trailing
-                    # dots '.' and only retain words starting with a dot '.'
-                    distributable = line[len(search_string):]
-                    # distributable looks like ' the runtime files .so and .dll.'
-                    # note the '.' after '.dll'
-                    for word in distributable.split():
-                        if word[0] == '.':
-                            # rstrip is used to remove the '.' after '.dll'
-                            allowlist.append(word.rstrip('.'))
-        if not found_search_string:
-            # search string wasn't found in LICENSE file
-            raise EasyBuildError("search string '%s' was not found in license file '%s';"
-                                 "hence installation may be replaced by symlinks only",
-                                 search_string, license_path)
+            # read cuDNN LICENSE, construct allowlist based on section "2. Distribution" that specifies list of files that can be shipped
+            license_path = os.path.join(self.installdir, 'LICENSE')
+            search_string = "2. Distribution. The following portions of the SDK are distributable under the Agreement:"
+            found_search_string = False
+            with open(license_path) as infile:
+                for line in infile:
+                    if line.strip().startswith(search_string):
+                        found_search_string = True
+                        # remove search string, split into words, remove trailing
+                        # dots '.' and only retain words starting with a dot '.'
+                        distributable = line[len(search_string):]
+                        # distributable looks like ' the runtime files .so and .dll.'
+                        # note the '.' after '.dll'
+                        for word in distributable.split():
+                            if word[0] == '.':
+                                # rstrip is used to remove the '.' after '.dll'
+                                allowlist.append(word.rstrip('.'))
+            if not found_search_string:
+                # search string wasn't found in LICENSE file
+                raise EasyBuildError("search string '%s' was not found in license file '%s';"
+                                     "hence installation may be replaced by symlinks only",
+                                     search_string, license_path)
 
-        allowlist = sorted(set(allowlist))
-        self.log.info("Allowlist for files in cuDNN installation that can be redistributed: " + ', '.join(allowlist))
+            allowlist = sorted(set(allowlist))
+            self.log.info("Allowlist for files in cuDNN installation that can be redistributed: " + ', '.join(allowlist))
 
-        # replace files that are not distributable with symlinks into
-        # host_injections
-        replace_non_distributable_files_with_symlinks(self.log, self.installdir, self.name, allowlist)
+            # replace files that are not distributable with symlinks into
+            # host_injections
+            replace_non_distributable_files_with_symlinks(self.log, self.installdir, self.name, allowlist)
+        else:
+            print_msg(f"EESSI hook to respect cuDDN license not triggered for installation path {self.installdir}")
     else:
         raise EasyBuildError("cuDNN-specific hook triggered for non-cuDNN easyconfig?!")
 
@@ -1179,10 +1278,21 @@ def inject_gpu_property(ec):
     return ec
 
 
+def pre_module_hook(self, *args, **kwargs):
+    """Main pre module hook: trigger custom functions based on software name."""
+    if self.name in PRE_MODULE_HOOKS:
+        PRE_MODULE_HOOKS[self.name](self, *args, **kwargs)
+
+    # Always trigger this one, regardless of self.name
+    cpu_target = get_eessi_envvar('EESSI_SOFTWARE_SUBDIR')
+    if cpu_target == CPU_TARGET_ZEN4:
+        pre_module_hook_zen4_gcccore1220(self, *args, **kwargs)
+
+
 def post_module_hook(self, *args, **kwargs):
     """Main post module hook: trigger custom functions based on software name."""
     if self.name in POST_MODULE_HOOKS:
-        POST_MODULE_HOOKS[ec.name](self, *args, **kwargs)
+        POST_MODULE_HOOKS[self.name](self, *args, **kwargs)
 
     # Always trigger this one, regardless of self.name
     cpu_target = get_eessi_envvar('EESSI_SOFTWARE_SUBDIR')
@@ -1196,8 +1306,6 @@ PARSE_HOOKS = {
     'fontconfig': parse_hook_fontconfig_add_fonts,
     'FreeImage': parse_hook_freeimage_aarch64,
     'grpcio': parse_hook_grpcio_zlib,
-    'LAMMPS': parse_hook_lammps_remove_deps_for_aarch64,
-    'CP2K': parse_hook_CP2K_remove_deps_for_aarch64,
     'OpenBLAS': parse_hook_openblas_relax_lapack_tests_num_errors,
     'pybind11': parse_hook_pybind11_replace_catch2,
     'PyTorch': parse_hook_pytorch_cuda_tweaks,
@@ -1218,6 +1326,7 @@ POST_PREPARE_HOOKS = {
 
 PRE_CONFIGURE_HOOKS = {
     'BLIS': pre_configure_hook_BLIS_a64fx,
+    'CUDA-Samples': pre_configure_hook_CUDA_Samples_test_remove,
     'GObject-Introspection': pre_configure_hook_gobject_introspection,
     'Extrae': pre_configure_hook_extrae,
     'GROMACS': pre_configure_hook_gromacs,
@@ -1257,4 +1366,47 @@ POST_POSTPROC_HOOKS = {
     'cuDNN': post_postproc_cudnn,
 }
 
+PRE_MODULE_HOOKS = {}
+
 POST_MODULE_HOOKS = {}
+
+# Define parallelism limit operations
+def divide_by_factor(parallel, factor):
+    """Divide parallelism by given factor"""
+    return max(1, parallel // factor)
+
+def set_maximum(parallel, max_value):
+    """Set parallelism to maximum value"""
+    return min(parallel, max_value)
+
+# Data structure defining parallelism limits for different software and CPU targets
+# Format: {software_name: {cpu_target: (operation_function, operation_args)}}
+#         '*' for a CPU target means the operation applies to all CPU targets
+# Information is processed in the post_ready_hook function. First it checks if the
+# specific CPU target is defined in the data structure below. If not, it checks for
+# the generic '*' entry.
+PARALLELISM_LIMITS = {
+    'libxc': {
+        '*': (divide_by_factor, 2),
+        CPU_TARGET_A64FX: (set_maximum, 12),
+    },
+    'nodejs': {
+        CPU_TARGET_A64FX: (divide_by_factor, 2),
+    },
+    'MBX': {
+        '*': (divide_by_factor, 2),
+    },
+    'PyTorch': {
+        CPU_TARGET_A64FX: (divide_by_factor, 4),
+    },
+    'TensorFlow': {
+        '*': (divide_by_factor, 2),
+        CPU_TARGET_A64FX: (set_maximum, 8),
+    },
+    'Qt5': {
+        CPU_TARGET_A64FX: (set_maximum, 8),
+    },
+    'ROOT': {
+        CPU_TARGET_A64FX: (divide_by_factor, 2),
+    },
+}
