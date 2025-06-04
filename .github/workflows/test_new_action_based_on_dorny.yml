@@ -32,14 +32,14 @@ jobs:
         - name: Check out software-layer repository
           uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
 
-        - name: Mount EESSI CernVM-FS pilot repository
-          uses: cvmfs-contrib/github-action-cvmfs@55899ca74cf78ab874bdf47f5a804e47c198743c # v4.0
-          with:
-              cvmfs_config_package: https://github.com/EESSI/filesystem-layer/releases/download/latest/cvmfs-config-eessi_latest_all.deb
-              cvmfs_http_proxy: DIRECT
-              cvmfs_repositories: software.eessi.io
+#        - name: Mount EESSI CernVM-FS pilot repository
+#          uses: cvmfs-contrib/github-action-cvmfs@55899ca74cf78ab874bdf47f5a804e47c198743c # v4.0
+#          with:
+#              cvmfs_config_package: https://github.com/EESSI/filesystem-layer/releases/download/latest/cvmfs-config-eessi_latest_all.deb
+#              cvmfs_http_proxy: DIRECT
+#              cvmfs_repositories: software.eessi.io
         - name: find changed easystacks
-          uses: laraPPr/test_easystack_filter_action@d72aa1ec727442dedfde29ca0f8aefb81a3026eb
+          uses: laraPPr/test_easystack_filter_action@fae97752de3f3c85572007d4cc4efbc063fee59b
 #          uses: dorny/paths-filter@v3
           id: changes
           with:
