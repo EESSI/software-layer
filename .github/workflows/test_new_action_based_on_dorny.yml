@@ -1,5 +1,5 @@
 # documentation: https://help.github.com/en/articles/workflow-syntax-for-github-actions
-name: Check for CUDA builds in changed easystacks
+name: Test new action
 on:
   push:
     branches: [ "*-software.eessi.io" ]
@@ -39,7 +39,7 @@ jobs:
               cvmfs_http_proxy: DIRECT
               cvmfs_repositories: software.eessi.io
         - name: find changed easystacks
-          uses: laraPPr/test_easystack_filter_action@e367df8a4c1df98804a8e166192b718dfda40119
+          uses: laraPPr/test_easystack_filter_action@ce62188bfa51e23b875db49ecc010b813ad8d045
 #          uses: dorny/paths-filter@v3
 #          id: changes
 #          with:
