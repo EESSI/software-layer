@@ -90,8 +90,8 @@ jobs:
                   module load EasyBuild/${eb_version}
                   which eb
                   eb --version
-                  ./check_missing_installations.sh ${easystack_file}
-                  ec=$?
+                  ec=0
+                  ./check_missing_installations.sh ${easystack_file} || ec=$?
                   if [[ ${ec} -ne 0 ]]; then echo "missing installations found for ${easystack_file}!" >&2; exit ${ec}; fi
               done
 
@@ -110,8 +110,8 @@ jobs:
                           module load EasyBuild/${eb_version}
                           which eb
                           eb --version
-                          ./check_missing_installations.sh ${easystack_file}
-                          ec=$?
+                          ec=0
+                          ./check_missing_installations.sh ${easystack_file} || ec=$?
                           if [[ ${ec} -ne 0 ]]; then echo "missing installations found for ${easystack_file}!" >&2; exit ${ec}; fi
                       done
                       module unuse ${EESSI_SOFTWARE_PATH}/accel/${accel}/modules/all
