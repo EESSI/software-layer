@@ -37,7 +37,7 @@ jobs:
             echo "GITHUB_BASE_REF = ${GITHUB_BASE_REF}"
             echo $GITHUB_ENV
             echo "git diff --no-renames --name-status -z ${GITHUB_BASE_REF}..${GITHUB_HEAD_REF}"
-            git diff --no-renames --name-status -z ${GITHUB_BASE_REF    }..${GITHUB_HEAD_REF}
+            git diff --no-renames --name-status -z ${GITHUB_BASE_REF}..${GITHUB_HEAD_REF}
             export CHANGED=$(git diff --no-renames --name-status -z ${GITHUB_BASE_REF}..${GITHUB_HEAD_REF})
             echo "CHANGED=${CHANGED}" >> $GITHUB_ENV
         - name: Are there changed files
