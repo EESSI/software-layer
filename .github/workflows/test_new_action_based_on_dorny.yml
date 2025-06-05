@@ -37,6 +37,7 @@ jobs:
             echo "GITHUB_BASE_REF = ${GITHUB_BASE_REF}"
             echo $GITHUB_ENV
             export CHANGED=test
+            echo "CHANGED={$CHANGED}" >> $GITHUB_ENV
         - name: Are there changed files
           run: |
             echo $CHANGED
