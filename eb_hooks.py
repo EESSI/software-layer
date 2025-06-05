@@ -666,7 +666,7 @@ def pre_configure_hook_llvm(self, *args, **kwargs):
     We can instead set the environment variable that EasyBuild uses for `get_software_root` to trick the EB into
     into pointing to the compat layer.
     """
-    if self.name == 'LLVM':
+    if self.name in ['LLVM', 'ROCm-LLVM']:
         eprefix = get_eessi_envvar('EPREFIX')
 
         for software in ('zlib', 'ncurses'):
