@@ -31,19 +31,28 @@ jobs:
     steps:
         - name: Check out software-layer repository
           uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
-
+        - name: find changed easystacks
+          run: |
+            echo "GITHUB_HEAD_REF = ${GITHUB_HEAD_REF}"
+            echo "GITHUB_BASE_REF = ${GITHUB_BASE_REF}"
+            echo $GITHUB_ENV
+            export CHANGED=test
+        - name: Are there changed files
+          run: |
+            echo $CHANGED
+            echo $GITHUB_ENV
 #        - name: Mount EESSI CernVM-FS pilot repository
 #          uses: cvmfs-contrib/github-action-cvmfs@55899ca74cf78ab874bdf47f5a804e47c198743c # v4.0
 #          with:
 #              cvmfs_config_package: https://github.com/EESSI/filesystem-layer/releases/download/latest/cvmfs-config-eessi_latest_all.deb
 #              cvmfs_http_proxy: DIRECT
 #              cvmfs_repositories: software.eessi.io
-        - name: find changed easystacks
-          uses: laraPPr/test_easystack_filter_action@0c1cb269a89654084c59308e40ae92e90c854fba
+#        - name: find changed easystacks
+#          uses: laraPPr/test_easystack_filter_action@0c1cb269a89654084c59308e40ae92e90c854fba
 #          uses: dorny/paths-filter@v3
-          id: changes
-          with:
-            list-files: shell
-            filters: |
-              changed:
-                - 'easystacks/**'
+#          id: changes
+#          with:
+#            list-files: shell
+#            filters: |
+#              changed:
+#                - 'easystacks/**'
