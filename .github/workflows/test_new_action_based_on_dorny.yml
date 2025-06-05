@@ -33,14 +33,14 @@ jobs:
           uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
         - name: find changed easystacks
           run: |
-            ls
             pwd
+            git branch
             echo "GITHUB_HEAD_REF = ${GITHUB_HEAD_REF}"
             echo "GITHUB_BASE_REF = ${GITHUB_BASE_REF}"
             echo $GITHUB_ENV
             echo "git diff --no-renames --name-status -z ${GITHUB_BASE_REF}..${GITHUB_HEAD_REF}"
-            git diff --no-renames --name-status -z ${GITHUB_BASE_REF}..${GITHUB_HEAD_REF}
-            export CHANGED=$(git diff --no-renames --name-status -z ${GITHUB_BASE_REF}..${GITHUB_HEAD_REF})
+            git diff --no-renames --name-status -z HEAD
+            export CHANGED=$(git diff --no-renames --name-status -z HEAD)
             echo "CHANGED=${CHANGED}" >> $GITHUB_ENV
         - name: Are there changed files
           run: |
