@@ -9,7 +9,7 @@
 import os
 
 diff = os.getenv('CHANGED')
-#env_file = os.getenv('GITHUB_ENV')
+env_file = os.getenv('GITHUB_ENV')
 
 diff_list = diff.split('\n')
 
