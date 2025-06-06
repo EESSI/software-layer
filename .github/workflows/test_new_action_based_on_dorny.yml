@@ -35,22 +35,18 @@ jobs:
             fetch-depth: 0
         - name: find changed easystacks
           run: |
-            pwd
-            git branch
+            #Keep this for now to check once I started testing this with the upstream repo
             git remote -v
-            echo "GITHUB_HEAD_REF = ${GITHUB_HEAD_REF}"
             echo "GITHUB_BASE_REF = ${GITHUB_BASE_REF}"
             echo $GITHUB_ENV
-            echo "git diff --no-renames --name-status -z ${GITHUB_BASE_REF}..${GITHUB_HEAD_REF}"
-            echo "git diff --no-renames --name-status -z HEAD"
-            # git diff --no-renames --name-status -z origin/${GITHUB_BASE_REF}..HEAD
+            echo "git diff --no-renames --name-status ${GITHUB_BASE_REF}..HEAD"
             export CHANGED=$(git diff --no-renames --name-status -z origin/${GITHUB_BASE_REF}..HEAD)
             echo $CHANGED
-            echo "CHANGED=${CHANGED}" >> $GITHUB_ENV
+            #echo "CHANGED=${CHANGED}" >> $GITHUB_ENV
+            python .github/workflows/scripts/filter_git_diff.py
         - name: Are there changed files
           run: |
-            echo $CHANGED
-            echo $GITHUB_ENV
+            echo $CHANGED_EASYSTACKS
 #        - name: Mount EESSI CernVM-FS pilot repository
 #          uses: cvmfs-contrib/github-action-cvmfs@55899ca74cf78ab874bdf47f5a804e47c198743c # v4.0
 #          with:
