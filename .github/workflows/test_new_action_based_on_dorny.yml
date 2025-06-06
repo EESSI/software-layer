@@ -42,9 +42,9 @@ jobs:
             echo "git diff --no-renames --name-status ${GITHUB_BASE_REF}..HEAD"
             export CHANGED=$(git diff --no-renames --name-status origin/${GITHUB_BASE_REF}..HEAD)
             echo $CHANGED
-            #echo "CHANGED=${CHANGED}" >> $GITHUB_ENV
             python .github/workflows/scripts/filter_git_diff.py
         - name: Are there changed files
+          if: env.TEST
           run: |
             echo $CHANGED_EASYSTACKS
 #        - name: Mount EESSI CernVM-FS pilot repository

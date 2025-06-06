@@ -24,10 +24,11 @@ for line in diff_list:
         # Ignoring the status assigned to the file
         diff_filtered += file + ' '
 
-# If we will at some point add paths to in diff_filter_path
-# we'll have to remove '/'
-env_var = 'CHANGED_' + diff_filter_path.upper()
-set_var = env_var + "=" + diff_filtered
+if diff_filtered != '':
+    # If we will at some point add paths to in diff_filter_path
+    # we'll have to remove '/'
+    env_var = 'CHANGED_' + diff_filter_path.upper()
+    set_var = env_var + "=" + diff_filtered
 
-with open(env_file, 'a') as file:
-    file.write(set_var)
+    with open(env_file, 'a') as file:
+        file.write(set_var)
