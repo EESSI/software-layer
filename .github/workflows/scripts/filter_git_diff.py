@@ -9,7 +9,7 @@
 import os
 
 diff = os.getenv('CHANGED')
-env_file = os.getenv('GITHUB_ENV')
+#env_file = os.getenv('GITHUB_ENV')
 
 diff_list = diff.split('\n')
 
@@ -17,7 +17,9 @@ diff_filter_path = 'easystacks'
 
 diff_filtered = ''
 
-for file in diff_list:
+for line in diff_list:
+    status = line.split('\t')[0]
+    file = line.split('\t')[1] 
     if file.startswith(diff_filter_path):
         # Ignoring the status assigned to the file
         diff_filtered += file + ' '
