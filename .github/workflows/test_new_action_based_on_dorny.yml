@@ -54,8 +54,8 @@ jobs:
               cvmfs_config_package: https://github.com/EESSI/filesystem-layer/releases/download/latest/cvmfs-config-eessi_latest_all.deb
               cvmfs_http_proxy: DIRECT
               cvmfs_repositories: software.eessi.io
-        - name: find changed easystacks
-          uses: laraPPr/test_easystack_filter_action@0c1cb269a89654084c59308e40ae92e90c854fba
+#        - name: find changed easystacks
+#          uses: laraPPr/test_easystack_filter_action@0c1cb269a89654084c59308e40ae92e90c854fba
 #          uses: dorny/paths-filter@v3
 #          id: changes
 #          with:
