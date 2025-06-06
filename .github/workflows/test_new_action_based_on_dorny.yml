@@ -40,7 +40,7 @@ jobs:
             echo "GITHUB_BASE_REF = ${GITHUB_BASE_REF}"
             echo $GITHUB_ENV
             echo "git diff --no-renames --name-status ${GITHUB_BASE_REF}..HEAD"
-            export CHANGED=$(git diff --no-renames --name-status -z origin/${GITHUB_BASE_REF}..HEAD)
+            export CHANGED=$(git diff --no-renames --name-status origin/${GITHUB_BASE_REF}..HEAD)
             echo $CHANGED
             #echo "CHANGED=${CHANGED}" >> $GITHUB_ENV
             python .github/workflows/scripts/filter_git_diff.py
