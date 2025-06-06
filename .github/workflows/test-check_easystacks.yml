@@ -29,8 +29,10 @@ jobs:
         - x86_64/intel/skylake_avx512
         - x86_64/generic
     steps:
-        - name: Check out software-layer repository
+        - name: Check out software-layer repositor
           uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
+          with:
+            fetch-depth: 0
         - name: Check for changed easystackfiles in pr
           run: |
             #Keep this for now to check once I started testing this with the upstream repo
