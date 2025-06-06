@@ -31,23 +31,25 @@ jobs:
     steps:
         - name: Check out software-layer repository
           uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
-
+        - name: Check for changed easystackfiles in pr
+          run: |
+            #Keep this for now to check once I started testing this with the upstream repo
+            git remote -v
+            echo "GITHUB_BASE_REF = ${GITHUB_BASE_REF}"
+            echo $GITHUB_ENV
+            echo "git diff --no-renames --name-status ${GITHUB_BASE_REF}..HEAD"
+            export CHANGED=$(git diff --no-renames --name-status origin/${GITHUB_BASE_REF}..HEAD)
+            echo $CHANGED
+            python .github/workflows/scripts/filter_git_diff.py
         - name: Mount EESSI CernVM-FS pilot repository
+          if: env.CHANGED_EASYSTACKS
           uses: cvmfs-contrib/github-action-cvmfs@55899ca74cf78ab874bdf47f5a804e47c198743c # v4.0
           with:
               cvmfs_config_package: https://github.com/EESSI/filesystem-layer/releases/download/latest/cvmfs-config-eessi_latest_all.deb
               cvmfs_http_proxy: DIRECT
               cvmfs_repositories: software.eessi.io
-        - name: find changed easystacks
-          uses: dorny/paths-filter@de90cc6fb38fc0963ad72b210f1f284cd68cea36  #v3.0.2
-          id: changes
-          with:
-            list-files: shell
-            filters: |
-              changed:
-                - 'easystacks/**'
         - name: Test check_missing_installations.sh script
-          if: ${{ steps.changes.outputs.changed == 'true' }}
+          if: env.CHANGED_EASYSTACKS
           run: |
               export EESSI_SOFTWARE_SUBDIR_OVERRIDE=${{matrix.EESSI_SOFTWARE_SUBDIR_OVERRIDE}}
               source /cvmfs/software.eessi.io/versions/${{matrix.EESSI_VERSION}}/init/bash

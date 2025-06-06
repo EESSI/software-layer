@@ -44,17 +44,18 @@ jobs:
             echo $CHANGED
             python .github/workflows/scripts/filter_git_diff.py
         - name: Are there changed files
-          if: env.TEST
+          if: env.CHANGED_EASYSTACKS
           run: |
             echo $CHANGED_EASYSTACKS
-#        - name: Mount EESSI CernVM-FS pilot repository
-#          uses: cvmfs-contrib/github-action-cvmfs@55899ca74cf78ab874bdf47f5a804e47c198743c # v4.0
-#          with:
-#              cvmfs_config_package: https://github.com/EESSI/filesystem-layer/releases/download/latest/cvmfs-config-eessi_latest_all.deb
-#              cvmfs_http_proxy: DIRECT
-#              cvmfs_repositories: software.eessi.io
-#        - name: find changed easystacks
-#          uses: laraPPr/test_easystack_filter_action@0c1cb269a89654084c59308e40ae92e90c854fba
+        - name: Mount EESSI CernVM-FS pilot repository
+          if: env.CHANGED_EASYSTACKS
+          uses: cvmfs-contrib/github-action-cvmfs@55899ca74cf78ab874bdf47f5a804e47c198743c # v4.0
+          with:
+              cvmfs_config_package: https://github.com/EESSI/filesystem-layer/releases/download/latest/cvmfs-config-eessi_latest_all.deb
+              cvmfs_http_proxy: DIRECT
+              cvmfs_repositories: software.eessi.io
+        - name: find changed easystacks
+          uses: laraPPr/test_easystack_filter_action@0c1cb269a89654084c59308e40ae92e90c854fba
 #          uses: dorny/paths-filter@v3
 #          id: changes
 #          with:
