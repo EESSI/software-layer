@@ -1,2 +1,4 @@
 easyconfigs:
   - buildenv-default-foss-2023a.eb 
+  - OpenFOAM-12-foss-2023a.eb
+  
