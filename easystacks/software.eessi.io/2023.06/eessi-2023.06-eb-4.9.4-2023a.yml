@@ -59,3 +59,4 @@ easyconfigs:
       # without any from-commit this will use a version from April 6, 2024
       # https://github.com/easybuilders/easybuild-easyconfigs/blob/88f6f9c7439c535e62461e6e71b1961c7be118b8/easybuild/easyconfigs/l/lit/lit-18.1.2-GCCcore-12.3.0.eb
       # EB 5.0.0 has a few changes to that
+  - OpenFOAM-12-foss-2023a.eb
