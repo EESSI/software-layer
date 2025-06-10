@@ -609,7 +609,7 @@ def pre_configure_hook_vsearch(self, *args, **kwargs):
     if self.name == 'VSEARCH':
         self.cfg.update('configopts', 'CPPFLAGS="-DOF=_Z_OF ${CPPFLAGS}"')
     else:
-        raise EasyBuildError("VSEARCH-specific hook triggered for non-Score-P easyconfig?!")
+        raise EasyBuildError("VSEARCH-specific hook triggered for non-VSEARCH easyconfig?!")
 
 
 def pre_configure_hook_extrae(self, *args, **kwargs):
