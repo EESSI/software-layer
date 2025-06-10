@@ -118,9 +118,6 @@ jobs:
                   done
               fi
 
-              # make sure that Lmod cache file is present
-              ls -l ${EESSI_SOFTWARE_PATH}/.lmod/cache/spiderT.lua
-
         - name: Test check_missing_installations.sh with missing package (GCC/8.3.0)
           run: |
               export EESSI_SOFTWARE_SUBDIR_OVERRIDE=${{matrix.EESSI_SOFTWARE_SUBDIR_OVERRIDE}}

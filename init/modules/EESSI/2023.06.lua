@@ -63,11 +63,14 @@ function archdetect_accel()
     local script = pathJoin(eessi_prefix, 'init', 'lmod_eessi_archdetect_wrapper_accel.sh')
     -- for unload mode, we need to grab the value before it is unset
     local archdetect_accel = os.getenv("EESSI_ACCEL_SUBDIR") or (os.getenv("EESSI_ACCELERATOR_TARGET_OVERRIDE") or "")
-    if not os.getenv("EESSI_ACCELERATOR_TARGET_OVERRIDE ") then
+    if not os.getenv("EESSI_ACCELERATOR_TARGET_OVERRIDE") then
         if convertToCanonical(LmodVersion()) < convertToCanonical("8.6") then
             LmodError("Loading this modulefile requires using Lmod version >= 8.6, but you can export EESSI_ACCELERATOR_TARGET_OVERRIDE to the available accelerator architecture in the form of: accel/nvidia/cc80")
         end
+        -- this script sets EESSI_ACCEL_SUBDIR
         source_sh("bash", script)
+    else
+        setenv("EESSI_ACCEL_SUBDIR", os.getenv("EESSI_ACCELERATOR_TARGET_OVERRIDE"))
     end
     archdetect_accel = os.getenv("EESSI_ACCEL_SUBDIR") or archdetect_accel
     eessiDebug("Got archdetect accel option: " .. archdetect_accel)
@@ -140,16 +143,33 @@ if not (archdetect_accel == nil or archdetect_accel == '') then
     -- /cvmfs/software.eessi.io/versions/2023.06/software/linux/x86_64/amd/zen3/accel/nvidia/cc80/modules/all
     eessi_module_path_accel = pathJoin(eessi_accel_software_path, archdetect_accel, eessi_modules_subdir)
     eessiDebug("Checking if " .. eessi_module_path_accel .. " exists")
+    if not isDir(eessi_module_path_accel) then
+        -- fall back to major version GPU arch if the exact one is not an option (i.e, 7.5 -> 7.0)
+        local original_archdetect_accel = archdetect_accel
+        archdetect_accel =  archdetect_accel:sub(1,-2) .. "0"
+        eessiDebug("No directory for " .. original_archdetect_accel .. ", trying " .. archdetect_accel)
+        eessi_module_path_accel = pathJoin(eessi_accel_software_path, archdetect_accel, eessi_modules_subdir)
+    end
     if isDir(eessi_module_path_accel) then
+        -- set the accelerator target based on what actually exists
+        setenv("EESSI_ACCELERATOR_TARGET", archdetect_accel)
         setenv("EESSI_MODULEPATH_ACCEL", eessi_module_path_accel)
-        prepend_path("MODULEPATH", eessi_module_path_accel)
-        eessiDebug("Using acclerator modules at: " .. eessi_module_path_accel)
+        if ( mode() ~= "spider" ) then
+            prepend_path("MODULEPATH", eessi_module_path_accel)
+            eessiDebug("Using accelerator modules at: " .. eessi_module_path_accel)
+        end
     end
 end
 
 -- prepend the site module path last so it has priority
 prepend_path("MODULEPATH", eessi_site_module_path)
 eessiDebug("Adding " .. eessi_site_module_path .. " to MODULEPATH")
+if isDir(eessi_module_path_accel) then
+    eessi_module_path_site_accel = string.gsub(eessi_module_path_accel, "versions", "host_injections")
+    setenv("EESSI_SITE_MODULEPATH_ACCEL", eessi_module_path_site_accel)
+    prepend_path("MODULEPATH", eessi_module_path_site_accel)
+    eessiDebug("Using site accelerator modules at: " .. eessi_module_path_site_accel)
+end
 if mode() == "load" then
     LmodMessage("EESSI/" .. eessi_version .. " loaded successfully")
 end

@@ -73,7 +73,9 @@ jobs:
           - x86_64/amd/zen3
           - x86_64/amd/zen4
         EESSI_ACCELERATOR_TARGET_OVERRIDE:
-          - accel/nvidia/cc80        
+          - accel/nvidia/cc80
+          # This should fall back to cc70
+          - accel/nvidia/cc77        
     steps:
       - name: Check out software-layer repository
         uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
@@ -102,21 +104,26 @@ jobs:
           # Turn on debug output in case we want to take a look
           export EESSI_DEBUG_INIT=true
           CPU_ARCH=$(./init/eessi_archdetect.sh -a cpupath)
-          export EESSI_ARCHDETECT_OPTIONS_OVERRIDE="dummy/cpu:${CPU_ARCH}:dummy1/cpu1"          
           module load EESSI/${{matrix.EESSI_VERSION}}
-          # EESSI_ARCHDETECT_OPTIONS_OVERRIDE/EESSI_DEBUG_INIT only relevant for Lmod init
-          unset EESSI_ARCHDETECT_OPTIONS_OVERRIDE
+          # EESSI_DEBUG_INIT/EESSI_ARCHDETECT_OPTIONS only relevant for Lmod init
           unset EESSI_DEBUG_INIT
           # Store all relevant environment variables
-          env | grep -E '(^EESSI_|^LMOD_RC|^LMOD_PACKAGE_PATH)' | sort > "${moduleoutfile}"
+          env | grep -E '(^EESSI_|^LMOD_RC|^LMOD_PACKAGE_PATH|^MODULEPATH)' | grep -v EESSI_ARCHDETECT_OPTIONS | sort > "${moduleoutfile}"
           module unload EESSI/${{matrix.EESSI_VERSION}}
           
+          # We should only have two EESSI_* variables defined (which set the overrides)
+          if [ "$(env | grep -c '^EESSI')" -ne 2 ]; then
+          echo "Expected 2 EESSI-related environment variables, but found a different number."
+          env | grep '^EESSI'
+          exit 1
+          fi
+
           # Now do the init script initialisation
           source ./init/bash
           # source script version sets environment variables to force archdetect, ignore these
           unset EESSI_USE_ARCHSPEC
           unset EESSI_USE_ARCHDETECT
-          env | grep -E '(^EESSI_|^LMOD_RC|^LMOD_PACKAGE_PATH)' | sort > "${sourceoutfile}"
+          env | grep -E '(^EESSI_|^LMOD_RC|^LMOD_PACKAGE_PATH|^MODULEPATH)' | sort > "${sourceoutfile}"
           
           # Now compare the two results
           echo ""
@@ -149,6 +156,8 @@ jobs:
         EESSI_ACCELERATOR_TARGET_OVERRIDE:
           - none
           - accel/nvidia/cc80
+          # This should fall back to cc70
+          - accel/nvidia/cc77
     steps:
       - name: Check out software-layer repository
         uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
@@ -181,7 +190,7 @@ jobs:
           initial_env_file="initial_env.txt"
           module_cycled_file="load_unload_cycle.txt"
           
-          # prepare Lmod, resetting it in a roundabout given we don't want defaults set
+          # prepare Lmod, resetting it in a roundabout way given we don't want defaults set
           export MODULEPATH=init/modules:.github/workflows/modules
           module load fake_module
           module purge
@@ -205,3 +214,9 @@ jobs:
               diff --unified=0 "${initial_env_file}" "${module_cycled_file}" 
               exit 1
           fi
+
+          module load EESSI/${{matrix.EESSI_VERSION}}
+          # Make sure our CPU and GPU architectures are what we expect
+          # (script uses EESSI_SOFTWARE_SUBDIR_OVERRIDE and EESSI_ACCELERATOR_TARGET_OVERRIDE
+          # as the starting point for the comparison)
+          python .github/workflows/scripts/verify_eessi_environment.py

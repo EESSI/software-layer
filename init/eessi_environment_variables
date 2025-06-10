@@ -67,10 +67,18 @@ if [ -d $EESSI_PREFIX ]; then
               EESSI_ACCEL_SOFTWARE_SUBDIR=${EESSI_ACCEL_SOFTWARE_SUBDIR_OVERRIDE:-$EESSI_SOFTWARE_SUBDIR}
               # path to where accel/* subdirectory is located
               EESSI_ACCEL_SOFTWARE_PATH=${EESSI_PREFIX}/software/${EESSI_OS_TYPE}/${EESSI_ACCEL_SOFTWARE_SUBDIR}
-              if [ -d $EESSI_ACCEL_SOFTWARE_PATH/${EESSI_ACCEL_SUBDIR} ]; then
-                  show_msg "archdetect found supported accelerator for CPU target ${EESSI_ACCEL_SOFTWARE_SUBDIR}: ${EESSI_ACCEL_SUBDIR}"
+              if [ ! -d $EESSI_ACCEL_SOFTWARE_PATH/${EESSI_ACCEL_SUBDIR} ]; then
+                  # We should try to use the fallback compute capability
+                  EESSI_ACCELERATOR_TARGET="${EESSI_ACCEL_SUBDIR::-1}0"
+                  show_msg "archdetect found no supported accelerator ${EESSI_ACCEL_SUBDIR}, falling back to ${EESSI_ACCELERATOR_TARGET}"
               else
-                  show_msg "No matching path found in ${EESSI_ACCEL_SOFTWARE_SUBDIR} for accelerator detected by archdetect (${EESSI_ACCEL_SUBDIR})"
+                  EESSI_ACCELERATOR_TARGET="${EESSI_ACCEL_SUBDIR}"
+              fi
+              if [ -d $EESSI_ACCEL_SOFTWARE_PATH/${EESSI_ACCELERATOR_TARGET} ]; then
+                  show_msg "archdetect found supported accelerator for CPU target ${EESSI_ACCEL_SOFTWARE_SUBDIR}: ${EESSI_ACCELERATOR_TARGET}"
+                  export EESSI_ACCELERATOR_TARGET
+              else
+                  show_msg "No matching path found in ${EESSI_ACCEL_SOFTWARE_SUBDIR} for accelerator detected by archdetect (${EESSI_ACCELERATOR_TARGET})"
               fi
           fi
       else
@@ -95,6 +103,7 @@ if [ -d $EESSI_PREFIX ]; then
         lmod_rc_file="$LMOD_CONFIG_DIR/lmodrc.lua"
         if [ -f $lmod_rc_file ]; then
           show_msg "Found Lmod configuration file at $lmod_rc_file"
+          export LMOD_RC="$lmod_rc_file"
         else
           error "Lmod configuration file not found at $lmod_rc_file"
         fi
@@ -112,6 +121,8 @@ if [ -d $EESSI_PREFIX ]; then
         elif [ -d $EESSI_SOFTWARE_PATH ]; then
           export EESSI_SITE_SOFTWARE_PATH=${EESSI_SOFTWARE_PATH/versions/host_injections}
           show_msg "Using ${EESSI_SITE_SOFTWARE_PATH} as the site extension directory for installations."
+          EESSI_SITE_ACCEL_SOFTWARE_PATH=${EESSI_ACCEL_SOFTWARE_PATH/versions/host_injections}
+          show_msg "Using ${EESSI_SITE_ACCEL_SOFTWARE_PATH} as the site extension directory for accelerated installations."
           # Allow for use of alternative module tree shipped with EESSI
           if [ -z ${EESSI_MODULE_SUBDIR+x} ]; then
             # EESSI_MODULE_SUBDIR not set
@@ -137,9 +148,11 @@ if [ -d $EESSI_PREFIX ]; then
             false
           fi
 
-          if [ -d ${EESSI_ACCEL_SOFTWARE_PATH}/${EESSI_ACCEL_SUBDIR}/${EESSI_MODULE_SUBDIR} ]; then
-              export EESSI_MODULEPATH_ACCEL=${EESSI_ACCEL_SOFTWARE_PATH}/${EESSI_ACCEL_SUBDIR}/${EESSI_MODULE_SUBDIR}
+          if [ -d ${EESSI_ACCEL_SOFTWARE_PATH}/${EESSI_ACCELERATOR_TARGET}/${EESSI_MODULE_SUBDIR} ]; then
+              export EESSI_MODULEPATH_ACCEL=${EESSI_ACCEL_SOFTWARE_PATH}/${EESSI_ACCELERATOR_TARGET}/${EESSI_MODULE_SUBDIR}
               show_msg "Using ${EESSI_MODULEPATH_ACCEL} as additional directory (for accelerators) to be added to MODULEPATH."
+              export EESSI_SITE_MODULEPATH_ACCEL=${EESSI_SITE_ACCEL_SOFTWARE_PATH}/${EESSI_ACCELERATOR_TARGET}/${EESSI_MODULE_SUBDIR}
+              show_msg "Using ${EESSI_SITE_MODULEPATH_ACCEL} as additional site extension directory (for accelerators) to be added to MODULEPATH."
           fi
 
           # Fix wrong path for RHEL >=8 libcurl 
