@@ -600,6 +600,18 @@ def pre_configure_hook_score_p(self, *args, **kwargs):
         raise EasyBuildError("Score-P-specific hook triggered for non-Score-P easyconfig?!")
 
 
+def pre_configure_hook_vsearch(self, *args, **kwargs):
+    """
+    Pre-configure hook for VSEARCH
+    - Workaround for a Zlib macro being renamed in Gentoo, see https://bugs.gentoo.org/383179 
+      (solves "expected initializer before 'OF'" errors)
+    """
+    if self.name == 'VSEARCH':
+        self.cfg.update('configopts', 'CPPFLAGS="-DOF=_Z_OF ${CPPFLAGS}"')
+    else:
+        raise EasyBuildError("VSEARCH-specific hook triggered for non-Score-P easyconfig?!")
+
+
 def pre_configure_hook_extrae(self, *args, **kwargs):
     """
     Pre-configure hook for Extrae
@@ -1286,6 +1298,7 @@ PRE_CONFIGURE_HOOKS = {
     'WRF': pre_configure_hook_wrf_aarch64,
     'LAMMPS': pre_configure_hook_LAMMPS_zen4,
     'Score-P': pre_configure_hook_score_p,
+    'VSEARCH': pre_configure_hook_vsearch,
 }
 
 PRE_TEST_HOOKS = {
