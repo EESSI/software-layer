@@ -1,4 +1,7 @@
 easyconfigs:
   - buildenv-default-foss-2023a.eb 
+  - Zoltan-3.901-foss-2023a.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/23068
+        from-commit: 077093868e1bf79762bb16a686185bbf6ae0846a  
   - OpenFOAM-12-foss-2023a.eb
-  
