@@ -1,2 +1,3 @@
 easyconfigs:
   - buildenv-default-foss-2023b.eb 
+  - cutadapt-5.0-GCCcore-13.2.0.eb
