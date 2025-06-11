@@ -30,7 +30,7 @@ file_changed_in_pr() {
   (
     cd "$repo_root" || return 2
     if [ -f "$PR_DIFF" ]; then  # PR_DIFF should be set by the calling script
-      grep -q "b/$rel_path" "$pr_diff" # Add b/ to match diff patterns
+      grep -q "b/$rel_path" "$PR_DIFF" # Add b/ to match diff patterns
     else
       return 3
     fi
