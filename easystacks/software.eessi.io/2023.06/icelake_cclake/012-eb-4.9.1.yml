@@ -1,5 +1,0 @@
-# 012-eb-4.9.1.yml: total build duration = 16 minutes
-easyconfigs:
-  - /cvmfs/software.eessi.io/versions/2023.06/software/linux/x86_64/intel/haswell/software/Python-bundle-PyPI/2023.06-GCCcore-12.3.0/easybuild/Python-bundle-PyPI-2023.06-GCCcore-12.3.0.eb:
-      options:
-        include-easyblocks: /cvmfs/software.eessi.io/versions/2023.06/software/linux/x86_64/intel/haswell/software/Python-bundle-PyPI/2023.06-GCCcore-12.3.0/easybuild/reprod/easyblocks/*.py

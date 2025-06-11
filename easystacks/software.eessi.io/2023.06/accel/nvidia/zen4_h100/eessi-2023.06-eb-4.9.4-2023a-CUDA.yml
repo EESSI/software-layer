@@ -1,4 +1,0 @@
-easyconfigs:
-  - CUDA-12.1.1.eb:
-      options:
-        accept-eula-for: CUDA

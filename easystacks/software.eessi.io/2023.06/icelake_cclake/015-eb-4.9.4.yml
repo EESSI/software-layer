@@ -1,7 +1,0 @@
-# 015-eb-4.9.4.yml: total build duration = 46 minutes
-easyconfigs:
-  - SciPy-bundle-2023.07-gfbf-2023a.eb:
-      options:
-        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/21693
-        from-commit: 7c5144d2c1a061cd9f08b5901970b7f6ec5eb5c0
-        include-easyblocks: /cvmfs/software.eessi.io/versions/2023.06/software/linux/x86_64/intel/haswell/software/SciPy-bundle/2023.07-gfbf-2023a/easybuild/reprod/easyblocks/*.py

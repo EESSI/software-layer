@@ -1,5 +1,0 @@
-# 022-eb-4.9.0.yml: total build duration = 24 minutes
-easyconfigs:
-  - /cvmfs/software.eessi.io/versions/2023.06/software/linux/x86_64/intel/haswell/software/OpenMPI/4.1.4-GCC-12.2.0/easybuild/OpenMPI-4.1.4-GCC-12.2.0.eb:
-      options:
-        include-easyblocks: /cvmfs/software.eessi.io/versions/2023.06/software/linux/x86_64/intel/haswell/software/OpenMPI/4.1.4-GCC-12.2.0/easybuild/reprod/easyblocks/*.py

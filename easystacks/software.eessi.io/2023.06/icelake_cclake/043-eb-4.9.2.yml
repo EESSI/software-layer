@@ -1,5 +1,0 @@
-# 043-eb-4.9.2.yml: total build duration = 0 minutes
-easyconfigs:
-  - /cvmfs/software.eessi.io/versions/2023.06/software/linux/x86_64/intel/haswell/software/at-spi2-core/2.49.91-GCCcore-12.3.0/easybuild/at-spi2-core-2.49.91-GCCcore-12.3.0.eb:
-      options:
-        include-easyblocks: /cvmfs/software.eessi.io/versions/2023.06/software/linux/x86_64/intel/haswell/software/at-spi2-core/2.49.91-GCCcore-12.3.0/easybuild/reprod/easyblocks/*.py
