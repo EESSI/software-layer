@@ -10,7 +10,6 @@ display_help() {
 
 file_changed_in_pr() {
   local full_path="$1"
-  local base_branch="${2:-origin/2023.06-software.eessi.io}"  # Default to origin/2023.06-software.eessi.io
 
   # Make sure file exists
   [[ -f "$full_path" ]] || return 1
@@ -29,7 +28,8 @@ file_changed_in_pr() {
   # Check if the file changed in the PR diff file that we have
   (
     cd "$repo_root" || return 2
-    if [ -f "$PR_DIFF" ]; then  # PR_DIFF should be set by the calling script
+    # $PR_DIFF should be set by the calling script
+    if [[ ! -z ${PR_DIFF} ]] && [[ -f "$PR_DIFF" ]]; then
       grep -q "b/$rel_path" "$PR_DIFF" # Add b/ to match diff patterns
     else
       return 3
