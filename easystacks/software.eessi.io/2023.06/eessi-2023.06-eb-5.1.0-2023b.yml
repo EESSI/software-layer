@@ -2,3 +2,4 @@ easyconfigs:
   - buildenv-default-foss-2023b.eb 
   - VSEARCH-2.30.0-GCC-13.2.0.eb
   - cutadapt-5.0-GCCcore-13.2.0.eb
+  - BWA-0.7.18-GCCcore-13.2.0.eb
