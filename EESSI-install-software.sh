@@ -242,6 +242,11 @@ fi
 # order is important: these are needed to install a full CUDA SDK in host_injections
 # for now, this just reinstalls all scripts. Note the most elegant, but works
 
+# the install_scripts.sh script relies on knowing the location of the PR diff
+# assume there's only one diff file that corresponds to the PR patch file
+pr_diff=$(ls [0-9]*.diff | head -1)
+export PR_DIFF="$PWD/$pr_diff"
+
 # Only run install_scripts.sh if not in dev.eessi.io for security
 if [[ -z ${EESSI_DEV_PROJECT} ]]; then
     ${TOPDIR}/install_scripts.sh --prefix ${EESSI_PREFIX}
@@ -340,10 +345,6 @@ if [[ -z ${MODULEPATH} ]]; then
 else
     echo_green ">> MODULEPATH set up: ${MODULEPATH}"
 fi
-
-# assume there's only one diff file that corresponds to the PR patch file
-pr_diff=$(ls [0-9]*.diff | head -1)
-
 
 # use PR patch file to determine in which easystack files stuff was added
 changed_easystacks=$(cat ${pr_diff} | grep '^+++' | cut -f2 -d' ' | sed 's@^[a-z]/@@g' | grep 'easystacks/.*yml$' | egrep -v 'known-issues|missing') 

@@ -15,7 +15,7 @@ file_changed_in_pr() {
   # Make sure file exists
   [[ -f "$full_path" ]] || return 1
 
-  # Check if the file is in a Git repo
+  # Check if the file is in a Git repo (it should be) 
   local repo_root
   repo_root=$(git -C "$(dirname "$full_path")" rev-parse --show-toplevel 2>/dev/null)
   if [[ -z "$repo_root" ]]; then
@@ -26,10 +26,14 @@ file_changed_in_pr() {
   local rel_path
   rel_path=$(realpath --relative-to="$repo_root" "$full_path")
 
-  # Check if the file changed in the diff range
+  # Check if the file changed in the PR diff file that we have
   (
     cd "$repo_root" || return 2
-    git diff --name-only "$base_branch"...HEAD | grep -q "^$rel_path$"
+    if [ -f "$PR_DIFF" ]; then  # PR_DIFF should be set by the calling script
+      grep -q "b/$rel_path" "$pr_diff" # Add b/ to match diff patterns
+    else
+      return 3
+    fi
   ) && return 0 || return 1
 }
 
@@ -51,8 +55,9 @@ compare_and_copy() {
           echo "File $source_file copied to $destination_file"
         else
           case $? in
-            1) echo "❌ File has NOT changed" ;;
-            2) echo "🚫 Not in a Git repo" ;;
+            1) echo "❌ File has NOT changed in PR" ;;
+            2) echo "🚫 Not in Git repository" ;;
+            3) echo "🚫 No PR diff file found" ;;
             *) echo "⚠️ Unknown error" ;;
           esac
         fi
