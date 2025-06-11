@@ -17,6 +17,8 @@ See also https://www.eessi.io/docs/software_layer .
 - The default branch of this repository has been changed to `main` (was `2023.06-software.eessi.io`),
   and houses [easystack files](https://docs.easybuild.io/easystack-files) for all versions of EESSI (not just `2023.06`).
 
+For more details, see https://gitlab.com/eessi/support/-/issues/139 .
+
 ## Setting up your environment
 
 You can set up your environment by sourcing the init script:
