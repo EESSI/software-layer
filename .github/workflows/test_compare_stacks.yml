@@ -1,5 +1,5 @@
 # documentation: https://help.github.com/en/articles/workflow-syntax-for-github-actions
-name: Check for discrepencies between software stacks in software.eessi.io
+name: Check for discrepancies between software stacks in software.eessi.io
 on:
   push:
     branches: [ "*-software.eessi.io" ]
