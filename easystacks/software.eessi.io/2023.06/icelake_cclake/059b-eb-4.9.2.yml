@@ -1,5 +1,0 @@
-# 059-eb-4.9.2.yml: total build duration = 397 minutes
-easyconfigs:
-  - /cvmfs/software.eessi.io/versions/2023.06/software/linux/x86_64/intel/haswell/software/ReFrame/4.6.2/easybuild/ReFrame-4.6.2.eb:
-      options:
-        include-easyblocks: /cvmfs/software.eessi.io/versions/2023.06/software/linux/x86_64/intel/haswell/software/ReFrame/4.6.2/easybuild/reprod/easyblocks/*.py

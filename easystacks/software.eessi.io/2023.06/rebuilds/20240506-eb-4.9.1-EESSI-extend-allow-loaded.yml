@@ -1,5 +1,0 @@
-# 2024.05.15
-# The module is an EasyBuild created module and therefore needs to be an allowed
-# module when running EasyBuild
-easyconfigs:
-  - EESSI-extend-easybuild.eb

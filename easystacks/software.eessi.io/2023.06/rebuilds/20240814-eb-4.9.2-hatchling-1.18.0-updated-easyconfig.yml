@@ -1,9 +1,0 @@
-# 2024.08.14
-# hatchling-1.18.0 rebuild to account for easyconfig changed upstream 
-# see https://gitlab.com/eessi/support/-/issues/85 and
-# https://github.com/easybuilders/easybuild-easyconfigs/pull/20389
-easyconfigs:
-  - hatchling-1.18.0-GCCcore-12.3.0.eb:
-      options:
-        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/20389
-        from-commit: 9580c0d67d6dd97b160b768a839bfcba6d5b21b9

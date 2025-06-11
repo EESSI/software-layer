@@ -1,7 +1,0 @@
-easyconfigs:
-  - EasyBuild-4.8.2.eb:
-      options:
-        from-pr: 19105
-  - Nextflow-23.10.0.eb:
-      options:
-        from-pr: 19172

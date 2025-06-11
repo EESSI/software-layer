@@ -1,5 +1,0 @@
-# 067-eb-4.9.2.yml: total build duration = 31 minutes
-easyconfigs:
-  - /cvmfs/software.eessi.io/versions/2023.06/software/linux/x86_64/intel/haswell/software/ROOT/6.26.10-foss-2022b/easybuild/ROOT-6.26.10-foss-2022b.eb:
-      options:
-        include-easyblocks: /cvmfs/software.eessi.io/versions/2023.06/software/linux/x86_64/intel/haswell/software/ROOT/6.26.10-foss-2022b/easybuild/reprod/easyblocks/*.py

@@ -1,4 +1,0 @@
-# 2024.09.19
-# We need to reinstall UCC-CUDA in the accelerator prefixes
-easyconfigs:
-  - UCC-CUDA-1.2.0-GCCcore-12.3.0-CUDA-12.1.1.eb

@@ -1,8 +1,0 @@
-# 2025.02.28
-# scikit-build-core-0.9.3-GCCcore-13.2.0.eb to account for easyconfig changed upstream 
-# see https://github.com/easybuilders/easybuild-easyconfigs/pull/21671
-easyconfigs:
-  - scikit-build-core-0.9.3-GCCcore-13.2.0.eb:
-      options:
-        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/21671
-        from-commit: c38f0637504bcd66e6f7f80277552934e1b03127

@@ -1,8 +1,0 @@
-# 2025.02.28
-# Z3/4.12.2-GCCcore-12.3.0 rebuild to account for easyconfig changed upstream 
-# see https://github.com/easybuilders/easybuild-easyconfigs/pull/20050
-easyconfigs:
-  - Z3-4.12.2-GCCcore-12.3.0.eb:
-      options:
-        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/20050
-        from-commit: 985b515a0bff531bdcafc5b83eb4160537c5db2c
