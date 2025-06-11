@@ -1,3 +1,4 @@
+# TEMPORARY COMMENT TO CHECK PR
 # Hooks to customize how EasyBuild installs software in EESSI
 # see https://docs.easybuild.io/en/latest/Hooks.html
 import glob
