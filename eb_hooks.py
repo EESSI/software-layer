@@ -14,6 +14,7 @@ from easybuild.tools.run import run_cmd
 from easybuild.tools.systemtools import AARCH64, POWER, X86_64, get_cpu_architecture, get_cpu_features
 from easybuild.tools.toolchain.compiler import OPTARCH_GENERIC
 from easybuild.tools.version import VERSION as EASYBUILD_VERSION
+from easybuild.tools.modules import get_software_root_env_var_name
 
 # prefer importing LooseVersion from easybuild.tools, but fall back to distuils in case EasyBuild <= 4.7.0 is used
 try:
@@ -421,6 +422,37 @@ def pre_fetch_hook(self, *args, **kwargs):
     if cpu_target == CPU_TARGET_ZEN4:
         pre_fetch_hook_zen4_gcccore1220(self, *args, **kwargs)
 
+    # Always check the software installation path
+    pre_fetch_hook_check_installation_path(self, *args, **kwargs)
+
+
+# Check the installation path so we verify that accelerator software always gets installed into the correct location
+def pre_fetch_hook_check_installation_path(self, *args, **kwargs):
+    # When we know the CUDA status, we will need to verify the installation path
+    # if we are doing an EESSI or host_injections installation
+    accelerator_deps = ['CUDA']
+    strict_eessi_installation = (
+        bool(re.search(EESSI_INSTALLATION_REGEX, self.installdir)) or
+        self.installdir.startswith(HOST_INJECTIONS_LOCATION))
+    if strict_eessi_installation:
+        dependency_names = self.cfg.dependency_names()
+        if self.cfg.name in accelerator_deps or any(dep in dependency_names for dep in accelerator_deps):
+            # Make sure the path is an accelerator location
+            if "/accel/" not in self.installdir:
+                raise EasyBuildError(
+                    f"It seems you are trying to install an accelerator package {self.cfg.name} into a "
+                    f"non-accelerator location {self.installdir}. You need to reconfigure your installation to target "
+                    "the correct location."
+                    )
+        else:
+            # If we don't have an accelerator dependency then we should be in a CPU installation path
+            if "/accel/" in self.installdir:
+                raise EasyBuildError(
+                    f"It seems you are trying to install a CPU-only package {self.cfg.name} into accelerator location "
+                    f"{self.installdir}. If this is a dependency of the package you are really interested in you will "
+                    "need to first install the CPU-only dependencies of that package."
+                    )
+
 
 def pre_fetch_hook_zen4_gcccore1220(self, *args, **kwargs):
     """Use --force --module-only if building a foss-2022b-based EasyConfig for Zen4.
@@ -599,6 +631,18 @@ def pre_configure_hook_score_p(self, *args, **kwargs):
         raise EasyBuildError("Score-P-specific hook triggered for non-Score-P easyconfig?!")
 
 
+def pre_configure_hook_vsearch(self, *args, **kwargs):
+    """
+    Pre-configure hook for VSEARCH
+    - Workaround for a Zlib macro being renamed in Gentoo, see https://bugs.gentoo.org/383179 
+      (solves "expected initializer before 'OF'" errors)
+    """
+    if self.name == 'VSEARCH':
+        self.cfg.update('configopts', 'CPPFLAGS="-DOF=_Z_OF ${CPPFLAGS}"')
+    else:
+        raise EasyBuildError("VSEARCH-specific hook triggered for non-VSEARCH easyconfig?!")
+
+
 def pre_configure_hook_extrae(self, *args, **kwargs):
     """
     Pre-configure hook for Extrae
@@ -668,6 +712,27 @@ def pre_configure_hook_gromacs(self, *args, **kwargs):
                 )
     else:
         raise EasyBuildError("GROMACS-specific hook triggered for non-GROMACS easyconfig?!")
+
+
+def pre_configure_hook_llvm(self, *args, **kwargs):
+    """Adjust internal configure options for the LLVM EasyBlock to reinstate filtered out dependencies.
+    In the LLVM EasyBlock, most checks concerning loaded modules are performed at the configure_step.
+    The EB uses a global `general_opts` dict to keep track of options that needs to be reused across stages.
+    The way the EB is structured does allow to inject a CMAKE option through `self._cfgopts` which is a splitted list
+    of the `configure_opts` passed through the EC, but does not allow to override as the `general_opts` dict will
+    take precedence over the `self._cfgopts` list.
+
+    We can instead set the environment variable that EasyBuild uses for `get_software_root` to trick the EB into
+    into pointing to the compat layer.
+    """
+    if self.name in ['LLVM', 'ROCm-LLVM']:
+        eprefix = get_eessi_envvar('EPREFIX')
+
+        for software in ('zlib', 'ncurses'):
+            var_name = get_software_root_env_var_name(software)
+            env.setvar(var_name, os.path.join(eprefix, 'usr'))
+    else:
+        raise EasyBuildError("LLVM-specific hook triggered for non-LLVM easyconfig?!")
 
 
 def pre_configure_hook_openblas_optarch_generic(self, *args, **kwargs):
@@ -1257,11 +1322,14 @@ PRE_CONFIGURE_HOOKS = {
     'Extrae': pre_configure_hook_extrae,
     'GROMACS': pre_configure_hook_gromacs,
     'libfabric': pre_configure_hook_libfabric_disable_psm3_x86_64_generic,
+    'LLVM': pre_configure_hook_llvm,
+    'ROCm-LLVM': pre_configure_hook_llvm,
     'MetaBAT': pre_configure_hook_metabat_filtered_zlib_dep,
     'OpenBLAS': pre_configure_hook_openblas_optarch_generic,
     'WRF': pre_configure_hook_wrf_aarch64,
     'LAMMPS': pre_configure_hook_LAMMPS_zen4,
     'Score-P': pre_configure_hook_score_p,
+    'VSEARCH': pre_configure_hook_vsearch,
 }
 
 PRE_TEST_HOOKS = {

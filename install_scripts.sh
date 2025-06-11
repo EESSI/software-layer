@@ -8,6 +8,35 @@ display_help() {
   echo "  -h | --help            -  display this usage information"
 }
 
+file_changed_in_pr() {
+  local full_path="$1"
+
+  # Make sure file exists
+  [[ -f "$full_path" ]] || return 1
+
+  # Check if the file is in a Git repo (it should be) 
+  local repo_root
+  repo_root=$(git -C "$(dirname "$full_path")" rev-parse --show-toplevel 2>/dev/null)
+  if [[ -z "$repo_root" ]]; then
+    return 2  # Not in a git repository
+  fi
+
+  # Compute relative path to the repo root
+  local rel_path
+  rel_path=$(realpath --relative-to="$repo_root" "$full_path")
+
+  # Check if the file changed in the PR diff file that we have
+  (
+    cd "$repo_root" || return 2
+    # $PR_DIFF should be set by the calling script
+    if [[ ! -z ${PR_DIFF} ]] && [[ -f "$PR_DIFF" ]]; then
+      grep -q "b/$rel_path" "$PR_DIFF" # Add b/ to match diff patterns
+    else
+      return 3
+    fi
+  ) && return 0 || return 1
+}
+
 compare_and_copy() {
     if [ "$#" -ne 2 ]; then
         echo "Usage of function: compare_and_copy <source_file> <destination_file>"
@@ -18,8 +47,20 @@ compare_and_copy() {
     destination_file="$2"
 
     if [ ! -f "$destination_file" ] || ! diff -q "$source_file" "$destination_file" ; then
-        cp "$source_file" "$destination_file"
-        echo "File $1 copied to $2"
+        echo "Files $source_file and $destination_file differ, checking if we should copy or not"
+        # We only copy if the file is part of the PR
+        if file_changed_in_pr "$source_file"; then
+          echo "File has changed in the PR"
+          cp "$source_file" "$destination_file"
+          echo "File $source_file copied to $destination_file"
+        else
+          case $? in
+            1) echo "❌ File has NOT changed in PR" ;;
+            2) echo "🚫 Not in Git repository" ;;
+            3) echo "🚫 No PR diff file found" ;;
+            *) echo "⚠️ Unknown error" ;;
+          esac
+        fi
     else
         echo "Files $1 and $2 are identical. No copy needed."
     fi

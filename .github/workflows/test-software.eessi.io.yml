@@ -55,6 +55,14 @@ jobs:
           with:
               fetch-depth: 0  # Fetch all history for all branches and tags
 
+        - name: Show host system info
+          run: |
+            echo "/proc/cpuinfo:"
+            cat /proc/cpuinfo
+            echo
+            echo "lscpu:"
+            lscpu
+
         - name: Mount EESSI CernVM-FS pilot repository
           uses: cvmfs-contrib/github-action-cvmfs@55899ca74cf78ab874bdf47f5a804e47c198743c # v4.0
           with:
@@ -109,6 +117,9 @@ jobs:
                       module unuse ${EESSI_SOFTWARE_PATH}/accel/${accel}/modules/all
                   done
               fi
+
+              # make sure that Lmod cache file is present
+              ls -l ${EESSI_SOFTWARE_PATH}/.lmod/cache/spiderT.lua
 
         - name: Test check_missing_installations.sh with missing package (GCC/8.3.0)
           run: |
