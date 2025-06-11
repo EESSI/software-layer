@@ -137,6 +137,8 @@ def post_ready_hook(self, *args, **kwargs):
         parallel_param = 'max_parallel'
     # get current parallelism setting
     parallel = self.cfg[parallel_param]
+    if parallel == None:
+        return  # self.cfg doesn't contain 'parallel' or 'max_parallel'
     if parallel == 1:
         return  # no need to limit if already using 1 core
 
