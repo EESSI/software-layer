@@ -2,3 +2,8 @@ easyconfigs:
   - buildenv-default-foss-2023b.eb 
   - VSEARCH-2.30.0-GCC-13.2.0.eb
   - cutadapt-5.0-GCCcore-13.2.0.eb
+  - Ginkgo-1.9.0-gompi-2023b.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/22719
+        # and https://github.com/easybuilders/easybuild-easyconfigs/pull/23078
+        from-commit: bd37ea6464fe8c0223cf5607c01bda9880e2316d
