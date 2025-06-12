@@ -6,4 +6,4 @@ easyconfigs:
       options:
         # see https://github.com/easybuilders/easybuild-easyconfigs/pull/22719
         # and https://github.com/easybuilders/easybuild-easyconfigs/pull/23078
-        from-commit: f79fc8aec01fb299d9a74afc30076125e5ef9b0e
+        from-commit: bd37ea6464fe8c0223cf5607c01bda9880e2316d
