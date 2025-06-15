@@ -87,3 +87,23 @@ easyconfigs:
 #        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/20201
 #        from-pr: 20201
   - Qt5-5.15.13-GCCcore-13.2.0.eb
+# from here on easyconfigs were originally built with EB 4.9.1
+  - scikit-build-core-0.9.3-GCCcore-13.2.0.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/21671
+        # we need to use from-commit because the PR was merged after EB 4.9.4 was
+        # released
+        from-commit: c38f0637504bcd66e6f7f80277552934e1b03127
+# originally built with EB 4.9.1, PR 20522 was included since EB 4.9.2
+#  - GROMACS-2024.1-foss-2023b.eb:
+#      options:
+#        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/20522
+#        from-commit: a0a467a88506c765a93a96b20d7a8fcb01d46b24
+# SOME TEST FAILED, so we skip it here
+#  - GROMACS-2024.1-foss-2023b.eb
+  - NLTK-3.8.1-foss-2023b.eb
+# originally built with EB 4.9.1, PR 20792 was included since EB 4.9.2
+#  - Valgrind-3.23.0-gompi-2023b.eb:
+#      options:
+#        from-pr: 20792
+  - Valgrind-3.23.0-gompi-2023b.eb
