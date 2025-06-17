@@ -1,0 +1,52 @@
+name: Create Issue on PR Opened
+
+on:
+  pull_request:
+    types: [opened]
+
+permissions:
+  contents: read  # to fetch code (actions/checkout)
+  issues: write  # to create an associated issue (if necessary)
+
+jobs:
+  create-issue:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Create an issue
+        uses: actions/github-script@60a0d83039c74a4aee543508d2ffcb1c3799cdea # v7.0.1
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const title = `New PR opened: #${context.payload.pull_request.number} - ${context.payload.pull_request.title}`;
+            const body = `
+              A new pull request has been opened!
+
+              **Title:** ${context.payload.pull_request.title}
+              **Author:** ${context.payload.pull_request.user.login}
+
+              **Link to PR:** ${context.payload.pull_request.html_url}
+
+              <details><summary>Click for details & help</summary>
+
+              Authorized maintainers may send commands by adding new comments to this issue. A comment can contain multiple commands each starting at the beginning of a line and having the format <code>bot: COMMANDS [ARGS]</code>
+
+              The table below lists the commands that are currently supported:
+              | command | description |
+              | ------- | ----------- |
+              | help | prints short usage information |
+              | show_config | shows config information |
+              | status | shows status information of builds |
+              | build ARGS | instructs to build software as defined by the linked PR and with the one or more of the arguments:<br/>architecture, instance, repository, accelerator, exportvariable |
+
+              For more information see [building software for EESSI](https://www.eessi.io/docs/bot/#build-test-deploy-bot)
+              </details>
+            `;
+
+            const issue = await github.rest.issues.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title: title,
+              body: body,
+            });
+
+            console.log(`Created issue: ${issue.data.html_url}`);
