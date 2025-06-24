@@ -2,7 +2,7 @@
 name: Check for missing software installations in software.eessi.io
 on:
   push:
-    branches: [ "*-software.eessi.io" ]
+    branches: [ "main" ]
   pull_request:
   workflow_dispatch:
 permissions:
@@ -55,6 +55,10 @@ jobs:
           with:
               fetch-depth: 0  # Fetch all history for all branches and tags
 
+        - name: Clone EESSI/software-layer-scripts repository
+          run: |
+            git clone https://github.com/EESSI/software-layer-scripts
+
         - name: Show host system info
           run: |
             echo "/proc/cpuinfo:"
@@ -70,7 +74,7 @@ jobs:
               cvmfs_http_proxy: DIRECT
               cvmfs_repositories: software.eessi.io
 
-        - name: Test check_missing_installations.sh script
+        - name: Check for missing installlations
           run: |
               export EESSI_SOFTWARE_SUBDIR_OVERRIDE=${{matrix.EESSI_SOFTWARE_SUBDIR_OVERRIDE}}
               source /cvmfs/software.eessi.io/versions/${EESSI_VERSION}/init/bash
@@ -91,7 +95,7 @@ jobs:
                   which eb
                   eb --version
                   ec=0
-                  ./check_missing_installations.sh ${easystack_file} || ec=$?
+                  software-layer-scripts/check_missing_installations.sh ${easystack_file} || ec=$?
                   if [[ ${ec} -ne 0 ]]; then echo "missing installations found for ${easystack_file}!" >&2; exit ${ec}; fi
               done
 
@@ -111,12 +115,15 @@ jobs:
                           which eb
                           eb --version
                           ec=0
-                          ./check_missing_installations.sh ${easystack_file} || ec=$?
+                          software-layer-scripts/check_missing_installations.sh ${easystack_file} || ec=$?
                           if [[ ${ec} -ne 0 ]]; then echo "missing installations found for ${easystack_file}!" >&2; exit ${ec}; fi
                       done
                       module unuse ${EESSI_SOFTWARE_PATH}/accel/${accel}/modules/all
                   done
               fi
+
+              # make sure that Lmod cache file is present
+              ls -l ${EESSI_SOFTWARE_PATH}/.lmod/cache/spiderT.lua
 
         - name: Test check_missing_installations.sh with missing package (GCC/8.3.0)
           run: |
@@ -142,35 +149,10 @@ jobs:
               # boolean logic), hence when the script exits 0 if no package was
               # missing it is interpreted as true, thus the test did not capture
               # the missing package
-              if ./check_missing_installations.sh ${easystack_file}; then
+              if software-layer-scripts/check_missing_installations.sh ${easystack_file}; then
                 echo "did NOT capture missing package; test FAILED"
                 exit 1
               else
                 echo "captured missing package; test PASSED"
                 exit 0
               fi
-
-        - name: Check that EasyBuild hook is up to date
-          if: ${{ github.event_name == 'pull_request' }}
-          run: |
-              FILE="eb_hooks.py"
-              TEMP_FILE="$(mktemp)"
-
-              # Fetch base branch
-              git fetch origin ${{ github.base_ref }}
-
-              # Check if the hooks has changed in the PR
-              if git diff --name-only origin/${{ github.base_ref }}...HEAD | grep -q "^$FILE$"; then
-                echo "Hooks changed in PR. Using PR version."
-                cp "$FILE" "$TEMP_FILE"
-              else
-                echo "File not changed in PR. Using default branch version."
-                git show origin/${{ github.base_ref }}:$FILE > "$TEMP_FILE"
-              fi
-
-              # Compare the hooks to what is shipped in the repository
-              # (it is overkill, but harmless, to do this for every architecture)
-              export EESSI_SOFTWARE_SUBDIR_OVERRIDE=${{matrix.EESSI_SOFTWARE_SUBDIR_OVERRIDE}}
-              source /cvmfs/software.eessi.io/versions/${EESSI_VERSION}/init/bash
-              module load EESSI-extend
-              diff "$TEMP_FILE" "$EASYBUILD_HOOKS"
