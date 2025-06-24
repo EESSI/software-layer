@@ -40,7 +40,7 @@ jobs:
             echo "git diff --no-renames --name-status ${GITHUB_BASE_REF}..HEAD"
             export CHANGED=$(git diff --no-renames --name-status origin/${GITHUB_BASE_REF}..HEAD)
             echo $CHANGED
-            python .github/workflows/scripts/filter_git_diff.py
+            python software-layer-scripts/.github/workflows/scripts/filter_git_diff.py
         - name: Mount EESSI CernVM-FS pilot repository
           if: env.CHANGED_EASYSTACKS
           uses: cvmfs-contrib/github-action-cvmfs@55899ca74cf78ab874bdf47f5a804e47c198743c # v4.0
@@ -74,6 +74,6 @@ jobs:
                   if [[ ${ec} -ne 0 ]]; then 
                       echo "missing installations found for ${easystack_file}!" >&2
                       export missing=$(env | grep .eb\) | tr -d \*)
-                      python .github/workflows/parse_missing-installations-output.py 
+                      python software-layer-scripts/.github/workflows/scripts/parse_missing-installations-output.py 
                   fi
               done
