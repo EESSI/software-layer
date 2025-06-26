@@ -8,6 +8,7 @@ easyconfigs:
         # see https://github.com/easybuilders/easybuild-easyconfigs/pull/22719
         # and https://github.com/easybuilders/easybuild-easyconfigs/pull/23078
         from-commit: bd408e638bdd0d0ef7d80d92b6d3e2ceb8d0893d
+  - HeFFTe-2.4.1-foss-2023b.eb
   - Flux-0.74.0-GCC-13.2.0.eb:
       options:
         # see https://github.com/easybuilders/easybuild-easyconfigs/pull/22979
