@@ -63,11 +63,19 @@ jobs:
               export EESSI_OS_TYPE=linux
               env | grep ^EESSI | sort
 
-              # check for missing installations if a file in the easystacks directory is changed
+              # check the changed easystack files
               echo "check for missing installation in changed easystack files"
               easystack_files=(${CHANGED_EASYSTACKS})
-              
+
+              # check for missing installations if a file in the easystacks directory is changed
+              # check easystack file for the use of `--from-pr` 
               for easystack_file in ${easystack_files[@]}; do
+                  echo "check for the use of from-pr in ${easystack_file}"
+                  if grep -q "from-pr" ${easystack_file}; then
+                      echo "ERROR: from-pr is found in ${easystack_file} please use from-commit" >&2
+                      exit 1
+                  fi
+
                   echo "check missing installatios for ${easystack_file}..."
                   ./check_missing_installations.sh ${easystack_file} || ec=$?
                   export eb_missing_out=$(./check_missing_installations.sh ${easystack_file})
