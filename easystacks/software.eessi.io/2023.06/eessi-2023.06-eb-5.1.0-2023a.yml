@@ -10,3 +10,6 @@ easyconfigs:
         # fix support for non-x86_64 systems,
         # see https://github.com/easybuilders/easybuild-easyconfigs/pull/23073
         from-commit: 6acf5617670d860cee1d12b120c18699be3c1a68
+  - Bazel-6.1.0-GCCcore-12.3.0.eb
+  - ml_dtypes-0.3.2-gfbf-2023a.eb
+  - tensorboard-2.15.1-gfbf-2023a.eb 
