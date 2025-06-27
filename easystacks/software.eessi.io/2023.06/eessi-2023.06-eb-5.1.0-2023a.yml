@@ -10,3 +10,11 @@ easyconfigs:
         # fix support for non-x86_64 systems,
         # see https://github.com/easybuilders/easybuild-easyconfigs/pull/23073
         from-commit: 6acf5617670d860cee1d12b120c18699be3c1a68
+  - jax-0.4.25-gfbf-2023a.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyblocks/pull/3486
+        include-easyblocks-from-commit: 9266abcd6c5668c5aca5815ea6c04ccf43112555
+  - AlphaFold-2.3.2-foss-2023a.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/21628
+        from-commit: 4204600998712ff595841c34d3f6a26192ec2eb4
