@@ -1,4 +1,4 @@
-# 2025.05.28
+# 2025.07.07
 # - rebuild Java wrapper modules to update to latest Java patch versions,
 #   see https://github.com/easybuilders/easybuild-easyconfigs/pull/22840;
 #   need to use --rebuild because automatic removal of module file doesn't work,
