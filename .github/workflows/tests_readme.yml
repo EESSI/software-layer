@@ -19,12 +19,16 @@ jobs:
         - name: Check out software-layer repository
           uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
 
+        - name: Clone EESSI/software-layer-scripts repository
+          run: |
+            git clone https://github.com/EESSI/software-layer-scripts
+
         - name: verify if README.md is consistent with EESSI_VERSION from init/eessi_defaults
           run: |
-            source init/eessi_defaults
+            source software-layer-scripts/init/eessi_defaults
             grep "${EESSI_VERSION}" README.md
 
         - name: verify if README.md is consistent with EESSI_CVMFS_REPO from init/eessi_defaults
           run: |
-            source init/eessi_defaults
+            source software-layer-scripts/init/eessi_defaults
             grep "${EESSI_CVMFS_REPO}" README.md
