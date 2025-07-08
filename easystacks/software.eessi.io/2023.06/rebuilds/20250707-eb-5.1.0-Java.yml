@@ -1,15 +1,7 @@
 # 2025.07.07
 # - rebuild Java wrapper modules to update to latest Java patch versions,
 #   see https://github.com/easybuilders/easybuild-easyconfigs/pull/22840;
-#   need to use --rebuild because automatic removal of module file doesn't work,
-#   since Java wrappers only result in changing Java/.modulerc.lua
 easyconfigs:
-  - Java-11.eb:
-      options:
-        rebuild: true
-  - Java-17.eb:
-      options:
-        rebuild: true
-  - Java-21.eb:
-      options:
-        rebuild: true
+  - Java-11.eb
+  - Java-17.eb
+  - Java-21.eb
