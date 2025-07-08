@@ -3,7 +3,9 @@
 # give up as soon as any error occurs
 set -e
 
-git clone https://github.com/EESSI/software-layer-scripts
+#git clone https://github.com/EESSI/software-layer-scripts
+# Testing Alan's feature branch
+git clone --branch remove_configure_easybuild git@github.com:ocaisa/software-layer-scripts.git
 
 # symlink everything, except for:
 # - common files like LICENSE and README.md
