@@ -1,2 +1,5 @@
 easyconfigs:
-  - Java-11.0.27.eb 
+  - EasyBuild-5.1.1.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/23340
+        from-commit: 59fa7d2e0536fd57f2df7f528d25f02f12746f1c
