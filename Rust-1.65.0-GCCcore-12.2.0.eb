@@ -31,5 +31,7 @@ preconfigopts = 'mv %(start_dir)s/src/llvm-project %(start_dir)s/src/llvm-projec
 preconfigopts += 'ln -s %(builddir)s/rustc-1.70.0-src/src/llvm-project %(start_dir)s/src/llvm-project && '
 preconfigopts += 'mv %(start_dir)s/compiler/rustc_llvm %(start_dir)s/compiler/rustc_llvm.bak && '
 preconfigopts += 'ln -s %(builddir)s/rustc-1.70.0-src/compiler/rustc_llvm %(start_dir)s/compiler/rustc_llvm && '
+preconfigopts += 'mv %(start_dir)s/compiler/rustc_smir %(start_dir)s/compiler/rustc_smir.bak && '
+preconfigopts += 'ln -s %(builddir)s/rustc-1.70.0-src/compiler/rustc_smir %(start_dir)s/compiler/rustc_smir && '
 
 moduleclass = 'lang'
