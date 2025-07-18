@@ -1,0 +1,10 @@
+# 2025.07.18
+# - rebuild EasyBuild 5.1.1 to include a fix for an issue 
+# with copying readonly patches
+#   see https://github.com/easybuilders/easybuild-easyconfigs/pull/23442
+#   and https://github.com/easybuilders/easybuild-framework/pull/4960
+easyconfigs:
+  - EasyBuild-5.1.1.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/23442
+        from-commit: f80afdebe0dfe7a48b68e0fd6e9a09c8f9a8e309
