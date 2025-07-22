@@ -1,0 +1,9 @@
+# 2025.07.22
+# - rebuild Lua to include luaposix which is required for Flux 
+#   see https://github.com/easybuilders/easybuild-easyconfigs/pull/23453
+#   (and https://github.com/easybuilders/easybuild-easyconfigs/pull/22979)
+easyconfigs:
+  - Lua-5.4.6-GCCcore-13.2.0.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/23453
+        from-commit: 724b25910d47a80ecfb6cb2d997a5b2b29fe9fe8
