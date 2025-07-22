@@ -21,6 +21,10 @@ See also https://www.eessi.io/docs/software_layer .
 
 For more details, see https://gitlab.com/eessi/support/-/issues/139 .
 
+## Contributing to the EESSI software layer
+
+Please see the documentation on [adding software to EESSI](https://www.eessi.io/docs/adding_software/overview/).
+
 ## Setting up EESSI in your environment
 
 Please refer the EESSI documentation for instructions on how to
@@ -29,7 +33,7 @@ Please refer the EESSI documentation for instructions on how to
 
 ### Accessing EESSI via a container
 
-Again, for the latest information for this use supported use case it is recommended that you refer to the
+Again, for the latest information for this supported use case it is recommended that you refer to the
 [documentation of the EESSI container script](https://www.eessi.io/docs/getting_access/eessi_container/).
 
 # License
