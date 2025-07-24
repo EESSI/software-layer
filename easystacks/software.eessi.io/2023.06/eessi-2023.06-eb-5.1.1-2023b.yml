@@ -1,6 +1,6 @@
 easyconfigs:
   - openCARP-17.0-foss-2023b.eb
-  - - Flux-0.74.0-GCC-13.2.0.eb:
+  - Flux-0.76.0-GCC-13.2.0.eb:
       options:
         # see https://github.com/easybuilders/easybuild-easyconfigs/pull/22979
         from-commit: c879064b195313a70e4509cfb98dd3eab195f647
