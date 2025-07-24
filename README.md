@@ -4,7 +4,22 @@ The software layer of the EESSI project uses [EasyBuild](https://docs.easybuild.
 
 See also https://www.eessi.io/docs/software_layer .
 
-## Pilot software stack
+## Recent changes
+
+**Wed 11 June 2025**
+
+- Code & scripts that are used to build the EESSI software layer have been relocated to a separate repository:
+  [`EESSI/software-layer-scripts`](https://github.com/EESSI/software-layer-scripts).
+
+- The minimal `bot/build.sh` script in this repository pulls in the latest `main` branch of the `EESSI/software-layer-scripts` repository,
+  symlinks the files in there, and then calls out to the `bot/build.sh` script located in that separate repository.
+
+- The default branch of this repository has been changed to `main` (was `2023.06-software.eessi.io`),
+  and houses [easystack files](https://docs.easybuild.io/easystack-files) for all versions of EESSI (not just `2023.06`).
+
+For more details, see https://gitlab.com/eessi/support/-/issues/139 .
+
+## Setting up your environment
 
 You can set up your environment by sourcing the init script:
 
