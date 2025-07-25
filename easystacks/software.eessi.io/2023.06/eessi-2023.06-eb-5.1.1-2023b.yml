@@ -1,2 +1,8 @@
 easyconfigs:
   - openCARP-17.0-foss-2023b.eb
+  - LLVM-20.1.5-GCCcore-13.2.0.eb:
+      options:
+        # See https://github.com/easybuilders/easybuild-easyconfigs/pull/23429
+        from-commit: 46bad6db04485e1e94ed1ecc447f866e5eaed1a1
+        # See https://github.com/easybuilders/easybuild-easyblocks/pull/3849
+        include-easyblocks-from-commit: 4f9dddc8a037cd05488c3324c69ce54222f212d0
