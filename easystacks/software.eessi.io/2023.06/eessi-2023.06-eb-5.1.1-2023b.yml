@@ -3,4 +3,4 @@ easyconfigs:
   - Flux-0.76.0-GCC-13.2.0.eb:
       options:
         # see https://github.com/easybuilders/easybuild-easyconfigs/pull/22979
-        from-commit: adf5859199f3398fb436e9fd5026ea41f7683acf
+        from-commit: 5492ebf6b4cc33cae46b25058a80768a24287d37
