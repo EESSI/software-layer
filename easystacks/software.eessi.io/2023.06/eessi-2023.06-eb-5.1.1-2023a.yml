@@ -1,4 +1,5 @@
 easyconfigs:
+  - libheif-1.17.6-GCCcore-12.3.0.eb
   - GraphicsMagick-1.3.45-GCCcore-12.3.0.eb:
       options:
         # See https://github.com/easybuilders/easybuild-easyconfigs/pull/22930
