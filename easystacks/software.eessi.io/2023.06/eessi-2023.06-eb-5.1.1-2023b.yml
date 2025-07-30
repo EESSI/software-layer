@@ -1,5 +1,6 @@
 easyconfigs:
   - openCARP-17.0-foss-2023b.eb
+  - libheif-1.19.5-GCCcore-13.2.0.eb
   - Flux-0.76.0-GCC-13.2.0.eb:
       options:
         # see https://github.com/easybuilders/easybuild-easyconfigs/pull/22979
