@@ -4,3 +4,6 @@ easyconfigs:
       options:
         # see https://github.com/easybuilders/easybuild-easyconfigs/pull/22979
         from-commit: c879064b195313a70e4509cfb98dd3eab195f647
+        # problems on the build cluster for sapphaire rapids when using /tmp
+        # since we know the build is small-ish, do it in RAM
+        buildpath: /dev/shm
