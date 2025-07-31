@@ -1,9 +1,10 @@
 easyconfigs:
   - openCARP-17.0-foss-2023b.eb
+  - libheif-1.19.5-GCCcore-13.2.0.eb
   - Flux-0.76.0-GCC-13.2.0.eb:
       options:
         # see https://github.com/easybuilders/easybuild-easyconfigs/pull/22979
-        from-commit: c879064b195313a70e4509cfb98dd3eab195f647
+        from-commit: 777c6cd3f165c2625b4d7588c42d92e17855f737
         # problems on the build cluster for sapphaire rapids when using /tmp
         # since we know the build is small-ish, do it in RAM
         buildpath: /dev/shm
