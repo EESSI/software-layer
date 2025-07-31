@@ -4,7 +4,8 @@ easyconfigs:
   - Flux-0.76.0-GCC-13.2.0.eb:
       options:
         # see https://github.com/easybuilders/easybuild-easyconfigs/pull/22979
-        from-commit: 777c6cd3f165c2625b4d7588c42d92e17855f737
-        # problems on the build cluster for sapphaire rapids when using /tmp
-        # since we know the build is small-ish, do it in RAM
+        from-commit: 856e35188b9ec014cc8f95e13044e14e5d7463f9
+        # for some still unknown reason sapphaire rapids on the build cluster
+        # is extremely slow. Since we know the build is small-ish, do it in RAM
+        # rather than in (the overlay we use in) /tmp
         buildpath: /dev/shm
