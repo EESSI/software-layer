@@ -1,0 +1,14 @@
+# We'll rebuild all CUDA software, for various reasons
+# 1. We now have a proper CUDA sanity check, and if anything was 'wrong' with our current CUDA installs, we'd like
+# to know about it
+# 2. The PR implementing a CI to check for differences between officially supported CUDA Compute Capabilities shows
+# that there are a lot of missing installations https://github.com/EESSI/software-layer/pull/1087 . A rebuild PR like
+# this will have the convenient side effect of filling all those holes
+easyconfigs:
+  - CUDA-12.4.0.eb:
+      options:
+        accept-eula-for: CUDA
+  - UCX-CUDA-1.15.0-GCCcore-13.2.0-CUDA-12.4.0.eb
+  - UCC-CUDA-1.2.0-GCCcore-13.2.0-CUDA-12.4.0.eb
+  - OSU-Micro-Benchmarks-7.5-gompi-2023b-CUDA-12.4.0.eb
+  - GROMACS-2024.4-foss-2023b-CUDA-12.4.0.eb
