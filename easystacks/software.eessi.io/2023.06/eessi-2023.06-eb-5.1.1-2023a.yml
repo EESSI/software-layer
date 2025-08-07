@@ -1,0 +1,11 @@
+easyconfigs:
+  - libheif-1.17.6-GCCcore-12.3.0.eb
+  - GraphicsMagick-1.3.45-GCCcore-12.3.0.eb:
+      options:
+        # See https://github.com/easybuilders/easybuild-easyconfigs/pull/22930
+        # We add also GraphicsMagick explicitly to make sure the version with the fix for libtiff is used
+        from-commit: ca5dddb65171a50207fd8a85559edb4b4844d69b
+  - Octave-10.1.0-foss-2023a.eb:
+      options:
+        # See https://github.com/easybuilders/easybuild-easyconfigs/pull/22932
+        from-commit: 3211d34eb16ff31b8de3dfef55ecaaf1ec205c6f

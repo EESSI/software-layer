@@ -1,0 +1,3 @@
+easyconfigs:
+  - openCARP-17.0-foss-2023b.eb
+  - libheif-1.19.5-GCCcore-13.2.0.eb
