@@ -2,9 +2,9 @@ name: Check and update licenses 2
 
 on:
   push:
-    branches: [ "*-software.eessi.io" ]
+    branches: [ "main" ]
   pull_request:
-    branches:  [ "*-software.eessi.io" ]
+    branches:  [ "main" ]
       #    types: [opened, synchronized]
 permissions:
   contents: read # we dont need to write
