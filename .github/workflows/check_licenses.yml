@@ -28,11 +28,10 @@ jobs:
           export EESSI_PREFIX=/cvmfs/software.eessi.io/versions/${EESSI_VERSION}
           export EESSI_OS_TYPE=linux
           env | grep ^EESSI | sort
-
+          module load EasyBuild
           
-
           # first check the CPU-only builds for this target
-          echo "first run eb --missing --easystack " 
+          
           # create a temporary directory to store the output
           LOCAL_TMPDIR=$(mktemp -d)
           eb_missing_out=$LOCAL_TMPDIR/eb_missing.out
