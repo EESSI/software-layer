@@ -29,7 +29,7 @@ jobs:
           export EESSI_OS_TYPE=linux
           env | grep ^EESSI | sort
 
-          module load EESSI-extend/${EESSI_VERSION}-easybuild
+          
 
           # first check the CPU-only builds for this target
           echo "first run eb --missing --easystack " 
@@ -41,10 +41,11 @@ jobs:
               eb_version=$(echo ${easystack_file} | sed 's/.*eb-\([0-9.]*\).*.yml/\1/g')
               echo "check missing installations for ${easystack_file} with EasyBuild ${eb_version}..."
               module purge
-              #module load EasyBuild/${eb_version}
+              module load EasyBuild/${eb_version}
+              module load EESSI-extend/${EESSI_VERSION}-easybuild
               which eb
-              eb --version
-              eb --missing --easystack ${easystack_file} 2>&1 | tee ${eb_missing_out}
+              ${EB:-eb}  --version
+              ${EB:-eb}  --missing --easystack ${easystack_file} 2>&1 | tee ${eb_missing_out}
               
               grep " required modules missing:" ${eb_missing_out} > /dev/null
               cat ${eb_missing_out}
