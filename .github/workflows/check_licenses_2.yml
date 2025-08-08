@@ -1,0 +1,111 @@
+name: Check and update licenses 2
+
+on:
+  push:
+    branches: [ "*-software.eessi.io" ]
+  pull_request:
+    branches:  [ "*-software.eessi.io" ]
+      #    types: [opened, synchronized]
+permissions:
+  contents: read # we dont need to write
+
+jobs:
+  license_update:
+    runs-on: ubuntu-latest
+
+    steps:
+      -  uses: actions/checkout@v4
+      -  uses: eessi/github-action-eessi@v3
+
+      - name: Check for missing installlations
+        run: |
+          export EESSI_SOFTWARE_SUBDIR_OVERRIDE=${{matrix.EESSI_SOFTWARE_SUBDIR_OVERRIDE}}
+          source /cvmfs/software.eessi.io/versions/${EESSI_VERSION}/init/bash
+
+          # set $EESSI_CPU_FAMILY to the CPU architecture that corresponds to $EESSI_SOFTWARE_SUBDIR_OVERRIDE (part before the first slash),
+          # to prevent issues with checks in the Easybuild configuration that use this variable
+          export EESSI_CPU_FAMILY=${EESSI_SOFTWARE_SUBDIR_OVERRIDE%%/*}
+          export EESSI_PREFIX=/cvmfs/software.eessi.io/versions/${EESSI_VERSION}
+          export EESSI_OS_TYPE=linux
+          env | grep ^EESSI | sort
+
+          # first check the CPU-only builds for this target
+          echo "first run eb --missing --easystack " 
+          # create a temporary directory to store the output
+          LOCAL_TMPDIR=$(mktemp -d)
+          eb_missing_out=$LOCAL_TMPDIR/eb_missing.out
+
+          for easystack_file in $(EESSI_VERSION=${EESSI_VERSION} .github/workflows/scripts/only_latest_easystacks.sh); do
+              eb_version=$(echo ${easystack_file} | sed 's/.*eb-\([0-9.]*\).*.yml/\1/g')
+              echo "check missing installations for ${easystack_file} with EasyBuild ${eb_version}..."
+              module purge
+              module load EasyBuild/${eb_version}
+              which eb
+              eb --version
+              eb --missing --easystack ${easystack_file} 2>&1 | tee ${eb_missing_out}
+              
+              grep " required modules missing:" ${eb_missing_out} > /dev/null
+              
+              exit_code=$?
+              if [[ ${exit_code} -ne 0 ]]; then echo "missing installations found for ${easystack_file}!" >&2;
+              else
+                echo "no missing installations found for ${easystack_file}."
+                exit 0
+              fi
+
+              grep 
+              
+          done
+
+          - name: Check for modules  existing in licenses.json file 
+            run: |
+            if [ -s licenses/licenses.json ]; then
+              echo "licenses.json file exists, checking for modules that are not in the file..."
+              grep -oP '\(\K[^)]+' ${eb_missing_out} | sort | uniq > missing_modules.txt
+              echo "Modules to check"
+              cat missing_modules.txt
+
+              # Check if module exists as key in JSON
+              while read -r module; do    
+                if ! jq -e --arg key "$module" 'has($key)' "licenses.json" > /dev/null; then
+                missing_modules+=("$module")
+              fi
+              done < missing_modules.txt
+
+              echo $missing_modules > missing_modules.txt
+              echo "Modules not in licenses.json: ${missing_modules[@]}"
+              
+            else
+              echo "licenses.json file does not exist? what happened?"
+              exit 1
+            fi
+
+          - name : Search sources for missing modules
+              run: |
+                if [ -s missing_modules.txt ]; then
+                  echo "Searching sources for missing modules..."
+                  # Generates a "modules_results.json" file 
+                  licenses/parse_easyconfig.py missing_modules.txt
+                fi
+
+          - name : Try to fetch the license 
+            run: |
+              if [ -s modules_results.json ]; then
+                echo "modules_results.json file exists, trying to fetch the license..."
+                licenses/parse_licenses.py modules_results.json
+              else
+                echo "modules_results.json file does not exist, skipping license fetch."
+              fi
+
+           - name: Check for missing licenses
+            run: |
+              grep -3 "not found" licenses.json 
+              exit_code=$?
+              if [[ ${exit_code} -ne 0 ]]; then 
+                echo "No missing licenses found."
+              else
+                echo "Missing licenses found, please check the licenses.json file."
+                exit 1
+              fi
+
+
