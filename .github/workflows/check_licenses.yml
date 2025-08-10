@@ -1,4 +1,4 @@
-name: Check and update licenses 2
+name: Check and update licenses
 
 on:
   push:
@@ -29,7 +29,7 @@ jobs:
           export EESSI_OS_TYPE=linux
           env | grep ^EESSI | sort
           module load EasyBuild
-          
+
           # first check the CPU-only builds for this target
           
           # create a temporary directory to store the output
@@ -46,6 +46,8 @@ jobs:
               ${EB:-eb}  --version
               ${EB:-eb}  --missing --easystack ${easystack_file} 2>&1 | tee ${eb_missing_out}
               
+              exit_code=${PIPESTATUS[0]}
+              echo "exit code for eb --missing --easystack ${easystack_file} is ${exit_code}"
               grep " required modules missing:" ${eb_missing_out} > /dev/null
               cat ${eb_missing_out}
 
