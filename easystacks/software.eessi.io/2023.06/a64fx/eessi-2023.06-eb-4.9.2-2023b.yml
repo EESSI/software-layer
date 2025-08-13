@@ -4,3 +4,17 @@ easyconfigs:
         # see https://github.com/easybuilders/easybuild-easyconfigs/pull/20820
         from-commit: 1fc885b35dacdeb2feef4af207a2daa2502bae08
   - foss-2023b.eb
+  - IPython-8.17.2-GCCcore-13.2.0.eb
+  - dlb-3.4-gompi-2023b.eb
+  - pystencils-1.3.4-gfbf-2023b.eb:
+  - Extrae-4.2.0-gompi-2023b.eb:
+  - Boost.MPI-1.83.0-gompi-2023b.eb:
+     options:
+       # source URLs for Boost.* have changed, corresponding PR is
+       # https://github.com/easybuilders/easybuild-easyconfigs/pull/22240
+       # Boost.MPI is a dependency of pyMBE
+       from-commit: e610fe1ac5393d1de668a466fdaaea74c580ee03
+  - pyMBE-0.8.0-foss-2023b.eb:
+  - STAR-2.7.11b-GCC-13.2.0.eb:
+  - HPL-2.3-foss-2023b.eb
+  - R-bundle-CRAN-2024.06-foss-2023b.eb:
