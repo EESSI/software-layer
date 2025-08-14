@@ -33,8 +33,12 @@ jobs:
           # create a temporary directory to store the output
           LOCAL_TMPDIR=$(mktemp -d)
           eb_missing_out=$LOCAL_TMPDIR/eb_missing.out
+          file_list = $(curl -sS \
+                        -H "Accept: application/vnd.github+json" \
+                        "https://api.github.com/repos/${GITHUB_REPOSITORY}/pulls/${PR}/files?per_page=100" |
+                        jq -r '.[].filename | select(test("easystack"))')
 
-          for easystack_file in $(gh pr view "$PR" --json files --jq '[.files[].path | select(test("easystack"))'); do
+          for easystack_file in ${file_list}; do
               eb_version=$(echo ${easystack_file} | sed 's/.*eb-\([0-9.]*\).*.yml/\1/g')
               echo "check missing installations for ${easystack_file} with EasyBuild ${eb_version}..."
               module purge
