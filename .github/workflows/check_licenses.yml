@@ -41,8 +41,6 @@ jobs:
                         "https://api.github.com/repos/${GITHUB_REPOSITORY}/pulls/${PR_NUMBER}/files?per_page=100" |
                         jq -r '.[].filename | select(test("easystack"))')
 
-          echo $file_list
-
           for easystack_file in $file_list; do
               eb_version=$(echo ${easystack_file} | sed 's/.*eb-\([0-9.]*\).*.yml/\1/g')
               echo "check missing installations for ${easystack_file} with EasyBuild ${eb_version}..."
@@ -56,8 +54,7 @@ jobs:
               exit_code=${PIPESTATUS[0]}
               echo "exit code for eb --missing --easystack ${easystack_file} is ${exit_code}"
               grep " required modules missing:" ${eb_missing_out} > /dev/null
-              cat ${eb_missing_out}
-
+      
               exit_code=$?
               if [[ ${exit_code} -ne 0 ]]; then echo "missing installations found for ${easystack_file}!" >&2;
               else
@@ -71,6 +68,7 @@ jobs:
             run: |
             if [ -s licenses/licenses.json ]; then
               echo "licenses.json file exists, checking for modules that are not in the file..."
+              cat ${eb_missing_out}
               grep -oP '\(\K[^)]+' ${eb_missing_out} | sort | uniq > missing_modules.txt
               echo "Modules to check"
               cat missing_modules.txt
