@@ -61,12 +61,11 @@ jobs:
                 echo "no missing installations found for ${easystack_file}."
                 exit 0
               fi  
-              
           done
 
-          - name: Check for modules  existing in licenses.json file 
-            run: |
-            if [ -s licenses/licenses.json ]; then
+      - name: Check for modules  existing in licenses.json file 
+        run: |
+          if [ -s licenses/licenses.json ]; then
               echo "licenses.json file exists, checking for modules that are not in the file..."
               cat ${eb_missing_out}
               grep -oP '\(\K[^)]+' ${eb_missing_out} | sort | uniq > missing_modules.txt
@@ -76,7 +75,7 @@ jobs:
               # Check if module exists as key in JSON
               while read -r module; do    
                 if ! jq -e --arg key "$module" 'has($key)' "licenses.json" > /dev/null; then
-                missing_modules+=("$module")
+                missing_modules+=("$module")runner
               fi
               done < missing_modules.txt
 
@@ -88,25 +87,25 @@ jobs:
               exit 1
             fi
 
-          - name : Search sources for missing modules
-              run: |
+      - name : Search sources for missing modules
+        run: |
                 if [ -s missing_modules.txt ]; then
                   echo "Searching sources for missing modules..."
                   # Generates a "modules_results.json" file 
                   licenses/parse_easyconfig.py missing_modules.txt
                 fi
 
-          - name : Try to fetch the license 
-            run: |
+      - name : Try to fetch the license 
+       run: |
               if [ -s modules_results.json ]; then
                 echo "modules_results.json file exists, trying to fetch the license..."
                 licenses/parse_licenses.py modules_results.json
               else
                 echo "modules_results.json file does not exist, skipping license fetch."
               fi
-
-           - name: Check for missing licenses
-            run: |
+              
+      - name: Check for missing licenses
+        run: |
               grep -3 "not found" licenses.json 
               exit_code=$?
               if [[ ${exit_code} -ne 0 ]]; then 
