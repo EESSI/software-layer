@@ -36,7 +36,8 @@ jobs:
           echo "curl -sS \
                         -H "Accept: application/vnd.github+json" \
                         "https://api.github.com/repos/${GITHUB_REPOSITORY}/pulls/${PR}/files?per_page=100" |
-                        jq -r '.[].filename | select(test("easystack"))'""
+                        jq -r '.[].filename | select(test("easystack"))'"
+                        
           file_list = $(curl -sS \
                         -H "Accept: application/vnd.github+json" \
                         "https://api.github.com/repos/${GITHUB_REPOSITORY}/pulls/${PR}/files?per_page=100" |
