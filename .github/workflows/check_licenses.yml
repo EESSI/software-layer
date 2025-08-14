@@ -96,7 +96,7 @@ jobs:
                 fi
 
       - name : Try to fetch the license 
-       run: |
+        run: |
               if [ -s modules_results.json ]; then
                 echo "modules_results.json file exists, trying to fetch the license..."
                 licenses/parse_licenses.py modules_results.json
