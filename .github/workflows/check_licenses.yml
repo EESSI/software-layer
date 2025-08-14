@@ -29,14 +29,12 @@ jobs:
           export EESSI_OS_TYPE=linux
           env | grep ^EESSI | sort
           module load EasyBuild
-
-          # first check the CPU-only builds for this target
           
           # create a temporary directory to store the output
           LOCAL_TMPDIR=$(mktemp -d)
           eb_missing_out=$LOCAL_TMPDIR/eb_missing.out
 
-          for easystack_file in $(EESSI_VERSION=${EESSI_VERSION} .github/workflows/scripts/only_latest_easystacks.sh); do
+          for easystack_file in $(gh pr view "$PR" --json files --jq '[.files[].path | select(test("easystack"))'); do
               eb_version=$(echo ${easystack_file} | sed 's/.*eb-\([0-9.]*\).*.yml/\1/g')
               echo "check missing installations for ${easystack_file} with EasyBuild ${eb_version}..."
               module purge
@@ -56,9 +54,7 @@ jobs:
               else
                 echo "no missing installations found for ${easystack_file}."
                 exit 0
-              fi
-
-              grep 
+              fi  
               
           done
 
