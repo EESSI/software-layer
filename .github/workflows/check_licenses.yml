@@ -18,6 +18,8 @@ jobs:
       -  uses: eessi/github-action-eessi@v3
 
       - name: Check for missing installlations
+        env:
+           PR_NUMBER: ${{ github.event.number }}
         run: |
           export EESSI_SOFTWARE_SUBDIR_OVERRIDE=${{matrix.EESSI_SOFTWARE_SUBDIR_OVERRIDE}}
           source /cvmfs/software.eessi.io/versions/${EESSI_VERSION}/init/bash
@@ -35,12 +37,12 @@ jobs:
           eb_missing_out=$LOCAL_TMPDIR/eb_missing.out
           echo "curl -sS \
                         -H "Accept: application/vnd.github+json" \
-                        "https://api.github.com/repos/${GITHUB_REPOSITORY}/pulls/${PR}/files?per_page=100" |
+                        "https://api.github.com/repos/${GITHUB_REPOSITORY}/pulls/${PR_NUMBER}/files?per_page=100" |
                         jq -r '.[].filename | select(test("easystack"))'"
-                        
+
           file_list = $(curl -sS \
                         -H "Accept: application/vnd.github+json" \
-                        "https://api.github.com/repos/${GITHUB_REPOSITORY}/pulls/${PR}/files?per_page=100" |
+                        "https://api.github.com/repos/${GITHUB_REPOSITORY}/pulls/${PR_NUMBER}/files?per_page=100" |
                         jq -r '.[].filename | select(test("easystack"))')
 
           for easystack_file in ${file_list}; do
