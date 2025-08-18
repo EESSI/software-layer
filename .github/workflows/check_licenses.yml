@@ -35,7 +35,7 @@ jobs:
           # create a temporary directory to store the output
           LOCAL_TMPDIR=$(mktemp -d)
           eb_missing_out=$LOCAL_TMPDIR/eb_missing.out
-
+          echo "Temporary directory created: ${eb_missing_out}"
           file_list=$(curl -sS \
                         -H "Accept: application/vnd.github+json" \
                         "https://api.github.com/repos/${GITHUB_REPOSITORY}/pulls/${PR_NUMBER}/files?per_page=100" |
@@ -92,7 +92,7 @@ jobs:
                 if [ -s missing_modules.txt ]; then
                   echo "Searching sources for missing modules..."
                   # Generates a "modules_results.json" file 
-                  licenses/parse_easyconfig.py missing_modules.txt
+                  licenses/parsing_easyconfig.py missing_modules.txt
                 fi
 
       - name : Try to fetch the license 
