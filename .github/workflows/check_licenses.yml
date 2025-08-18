@@ -67,6 +67,7 @@ jobs:
         run: |
           if [ -s licenses/licenses.json ]; then
               echo "licenses.json file exists, checking for modules that are not in the file..."
+              echo "tmp file check:  ${eb_missing_out}"
               cat ${eb_missing_out}
               grep -oP '\(\K[^)]+' ${eb_missing_out} | sort | uniq > missing_modules.txt
               echo "Modules to check"
@@ -92,7 +93,7 @@ jobs:
                 if [ -s missing_modules.txt ]; then
                   echo "Searching sources for missing modules..."
                   # Generates a "modules_results.json" file 
-                  licenses/parsing_easyconfig.py missing_modules.txt
+                  licenses/parsing_easyconfigs.py missing_modules.txt
                 fi
 
       - name : Try to fetch the license 
