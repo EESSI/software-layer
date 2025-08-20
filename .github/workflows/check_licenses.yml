@@ -34,7 +34,7 @@ jobs:
           
           # create a temporary directory to store the output
           LOCAL_TMPDIR=$(mktemp -d)
-          eb_missing_out=$LOCAL_TMPDIR/eb_missing.out
+          echo "eb_missing_out=$LOCAL_TMPDIR/eb_missing.out" >> $GITHUB_ENV
           echo "Temporary directory created: ${eb_missing_out}"
           file_list=$(curl -sS \
                         -H "Accept: application/vnd.github+json" \
