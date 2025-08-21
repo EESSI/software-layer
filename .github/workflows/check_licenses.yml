@@ -96,20 +96,23 @@ jobs:
                   # Generates a "modules_results.json" file 
                   module load Python-bundle-PyPI/2023.06-GCCcore-12.3.0
                   python licenses/parsing_easyconfigs.py missing_modules.txt
+                  cat modules_results.json
                 fi
 
       - name : Try to fetch the license 
         run: |
               if [ -s modules_results.json ]; then
                 echo "modules_results.json file exists, trying to fetch the license..."
+                module load Python-bundle-PyPI/2023.06-GCCcore-12.3.0
                 python licenses/parse_licenses.py modules_results.json
+                cat licenses/licenses_test.json
               else
                 echo "modules_results.json file does not exist, skipping license fetch."
               fi
               
       - name: Check for missing licenses
         run: |
-              grep -3 "not found" licenses.json 
+              grep -3 "not found" licenses/licenses_test.json 
               exit_code=$?
               if [[ ${exit_code} -ne 0 ]]; then 
                 echo "No missing licenses found."

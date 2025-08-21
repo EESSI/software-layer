@@ -219,7 +219,7 @@ def process_modules_for_licenses(modules_file):
     return results
 
 
-def save_license_results(results, output_file="licenses.json"):
+def save_license_results(results, output_file="licenses_test.json"):
     """Saves license information to a JSON file."""
     with open(output_file, "w") as f:
         json.dump(results, f, indent=4)
