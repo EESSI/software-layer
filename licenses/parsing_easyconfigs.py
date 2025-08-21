@@ -83,7 +83,7 @@ def load_modules_from_file(filename):
 
 def main():
     
-    filename = argv[1] if len(argv) > 1 else "missing_modules.txt"  # Default filename
+    filename = os.sys.argv[1] if len(os.sys.argv) > 1 else "missing_modules.txt"  # Default filename
 
     if not os.path.exists(filename):
         print(f"Error: {filename} not found.")
