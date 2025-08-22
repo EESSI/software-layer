@@ -106,14 +106,14 @@ jobs:
                 module load Python-bundle-PyPI/2023.06-GCCcore-12.3.0
                 module load BeautifulSoup/4.12.2-GCCcore-12.3.0
                 python licenses/parse_licenses.py modules_results.json
-                cat licenses/licenses_test.json
+                cat licenses_test.json
               else
                 echo "modules_results.json file does not exist, skipping license fetch."
               fi
               
       - name: Check for missing licenses
         run: |
-              grep -3 "not found" licenses/licenses_test.json 
+              grep -3 "not found" licenses_test.json 
               exit_code=$?
               if [[ ${exit_code} -ne 0 ]]; then 
                 echo "No missing licenses found."
