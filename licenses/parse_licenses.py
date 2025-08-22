@@ -13,7 +13,7 @@ URL_REG = "https://packages.ecosyste.ms/api/v1/packages/lookup?repository_url="
 MAX_DEPTH = 3
 
 # Load SPDX License Data to interpolate with found license files
-with open("spdx-list.json", "r") as f:
+with open("licenses/spdx-list.json", "r") as f:
     spdx_data = json.load(f)
 SPDX_LICENSES = {
     entry["licenseId"].lower(): {
