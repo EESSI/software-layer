@@ -1,0 +1,4 @@
+easyconfigs:
+  - GCC-14.2.0.eb
+  - gfbf-2025a.eb
+  - FFTW-3.3.10-GCC-14.2.0
