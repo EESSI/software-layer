@@ -12,4 +12,4 @@ easyconfigs:
         # and passes for every architecture except sapphaire rapids. Building
         # interactively on that arch with EESSI-extend does work so we just
         # ignore test failures to get this build ingested.
-      ignore-test-failure: True
+        ignore-test-failure: True
