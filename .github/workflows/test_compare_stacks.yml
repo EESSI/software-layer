@@ -21,6 +21,7 @@ jobs:
       matrix:
         EESSI_VERSION:
         - 2023.06
+        - 2025.06
         COMPARISON_ARCH:
         - aarch64/neoverse_n1
         - aarch64/neoverse_v1
