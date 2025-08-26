@@ -45,3 +45,7 @@ easyconfigs:
       options:
         # see https://github.com/easybuilders/easybuild-easyconfigs/pull/22469
         from-commit: fc22841fef99cbb2a221c18029b15e692e78c27c
+  - Scalasca-2.6.1-gompi-2023b.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/21135
+        from-commit: c61e72465641ffb2852f60c5264386af690b2ea1
