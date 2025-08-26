@@ -64,7 +64,7 @@ jobs:
               fi  
           done
 
-      - name: Check for modules  existing in licenses.json file 
+      - name: Check for modules existing in licenses.json file 
         run: |
           if [ -s licenses/licenses.json ]; then
               echo "licenses.json file exists, checking for modules that are not in the file..."
