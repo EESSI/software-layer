@@ -5,4 +5,6 @@
 # that there are a lot of missing installations https://github.com/EESSI/software-layer/pull/1087 . A rebuild PR like
 # this will have the convenient side effect of filling all those holes
 easyconfigs:
-  - GROMACS-2024.4-foss-2023b-CUDA-12.4.0.eb
+  - GROMACS-2024.4-foss-2023b-CUDA-12.4.0.eb:
+      options:
+        cuda-sanity-check-accept-missing-ptx: True
