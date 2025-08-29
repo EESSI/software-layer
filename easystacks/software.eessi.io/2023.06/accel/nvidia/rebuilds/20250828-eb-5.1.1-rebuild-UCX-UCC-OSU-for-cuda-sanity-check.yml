@@ -6,5 +6,8 @@
 # this will have the convenient side effect of filling all those holes
 easyconfigs:
   - UCX-CUDA-1.15.0-GCCcore-13.2.0-CUDA-12.4.0.eb
+  - NCCL-2.20.5-GCCcore-13.2.0-CUDA-12.4.0.eb:
+      options:
+         cuda-sanity-check-accept-missing-ptx: True 
   - UCC-CUDA-1.2.0-GCCcore-13.2.0-CUDA-12.4.0.eb
   - OSU-Micro-Benchmarks-7.5-gompi-2023b-CUDA-12.4.0.eb
