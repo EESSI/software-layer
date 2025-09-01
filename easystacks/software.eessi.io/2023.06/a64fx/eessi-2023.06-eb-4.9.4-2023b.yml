@@ -118,5 +118,5 @@ easyconfigs:
         from-commit: fc22841fef99cbb2a221c18029b15e692e78c27c
   - PDT-3.25.2-GCCcore-13.2.0.eb:
       options:
-      # see https://github.com/easybuilders/easybuild-easyconfigs/pull/22523
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/22523
         from-commit: 0044f08898e12cfd31177bfce0747ef2172226d1
