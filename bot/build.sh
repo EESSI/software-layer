@@ -8,7 +8,7 @@ git clone https://github.com/EESSI/software-layer-scripts
 # symlink everything, except for:
 # - common files like LICENSE and README.md
 # - 'bot' subdirectory, there we need to be a bit more careful (see below)
-for file in $(ls software-layer-scripts | egrep -v 'LICENSE|README.md|^bot'); do
+for file in $(ls software-layer-scripts | egrep -v 'easystacks|LICENSE|README.md|^bot'); do
     ln -s software-layer-scripts/${file}
 done
 
