@@ -1,0 +1,11 @@
+easyconfigs:
+# from here on built originally with EB 4.8.2
+# need to keep building Qt5 with 4.8.2 because more recent versions include an
+# updated easyblock for python which doesn't work correctly for Python-2.7.18
+  - Qt5-5.15.7-GCCcore-12.2.0.eb
+# try to also build QE with EB 4.8.2 --> worked but it looks like we may not have
+# used the FoX library, see https://github.com/easybuilders/easybuild-easyconfigs/pull/20070/files#diff-b5e488fd7d21901d2307ed7994868853061fb5c60080e91cb186e2f937e45522
+# so we move building QE 7.2 with EB 4.9.4; that failed plus QE was not built
+# with the FoX library for any other of the supported CPU microarchitectures,
+# hence we keep building it with EB 4.8.2 (here in this easystack file)
+  - QuantumESPRESSO-7.2-foss-2022b.eb
