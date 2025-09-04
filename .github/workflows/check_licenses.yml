@@ -53,7 +53,9 @@ jobs:
                         -H "Accept: application/vnd.github+json" \
                         "https://api.github.com/repos/${GITHUB_REPOSITORY}/pulls/${PR_NUMBER}/files?per_page=100" |
                         jq -r '.[].filename | select(test("easystack"))')
-
+          echo "Files to check:"
+          echo $file_list
+           
           for easystack_file in $file_list; do
               eb_version=$(echo ${easystack_file} | sed 's/.*eb-\([0-9.]*\).*.yml/\1/g')
               echo "check missing installations for ${easystack_file} with EasyBuild ${eb_version}..."
@@ -89,7 +91,7 @@ jobs:
               # Check if module exists as key in JSON
               while read -r module; do    
                 if ! jq -e --arg key "$module" 'has($key)' "licenses/licenses.json" > /dev/null; then
-                missing_modules+=("$module")
+                missing_modules+=("$module\n")
               fi
               done < missing_modules.txt
 
