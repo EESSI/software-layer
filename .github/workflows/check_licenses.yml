@@ -84,20 +84,19 @@ jobs:
               echo "licenses.json file exists, checking for modules that are not in the file..."
               echo "tmp file check:  ${eb_missing_out}"
              # cat ${eb_missing_out}
-              grep -oP '^\* \K[^ ]+' "${eb_missing_out}" | sort -u  > missing_modules.txt
+              grep -oP '^\* \K[^ ]+' "${eb_missing_out}" | sort -u  > missing.txt
               echo "Modules to check"
               cat missing_modules.txt
 
               # Check if module exists as key in JSON
               while read -r module; do    
                 if ! jq -e --arg key "$module" 'has($key)' "licenses/licenses.json" > /dev/null; then
-                missing_modules+=("$module")
-                missing_modules+=("")
+                echo "$module" >> missing_modules.txt
               fi
-              done < missing_modules.txt
+              done < missing.txt
 
-              echo $missing_modules > missing_modules.txt
-              echo "Modules not in licenses.json: ${missing_modules[@]}"
+              echo "Modules not in licenses.json: "
+              cat missing_modules.txt
               
             else
               echo "licenses.json file does not exist? what happened?"
