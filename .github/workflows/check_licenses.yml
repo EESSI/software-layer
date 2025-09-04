@@ -91,7 +91,8 @@ jobs:
               # Check if module exists as key in JSON
               while read -r module; do    
                 if ! jq -e --arg key "$module" 'has($key)' "licenses/licenses.json" > /dev/null; then
-                missing_modules+=("$module\n")
+                missing_modules+=("$module")
+                missing_modules+=("")
               fi
               done < missing_modules.txt
 
