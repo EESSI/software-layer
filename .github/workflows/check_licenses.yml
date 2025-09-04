@@ -86,7 +86,7 @@ jobs:
              # cat ${eb_missing_out}
               grep -oP '^\* \K[^ ]+' "${eb_missing_out}" | sort -u  > missing.txt
               echo "Modules to check"
-              cat missing_modules.txt
+              cat missing.txt
 
               # Check if module exists as key in JSON
               while read -r module; do    
