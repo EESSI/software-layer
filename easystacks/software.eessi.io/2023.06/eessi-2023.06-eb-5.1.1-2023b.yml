@@ -1,3 +1,7 @@
 easyconfigs:
   - openCARP-17.0-foss-2023b.eb
   - libheif-1.19.5-GCCcore-13.2.0.eb
+  - Flye-2.9.4-GCC-13.2.0.eb
+      options:
+        # See https://github.com/easybuilders/easybuild-easyconfigs/pull/21109
+        from-commit: 3175081ed25799d70d005ec8d288c832d69ca6f9
