@@ -5,4 +5,8 @@
 # that there are a lot of missing installations https://github.com/EESSI/software-layer/pull/1087 . A rebuild PR like
 # this will have the convenient side effect of filling all those holes
 easyconfigs:
-  - ESPResSo-4.2.2-foss-2023a-CUDA-12.1.1.eb
+  - ESPResSo-4.2.2-foss-2023a-CUDA-12.1.1.eb:
+      options:
+        # need an additional patch to build for the right CUDA architecture,
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/23795
+        from-commit: d70176fdac5f611b5df02798a9651e13ba61c32a
