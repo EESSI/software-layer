@@ -9,4 +9,4 @@ easyconfigs:
       options:
         # need an additional patch to build for the right CUDA architecture,
         # see https://github.com/easybuilders/easybuild-easyconfigs/pull/23795
-        from-commit: d70176fdac5f611b5df02798a9651e13ba61c32a
+        from-commit: 7dea219f1e24746528331b8bd5ab2b99ab2cc6d2
