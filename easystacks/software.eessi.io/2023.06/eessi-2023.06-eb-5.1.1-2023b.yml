@@ -1,3 +1,15 @@
 easyconfigs:
   - openCARP-17.0-foss-2023b.eb
   - libheif-1.19.5-GCCcore-13.2.0.eb
+  - Flux-0.76.0-GCC-13.2.0.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/22979
+        from-commit: 856e35188b9ec014cc8f95e13044e14e5d7463f9
+        # for some still unknown reason sapphaire rapids on the build cluster
+        # is extremely slow and causes the test suite to time out.
+        # The builds have been tested a hundred times via
+        # https://github.com/EESSI/software-layer/pull/1107
+        # and passes for every architecture except sapphaire rapids. Building
+        # interactively on that arch with EESSI-extend does work so we just
+        # ignore test failures to get this build ingested.
+        ignore-test-failure: True
