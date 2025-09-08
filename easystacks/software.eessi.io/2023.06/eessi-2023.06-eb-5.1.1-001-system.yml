@@ -3,3 +3,4 @@ easyconfigs:
   - Java-17.0.15.eb
   - Java-21.0.7.eb
   - Trimmomatic-0.39-Java-11.eb
+  - code-server-4.97.2.eb
