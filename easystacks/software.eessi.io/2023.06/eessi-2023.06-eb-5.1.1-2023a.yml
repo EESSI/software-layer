@@ -10,3 +10,4 @@ easyconfigs:
         # See https://github.com/easybuilders/easybuild-easyconfigs/pull/22932
         from-commit: 3211d34eb16ff31b8de3dfef55ecaaf1ec205c6f
   - MrBayes-3.2.7-gompi-2023a.eb
+  - Subread-2.0.6-GCC-12.3.0.eb
