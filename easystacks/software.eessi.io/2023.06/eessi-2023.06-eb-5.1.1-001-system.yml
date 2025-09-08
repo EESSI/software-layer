@@ -4,4 +4,4 @@ easyconfigs:
   - Java-21.0.7.eb
   - Trimmomatic-0.39-Java-11.eb
   - FastQC-0.12.1-Java-11.eb
-  - code-server-4.97.2.eb
+  - code-server-4.100.2.eb
