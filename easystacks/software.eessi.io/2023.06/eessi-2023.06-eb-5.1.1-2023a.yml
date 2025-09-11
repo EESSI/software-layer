@@ -16,3 +16,4 @@ easyconfigs:
         # See https://github.com/easybuilders/easybuild-easyconfigs/pull/23596
         from-commit: daa610c5b3aaf43b80779805d85f13a1d5a8734e
   - MLflow-2.10.2-gfbf-2023a.eb
+  - Salmon-1.10.3-GCC-12.3.0.eb
