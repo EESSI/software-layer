@@ -34,5 +34,5 @@ easyconfigs:
   - R-bundle-CRAN-2024.06-foss-2023b.eb:
       options:
         # see https://github.com/easybuilders/easybuild-easyconfigs/pull/21366
-        # use the latest update of the bundle
-        from-commit: 743dcc4e3440f29200b90a3cd1aaee2580aaf19f
+        # use an older commit to not run into dependency issues
+        from-commit: 1736a123b1685836452587a5c51793257570bb2d
