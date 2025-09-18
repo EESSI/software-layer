@@ -4,3 +4,4 @@ easyconfigs:
   - Subread-2.1.1-GCC-13.2.0.eb
   - Flye-2.9.4-GCC-13.2.0.eb
   - MLflow-2.18.0-gfbf-2023b.eb
+  - RStudio-Server-2024.09.0+375-foss-2023b-Java-11-R-4.4.1.eb

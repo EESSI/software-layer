@@ -16,3 +16,4 @@ easyconfigs:
         # See https://github.com/easybuilders/easybuild-easyconfigs/pull/23596
         from-commit: daa610c5b3aaf43b80779805d85f13a1d5a8734e
   - MLflow-2.10.2-gfbf-2023a.eb
+  - RStudio-Server-2023.09.1+494-foss-2023a-Java-11-R-4.3.2.eb
