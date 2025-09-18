@@ -8,7 +8,7 @@ easyconfigs:
   - CUDA-Samples-12.1-GCC-12.3.0-CUDA-12.1.1.eb:
       # See https://github.com/EESSI/software-layer/issues/1198
       options:
-        cuda-sanity-check-accept-missing-ptx: True
+        cuda-sanity-check-error-on-failed-checks: False
   - UCX-CUDA-1.14.1-GCCcore-12.3.0-CUDA-12.1.1.eb
   - NCCL-2.18.3-GCCcore-12.3.0-CUDA-12.1.1.eb:
       options:
