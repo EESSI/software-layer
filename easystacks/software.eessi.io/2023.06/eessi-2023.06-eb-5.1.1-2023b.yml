@@ -3,3 +3,4 @@ easyconfigs:
   - libheif-1.19.5-GCCcore-13.2.0.eb
   - Subread-2.1.1-GCC-13.2.0.eb
   - Flye-2.9.4-GCC-13.2.0.eb
+  - RAxML-8.2.13-gompi-2023b-avx2.eb
