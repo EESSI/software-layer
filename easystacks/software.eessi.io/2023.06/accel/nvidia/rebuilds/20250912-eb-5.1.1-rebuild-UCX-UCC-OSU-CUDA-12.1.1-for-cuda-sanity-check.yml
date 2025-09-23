@@ -1,0 +1,17 @@
+# We'll rebuild all CUDA software, for various reasons
+# 1. We now have a proper CUDA sanity check, and if anything was 'wrong' with our current CUDA installs, we'd like
+# to know about it
+# 2. The PR implementing a CI to check for differences between officially supported CUDA Compute Capabilities shows
+# that there are a lot of missing installations https://github.com/EESSI/software-layer/pull/1087 . A rebuild PR like
+# this will have the convenient side effect of filling all those holes
+easyconfigs:
+  - CUDA-Samples-12.1-GCC-12.3.0-CUDA-12.1.1.eb:
+      # See https://github.com/EESSI/software-layer/issues/1198
+      options:
+        cuda-sanity-check-error-on-failed-checks: False
+  - UCX-CUDA-1.14.1-GCCcore-12.3.0-CUDA-12.1.1.eb
+  - NCCL-2.18.3-GCCcore-12.3.0-CUDA-12.1.1.eb:
+      options:
+        cuda-sanity-check-accept-missing-ptx: True
+  - UCC-CUDA-1.2.0-GCCcore-12.3.0-CUDA-12.1.1.eb
+  - OSU-Micro-Benchmarks-7.2-gompi-2023a-CUDA-12.1.1.eb
