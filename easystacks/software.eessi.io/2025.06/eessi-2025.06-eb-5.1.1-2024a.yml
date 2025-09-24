@@ -4,3 +4,4 @@ easyconfigs:
   - FFTW-3.3.10-GCC-13.3.0
   - OpenMPI-5.0.3-GCC-13.3.0.eb
   - foss-2024a.eb
+  - ollama-0.6.0-GCCcore-13.3.0.eb
