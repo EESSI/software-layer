@@ -13,4 +13,3 @@ easyconfigs:
   - libglvnd-1.6.0-GCCcore-12.2.0.eb
   - nodejs-18.12.1-GCCcore-12.2.0.eb
   - libunwind-1.6.2-GCCcore-12.2.0.eb
-  - lit-18.1.7-GCCcore-12.2.0.eb
