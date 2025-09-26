@@ -8,4 +8,4 @@ easyconfigs:
   - LightGBM-4.5.0-foss-2023a-CUDA-12.1.1.eb:
       options:
         # see https://github.com/easybuilders/easybuild-easyconfigs/pull/24023
-        from-commit: 53374e6a5898030e3ef77dc2a69611e9aa272103
+        from-commit: 3a913849290d1b2373bf36aa5d20041d95b0df87
