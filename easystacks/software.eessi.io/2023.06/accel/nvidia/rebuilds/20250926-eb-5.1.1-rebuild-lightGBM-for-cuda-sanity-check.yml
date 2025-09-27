@@ -8,4 +8,5 @@ easyconfigs:
   - LightGBM-4.5.0-foss-2023a-CUDA-12.1.1.eb:
       options:
         # see https://github.com/easybuilders/easybuild-easyconfigs/pull/24023
-        from-commit: 942ff3e1bd772c794d3d7651380d414c8ce5f7b1
+        from-commit: 853cdf7a8a3912aa0e55367b2b4451ebff00e13b
+        cuda-sanity-check-accept-missing-ptx: True
