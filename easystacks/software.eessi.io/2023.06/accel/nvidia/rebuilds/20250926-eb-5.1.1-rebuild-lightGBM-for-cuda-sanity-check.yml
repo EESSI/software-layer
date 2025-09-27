@@ -1,0 +1,12 @@
+# We'll rebuild all CUDA software, for various reasons
+# 1. We now have a proper CUDA sanity check, and if anything was 'wrong' with our current CUDA installs, we'd like
+# to know about it
+# 2. The PR implementing a CI to check for differences between officially supported CUDA Compute Capabilities shows
+# that there are a lot of missing installations https://github.com/EESSI/software-layer/pull/1087 . A rebuild PR like
+# this will have the convenient side effect of filling all those holes
+easyconfigs:
+  - LightGBM-4.5.0-foss-2023a-CUDA-12.1.1.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/24023
+        from-commit: 853cdf7a8a3912aa0e55367b2b4451ebff00e13b
+        cuda-sanity-check-accept-missing-ptx: True
