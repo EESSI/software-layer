@@ -5,3 +5,7 @@ easyconfigs:
   #       in EESSI 2025.06 compat layer can cause problems with some installations (like OpenMPI);
   #       see also https://github.com/EESSI/software-layer-scripts/pull/74
   - M4-1.4.19.eb
+  - EasyBuild-5.1.2.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/24024
+        from-commit: d250e047335cff444680790ceb026676cfb65eb8
