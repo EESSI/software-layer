@@ -8,3 +8,4 @@ easyconfigs:
       options:
         # see https://github.com/easybuilders/easybuild-easyconfigs/pull/22371
         from-commit: 29f82e43229663c22f0c76cb3fc7b6dd5c407cd7
+  - RAxML-8.2.13-gompi-2023b-avx2.eb
