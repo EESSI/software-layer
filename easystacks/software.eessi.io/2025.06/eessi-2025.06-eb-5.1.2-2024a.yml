@@ -1,2 +1,3 @@
 easyconfigs:
+  - Python-bundle-PyPI-2024.06-GCCcore-13.3.0.eb
   - SciPy-bundle-2024.05-gfbf-2024a.eb
