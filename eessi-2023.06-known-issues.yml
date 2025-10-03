@@ -1,4 +1,4 @@
-- aarch64/a64x:
+- aarch64/a64fx:
   - LLVM-15.0.5-GCCcore-12.2.0.eb:
     - issue: https://github.com/EESSI/software-layer/issues/1213
     - info: "build failure: immediate offset out of range"
