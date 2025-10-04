@@ -1,0 +1,8 @@
+# 2025.10.03
+# Rust 1.65.0 had build failures on A64FX (related to its included LLVM),
+# and we worked around by using 1.75.0 and adding a dummy module file for 1.65.0.
+# It should be possible to build it with optarch=march=armv8.2-a, so we need to rebuild it.
+# 
+# See https://github.com/EESSI/software-layer/issues/1213
+easyconfigs:
+  - Rust-1.65.0-GCCcore-12.2.0.eb
