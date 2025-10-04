@@ -1,4 +1,10 @@
-- aarch64/a64x:
+- aarch64/a64fx:
+  - LLVM-15.0.5-GCCcore-12.2.0.eb:
+    - issue: https://github.com/EESSI/software-layer/issues/1213
+    - info: "build failure: immediate offset out of range"
+  - Rust-1.65.0-GCCcore-12.2.0.eb:
+    - issue: https://github.com/EESSI/software-layer/issues/1213
+    - info: "same build failure as LLVM 15.0.5, as Rust includes LLVM 15"
   - SciPy-bundle-2023.07-gfbf-2023a:
     - issue: https://github.com/EESSI/software-layer/issues/318
     - info: "4 failing tests (vs 54407 passed) in scipy test suite"

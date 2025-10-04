@@ -13,6 +13,7 @@ easyconfigs:
   - libglvnd-1.6.0-GCCcore-12.2.0.eb
   - nodejs-18.12.1-GCCcore-12.2.0.eb
   - libunwind-1.6.2-GCCcore-12.2.0.eb
+  - LLVM-15.0.5-GCCcore-12.2.0.eb
   # from here on built originally with EB 4.8.2
   # need to keep building Qt5 with 4.8.2 because more recent versions include an
   # updated easyblock for python which doesn't work correctly for Python-2.7.18
