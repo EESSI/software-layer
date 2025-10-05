@@ -13,4 +13,5 @@ easyconfigs:
   - libglvnd-1.6.0-GCCcore-12.2.0.eb
   - nodejs-18.12.1-GCCcore-12.2.0.eb
   - libunwind-1.6.2-GCCcore-12.2.0.eb
+  - LLVM-15.0.5-GCCcore-12.2.0.eb
   - QuantumESPRESSO-7.2-foss-2022b.eb
