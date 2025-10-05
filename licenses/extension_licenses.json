@@ -176,7 +176,7 @@
         },
         "Cython": {
             "License": [
-                "Apache-2.0",
+                "Apache-2.0"
             ],
             "Permission to redistribute": true,
             "Retrieved from": "https://pypi.org/pypi/Cython/json"
@@ -1393,7 +1393,7 @@
                 "Artistic-1.0-Perl"
             ],
             "Permission to redistribute": true,
-            "Retrieved from": "https://metacpan.org/pod/Class::DBI#LICENSE",
+            "Retrieved from": "https://metacpan.org/pod/Class::DBI#LICENSE"
         },
         "Class::Inspector": {
             "License": [
@@ -4140,7 +4140,7 @@
             ],
             "Permission to redistribute": true,
             "Retrieved from": "https://github.com/urllib3/urllib3"
-        },
+        }
     },
     "flit/3.9.0-GCCcore-13.2.0": {
         "certifi": {
@@ -4305,7 +4305,7 @@
             ],
             "Permission to redistribute": true,
             "Retrieved from": "https://github.com/python/typing_extensions"
-        },
+        }
     },
     "setuptools-rust/1.8.0-GCCcore-13.2.0": {
         "semantic_version": {
@@ -4326,7 +4326,7 @@
             ],
             "Permission to redistribute": true,
             "Retrieved from": "https://github.com/python/typing_extensions"
-        },
+        }
     },
     "cffi/1.15.1-GCCcore-12.3.0": {
         "cffi": {
@@ -6737,7 +6737,7 @@
                 "BSD-3-Clause",
                 "MIT",
                 "Zlib",
-                "Apache-2.0",
+              "Apache-2.0"
             ],
             "Permission to redistribute": true,
             "Retrieved from": "https://github.com/numpy/numpy"
@@ -6831,7 +6831,7 @@
                 "BSD-3-Clause",
                 "MIT",
                 "Zlib",
-                "Apache-2.0",
+                "Apache-2.0"
             ],
             "Permission to redistribute": true,
             "Retrieved from": "https://github.com/numpy/numpy"
@@ -6911,7 +6911,7 @@
                 "BSD-3-Clause",
                 "MIT",
                 "Zlib",
-                "Apache-2.0",
+                "Apache-2.0"
             ],
             "Permission to redistribute": true,
             "Retrieved from": "https://github.com/numpy/numpy"
@@ -16416,7 +16416,7 @@
             "License": "GPL-2.0-or-later",
             "Permission to redistribute": true,
             "Retrieved from": "https://search.r-project.org/R/refmans/datasets/html/datasets-package.html"
-        },,
+        },
         "desc": {
             "License": [
                 "MIT"
@@ -35151,7 +35151,7 @@
             "License": "Artistic-2.0",
             "Permission to redistribute": true,
             "Retrieved from": "https://bioconductor.org/packages/IlluminaHumanMethylationEPICmanifest"
-        }
+        },
         "illuminaio": {
             "License": [
                 "GPL-2.0"
@@ -40317,7 +40317,7 @@
                 "Artistic-1.0-Perl"
             ],
             "Permission to redistribute": true,
-            "Retrieved from": "https://metacpan.org/pod/Class::DBI#LICENSE",
+            "Retrieved from": "https://metacpan.org/pod/Class::DBI#LICENSE"
         },
         "Class::Inspector": {
             "License": [
