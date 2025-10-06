@@ -1,2 +1,3 @@
 easyconfigs:
   - GRASS-8.4.0-foss-2023a.eb
+  - parallel-20230722-GCCcore-12.3.0.eb
