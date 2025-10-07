@@ -303,6 +303,38 @@ easyconfigs:
       # without any from-commit this will use a version from April 6, 2024
       # https://github.com/easybuilders/easybuild-easyconfigs/blob/88f6f9c7439c535e62461e6e71b1961c7be118b8/easybuild/easyconfigs/l/lit/lit-18.1.2-GCCcore-12.3.0.eb
       # EB 5.0.0 has a few changes to that
+# from here on apps were originally built with EB 4.9.2
+# PR 20958 is included since EB 4.9.3
+#  - OpenFOAM-10-foss-2023a.eb:
+#      options:
+#        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/20958
+#        from-commit: dbadb2074464d816740ee0e95595c2cb31b6338f
+  - OpenFOAM-10-foss-2023a.eb
+# PR 20958 is included since EB 4.9.3
+#  - OpenFOAM-11-foss-2023a.eb:
+#      options:
+#        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/20958
+#        from-commit: dbadb2074464d816740ee0e95595c2cb31b6338f
+  - OpenFOAM-11-foss-2023a.eb
+  - BCFtools-1.18-GCC-12.3.0.eb
+  - BWA-0.7.18-GCCcore-12.3.0.eb
+  - CapnProto-1.0.1-GCCcore-12.3.0.eb
+  - DendroPy-4.6.1-GCCcore-12.3.0.eb
+  - DIAMOND-2.1.8-GCC-12.3.0.eb
+  - FastME-2.1.6.3-GCC-12.3.0.eb
+  - fastp-0.23.4-GCC-12.3.0.eb
+  - HMMER-3.4-gompi-2023a.eb
+# PR 20955 is included since EB 4.9.3
+#  - IQ-TREE-2.3.5-gompi-2023a.eb:
+#      options:
+#        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/20955
+#        from-commit: 185f88b9a03d65a7fb74edc7acb4221e87e90784
+  - IQ-TREE-2.3.5-gompi-2023a.eb
+  - KronaTools-2.8.1-GCCcore-12.3.0.eb
+  - LSD2-2.4.1-GCCcore-12.3.0.eb
+  - MAFFT-7.520-GCC-12.3.0-with-extensions.eb
+  - ncbi-vdb-3.0.10-gompi-2023a.eb
+  - MetalWalls-21.06.1-foss-2023a.eb
 # PRs 20138 and 3338 were included since EB 4.9.3
 #  - QuantumESPRESSO-7.3.1-foss-2023a.eb:
 #      options:
