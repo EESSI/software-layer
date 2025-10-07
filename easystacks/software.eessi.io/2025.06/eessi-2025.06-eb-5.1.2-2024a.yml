@@ -1,4 +1,5 @@
 easyconfigs:
+  - Python-bundle-PyPI-2024.06-GCCcore-13.3.0.eb
   - LLVM-18.1.8-GCCcore-13.3.0-minimal.eb:
       options:
         # see https://github.com/easybuilders/easybuild-easyblocks/pull/3952
