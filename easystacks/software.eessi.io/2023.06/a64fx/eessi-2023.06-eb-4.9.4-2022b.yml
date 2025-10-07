@@ -69,6 +69,7 @@ easyconfigs:
 #        from-pr: 20298
   - Highway-1.0.3-GCCcore-12.2.0.eb
   - SciPy-bundle-2023.02-gfbf-2022b.eb
+  - Rust-1.65.0-GCCcore-12.2.0.eb
 # Boost-1.81.0-GCC-12.2.0.eb is a dependency for GDAL and the sources URL for Boost
 # has recently changed by PR 22157
 # see https://github.com/easybuilders/easybuild-easyconfigs/pull/22157
@@ -106,4 +107,3 @@ easyconfigs:
 #      options:
 #        from-pr: 20238
   - R-4.2.2-foss-2022b.eb
-  - Rust-1.65.0-GCCcore-12.2.0.eb
