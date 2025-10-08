@@ -1,0 +1,6 @@
+# 2025.10.08
+# Rebuild Perl-bundle-CPAN 5.36.1 with the same EB version
+# that was used for other CPU targets. The currently installed version
+# is built with EB 5.1.2 and includes more extensions.
+easyconfigs:
+  - Perl-bundle-CPAN-5.36.1-GCCcore-12.3.0.eb
