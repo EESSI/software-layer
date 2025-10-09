@@ -106,4 +106,4 @@ easyconfigs:
 #  - R-4.2.2-foss-2022b.eb:
 #      options:
 #        from-pr: 20238
-  - R-4.2.2-foss-2022b.eb
+#  - R-4.2.2-foss-2022b.eb
