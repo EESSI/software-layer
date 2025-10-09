@@ -5,4 +5,8 @@ easyconfigs:
         # see https://github.com/easybuilders/easybuild-easyblocks/pull/3952
         include-easyblocks-from-commit: 2e5a227c1f0f161d6a96a938b287c0140ef88648
   - Mesa-24.1.3-GCCcore-13.3.0.eb
+  - libdeflate-1.20-GCCcore-13.3.0.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/24171
+        from-commit: 9ac9273e0bb622d051e15780b701cadb517fd65c
   - R-4.4.2-gfbf-2024a.eb
