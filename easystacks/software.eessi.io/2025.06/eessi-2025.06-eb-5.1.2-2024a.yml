@@ -8,5 +8,5 @@ easyconfigs:
   - libdeflate-1.20-GCCcore-13.3.0.eb:
       options:
         # see https://github.com/easybuilders/easybuild-easyconfigs/pull/24171
-        from-commit: 9ac9273e0bb622d051e15780b701cadb517fd65c
+        from-commit: a8acda7b6540f666005f362cd2042f1b0170d717
   - R-4.4.2-gfbf-2024a.eb
