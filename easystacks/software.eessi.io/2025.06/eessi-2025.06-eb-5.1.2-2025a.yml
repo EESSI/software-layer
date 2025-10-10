@@ -3,6 +3,10 @@ easyconfigs:
       options:
         # see https://github.com/easybuilders/easybuild-easyconfigs/pull/24189
         from-commit: dd72fa142487271380eda2029b99c695faf7137d
+  - libarchive-3.7.7-GCCcore-14.2.0.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/24203
+        from-commit: 237970c5b712196f4d01feab8b913591cc6c772f
   - Perl-bundle-CPAN-5.40.0-GCCcore-14.2.0.eb:
       options:
         # see https://github.com/easybuilders/easybuild-easyconfigs/pull/24186
