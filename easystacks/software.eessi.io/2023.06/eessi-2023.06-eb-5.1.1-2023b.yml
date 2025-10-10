@@ -1,3 +1,10 @@
 easyconfigs:
   - openCARP-17.0-foss-2023b.eb
   - libheif-1.19.5-GCCcore-13.2.0.eb
+  - Subread-2.1.1-GCC-13.2.0.eb
+  - Flye-2.9.4-GCC-13.2.0.eb
+  - MLflow-2.18.0-gfbf-2023b.eb
+  - snakemake-8.28.0-foss-2023b.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/22371
+        from-commit: 29f82e43229663c22f0c76cb3fc7b6dd5c407cd7
