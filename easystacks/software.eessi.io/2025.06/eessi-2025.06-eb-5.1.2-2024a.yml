@@ -10,3 +10,7 @@ easyconfigs:
         # see https://github.com/easybuilders/easybuild-easyconfigs/pull/24171
         from-commit: a8acda7b6540f666005f362cd2042f1b0170d717
   - R-4.4.2-gfbf-2024a.eb
+  - Perl-bundle-CPAN-5.38.2-GCCcore-13.3.0.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/24186
+        from-commit: 7b34eae4ec75e83e13c069203ab6be709da97a96
