@@ -2,4 +2,4 @@ easyconfigs:
   - Perl-bundle-CPAN-5.40.0-GCCcore-14.2.0.eb:
       options:
         # see https://github.com/easybuilders/easybuild-easyconfigs/pull/24186
-        from-commit: e880b4f5cd5e3cc7997173e3cc27078130bf5965
+        from-commit: 814cad16d64b26fcad519fceb8daf374d1aac350
