@@ -20,3 +20,4 @@ easyconfigs:
         # see https://github.com/easybuilders/easybuild-easyconfigs/pull/24205
         from-commit: a24af27f1d7f41ba21539955419c8b41f224efdf
   - FlexiBLAS-3.4.5-GCC-14.2.0.eb
+  - foss-2025a.eb
