@@ -1,0 +1,8 @@
+# 2025.10.09
+# Rebuild Perl-bundle-CPAN 5.36.1 to synchronise the extensions between archs.
+# This is necessary because the A64FX version was built with a newer EB version,
+# and the list of extensions had changed.
+# Rebuilding for A64FX version didn't work because of a known and solved issue
+# regarding the tests of an extension, so this rebuilds it for the other targets instead.
+easyconfigs:
+  - Perl-bundle-CPAN-5.36.1-GCCcore-12.3.0.eb
