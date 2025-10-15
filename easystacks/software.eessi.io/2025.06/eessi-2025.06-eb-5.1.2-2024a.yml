@@ -17,4 +17,4 @@ easyconfigs:
   - TurboVNC-3.1.2-GCCcore-13.3.0.eb:
       options:
         # see https://github.com/easybuilders/easybuild-easyconfigs/pull/24254
-        from-commit: 40e90f63163a40c8695160f7c5b79a107a176630
+        from-commit: d71be56f713ea6434fecca5caee3c43443d05b93
