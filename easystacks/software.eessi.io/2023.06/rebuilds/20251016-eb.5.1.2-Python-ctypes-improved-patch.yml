@@ -1,0 +1,25 @@
+# 2025.10.16
+# Python ctypes relies on LD_LIBRARY_PATH and doesn't respect rpath linking. A prior workaround
+# was implemented in EasyBuild in https://github.com/easybuilders/easybuild-easyblocks/pull/3352.
+# However, while this fixed ctypes.util.find_library(), a similar issue popped up in ctypes.CLL
+# and ctypes.cdll.LoadLibrary https://gitlab.com/eessi/support/-/issues/154
+# An easyblock change and patch were implemented for Python.
+#
+# This rebuild ensures this fix is available for all Python versions shipped with EESSI.
+easyconfigs:
+  - Python-3.10.8-GCCcore-12.2.0-bare:
+      options:
+        # See https://github.com/easybuilders/easybuild-easyblocks/pull/3352
+        include-easyblocks-from-commit: 1ee17c0f7726c69e97442f53c65c5f041d65c94f
+  - Python-3.10.8-GCCcore-12.2.0:
+      options:
+        # See https://github.com/easybuilders/easybuild-easyblocks/pull/3352
+        include-easyblocks-from-commit: 1ee17c0f7726c69e97442f53c65c5f041d65c94f
+  - Python-3.11.3-GCCcore-12.3.0:
+      options:
+        # See https://github.com/easybuilders/easybuild-easyblocks/pull/3352
+        include-easyblocks-from-commit: 1ee17c0f7726c69e97442f53c65c5f041d65c94f
+  - Python-3.11.5-GCCcore-13.2.0:
+      options:
+        # See https://github.com/easybuilders/easybuild-easyblocks/pull/3352
+        include-easyblocks-from-commit: 1ee17c0f7726c69e97442f53c65c5f041d65c94f
