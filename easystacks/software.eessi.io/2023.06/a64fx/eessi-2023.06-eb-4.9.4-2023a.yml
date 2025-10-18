@@ -392,7 +392,7 @@ easyconfigs:
 #      options:
 #        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/21155
 #        from-commit: 6929a67401f2a2ec58f91fb306332a77497d73ff
-#  - MBX-1.1.0-foss-2023a.eb
+  - MBX-1.1.0-foss-2023a.eb
 # PRs 20964 and 3381 are included since EB 4.9.3
 #  - Transrate-1.0.3-GCC-12.3.0.eb:
 #      options:
