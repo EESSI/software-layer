@@ -115,3 +115,7 @@ easyconfigs:
 #        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/20379
 #        from-pr: 20379
   - R-bundle-Bioconductor-3.16-foss-2022b-R-4.2.2.eb
+  - ParaView-5.11.1-foss-2022b.eb
+  - ASE-3.22.1-gfbf-2022b.eb
+  - SEPP-4.5.1-foss-2022b.eb
+  - Valgrind-3.21.0-gompi-2022b.eb
