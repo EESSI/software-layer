@@ -21,3 +21,4 @@ easyconfigs:
         from-commit: a24af27f1d7f41ba21539955419c8b41f224efdf
   - FlexiBLAS-3.4.5-GCC-14.2.0.eb
   - foss-2025a.eb
+  - Python-bundle-PyPI-2025.04-GCCcore-14.2.0.eb
