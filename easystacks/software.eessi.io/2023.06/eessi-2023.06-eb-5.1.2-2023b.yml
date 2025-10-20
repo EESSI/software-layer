@@ -10,6 +10,11 @@ easyconfigs:
         # SHOULD BE REPLACED WITH FROM-COMMIT BEFORE MERGING
         # include-easyblocks-from-commit:
         from-pr: 23155
+  - PyVO-1.7-foss-2023b.eb:
+      options:
+        # SHOULD BE REPLACED WITH FROM-COMMIT BEFORE MERGING
+        # include-easyblocks-from-commit:
+        from-pr: 23155
   - LSMTool-1.7.0-foss-2023b.eb:
       options:
         # SHOULD BE REPLACED WITH FROM-COMMIT BEFORE MERGING
