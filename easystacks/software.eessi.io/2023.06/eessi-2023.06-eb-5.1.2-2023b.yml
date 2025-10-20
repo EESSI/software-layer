@@ -4,29 +4,29 @@ easyconfigs:
       options:
         # SHOULD BE REPLACED WITH FROM-COMMIT BEFORE MERGING
         # include-easyblocks-from-commit:
-        from-pr: 23499
+        from-pr: 23155
   - dysco-1.3-foss-2023b.eb:
       options:
         # SHOULD BE REPLACED WITH FROM-COMMIT BEFORE MERGING
         # include-easyblocks-from-commit:
-        from-pr: 23499
+        from-pr: 23155
   - LSMTool-1.7.0-foss-2023b.eb:
       options:
         # SHOULD BE REPLACED WITH FROM-COMMIT BEFORE MERGING
         # include-easyblocks-from-commit:
-        from-pr: 23499
+        from-pr: 23155
   - LofarStMan-1.0-foss-2023b.eb:
       options:
         # SHOULD BE REPLACED WITH FROM-COMMIT BEFORE MERGING
         # include-easyblocks-from-commit:
-        from-pr: 23499
+        from-pr: 23155
   - LSMTool-1.7.0-foss-2023b.eb:
       options:
         # SHOULD BE REPLACED WITH FROM-COMMIT BEFORE MERGING
         # include-easyblocks-from-commit:
-        from-pr: 23499
+        from-pr: 23155
   - SAGECal-0.8.4-foss-2023b.eb:
       options:
         # SHOULD BE REPLACED WITH FROM-COMMIT BEFORE MERGING
         # include-easyblocks-from-commit:
-        from-pr: 23499
+        from-pr: 23155
