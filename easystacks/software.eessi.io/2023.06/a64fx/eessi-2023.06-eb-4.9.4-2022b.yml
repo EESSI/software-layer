@@ -36,7 +36,7 @@ easyconfigs:
 ##  - Qt5-5.15.7-GCCcore-12.2.0.eb
 ##  - QuantumESPRESSO-7.2-foss-2022b.eb
 # Apps originaly added from gracehopper on https://github.com/EESSI/software-layer/pull/1031
-  - MUMPS-5.6.1-foss-2022b-metis.eb 
+  - MUMPS-5.6.1-foss-2022b-metis.eb
   # - GL2PS-1.4.2-GCCcore-12.2.0.eb 
   # - GST-plugins-base-1.22.1-GCC-12.2.0.eb
   # - wxWidgets-3.2.2.1-GCC-12.2.0.eb
