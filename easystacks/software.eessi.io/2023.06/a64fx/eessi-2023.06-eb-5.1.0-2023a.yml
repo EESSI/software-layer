@@ -4,6 +4,8 @@ easyconfigs:
       options:
         # see https://github.com/easybuilders/easybuild-easyconfigs/pull/23068
         from-commit: 644b17f1b42bbf8eb4ad56d9e8f125b8c52d7258
+        # use the same list of filtered dependencies as was used for other CPU targets (in particular: without ParMETIS)
+        filter-deps: Autoconf,Automake,Autotools,binutils,bzip2,DBus,flex,gettext,gperf,help2man,intltool,libreadline,libtool,M4,makeinfo,ncurses,util-linux,XZ,zlib,Yasm
   - OpenFOAM-12-foss-2023a.eb
   - MEGAHIT-1.2.9-GCCcore-12.3.0.eb:
       options:
