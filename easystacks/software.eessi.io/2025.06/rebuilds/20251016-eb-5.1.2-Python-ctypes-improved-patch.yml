@@ -1,0 +1,24 @@
+# 2025.10.16
+# Python ctypes relies on LD_LIBRARY_PATH and doesn't respect rpath linking. A prior workaround
+# was implemented in EasyBuild in https://github.com/easybuilders/easybuild-easyblocks/pull/3352.
+# However, while this fixed ctypes.util.find_library(), a similar issue popped up in ctypes.CLL
+# and ctypes.cdll.LoadLibrary https://gitlab.com/eessi/support/-/issues/154
+# An easyblock change and patch were implemented for Python.
+#
+# This rebuild ensures this fix is available for all Python versions shipped with EESSI that are supported on
+# all architectures, including zen4.
+easyconfigs:
+  - Python-3.12.3-GCCcore-13.3.0:
+      options:
+        # See https://github.com/easybuilders/easybuild-easyblocks/pull/3860`
+        # SHOULD BE REPLACED WITH FROM-COMMIT BEFORE MERGING
+        include-easyblocks-from-pr: 3860
+        # include-easyblocks-from-commit:
+        from-pr: 23499
+  - Python-3.13.1-GCCcore-14.2.0:
+      options:
+        # See https://github.com/easybuilders/easybuild-easyblocks/pull/3860`
+        # SHOULD BE REPLACED WITH FROM-COMMIT BEFORE MERGING
+        include-easyblocks-from-pr: 3860
+        # include-easyblocks-from-commit:
+        from-pr: 23499
