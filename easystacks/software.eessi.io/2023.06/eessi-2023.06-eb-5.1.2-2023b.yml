@@ -1,2 +1,3 @@
 easyconfigs:
   - tblite-0.4.0-gfbf-2023b.eb
+  - Ruby-3.4.2-GCCcore-13.2.0.eb
