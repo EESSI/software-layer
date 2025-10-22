@@ -10,15 +10,11 @@
 easyconfigs:
   - Python-3.11.3-GCCcore-12.3.0:
       options:
-        # See https://github.com/easybuilders/easybuild-easyblocks/pull/3860`
-        # SHOULD BE REPLACED WITH FROM-COMMIT BEFORE MERGING
-        include-easyblocks-from-pr: 3860
-        # include-easyblocks-from-commit:
+        # See https://github.com/easybuilders/easybuild-easyblocks/pull/3860
+        include-easyblocks-from-commit: 3fa0df7414d7d8415fe34f7758649f966322472e
         from-pr: 23499
   - Python-3.11.5-GCCcore-13.2.0:
       options:
-        # See https://github.com/easybuilders/easybuild-easyblocks/pull/3860`
-        # SHOULD BE REPLACED WITH FROM-COMMIT BEFORE MERGING
-        include-easyblocks-from-pr: 3860
-        # include-easyblocks-from-commit:
+        # See https://github.com/easybuilders/easybuild-easyblocks/pull/3860
+        include-easyblocks-from-commit: 3fa0df7414d7d8415fe34f7758649f966322472e
         from-pr: 23499
