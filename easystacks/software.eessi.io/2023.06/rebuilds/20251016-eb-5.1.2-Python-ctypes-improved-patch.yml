@@ -11,10 +11,14 @@ easyconfigs:
   - Python-3.11.3-GCCcore-12.3.0:
       options:
         # See https://github.com/easybuilders/easybuild-easyblocks/pull/3860
+        # and https://github.com/easybuilders/easybuild-easyblocks/pull/3965
         include-easyblocks-from-commit: 3fa0df7414d7d8415fe34f7758649f966322472e
+        # See https://github.com/easybuilders/easybuild-easyconfigs/pull/23499
         from-commit: 08aa521b52c9f83d8df345d083e46d6f304d5641
   - Python-3.11.5-GCCcore-13.2.0:
       options:
         # See https://github.com/easybuilders/easybuild-easyblocks/pull/3860
+        # and https://github.com/easybuilders/easybuild-easyblocks/pull/3965
         include-easyblocks-from-commit: 3fa0df7414d7d8415fe34f7758649f966322472e
+        # See https://github.com/easybuilders/easybuild-easyconfigs/pull/23499
         from-commit: 08aa521b52c9f83d8df345d083e46d6f304d5641
