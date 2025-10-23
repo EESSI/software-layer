@@ -6,7 +6,7 @@
 # An easyblock change and patch were implemented for Python.
 #
 # This rebuild ensures this fix is available for all Python versions shipped with EESSI that are supported on
-# all architectures, including zen4.
+# all architectures.
 easyconfigs:
   - Python-3.12.3-GCCcore-13.3.0:
       options:
