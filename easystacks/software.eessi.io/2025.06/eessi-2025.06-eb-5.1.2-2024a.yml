@@ -23,3 +23,25 @@ easyconfigs:
   - snappy-1.2.1-GCCcore-13.3.0.eb
   - NSS-3.104-GCCcore-13.3.0.eb
   - nodejs-20.13.1-GCCcore-13.3.0.eb
+  - TurboVNC-3.1.2-GCCcore-13.3.0.eb
+  - feh-3.10.3-GCCcore-13.3.0.eb
+  - Openbox-3.6.1-GCCcore-13.3.0.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/24280
+        from-commit: cef31b32459a296e95447f89ff17a15371deacef
+  - Rust-1.83.0-GCCcore-13.3.0.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/24331
+        from-commit: fb71f0be42a1e65b9f0aa669f7d2ced3708ca634
+  - tint2-17.0.2-GCCcore-13.3.0.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/24280
+        from-commit: cef31b32459a296e95447f89ff17a15371deacef
+  - xterm-402-GCCcore-13.3.0.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/24280
+        from-commit: cef31b32459a296e95447f89ff17a15371deacef
+  - jgmenu-4.5.0-GCCcore-13.3.0.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/24323
+        from-commit: dda6e6dfbe23177be7d251819007c144c132323a
