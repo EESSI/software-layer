@@ -45,4 +45,7 @@ easyconfigs:
       options:
         # see https://github.com/easybuilders/easybuild-easyconfigs/pull/24323
         from-commit: dda6e6dfbe23177be7d251819007c144c132323a
-  - picom-12.5-GCCcore-13.3.0.eb
+  - picom-12.5-GCCcore-13.3.0.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/24280
+        from-commit: cef31b32459a296e95447f89ff17a15371deacef
