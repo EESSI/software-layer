@@ -23,3 +23,7 @@ easyconfigs:
   - snappy-1.2.1-GCCcore-13.3.0.eb
   - NSS-3.104-GCCcore-13.3.0.eb
   - nodejs-20.13.1-GCCcore-13.3.0.eb
+  - Qt6-6.7.2-GCCcore-13.3.0.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/24356
+        from-commit: e78daa69015bdfb50fe5c48c5eda825905cdd57c
