@@ -1,0 +1,18 @@
+# 2025.10.25
+# Some Ruby 3.2.2/3.3.0 installations (built on JURECA which has not enabled
+# PAC+BTI CPU features) segfault on some NVIDIA Grace systems (SURF-ETP, Olivia,
+# eX3) which have PAC+BTI CPU features enabled.
+# 
+# See https://gitlab.com/eessi/support/-/issues/197 for details.
+#
+# Both versions are rebuilt for NVIDIA Grace (maybe more ARM architectures?)
+# ensuring that PAC+BTI CPU features are handled correctly.
+easyconfigs:
+  - Ruby-3.2.2-GCCcore-12.2.0:
+      options:
+        # See https://github.com/easybuilders/easybuild-easyconfigs/pull/24368
+        from-commit: 22736e003d862b9068838f45aa789c08525b32b9
+  - Ruby-3.3.0-GCCcore-12.3.0:
+      options:
+        # See https://github.com/easybuilders/easybuild-easyconfigs/pull/24368
+        from-commit: 22736e003d862b9068838f45aa789c08525b32b9
