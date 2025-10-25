@@ -31,8 +31,8 @@ easyconfigs:
   - Ruby-3.4.2-GCCcore-13.2.0.eb
   - Boost.Python-NumPy-1.83.0-gfbf-2023b.eb:
       options:
-        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/23155
-        from-commit: b35081d4454f54996108088780f6554739dc4891
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/23893
+        from-commit: 7f5e2d7d079e9c150d731b0525a310bc6b9008d4
   - LoSoTo-2.5.0-foss-2023b.eb:
       options:
         # see https://github.com/easybuilders/easybuild-easyconfigs/pull/23155
