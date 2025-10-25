@@ -42,3 +42,7 @@ easyconfigs:
       options:
         # see https://github.com/easybuilders/easybuild-easyconfigs/pull/23155
         from-commit: b35081d4454f54996108088780f6554739dc4891
+  - LINC-5.0-foss-2023b.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/23155
+        from-commit: b35081d4454f54996108088780f6554739dc4891
