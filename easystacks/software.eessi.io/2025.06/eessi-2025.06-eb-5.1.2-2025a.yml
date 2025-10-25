@@ -26,3 +26,6 @@ easyconfigs:
         # see https://github.com/easybuilders/easybuild-easyconfigs/pull/24331
         from-commit: b6adb815305bd199f1ade69194e2ca9faaf87e07
   - Python-bundle-PyPI-2025.04-GCCcore-14.2.0.eb
+  - PyYAML-6.0.2-GCCcore-14.2.0.eb
+  - Z3-4.13.4-GCCcore-14.2.0.eb
+  - libglvnd-1.7.0-GCCcore-14.2.0.eb
