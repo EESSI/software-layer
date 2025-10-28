@@ -1,3 +1,52 @@
 easyconfigs:
   - Python-bundle-PyPI-2024.06-GCCcore-13.3.0.eb
+  - LLVM-18.1.8-GCCcore-13.3.0-minimal.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyblocks/pull/3952
+        include-easyblocks-from-commit: 2e5a227c1f0f161d6a96a938b287c0140ef88648
+  - Mesa-24.1.3-GCCcore-13.3.0.eb
+  - libdeflate-1.20-GCCcore-13.3.0.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/24171
+        from-commit: a8acda7b6540f666005f362cd2042f1b0170d717
+  - R-4.4.2-gfbf-2024a.eb
+  - Perl-bundle-CPAN-5.38.2-GCCcore-13.3.0.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/24186
+        from-commit: 7b34eae4ec75e83e13c069203ab6be709da97a96
+  - re2c-3.1-GCCcore-13.3.0.eb 
+  - libwebp-1.4.0-GCCcore-13.3.0.eb
+  - graphite2-1.3.14-GCCcore-13.3.0.eb
+  - assimp-5.4.3-GCCcore-13.3.0.eb
+  - FFmpeg-7.0.2-GCCcore-13.3.0.eb
+  - JasPer-4.2.4-GCCcore-13.3.0.eb
+  - snappy-1.2.1-GCCcore-13.3.0.eb
+  - NSS-3.104-GCCcore-13.3.0.eb
+  - nodejs-20.13.1-GCCcore-13.3.0.eb
+  - TurboVNC-3.1.2-GCCcore-13.3.0.eb
+  - feh-3.10.3-GCCcore-13.3.0.eb
+  - Openbox-3.6.1-GCCcore-13.3.0.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/24280
+        from-commit: cef31b32459a296e95447f89ff17a15371deacef
+  - Rust-1.83.0-GCCcore-13.3.0.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/24331
+        from-commit: fb71f0be42a1e65b9f0aa669f7d2ced3708ca634
+  - tint2-17.0.2-GCCcore-13.3.0.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/24280
+        from-commit: cef31b32459a296e95447f89ff17a15371deacef
+  - xterm-402-GCCcore-13.3.0.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/24280
+        from-commit: cef31b32459a296e95447f89ff17a15371deacef
+  - jgmenu-4.5.0-GCCcore-13.3.0.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/24323
+        from-commit: dda6e6dfbe23177be7d251819007c144c132323a
+  - picom-12.5-GCCcore-13.3.0.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/24279
+        from-commit: ca754557cc23264b213fb09d3e6b2d360e3eb426
   - SciPy-bundle-2024.05-gfbf-2024a.eb
