@@ -29,3 +29,4 @@ easyconfigs:
   - PyYAML-6.0.2-GCCcore-14.2.0.eb
   - Z3-4.13.4-GCCcore-14.2.0.eb
   - libglvnd-1.7.0-GCCcore-14.2.0.eb
+  - SciPy-bundle-2025.06-gfbf-2025a.eb
