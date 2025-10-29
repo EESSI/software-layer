@@ -54,3 +54,4 @@ easyconfigs:
         # see https://github.com/easybuilders/easybuild-easyconfigs/pull/24356
         from-commit: c057c3242d4a947ae30358ea283659ff0d1a3d17
   - SciPy-bundle-2024.05-gfbf-2024a.eb
+  - ParaView-5.13.2-foss-2024a.eb
