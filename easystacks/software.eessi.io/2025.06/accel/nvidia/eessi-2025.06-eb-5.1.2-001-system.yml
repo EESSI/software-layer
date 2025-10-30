@@ -5,9 +5,9 @@ easyconfigs:
   - CUDA-12.8.0.eb:
       options:
         accept-eula-for: CUDA
-  - cuDNN-9.5.0.50-CUDA-12.6.0.eb
+  - cuDNN-9.5.0.50-CUDA-12.6.0.eb:
       options:
         accept-eula-for: cuDNN
-  - cuDNN-9.10.1.4-CUDA-12.8.0.eb
+  - cuDNN-9.10.1.4-CUDA-12.8.0.eb:
       options:
         accept-eula-for: cuDNN
