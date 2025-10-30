@@ -54,4 +54,8 @@ easyconfigs:
         # see https://github.com/easybuilders/easybuild-easyconfigs/pull/24356
         from-commit: c057c3242d4a947ae30358ea283659ff0d1a3d17
   - SciPy-bundle-2024.05-gfbf-2024a.eb
+  - websockify-0.13.0-gfbf-2024a.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/24287
+        from-commit: 131a6fecdf26796f85c26a392f511f86078291c6
   - ParaView-5.13.2-foss-2024a.eb
