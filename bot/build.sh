@@ -3,7 +3,7 @@
 # give up as soon as any error occurs
 set -e
 
-git clone https://github.com/EESSI/software-layer-scripts
+git clone -b cuda_host_injections_202506 https://github.com/casparvl/software-layer-scripts
 
 # symlink everything, except for:
 # - common files like LICENSE and README.md
