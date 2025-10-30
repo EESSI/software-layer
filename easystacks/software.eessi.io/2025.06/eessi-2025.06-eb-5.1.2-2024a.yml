@@ -60,3 +60,4 @@ easyconfigs:
         from-commit: 131a6fecdf26796f85c26a392f511f86078291c6
   - ParaView-5.13.2-foss-2024a.eb
   - matplotlib-3.9.2-gfbf-2024a.eb
+  - tensorboard-2.18.0-gfbf-2024a.eb
