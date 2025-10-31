@@ -46,3 +46,7 @@ easyconfigs:
       options:
         # see https://github.com/easybuilders/easybuild-easyconfigs/pull/23155
         from-commit: b35081d4454f54996108088780f6554739dc4891
+  - ADIOS2-2.10.2-foss-2023b.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/24316
+        from-commit: ad77d4e194b737d9f741c31099ae583b2886c017
