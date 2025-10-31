@@ -30,3 +30,4 @@ easyconfigs:
   - Z3-4.13.4-GCCcore-14.2.0.eb
   - libglvnd-1.7.0-GCCcore-14.2.0.eb
   - SciPy-bundle-2025.06-gfbf-2025a.eb
+  - Boost.MPI-1.88.0-gompi-2025a.eb
