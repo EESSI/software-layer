@@ -1,0 +1,8 @@
+easyconfigs:
+  - cuDNN-9.10.1.4-CUDA-12.8.0.eb:
+      options:
+        accept-eula-for: cuDNN
+        # We accept that cuDNN only contains 9.0a device code, and not 9.0
+        # See https://gitlab.com/eessi/support/-/issues/210#note_2865904820
+        disable-cuda-sanity-check-error-on-failed-checks: True
+        cuda-sanity-check-accept-missing-ptx: True
