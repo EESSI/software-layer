@@ -34,4 +34,8 @@ easyconfigs:
       options:
         # see https://github.com/easybuilders/easybuild-easyconfigs/pull/24421
         from-commit: dc5f86bd3433803b877948c5d667676e93f6afa3
-  - OSU-Micro-Benchmarks-7.5-gompi-2025a.eb          
+  - Score-P-9.3-gompi-2025a.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/24161
+        from-commit: 04b8829e730bc35a4654441297fb39a7d8d4b4dc
+  - OSU-Micro-Benchmarks-7.5-gompi-2025a.eb    

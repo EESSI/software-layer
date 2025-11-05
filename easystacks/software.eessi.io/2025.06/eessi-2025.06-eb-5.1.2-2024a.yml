@@ -61,3 +61,4 @@ easyconfigs:
   - ParaView-5.13.2-foss-2024a.eb
   - matplotlib-3.9.2-gfbf-2024a.eb
   - tensorboard-2.18.0-gfbf-2024a.eb
+  - VTK-9.3.1-foss-2024a.eb
