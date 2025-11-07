@@ -1,0 +1,6 @@
+easyconfigs:
+  - ReFrame-4.7.4.eb
+  - caddy-2.10.2.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/24402
+        from-commit: b83c437b11d31e2b8bb6ac8eb683a1b24e0dc810
