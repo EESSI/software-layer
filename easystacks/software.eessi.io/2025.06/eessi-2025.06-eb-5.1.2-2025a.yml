@@ -45,5 +45,5 @@ easyconfigs:
         from-commit: dec5a6f7e05325a634fc59d7665ef418ecb553cc
   - BLAST+-2.17.0-gompi-2025a.eb:
       options:
-        # see easystacks/software.eessi.io/2025.06/eessi-2025.06-eb-5.1.2-2025a.yml
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/24060
         from-commit: 5dd9b67d1d5dd0cf4865c4e5166adf8e92b76829
