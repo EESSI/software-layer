@@ -62,3 +62,13 @@ easyconfigs:
   - matplotlib-3.9.2-gfbf-2024a.eb
   - tensorboard-2.18.0-gfbf-2024a.eb
   - VTK-9.3.1-foss-2024a.eb
+  - GMP-6.3.0-GCCcore-13.3.0.eb
+  - NLopt-2.7.1-GCCcore-13.3.0.eb
+  - UDUNITS-2.2.28-GCCcore-13.3.0.eb
+  - ImageMagick-7.1.1-38-GCCcore-13.3.0.eb
+  - GSL-2.8-GCC-13.3.0.eb
+  - GDAL-3.10.0-foss-2024a.eb
+  - MPFR-4.2.1-GCCcore-13.3.0.eb
+  - PostgreSQL-16.4-GCCcore-13.3.0.eb
+  - Xvfb-21.1.14-GCCcore-13.3.0.eb
+  - GLPK-5.0-GCCcore-13.3.0.eb
