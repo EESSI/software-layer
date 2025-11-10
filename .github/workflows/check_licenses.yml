@@ -67,7 +67,7 @@ jobs:
               ${EB:-eb}  --missing --easystack ${easystack_file} 2>&1 | tee ${eb_missing_out}
               
               exit_code=${PIPESTATUS[0]}
-              echo "exit code for eb --missing --easystack ${easystack_file} is ${exit_code}"
+              #echo "exit code for eb --missing --easystack ${easystack_file} is ${exit_code}"
               grep " required modules missing:" ${eb_missing_out} # > /dev/null
               exit_code=$?
               
@@ -78,19 +78,29 @@ jobs:
               fi  
           done
 
-      - name: Check for modules existing in licenses.json file 
+      - name: Check for software existing in licenses.yaml file 
         run: |
-          if [ -s licenses/licenses.json ]; then
-              echo "licenses.json file exists, checking for modules that are not in the file..."
+          # double check this 
+          if [ -s licenses/licenses.yml ]; then
+              echo "licenses.yml file exists, checking for software versions that are not in the file..."
               echo "tmp file check:  ${eb_missing_out}"
              # cat ${eb_missing_out}
               grep -oP '^\* \K[^ ]+' "${eb_missing_out}" | sort -u  > missing.txt
               echo "Modules to check"
               cat missing.txt
 
-              # Check if module exists as key in JSON
-              while read -r module; do    
-                if ! jq -e --arg key "$module" 'has($key)' "licenses/licenses.json" > /dev/null; then
+              # Check if software exists as key in YAML
+
+              while IFS= read -r module; do
+              # module format: NAME/VERSION-TOOLCHAIN
+              # e.g. ALL/0.9.2-foss-2023a
+
+                name="${module%%/*}"      # ALL
+                rest="${module#*/}"       # 0.9.2-foss-2023a
+                version="${rest%%-*}"     # 0.9.2
+
+              # Check if licenses.yaml has: NAME -> VERSION
+              if ! yq -e ".\"$name\".\"$version\"" "$LICENSES_YAML" >/dev/null 2>&1; then
                 echo "$module" >> missing_modules.txt
               fi
               done < missing.txt
@@ -99,7 +109,7 @@ jobs:
               cat missing_modules.txt
               
             else
-              echo "licenses.json file does not exist? what happened?"
+              echo "licenses.yml file does not exist? what happened?"
               exit 1
             fi
 
