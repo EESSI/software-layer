@@ -76,3 +76,5 @@ easyconfigs:
       options:
         # see https://github.com/easybuilders/easybuild-easyconfigs/pull/24524
         from-commit: 1546f454c1a0b0c6483d8a0aaad2157ca1f770e8
+        # install extensions in parallel
+        parallel-extensions-install: True
