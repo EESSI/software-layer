@@ -72,3 +72,4 @@ easyconfigs:
   - PostgreSQL-16.4-GCCcore-13.3.0.eb
   - Xvfb-21.1.14-GCCcore-13.3.0.eb
   - GLPK-5.0-GCCcore-13.3.0.eb
+  - Flye-2.9.5-GCC-13.3.0.eb
