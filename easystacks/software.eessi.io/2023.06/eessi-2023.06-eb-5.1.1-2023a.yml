@@ -18,3 +18,4 @@ easyconfigs:
   - MLflow-2.10.2-gfbf-2023a.eb
   - Salmon-1.10.3-GCC-12.3.0.eb
   - WebKitGTK+-2.41.4-foss-2023a.eb
+  - RStudio-Server-2023.09.1+494-foss-2023a-Java-11-R-4.3.2.eb
