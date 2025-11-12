@@ -1,0 +1,6 @@
+# Need to rebuild Boost with EB 5.1.2 to include
+# https://github.com/easybuilders/easybuild-easyconfigs/pull/23890
+# which fixes RStudio-Server crashes:
+#   Unexpected exception: flat_map::at key not found
+easyconfigs:
+  - Boost-1.85.0-13.3.0.eb
