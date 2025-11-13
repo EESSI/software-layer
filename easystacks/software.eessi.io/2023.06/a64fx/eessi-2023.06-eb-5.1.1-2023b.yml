@@ -1,2 +1,6 @@
 easyconfigs:
   - MLflow-2.18.0-gfbf-2023b.eb
+  - GROMACS-2025.3-foss-2023b.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/19552
+        from-pr: 24549
