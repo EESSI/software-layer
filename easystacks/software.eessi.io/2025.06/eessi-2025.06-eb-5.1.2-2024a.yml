@@ -78,6 +78,7 @@ easyconfigs:
         from-commit: 1546f454c1a0b0c6483d8a0aaad2157ca1f770e8
         # install extensions in parallel
         parallel-extensions-install: True
+  - Flye-2.9.5-GCC-13.3.0.eb
   - RStudio-Server-2024.12.0+467-foss-2024a-R-4.4.2.eb:
       options:
         # see https://github.com/easybuilders/easybuild-easyconfigs/pull/24542
