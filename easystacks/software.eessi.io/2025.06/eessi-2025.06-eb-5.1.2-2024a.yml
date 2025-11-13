@@ -79,3 +79,4 @@ easyconfigs:
         # install extensions in parallel
         parallel-extensions-install: True
   - Flye-2.9.5-GCC-13.3.0.eb
+  - R-bundle-Bioconductor-3.20-foss-2024a-R-4.4.2.eb
