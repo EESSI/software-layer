@@ -72,4 +72,10 @@ easyconfigs:
   - PostgreSQL-16.4-GCCcore-13.3.0.eb
   - Xvfb-21.1.14-GCCcore-13.3.0.eb
   - GLPK-5.0-GCCcore-13.3.0.eb
+  - R-bundle-CRAN-2024.11-foss-2024a.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/24524
+        from-commit: 1546f454c1a0b0c6483d8a0aaad2157ca1f770e8
+        # install extensions in parallel
+        parallel-extensions-install: True
   - Flye-2.9.5-GCC-13.3.0.eb
