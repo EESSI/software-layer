@@ -1,7 +1,10 @@
 easyconfigs:
   - MLflow-2.18.0-gfbf-2023b.eb
   - CMake-3.31.8.eb
-  - pybind11-2.12.0-GCCcore-13.2.0.eb
+  - pybind11-2.12.0-GCCcore-13.2.0.eb:
+        options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/24549
+        from-pr: 24549
   - GROMACS-2025.3-foss-2023b.eb:
       options:
         # see https://github.com/easybuilders/easybuild-easyconfigs/pull/24549
