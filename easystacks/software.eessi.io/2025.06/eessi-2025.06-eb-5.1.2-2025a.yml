@@ -47,3 +47,7 @@ easyconfigs:
       options:
         # see https://github.com/easybuilders/easybuild-easyconfigs/pull/24060
         from-commit: 5dd9b67d1d5dd0cf4865c4e5166adf8e92b76829
+  - R-4.5.1-gfbf-2025a.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/24107
+        from-commit: 9b18c6f95d24fe974cf4eed23497521252ee4887
