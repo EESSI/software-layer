@@ -1,0 +1,5 @@
+easyconfigs:
+  - GROMACS-2024.4-foss-2023b.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/24548
+        from-commit: 2a45a80a9b50adc8954150a1101c81e692598b98
