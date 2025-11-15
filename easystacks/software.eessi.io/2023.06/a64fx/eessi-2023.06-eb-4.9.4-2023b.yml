@@ -182,15 +182,15 @@ easyconfigs:
         # see https://github.com/easybuilders/easybuild-easyconfigs/pull/21765
         # NOTE, below commit is the merge commit for PR 21765
         from-commit: c7e4bfe1a57cf9781ce346ba8ae9081644408c23
-  - GROMACS-2024.1-foss-2023b.eb:
-      options:
-        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/24548
-        from-commit: 864017f724fcb4512c4d6fc0e91b2e593fe115b0
-  - GROMACS-2024.3-foss-2023b.eb:
-      options:
-        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/24548
-        from-commit: 864017f724fcb4512c4d6fc0e91b2e593fe115b0
-  - GROMACS-2024.4-foss-2023b.eb:
-      options:
-        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/24548
-        from-commit: 864017f724fcb4512c4d6fc0e91b2e593fe115b0
+  #- GROMACS-2024.1-foss-2023b.eb:
+  #    options:
+  #      # see https://github.com/easybuilders/easybuild-easyconfigs/pull/24548
+  #      from-commit: 864017f724fcb4512c4d6fc0e91b2e593fe115b0
+  #- GROMACS-2024.3-foss-2023b.eb:
+  #    options:
+  #      # see https://github.com/easybuilders/easybuild-easyconfigs/pull/24548
+  #      from-commit: 864017f724fcb4512c4d6fc0e91b2e593fe115b0
+  #- GROMACS-2024.4-foss-2023b.eb:
+  #    options:
+  #      # see https://github.com/easybuilders/easybuild-easyconfigs/pull/24548
+  #      from-commit: 864017f724fcb4512c4d6fc0e91b2e593fe115b0
