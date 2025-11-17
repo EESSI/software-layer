@@ -8,11 +8,64 @@ on:
 permissions:
   contents: read # to fetch code (actions/checkout)
 env:
+  # list below should correspond with table @ https://eessi.io/docs/software_layer/gpu_targets/
   EESSI_ACCELERATOR_TARGETS: |
+    # Arm (except A64FX)
+    aarch64/generic:
+      - nvidia/cc70
+      - nvidia/cc80
+      - nvidia/cc90
+    aarch64/neoverse_n1:
+      - nvidia/cc70
+      - nvidia/cc80
+      - nvidia/cc90
+    aarch64/neoverse_v1:
+      - nvidia/cc70
+      - nvidia/cc80
+      - nvidia/cc90
+    aarch64/nvidia/grace:
+      - nvidia/cc70
+      - nvidia/cc80
+      - nvidia/cc90
+    # x86 generic
+    x86_64/generic:
+      - nvidia/cc70
+      - nvidia/cc80
+      - nvidia/cc90
+    # AMD
     x86_64/amd/zen2:
+      - nvidia/cc70
       - nvidia/cc80
+      - nvidia/cc90
     x86_64/amd/zen3:
+      - nvidia/cc70
       - nvidia/cc80
+      - nvidia/cc90
+    x86_64/amd/zen4:
+      - nvidia/cc70
+      - nvidia/cc80
+      - nvidia/cc90
+    # Intel
+    x86_64/intel/haswell:
+      - nvidia/cc70
+      - nvidia/cc80
+      - nvidia/cc90
+    x86_64/intel/sapphirerapids:
+      - nvidia/cc70
+      - nvidia/cc80
+      - nvidia/cc90
+    x86_64/intel/skylake_avx512:
+      - nvidia/cc70
+      - nvidia/cc80
+      - nvidia/cc90
+    x86_64/intel/icelake:
+      - nvidia/cc70
+      - nvidia/cc80
+      - nvidia/cc90
+    x86_64/intel/cascadelake:
+      - nvidia/cc70
+      - nvidia/cc80
+      - nvidia/cc90
 jobs:
   check_missing:
     strategy:

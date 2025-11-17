@@ -7,3 +7,13 @@ easyconfigs:
         # but skipping the tests during build and then running them with the
         # installed module works, so skipping the tests only in this case
         skip-test-step: True
+  - MUSCLE-5.1.0-GCCcore-12.3.0.eb:
+      options:
+        # See https://github.com/easybuilders/easybuild-easyconfigs/pull/22780
+        from-commit: ff159780fbaa881fb442b0ee1b37cd9e3d981ca9
+  - bcgTree-1.2.1-foss-2023a.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/22707
+        # and https://github.com/easybuilders/easybuild-easyconfigs/pull/22540
+        # and https://github.com/easybuilders/easybuild-easyconfigs/pull/22781
+        from-commit: 720c5b5b8280bf342d827617ee14738f3d231097

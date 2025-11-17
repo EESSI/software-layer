@@ -1,0 +1,11 @@
+# With an update to CUDA driver R575 or newer UCX fails to create a registration cache
+# This cache is essential to prevent having to pin memory for every individual data
+# transfer. Pinning memory for every individual transfer introduces a high overhead on
+# every transfer, crippling performance
+# A patch was introduced to solve the issue, this rebuild reinstalls UCX with that patch.
+# More information, see https://gitlab.com/eessi/support/-/issues/209
+easyconfigs:
+  - UCX-1.13.1-GCCcore-12.2.0.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/24388
+        from-commit: d438adc699f5ff35d866d9045f0aae663a0913cb

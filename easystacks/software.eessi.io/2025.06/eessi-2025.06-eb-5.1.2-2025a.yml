@@ -1,0 +1,49 @@
+easyconfigs:
+  - Python-3.13.1-GCCcore-14.2.0.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/24189
+        from-commit: dd72fa142487271380eda2029b99c695faf7137d
+  - libarchive-3.7.7-GCCcore-14.2.0.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/24203
+        from-commit: 237970c5b712196f4d01feab8b913591cc6c772f
+  - Perl-bundle-CPAN-5.40.0-GCCcore-14.2.0.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/24186
+        from-commit: 7b34eae4ec75e83e13c069203ab6be709da97a96
+  - OpenBLAS-0.3.29-GCC-14.2.0.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/24204
+        from-commit: 2b4e8419ba88f858a4a5d07f546ccbaa1070553d
+  - BLIS-1.1-GCC-14.2.0.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/24205
+        from-commit: a24af27f1d7f41ba21539955419c8b41f224efdf
+  - FlexiBLAS-3.4.5-GCC-14.2.0.eb
+  - foss-2025a.eb
+  - Rust-1.85.1-GCCcore-14.2.0.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/24331
+        from-commit: b6adb815305bd199f1ade69194e2ca9faaf87e07
+  - Python-bundle-PyPI-2025.04-GCCcore-14.2.0.eb
+  - PyYAML-6.0.2-GCCcore-14.2.0.eb
+  - Z3-4.13.4-GCCcore-14.2.0.eb
+  - libglvnd-1.7.0-GCCcore-14.2.0.eb
+  - SciPy-bundle-2025.06-gfbf-2025a.eb
+  - Boost.MPI-1.88.0-gompi-2025a.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/24421
+        from-commit: dc5f86bd3433803b877948c5d667676e93f6afa3
+  - Score-P-9.3-gompi-2025a.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/24161
+        from-commit: 04b8829e730bc35a4654441297fb39a7d8d4b4dc
+  - OSU-Micro-Benchmarks-7.5-gompi-2025a.eb    
+  - json-fortran-9.0.5-GCC-14.2.0.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/24095
+        from-commit: dec5a6f7e05325a634fc59d7665ef418ecb553cc
+  - BLAST+-2.17.0-gompi-2025a.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/24060
+        from-commit: 5dd9b67d1d5dd0cf4865c4e5166adf8e92b76829

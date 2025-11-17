@@ -1,0 +1,10 @@
+# 2025.10.08
+# 
+# The openCARP 17.0 installation for A64FX was built with ParMETIS support (because it had an outdated EESSI-extend at the time of building),
+# while it was disabled for the other targets.
+# This rebuild will make sure that openCARP and its dependencies PETSc and SuperLU_DIST  get built without ParMETIS support,
+# and will allow us to remove ParMETIS from the A64FX stack.
+easyconfigs:
+  - SuperLU_DIST-8.2.1-foss-2023b.eb
+  - PETSc-3.22.5-foss-2023b.eb
+  - openCARP-17.0-foss-2023b.eb
