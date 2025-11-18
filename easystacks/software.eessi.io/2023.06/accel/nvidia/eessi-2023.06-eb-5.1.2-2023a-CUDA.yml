@@ -1,2 +1,6 @@
 easyconfigs:
   - beagle-lib-4.0.1-GCC-12.3.0-CUDA-12.1.1.eb
+  - MrBayes-3.2.7-gompi-2023a-CUDA-12.1.1.eb:
+      options:
+        # https://github.com/easybuilders/easybuild-easyconfigs/pull/24579
+        from-commit: 31f3ef164fd61c03c9bce8777b774486a8da8329
