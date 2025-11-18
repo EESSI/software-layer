@@ -19,6 +19,7 @@ env:
       - cc70
       - cc80
       - cc90
+    aarch64/a64fx: []
 jobs:
   compare_stacks:
     runs-on: ubuntu-24.04
