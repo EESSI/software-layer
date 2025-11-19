@@ -51,11 +51,11 @@ easyconfigs:
       options:
         # see https://github.com/easybuilders/easybuild-easyconfigs/pull/24548
         from-commit: 091da705ab376a530a2368c0690e7dd44fbc7404
-  - Flye-2.9.6-GCC-14.2.0.eb
+  - Flye-2.9.6-GCC-14.2.0.eb:
       options:
         # see https://github.com/easybuilders/easybuild-easyconfigs/pull/24543
         from-commit: 36ede4967688b0ad308121fc77f12bd337cb08e1
-  - MrBayes-3.2.7-gompi-2025a.eb
+  - MrBayes-3.2.7-gompi-2025a.eb:
       options:
         # see https://github.com/easybuilders/easybuild-easyconfigs/pull/24552
         from-commit: d92743f799fc859c472edccd78cf558e0a91ba86
