@@ -47,3 +47,7 @@ easyconfigs:
         # see https://github.com/easybuilders/easybuild-easyconfigs/pull/23155
         from-commit: b35081d4454f54996108088780f6554739dc4891
   - ESMF-8.6.1-foss-2023b.eb
+  - RStudio-Server-2024.09.0+375-foss-2023b-Java-11-R-4.4.1.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/24490
+        from-commit: c9c20b479dc9220724f0c38f980a372413d0c5ed
