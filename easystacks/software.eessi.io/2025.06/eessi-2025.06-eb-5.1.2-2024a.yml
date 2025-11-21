@@ -83,3 +83,4 @@ easyconfigs:
       options:
         # see https://github.com/easybuilders/easybuild-easyconfigs/pull/24542
         from-commit: c1fc31398e705be39f8dbdf2e2671d38adda1faf
+  - PyTorch-2.6.0-foss-2024a.eb
