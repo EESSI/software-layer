@@ -59,3 +59,4 @@ easyconfigs:
       options:
         # see https://github.com/easybuilders/easybuild-easyconfigs/pull/24552
         from-commit: d92743f799fc859c472edccd78cf558e0a91ba86
+  - Biopython-1.85-gfbf-2025a.eb
