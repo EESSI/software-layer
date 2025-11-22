@@ -1,0 +1,7 @@
+easyconfigs:
+  - GRASS-8.4.0-foss-2023a.eb
+  - parallel-20230722-GCCcore-12.3.0.eb
+  - NEST-3.9-foss-2023a.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/24259
+        from-commit: 3f59104cfd0aeedc261e2bf7ca18b8ae5efdca0a 

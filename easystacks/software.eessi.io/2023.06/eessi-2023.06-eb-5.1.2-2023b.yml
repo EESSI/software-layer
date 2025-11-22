@@ -1,0 +1,53 @@
+easyconfigs:
+  - tblite-0.4.0-gfbf-2023b.eb
+  - toil-cwl-8.2.0-foss-2023b.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/23155
+        from-commit: b35081d4454f54996108088780f6554739dc4891
+  - dysco-1.3-foss-2023b.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/23155
+        from-commit: b35081d4454f54996108088780f6554739dc4891
+  - PyVO-1.7-foss-2023b.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/23155
+        from-commit: b35081d4454f54996108088780f6554739dc4891
+  - LSMTool-1.7.0-foss-2023b.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/23155
+        from-commit: b35081d4454f54996108088780f6554739dc4891
+  - LofarStMan-1.0-foss-2023b.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/23155
+        from-commit: b35081d4454f54996108088780f6554739dc4891
+  - LSMTool-1.7.0-foss-2023b.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/23155
+        from-commit: b35081d4454f54996108088780f6554739dc4891
+  - SAGECal-0.8.4-foss-2023b.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/23155
+        from-commit: b35081d4454f54996108088780f6554739dc4891
+  - Ruby-3.4.2-GCCcore-13.2.0.eb
+  - Boost.Python-NumPy-1.83.0-gfbf-2023b.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/23893
+        from-commit: 7f5e2d7d079e9c150d731b0525a310bc6b9008d4
+  - LoSoTo-2.5.0-foss-2023b.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/23155
+        from-commit: b35081d4454f54996108088780f6554739dc4891
+  - PyTables-3.9.2-foss-2023b.eb
+  - RMextract-0.5.1-foss-2023b.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/23155
+        from-commit: b35081d4454f54996108088780f6554739dc4891
+  - LINC-5.0-foss-2023b.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/23155
+        from-commit: b35081d4454f54996108088780f6554739dc4891
+  - ESMF-8.6.1-foss-2023b.eb
+  - RStudio-Server-2024.09.0+375-foss-2023b-Java-11-R-4.4.1.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/24490
+        from-commit: c9c20b479dc9220724f0c38f980a372413d0c5ed
