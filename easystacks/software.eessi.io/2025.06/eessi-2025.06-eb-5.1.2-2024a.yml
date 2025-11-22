@@ -97,3 +97,4 @@ easyconfigs:
   - Z3-4.13.0-GCCcore-13.3.0.eb
   - sympy-1.13.3-gfbf-2024a.eb
   - PuLP-2.8.0-foss-2024a.eb
+  - R-bundle-Bioconductor-3.20-foss-2024a-R-4.4.2.eb
