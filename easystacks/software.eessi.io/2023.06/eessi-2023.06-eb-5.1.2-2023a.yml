@@ -5,3 +5,4 @@ easyconfigs:
       options:
         # see https://github.com/easybuilders/easybuild-easyconfigs/pull/24259
         from-commit: 3f59104cfd0aeedc261e2bf7ca18b8ae5efdca0a 
+  - ESMF-8.6.0-foss-2023a.eb
