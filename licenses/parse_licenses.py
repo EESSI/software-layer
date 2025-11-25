@@ -4,6 +4,7 @@ import os
 import re
 from urllib.parse import quote
 from bs4 import BeautifulSoup
+import yaml
 
 # API Endpoints
 URL_REPO = "https://repos.ecosyste.ms/api/v1/repositories/lookup?url="
@@ -210,19 +211,23 @@ def process_modules_for_licenses(modules_file):
         if license_info_normalized in SPDX_LICENSES:
             spdx_details = SPDX_LICENSES[license_info_normalized]
             is_redistributable = spdx_details["isOsiApproved"] or spdx_details["isFsfLibre"]
-
-        results[module_name] = {
-            "License": license_info,
-            "Permission to redistribute": is_redistributable,
-            "Retrieved from": url
+        
+        # Split the software name and version to display them properly in the YAML file
+        software_name, version = module_name.split("/", 1)
+        results[software_name] = {
+            version: {
+                "License": license_info,
+                "Permission to redistribute": is_redistributable,
+                "Retrieved from": url
+            }
         }
     return results
 
 
-def save_license_results(results, output_file="licenses_test.json"):
+def save_license_results(results, output_file="licenses_test.yaml"):
     """Saves license information to a JSON file."""
     with open(output_file, "w") as f:
-        json.dump(results, f, indent=4)
+        yaml.dump(results, f)
     print(f"License information saved to {output_file}")
 
 def main():
