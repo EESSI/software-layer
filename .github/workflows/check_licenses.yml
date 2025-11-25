@@ -151,10 +151,10 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: license-results
+          name: license-results-${{ matrix.EESSI_SOFTWARE_SUBDIR_OVERRIDE }}
           path: |
-            licenses_test.json
-            modules_results.json
-            missing_modules.txt
+            licenses_test-${{ matrix.EESSI_SOFTWARE_SUBDIR_OVERRIDE }}.json
+            modules_results-${{ matrix.EESSI_SOFTWARE_SUBDIR_OVERRIDE }}.json
+            missing_modules-${{ matrix.EESSI_SOFTWARE_SUBDIR_OVERRIDE }}.txt
 
 
