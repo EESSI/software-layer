@@ -147,3 +147,14 @@ jobs:
               fi
 
 
+      - name: Generate artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: license-results
+          path: |
+            licenses_test.json
+            modules_results.json
+            missing_modules.txt
+
+
