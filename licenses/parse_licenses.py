@@ -2,6 +2,7 @@ import requests
 import json
 import os
 import re
+import argparse
 from urllib.parse import quote
 from bs4 import BeautifulSoup
 
@@ -224,6 +225,11 @@ def save_license_results(results, output_file="licenses_test.json"):
     with open(output_file, "w") as f:
         json.dump(results, f, indent=4)
     print(f"License information saved to {output_file}")
+
+def parse_arguments():
+        parser = argparse.ArgumentParser(description='Script to parse licenses')
+        parser.add_argument(
+        '--debug', '-d', help='Prints scripts debugging', action='store_true', required=False)
 
 def main():
     modules_file = "modules_results.json"
