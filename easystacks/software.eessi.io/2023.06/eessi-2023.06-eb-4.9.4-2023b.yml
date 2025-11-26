@@ -53,4 +53,3 @@ easyconfigs:
       options:
         # testing purposes 
         from-commit: cb372c4e096030c0bd285346b6b897842c998b92
-

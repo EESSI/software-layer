@@ -4,7 +4,7 @@ on:
   push:
     branches: [ "main" ]
   pull_request:
-    branches:  [ "licenses", "main" ]
+    branches:  [ "main", "licenses" ]
       #    types: [opened, synchronized]
 permissions:
   contents: read # we dont need to write
