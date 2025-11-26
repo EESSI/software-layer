@@ -6,13 +6,6 @@ on:
   pull_request:
     branches:  [ "main", "licenses" ]
         #    types: [opened, synchronized]
-  workflow_dispatch:
-    inputs:
-      debug_mode:
-        description: 'Enable debugging for troubleshooting' 
-        required: false
-        type: boolean
-        default: false
 permissions:
   contents: read # we dont need to write
 
@@ -134,14 +127,11 @@ jobs:
 
       - name : Try to fetch the license 
         run: |
-              if [[ "${{ inputs.debug_mode }}"" == "true" ]]; then
-                  DEBUG_FLAG="--debug"
-              fi
               if [ -s modules_results.json ]; then
                 echo "modules_results.json file exists, trying to fetch the license..."
                 module load Python-bundle-PyPI/2023.06-GCCcore-12.3.0
                 module load BeautifulSoup/4.12.2-GCCcore-12.3.0
-                python licenses/parse_licenses.py modules_results.json
+                python licenses/parse_licenses.py --debug modules_results.json
                 cat licenses_test.json
               else
                 echo "modules_results.json file does not exist, skipping license fetch."
