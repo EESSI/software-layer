@@ -238,6 +238,7 @@ def save_license_results(results, output_file="licenses_test.json"):
 
 def parse_arguments():
         parser = argparse.ArgumentParser(description='Script to parse licenses')
+        parser.add_argument('input_file', help='Path to the input file')
         parser.add_argument('--debug', help='Prints scripts debugging', action='store_true', required=False)
         return parser.parse_args()
 
