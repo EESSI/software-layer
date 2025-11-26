@@ -155,8 +155,8 @@ jobs:
         with:
           name: license-results-${{ matrix.NO_SLASH_NAME }}
           path: |
-            licenses_test-${{ matrix.NO_SLASH_NAME }}.json
-            modules_results-${{ matrix.NO_SLASH_NAME }}.json
-            missing_modules-${{ matrix.NO_SLASH_NAME }}.txt
+            licenses_test.json
+            modules_results.json
+            missing_modules.txt
 
 
