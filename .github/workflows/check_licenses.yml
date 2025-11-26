@@ -131,7 +131,7 @@ jobs:
                 echo "modules_results.json file exists, trying to fetch the license..."
                 module load Python-bundle-PyPI/2023.06-GCCcore-12.3.0
                 module load BeautifulSoup/4.12.2-GCCcore-12.3.0
-                python licenses/parse_licenses.py --debug modules_results.json
+                python licenses/parse_licenses.py modules_results.json
                 cat licenses_test.json
               else
                 echo "modules_results.json file does not exist, skipping license fetch."
