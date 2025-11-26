@@ -19,8 +19,10 @@ jobs:
         include:
          - runs_on: ubuntu-24.04-arm
            EESSI_SOFTWARE_SUBDIR_OVERRIDE: aarch64/generic
+           NO_SLASH_NAME: aarch64-generic
          - runs_on: ubuntu-24.04
            EESSI_SOFTWARE_SUBDIR_OVERRIDE: x86_64/generic
+           NO_SLASH_NAME: x86_64-generic
 
     runs-on: ${{ matrix.runs_on }}
 
@@ -146,5 +148,16 @@ jobs:
                 echo "Missing licenses found, please check the licenses.json file."
                 #exit 1
               fi
+
+
+      - name: Generate artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: license-results-${{ matrix.NO_SLASH_NAME }}
+          path: |
+            licenses_test.json
+            modules_results.json
+            missing_modules.txt
 
 
