@@ -2,9 +2,9 @@ name: Check and update licenses
 
 on:
   push:
-    branches: [ "main" ]
+    branches: [ "licenses", "main" ]
   pull_request:
-    branches:  [ "main" ]
+    branches:  [ "licenses", "main" ]
       #    types: [opened, synchronized]
 permissions:
   contents: read # we dont need to write
