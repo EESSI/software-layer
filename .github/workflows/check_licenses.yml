@@ -2,7 +2,7 @@ name: Check and update licenses
 
 on:
   push:
-    branches: [ "licenses", "main" ]
+    branches: [ "main" ]
   pull_request:
     branches:  [ "licenses", "main" ]
       #    types: [opened, synchronized]
