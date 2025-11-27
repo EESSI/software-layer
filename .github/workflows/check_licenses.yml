@@ -30,7 +30,7 @@ jobs:
       -  uses: actions/checkout@v4
       -  uses: eessi/github-action-eessi@v3
 
-      - name: Check for missing installlations
+      - name: Check for missing installations
         env:
            PR_NUMBER: ${{ github.event.number }}
 
@@ -132,14 +132,14 @@ jobs:
                 module load Python-bundle-PyPI/2023.06-GCCcore-12.3.0
                 module load BeautifulSoup/4.12.2-GCCcore-12.3.0
                 python licenses/parse_licenses.py --debug modules_results.json
-                cat licenses_test.json
+                cat licenses_test.yaml
               else
                 echo "modules_results.json file does not exist, skipping license fetch."
               fi
               
       - name: Check for missing licenses
         run: |
-              grep -3 "not found" licenses_test.json 
+              grep -3 "not found" licenses_test.yaml 
               exit_code=$?
               if [[ ${exit_code} -ne 0 ]]; then 
                 echo "No missing licenses found."
@@ -155,7 +155,7 @@ jobs:
         with:
           name: license-results-${{ matrix.NO_SLASH_NAME }}
           path: |
-            licenses_test.json
+            licenses_test.yaml
             modules_results.json
             missing_modules.txt
 
