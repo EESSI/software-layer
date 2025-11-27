@@ -175,8 +175,8 @@ def scrape_repo_from_package(url, depth=0):
         response = requests.get(url, timeout=10)
         response.raise_for_status()
     except requests.RequestException:
-        # if DEBUG_MODE:
-        print(f"Failed to fetch {url}")
+        if DEBUG_MODE:
+            print(f"Failed to fetch {url}")
         return "not found", "not found"
 
     soup = BeautifulSoup(response.text, "html.parser")
