@@ -140,13 +140,18 @@ jobs:
               
       - name: Check for missing licenses
         run: |
-              grep -3 "not found" licenses_test.yaml 
-              exit_code=$?
-              if [[ ${exit_code} -ne 0 ]]; then 
-                echo "No missing licenses found."
+              echo ""
+              # Look for missing licences in licenses_test.yaml
+              OUTPUT=$(yq '.. | select(.License == "not found" or .License == "Other")' licenses_test.yaml)
+              
+              # Check if the variable is NOT empty (-n)
+              if [[ -n "$OUTPUT" ]]; then
+                echo "Missing licenses found, please check the missing_report.yaml file."
+                echo "$OUTPUT"
+                echo "$OUTPUT" > missing_report.yaml
+                exit 1
               else
-                echo "Missing licenses found, please check the licenses.json file."
-                #exit 1
+                echo "No missing licenses found."
               fi
 
 
