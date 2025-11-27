@@ -5,7 +5,7 @@ on:
     branches: [ "main", "licenses" ]
   pull_request:
     branches:  [ "main", "licenses" ]
-      #    types: [opened, synchronized]
+        #    types: [opened, synchronized]
 permissions:
   contents: read # we dont need to write
 
@@ -132,7 +132,7 @@ jobs:
                 module load Python-bundle-PyPI/2023.06-GCCcore-12.3.0
                 module load BeautifulSoup/4.12.2-GCCcore-12.3.0
                 module load PyYAML/6.0-GCCcore-12.3.0
-                python licenses/parse_licenses.py modules_results.json
+                python licenses/parse_licenses.py --debug modules_results.json
                 cat licenses_test.yaml
               else
                 echo "modules_results.json file does not exist, skipping license fetch."
@@ -156,7 +156,7 @@ jobs:
         with:
           name: license-results-${{ matrix.NO_SLASH_NAME }}
           path: |
-            licenses_test.json
+            licenses_test.yaml
             modules_results.json
             missing_modules.txt
 

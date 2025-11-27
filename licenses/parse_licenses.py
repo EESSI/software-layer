@@ -2,6 +2,8 @@ import requests
 import json
 import os
 import re
+import argparse
+import yaml
 from urllib.parse import quote
 from bs4 import BeautifulSoup
 import yaml
@@ -12,6 +14,9 @@ URL_REG = "https://packages.ecosyste.ms/api/v1/packages/lookup?repository_url="
 
 # Constants
 MAX_DEPTH = 3
+
+# Global variable
+DEBUG_MODE = False
 
 # Load SPDX License Data to interpolate with found license files
 with open("licenses/spdx-list.json", "r") as f:
@@ -38,18 +43,21 @@ def is_valid_repo_url(url):
 def fetch_license_from_ecosystems(url, depth=0):
     """Fetches license information from ecosyste.ms API with a depth limit."""
     if depth > MAX_DEPTH:
-        print(f"Max depth reached for {url}, stopping recursion.")
-        return "not found", "not found"
+            if DEBUG_MODE:
+                print(f"Max depth reached for {url}, stopping recursion.")
+            return "not found", "not found"
 
     clean_url = clean_repo_url(url)
     formatted_url = quote(clean_url, safe="")
-    print(f"Depth {depth}: Checking {url}")
+    if DEBUG_MODE:
+        print(f"Depth {depth}: Checking {url}")
 
     try:
         repo_response = requests.get(f"{URL_REPO}{formatted_url}")
         reg_response = requests.get(f"{URL_REG}{formatted_url}")
     except requests.RequestException as e:
-        print(f"Request failed: {e}")
+        if DEBUG_MODE:
+            print(f"Request failed: {e}")
         return "not found", "not found"
 
     if repo_response.status_code == 200:
@@ -59,7 +67,8 @@ def fetch_license_from_ecosystems(url, depth=0):
         
         if license_info in ("not found", "other", "Other"):
             scraped_license = scrape_license(clean_url)
-            print("SCRAPED LICENSE "+str(scraped_license))
+            if DEBUG_MODE:
+                print("SCRAPED LICENSE "+str(scraped_license))
             if scraped_license != "not found":
                 return scraped_license[0], scraped_license[1]
         
@@ -67,20 +76,23 @@ def fetch_license_from_ecosystems(url, depth=0):
 
     if reg_response.status_code == 200:
         data = reg_response.json()
-        print(f"for {URL_REG}{formatted_url}")
+        if DEBUG_MODE:
+            print(f"for {URL_REG}{formatted_url}")
         if isinstance(data, list) and data:
             license_info = data[0].get("normalized_licenses", "not found")
             repo_url = data[0].get("repository_url", "not found")
             if license_info in ("not found", "other", "Other"):
                 scraped_license = scrape_repo_from_package(clean_url, depth + 1)
-                print("SCRAPED LICENSE "+str(scraped_license))
+                if DEBUG_MODE:
+                    print("SCRAPED LICENSE "+str(scraped_license))
                 if scraped_license != "not found":
                     return scraped_license[0], scraped_license[1]
                     
             return license_info, repo_url
         else: 
             scraped_license = scrape_license(clean_url)
-            print("SCRAPED LICENSE "+str(scraped_license))
+            if DEBUG_MODE:
+                print("SCRAPED LICENSE "+str(scraped_license))
             if scraped_license != "not found":
                 return scraped_license, scraped_license[1]
             
@@ -157,14 +169,16 @@ def scrape_license(repo_url):
 def scrape_repo_from_package(url, depth=0):
     """Scrapes a package homepage for a GitHub/GitLab repository link."""
     if depth > MAX_DEPTH:
-        print(f"Max depth reached for {url}, stopping recursion.")
+        if DEBUG_MODE:
+            print(f"Max depth reached for {url}, stopping recursion.")
         return "not found", "not found"
 
     try:
         response = requests.get(url, timeout=10)
         response.raise_for_status()
     except requests.RequestException:
-        print(f"Failed to fetch {url}")
+        if DEBUG_MODE:
+            print(f"Failed to fetch {url}")
         return "not found", "not found"
 
     soup = BeautifulSoup(response.text, "html.parser")
@@ -220,6 +234,15 @@ def process_modules_for_licenses(modules_file):
                 "Permission to redistribute": is_redistributable,
                 "Retrieved from": url
             }
+
+        # Split the software name and version to display them properly in the YAML file
+        software_name, version = module_name.split("/", 1)
+        results[software_name] = {
+            version: {
+                "License": license_info,
+                "Permission to redistribute": is_redistributable,
+                "Retrieved from": url
+            }
         }
     return results
 
@@ -230,15 +253,23 @@ def save_license_results(results, output_file="licenses_test.yaml"):
         yaml.dump(results, f)
     print(f"License information saved to {output_file}")
 
+def parse_arguments():
+        parser = argparse.ArgumentParser(description='Script to parse licenses')
+        parser.add_argument('input_file', help='Path to the input file')
+        parser.add_argument('--debug', help='Prints scripts debugging', action='store_true', required=False)
+        return parser.parse_args()
+
 def main():
     modules_file = "modules_results.json"
     if not os.path.exists(modules_file):
         print(f"Error: {modules_file} not found.")
         return
-    
     license_results = process_modules_for_licenses(modules_file)
     save_license_results(license_results)
 
 if __name__ == "__main__":
+    # Parse command-line arguments and enable global debug mode if requested
+    args = parse_arguments()
+    if args.debug:
+        DEBUG_MODE = True
     main()
-
