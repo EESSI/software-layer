@@ -151,7 +151,6 @@ jobs:
 
 
       - name: Generate artifacts
-        if: always()
         uses: actions/upload-artifact@v4
         with:
           name: license-results-${{ matrix.NO_SLASH_NAME }}
@@ -160,4 +159,14 @@ jobs:
             modules_results.json
             missing_modules.txt
 
+
+      - name: How to edit artifacts
+        run: |
+              echo "Artifacts generated. To resolve the missing licenses, please edit 'licenses_test.yaml' manually, making sure you follow the following format: "
+              echo ""
+              echo "<package_name>:"
+              echo "  <version_id>:"
+              echo "    License: <license_info>"
+              echo "    Permission to redistribute: <true/false>"
+              echo "    Retrieved from: <source_link>"
 
