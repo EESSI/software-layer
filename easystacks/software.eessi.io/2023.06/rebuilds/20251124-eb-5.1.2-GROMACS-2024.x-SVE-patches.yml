@@ -1,0 +1,21 @@
+# For A64FX an SVE patch had to be added to all GROMACS 2024.x easyconfigs:
+# https://github.com/easybuilders/easybuild-easyconfigs/pull/24548
+# And another one to solve a double-precision SVE bug:
+# https://github.com/easybuilders/easybuild-easyconfigs/pull/24602
+# The latter patch also fixes issues for Neoverse V1 and NVIDIA Grace.
+# In order to keep things consistent across all CPU targets,
+# we rebuild all existing 2024.x versions with the same 
+# EasyBuild version + easyblock + easyconfig.
+easyconfigs:
+  - GROMACS-2024.3-foss-2023b.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/24548
+        from-commit: 2a45a80a9b50adc8954150a1101c81e692598b98
+  - GROMACS-2024.4-foss-2023b.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/24548
+        from-commit: 2a45a80a9b50adc8954150a1101c81e692598b98
+  - GROMACS-2024.1-foss-2023b.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/24602
+        from-commit: 70637e8c01ff57e28044a629da983d7715fb8067
