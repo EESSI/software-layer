@@ -81,14 +81,16 @@ def fetch_license_from_ecosystems(url, depth=0):
             repo_url = data[0].get("repository_url", "not found")
             if license_info in ("not found", "other", "Other"):
                 scraped_license = scrape_repo_from_package(clean_url, depth + 1)
-                print("SCRAPED LICENSE "+str(scraped_license))
+                if DEBUG_MODE:
+                    print("SCRAPED LICENSE "+str(scraped_license))
                 if scraped_license != "not found":
                     return scraped_license[0], scraped_license[1]
                     
             return license_info, repo_url
         else: 
             scraped_license = scrape_license(clean_url)
-            print("SCRAPED LICENSE "+str(scraped_license))
+            if DEBUG_MODE:
+                print("SCRAPED LICENSE "+str(scraped_license))
             if scraped_license != "not found":
                 return scraped_license, scraped_license[1]
             
