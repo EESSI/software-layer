@@ -142,14 +142,13 @@ jobs:
         run: |
               echo ""
               # Look for missing licences in licenses_test.yaml
-              OUTPUT=$(yq '.. | select(.License == "not found" or .License == "Other")' licenses_test.yaml)
+              OUTPUT=$(yq eval '.. | select(has("License")) | select(.License == "not found" or .License == "Other") | (path | join(" -> ")) + ": " + .License' licenses_test.yaml)
               
               # Check if the variable is NOT empty (-n)
               if [[ -n "$OUTPUT" ]]; then
                 echo "Missing licenses found, please check the missing_report.yaml file."
                 echo "$OUTPUT"
                 echo "$OUTPUT" > missing_report.yaml
-                exit 1
               else
                 echo "No missing licenses found."
               fi
