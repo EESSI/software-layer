@@ -6,7 +6,6 @@ import argparse
 import yaml
 from urllib.parse import quote
 from bs4 import BeautifulSoup
-import yaml
 
 # API Endpoints
 URL_REPO = "https://repos.ecosyste.ms/api/v1/repositories/lookup?url="
@@ -225,15 +224,6 @@ def process_modules_for_licenses(modules_file):
         if license_info_normalized in SPDX_LICENSES:
             spdx_details = SPDX_LICENSES[license_info_normalized]
             is_redistributable = spdx_details["isOsiApproved"] or spdx_details["isFsfLibre"]
-        
-        # Split the software name and version to display them properly in the YAML file
-        software_name, version = module_name.split("/", 1)
-        results[software_name] = {
-            version: {
-                "License": license_info,
-                "Permission to redistribute": is_redistributable,
-                "Retrieved from": url
-            }
 
         # Split the software name and version to display them properly in the YAML file
         software_name, version = module_name.split("/", 1)
