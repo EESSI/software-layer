@@ -133,7 +133,7 @@ jobs:
                 module load BeautifulSoup/4.12.2-GCCcore-12.3.0
                 module load PyYAML/6.0-GCCcore-12.3.0
                 python licenses/parse_licenses.py --debug modules_results.json
-                cat licenses_test.yaml
+                cat licenses_aux.yaml
               else
                 echo "modules_results.json file does not exist, skipping license fetch."
               fi
@@ -141,8 +141,8 @@ jobs:
       - name: Check for missing licenses
         run: |
               echo ""
-              # Look for missing licences in licenses_test.yaml
-              OUTPUT=$(yq eval '.. | select(has("License")) | select(.License == "not found" or .License == "Other") | (path | join(" -> ")) + ": " + .License' licenses_test.yaml)
+              # Look for missing licences in licenses_aux.yaml
+              OUTPUT=$(yq eval '.. | select(has("License")) | select(.License == "not found" or .License == "Other") | (path | join(" -> ")) + ": " + .License' licenses_aux.yaml)
               
               # Check if the variable is NOT empty (-n)
               if [[ -n "$OUTPUT" ]]; then
@@ -153,20 +153,25 @@ jobs:
                 echo "No missing licenses found."
               fi
 
+              # Create a patch file
+              diff -Naur licenses.yaml licenses_aux.yaml > patch.txt
+
 
       - name: Generate artifacts
         uses: actions/upload-artifact@v4
         with:
           name: license-results-${{ matrix.NO_SLASH_NAME }}
           path: |
-            licenses_test.yaml
+            licenses_aux.yaml
             modules_results.json
             missing_modules.txt
+            missing_report.yaml
+            patch.txt
 
 
       - name: How to edit artifacts
         run: |
-              echo "Artifacts generated. To resolve the missing licenses, please edit 'licenses_test.yaml' manually, making sure you follow the following format: "
+              echo "Artifacts generated. To resolve the missing licenses, please edit 'licenses_aux.yaml' manually, making sure you follow the following format: "
               echo ""
               echo "<package_name>:"
               echo "  <version_id>:"

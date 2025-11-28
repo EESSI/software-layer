@@ -237,7 +237,7 @@ def process_modules_for_licenses(modules_file):
     return results
 
 
-def save_license_results(results, output_file="licenses_test.yaml"):
+def save_license_results(results, output_file="licenses_aux.yaml"):
     """Saves license information to a JSON file."""
     with open(output_file, "w") as f:
         yaml.dump(results, f)
