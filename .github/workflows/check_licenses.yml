@@ -153,8 +153,12 @@ jobs:
                 echo "No missing licenses found."
               fi
 
+              # TEST
+              cat "licenses.yml"
+              cat "licenses.yaml"
+
               # Create a patch file
-              diff -Naur licenses.yml licenses_aux.yaml > patch.txt || true
+              diff -Naur licenses.yaml licenses_aux.yaml > patch.txt || true
 
 
       - name: Generate artifacts
