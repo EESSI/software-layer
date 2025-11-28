@@ -154,11 +154,13 @@ jobs:
               fi
 
               # TEST
-              cat "licenses.yml" || true
-              cat "licenses.yaml" || true
+              ls -l
+              pwd
+              cat "licenses/licenses.yml" || true
+              cat "licenses/licenses.yaml" || true
 
               # Create a patch file
-              diff -Naur licenses.yaml licenses_aux.yaml > patch.txt || true
+              diff -Naur licenses/licenses.yml licenses_aux.yaml > patch.txt || true
 
 
       - name: Generate artifacts
