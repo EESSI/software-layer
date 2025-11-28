@@ -154,8 +154,8 @@ jobs:
               fi
 
               # TEST
-              cat "licenses.yml"
-              cat "licenses.yaml"
+              cat "licenses.yml" || true
+              cat "licenses.yaml" || true
 
               # Create a patch file
               diff -Naur licenses.yaml licenses_aux.yaml > patch.txt || true
