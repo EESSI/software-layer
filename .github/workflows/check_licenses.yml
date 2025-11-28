@@ -154,7 +154,7 @@ jobs:
               fi
 
               # Create a patch file
-              diff -Naur licenses.yaml licenses_aux.yaml > patch.txt
+              diff -Naur licenses.yml licenses_aux.yaml > patch.txt
 
 
       - name: Generate artifacts
