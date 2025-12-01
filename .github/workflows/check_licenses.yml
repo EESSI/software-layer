@@ -153,11 +153,9 @@ jobs:
                 echo "No missing licenses found."
               fi
 
-              # TEST
-              ls -l licenses
-
               # Create a patch file
-              diff -Naur licenses/licenses.yaml licenses_aux.yaml > patch.txt || true
+              python licenses/reformat_yaml.py licenses/licenses.yaml    #Reformat licenses.yaml to match the structure of licenses_aux.yaml
+              diff -Naur licenses/reformatted_licenses.yaml licenses_aux.yaml > patch.txt || true
 
 
       - name: Generate artifacts
