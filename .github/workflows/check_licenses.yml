@@ -142,7 +142,7 @@ jobs:
         run: |
               echo ""
               # Look for missing licences in licenses_aux.yaml
-              OUTPUT=$(yq eval '.. | select(has("License")) | select(.License == "not found" or .License == "Other") | (path | join(" -> ")) + ": " + .License' licenses_aux.yaml)
+              OUTPUT=$(yq eval '.. | select(has("License")) | select(.License == "not found" or .License == "Other") | (path | join(" --> ")) + ": " + .License' licenses_aux.yaml)
               
               # Check if the variable is NOT empty (-n)
               if [[ -n "$OUTPUT" ]]; then
@@ -155,7 +155,8 @@ jobs:
 
               # Create a patch file
               python licenses/reformat_yaml.py licenses/licenses.yaml    #Reformat licenses.yaml to match the structure of licenses_aux.yaml
-              diff -Naur licenses/reformatted_licenses.yaml licenses_aux.yaml > patch.txt || true
+              diff -Naur reformatted_licenses.yaml licenses_aux.yaml > patch.txt || true
+              echo -e "\npatch.txt file generated."
 
 
       - name: Generate artifacts
