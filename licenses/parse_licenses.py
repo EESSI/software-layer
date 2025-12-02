@@ -241,6 +241,9 @@ def process_modules_for_licenses(modules_file):
 
 def save_license_results(results, output_file="licenses_aux.yaml",licenses_original = os.sys.argv[2]):
     """Saves license information to a JSON file."""
+    with open("temporal_print.yaml", "w") as f:
+        yaml.dump(results, f, default_flow_style=False, sort_keys=True)  #Fast dump of what we have to print in the workflow
+
     full_data = {}
     with open(licenses_original, 'r') as f:
         full_data = yaml.safe_load(f)
@@ -250,7 +253,8 @@ def save_license_results(results, output_file="licenses_aux.yaml",licenses_origi
             full_data[software_name] = {}
 
         for version, details in versions_data.items():      
-            full_data[software_name][version] = details         #Add/replace the details of modules found in the new licenses data dictionary
+            if version not in full_data[software_name]: 
+                full_data[software_name][version] = details         #Add/replace the details of modules found in the new licenses data dictionary
 
     with open(output_file, "w") as f:
         yaml.dump(full_data, f, default_flow_style=False, sort_keys=True)  #Export data dictionary as licenses_aux.yaml file

@@ -131,7 +131,7 @@ jobs:
                 echo "modules_results.json file exists, trying to fetch the license..."
                 ml Python-bundle-PyPI/2023.06-GCCcore-12.3.0 BeautifulSoup/4.12.2-GCCcore-12.3.0 PyYAML/6.0-GCCcore-12.3.0
                 python licenses/parse_licenses.py modules_results.json licenses/licenses.yml
-                cat licenses_aux.yaml
+                cat temporal_print.yaml
               else
                 echo "modules_results.json file does not exist, skipping license fetch."
               fi
