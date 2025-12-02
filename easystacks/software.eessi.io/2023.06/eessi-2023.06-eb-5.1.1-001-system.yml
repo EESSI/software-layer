@@ -2,3 +2,9 @@ easyconfigs:
   - Java-11.0.27.eb
   - Java-17.0.15.eb
   - Java-21.0.7.eb
+  - Trimmomatic-0.39-Java-11.eb
+  - FastQC-0.12.1-Java-11.eb
+  - EasyBuild-5.1.2.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/24024
+        from-commit: d250e047335cff444680790ceb026676cfb65eb8

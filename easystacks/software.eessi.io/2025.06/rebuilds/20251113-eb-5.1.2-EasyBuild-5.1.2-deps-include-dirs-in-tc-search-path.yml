@@ -1,0 +1,10 @@
+# Fix EasyBuild bug with toolchain method that sets up the search path for header files.
+# The bug has been exposed when using the new options
+# EASYBUILD_MODULE_SEARCH_PATH_HEADERS=include_paths and
+# EASYBUILD_SEARCH_PATH_CPP_HEADERS=include_paths
+#
+easyconfigs:
+  - EasyBuild-5.1.2.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/24608
+        from-commit: 212baa80690f23dc221e0028519fb3d57acb1625

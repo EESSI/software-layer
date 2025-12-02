@@ -1,0 +1,11 @@
+easyconfigs:
+  # note: M4 is only listed here because it's a build dependency for GCCcore,
+  #       but it was still filtered out as dependency when GCCcore/13.3.0 and GCCcore/14.2.0 got built;
+  #       now Autotools/Automake/libtool/M4 are retained as (build) dependency because the newer versions
+  #       in EESSI 2025.06 compat layer can cause problems with some installations (like OpenMPI);
+  #       see also https://github.com/EESSI/software-layer-scripts/pull/74
+  - M4-1.4.19.eb
+  - EasyBuild-5.1.2.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/24024
+        from-commit: d250e047335cff444680790ceb026676cfb65eb8
