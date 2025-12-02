@@ -4,6 +4,7 @@ import os
 import re
 import argparse
 import yaml
+import shutil
 from urllib.parse import quote
 from bs4 import BeautifulSoup
 
@@ -238,16 +239,27 @@ def process_modules_for_licenses(modules_file):
         }
     return results
 
-
-def save_license_results(results, output_file="licenses_aux.yaml"):
+def save_license_results(results, output_file="licenses_aux.yaml",licenses_original = os.sys.argv[2]):
     """Saves license information to a JSON file."""
+    full_data = {}
+    with open(licenses_original, 'r') as f:
+        full_data = yaml.safe_load(f)
+    
+    for software_name, versions_data in results.items():    #Look for new modules which are not in the new licenses dictionary
+        if software_name not in full_data:                  #Add new modules in a data dictionary
+            full_data[software_name] = {}
+
+        for version, details in versions_data.items():      
+            full_data[software_name][version] = details         #Add/replace the details of modules found in the new licenses data dictionary
+
     with open(output_file, "w") as f:
-        yaml.dump(results, f)
-    print(f"License information saved to {output_file}")
+        yaml.dump(full_data, f, default_flow_style=False, sort_keys=True)  #Export data dictionary as licenses_aux.yaml file
+    print(f"License information saved to {output_file}")    
 
 def parse_arguments():
         parser = argparse.ArgumentParser(description='Script to parse licenses')
         parser.add_argument('input_file', help='Path to the input file')
+        parser.add_argument('licenses_original', help='Path to the original licenses file (licenses.yml)')
         parser.add_argument('--debug', help='Prints scripts debugging', action='store_true', required=False)
         return parser.parse_args()
 
