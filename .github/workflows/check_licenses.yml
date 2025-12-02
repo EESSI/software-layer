@@ -152,8 +152,8 @@ jobs:
               fi
 
               # Create a patch file
-              diff -Naur licenses.yml licenses_aux.yaml > patch.txt || true
-              echo -e "\npatch.txt file generated."
+              diff -Naur licenses/licenses.yml licenses_aux.yaml > patch.txt || true
+              echo "patch.txt file generated."
 
 
       - name: Generate artifacts
