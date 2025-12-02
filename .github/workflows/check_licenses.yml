@@ -2,9 +2,9 @@ name: Check and update licenses
 
 on:
   push:
-    branches: [ "main" ]
+    branches: [ "main", "licenses" ]
   pull_request:
-    branches:  [ "main" ]
+    branches:  [ "main", "licenses" ]
       #    types: [opened, synchronized]
 permissions:
   contents: read # we dont need to write
@@ -19,8 +19,10 @@ jobs:
         include:
          - runs_on: ubuntu-24.04-arm
            EESSI_SOFTWARE_SUBDIR_OVERRIDE: aarch64/generic
+           NO_SLASH_NAME: aarch64-generic
          - runs_on: ubuntu-24.04
            EESSI_SOFTWARE_SUBDIR_OVERRIDE: x86_64/generic
+           NO_SLASH_NAME: x86_64-generic
 
     runs-on: ${{ matrix.runs_on }}
 
@@ -28,7 +30,7 @@ jobs:
       -  uses: actions/checkout@v4
       -  uses: eessi/github-action-eessi@v3
 
-      - name: Check for missing installlations
+      - name: Check for missing installations
         env:
            PR_NUMBER: ${{ github.event.number }}
 
@@ -78,7 +80,7 @@ jobs:
               fi  
           done
 
-      - name: Check for software existing in licenses.yaml file 
+      - name: Check for software existing in licenses.yml file 
         run: |
           # double check this 
           if [ -s licenses/licenses.yml ]; then
@@ -99,13 +101,13 @@ jobs:
                 rest="${module#*/}"       # 0.9.2-foss-2023a
                 version="${rest%%-*}"     # 0.9.2
 
-              # Check if licenses.yaml has: NAME -> VERSION
+              # Check if licenses.yml has: NAME -> VERSION
               if ! yq -e ".\"$name\".\"$version\"" "$LICENSES_YAML" >/dev/null 2>&1; then
                 echo "$module" >> missing_modules.txt
               fi
               done < missing.txt
 
-              echo "Modules not in licenses.json: "
+              echo "Modules not in licenses.yml: "
               cat missing_modules.txt
               
             else
@@ -127,34 +129,49 @@ jobs:
         run: |
               if [ -s modules_results.json ]; then
                 echo "modules_results.json file exists, trying to fetch the license..."
-                module load Python-bundle-PyPI/2023.06-GCCcore-12.3.0
-                module load BeautifulSoup/4.12.2-GCCcore-12.3.0
-                python licenses/parse_licenses.py modules_results.json
-                cat licenses_test.json
+                ml Python-bundle-PyPI/2023.06-GCCcore-12.3.0 BeautifulSoup/4.12.2-GCCcore-12.3.0 PyYAML/6.0-GCCcore-12.3.0
+                python licenses/parse_licenses.py modules_results.json licenses/licenses.yml
+                cat licenses_aux.yaml
               else
                 echo "modules_results.json file does not exist, skipping license fetch."
               fi
               
-      - name: Check for missing licenses
+      - name: Check and generate report on missing licenses
         run: |
-              grep -3 "not found" licenses_test.json 
-              exit_code=$?
-              if [[ ${exit_code} -ne 0 ]]; then 
-                echo "No missing licenses found."
+              echo ""
+              # Look for missing licences in licenses_aux.yaml
+              OUTPUT=$(yq eval '.. | select(has("License")) | select(.License == "not found" or .License == "Other") | (path | join(" --> ")) + ": " + .License' licenses_aux.yaml)
+              
+              # Check if the variable is NOT empty (-n)
+              if [[ -n "$OUTPUT" ]]; then
+                echo "Missing licenses found, please check the missing_report.yaml file."
+                echo "$OUTPUT"
+                echo "$OUTPUT" > missing_report.yaml
               else
-                echo "Missing licenses found, please check the licenses.json file."
-                #exit 1
+                echo "No missing licenses found."
               fi
+
+              # Create a patch file
+              diff -Naur licenses/licenses.yml licenses_aux.yaml > patch.txt || true
+              echo "patch.txt file generated."
 
 
       - name: Generate artifacts
-        if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: license-results
+          name: license-results-${{ matrix.NO_SLASH_NAME }}
           path: |
-            licenses_test.json
-            modules_results.json
-            missing_modules.txt
+            missing_report.yaml
+            patch.txt
 
+
+      - name: How to edit artifacts
+        run: |
+              echo "Artifacts generated. To resolve the missing licenses, please edit 'patch.txt' manually, making sure you follow the following format: "
+              echo ""
+              echo "<package_name>:"
+              echo "  <version_id>:"
+              echo "    License: <license_info>"
+              echo "    Permission to redistribute: <true/false>"
+              echo "    Retrieved from: <source_link>"
 
