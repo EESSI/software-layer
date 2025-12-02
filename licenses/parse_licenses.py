@@ -226,8 +226,9 @@ def process_modules_for_licenses(modules_file):
             is_redistributable = spdx_details["isOsiApproved"] or spdx_details["isFsfLibre"]
 
         # Split the software name and version to display them properly in the YAML file
-        software_name, full_version = module_name.split("/", 1)
-        version,toolchain = full_version.split("-",1)
+        software_name, version = module_name.split("/", 1)
+        if "-" in version:
+            version,toolchain = version.split("-",1)
         results[software_name] = {
             version: {
                 "License": license_info,
