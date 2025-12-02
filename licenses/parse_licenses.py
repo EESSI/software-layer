@@ -227,6 +227,8 @@ def process_modules_for_licenses(modules_file):
 
         # Split the software name and version to display them properly in the YAML file
         software_name, version = module_name.split("/", 1)
+        if "-" in version:
+            version,toolchain = version.split("-",1)
         results[software_name] = {
             version: {
                 "License": license_info,
@@ -237,7 +239,7 @@ def process_modules_for_licenses(modules_file):
     return results
 
 
-def save_license_results(results, output_file="licenses_test.yaml"):
+def save_license_results(results, output_file="licenses_aux.yaml"):
     """Saves license information to a JSON file."""
     with open(output_file, "w") as f:
         yaml.dump(results, f)
