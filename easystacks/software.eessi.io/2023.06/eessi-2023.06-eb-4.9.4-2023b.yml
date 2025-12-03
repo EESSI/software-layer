@@ -45,12 +45,3 @@ easyconfigs:
       options:
         # see https://github.com/easybuilders/easybuild-easyconfigs/pull/22469
         from-commit: fc22841fef99cbb2a221c18029b15e692e78c27c
-  - Scalasca-2.6.1-gompi-2023b.eb:
-      options:
-        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/21135
-        from-commit: c61e72465641ffb2852f60c5264386af690b2ea1
-  - LAMMPS-29Aug2024_update2-foss-2023b-kokkos-CUDA-12.4.0.eb:
-      options:
-        # testing purposes 
-        from-commit: cb372c4e096030c0bd285346b6b897842c998b92
-

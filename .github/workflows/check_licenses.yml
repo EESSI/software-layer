@@ -2,7 +2,7 @@ name: Check and update licenses
 
 on:
   push:
-    branches: [ "main", "licenses" ]
+    branches: [ "main", "licenses" ] # this should be kept like this for now because we will continue to do testing in this branches
   pull_request:
     branches:  [ "main", "licenses" ]
       #    types: [opened, synchronized]
@@ -130,8 +130,8 @@ jobs:
               if [ -s modules_results.json ]; then
                 echo "modules_results.json file exists, trying to fetch the license..."
                 ml Python-bundle-PyPI/2023.06-GCCcore-12.3.0 BeautifulSoup/4.12.2-GCCcore-12.3.0 PyYAML/6.0-GCCcore-12.3.0
-                python licenses/parse_licenses.py modules_results.json
-                cat licenses_aux.yaml
+                python licenses/parse_licenses.py modules_results.json licenses/licenses.yml
+                cat temporal_print.yaml
               else
                 echo "modules_results.json file does not exist, skipping license fetch."
               fi
@@ -165,7 +165,7 @@ jobs:
             patch.txt
 
 
-      - name: How to edit artifacts
+      - name: How to edit artifacts and apply patch
         run: |
               echo "Artifacts generated. To resolve the missing licenses, please edit 'patch.txt' manually, making sure you follow the following format: "
               echo ""
@@ -174,3 +174,7 @@ jobs:
               echo "    License: <license_info>"
               echo "    Permission to redistribute: <true/false>"
               echo "    Retrieved from: <source_link>"
+              echo ""
+              echo " Once edited, you can apply the patch automatically using the patch command from the licenses directory:    "
+
+              echo " patch < <path/to/patch.txt>  "

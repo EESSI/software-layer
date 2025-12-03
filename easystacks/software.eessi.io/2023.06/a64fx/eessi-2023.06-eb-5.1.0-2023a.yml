@@ -1,0 +1,18 @@
+easyconfigs:
+  - buildenv-default-foss-2023a.eb 
+  - Zoltan-3.901-foss-2023a.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/23068
+        from-commit: 644b17f1b42bbf8eb4ad56d9e8f125b8c52d7258
+        # use the same list of filtered dependencies as was used for other CPU targets (in particular: without ParMETIS)
+        filter-deps: Autoconf,Automake,Autotools,binutils,bzip2,DBus,flex,gettext,gperf,help2man,intltool,libreadline,libtool,M4,makeinfo,ncurses,util-linux,XZ,zlib,Yasm
+  - OpenFOAM-12-foss-2023a.eb
+  - MEGAHIT-1.2.9-GCCcore-12.3.0.eb:
+      options:
+        # fix support for non-x86_64 systems,
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/23073
+        from-commit: 6acf5617670d860cee1d12b120c18699be3c1a68
+  - scCODA-0.1.9-foss-2023a.eb
+  - Bazel-6.1.0-GCCcore-12.3.0.eb
+  - ml_dtypes-0.3.2-gfbf-2023a.eb
+  - tensorboard-2.15.1-gfbf-2023a.eb 

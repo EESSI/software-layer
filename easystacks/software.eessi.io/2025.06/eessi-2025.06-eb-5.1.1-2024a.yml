@@ -1,0 +1,10 @@
+easyconfigs:
+  - GCC-13.3.0.eb
+  - gfbf-2024a.eb
+  - FFTW-3.3.10-GCC-13.3.0
+  - OpenMPI-5.0.3-GCC-13.3.0.eb
+  - foss-2024a.eb
+  - ollama-0.6.0-GCCcore-13.3.0.eb
+  - MetaBAT-2.17-GCC-13.3.0.eb
+  - p7zip-17.05-GCCcore-13.3.0.eb
+
