@@ -100,3 +100,4 @@ easyconfigs:
   - R-bundle-Bioconductor-3.20-foss-2024a-R-4.4.2.eb
   - tmux-3.4-GCCcore-13.3.0.eb
   - JupyterLab-4.2.5-GCCcore-13.3.0.eb
+  - SAMtools-1.21-GCC-13.3.0.eb
