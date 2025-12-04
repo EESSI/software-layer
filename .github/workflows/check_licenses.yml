@@ -165,7 +165,7 @@ jobs:
                 pip install google-generativeai
                 
                 # Execute AI script
-                python licenses/enrich_licenses_ai.py temporal_print.yaml
+                python licenses/processing_licenses_with_ai.py temporal_print.yaml
 
                 # Create a patch file for licences found by AI
                 diff -Naur licenses/licenses.yml licenses_aux_llm.yaml > patch_llm.txt || true
