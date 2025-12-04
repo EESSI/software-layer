@@ -7,4 +7,3 @@ easyconfigs:
   - ollama-0.6.0-GCCcore-13.3.0.eb
   - MetaBAT-2.17-GCC-13.3.0.eb
   - p7zip-17.05-GCCcore-13.3.0.eb
-
