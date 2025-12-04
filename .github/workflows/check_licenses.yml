@@ -155,14 +155,31 @@ jobs:
               diff -Naur licenses/licenses.yml licenses_aux.yaml > patch.txt || true
               echo "patch.txt file generated."
 
+      - name: Process missing licenses with AI
+        env:
+          GOOGLE_API_KEY: ${{ secrets.GOOGLE_API_KEY }}
+        run: |
+              if [ -s temporal_print.yaml ]; then
+                echo "Asking Gemini about missing licenses..."
+                # Install Google library
+                pip install google-generativeai
+                
+                # Execute AI script
+                python licenses/enrich_licenses_ai.py temporal_print.yaml
 
-      - name: Generate artifacts
-        uses: actions/upload-artifact@v4
-        with:
-          name: license-results-${{ matrix.NO_SLASH_NAME }}
-          path: |
-            missing_report.yaml
-            patch.txt
+                # Create a patch file for licences found by AI
+                diff -Naur licenses/licenses.yml licenses_aux_llm.yaml > patch_llm.txt || true
+              fi
+              
+              - name: Generate artifacts
+              uses: actions/upload-artifact@v4
+              with:
+                name: license-results-${{ matrix.NO_SLASH_NAME }}
+                path: |
+                  missing_report.yaml
+                  patch.txt
+                  licenses_aux_llm.yaml
+                  patch_llm.txt
 
 
       - name: How to edit artifacts and apply patch
