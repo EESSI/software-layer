@@ -162,7 +162,7 @@ jobs:
               if [ -s temporal_print.yaml ]; then
                 echo "Asking Gemini about missing licenses..."
                 # Install Google library
-                pip install google-generativeai
+                pip install google-generativeai --quiet
                 
                 # Execute AI script
                 python licenses/processing_licenses_with_ai.py temporal_print.yaml
