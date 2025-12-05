@@ -60,4 +60,7 @@ easyconfigs:
         # see https://github.com/easybuilders/easybuild-easyconfigs/pull/24552
         from-commit: d92743f799fc859c472edccd78cf558e0a91ba86
   - Biopython-1.85-gfbf-2025a.eb
-  - LLVM-20.1.7-GCCcore-14.2.0.eb
+  - LLVM-20.1.7-GCCcore-14.2.0.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyblocks/pull/4010
+        include-easyblocks-from-commit: 28cd91876b3960c530a845874f6726e4b2197684
