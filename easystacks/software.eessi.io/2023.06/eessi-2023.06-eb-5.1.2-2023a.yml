@@ -11,3 +11,4 @@ easyconfigs:
       options:
         # see https://github.com/easybuilders/easybuild-easyconfigs/pull/24703
         from-commit: 67de6dc47ed49fabea09da17849b35bb2a7a9618
+  - NCO-5.1.9-foss-2023a.eb
