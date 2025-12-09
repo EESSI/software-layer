@@ -63,5 +63,5 @@ easyconfigs:
   - ASE-3.25.0-gfbf-2025a.eb
   - LLVM-20.1.7-GCCcore-14.2.0.eb:
       options:
-        # see https://github.com/easybuilders/easybuild-easyblocks/pull/4010
-        include-easyblocks-from-commit: 28cd91876b3960c530a845874f6726e4b2197684
+        # see https://github.com/easybuilders/easybuild-easyblocks/pull/4014
+        include-easyblocks-from-commit: 5cf9f73cd615f255fe9a372b5f26922a30542fc7
