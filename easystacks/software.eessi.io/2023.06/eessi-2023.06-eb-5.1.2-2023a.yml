@@ -12,3 +12,7 @@ easyconfigs:
         # see https://github.com/easybuilders/easybuild-easyconfigs/pull/24703
         from-commit: 67de6dc47ed49fabea09da17849b35bb2a7a9618
   - NCO-5.1.9-foss-2023a.eb
+  - acpype-2023.10.27-foss-2023a.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/24174
+        from-commit: 8389c769c05070fdb45f1891682c7ba369ece01b
