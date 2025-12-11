@@ -21,3 +21,7 @@ easyconfigs:
       options:
         # see https://github.com/easybuilders/easybuild-easyconfigs/pull/24238
         from-commit: 65208afce64bcdaf5bc61424fe360641e28ff55b
+  - aiida-shell-0.7.1-foss-2023a.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/24252
+        from-commit: 944cbb629b14e9b216a8923498fb757e8af71ec3
