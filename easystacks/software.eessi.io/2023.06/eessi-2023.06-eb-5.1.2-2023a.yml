@@ -12,3 +12,8 @@ easyconfigs:
         # see https://github.com/easybuilders/easybuild-easyconfigs/pull/24703
         from-commit: 67de6dc47ed49fabea09da17849b35bb2a7a9618
   - NCO-5.1.9-foss-2023a.eb
+  - Bowtie2-2.5.1-GCC-12.3.0.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/24791
+        from-commit: 686ed52641b27c2ea15a9ff0afa6fd5e67e22d45
+  - QIIME2-2024.2.0-foss-2023a-amplicon.eb
