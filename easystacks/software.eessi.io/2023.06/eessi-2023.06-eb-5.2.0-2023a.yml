@@ -1,2 +1,6 @@
 easyconfigs:
   - jupyterlmod-4.0.3-GCCcore-12.3.0.eb
+  - acpype-2023.10.27-foss-2023a.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyblocks/pull/4045
+        include-easyblocks-from-commit: 4e35f4d7352e9eca84f8d3154b18bd62cc48700b
