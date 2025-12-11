@@ -64,4 +64,4 @@ easyconfigs:
   - LLVM-20.1.7-GCCcore-14.2.0.eb:
       options:
         # see https://github.com/easybuilders/easybuild-easyblocks/pull/4014
-        include-easyblocks-from-commit: 5cf9f73cd615f255fe9a372b5f26922a30542fc7
+        include-easyblocks-from-commit: 42a3e24d1d66a98d8a38bd2e5744e864cc4f46be
