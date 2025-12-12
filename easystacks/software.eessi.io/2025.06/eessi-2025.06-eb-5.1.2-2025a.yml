@@ -65,3 +65,12 @@ easyconfigs:
       options:
         # see https://github.com/easybuilders/easybuild-easyblocks/pull/4014
         include-easyblocks-from-commit: 42a3e24d1d66a98d8a38bd2e5744e864cc4f46be
+  - GSL-2.8-GCC-14.2.0
+  - IPython-9.3.0-GCCcore-14.2.0.eb
+  - HDF5-1.14.6-gompi-2025a.eb
+  - h5py-3.14.0-foss-2025a.eb
+  - Pint-0.24.4-GCCcore-14.2.0.eb
+  - HeFFTe-2.4.1-foss-2025a.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/24812
+        from-commit: f8bba1b0e552d120894b0eca3c86e52dec3191e7
