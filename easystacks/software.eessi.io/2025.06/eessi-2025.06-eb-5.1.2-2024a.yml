@@ -72,3 +72,31 @@ easyconfigs:
   - PostgreSQL-16.4-GCCcore-13.3.0.eb
   - Xvfb-21.1.14-GCCcore-13.3.0.eb
   - GLPK-5.0-GCCcore-13.3.0.eb
+  - R-bundle-CRAN-2024.11-foss-2024a.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/24524
+        from-commit: 1546f454c1a0b0c6483d8a0aaad2157ca1f770e8
+        # install extensions in parallel
+        parallel-extensions-install: True
+  - Flye-2.9.5-GCC-13.3.0.eb
+  - RStudio-Server-2024.12.0+467-foss-2024a-R-4.4.2.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/24542
+        from-commit: c1fc31398e705be39f8dbdf2e2671d38adda1faf
+  - parameterized-0.9.0-GCCcore-13.3.0.eb
+  - optree-0.14.1-GCCcore-13.3.0.eb
+  - tlparse-0.3.37-GCCcore-13.3.0.eb
+  - unittest-xml-reporting-3.1.0-GCCcore-13.3.0.eb
+  - pytest-rerunfailures-15.0-GCCcore-13.3.0.eb
+  - pytest-shard-0.1.2-GCCcore-13.3.0.eb
+  - pytest-subtests-0.13.1-GCCcore-13.3.0.eb
+  - pytest-flakefinder-1.1.0-GCCcore-13.3.0.eb
+  - PyYAML-6.0.2-GCCcore-13.3.0.eb
+  - expecttest-0.2.1-GCCcore-13.3.0.eb
+  - networkx-3.4.2-gfbf-2024a.eb
+  - Z3-4.13.0-GCCcore-13.3.0.eb
+  - sympy-1.13.3-gfbf-2024a.eb
+  - PuLP-2.8.0-foss-2024a.eb
+  - R-bundle-Bioconductor-3.20-foss-2024a-R-4.4.2.eb
+  - tmux-3.4-GCCcore-13.3.0.eb
+  - JupyterLab-4.2.5-GCCcore-13.3.0.eb

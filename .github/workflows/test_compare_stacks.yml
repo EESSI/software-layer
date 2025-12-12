@@ -19,6 +19,7 @@ env:
       - cc70
       - cc80
       - cc90
+    aarch64/a64fx: []
 jobs:
   compare_stacks:
     runs-on: ubuntu-24.04
@@ -41,9 +42,10 @@ jobs:
         - x86_64/intel/sapphirerapids
         - x86_64/intel/icelake
         - x86_64/intel/cascadelake
-        exclude:
-        - EESSI_VERSION: 2023.06
-          COMPARISON_ARCH: aarch64/a64fx
+        # Example of how a specific target can be excluded:
+        # exclude:
+        # - EESSI_VERSION: 2023.06
+        #   COMPARISON_ARCH: aarch64/a64fx
     steps:
         - name: Check out software-layer repository
           uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1

@@ -47,6 +47,24 @@ easyconfigs:
       options:
         # see https://github.com/easybuilders/easybuild-easyconfigs/pull/24060
         from-commit: 5dd9b67d1d5dd0cf4865c4e5166adf8e92b76829
+  - GROMACS-2025.2-foss-2025a.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/24548
+        from-commit: 091da705ab376a530a2368c0690e7dd44fbc7404
+  - Flye-2.9.6-GCC-14.2.0.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/24543
+        from-commit: 36ede4967688b0ad308121fc77f12bd337cb08e1
+  - MrBayes-3.2.7-gompi-2025a.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/24552
+        from-commit: d92743f799fc859c472edccd78cf558e0a91ba86
+  - Biopython-1.85-gfbf-2025a.eb
+  - ASE-3.25.0-gfbf-2025a.eb
+  - LLVM-20.1.7-GCCcore-14.2.0.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyblocks/pull/4014
+        include-easyblocks-from-commit: 42a3e24d1d66a98d8a38bd2e5744e864cc4f46be
   - R-4.5.1-gfbf-2025a.eb:
       options:
         # see https://github.com/easybuilders/easybuild-easyconfigs/pull/24107
