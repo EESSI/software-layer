@@ -26,6 +26,45 @@ easyconfigs:
         # see https://github.com/easybuilders/easybuild-easyconfigs/pull/24331
         from-commit: b6adb815305bd199f1ade69194e2ca9faaf87e07
   - Python-bundle-PyPI-2025.04-GCCcore-14.2.0.eb
+  - PyYAML-6.0.2-GCCcore-14.2.0.eb
+  - Z3-4.13.4-GCCcore-14.2.0.eb
+  - libglvnd-1.7.0-GCCcore-14.2.0.eb
+  - SciPy-bundle-2025.06-gfbf-2025a.eb
+  - Boost.MPI-1.88.0-gompi-2025a.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/24421
+        from-commit: dc5f86bd3433803b877948c5d667676e93f6afa3
+  - Score-P-9.3-gompi-2025a.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/24161
+        from-commit: 04b8829e730bc35a4654441297fb39a7d8d4b4dc
+  - OSU-Micro-Benchmarks-7.5-gompi-2025a.eb    
+  - json-fortran-9.0.5-GCC-14.2.0.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/24095
+        from-commit: dec5a6f7e05325a634fc59d7665ef418ecb553cc
+  - BLAST+-2.17.0-gompi-2025a.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/24060
+        from-commit: 5dd9b67d1d5dd0cf4865c4e5166adf8e92b76829
+  - GROMACS-2025.2-foss-2025a.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/24548
+        from-commit: 091da705ab376a530a2368c0690e7dd44fbc7404
+  - Flye-2.9.6-GCC-14.2.0.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/24543
+        from-commit: 36ede4967688b0ad308121fc77f12bd337cb08e1
+  - MrBayes-3.2.7-gompi-2025a.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/24552
+        from-commit: d92743f799fc859c472edccd78cf558e0a91ba86
+  - Biopython-1.85-gfbf-2025a.eb
+  - ASE-3.25.0-gfbf-2025a.eb
+  - LLVM-20.1.7-GCCcore-14.2.0.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyblocks/pull/4014
+        include-easyblocks-from-commit: 42a3e24d1d66a98d8a38bd2e5744e864cc4f46be
   - Mesa-25.1.3-GCCcore-14.2.0.eb:
       options:
         # see https://github.com/easybuilders/easybuild-easyconfigs/pull/24048

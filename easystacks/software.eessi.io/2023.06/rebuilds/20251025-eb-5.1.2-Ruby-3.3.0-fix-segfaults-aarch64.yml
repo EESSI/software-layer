@@ -1,0 +1,17 @@
+# 2025.10.25
+# Some Ruby 3.3.0 installations for NVIDIA Grace (built on JURECA which has not
+# enabled PAC+BTI CPU features) and for Neoverse V1 (built on AWS) segfault on
+# some NVIDIA Grace systems (SURF-ETP, Olivia, eX3) which have PAC+BTI CPU
+# features enabled.
+# 
+# See https://gitlab.com/eessi/support/-/issues/197 for details.
+#
+# Also version 3.2.2 had the same problem, but is being rebuilt in a separate PR
+# because for 'zen4' there is only a dummy module (for all modules based on
+# foss/2022b)
+#
+easyconfigs:
+  - Ruby-3.3.0-GCCcore-12.3.0:
+      options:
+        # See https://github.com/easybuilders/easybuild-easyconfigs/pull/24368
+        from-commit: 9e2517e90e7e30b2427bd0259dab73bf3a5391bc

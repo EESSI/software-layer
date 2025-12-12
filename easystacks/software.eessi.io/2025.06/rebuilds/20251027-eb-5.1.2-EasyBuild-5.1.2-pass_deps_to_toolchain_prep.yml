@@ -1,0 +1,11 @@
+# Fix long-lived EasyBuild bug with toolchain prepare when not using CPATH
+# The bug has been exposed when using the new options
+# EASYBUILD_MODULE_SEARCH_PATH_HEADERS=include_paths and
+# EASYBUILD_SEARCH_PATH_CPP_HEADERS=include_paths so that CPATH is no longer
+# set with EESSI/2025.06
+#
+easyconfigs:
+  - EasyBuild-5.1.2.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/24376
+        from-commit: 80f00063d4896474e46fdd8958b0471735d7ea65
