@@ -7,3 +7,13 @@ easyconfigs:
         from-commit: 3f59104cfd0aeedc261e2bf7ca18b8ae5efdca0a 
   - ESMF-8.6.0-foss-2023a.eb
   - xESMF-0.8.6-foss-2023a.eb
+  - LPC3D-0.1.2-foss-2023a.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/24703
+        from-commit: 67de6dc47ed49fabea09da17849b35bb2a7a9618
+  - NCO-5.1.9-foss-2023a.eb
+  - yacrd-1.0.0-foss-2023a.eb
+  - VeloxChem-1.0-rc4-foss-2023a.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/24176
+        from-commit: 107ea0ea250d1fd145c92f1d265d372e0ea3e685
