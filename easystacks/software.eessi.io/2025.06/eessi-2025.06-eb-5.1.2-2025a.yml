@@ -69,6 +69,15 @@ easyconfigs:
       options:
         # see https://github.com/easybuilders/easybuild-easyconfigs/pull/24048
         from-commit: 003a729ab53fb81e6c34618795b32fcfc99b8c08
+  - GSL-2.8-GCC-14.2.0
+  - IPython-9.3.0-GCCcore-14.2.0.eb
+  - HDF5-1.14.6-gompi-2025a.eb
+  - h5py-3.14.0-foss-2025a.eb
+  - Pint-0.24.4-GCCcore-14.2.0.eb
+  - HeFFTe-2.4.1-foss-2025a.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/24812
+        from-commit: f8bba1b0e552d120894b0eca3c86e52dec3191e7
   - R-4.5.1-gfbf-2025a.eb:
       options:
         # see https://github.com/easybuilders/easybuild-easyconfigs/pull/24107
