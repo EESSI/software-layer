@@ -82,3 +82,7 @@ easyconfigs:
       options:
         # see https://github.com/easybuilders/easybuild-easyconfigs/pull/24107
         from-commit: 9b18c6f95d24fe974cf4eed23497521252ee4887
+  - neko-0.9.1-foss-2025a.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/24438
+        from-commit: 32d6d1bddd57248651e39afb42eca9852ac2823f
