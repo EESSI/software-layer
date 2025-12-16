@@ -17,3 +17,7 @@ easyconfigs:
       options:
         # see https://github.com/easybuilders/easybuild-easyconfigs/pull/24176
         from-commit: 107ea0ea250d1fd145c92f1d265d372e0ea3e685
+  - acpype-2023.10.27-foss-2023a.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/24174
+        from-commit: 8389c769c05070fdb45f1891682c7ba369ece01b
