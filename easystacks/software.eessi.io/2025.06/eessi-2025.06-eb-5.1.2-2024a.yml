@@ -105,4 +105,4 @@ easyconfigs:
         # See https://github.com/easybuilders/easybuild-easyconfigs/pull/23719
         from-commit: 379c0f01a29109a3c3db1e1807838f50074af143
         # See https://github.com/easybuilders/easybuild-easyblocks/pull/3894
-        include-easyblocks-from-commit: 60af21ba2173dd8d4ce7390aa60bd16718a28546
+        include-easyblocks-from-commit: 433d723ceb5492ab22bf45566e40296d01db87c2
