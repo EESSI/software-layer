@@ -38,7 +38,7 @@ easyconfigs:
       options:
         # see https://github.com/easybuilders/easybuild-easyconfigs/pull/24161
         from-commit: 04b8829e730bc35a4654441297fb39a7d8d4b4dc
-  - OSU-Micro-Benchmarks-7.5-gompi-2025a.eb    
+  - OSU-Micro-Benchmarks-7.5-gompi-2025a.eb
   - json-fortran-9.0.5-GCC-14.2.0.eb:
       options:
         # see https://github.com/easybuilders/easybuild-easyconfigs/pull/24095
