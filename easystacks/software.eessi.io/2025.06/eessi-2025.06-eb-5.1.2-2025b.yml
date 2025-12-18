@@ -4,3 +4,11 @@ easyconfigs:
       options:
         # see https://github.com/easybuilders/easybuild-easyconfigs/pull/24189
         from-commit: 348d94859e21f06d6eae72412f1445b7be982dfd
+  - OpenMPI-5.0.8-GCC-14.3.0.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/24763
+        from-commit: 9e6b01cfd29692944cb57bef9493ae7253103e42
+  - foss-2025b.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/24127
+        from-commit: 70d12dc46c5bd88f40fb3b553ec75dc9cf6de3a1
