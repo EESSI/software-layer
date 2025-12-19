@@ -12,7 +12,3 @@ easyconfigs:
       options:
         # see https://github.com/easybuilders/easybuild-easyconfigs/pull/24203
         from-commit: 237970c5b712196f4d01feab8b913591cc6c772f
-  - foss-2025b.eb:
-      options:
-        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/24127
-        from-commit: 70d12dc46c5bd88f40fb3b553ec75dc9cf6de3a1
