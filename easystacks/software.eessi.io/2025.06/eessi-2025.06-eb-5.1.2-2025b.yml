@@ -4,3 +4,7 @@ easyconfigs:
       options:
         # see https://github.com/easybuilders/easybuild-easyconfigs/pull/24189
         from-commit: 348d94859e21f06d6eae72412f1445b7be982dfd
+  - BLIS-2.0-GCC-14.3.0.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyblocks/pull/3938
+        include-easyblocks-from-commit: 65818837750ee9f190bb52ce850f05909c4ef3ba
