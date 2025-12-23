@@ -4,3 +4,15 @@ easyconfigs:
       options:
         # see https://github.com/easybuilders/easybuild-easyconfigs/pull/24189
         from-commit: 348d94859e21f06d6eae72412f1445b7be982dfd
+  - BLIS-2.0-GCC-14.3.0.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyblocks/pull/3938
+        include-easyblocks-from-commit: a35d88fdecb0630b5aa56a7a13e35964b816bdf7
+  - OpenMPI-5.0.8-GCC-14.3.0.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/24763
+        from-commit: 9e6b01cfd29692944cb57bef9493ae7253103e42
+  - libarchive-3.8.1-GCCcore-14.3.0.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/24203
+        from-commit: 237970c5b712196f4d01feab8b913591cc6c772f
