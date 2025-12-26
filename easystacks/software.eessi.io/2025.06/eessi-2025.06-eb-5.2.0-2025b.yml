@@ -1,6 +1,6 @@
 easyconfigs:
-  - FlexiBLAS-3.4.5-GCC-14.3.0.eb
-  - foss-2025b.eb:
+  - FlexiBLAS-3.4.5-GCC-14.3.0.eb:
       options:
         # see https://github.com/easybuilders/easybuild-easyblocks/pull/4031
         include-easyblocks-from-commit: 64173059ec68ff74f68e08115ededa308b2af19a
+  - foss-2025b.eb
