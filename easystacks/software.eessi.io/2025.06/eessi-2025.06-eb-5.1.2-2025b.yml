@@ -16,11 +16,3 @@ easyconfigs:
       options:
         # see https://github.com/easybuilders/easybuild-easyconfigs/pull/24203
         from-commit: 237970c5b712196f4d01feab8b913591cc6c772f
-  - FlexiBLAS-3.4.5-GCC-14.3.0.eb:
-      options:
-        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/24231
-        from-commit: caf1d6d6e8757ce422fa8ae144ce4dfdcbb3b598
-  - foss-2025b.eb:
-      options:
-        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/24127
-        from-commit: 70d12dc46c5bd88f40fb3b553ec75dc9cf6de3a1
