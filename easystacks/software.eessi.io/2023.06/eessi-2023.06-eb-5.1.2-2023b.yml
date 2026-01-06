@@ -59,4 +59,5 @@ easyconfigs:
   - FEniCS-DOLFINx-Python-0.9.0-foss-2023b.eb:
       options:
         # see https://github.com/easybuilders/easybuild-easyconfigs/pull/23838
-        from-commit: 38ed96942a359e6fe0150d28fad8d5b488290199
+        # and https://github.com/easybuilders/easybuild-easyconfigs/pull/25004
+        from-commit: 85288b6b2b261bfa508eab8c2c892a7db6729d2f
