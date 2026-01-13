@@ -38,6 +38,10 @@ jobs:
           run: |
             SHA="${{ steps.read_sha.outputs.sha }}"
 
+            echo "Checking out commit ${SHA} from software-layer-scripts"
+            git fetch --depth=1 origin ${SHA}
+            git checkout --detach ${SHA}
+
             if ! git cat-file -e "${SHA}^{commit}" 2>/dev/null; then
               echo "Commit $SHA not found in software‑layer‑scripts."
               exit 1
