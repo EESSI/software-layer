@@ -55,6 +55,12 @@ jobs:
                         -H "Accept: application/vnd.github+json" \
                         "https://api.github.com/repos/${GITHUB_REPOSITORY}/pulls/${PR_NUMBER}/files?per_page=100" |
                         jq -r '.[].filename | select(test("easystack"))')
+          
+          if [ -z "$file_list" ]; then
+             echo "No easystack files found. Skipping license check."
+             exit 0 
+          fi
+
           echo "Files to check:"
           echo $file_list
            
@@ -73,7 +79,9 @@ jobs:
               grep " required modules missing:" ${eb_missing_out} # > /dev/null
               exit_code=$?
               
-              if [[ ${exit_code} -eq 0 ]]; then echo "missing installations found for ${easystack_file}!" >&2;
+              if [[ ${exit_code} -eq 0 ]]; then 
+                echo "missing installations found for ${easystack_file}!" >&2;
+                echo "PROCESS_LICENSES=true" >> $GITHUB_ENV
               else
                 echo "no missing installations found for ${easystack_file}."
                 exit 0
@@ -81,6 +89,7 @@ jobs:
           done
 
       - name: Check for software existing in licenses.yml file 
+        if: env.PROCESS_LICENSES == 'true'
         run: |
           # double check this 
           if [ -s licenses/licenses.yml ]; then
@@ -116,6 +125,7 @@ jobs:
             fi
 
       - name : Search sources for missing modules
+        if: env.PROCESS_LICENSES == 'true'
         run: |
                 if [ -s missing_modules.txt ]; then
                   echo "Searching sources for missing modules..."
@@ -126,6 +136,7 @@ jobs:
                 fi
 
       - name : Try to fetch the license 
+        if: env.PROCESS_LICENSES == 'true'
         run: |
               if [ -s modules_results.json ]; then
                 echo "modules_results.json file exists, trying to fetch the license..."
@@ -137,6 +148,7 @@ jobs:
               fi
               
       - name: Check and generate report on missing licenses
+        if: env.PROCESS_LICENSES == 'true'
         run: |
               echo ""
               # Look for missing licences in licenses_aux.yaml
@@ -157,6 +169,7 @@ jobs:
 
 
       - name: Generate artifacts
+        if: env.PROCESS_LICENSES == 'true'
         uses: actions/upload-artifact@v4
         with:
           name: license-results-${{ matrix.NO_SLASH_NAME }}
@@ -166,6 +179,7 @@ jobs:
 
 
       - name: How to edit artifacts and apply patch
+        if: env.PROCESS_LICENSES == 'true'
         run: |
               echo "Artifacts generated. To resolve the missing licenses, please edit 'patch.txt' manually, making sure you follow the following format: "
               echo ""
