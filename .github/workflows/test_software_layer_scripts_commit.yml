@@ -1,0 +1,87 @@
+# documentation: https://help.github.com/en/articles/workflow-syntax-for-github-actions
+# This workflow verifies that the software-layer-scripts commit used in bot/commit_sha is
+# a merge-commit for a merge into the default branch of software-layer-scripts.
+# This guarantees that everything that is associated with that commit was approved by a reviewer
+# (and deployed, if needed)
+name: Verify software-layer-scripts commit
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+  workflow_dispatch:
+permissions:
+  contents: read # to fetch code (actions/checkout)
+jobs:
+  check_software_layer_scripts_commit:
+    runs-on: ubuntu-24.04
+    steps:
+        - name: Check out software-layer repository (shallow)
+          uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
+          with:
+              fetch-depth: 1  # We only need the current revision to read bot/commit_sha
+        - name: Checkout software-layer-scripts (full history)
+          uses: actions/checkout@v4
+          with:
+            repository: EESSI/software-layer-scripts
+            path: upstream-scripts
+            fetch-depth: 0 # full history → required for ancestry checks
+
+        - name: Read commit SHA
+          id: read_sha
+          run: |
+            SHA=$(cat bot/commit_sha | tr -d '[:space:]')
+            echo "sha=$SHA" >> $GITHUB_OUTPUT
+            echo "Found SHA: $SHA"
+
+        - name: Verify SHA exists in software‑layer‑scripts
+          working-directory: upstream-scripts
+          run: |
+            SHA="${{ steps.read_sha.outputs.sha }}"
+  
+            if ! git cat-file -e "${SHA}^{commit}" 2>/dev/null; then
+              echo "Commit $SHA not found in software‑layer‑scripts."
+              exit 1
+            fi
+            echo "Commit $SHA exists in software‑layer‑scripts."
+
+        - name: Check that SHA is merged into the default branch
+          working-directory: upstream-scripts
+          run: |
+            SHA="${{ steps.read_sha.outputs.sha }}"
+  
+            # Make sure we have the latest refs for the default branch
+            git remote set-head origin -a
+            git fetch origin main --depth=0
+  
+            # git merge‑base --is‑ancestor returns 0 if $SHA is an ancestor of origin/main
+            if git merge-base --is-ancestor "$SHA" origin/main; then
+              echo "Commit $SHA is merged into origin/main."
+            else
+              echo "Commit $SHA is NOT merged into origin/main."
+              exit 1
+            fi
+
+        - name: Verify commit is signed by GitHub’s web‑flow key
+        working-directory: upstream-scripts
+        env:
+          GIT_TRACE: 1   # extra debug output if something goes wrong
+        run: |
+          SHA="${{ steps.read_sha.outputs.sha }}"
+
+          # Import the public key that GitHub uses for UI‑generated merges
+          echo "Importing GitHub web‑flow GPG key…"
+          curl -sSfL https://github.com/web-flow.gpg | gpg --dearmor > web-flow.gpg
+          gpg --import web-flow.gpg
+          # (optional) show the fingerprint for debugging
+          echo "Fingerprint of the web-flow GPG key:"
+          gpg --list-keys --fingerprint | grep -i "web-flow" -A1
+
+          # Verify the commit’s GPG signature
+          echo "Verifying the signature of commit $SHA…"
+          if git verify-commit "$SHA"; then
+            echo "Commit $SHA is signed and the signature validates with the web‑flow key."
+            echo "All verification steps succeeded."
+          else
+            echo "Commit $SHA is either unsigned or not signed by the web‑flow key."
+            exit 1
+          fi
