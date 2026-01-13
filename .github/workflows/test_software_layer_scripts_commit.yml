@@ -49,10 +49,6 @@ jobs:
           run: |
             SHA="${{ steps.read_sha.outputs.sha }}"
 
-            # Make sure we have the latest refs for the default branch
-            git remote set-head origin -a
-            git fetch origin main --depth=0
-
             # git merge‑base --is‑ancestor returns 0 if $SHA is an ancestor of origin/main
             if git merge-base --is-ancestor "$SHA" origin/main; then
               echo "Commit $SHA is merged into origin/main."
