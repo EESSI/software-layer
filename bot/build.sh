@@ -31,5 +31,3 @@ done
 
 # call out to bot/build.sh script from software-layer-scripts
 software-layer-scripts/bot/build.sh
-
-# INSERT BOGUS COMMENT
