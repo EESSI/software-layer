@@ -16,7 +16,7 @@ env:
   # UPDATE THIS CHECKSUM IF AND ONLY IF WE ACTUALLY WANT TO CHANGE bot/build.sh
   EXPECTED_CHECKSUM: "9d33368cac2e38e10147eeb0aafc321651ebaa5912387ecef97683570906773a" 
 jobs:
-  check_software_layer_scripts_commit:
+  check_bot_build_checksum:
     runs-on: ubuntu-24.04
     steps:
         - name: Check out software-layer repository (shallow)
