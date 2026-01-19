@@ -1,0 +1,46 @@
+# documentation: https://help.github.com/en/articles/workflow-syntax-for-github-actions
+# This workflow verifies that bot/build.sh was unchanged, as a change could mean a security risk
+# (e.g. if a PR clones an fork of software-layer-scripts instead, anything could happen)
+# If the bot/build.sh _actually_ needs updating, then the reference checksum for that file needs to
+# be updated as well - and that stands out to a reviewer, making it harder to do without a reviewer
+# noticiing.
+name: Verify bot/build.sh was unchanged
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+  workflow_dispatch:
+permissions:
+  contents: read # to fetch code (actions/checkout)
+env:
+  # UPDATE THIS CHECKSUM IF AND ONLY IF WE ACTUALLY WANT TO CHANGE bot/build.sh
+  EXPECTED_CHECKSUM: "9d33368cac2e38e10147eeb0aafc321651ebaa5912387ecef97683570906773a" 
+jobs:
+  check_software_layer_scripts_commit:
+    runs-on: ubuntu-24.04
+    steps:
+        - name: Check out software-layer repository (shallow)
+          uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
+          with:
+              fetch-depth: 1  # We only need the current revision to read bot/commit_sha
+
+        - name: Compute bot/build.sh checksum and verify it
+          run: |
+            # Print clear error if file doesn't exist at all
+            if [[ ! -f bot/build.sh ]]; then
+              echo "ERROR: File bot/build.sh not found!"
+              exit 1
+            fi
+
+            # Compute checksum
+            COMPUTED_CHECKSUM=$(sha256sum bot/build.sh | awk '{print $1}')
+            echo "Computed checksum: $COMPUTED_CHECKSUM"
+            echo "Reference checksum: $EXPECTED_CHECKSUM"
+
+            # Compare checksums
+            if [["$COMPUTED_CHECKSUM" != "$EXPECTED_CHECKSUM" ]]; then
+              echo "ERROR: Checksum mismatch! The file bot/build.sh has been modified."
+              exit 1
+            else
+              echo "Checksum for bot/build.sh matches the reference value"
+            fi
