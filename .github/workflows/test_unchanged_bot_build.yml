@@ -38,7 +38,7 @@ jobs:
             echo "Reference checksum: $EXPECTED_CHECKSUM"
 
             # Compare checksums
-            if [["$COMPUTED_CHECKSUM" != "$EXPECTED_CHECKSUM" ]]; then
+            if [[ "$COMPUTED_CHECKSUM" != "$EXPECTED_CHECKSUM" ]]; then
               echo "ERROR: Checksum mismatch! The file bot/build.sh has been modified."
               exit 1
             else
