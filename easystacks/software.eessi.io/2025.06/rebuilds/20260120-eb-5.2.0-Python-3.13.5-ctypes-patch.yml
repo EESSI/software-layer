@@ -6,4 +6,4 @@ easyconfigs:
   - Python-3.13.5-GCCcore-14.3.0.eb:
       options:
         # see https://github.com/easybuilders/easybuild-easyconfigs/pull/25106
-        from-commit: 2f21f4dd26b9733fb7d7faf9a014c5155ae72973
+        from-commit: deb72dd056970e32b7f649ce2a629b63aad6e83a
