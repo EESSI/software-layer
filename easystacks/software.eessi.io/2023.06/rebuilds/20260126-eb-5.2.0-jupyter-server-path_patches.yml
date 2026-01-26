@@ -1,0 +1,8 @@
+# The current version of jupyter-server on 2023.06 jupyter-server/2.7.2-GCCcore-12.3.0 does not include the patch
+# introduced by https://github.com/easybuilders/easybuild-easyconfigs/pull/19737 to modify the behavior og jupyter
+# to add paths from EB_ENV_JUPYTER_ROOT to JUPYTER_PATH and JUPYTER_CONFIG_PATH.
+easyconfigs:
+  - jupyter-server-2.7.2-GCCcore-12.3.0.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/19737
+        from-commit: 5ff7393a2120787add872f45583a7ffeb683ab65
