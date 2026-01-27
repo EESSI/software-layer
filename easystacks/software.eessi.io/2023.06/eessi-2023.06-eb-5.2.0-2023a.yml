@@ -3,4 +3,4 @@ easyconfigs:
   - acpype-2023.10.27-foss-2023a.eb:
       options:
         # see https://github.com/easybuilders/easybuild-easyblocks/pull/4045
-        include-easyblocks-from-commit: 4e35f4d7352e9eca84f8d3154b18bd62cc48700b
+        include-easyblocks-from-commit: b0aef6d87f3b102a29f53c875e1c69b789f16a33
