@@ -2,8 +2,8 @@ easyconfigs:
   - aiida-core-2.7.2-foss-2023a.eb:
       options:
         # see https://github.com/easybuilders/easybuild-easyconfigs/pull/25113
-        from-commit: 4506df068e4db071d38fa6c76a55af0978a0fb75
+        from-commit: 6801845f75c09667adc8bb52472a4c73b6c665cf
   - aiida-shell-0.8.2-foss-2023a.eb:
       options:
         # see https://github.com/easybuilders/easybuild-easyconfigs/pull/25113
-        from-commit: 4506df068e4db071d38fa6c76a55af0978a0fb75
+        from-commit: 6801845f75c09667adc8bb52472a4c73b6c665cf
