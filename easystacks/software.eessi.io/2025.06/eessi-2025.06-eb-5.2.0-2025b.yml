@@ -6,3 +6,4 @@ easyconfigs:
   - foss-2025b.eb
   - LLVM-20.1.8-GCCcore-14.3.0.eb
   - lfoss-2025b.eb
+  - libdrm-2.4.125-GCCcore-14.3.0.eb
