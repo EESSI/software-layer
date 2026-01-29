@@ -5,4 +5,7 @@ easyconfigs:
           from-commit: 0f50e961c55d6406b0e64eebd59335b32dce0e92
   - Flux-0.80.0-GCC-13.3.0.eb
   - WRF-4.6.1-foss-2024a-dmpar.eb
-  - LAMMPS-29Aug2024_update2-foss-2024a-kokkos.eb
+  - LAMMPS-29Aug2024_update2-foss-2024a-kokkos.eb:
+      options:
+          # See https://github.com/easybuilders/easybuild-easyconfigs/pull/25133
+          from-commit: 0fb7d96f8f1e0b846a6cf1609dbe689646f15ed9
