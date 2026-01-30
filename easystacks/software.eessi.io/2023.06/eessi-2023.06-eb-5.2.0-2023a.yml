@@ -1,4 +1,8 @@
 easyconfigs:
+  - Graphviz-8.1.0-GCCcore-12.3.0.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/25189
+        from-commit: 962002ee42d6fc74c981105a79e30b05f37cc1d0
   - aiida-core-2.7.2-foss-2023a.eb:
       options:
         # see https://github.com/easybuilders/easybuild-easyconfigs/pull/25113
