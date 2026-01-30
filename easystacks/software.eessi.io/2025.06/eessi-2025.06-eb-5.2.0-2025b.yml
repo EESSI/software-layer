@@ -7,3 +7,4 @@ easyconfigs:
   - LLVM-20.1.8-GCCcore-14.3.0.eb
   - lfoss-2025b.eb
   - minimap2-2.30-GCCcore-14.3.0.eb
+  - BWA-0.7.19-GCCcore-14.3.0.eb
