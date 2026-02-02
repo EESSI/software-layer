@@ -6,3 +6,7 @@ easyconfigs:
   - Flux-0.80.0-GCC-13.3.0.eb
   - WRF-4.6.1-foss-2024a-dmpar.eb
   - buildenv-default-foss-2024a.eb
+  - GDRCopy-2.4.1-GCCcore-13.3.0.eb
+  - lit-18.1.7-GCCcore-13.3.0.eb
+  - pydot-3.0.3-GCCcore-13.3.0.eb
+  - pyzstd-0.16.2-GCCcore-13.3.0.eb
