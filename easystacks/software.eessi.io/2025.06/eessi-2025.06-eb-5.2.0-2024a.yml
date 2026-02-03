@@ -4,3 +4,5 @@ easyconfigs:
           # see https://github.com/easybuilders/easybuild-easyconfigs/pull/24951
           from-commit: 0f50e961c55d6406b0e64eebd59335b32dce0e92
   - Flux-0.80.0-GCC-13.3.0.eb
+  - WRF-4.6.1-foss-2024a-dmpar.eb
+  - buildenv-default-foss-2024a.eb

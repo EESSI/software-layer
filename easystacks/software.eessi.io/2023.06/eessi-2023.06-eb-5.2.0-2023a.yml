@@ -1,4 +1,5 @@
 easyconfigs:
+  - jupyterlmod-4.0.3-GCCcore-12.3.0.eb
   - Graphviz-8.1.0-GCCcore-12.3.0.eb:
       options:
         # see https://github.com/easybuilders/easybuild-easyconfigs/pull/25189
