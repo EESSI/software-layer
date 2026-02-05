@@ -11,3 +11,4 @@ easyconfigs:
   - BWA-0.7.19-GCCcore-14.3.0.eb
   - buildenv-default-foss-2025b.eb
   - Armadillo-15.0.1-foss-2025b.eb
+  - GDB-16.3-GCCcore-14.3.0.eb
