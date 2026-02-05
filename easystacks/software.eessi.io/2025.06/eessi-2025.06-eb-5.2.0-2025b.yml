@@ -12,3 +12,7 @@ easyconfigs:
   - buildenv-default-foss-2025b.eb
   - Armadillo-15.0.1-foss-2025b.eb
   - GDB-16.3-GCCcore-14.3.0.eb
+  - Rust-1.91.1-GCCcore-14.3.0.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/25217
+        from-commit: 9793e8871ab0c9e635e7b7fc4d06720c62aebb26
