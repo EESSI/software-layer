@@ -14,3 +14,7 @@ easyconfigs:
         # see https://github.com/easybuilders/easybuild-easyconfigs/pull/23923
         from-commit: 0eef0cf4f6e03172451c41a5af1c0e26b7a777f8
   - GDB-16.3-GCCcore-13.3.0.eb
+  - LAMMPS-22Jul2025-foss-2024a-kokkos.eb:
+      options:
+          # See https://github.com/easybuilders/easybuild-easyconfigs/pull/25133
+          from-commit: e35a385e245956a755a2c7f056f979af34aa4485
