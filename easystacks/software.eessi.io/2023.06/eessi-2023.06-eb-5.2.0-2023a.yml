@@ -9,5 +9,5 @@ easyconfigs:
   - OpenBabel-3.1.1-gompi-2023a.eb:
       options:
         # see https://github.com/easybuilders/easybuild-easyconfigs/pull/25222
-        from-commit: 2cfa02201ace74011464cd53adaa98abe8b046fc
+        from-commit: 7dbe8beab98ec0b2daa432aa43ae3a0ed874e859
   - acpype-2023.10.27-foss-2023a.eb:
