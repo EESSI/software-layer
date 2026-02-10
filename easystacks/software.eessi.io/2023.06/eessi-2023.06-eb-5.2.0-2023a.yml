@@ -12,3 +12,15 @@ easyconfigs:
       options:
         # see https://github.com/easybuilders/easybuild-easyconfigs/pull/25113
         from-commit: 077b656e7e9a93aef4a6286aafc57fb5acd7a424
+  - AITW-stiffness-1.0.0-foss-2023a.eb:
+    options:
+      # see https://github.com/easybuilders/easybuild-easyconfigs/pull/25220
+      from-commit: 66b940920676ea2bb03c828163adcace29731023
+  - AITW-microstructures-1.0.0-foss-2023a.eb:
+    options:
+      # see https://github.com/easybuilders/easybuild-easyconfigs/pull/25220
+      from-commit: 66b940920676ea2bb03c828163adcace29731023
+  - AITW-viscosity-1.0.0-foss-2023a.eb:
+    options:
+      # see https://github.com/easybuilders/easybuild-easyconfigs/pull/25220
+      from-commit: 66b940920676ea2bb03c828163adcace29731023
