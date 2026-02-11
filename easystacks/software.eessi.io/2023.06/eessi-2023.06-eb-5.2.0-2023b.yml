@@ -1,3 +1,2 @@
 easyconfigs:
   - GROMACS-2024.3-foss-2023b-PLUMED-2.9.2.eb
-  - NLopt-2.7.1-GCCcore-13.2.0.eb
