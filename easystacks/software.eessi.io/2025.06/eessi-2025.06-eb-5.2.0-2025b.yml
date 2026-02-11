@@ -17,3 +17,11 @@ easyconfigs:
         # see https://github.com/easybuilders/easybuild-easyconfigs/pull/25217
         from-commit: 9793e8871ab0c9e635e7b7fc4d06720c62aebb26
   - Python-bundle-PyPI-2025.07-GCCcore-14.3.0.eb
+  - GtkSourceView4-4.8.4-GCCcore-14.3.0.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/24895
+        from-commit: 3733386ce25a54818d887e38ccb3f40b1e11475a
+  - VTE-0.82.2-GCCcore-14.3.0.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/24895
+        from-commit: 3733386ce25a54818d887e38ccb3f40b1e11475a
