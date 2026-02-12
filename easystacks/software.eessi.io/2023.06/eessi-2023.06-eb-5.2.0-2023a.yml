@@ -25,13 +25,19 @@ easyconfigs:
   - acpype-2023.10.27-foss-2023a.eb
   - AITW-stiffness-1.0.0-foss-2023a.eb:
       options:
+        # see https://github.com/easybuilders/easybuild-easyblocks/pull/4056
+        include-easyblocks-from-commit: 0f75bae68e0323d7053e0e2dddb03e6422e666e2
         # see https://github.com/easybuilders/easybuild-easyconfigs/pull/25220
         from-commit: 66b940920676ea2bb03c828163adcace29731023
   - AITW-microstructures-1.0.0-foss-2023a.eb:
       options:
+        # see https://github.com/easybuilders/easybuild-easyblocks/pull/4056
+        include-easyblocks-from-commit: 0f75bae68e0323d7053e0e2dddb03e6422e666e2
         # see https://github.com/easybuilders/easybuild-easyconfigs/pull/25220
         from-commit: 66b940920676ea2bb03c828163adcace29731023
   - AITW-viscosity-1.0.0-foss-2023a.eb:
       options:
+        # see https://github.com/easybuilders/easybuild-easyblocks/pull/4056
+        include-easyblocks-from-commit: 0f75bae68e0323d7053e0e2dddb03e6422e666e2
         # see https://github.com/easybuilders/easybuild-easyconfigs/pull/25220
         from-commit: 66b940920676ea2bb03c828163adcace29731023
