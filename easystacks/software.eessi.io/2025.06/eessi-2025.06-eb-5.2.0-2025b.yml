@@ -17,3 +17,6 @@ easyconfigs:
         # see https://github.com/easybuilders/easybuild-easyconfigs/pull/25217
         from-commit: 9793e8871ab0c9e635e7b7fc4d06720c62aebb26
   - Python-bundle-PyPI-2025.07-GCCcore-14.3.0.eb
+  - Pango-1.57.0-GCCcore-14.3.0.eb
+  - Vala-0.56.18-GCCcore-14.3.0.eb
+  - Wayland-1.24.0-GCCcore-14.3.0.eb
