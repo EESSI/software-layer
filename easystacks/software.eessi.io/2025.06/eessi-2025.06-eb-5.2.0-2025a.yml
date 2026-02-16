@@ -3,3 +3,4 @@ easyconfigs:
   - GDB-16.3-GCCcore-14.2.0.eb
   - VTK-9.5.0-foss-2025a.eb
   - NLopt-2.10.0-GCCcore-14.2.0.eb
+  - DIRAC-25.0-foss-2025a.eb
