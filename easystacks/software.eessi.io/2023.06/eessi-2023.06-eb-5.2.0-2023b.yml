@@ -1,4 +1,5 @@
 easyconfigs:
+  - GROMACS-2024.3-foss-2023b-PLUMED-2.9.2.eb
   - FEniCS-DOLFINx-Python-0.9.0-foss-2023b.eb:
       options:
         # see https://github.com/easybuilders/easybuild-easyconfigs/pull/25004

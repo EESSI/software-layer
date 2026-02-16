@@ -1,0 +1,7 @@
+# rebuild libarchive 3.8.1 with libiconv as a runtime dependency
+# see https://github.com/easybuilders/easybuild-easyconfigs/pull/25259
+easyconfigs:
+  - libarchive-3.8.1-GCCcore-14.3.0.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/25259
+        from-commit: fedb256a998b6059f17ac9250eea0f88c3afec82
