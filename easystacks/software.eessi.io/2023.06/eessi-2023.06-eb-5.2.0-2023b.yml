@@ -1,2 +1,6 @@
 easyconfigs:
   - GROMACS-2024.3-foss-2023b-PLUMED-2.9.2.eb
+  - FEniCS-DOLFINx-Python-0.9.0-foss-2023b.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/25004
+        from-commit: 2ef62609e3e40785dfb28bcb91db143cee5924a5
