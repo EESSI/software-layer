@@ -90,3 +90,7 @@ easyconfigs:
       options:
         # see https://github.com/easybuilders/easybuild-easyconfigs/pull/24356
         from-commit: c057c3242d4a947ae30358ea283659ff0d1a3d17
+  - GetOrganelle-1.7.7.1-foss-2025a.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/24461
+        from-commit: 755f553a71e40f7098cfc0d4329640a46f525181
