@@ -3,7 +3,7 @@
 # give up as soon as any error occurs
 set -e
 
-git clone --single-branch --branch CUDA_cuDNN_hooks_202506 https://github.com/casparvl/software-layer-scripts
+git clone https://github.com/EESSI/software-layer-scripts
 
 # symlink everything, except for:
 # - common files like LICENSE and README.md
