@@ -4,3 +4,21 @@ easyconfigs:
         # see https://github.com/easybuilders/easybuild-easyblocks/pull/4031
         include-easyblocks-from-commit: 64173059ec68ff74f68e08115ededa308b2af19a
   - foss-2025b.eb
+  - LLVM-20.1.8-GCCcore-14.3.0.eb
+  - lfoss-2025b.eb
+  - libdrm-2.4.125-GCCcore-14.3.0.eb
+  - minimap2-2.30-GCCcore-14.3.0.eb
+  - BWA-0.7.19-GCCcore-14.3.0.eb
+  - buildenv-default-foss-2025b.eb
+  - Armadillo-15.0.1-foss-2025b.eb
+  - GDB-16.3-GCCcore-14.3.0.eb
+  - Rust-1.91.1-GCCcore-14.3.0.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/25217
+        from-commit: 9793e8871ab0c9e635e7b7fc4d06720c62aebb26
+  - Python-bundle-PyPI-2025.07-GCCcore-14.3.0.eb
+  - Pango-1.57.0-GCCcore-14.3.0.eb
+  - Vala-0.56.18-GCCcore-14.3.0.eb
+  - Wayland-1.24.0-GCCcore-14.3.0.eb
+  - OpenGL-2025.09-GCCcore-14.3.0.eb
+  - GTK3-3.24.43-GCCcore-14.3.0.eb
