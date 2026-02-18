@@ -22,3 +22,7 @@ easyconfigs:
   - Wayland-1.24.0-GCCcore-14.3.0.eb
   - OpenGL-2025.09-GCCcore-14.3.0.eb
   - GTK3-3.24.43-GCCcore-14.3.0.eb
+  - GST-plugins-base-1.26.6-GCCcore-14.3.0.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/25064
+        from-commit: 67e7bbe7bd44ae91707004f88ccce6032b104e05
