@@ -22,3 +22,7 @@ easyconfigs:
   - Wayland-1.24.0-GCCcore-14.3.0.eb
   - OpenGL-2025.09-GCCcore-14.3.0.eb
   - GTK3-3.24.43-GCCcore-14.3.0.eb
+  - librsvg-2.61.0-GCCcore-14.3.0.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/25317
+        from-commit: 4a499cbc511d266bacb3a77b71c420562ea4030f
