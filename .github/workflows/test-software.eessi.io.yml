@@ -45,6 +45,7 @@ env:
       - nvidia/cc70
       - nvidia/cc80
       - nvidia/cc90
+    x86_64/amd/zen5: [] # not available in 2023.06
     # Intel
     x86_64/intel/haswell:
       - nvidia/cc70
@@ -139,6 +140,9 @@ jobs:
           - runs_on: ubuntu-24.04
             EESSI_VERSION: 2025.06
             EESSI_SOFTWARE_SUBDIR_OVERRIDE: x86_64/amd/zen4
+          - runs_on: ubuntu-24.04
+            EESSI_VERSION: 2025.06
+            EESSI_SOFTWARE_SUBDIR_OVERRIDE: x86_64/amd/zen5
           - runs_on: ubuntu-24.04
             EESSI_VERSION: 2025.06
             EESSI_SOFTWARE_SUBDIR_OVERRIDE: x86_64/intel/haswell
