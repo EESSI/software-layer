@@ -30,3 +30,7 @@ easyconfigs:
       options:
         # see https://github.com/easybuilders/easybuild-easyconfigs/pull/25064
         from-commit: 67e7bbe7bd44ae91707004f88ccce6032b104e05
+  - Xfce-4.20-GCCcore-14.3.0.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/25261
+        from-commit: 897dab557bc69754562479087a3204b5a77d5ed9
