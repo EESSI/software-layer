@@ -1,0 +1,6 @@
+easyconfigs:
+  # Use BLIS from upstream 5.1.2 so we include https://github.com/easybuilders/easybuild-easyblocks/pull/4034
+  # which is needed for zen5 since autodetection fails there
+  - BLIS-1.0-GCC-13.3.0.eb:
+      options:
+        include-easyblocks-from-commit: 0e3f38cad1dbcafd03f4251b67cc430239561080
