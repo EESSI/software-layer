@@ -13,3 +13,4 @@ easyconfigs:
       options:
         accept-eula-for: cuDNN
         cuda-sanity-check-accept-missing-ptx: True
+  - OSU-Micro-Benchmarks-7.5-gompi-2024a-CUDA-12.6.0.eb:
