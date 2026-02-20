@@ -3,7 +3,19 @@
 # give up as soon as any error occurs
 set -e
 
-git clone https://github.com/EESSI/software-layer-scripts
+TOPDIR=$(dirname $(realpath $0))
+
+# Clone a the commit from software-layer-script that corresponds to `bot/commit_sha`
+commit_sha=$(cat ${TOPDIR}/commit_sha)
+
+# Get a shallow clone first
+git clone --depth 1 --filter=blob:none --no-checkout https://github.com/EESSI/software-layer-scripts
+
+# Fetch the relevant commit & check it out
+cd software-layer-scripts
+git fetch --depth=1 origin ${commit_sha}
+git checkout --detach ${commit_sha}
+cd ..
 
 # symlink everything, except for:
 # - common files like LICENSE and README.md
