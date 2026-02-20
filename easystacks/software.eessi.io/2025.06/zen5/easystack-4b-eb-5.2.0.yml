@@ -1,0 +1,5 @@
+easyconfigs:
+  - BLIS-1.0-GCC-13.3.0.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyblocks/pull/4034
+        include-easyblocks-from-commit: 0e3f38cad1dbcafd03f4251b67cc430239561080
