@@ -40,3 +40,9 @@ easyconfigs:
       options:
         # see https://github.com/easybuilders/easybuild-easyconfigs/pull/24950
         from-commit: 51a592c09cad9dd4f48640068ae300f971b1e005
+  - OpenEXR-3.3.4-GCCcore-14.3.0.eb
+  - libaom-3.10.0-GCCcore-14.3.0.eb
+  - libwebp-1.5.0-GCCcore-14.3.0.eb
+  - SVT-AV1-3.1.2-GCCcore-14.3.0.eb
+  - libde265-1.0.16-GCCcore-14.3.0.eb
+  - x265-4.1-GCCcore-14.3.0.eb
