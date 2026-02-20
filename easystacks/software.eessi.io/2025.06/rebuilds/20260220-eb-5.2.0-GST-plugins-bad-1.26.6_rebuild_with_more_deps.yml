@@ -1,0 +1,7 @@
+# enable yet more codecs in GST-plugins-bad 1.26.6
+# see https://github.com/easybuilders/easybuild-easyconfigs/pull/25020
+easyconfigs:
+  - GST-plugins-bad-1.26.6-GCCcore-14.3.0.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/25020
+        from-commit: 255d6a2e010922e3e576576ffcf3457af0ccc8b1
