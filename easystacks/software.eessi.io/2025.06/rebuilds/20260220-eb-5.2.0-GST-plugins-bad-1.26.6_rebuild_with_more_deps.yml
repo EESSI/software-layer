@@ -1,42 +1,6 @@
-# enable yet more codecs in GST-plugins-bad 1.26.6, adding all the dependencies from the same commit
+# enable yet more codecs in GST-plugins-bad 1.26.6, adding the dependencies from the same commit
 # see https://github.com/easybuilders/easybuild-easyconfigs/pull/25020
 easyconfigs:
-  - Imath-3.1.12-GCCcore-14.3.0.eb:
-      options:
-        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/25020
-        from-commit: 255d6a2e010922e3e576576ffcf3457af0ccc8b1
-  - OpenEXR-3.3.4-GCCcore-14.3.0.eb:
-      options:
-        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/25020
-        from-commit: 255d6a2e010922e3e576576ffcf3457af0ccc8b1
-  - libaom-3.10.0-GCCcore-14.3.0.eb:
-      options:
-        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/25020
-        from-commit: 255d6a2e010922e3e576576ffcf3457af0ccc8b1
-  - giflib-5.2.2-GCCcore-14.3.0.eb:
-      options:
-        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/25020
-        from-commit: 255d6a2e010922e3e576576ffcf3457af0ccc8b1
-  - libwebp-1.5.0-GCCcore-14.3.0.eb:
-      options:
-        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/25020
-        from-commit: 255d6a2e010922e3e576576ffcf3457af0ccc8b1
-  - SVT-AV1-3.1.2-GCCcore-14.3.0.eb:
-      options:
-        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/25020
-        from-commit: 255d6a2e010922e3e576576ffcf3457af0ccc8b1
-  - libde265-1.0.16-GCCcore-14.3.0.eb:
-      options:
-        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/25020
-        from-commit: 255d6a2e010922e3e576576ffcf3457af0ccc8b1
-  - CMake-3.31.8-GCCcore-14.3.0.eb:
-      options:
-        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/25020
-        from-commit: 255d6a2e010922e3e576576ffcf3457af0ccc8b1
-  - x265-4.1-GCCcore-14.3.0.eb:
-      options:
-        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/25020
-        from-commit: 255d6a2e010922e3e576576ffcf3457af0ccc8b1
   - FAAD2-2.11.2-GCCcore-14.3.0.eb:
       options:
         # see https://github.com/easybuilders/easybuild-easyconfigs/pull/25020
