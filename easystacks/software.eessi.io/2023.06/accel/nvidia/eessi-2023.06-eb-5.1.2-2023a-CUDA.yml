@@ -4,4 +4,3 @@ easyconfigs:
       options:
         # https://github.com/easybuilders/easybuild-easyconfigs/pull/24579
         from-commit: 31f3ef164fd61c03c9bce8777b774486a8da8329
-  - pmt-1.2.0-GCCcore-12.3.0-CUDA-12.1.1.eb
