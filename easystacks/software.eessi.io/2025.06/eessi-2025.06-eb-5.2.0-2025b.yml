@@ -40,3 +40,6 @@ easyconfigs:
       options:
         # see https://github.com/easybuilders/easybuild-easyconfigs/pull/24950
         from-commit: 51a592c09cad9dd4f48640068ae300f971b1e005
+  - jupyterlmod-5.2.2-GCCcore-13.3.0.eb
+  - jupyterlmod-5.2.2-GCCcore-14.2.0.eb
+  - jupyterlmod-5.3.0-GCCcore-14.3.0.eb
