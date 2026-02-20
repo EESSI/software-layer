@@ -1,2 +1,5 @@
 easyconfigs:
+  - /cvmfs/software.eessi.io/versions/2025.06/software/linux/x86_64/amd/zen2/reprod/BLIS/1.0-GCC-13.3.0/20250822_183836UTC/easybuild/BLIS-1.0-GCC-13.3.0.eb:
+      options:
+        include-easyblocks: /cvmfs/software.eessi.io/versions/2025.06/software/linux/x86_64/amd/zen2/reprod/BLIS/1.0-GCC-13.3.0/20250822_183836UTC/easybuild/reprod/easyblocks/*.py
   - OpenBLAS-0.3.27-GCC-13.3.0.eb
