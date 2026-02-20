@@ -1,5 +1,4 @@
 easyconfigs:
-  - BLIS-1.0-GCC-13.3.0.eb:
+  - /cvmfs/software.eessi.io/versions/2025.06/software/linux/x86_64/amd/zen2/reprod/BLIS/1.0-GCC-13.3.0/20250822_183836UTC/easybuild/BLIS-1.0-GCC-13.3.0.eb:
       options:
-        # see https://github.com/easybuilders/easybuild-easyblocks/pull/4034
-        include-easyblocks-from-commit: 0e3f38cad1dbcafd03f4251b67cc430239561080
+        include-easyblocks: /cvmfs/software.eessi.io/versions/2025.06/software/linux/x86_64/amd/zen2/reprod/BLIS/1.0-GCC-13.3.0/20250822_183836UTC/easybuild/reprod/easyblocks/*.py
