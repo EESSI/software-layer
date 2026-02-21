@@ -1,0 +1,5 @@
+
+easyconfigs:
+  - jupyterlmod-5.2.2-GCCcore-13.3.0.eb
+  - jupyterlmod-5.2.2-GCCcore-14.2.0.eb
+  - jupyterlmod-5.3.0-GCCcore-14.3.0.eb
