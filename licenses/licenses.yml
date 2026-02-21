@@ -1,0 +1,2365 @@
+ALL:
+  0.9.2:
+    License: BSD-3-Clause
+    Permission to redistribute: true
+    Retrieved from: https://gitlab.jsc.fz-juelich.de/SLMS/loadbalancing/-/raw/master/LICENSE
+AOFlagger:
+  3.4.0:
+    License: gpl-3.0
+    Permission to redistribute: true
+    Retrieved from: https://repos.ecosyste.ms/api/v1/hosts/gitlab.com/repositories/aroffringa%2Faoflagger
+ASE:
+  3.22.1:
+    License: LGPL-2.1
+    Permission to redistribute: true
+    Retrieved from: https://wiki.fysik.dtu.dk/ase
+ATK:
+  2.38.0:
+    License: LGPL-2.0
+    Permission to redistribute: true
+    Retrieved from: https://developer.gnome.org/atk/
+Abseil:
+  '20240116.1':
+    License: Apache-2.0
+    Permission to redistribute: true
+    Retrieved from: https://abseil.io/
+Archive-Zip:
+  '1.68':
+    License: Artistic-1.0-Perl
+    Permission to redistribute: true
+    Retrieved from: https://metacpan.org/pod/Archive::Zip
+Armadillo:
+  12.8.0:
+    License: Apache-2.0
+    Permission to redistribute: true
+    Retrieved from: https://arma.sourceforge.net/
+Arrow:
+  16.1.0:
+    License: Apache-2.0
+    Permission to redistribute: true
+    Retrieved from: https://arrow.apache.org
+BCFtools:
+  '1.18':
+    License: mit
+    Permission to redistribute: true
+    Retrieved from: https://github.com/samtools/bcftools/raw/develop/LICENSE
+BLAST+:
+  2.14.1:
+    License: Public Domain
+    Permission to redistribute: true
+    Retrieved from: https://blast.ncbi.nlm.nih.gov/
+BLIS:
+  0.9.0:
+    License: BSD-3-Clause
+    Permission to redistribute: true
+    Retrieved from: https://github.com/flame/blis/raw/master/LICENSE
+BWA:
+  0.7.18:
+    License: gpl-3.0
+    Permission to redistribute: true
+    Retrieved from: https://repos.ecosyste.ms/api/v1/hosts/GitHub/repositories/lh3%2Fbwa
+BamTools:
+  2.5.2:
+    License: mit
+    Permission to redistribute: true
+    Retrieved from: https://repos.ecosyste.ms/api/v1/hosts/GitHub/repositories/pezmaster31%2Fbamtools
+Bazel:
+  6.3.1:
+    License: apache-2.0
+    Permission to redistribute: true
+    Retrieved from: https://repos.ecosyste.ms/api/v1/hosts/GitHub/repositories/bazelbuild%2Fbazel
+BeautifulSoup:
+  4.12.2:
+    License: mit
+    Permission to redistribute: true
+    Retrieved from: https://www.crummy.com/software/BeautifulSoup
+Bio-DB-HTS:
+  '3.01':
+    License: apache-2.0
+    Permission to redistribute: true
+    Retrieved from: https://metacpan.org/release/AVULLO/Bio-DB-HTS-3.01/source/LICENSE
+BioPerl:
+  1.7.8:
+    License: GPL-3.0
+    Permission to redistribute: true
+    Retrieved from: https://www.gnu.org/licenses/old-licenses/fdl-1.2.html
+Biopython:
+  '1.83':
+    License: other
+    Permission to redistribute: true
+    Retrieved from: https://raw.githubusercontent.com/biopython/DIST/refs/heads/gh-pages/LICENSE
+Bison:
+  3.8.2:
+    License: GPL-3.0
+    Permission to redistribute: true
+    Retrieved from: https://www.gnu.org/licenses/licenses.html
+Boost:
+  1.83.0:
+    License: BSL-1.0
+    Permission to redistribute: true
+    Retrieved from: https://www.boost.org/users/license.html
+Boost.MPI:
+  1.83.0:
+    License: BSL-1.0
+    Permission to redistribute: true
+    Retrieved from: https://www.boost.org/users/license.html
+Boost.Python:
+  1.83.0:
+    License: BSL-1.0
+    Permission to redistribute: true
+    Retrieved from: https://www.boost.org/users/license.html
+Bowtie2:
+  2.5.1:
+    License: gpl-3.0
+    Permission to redistribute: true
+    Retrieved from: https://www.boost.org/usershttps://bowtie-bio.sourceforge.net/bowtie2/index.shtml/license.html
+Brotli:
+  1.1.0:
+    License: mit
+    Permission to redistribute: true
+    Retrieved from: https://repos.ecosyste.ms/api/v1/hosts/GitHub/repositories/google%2Fbrotli
+Brunsli:
+  '0.1':
+    License: mit
+    Permission to redistribute: true
+    Retrieved from: https://repos.ecosyste.ms/api/v1/hosts/GitHub/repositories/google%2Fbrunsli
+CD-HIT:
+  4.8.1:
+    License: GPL-2.0
+    Permission to redistribute: true
+    Retrieved from: http://weizhong-lab.ucsd.edu/cd-hit/
+CDO:
+  2.2.2:
+    License: GPL-2.0
+    Permission to redistribute: true
+    Retrieved from: https://code.mpimet.mpg.de/projects/cdo
+CFITSIO:
+  4.3.1:
+    License: MIT
+    Permission to redistribute: true
+    Retrieved from: https://heasarc.gsfc.nasa.gov/fitsio/
+CGAL:
+  '5.6':
+    License: gpl-3.0
+    Permission to redistribute: true
+    Retrieved from: https://raw.githubusercontent.com/CGAL/cgal/refs/heads/master/Installation/LICENSE
+CMake:
+  3.27.6:
+    License: BSD-3-Clause
+    Permission to redistribute: true
+    Retrieved from: https://www.cmake.org
+CP2K:
+  '2023.1':
+    License: gpl-2.0
+    Permission to redistribute: true
+    Retrieved from: https://repos.ecosyste.ms/api/v1/hosts/GitHub/repositories/cp2k%2Fcp2k
+CUDA:
+  12.1.1:
+    License: Other
+    Permission to redistribute: false
+    Retrieved from: https://developer.nvidia.com/cuda-toolkit
+CUDA-Samples:
+  '12.1':
+    License: BSD-3-Clause
+    Permission to redistribute: true
+    Retrieved from: https://github.com/NVIDIA/cuda-samples
+CapnProto:
+  1.0.1:
+    License: MIT
+    Permission to redistribute: true
+    Retrieved from: https://capnproto.org
+Cartopy:
+  0.22.0:
+    License: MIT
+    Permission to redistribute: true
+    Retrieved from: https://scitools.org.uk/cartopy/docs/latest/
+Cassiopeia:
+  2.0.0:
+    License: mit
+    Permission to redistribute: true
+    Retrieved from: https://repos.ecosyste.ms/api/v1/hosts/GitHub/repositories/YosefLab%2FCassiopeia
+Catch2:
+  2.13.9:
+    License: bsl-1.0
+    Permission to redistribute: true
+    Retrieved from: https://repos.ecosyste.ms/api/v1/hosts/GitHub/repositories/catchorg%2FCatch2
+Cbc:
+  2.10.11:
+    License: clips
+    Permission to redistribute: true
+    Retrieved from: https://github.com/coin-or/Cbc/raw/master/LICENSE
+Cgl:
+  0.60.8:
+    License: clips
+    Permission to redistribute: true
+    Retrieved from: https://github.com/coin-or/Cgl/raw/master/LICENSE
+Clp:
+  1.17.9:
+    License: clips
+    Permission to redistribute: true
+    Retrieved from: https://github.com/coin-or/Clp/raw/master/LICENSE
+CoinUtils:
+  2.11.10:
+    License: clips
+    Permission to redistribute: true
+    Retrieved from: https://github.com/coin-or/CoinUtils/raw/master/LICENSE
+Critic2:
+  '1.2':
+    License: GPL-3.0
+    Permission to redistribute: true
+    Retrieved from: https://github.com/aoterodelaroza/critic2/raw/master/LICENSE
+CubeLib:
+  4.8.2:
+    License: scalasca-2
+    Permission to redistribute: true
+    Retrieved from: https://www.scalasca.org/software/cube-4.x/download.html
+CubeWriter:
+  4.8.2:
+    License: scalasca-2
+    Permission to redistribute: true
+    Retrieved from: https://www.scalasca.org/software/cube-4.x/download.html
+Cython:
+  3.0.10:
+    License: Apache-2.0
+    Permission to redistribute: true
+    Retrieved from: https://cython.org/
+DB:
+  18.1.40:
+    License: Sleepycat License
+    Permission to redistribute: true
+    Retrieved from: https://www.oracle.com/database/technologies/related/berkeleydb-downloads.html
+DB_File:
+  '1.859':
+    License: Artistic-1.0-Perl
+    Permission to redistribute: true
+    Retrieved from: https://metacpan.org/pod/DB_File
+DIAMOND:
+  2.1.8:
+    License: gpl-3.0
+    Permission to redistribute: true
+    Retrieved from: https://repos.ecosyste.ms/api/v1/hosts/GitHub/repositories/bbuchfink%2Fdiamond
+DP3:
+  '6.2':
+    License: mit
+    Permission to redistribute: true
+    Retrieved from: https://repos.ecosyste.ms/api/v1/hosts/GitHub/repositories/readthedocs%2Fsphinx_rtd_theme
+DendroPy:
+  4.6.1:
+    License: BSD-3-Clause
+    Permission to redistribute: true
+    Retrieved from: https://github.com/jeetsukumaran/DendroPy
+Doxygen:
+  1.9.8:
+    License: GPL-2.0-or-later
+    Permission to redistribute: true
+    Retrieved from: https://www.doxygen.org
+ELPA:
+  2023.05.001:
+    License: LGPG-3.0
+    Permission to redistribute: true
+    Retrieved from: https://elpa.mpcdf.mpg.de/LICENSING.html
+ESPResSo:
+  4.2.2:
+    License: cc-by-4.0
+    Permission to redistribute: true
+    Retrieved from: https://creativecommons.org/licenses/by-nc-sa/3.0/
+ETE:
+  3.1.3:
+    License: gpl-3.0
+    Permission to redistribute: true
+    Retrieved from: https://repos.ecosyste.ms/api/v1/hosts/GitHub/repositories/etetoolkit%2Fete
+EasyBuild:
+  4.9.4:
+    License: gpl-2.0
+    Permission to redistribute: true
+    Retrieved from: https://easybuilders.github.io/easybuild
+Eigen:
+  3.4.0:
+    License: MPL-2.0
+    Permission to redistribute: true
+    Retrieved from: https://eigen.tuxfamily.org#License
+EveryBeam:
+  0.6.1:
+    License: gpl-3.0+
+    Permission to redistribute: true
+    Retrieved from: https://repos.ecosyste.ms/api/v1/hosts/gitlab.com/repositories/aroffringa%2Fwsclean
+Extrae:
+  4.2.0:
+    License: GPL-3.0
+    Permission to redistribute: true
+    Retrieved from: https://tools.bsc.es/extrae
+FFTW:
+  3.3.10:
+    License: GPL-2.0
+    Permission to redistribute: true
+    Retrieved from: https://www.fftw.org/
+FFTW.MPI:
+  3.3.10:
+    License: GPL-2.0
+    Permission to redistribute: true
+    Retrieved from: https://www.fftw.org
+FFmpeg:
+  '6.0':
+    License: GPL-3.0
+    Permission to redistribute: true
+    Retrieved from: https://www.ffmpeg.org/legal.html
+FLAC:
+  1.4.3:
+    License: BSD-3-Clause
+    Permission to redistribute: true
+    Retrieved from: https://xiph.org/flac/
+FLTK:
+  1.3.8:
+    License: GPL-3.0
+    Permission to redistribute: true
+    Retrieved from: https://www.fltk.org/COPYING.php
+FastME:
+  2.1.6.3:
+    License: gpl-2.0
+    Permission to redistribute: true
+    Retrieved from: http://www.atgc-montpellier.fr/fastme/
+Fiona:
+  1.9.5:
+    License: bsd-3-clause
+    Permission to redistribute: true
+    Retrieved from: https://repos.ecosyste.ms/api/v1/hosts/GitHub/repositories/Toblerity%2FFiona
+Flask:
+  2.2.3:
+    License: bsd-3-clause
+    Permission to redistribute: true
+    Retrieved from: https://repos.ecosyste.ms/api/v1/hosts/GitHub/repositories/pallets%2Fflask
+FlexiBLAS:
+  3.3.1:
+    License: bsd-3-clause-open-mpi
+    Permission to redistribute: true
+    Retrieved from: https://repos.ecosyste.ms/api/v1/hosts/gitlab.mpi-magdeburg.mpg.de/repositories/software%2Fflexiblas-release
+FragGeneScan:
+  '1.31':
+    License: gpl-3.0
+    Permission to redistribute: true
+    Retrieved from: https://raw.githubusercontent.com/gaberoo/FragGeneScan/master/LICENSE
+FreeImage:
+  3.18.0:
+    License: GPL-3.0
+    Permission to redistribute: true
+    Retrieved from: http://freeimage.sourceforge.net/license.html
+FriBidi:
+  1.0.13:
+    License: lgpl-2.1
+    Permission to redistribute: true
+    Retrieved from: https://repos.ecosyste.ms/api/v1/hosts/GitHub/repositories/fribidi%2Ffribidi
+GATK:
+  4.5.0.0:
+    License: apache-2.0
+    Permission to redistribute: true
+    Retrieved from: https://raw.githubusercontent.com/broadinstitute/gatk/refs/heads/master/LICENSE.TXT
+GCC:
+  13.2.0:
+    License: GPL-3.0-or-later
+    Permission to redistribute: true
+    Retrieved from: https://gcc.gnu.org/
+GCCcore:
+  13.2.0:
+    License: GPL-3.0-or-later
+    Permission to redistribute: true
+    Retrieved from: https://gcc.gnu.org/
+GDAL:
+  3.9.0:
+    License: MIT
+    Permission to redistribute: true
+    Retrieved from: https://www.gdal.org/license.html
+GDB:
+  '13.2':
+    License: gpl-3.0
+    Permission to redistribute: true
+    Retrieved from: https://www.gnu.org/software/gdb
+GDRCopy:
+  '2.4':
+    License: mit
+    Permission to redistribute: true
+    Retrieved from: https://repos.ecosyste.ms/api/v1/hosts/GitHub/repositories/NVIDIA%2Fgdrcopy
+GEOS:
+  3.12.1:
+    License: GPL-3.0
+    Permission to redistribute: true
+    Retrieved from: http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html
+GL2PS:
+  1.4.2:
+    License: gpl-1.0
+    Permission to redistribute: true
+    Retrieved from: https://www.geuz.org/gl2ps/
+GLPK:
+  '5.0':
+    License: GPL-3.0-only
+    Permission to redistribute: true
+    Retrieved from: https://www.gnu.org/software/glpk/
+GLib:
+  2.78.1:
+    License: LGPL-2.1-or-later
+    Permission to redistribute: true
+    Retrieved from: https://www.gtk.org/
+GMP:
+  6.3.0:
+    License: LGPL-3.0-or-later, GPL-2.0-or-later
+    Permission to redistribute: true
+    Retrieved from: https://gmplib.org/
+GObject-Introspection:
+  1.78.1:
+    License: mit
+    Permission to redistribute: true
+    Retrieved from: https://repos.ecosyste.ms/api/v1/hosts/GitHub/repositories/readthedocs%2Fsphinx_rtd_theme
+GROMACS:
+  '2024.4':
+    License: LGPL-2.1
+    Permission to redistribute: true
+    Retrieved from: https://www.gromacs.org
+GSL:
+  '2.7':
+    License: GPL-3.0
+    Permission to redistribute: true
+    Retrieved from: https://www.gnu.org/licenses/licenses.html
+GST-plugins-base:
+  1.24.8:
+    License: lgpl-2.1
+    Permission to redistribute: true
+    Retrieved from: https://gitlab.freedesktop.org/gstreamer/gst-plugins-base/-/raw/discontinued-for-monorepo/COPYING
+GStreamer:
+  1.24.8:
+    License: lgpl-2.1
+    Permission to redistribute: true
+    Retrieved from: https://gitlab.freedesktop.org/gstreamer/gstreamer/-/raw/main/LICENSE
+GTK3:
+  3.24.39:
+    License: lgpl-2.1
+    Permission to redistribute: true
+    Retrieved from: https://developer.gnome.org/gtk3/stable/enum.License.html
+Gdk-Pixbuf:
+  2.42.10:
+    License: lgpl-2.1
+    Permission to redistribute: true
+    Retrieved from: https://gitlab.gnome.org/GNOME/gdk-pixbuf/-/raw/master/COPYING
+GenomeTools:
+  1.6.2:
+    License: isc
+    Permission to redistribute: true
+    Retrieved from: http://genometools.org/license.html
+Ghostscript:
+  10.02.1:
+    License: GPL-3.0
+    Permission to redistribute: true
+    Retrieved from: https://www.gnu.org/licenses/agpl-3.0.html
+GitPython:
+  3.1.40:
+    License: BSD-3-Clause
+    Permission to redistribute: true
+    Retrieved from: https://github.com/gitpython-developers/GitPython/blob/main/LICENSE
+Graphene:
+  1.10.8:
+    License: mit
+    Permission to redistribute: true
+    Retrieved from: https://github.com/ebassi/graphene?tab=License-1-ov-file#readme
+HDBSCAN:
+  0.8.38.post1:
+    License: mit
+    Permission to redistribute: true
+    Retrieved from: https://repos.ecosyste.ms/api/v1/hosts/GitHub/repositories/readthedocs%2Fsphinx_rtd_theme
+HDF:
+  4.2.16:
+    License: BSD-3-Clause
+    Permission to redistribute: true
+    Retrieved from: https://www.hdfgroup.org/
+HDF5:
+  1.14.3:
+    License: BSD-3-Clause
+    Permission to redistribute: true
+    Retrieved from: https://www.hdfgroup.org/
+HMMER:
+  '3.4':
+    License: BSD-3-Clause
+    Permission to redistribute: true
+    Retrieved from: http://hmmer.org/license.html
+HPL:
+  '2.3':
+    License: BSD-3-Clause
+    Permission to redistribute: true
+    Retrieved from: https://www.netlib.org/benchmark/hpl/
+HTSlib:
+  1.19.1:
+    License: MIT
+    Permission to redistribute: true
+    Retrieved from: https://github.com/samtools/htslib
+HarfBuzz:
+  8.2.2:
+    License: MIT
+    Permission to redistribute: true
+    Retrieved from: https://www.freedesktop.org/wiki/Software/HarfBuzz
+HepMC3:
+  3.2.6:
+    License: GPL-3.0-or-later
+    Permission to redistribute: true
+    Retrieved from: https://gitlab.cern.ch/hepmc/HepMC3
+Highway:
+  1.0.4:
+    License: apache-2.0
+    Permission to redistribute: true
+    Retrieved from: https://repos.ecosyste.ms/api/v1/hosts/GitHub/repositories/google%2Fhighway
+Hypre:
+  2.29.0:
+    License: Apache-2.0
+    Permission to redistribute: true
+    Retrieved from: https://github.com/hypre-space/hypre
+ICU:
+  '74.1':
+    License: ICU
+    Permission to redistribute: true
+    Retrieved from: https://icu.unicode.org
+IDG:
+  1.2.0:
+    License: mit
+    Permission to redistribute: true
+    Retrieved from: https://repos.ecosyste.ms/api/v1/hosts/GitHub/repositories/readthedocs%2Fsphinx_rtd_theme
+IPython:
+  8.17.2:
+    License: BSD-3-Clause
+    Permission to redistribute: true
+    Retrieved from: https://github.com/ipython/ipython/blob/main/LICENSE
+IQ-TREE:
+  2.3.5:
+    License: gpl-2.0
+    Permission to redistribute: true
+    Retrieved from: https://repos.ecosyste.ms/api/v1/hosts/GitHub/repositories/iqtree%2Fiqtree2
+ISA-L:
+  2.30.0:
+    License: BSD-3-Clause
+    Permission to redistribute: true
+    Retrieved from: https://github.com/intel/isa-l/blob/master/LICENSE
+ISL:
+  '0.26':
+    License: MIT
+    Permission to redistribute: true
+    Retrieved from: https://libisl.sourceforge.io/user.html#License
+ITSTool:
+  2.0.7:
+    License: GPL-3.0+
+    Permission to redistribute: true
+    Retrieved from: http://itstool.org/
+ImageMagick:
+  7.1.1:
+    License: ImageMagick
+    Permission to redistribute: true
+    Retrieved from: https://www.imagemagick.org/
+Imath:
+  3.1.9:
+    License: BSC-3-Clause
+    Permission to redistribute: true
+    Retrieved from: https://imath.readthedocs.io/en/latest/license.html#license
+JasPer:
+  4.0.0:
+    License: MIT
+    Permission to redistribute: true
+    Retrieved from: https://www.ece.uvic.ca/~frodo/jasper/
+Java:
+  17.0.6:
+    License: gplv2+ce
+    Permission to redistribute: true
+    Retrieved from: https://openjdk.org/legal/gplv2+ce.html
+JsonCpp:
+  1.9.5:
+    License: mit
+    Permission to redistribute: true
+    Retrieved from: https://github.com/open-source-parsers/jsoncpp/blob/master/LICENSE
+Judy:
+  1.0.5:
+    License: LGPL-2.0-only
+    Permission to redistribute: true
+    Retrieved from: http://judy.sourceforge.net/
+JupyterLab:
+  4.0.5:
+    License: BSD-3-Clause
+    Permission to redistribute: true
+    Retrieved from: https://raw.githubusercontent.com/jupyterlab/jupyterlab/refs/heads/main/LICENSE
+JupyterNotebook:
+  7.0.2:
+    License: BSD-3-Clause
+    Permission to redistribute: true
+    Retrieved from: https://github.com/jupyter/notebook/blob/main/LICENSE
+KaHIP:
+  '3.16':
+    License: mit
+    Permission to redistribute: true
+    Retrieved from: https://repos.ecosyste.ms/api/v1/hosts/GitHub/repositories/KaHIP%2FKaMinPar
+KronaTools:
+  2.8.1:
+    License: BSD-3-Clause
+    Permission to redistribute: true
+    Retrieved from: https://github.com/marbl/Krona/blob/master/LICENSE.txt
+LAME:
+  '3.100':
+    License: LGPL-2.0-or-later
+    Permission to redistribute: true
+    Retrieved from: http://lame.sourceforge.net/
+LAMMPS:
+  29Aug2024:
+    License: gpl-2.0
+    Permission to redistribute: true
+    Retrieved from: https://repos.ecosyste.ms/api/v1/hosts/GitHub/repositories/lammps%2Flammps
+LERC:
+  4.0.0:
+    License: apache-2.0
+    Permission to redistribute: true
+    Retrieved from: https://repos.ecosyste.ms/api/v1/hosts/GitHub/repositories/Esri%2Flerc
+LHAPDF:
+  6.5.4:
+    License: GPL-3.0
+    Permission to redistribute: true
+    Retrieved from: https://lhapdf.hepforge.org/
+LLVM:
+  16.0.6:
+    License: Apache-2.0
+    Permission to redistribute: true
+    Retrieved from: https://llvm.org/
+LMDB:
+  0.9.31:
+    License: OpenLDAP Public Licese
+    Permission to redistribute: true
+    Retrieved from: https://raw.githubusercontent.com/LMDB/lmdb/refs/heads/mdb.master/libraries/liblmdb/LICENSE
+LRBinner:
+  '0.1':
+    License: gpl-2.0
+    Permission to redistribute: true
+    Retrieved from: https://repos.ecosyste.ms/api/v1/hosts/GitHub/repositories/anuradhawick%2FLRBinner
+LSD2:
+  2.4.1:
+    License: gpl-2.0
+    Permission to redistribute: true
+    Retrieved from: https://repos.ecosyste.ms/api/v1/hosts/GitHub/repositories/tothuhien%2Flsd2
+LZO:
+  '2.10':
+    License: gpl-2.0
+    Permission to redistribute: true
+    Retrieved from: https://www.oberhumer.com/opensource/gpl.html
+LibTIFF:
+  4.6.0:
+    License: libtiff
+    Permission to redistribute: true
+    Retrieved from: https://libtiff.gitlab.io/libtiff/project/license.html
+Libint:
+  2.7.2:
+    License: GPL-3.0
+    Permission to redistribute: true
+    Retrieved from: https://github.com/evaleev/libint/raw/master/LICENSE
+LightGBM:
+  4.5.0:
+    License: mit
+    Permission to redistribute: true
+    Retrieved from: https://repos.ecosyste.ms/api/v1/hosts/GitHub/repositories/readthedocs%2Fsphinx_rtd_theme
+LittleCMS:
+  '2.15':
+    License: mit
+    Permission to redistribute: true
+    Retrieved from: https://repos.ecosyste.ms/api/v1/hosts/GitHub/repositories/devcows%2Fhugo-universal-theme
+LoopTools:
+  '2.15':
+    License: GPL-3.0
+    Permission to redistribute: true
+    Retrieved from: http://gnu.org/licenses/lgpl.html
+Lua:
+  5.4.6:
+    License: MIT
+    Permission to redistribute: true
+    Retrieved from: https://www.lua.org/
+MAFFT:
+  '7.520':
+    License: Other
+    Permission to redistribute: true
+    Retrieved from: https://mafft.cbrc.jp/alignment/software/license66.txt
+MBX:
+  1.1.0:
+    License: MIT
+    Permission to redistribute: true
+    Retrieved from: https://github.com/paesanilab/MBX
+MCL:
+  '22.282':
+    License: GPL-3.0
+    Permission to redistribute: true
+    Retrieved from: https://micans.org/mcl/
+MDAnalysis:
+  2.4.2:
+    License: GPL-3.0
+    Permission to redistribute: true
+    Retrieved from: https://www.gnu.org/licenses/gpl-2.0.html
+MDI:
+  1.4.29:
+    License: bsd-3-clause
+    Permission to redistribute: true
+    Retrieved from: https://repos.ecosyste.ms/api/v1/hosts/GitHub/repositories/MolSSI-MDI%2FMDI_Library
+METIS:
+  5.1.0:
+    License: Apache-2.0
+    Permission to redistribute: true
+    Retrieved from: http://glaros.dtc.umn.edu/gkhome/metis/metis/overview
+MMseqs2:
+  '14':
+    License: mit
+    Permission to redistribute: true
+    Retrieved from: https://mmseqs.com/soedinglab/MMseqs2/blob/master/LICENSE.md
+MODFLOW:
+  6.4.4:
+    License: Public Domain
+    Permission to redistribute: true
+    Retrieved from: https://www.usgs.gov/software/modflow-6-usgs-modular-hydrologic-model
+MPC:
+  1.3.1:
+    License: LGPL-3.0-or-later
+    Permission to redistribute: true
+    Retrieved from: http://www.multiprecision.org/
+MPFR:
+  4.2.1:
+    License: GPL-3.0
+    Permission to redistribute: true
+    Retrieved from: https://www.gnu.org/licenses/lgpl-3.0.html
+MUMPS:
+  5.6.1:
+    License: CeCILL-C
+    Permission to redistribute: true
+    Retrieved from: http://mumps.enseeiht.fr/
+Mako:
+  1.2.4:
+    License: cc-by-4.0
+    Permission to redistribute: true
+    Retrieved from: http://www.opensource.org/licenses/mit-license.php
+MariaDB:
+  11.6.0:
+    License: GPL-2.0-only
+    Permission to redistribute: true
+    Retrieved from: https://mariadb.com/kb/en/mariadb-license/
+Mash:
+  '2.3':
+    License: mit
+    Permission to redistribute: true
+    Retrieved from: https://repos.ecosyste.ms/api/v1/hosts/GitHub/repositories/readthedocs%2Fsphinx_rtd_theme
+Mesa:
+  23.1.9:
+    License: mit
+    Permission to redistribute: true
+    Retrieved from: https://docs.mesa3d.org/license.html
+Meson:
+  1.3.1:
+    License: Apache-2.0
+    Permission to redistribute: true
+    Retrieved from: https://mesonbuild.com
+MetaEuk:
+  '6':
+    License: GPL-3.0
+    Permission to redistribute: true
+    Retrieved from: https://github.com/soedinglab/MetaEuk
+MetalWalls:
+  21.06.1:
+    License: mit
+    Permission to redistribute: true
+    Retrieved from: https://repos.ecosyste.ms/api/v1/hosts/gitlab.com/repositories/ampere2%2Fmetalwalls
+MultiQC:
+  '1.14':
+    License: GPL-3.0
+    Permission to redistribute: true
+    Retrieved from: https://github.com/ewels/MultiQC
+Mustache:
+  1.3.3:
+    License: mit
+    Permission to redistribute: true
+    Retrieved from: https://repos.ecosyste.ms/api/v1/hosts/GitHub/repositories/ay-lab%2Fmustache
+NASM:
+  2.16.01:
+    License: BSD-2-Clause
+    Permission to redistribute: true
+    Retrieved from: https://www.nasm.us/
+NCCL:
+  2.18.3:
+    License: BSD-3-Clause
+    Permission to redistribute: true
+    Retrieved from: https://github.com/NVIDIA/nccl
+NLTK:
+  3.8.1:
+    License: Apache-2.0
+    Permission to redistribute: true
+    Retrieved from: https://www.nltk.org/
+NLopt:
+  2.7.1:
+    License: mit
+    Permission to redistribute: true
+    Retrieved from: http://ab-initio.mit.edu/wiki/index.php/NLopt_License_and_Copyright/
+NSPR:
+  '4.35':
+    License: mit
+    Permission to redistribute: true
+    Retrieved from: https://repos.ecosyste.ms/api/v1/hosts/GitHub/repositories/readthedocs%2Fsphinx_rtd_theme
+NSS:
+  '3.94':
+    License: MPL-2.0
+    Permission to redistribute: true
+    Retrieved from: https://developer.mozilla.org/en-US/docs/Mozilla/Projects/NSS
+Nextflow:
+  23.10.0:
+    License: apache-2.0
+    Permission to redistribute: true
+    Retrieved from: https://repos.ecosyste.ms/api/v1/hosts/GitHub/repositories/nextflow-io%2Fnextflow
+Ninja:
+  1.11.1:
+    License: Apache-2.0
+    Permission to redistribute: true
+    Retrieved from: https://ninja-build.org/
+OPARI2:
+  2.0.8:
+    License: cc-by-4.0
+    Permission to redistribute: true
+    Retrieved from: https://opensource.org/licenses/BSD-3-Clause
+OSU-Micro-Benchmarks:
+  '7.2':
+    License: BSD-3-Clause
+    Permission to redistribute: true
+    Retrieved from: https://mvapich.cse.ohio-state.edu/benchmarks/
+OTF2:
+  3.0.3:
+    License: cc-by-4.0
+    Permission to redistribute: true
+    Retrieved from: https://opensource.org/licenses/BSD-3-Clause
+OpenBLAS:
+  0.3.24:
+    License: BSD-3-Clause
+    Permission to redistribute: true
+    Retrieved from: https://www.openblas.net/
+OpenEXR:
+  3.2.0:
+    License: BSD-3-Clause
+    Permission to redistribute: true
+    Retrieved from: https://www.openexr.com/
+OpenFOAM:
+  v2406:
+    License: GPL-3.0-or-later
+    Permission to redistribute: true
+    Retrieved from: https://www.openfoam.com/
+OpenJPEG:
+  2.5.0:
+    License: BSD-2-Clause
+    Permission to redistribute: true
+    Retrieved from: https://www.openjpeg.org/
+OpenMPI:
+  4.1.6:
+    License: BSD-3-Clause
+    Permission to redistribute: true
+    Retrieved from: https://www.open-mpi.org/
+OpenPGM:
+  5.2.122:
+    License: LGPL-2.1
+    Permission to redistribute: true
+    Retrieved from: https://code.google.com/p/openpgm/
+OpenSSL:
+  '1.1':
+    License: Apache-2.0
+    Permission to redistribute: true
+    Retrieved from: https://www.openssl.org/
+OrthoFinder:
+  2.5.5:
+    License: gpl-3.0
+    Permission to redistribute: true
+    Retrieved from: https://repos.ecosyste.ms/api/v1/hosts/GitHub/repositories/davidemms%2FOrthoFinder
+Osi:
+  0.108.9:
+    License: GPL-3.0
+    Permission to redistribute: true
+    Retrieved from: https://github.com/coin-or/Osi/raw/master/LICENSE
+PAPI:
+  7.1.0:
+    License: BSD-3-Clause
+    Permission to redistribute: true
+    Retrieved from: https://icl.utk.edu/papi/
+PCRE:
+  '8.45':
+    License: BSD-3-Clause
+    Permission to redistribute: true
+    Retrieved from: https://www.pcre.org/
+PCRE2:
+  '10.42':
+    License: BSD-3-Clause
+    Permission to redistribute: true
+    Retrieved from: https://www.pcre.org/
+PDT:
+  3.25.2:
+    License: BSD-3-Clause
+    Permission to redistribute: true
+    Retrieved from: https://github.com/HPCToolkit/hpctoolkit
+PETSc:
+  3.20.3:
+    License: BSD-2-Clause
+    Permission to redistribute: true
+    Retrieved from: https://petsc.org/release/
+PGPLOT:
+  5.2.2:
+    License: Not-Public domain
+    Permission to redistribute: false
+    Retrieved from: https://sites.astro.caltech.edu/~tjp/pgplot/
+PLUMED:
+  2.9.2:
+    License: cc-by-4.0
+    Permission to redistribute: true
+    Retrieved from: http://creativecommons.org/licenses/by-sa/4.0/
+PLY:
+  '3.11':
+    License: BSD-3-Clause
+    Permission to redistribute: true
+    Retrieved from: https://www.dabeaz.com/ply/
+PMIx:
+  4.2.6:
+    License: BSD-3-Clause
+    Permission to redistribute: true
+    Retrieved from: https://github.com/openpmix/openpmix
+PROJ:
+  9.3.1:
+    License: mit
+    Permission to redistribute: true
+    Retrieved from: https://proj.org/about.html#license
+Pango:
+  1.51.0:
+    License: LGPL-2.1-or-later
+    Permission to redistribute: true
+    Retrieved from: https://www.pango.org/
+ParMETIS:
+  4.0.3:
+    License: Apache-2.0
+    Permission to redistribute: true
+    Retrieved from: http://glaros.dtc.umn.edu/gkhome/metis/parmetis/overview
+ParaView:
+  5.11.2:
+    License: BSD-3-Clause
+    Permission to redistribute: true
+    Retrieved from: https://www.paraview.org
+Paraver:
+  4.11.4:
+    License: GPL-3.0
+    Permission to redistribute: true
+    Retrieved from: https://tools.bsc.es/paraver
+Perl:
+  5.38.0:
+    License: Artistic-1.0-Perl, GPL-1.0-or-later
+    Permission to redistribute: true
+    Retrieved from: https://www.perl.org/
+Perl-bundle-CPAN:
+  5.36.1:
+    License: Artistic-1.0-Perl, GPL-1.0-or-later
+    Permission to redistribute: true
+    Retrieved from: https://www.perl.org/
+Pillow:
+  10.2.0:
+    License: HPND
+    Permission to redistribute: true
+    Retrieved from: https://github.com/python-pillow/Pillow
+Pillow-SIMD:
+  9.5.0:
+    License: HPND
+    Permission to redistribute: true
+    Retrieved from: https://github.com/uploadcare/pillow-simd
+Pint:
+  '0.24':
+    License: Other
+    Permission to redistribute: true
+    Retrieved from: https://github.com/hgrecco/pint/blob/master/LICENSE
+PostgreSQL:
+  '16.1':
+    License: PostgreSQL
+    Permission to redistribute: true
+    Retrieved from: https://www.postgresql.org/
+PuLP:
+  2.8.0:
+    License: MIT
+    Permission to redistribute: true
+    Retrieved from: https://github.com/coin-or/pulp
+PyOpenGL:
+  3.1.7:
+    License: BSD-3-Clause
+    Permission to redistribute: true
+    Retrieved from: http://pyopengl.sourceforge.net
+PyQt-builder:
+  1.15.4:
+    License: GPL-2.0+
+    Permission to redistribute: true
+    Retrieved from: http://www.example.com
+PyQt5:
+  5.15.10:
+    License: GPL-3.0
+    Permission to redistribute: true
+    Retrieved from: https://www.riverbankcomputing.com/software/pyqt/
+PyTorch:
+  2.1.2:
+    License: BSD-3-Clause
+    Permission to redistribute: true
+    Retrieved from: https://github.com/pytorch/pytorch
+PyYAML:
+  6.0.1:
+    License: mit
+    Permission to redistribute: true
+    Retrieved from: https://repos.ecosyste.ms/api/v1/hosts/GitHub/repositories/yaml%2Fpyyaml
+PyZMQ:
+  25.1.1:
+    License: mpl-2.0
+    Permission to redistribute: true
+    Retrieved from: https://www.zeromq.org/license/
+Pygments:
+  2.18.0:
+    License: BSD-2-Clause
+    Permission to redistribute: true
+    Retrieved from: https://pygments.org/
+Pysam:
+  0.22.0:
+    License: mit
+    Permission to redistribute: true
+    Retrieved from: https://repos.ecosyste.ms/api/v1/hosts/GitHub/repositories/pysam-developers%2Fpysam
+Python:
+  3.11.5:
+    License: mit
+    Permission to redistribute: true
+    Retrieved from: https://docs.python.org/3/license.html
+Python-bundle-PyPI:
+  '2023.10':
+    License: mit
+    Permission to redistribute: true
+    Retrieved from: https://docs.python.org/3/license.html
+Qhull:
+  '2020.2':
+    License: Qhull License (Permissive)
+    Permission to redistribute: true
+    Retrieved from: http://www.qhull.org
+Qt5:
+  5.15.13:
+    License: LGPL-2.1-only, LGPL-3.0-only, GPL-3.0-only, MulanPSL-1.0
+    Permission to redistribute: true
+    Retrieved from: https://qt.io/
+QuantumESPRESSO:
+  7.3.1:
+    License: GPL-2.0
+    Permission to redistribute: true
+    Retrieved from: https://www.quantum-espresso.org/
+R:
+  4.4.1:
+    License: GPL-2.0-only, CNRI-Python-GPL-Compatible, LGPL-2.1-or-later
+    Permission to redistribute: true
+    Retrieved from: https://www.r-project.org/
+R-bundle-Bioconductor:
+  '3.18':
+    License: GPL-2.0
+    Permission to redistribute: true
+    Retrieved from: https://bioconductor.org
+R-bundle-CRAN:
+  '2024.06':
+    License: GPL-2.0-only, CNRI-Python-GPL-Compatible, LGPL-2.1-or-later
+    Permission to redistribute: true
+    Retrieved from: https://www.r-project.org/
+RE2:
+  '2024':
+    License: bsd-3-clause
+    Permission to redistribute: true
+    Retrieved from: https://repos.ecosyste.ms/api/v1/hosts/GitHub/repositories/google%2Fre2
+ROOT:
+  6.30.06:
+    License: LGPL-2.1
+    Permission to redistribute: true
+    Retrieved from: https://root.cern.ch/
+RapidJSON:
+  1.1.0:
+    License: MIT
+    Permission to redistribute: true
+    Retrieved from: https://rapidjson.org/
+Raptor:
+  2.0.16:
+    License: apache-2.0, LGPL-2.1-or-later, GPL-2.0
+    Permission to redistribute: true
+    Retrieved from: https://librdf.org/raptor/LICENSE.html
+Rasqal:
+  0.9.33:
+    License: LGPL-2.1
+    Permission to redistribute: true
+    Retrieved from: https://librdf.org/rasqal/
+ReFrame:
+  4.6.2:
+    License: bsd-3-clause
+    Permission to redistribute: true
+    Retrieved from: https://repos.ecosyste.ms/api/v1/hosts/GitHub/repositories/reframe-hpc%2Freframe
+Redland:
+  1.0.17:
+    License: LGPL-2.1-or-later
+    Permission to redistribute: true
+    Retrieved from: https://librdf.org/raptor
+Rivet:
+  3.1.9:
+    License: gpl-3.0
+    Permission to redistribute: true
+    Retrieved from: https://repos.ecosyste.ms/api/v1/hosts/gitlab.com/repositories/hepcedar%2Frivet
+Ruby:
+  3.3.0:
+    License: Ruby License
+    Permission to redistribute: true
+    Retrieved from: https://www.ruby-lang.org/
+Rust:
+  1.76.0:
+    License: Apache-2.0, MIT
+    Permission to redistribute: true
+    Retrieved from: https://www.rust-lang.org
+SAMtools:
+  '1.18':
+    License: MIT
+    Permission to redistribute: true
+    Retrieved from: https://github.com/samtools/samtools
+SCOTCH:
+  7.0.3:
+    License: cecill-c
+    Permission to redistribute: true
+    Retrieved from: http://www.cecill.info/licences/Licence_CeCILL-C_V1-en.html
+SDL2:
+  2.28.5:
+    License: Zlib
+    Permission to redistribute: true
+    Retrieved from: https://www.libsdl.org/
+SEPP:
+  4.5.1:
+    License: gpl-3.0
+    Permission to redistribute: true
+    Retrieved from: https://repos.ecosyste.ms/api/v1/hosts/GitHub/repositories/smirarab%2Fsepp
+SIONlib:
+  1.7.7:
+    License: LGPL-3.0
+    Permission to redistribute: true
+    Retrieved from: https://www.fz-juelich.de/ias/jsc/EN/Expertise/Support/Software/SIONlib/_node.html
+SIP:
+  6.8.1:
+    License: GPL-2.0
+    Permission to redistribute: true
+    Retrieved from: https://www.riverbankcomputing.com/software/sip/
+SLEPc:
+  3.20.1:
+    License: LGPL-2.1-or-later
+    Permission to redistribute: true
+    Retrieved from: https://slepc.upv.es/
+SQLAlchemy:
+  2.0.25:
+    License: mit
+    Permission to redistribute: true
+    Retrieved from: https://www.sqlalchemy.org/download.html#license
+SQLite:
+  3.43.1:
+    License: Public Domain
+    Permission to redistribute: true
+    Retrieved from: https://www.sqlite.org/
+STAR:
+  2.7.11b:
+    License: mit
+    Permission to redistribute: true
+    Retrieved from: https://repos.ecosyste.ms/api/v1/hosts/GitHub/repositories/alexdobin%2FSTAR
+SWIG:
+  4.1.1:
+    License: GPL-3.0-only
+    Permission to redistribute: true
+    Retrieved from: http://www.swig.org/
+ScaFaCoS:
+  1.0.4:
+    License: GPL-3.0
+    Permission to redistribute: true
+    Retrieved from: http://www.scafacos.de/
+ScaLAPACK:
+  2.2.0:
+    License: BSD-3-Clause
+    Permission to redistribute: true
+    Retrieved from: https://www.netlib.org/scalapack/
+SciPy-bundle:
+  '2023.11':
+    License: mit
+    Permission to redistribute: true
+    Retrieved from: https://docs.python.org/3/license.html
+SciTools-Iris:
+  3.9.0:
+    License: LGPL-3.0
+    Permission to redistribute: true
+    Retrieved from: https://scitools.org.uk/iris/
+Score-P:
+  '8.4':
+    License: cc-by-4.0
+    Permission to redistribute: true
+    Retrieved from: https://opensource.org/licenses/BSD-3-Clause
+Seaborn:
+  0.13.2:
+    License: BSD-3-Clause
+    Permission to redistribute: true
+    Retrieved from: https://seaborn.pydata.org/
+Shapely:
+  2.0.1:
+    License: bsd-3-clause
+    Permission to redistribute: true
+    Retrieved from: https://repos.ecosyste.ms/api/v1/hosts/GitHub/repositories/shapely%2Fshapely
+SlurmViewer:
+  1.0.1:
+    License: mit
+    Permission to redistribute: true
+    Retrieved from: https://repos.ecosyste.ms/api/v1/hosts/gitlab.com/repositories/lkeb%2Fslurm_viewer
+Solids4foam:
+  '2.1':
+    License: mit
+    Permission to redistribute: true
+    Retrieved from: https://github.com/solids4foam/solids4foam.github.io
+SuiteSparse:
+  7.1.0:
+    License: GPL-3.0
+    Permission to redistribute: true
+    Retrieved from: https://github.com/DrTimothyAldenDavis/SuiteSparse/raw/dev/LICENSE.txt
+SuperLU_DIST:
+  8.1.2:
+    License: BSD-3-Clause
+    Permission to redistribute: true
+    Retrieved from: https://github.com/xiaoyeli/superlu_dist
+Szip:
+  2.1.1:
+    License: Szip License
+    Permission to redistribute: true
+    Retrieved from: https://support.hdfgroup.org/doc_resource/SZIP/
+Tcl:
+  8.6.13:
+    License: Tcl/Tk License
+    Permission to redistribute: true
+    Retrieved from: https://www.tcl.tk/
+TensorFlow:
+  2.13.0:
+    License: Apache-2.0
+    Permission to redistribute: true
+    Retrieved from: https://www.tensorflow.org/
+Tk:
+  8.6.13:
+    License: Tcl/Tk License
+    Permission to redistribute: true
+    Retrieved from: https://www.tcl.tk/
+Tkinter:
+  3.11.5:
+    License: mit
+    Permission to redistribute: true
+    Retrieved from: https://docs.python.org/3/license.html
+Tombo:
+  1.5.1:
+    License: GPL-3.0
+    Permission to redistribute: true
+    Retrieved from: https://github.com/nanoporetech/tombo/raw/master/LICENSE.md
+Transrate:
+  1.0.3:
+    License: mit
+    Permission to redistribute: true
+    Retrieved from: http://transrate.mit-license.org
+UCC:
+  1.2.0:
+    License: bsd-3-clause
+    Permission to redistribute: true
+    Retrieved from: https://repos.ecosyste.ms/api/v1/hosts/GitHub/repositories/openucx%2Fucc
+UCC-CUDA:
+  1.2.0:
+    License: bsd-3-clause
+    Permission to redistribute: true
+    Retrieved from: https://repos.ecosyste.ms/api/v1/hosts/GitHub/repositories/openucx%2Fucc
+UCX:
+  1.15.0:
+    License: BSD-3-Clause
+    Permission to redistribute: true
+    Retrieved from: https://github.com/openucx/ucx
+UCX-CUDA:
+  1.14.1:
+    License: BSD-3-Clause
+    Permission to redistribute: true
+    Retrieved from: https://github.com/openucx/ucx
+UDUNITS:
+  2.2.28:
+    License: BSD-3-Clause
+    Permission to redistribute: true
+    Retrieved from: https://www.unidata.ucar.edu/software/udunits/
+UnZip:
+  '6.0':
+    License: Info-ZIP License
+    Permission to redistribute: true
+    Retrieved from: http://www.info-zip.org/UnZip.html
+VCFtools:
+  0.1.16:
+    License: lgpl-3.0
+    Permission to redistribute: true
+    Retrieved from: https://repos.ecosyste.ms/api/v1/hosts/GitHub/repositories/vcftools%2Fvcftools
+VTK:
+  9.3.0:
+    License: BSD-3-Clause
+    Permission to redistribute: true
+    Retrieved from: https://www.vtk.org
+Valgrind:
+  3.23.0:
+    License: GPL-3.0
+    Permission to redistribute: true
+    Retrieved from: http://www.gnu.org/licenses/gpl-2.0.html
+Vim:
+  9.1.0004:
+    License: Vim License
+    Permission to redistribute: true
+    Retrieved from: https://www.vim.org/
+Voro++:
+  0.4.6:
+    License: BSD-3-Clause
+    Permission to redistribute: true
+    Retrieved from: http://math.lbl.gov/voro++/
+WCSLIB:
+  '7.11':
+    License: LGPL-3.0
+    Permission to redistribute: true
+    Retrieved from: https://www.atnf.csiro.au/people/mcalabre/WCS/
+WRF:
+  4.4.1:
+    License: GPL-2.0
+    Permission to redistribute: true
+    Retrieved from: https://www.mmm.ucar.edu/models/wrf
+WSClean:
+  '3.5':
+    License: gpl-3.0+
+    Permission to redistribute: true
+    Retrieved from: https://repos.ecosyste.ms/api/v1/hosts/gitlab.com/repositories/aroffringa%2Fwsclean
+Wayland:
+  1.22.0:
+    License: MIT
+    Permission to redistribute: true
+    Retrieved from: https://wayland.freedesktop.org/
+WhatsHap:
+  '2.2':
+    License: mit
+    Permission to redistribute: true
+    Retrieved from: https://repos.ecosyste.ms/api/v1/hosts/GitHub/repositories/whatshap%2Fwhatshap
+X11:
+  '20231019':
+    License: MIT
+    Permission to redistribute: true
+    Retrieved from: https://www.x.org
+XML-LibXML:
+  '2.0209':
+    License: Artistic-1.0-Perl
+    Permission to redistribute: true
+    Retrieved from: https://metacpan.org/pod/XML::LibXML
+Xerces-C++:
+  3.2.5:
+    License: Apache-2.0
+    Permission to redistribute: true
+    Retrieved from: https://xerces.apache.org/xerces-c/
+Xvfb:
+  21.1.9:
+    License: MIT
+    Permission to redistribute: true
+    Retrieved from: https://www.x.org
+YODA:
+  1.9.9:
+    License: GPL-3.0
+    Permission to redistribute: true
+    Retrieved from: https://yoda.hepforge.org/
+Yasm:
+  1.3.0:
+    License: GPL-3.0
+    Permission to redistribute: true
+    Retrieved from: https://github.com/yasm/yasm/raw/master/COPYING
+Z3:
+  4.12.2:
+    License: MIT
+    Permission to redistribute: true
+    Retrieved from: https://github.com/Z3Prover/z3
+ZeroMQ:
+  4.3.5:
+    License: LGPL-3.0-or-later
+    Permission to redistribute: true
+    Retrieved from: https://github.com/zeromq/libzmq/blob/master/COPYING.LESSER
+Zip:
+  '3.0':
+    License: Info-ZIP License
+    Permission to redistribute: true
+    Retrieved from: http://www.info-zip.org/Zip.html
+amdahl:
+  0.3.1:
+    License: mit
+    Permission to redistribute: true
+    Retrieved from: https://repos.ecosyste.ms/api/v1/hosts/GitHub/repositories/hpc-carpentry%2Famdahl
+archspec:
+  0.2.5:
+    License: MIT
+    Permission to redistribute: true
+    Retrieved from: https://github.com/archspec/archspec
+arpack-ng:
+  3.9.0:
+    License: BSD-3-Clause
+    Permission to redistribute: true
+    Retrieved from: https://github.com/opencollab/arpack-ng
+arrow-R:
+  14.0.1:
+    License: Apache-2.0
+    Permission to redistribute: true
+    Retrieved from: https://arrow.apache.org/
+at-spi2-atk:
+  2.38.0:
+    License: LGPL-2.1
+    Permission to redistribute: true
+    Retrieved from: https://gitlab.gnome.org/GNOME/at-spi2-atk
+at-spi2-core:
+  2.50.0:
+    License: LGPL-2.1
+    Permission to redistribute: true
+    Retrieved from: https://gitlab.gnome.org/GNOME/at-spi2-core
+basemap:
+  1.3.9:
+    License: MIT
+    Permission to redistribute: true
+    Retrieved from: https://matplotlib.org/basemap/
+bokeh:
+  3.2.2:
+    License: bsd-3-clause
+    Permission to redistribute: true
+    Retrieved from: https://repos.ecosyste.ms/api/v1/hosts/GitHub/repositories/bokeh%2Fbokeh
+cURL:
+  8.3.0:
+    License: MIT
+    Permission to redistribute: true
+    Retrieved from: https://curl.haxx.se
+cairo:
+  1.18.0:
+    License: LGPL-2.1
+    Permission to redistribute: true
+    Retrieved from: https://www.cairographics.org/
+casacore:
+  3.5.0:
+    License: GPL-3.0
+    Permission to redistribute: true
+    Retrieved from: https://github.com/casacore/casacore/raw/master/COPYING
+ccache:
+  '4.9':
+    License: GPL-3.0-or-later
+    Permission to redistribute: true
+    Retrieved from: https://ccache.dev/
+cffi:
+  1.15.1:
+    License: MIT
+    Permission to redistribute: true
+    Retrieved from: https://cffi.readthedocs.io/en/latest/
+cimfomfa:
+  '22.273':
+    License: GPL-3.0
+    Permission to redistribute: true
+    Retrieved from: https://github.com/micans/cimfomfa/raw/main/LICENSE
+colorize:
+  0.7.7:
+    License: gpl-2.0
+    Permission to redistribute: true
+    Retrieved from: https://repos.ecosyste.ms/api/v1/hosts/GitHub/repositories/fazibear%2Fcolorize
+cooler:
+  0.10.2:
+    License: bsd-3-clause
+    Permission to redistribute: true
+    Retrieved from: https://repos.ecosyste.ms/api/v1/hosts/GitHub/repositories/open2c%2Fcooler
+cpio:
+  '2.15':
+    License: GPL-2.0
+    Permission to redistribute: true
+    Retrieved from: ' https://ftp.gnu.org/gnu/cpio/'
+cppy:
+  1.2.1:
+    License: bsd-3-clause
+    Permission to redistribute: true
+    Retrieved from: https://repos.ecosyste.ms/api/v1/hosts/GitHub/repositories/nucleic%2Fcppy
+crb-blast:
+  0.6.9:
+    License: MIT
+    Permission to redistribute: true
+    Retrieved from: https://rubygems.org/gems/crb-blast/versions/0.6.9
+cryptography:
+  41.0.5:
+    License: Apache-2.0
+    Permission to redistribute: true
+    Retrieved from: https://github.com/pyca/cryptography
+dask:
+  2023.9.2:
+    License: BSD-3-Clause
+    Permission to redistribute: true
+    Retrieved from: https://dask.org/
+dill:
+  0.3.8:
+    License: BSD-3-Clause
+    Permission to redistribute: true
+    Retrieved from: https://pypi.org/project/dill/
+dlb:
+  '3.4':
+    License: lgpl-3.0
+    Permission to redistribute: true
+    Retrieved from: https://repos.ecosyste.ms/api/v1/hosts/GitHub/repositories/bsc-pm%2Fdlb
+double-conversion:
+  3.3.0:
+    License: bsd-3-clause
+    Permission to redistribute: true
+    Retrieved from: https://repos.ecosyste.ms/api/v1/hosts/GitHub/repositories/google%2Fdouble-conversion
+ecBuild:
+  3.8.0:
+    License: mit
+    Permission to redistribute: true
+    Retrieved from: https://repos.ecosyste.ms/api/v1/hosts/GitHub/repositories/readthedocs%2Fsphinx_rtd_theme
+ecCodes:
+  2.31.0:
+    License: apache-2.0
+    Permission to redistribute: true
+    Retrieved from: https://confluence.ecmwf.int/display/ECC/License
+elfutils:
+  '0.190':
+    License: GPL-3.0
+    Permission to redistribute: true
+    Retrieved from: https://sourceware.org/elfutils/
+elfx86exts:
+  0.6.2:
+    License: mit
+    Permission to redistribute: true
+    Retrieved from: https://repos.ecosyste.ms/api/v1/hosts/GitHub/repositories/pkgw%2Felfx86exts
+expat:
+  2.5.0:
+    License: mit
+    Permission to redistribute: true
+    Retrieved from: https://repos.ecosyste.ms/api/v1/hosts/GitHub/repositories/libexpat%2Flibexpat
+expecttest:
+  0.1.5:
+    License: mit
+    Permission to redistribute: true
+    Retrieved from: https://repos.ecosyste.ms/api/v1/hosts/GitHub/repositories/pytorch%2Fexpecttest
+f90wrap:
+  0.2.13:
+    License: lgpl-3.0
+    Permission to redistribute: true
+    Retrieved from: https://repos.ecosyste.ms/api/v1/hosts/GitHub/repositories/jameskermode%2Ff90wrap
+fastjet:
+  3.4.2:
+    License: GPL-2.0
+    Permission to redistribute: true
+    Retrieved from: https://fastjet.fr/
+fastjet-contrib:
+  '1.053':
+    License: GPL-2.0
+    Permission to redistribute: true
+    Retrieved from: https://fastjet.fr/contrib/
+fastp:
+  0.23.4:
+    License: mit
+    Permission to redistribute: true
+    Retrieved from: https://repos.ecosyste.ms/api/v1/hosts/GitHub/repositories/OpenGene%2Ffastp
+ffnvcodec:
+  12.1.14.0:
+    License: MIT
+    Permission to redistribute: true
+    Retrieved from: https://github.com/FFmpeg/nv-codec-headers
+flatbuffers:
+  23.5.26:
+    License: apache-2.0
+    Permission to redistribute: true
+    Retrieved from: https://repos.ecosyste.ms/api/v1/hosts/GitHub/repositories/google%2Fflatbuffers
+flatbuffers-python:
+  23.5.26:
+    License: apache-2.0
+    Permission to redistribute: true
+    Retrieved from: https://repos.ecosyste.ms/api/v1/hosts/GitHub/repositories/google%2Fflatbuffers
+flit:
+  3.9.0:
+    License: bsd-3-clause
+    Permission to redistribute: true
+    Retrieved from: https://repos.ecosyste.ms/api/v1/hosts/GitHub/repositories/pypa%2Fflit
+fontconfig:
+  2.14.2:
+    License: MIT
+    Permission to redistribute: true
+    Retrieved from: https://www.freedesktop.org/wiki/Software/fontconfig/
+foss:
+  2023b:
+    License: Various
+    Permission to redistribute: true
+    Retrieved from: https://easybuild.io/
+freeglut:
+  3.4.0:
+    License: MIT
+    Permission to redistribute: true
+    Retrieved from: http://freeglut.sourceforge.net/
+freetype:
+  2.13.2:
+    License: GPL-3.0
+    Permission to redistribute: true
+    Retrieved from: https://www.freetype.org/license.html
+geopandas:
+  0.14.2:
+    License: bsd-3-clause
+    Permission to redistribute: true
+    Retrieved from: https://repos.ecosyste.ms/api/v1/hosts/GitHub/repositories/geopandas%2Fgeopandas
+gfbf:
+  2023b:
+    License: Various
+    Permission to redistribute: true
+    Retrieved from: https://easybuild.io/
+giflib:
+  5.2.1:
+    License: MIT
+    Permission to redistribute: true
+    Retrieved from: https://giflib.sourceforge.net/
+git:
+  2.42.0:
+    License: GPL-2.0
+    Permission to redistribute: true
+    Retrieved from: https://git-scm.com/
+gmpy2:
+  2.1.5:
+    License: lgpl-3.0
+    Permission to redistribute: true
+    Retrieved from: https://repos.ecosyste.ms/api/v1/hosts/GitHub/repositories/aleaxit%2Fgmpy
+gmsh:
+  4.12.2:
+    License: GPL-2.0-or-later
+    Permission to redistribute: true
+    Retrieved from: https://gmsh.info/
+gnuplot:
+  5.4.8:
+    License: GPL-3.0
+    Permission to redistribute: true
+    Retrieved from: http://www.gnuplot.info/
+gompi:
+  2023b:
+    License: Various
+    Permission to redistribute: true
+    Retrieved from: https://easybuild.io/
+googletest:
+  1.14.0:
+    License: bsd-3-clause
+    Permission to redistribute: true
+    Retrieved from: https://repos.ecosyste.ms/api/v1/hosts/GitHub/repositories/google%2Fgoogletest
+graphite2:
+  1.3.14:
+    License: LGPL-2.1
+    Permission to redistribute: true
+    Retrieved from: https://github.com/silnrsi/graphite
+groff:
+  1.22.4:
+    License: GPL-3.0
+    Permission to redistribute: true
+    Retrieved from: https://layers.openembedded.org/layerindex/recipe/150214/
+grpcio:
+  1.57.0:
+    License: Apache-2.0, BSD-3-Clause, MIT
+    Permission to redistribute: true
+    Retrieved from: https://grpc.io/
+gtk-doc:
+  1.34.0:
+    License: gfdl-1.1
+    Permission to redistribute: true
+    Retrieved from: https://repos.ecosyste.ms/api/v1/hosts/gitlab.gnome.org/repositories/GNOME%2Fgtk-doc
+gzip:
+  '1.13':
+    License: GPL-3.0-or-later
+    Permission to redistribute: true
+    Retrieved from: https://www.gnu.org/software/gzip/
+h5netcdf:
+  1.2.0:
+    License: MIT
+    Permission to redistribute: true
+    Retrieved from: https://github.com/h5netcdf/h5netcdf
+h5py:
+  3.11.0:
+    License: BSD-3-Clause
+    Permission to redistribute: true
+    Retrieved from: https://github.com/h5py/h5py
+hatch-jupyter-builder:
+  0.9.1:
+    License: BSD-3-Clause
+    Permission to redistribute: true
+    Retrieved from: https://github.com/jupyterlab/hatch-jupyter-builder
+hatchling:
+  1.18.0:
+    License: MIT
+    Permission to redistribute: true
+    Retrieved from: https://github.com/pypa/hatch
+hic-straw:
+  1.3.1:
+    License: mit
+    Permission to redistribute: true
+    Retrieved from: https://repos.ecosyste.ms/api/v1/hosts/GitHub/repositories/aidenlab%2Fstraw
+hiredis:
+  1.2.0:
+    License: bsd-3-clause
+    Permission to redistribute: true
+    Retrieved from: https://repos.ecosyste.ms/api/v1/hosts/GitHub/repositories/redis%2Fhiredis
+hwloc:
+  2.9.2:
+    License: BSD-3-Clause
+    Permission to redistribute: true
+    Retrieved from: https://www.open-mpi.org/projects/hwloc/license.php
+hypothesis:
+  6.90.0:
+    License: MPL-2.0
+    Permission to redistribute: true
+    Retrieved from: https://github.com/HypothesisWorks/hypothesis
+ipympl:
+  0.9.3:
+    License: bsd-3-clause
+    Permission to redistribute: true
+    Retrieved from: https://repos.ecosyste.ms/api/v1/hosts/GitHub/repositories/matplotlib%2Fipympl
+jbigkit:
+  '2.1':
+    License: GPL-2.0
+    Permission to redistribute: true
+    Retrieved from: https://www.cl.cam.ac.uk/~mgk25/jbigkit/
+jedi:
+  0.19.1:
+    License: mit
+    Permission to redistribute: true
+    Retrieved from: https://github.com/davidhalter/jedi/raw/master/LICENSE.txt
+jemalloc:
+  5.3.0:
+    License: BSD-2-Clause
+    Permission to redistribute: true
+    Retrieved from: http://jemalloc.net
+jq:
+  '1.6':
+    License: MIT
+    Permission to redistribute: true
+    Retrieved from: https://github.com/stedolan/jq
+json-c:
+  '0.17':
+    License: MIT
+    Permission to redistribute: true
+    Retrieved from: https://github.com/json-c/json-c
+jupyter-server:
+  2.7.2:
+    License: BSD-3-Clause
+    Permission to redistribute: true
+    Retrieved from: https://github.com/jupyter-server/jupyter_server
+kim-api:
+  2.3.0:
+    License: LGPL-2.1
+    Permission to redistribute: true
+    Retrieved from: https://github.com/openkim/kim-api
+libGLU:
+  9.0.3:
+    License: mit
+    Permission to redistribute: true
+    Retrieved from: https://docs.mesa3d.org/license.html
+libaec:
+  1.0.6:
+    License: bsd-2-clause
+    Permission to redistribute: true
+    Retrieved from: https://repos.ecosyste.ms/api/v1/hosts/gitlab.dkrz.de/repositories/k202009%2Flibaec
+libaio:
+  0.3.113:
+    License: LGPL-2.1-or-later
+    Permission to redistribute: true
+    Retrieved from: https://pagure.io/libaio
+libarchive:
+  3.7.2:
+    License: BSD-2-Clause
+    Permission to redistribute: true
+    Retrieved from: https://github.com/libarchive/libarchive
+libcerf:
+  '2.3':
+    License: MIT
+    Permission to redistribute: true
+    Retrieved from: https://jugit.fz-juelich.de/mlz/libcerf
+libcint:
+  5.4.0:
+    License: apache-2.0
+    Permission to redistribute: true
+    Retrieved from: https://repos.ecosyste.ms/api/v1/hosts/GitHub/repositories/sunqm%2Flibcint
+libdeflate:
+  '1.19':
+    License: mit
+    Permission to redistribute: true
+    Retrieved from: https://repos.ecosyste.ms/api/v1/hosts/GitHub/repositories/ebiggers%2Flibdeflate
+libdrm:
+  2.4.117:
+    License: Other
+    Permission to redistribute: true
+    Retrieved from: https://dri.freedesktop.org/libdrm/
+libdwarf:
+  0.9.2:
+    License: LGPL-2.1-or-later
+    Permission to redistribute: true
+    Retrieved from: https://www.prevanders.net/dwarf.html
+libepoxy:
+  1.5.10:
+    License: mit
+    Permission to redistribute: true
+    Retrieved from: https://github.com/anholt/libepoxy/raw/master/COPYING
+libevent:
+  2.1.12:
+    License: BSD-3-Clause
+    Permission to redistribute: true
+    Retrieved from: https://libevent.org/
+libfabric:
+  1.19.0:
+    License: GPL-3.0
+    Permission to redistribute: true
+    Retrieved from: https://github.com/ofiwg/libfabric/raw/main/COPYING
+libffi:
+  3.4.4:
+    License: MIT
+    Permission to redistribute: true
+    Retrieved from: https://sourceware.org/libffi/
+libgcrypt:
+  1.10.3:
+    License: cc-by-4.0
+    Permission to redistribute: true
+    Retrieved from: https://creativecommons.org/licenses/by-sa/3.0/
+libgd:
+  2.3.3:
+    License: BSD-3-Clause
+    Permission to redistribute: true
+    Retrieved from: https://github.com/libgd/libgd
+libgeotiff:
+  1.7.3:
+    License: gfdl-1.3
+    Permission to redistribute: true
+    Retrieved from: http://static.fsf.org/nosvn/directory/fdl-1.3-standalone.html
+libgit2:
+  1.7.2:
+    License: GPL-2.0
+    Permission to redistribute: true
+    Retrieved from: https://github.com/libgit2/libgit2
+libglvnd:
+  1.7.0:
+    License: MIT
+    Permission to redistribute: true
+    Retrieved from: https://github.com/NVIDIA/libglvnd
+libgpg-error:
+  '1.48':
+    License: cc-by-4.0
+    Permission to redistribute: true
+    Retrieved from: https://creativecommons.org/licenses/by-sa/3.0/
+libiconv:
+  '1.17':
+    License: GPL-3.0-or-later
+    Permission to redistribute: true
+    Retrieved from: https://www.gnu.org/software/libiconv
+libidn2:
+  2.3.7:
+    License: GPL-3.0
+    Permission to redistribute: true
+    Retrieved from: http://www.gnu.org/licenses/licenses.html
+libjpeg-turbo:
+  3.0.1:
+    License: BSD-3-Clause
+    Permission to redistribute: true
+    Retrieved from: https://github.com/libjpeg-turbo/libjpeg-turbo
+libogg:
+  1.3.5:
+    License: BSD-3-Clause
+    Permission to redistribute: true
+    Retrieved from: https://xiph.org/ogg/
+libopus:
+  1.5.2:
+    License: BSD-3-Clause
+    Permission to redistribute: true
+    Retrieved from: https://www.opus-codec.org/
+libpciaccess:
+  '0.17':
+    License: Other
+    Permission to redistribute: true
+    Retrieved from: https://gitlab.freedesktop.org/xorg/lib/libpciaccess/-/raw/master/COPYING?ref_type=heads
+libpng:
+  1.6.40:
+    License: Libpng
+    Permission to redistribute: true
+    Retrieved from: http://www.libpng.org/pub/png/libpng.html
+librosa:
+  0.10.1:
+    License: ISC
+    Permission to redistribute: true
+    Retrieved from: https://github.com/librosa/librosa
+libsndfile:
+  1.2.2:
+    License: LGPL-2.0+
+    Permission to redistribute: true
+    Retrieved from: http://www.mega-nerd.com/libsndfile
+libsodium:
+  1.0.19:
+    License: isc
+    Permission to redistribute: true
+    Retrieved from: https://doc.libsodium.org/#license
+libspatialindex:
+  1.9.3:
+    License: mit
+    Permission to redistribute: true
+    Retrieved from: https://libspatialindex.org#license-mit
+libtirpc:
+  1.3.4:
+    License: BSD-3-Clause
+    Permission to redistribute: true
+    Retrieved from: https://sourceforge.net/projects/libtirpc/
+libunwind:
+  1.6.2:
+    License: MIT
+    Permission to redistribute: true
+    Retrieved from: https://www.nongnu.org/libunwind/
+libvorbis:
+  1.3.7:
+    License: BSD-3-Clause
+    Permission to redistribute: true
+    Retrieved from: https://xiph.org/vorbis/
+libvori:
+  '220621':
+    License: LGPL-3.0
+    Permission to redistribute: true
+    Retrieved from: https://brehm-research.de/libvori.php
+libwebp:
+  1.3.2:
+    License: BSD-3-Clause
+    Permission to redistribute: true
+    Retrieved from: https://developers.google.com/speed/webp/
+libxc:
+  6.2.2:
+    License: LGPL-3.0
+    Permission to redistribute: true
+    Retrieved from: https://gitlab.com/libxc/libxc
+libxml2:
+  2.11.5:
+    License: MIT
+    Permission to redistribute: true
+    Retrieved from: https://gitlab.gnome.org/GNOME/libxml2
+libxml2-python:
+  2.11.4:
+    License: MIT
+    Permission to redistribute: true
+    Retrieved from: https://gitlab.gnome.org/GNOME/libxml2
+libxslt:
+  1.1.38:
+    License: MIT
+    Permission to redistribute: true
+    Retrieved from: https://gitlab.gnome.org/GNOME/libxslt
+libxsmm:
+  '1.17':
+    License: bsd-3-clause
+    Permission to redistribute: true
+    Retrieved from: https://repos.ecosyste.ms/api/v1/hosts/GitHub/repositories/libxsmm%2Flibxsmm
+libyaml:
+  0.2.5:
+    License: MIT
+    Permission to redistribute: true
+    Retrieved from: https://pyyaml.org/wiki/LibYAML
+lpsolve:
+  5.5.2.11:
+    License: LGPL-2.1
+    Permission to redistribute: true
+    Retrieved from: https://sourceforge.net/projects/lpsolve/
+lxml:
+  4.9.3:
+    License: BSD-3-Clause, ZPL-2.0
+    Permission to redistribute: true
+    Retrieved from: https://lxml.de/
+lz4:
+  1.9.4:
+    License: BSD-2-Clause
+    Permission to redistribute: true
+    Retrieved from: https://github.com/lz4/lz4
+make:
+  4.4.1:
+    License: GPL-3.0
+    Permission to redistribute: true
+    Retrieved from: https://www.gnu.org/licenses/licenses.html
+mallard-ducktype:
+  1.0.2:
+    License: mit
+    Permission to redistribute: true
+    Retrieved from: https://repos.ecosyste.ms/api/v1/hosts/GitHub/repositories/projectmallard%2Fmallard-ducktype
+matplotlib:
+  3.8.2:
+    License: Python-2.0
+    Permission to redistribute: true
+    Retrieved from: https://matplotlib.org
+maturin:
+  1.5.0:
+    License: apache-2.0
+    Permission to redistribute: true
+    Retrieved from: https://repos.ecosyste.ms/api/v1/hosts/GitHub/repositories/PyO3%2Fmaturin
+meson-python:
+  0.15.0:
+    License: mit
+    Permission to redistribute: true
+    Retrieved from: https://repos.ecosyste.ms/api/v1/hosts/GitHub/repositories/mesonbuild%2Fmeson-python
+mpi4py:
+  3.1.5:
+    License: bsd-3-clause
+    Permission to redistribute: true
+    Retrieved from: https://repos.ecosyste.ms/api/v1/hosts/GitHub/repositories/mpi4py%2Fmpi4py
+mpl-ascii:
+  0.10.0:
+    License: mit
+    Permission to redistribute: true
+    Retrieved from: https://repos.ecosyste.ms/api/v1/hosts/GitHub/repositories/chriscave%2Fmpl_ascii
+multiprocess:
+  0.70.16:
+    License: other
+    Permission to redistribute: true
+    Retrieved from: https://raw.githubusercontent.com/uqfoundation/multiprocess/refs/heads/master/COPYING
+ncbi-vdb:
+  3.0.10:
+    License: Public Domain
+    Permission to redistribute: true
+    Retrieved from: https://raw.githubusercontent.com/ncbi/ncbi-vdb/refs/heads/master/LICENSE
+ncdu:
+  '1.18':
+    License: MIT
+    Permission to redistribute: true
+    Retrieved from: https://dev.yorhel.nl/ncdu
+netCDF:
+  4.9.2:
+    License: BSD-3-Clause
+    Permission to redistribute: true
+    Retrieved from: https://www.unidata.ucar.edu/software/netcdf/
+netCDF-Fortran:
+  4.6.1:
+    License: BSD-3-Clause
+    Permission to redistribute: true
+    Retrieved from: https://www.unidata.ucar.edu/software/netcdf/
+netcdf4-python:
+  1.6.4:
+    License: mit
+    Permission to redistribute: true
+    Retrieved from: https://repos.ecosyste.ms/api/v1/hosts/GitHub/repositories/Unidata%2Fnetcdf4-python
+nettle:
+  3.9.1:
+    License: LGPL-2.0-or-later
+    Permission to redistribute: true
+    Retrieved from: https://www.lysator.liu.se/~nisse/nettle/
+networkx:
+  3.2.1:
+    License: BSD-3-Clause
+    Permission to redistribute: true
+    Retrieved from: https://raw.githubusercontent.com/networkx/networkx/refs/heads/main/LICENSE.txt
+nlohmann_json:
+  3.11.3:
+    License: mit
+    Permission to redistribute: true
+    Retrieved from: https://repos.ecosyste.ms/api/v1/hosts/GitHub/repositories/nlohmann%2Fjson
+nodejs:
+  20.9.0:
+    License: artistic-2.0
+    Permission to redistribute: true
+    Retrieved from: https://github.com/nodejs/node/raw/main/LICENSE
+nsync:
+  1.26.0:
+    License: apache-2.0
+    Permission to redistribute: true
+    Retrieved from: https://repos.ecosyste.ms/api/v1/hosts/GitHub/repositories/google%2Fnsync
+numactl:
+  2.0.16:
+    License: gpl-2.0
+    Permission to redistribute: true
+    Retrieved from: https://repos.ecosyste.ms/api/v1/hosts/GitHub/repositories/numactl%2Fnumactl
+numba:
+  0.58.1:
+    License: BSD-2-Clause
+    Permission to redistribute: true
+    Retrieved from: https://github.com/numba/numba
+occt:
+  7.8.0:
+    License: lgpl-2.1
+    Permission to redistribute: true
+    Retrieved from: https://repos.ecosyste.ms/api/v1/hosts/GitHub/repositories/Open-Cascade-SAS%2FOCCT
+orjson:
+  3.9.15:
+    License: apache-2.0
+    Permission to redistribute: true
+    Retrieved from: https://repos.ecosyste.ms/api/v1/hosts/GitHub/repositories/ijl%2Forjson
+parallel:
+  '20230722':
+    License: GPL-3.0
+    Permission to redistribute: true
+    Retrieved from: https://savannah.gnu.org/projects/parallel/
+patchelf:
+  0.18.0:
+    License: gpl-3.0
+    Permission to redistribute: true
+    Retrieved from: https://repos.ecosyste.ms/api/v1/hosts/GitHub/repositories/NixOS%2Fpatchelf
+pixman:
+  0.42.2:
+    License: MIT
+    Permission to redistribute: true
+    Retrieved from: https://gitlab.freedesktop.org/pixman/pixman
+pkgconf:
+  2.0.3:
+    License: ISC
+    Permission to redistribute: true
+    Retrieved from: https://github.com/pkgconf/pkgconf
+pkgconfig:
+  1.5.5:
+    License: mit
+    Permission to redistribute: true
+    Retrieved from: https://repos.ecosyste.ms/api/v1/hosts/GitHub/repositories/matze%2Fpkgconfig
+poetry:
+  1.6.1:
+    License: MIT
+    Permission to redistribute: true
+    Retrieved from: https://python-poetry.org
+protobuf:
+  '24.0':
+    License: BSD-3-Clause
+    Permission to redistribute: true
+    Retrieved from: https://github.com/protocolbuffers/protobuf
+protobuf-python:
+  4.24.0:
+    License: BSD-3-Clause
+    Permission to redistribute: true
+    Retrieved from: https://github.com/protocolbuffers/protobuf
+psycopg2:
+  2.9.9:
+    License: LGPL-3.0
+    Permission to redistribute: true
+    Retrieved from: https://github.com/psycopg/psycopg2
+pyMBE:
+  0.8.0:
+    License: MIT
+    Permission to redistribute: true
+    Retrieved from: https://github.com/pyMBE-dev/pyMBE
+pybind11:
+  2.11.1:
+    License: BSD-3-Clause
+    Permission to redistribute: true
+    Retrieved from: https://github.com/pybind/pybind11
+pydantic:
+  2.7.4:
+    License: mit
+    Permission to redistribute: true
+    Retrieved from: https://repos.ecosyste.ms/api/v1/hosts/GitHub/repositories/pydantic%2Fpydantic
+pyfaidx:
+  0.8.1.1:
+    License: MIT
+    Permission to redistribute: true
+    Retrieved from: https://github.com/mdshw5/pyfaidx
+pyproj:
+  3.6.0:
+    License: MIT
+    Permission to redistribute: true
+    Retrieved from: https://github.com/pyproj4/pyproj
+pystencils:
+  1.3.4:
+    License: mit
+    Permission to redistribute: true
+    Retrieved from: https://repos.ecosyste.ms/api/v1/hosts/GitHub/repositories/readthedocs%2Fsphinx_rtd_theme
+pytest-flakefinder:
+  1.1.0:
+    License: MIT
+    Permission to redistribute: true
+    Retrieved from: https://github.com/dropbox/pytest-flakefinder
+pytest-rerunfailures:
+  '12.0':
+    License: MIT
+    Permission to redistribute: true
+    Retrieved from: https://github.com/pytest-dev/pytest-rerunfailures
+pytest-shard:
+  0.1.2:
+    License: mit
+    Permission to redistribute: true
+    Retrieved from: https://repos.ecosyste.ms/api/v1/hosts/GitHub/repositories/AdamGleave%2Fpytest-shard
+python-casacore:
+  3.5.2:
+    License: lgpl-3.0
+    Permission to redistribute: true
+    Retrieved from: https://repos.ecosyste.ms/api/v1/hosts/GitHub/repositories/casacore%2Fpython-casacore
+python-isal:
+  1.1.0:
+    License: MIT
+    Permission to redistribute: true
+    Retrieved from: https://github.com/pycompression/python-isal
+python-xxhash:
+  3.4.1:
+    License: bsd-2-clause
+    Permission to redistribute: true
+    Retrieved from: https://repos.ecosyste.ms/api/v1/hosts/GitHub/repositories/ifduyue%2Fpython-xxhash
+re2c:
+  '3.1':
+    License: Public Domain
+    Permission to redistribute: true
+    Retrieved from: https://re2c.org
+rpy2:
+  3.5.15:
+    License: GPL-2.0
+    Permission to redistribute: true
+    Retrieved from: https://github.com/rpy2/rpy2
+scikit-build:
+  0.17.6:
+    License: MIT
+    Permission to redistribute: true
+    Retrieved from: https://github.com/scikit-build/scikit-build
+scikit-build-core:
+  0.9.3:
+    License: MIT
+    Permission to redistribute: true
+    Retrieved from: https://github.com/scikit-build/scikit-build-core
+scikit-learn:
+  1.4.0:
+    License: bsd-3-clause
+    Permission to redistribute: true
+    Retrieved from: https://repos.ecosyste.ms/api/v1/hosts/GitHub/repositories/scikit-learn%2Fscikit-learn
+setuptools:
+  64.0.3:
+    License: MIT
+    Permission to redistribute: true
+    Retrieved from: https://pypi.org/project/setuptools
+setuptools-rust:
+  1.8.0:
+    License: mit
+    Permission to redistribute: true
+    Retrieved from: https://repos.ecosyste.ms/api/v1/hosts/GitHub/repositories/PyO3%2Fsetuptools-rust
+siscone:
+  3.0.6:
+    License: agpl-1.0
+    Permission to redistribute: true
+    Retrieved from: https://repos.ecosyste.ms/api/v1/hosts/gitlab.com/repositories/fastjet%2Fsiscone
+snakemake:
+  8.4.2:
+    License: MIT
+    Permission to redistribute: true
+    Retrieved from: https://github.com/snakemake/snakemake
+snappy:
+  1.1.10:
+    License: mit
+    Permission to redistribute: true
+    Retrieved from: https://github.com/google/snappy/raw/main/COPYING
+spglib-python:
+  2.0.2:
+    License: mit
+    Permission to redistribute: true
+    Retrieved from: https://spdx.github.io/spdx-spec/v2-draft/SPDX-license-expressions/
+statsmodels:
+  0.14.1:
+    License: BSD-3-Clause
+    Permission to redistribute: true
+    Retrieved from: https://www.statsmodels.org/
+sympy:
+  '1.12':
+    License: BSD-3-Clause
+    Permission to redistribute: true
+    Retrieved from: https://github.com/sympy/sympy
+tbb:
+  2021.13.0:
+    License: apache-2.0
+    Permission to redistribute: true
+    Retrieved from: https://repos.ecosyste.ms/api/v1/hosts/GitHub/repositories/uxlfoundation%2FoneTBB
+tcsh:
+  6.24.07:
+    License: BSD-3-Clause
+    Permission to redistribute: true
+    Retrieved from: https://www.tcsh.org
+time:
+  '1.9':
+    License: GPL-3.0-only
+    Permission to redistribute: true
+    Retrieved from: https://www.gnu.org/software/time/
+tmux:
+  3.3a:
+    License: isc
+    Permission to redistribute: true
+    Retrieved from: https://github.com/tmux/tmux/raw/master/COPYING
+tornado:
+  6.3.2:
+    License: apache-2.0
+    Permission to redistribute: true
+    Retrieved from: https://repos.ecosyste.ms/api/v1/hosts/GitHub/repositories/tornadoweb%2Ftornado
+tqdm:
+  4.66.2:
+    License: mit
+    Permission to redistribute: true
+    Retrieved from: https://github.com/tqdm/tqdm/raw/master/LICENCE
+typing-extensions:
+  4.10.0:
+    License: GPL-3.0
+    Permission to redistribute: true
+    Retrieved from: https://github.com/python/typing_extensions/raw/main/LICENSE
+unixODBC:
+  2.3.12:
+    License: LGPL-2.0-or-later
+    Permission to redistribute: true
+    Retrieved from: https://www.unixodbc.org/
+utf8proc:
+  2.9.0:
+    License: MIT
+    Permission to redistribute: true
+    Retrieved from: https://github.com/JuliaStrings/utf8proc
+virtualenv:
+  20.24.6:
+    License: mit
+    Permission to redistribute: true
+    Retrieved from: https://repos.ecosyste.ms/api/v1/hosts/GitHub/repositories/pypa%2Fvirtualenv
+waLBerla:
+  '6.1':
+    License: GPL-3.0
+    Permission to redistribute: true
+    Retrieved from: https://www.walberla.net/
+wget:
+  1.24.5:
+    License: GPL-3.0
+    Permission to redistribute: true
+    Retrieved from: https://www.gnu.org/licenses/licenses.html
+wradlib:
+  2.0.3:
+    License: mit
+    Permission to redistribute: true
+    Retrieved from: https://docs.wradlib.org/#license
+wrapt:
+  1.15.0:
+    License: BSD-2-Clause
+    Permission to redistribute: true
+    Retrieved from: https://github.com/GrahamDumpleton/wrapt
+wxWidgets:
+  3.2.6:
+    License: GPL-2.0
+    Permission to redistribute: true
+    Retrieved from: https://raw.githubusercontent.com/wxWidgets/wxWidgets/refs/heads/master/docs/licence.txt
+x264:
+  '20231019':
+    License: GPL-2.0-or-later
+    Permission to redistribute: true
+    Retrieved from: https://www.videolan.org/developers/x264.html
+x265:
+  '3.5':
+    License: GPL-2.0
+    Permission to redistribute: true
+    Retrieved from: https://www.x265.org/
+xarray:
+  2023.9.0:
+    License: apache-2.0
+    Permission to redistribute: true
+    Retrieved from: https://repos.ecosyste.ms/api/v1/hosts/GitHub/repositories/pydata%2Fxarray
+xorg-macros:
+  1.20.0:
+    License: mit
+    Permission to redistribute: true
+    Retrieved from: https://repos.ecosyste.ms/api/v1/hosts/gitlab.freedesktop.org/repositories/xorg%2Futil%2Fmacros
+xprop:
+  1.2.6:
+    License: MIT
+    Permission to redistribute: true
+    Retrieved from: https://www.x.org/wiki/
+xxHash:
+  0.8.2:
+    License: BSD-2-Clause
+    Permission to redistribute: true
+    Retrieved from: https://raw.githubusercontent.com/Cyan4973/xxHash/refs/heads/dev/LICENSE
+xxd:
+  9.1.0307:
+    License: vim
+    Permission to redistribute: true
+    Retrieved from: https://www.vim.org
+yell:
+  2.2.2:
+    License: mit
+    Permission to redistribute: true
+    Retrieved from: https://repos.ecosyste.ms/api/v1/hosts/GitHub/repositories/rudionrails%2Fyell
+yelp-tools:
+  '42.1':
+    License: gpl-2.0+
+    Permission to redistribute: true
+    Retrieved from: https://repos.ecosyste.ms/api/v1/hosts/gitlab.gnome.org/repositories/GNOME%2Fyelp-tools
+yelp-xsl:
+  '42.1':
+    License: LGPL-2.1-only
+    Permission to redistribute: true
+    Retrieved from: https://gitlab.gnome.org/GNOME/yelp-xsl/-/raw/master/COPYING
+zstd:
+  1.5.5:
+    License: BSD-3-Clause
+    Permission to redistribute: true
+    Retrieved from: https://github.com/facebook/zstd/blob/dev/LICENSE
