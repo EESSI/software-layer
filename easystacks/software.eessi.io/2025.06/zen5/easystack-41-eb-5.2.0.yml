@@ -1,5 +1,0 @@
-# easystack-41-eb-5.2.0.yml: total build duration = 2 minutes
-easyconfigs:
-  - /cvmfs/software.eessi.io/versions/2025.06/software/linux/x86_64/amd/zen2/reprod/hwloc/2.12.1-GCCcore-14.3.0/20260115_101151UTC/easybuild/hwloc-2.12.1-GCCcore-14.3.0.eb:
-      options:
-        include-easyblocks: /cvmfs/software.eessi.io/versions/2025.06/software/linux/x86_64/amd/zen2/reprod/hwloc/2.12.1-GCCcore-14.3.0/20260115_101151UTC/easybuild/reprod/easyblocks/*.py

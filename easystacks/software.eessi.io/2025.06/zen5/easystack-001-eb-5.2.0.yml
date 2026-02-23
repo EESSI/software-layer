@@ -1,0 +1,18 @@
+# easystack-001-eb-5.2.0.yml: total build duration = 6 minutes
+easyconfigs:
+  - /cvmfs/software.eessi.io/versions/2025.06/software/linux/x86_64/amd/zen2/reprod/EasyBuild/5.1.1/20250718_190128UTC/easybuild/EasyBuild-5.1.1.eb:
+      options:
+        robot: False
+        include-easyblocks: /cvmfs/software.eessi.io/versions/2025.06/software/linux/x86_64/amd/zen2/reprod/EasyBuild/5.1.1/20250718_190128UTC/easybuild/reprod/easyblocks/*.py
+  - /cvmfs/software.eessi.io/versions/2025.06/software/linux/x86_64/amd/zen2/reprod/EasyBuild/5.1.2/20251118_140221UTC/easybuild/EasyBuild-5.1.2.eb:
+      options:
+        robot: False
+        include-easyblocks: /cvmfs/software.eessi.io/versions/2025.06/software/linux/x86_64/amd/zen2/reprod/EasyBuild/5.1.2/20251118_140221UTC/easybuild/reprod/easyblocks/*.py
+  - /cvmfs/software.eessi.io/versions/2025.06/software/linux/x86_64/amd/zen2/reprod/EasyBuild/5.2.0/20251224_112509UTC/easybuild/EasyBuild-5.2.0.eb:
+      options:
+        robot: False
+        include-easyblocks: /cvmfs/software.eessi.io/versions/2025.06/software/linux/x86_64/amd/zen2/reprod/EasyBuild/5.2.0/20251224_112509UTC/easybuild/reprod/easyblocks/*.py
+  - /cvmfs/software.eessi.io/versions/2025.06/software/linux/x86_64/amd/zen2/reprod/EasyBuild/5.2.1/20260220_211136UTC/easybuild/EasyBuild-5.2.1.eb:
+      options:
+        robot: False
+        include-easyblocks: /cvmfs/software.eessi.io/versions/2025.06/software/linux/x86_64/amd/zen2/reprod/EasyBuild/5.2.1/20260220_211136UTC/easybuild/reprod/easyblocks/*.py
