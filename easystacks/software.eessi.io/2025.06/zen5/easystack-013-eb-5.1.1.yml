@@ -2,5 +2,4 @@
 easyconfigs:
   - /cvmfs/software.eessi.io/versions/2025.06/software/linux/x86_64/amd/zen2/reprod/p7zip/17.05-GCCcore-13.3.0/20250930_152624UTC/easybuild/p7zip-17.05-GCCcore-13.3.0.eb:
       options:
-        robot: False
         include-easyblocks: /cvmfs/software.eessi.io/versions/2025.06/software/linux/x86_64/amd/zen2/reprod/p7zip/17.05-GCCcore-13.3.0/20250930_152624UTC/easybuild/reprod/easyblocks/*.py
