@@ -1,0 +1,5 @@
+# easystack-11-eb-5.2.0.yml: total build duration = 8 minutes
+easyconfigs:
+  - /cvmfs/software.eessi.io/versions/2025.06/software/linux/x86_64/amd/zen2/reprod/poetry/1.8.3-GCCcore-13.3.0/20260113_212026UTC/easybuild/poetry-1.8.3-GCCcore-13.3.0.eb:
+      options:
+        include-easyblocks: /cvmfs/software.eessi.io/versions/2025.06/software/linux/x86_64/amd/zen2/reprod/poetry/1.8.3-GCCcore-13.3.0/20260113_212026UTC/easybuild/reprod/easyblocks/*.py

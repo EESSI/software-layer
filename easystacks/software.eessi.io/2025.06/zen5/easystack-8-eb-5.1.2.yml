@@ -1,0 +1,5 @@
+# easystack-8-eb-5.1.2.yml: total build duration = 15 minutes
+easyconfigs:
+  - /cvmfs/software.eessi.io/versions/2025.06/software/linux/x86_64/amd/zen2/reprod/Boost/1.85.0-GCC-13.3.0/20251112_164353UTC/easybuild/Boost-1.85.0-GCC-13.3.0.eb:
+      options:
+        include-easyblocks: /cvmfs/software.eessi.io/versions/2025.06/software/linux/x86_64/amd/zen2/reprod/Boost/1.85.0-GCC-13.3.0/20251112_164353UTC/easybuild/reprod/easyblocks/*.py

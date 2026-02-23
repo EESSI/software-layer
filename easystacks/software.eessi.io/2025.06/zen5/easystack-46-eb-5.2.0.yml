@@ -1,0 +1,77 @@
+# easystack-46-eb-5.2.0.yml: total build duration = 232 minutes
+easyconfigs:
+  - /cvmfs/software.eessi.io/versions/2025.06/software/linux/x86_64/amd/zen2/reprod/Flask/3.0.3-GCCcore-13.3.0/20260114_091611UTC/easybuild/Flask-3.0.3-GCCcore-13.3.0.eb:
+      options:
+        include-easyblocks: /cvmfs/software.eessi.io/versions/2025.06/software/linux/x86_64/amd/zen2/reprod/Flask/3.0.3-GCCcore-13.3.0/20260114_091611UTC/easybuild/reprod/easyblocks/*.py
+  - /cvmfs/software.eessi.io/versions/2025.06/software/linux/x86_64/amd/zen2/reprod/wrapt/1.16.0-gfbf-2024a/20260114_091639UTC/easybuild/wrapt-1.16.0-gfbf-2024a.eb:
+      options:
+        include-easyblocks: /cvmfs/software.eessi.io/versions/2025.06/software/linux/x86_64/amd/zen2/reprod/wrapt/1.16.0-gfbf-2024a/20260114_091639UTC/easybuild/reprod/easyblocks/*.py
+  - /cvmfs/software.eessi.io/versions/2025.06/software/linux/x86_64/amd/zen2/reprod/Deprecated/1.2.18-gfbf-2024a/20260114_091700UTC/easybuild/Deprecated-1.2.18-gfbf-2024a.eb:
+      options:
+        include-easyblocks: /cvmfs/software.eessi.io/versions/2025.06/software/linux/x86_64/amd/zen2/reprod/Deprecated/1.2.18-gfbf-2024a/20260114_091700UTC/easybuild/reprod/easyblocks/*.py
+  - /cvmfs/software.eessi.io/versions/2025.06/software/linux/x86_64/amd/zen2/reprod/GitPython/3.1.43-GCCcore-13.3.0/20260114_091737UTC/easybuild/GitPython-3.1.43-GCCcore-13.3.0.eb:
+      options:
+        include-easyblocks: /cvmfs/software.eessi.io/versions/2025.06/software/linux/x86_64/amd/zen2/reprod/GitPython/3.1.43-GCCcore-13.3.0/20260114_091737UTC/easybuild/reprod/easyblocks/*.py
+  - /cvmfs/software.eessi.io/versions/2025.06/software/linux/x86_64/amd/zen2/reprod/googleapis-python/2025.03-GCCcore-13.3.0/20260114_092028UTC/easybuild/googleapis-python-2025.03-GCCcore-13.3.0.eb:
+      options:
+        include-easyblocks: /cvmfs/software.eessi.io/versions/2025.06/software/linux/x86_64/amd/zen2/reprod/googleapis-python/2025.03-GCCcore-13.3.0/20260114_092028UTC/easybuild/reprod/easyblocks/*.py
+  - /cvmfs/software.eessi.io/versions/2025.06/software/linux/x86_64/amd/zen2/reprod/pydantic/2.9.1-GCCcore-13.3.0/20260114_092823UTC/easybuild/pydantic-2.9.1-GCCcore-13.3.0.eb:
+      options:
+        include-easyblocks: /cvmfs/software.eessi.io/versions/2025.06/software/linux/x86_64/amd/zen2/reprod/pydantic/2.9.1-GCCcore-13.3.0/20260114_092823UTC/easybuild/reprod/easyblocks/*.py
+  - /cvmfs/software.eessi.io/versions/2025.06/software/linux/x86_64/amd/zen2/reprod/scikit-learn/1.5.2-gfbf-2024a/20260114_093118UTC/easybuild/scikit-learn-1.5.2-gfbf-2024a.eb:
+      options:
+        include-easyblocks: /cvmfs/software.eessi.io/versions/2025.06/software/linux/x86_64/amd/zen2/reprod/scikit-learn/1.5.2-gfbf-2024a/20260114_093118UTC/easybuild/reprod/easyblocks/*.py
+  - /cvmfs/software.eessi.io/versions/2025.06/software/linux/x86_64/amd/zen2/reprod/Greenlet/3.1.1-GCCcore-13.3.0/20260114_093141UTC/easybuild/Greenlet-3.1.1-GCCcore-13.3.0.eb:
+      options:
+        include-easyblocks: /cvmfs/software.eessi.io/versions/2025.06/software/linux/x86_64/amd/zen2/reprod/Greenlet/3.1.1-GCCcore-13.3.0/20260114_093141UTC/easybuild/reprod/easyblocks/*.py
+  - /cvmfs/software.eessi.io/versions/2025.06/software/linux/x86_64/amd/zen2/reprod/psycopg/3.2.3-GCCcore-13.3.0/20260114_093158UTC/easybuild/psycopg-3.2.3-GCCcore-13.3.0.eb:
+      options:
+        include-easyblocks: /cvmfs/software.eessi.io/versions/2025.06/software/linux/x86_64/amd/zen2/reprod/psycopg/3.2.3-GCCcore-13.3.0/20260114_093158UTC/easybuild/reprod/easyblocks/*.py
+  - /cvmfs/software.eessi.io/versions/2025.06/software/linux/x86_64/amd/zen2/reprod/SQLAlchemy/2.0.36-GCCcore-13.3.0/20260114_093353UTC/easybuild/SQLAlchemy-2.0.36-GCCcore-13.3.0.eb:
+      options:
+        include-easyblocks: /cvmfs/software.eessi.io/versions/2025.06/software/linux/x86_64/amd/zen2/reprod/SQLAlchemy/2.0.36-GCCcore-13.3.0/20260114_093353UTC/easybuild/reprod/easyblocks/*.py
+  - /cvmfs/software.eessi.io/versions/2025.06/software/linux/x86_64/amd/zen2/reprod/MLflow/2.22.4-gfbf-2024a/20260114_093838UTC/easybuild/MLflow-2.22.4-gfbf-2024a.eb:
+      options:
+        include-easyblocks: /cvmfs/software.eessi.io/versions/2025.06/software/linux/x86_64/amd/zen2/reprod/MLflow/2.22.4-gfbf-2024a/20260114_093838UTC/easybuild/reprod/easyblocks/*.py
+  - /cvmfs/software.eessi.io/versions/2025.06/software/linux/x86_64/amd/zen2/reprod/jq/1.7.1-GCCcore-13.3.0/20260115_093036UTC/easybuild/jq-1.7.1-GCCcore-13.3.0.eb:
+      options:
+        include-easyblocks: /cvmfs/software.eessi.io/versions/2025.06/software/linux/x86_64/amd/zen2/reprod/jq/1.7.1-GCCcore-13.3.0/20260115_093036UTC/easybuild/reprod/easyblocks/*.py
+  - /cvmfs/software.eessi.io/versions/2025.06/software/linux/x86_64/amd/zen2/reprod/PLY/3.11-GCCcore-13.3.0/20260115_093054UTC/easybuild/PLY-3.11-GCCcore-13.3.0.eb:
+      options:
+        include-easyblocks: /cvmfs/software.eessi.io/versions/2025.06/software/linux/x86_64/amd/zen2/reprod/PLY/3.11-GCCcore-13.3.0/20260115_093054UTC/easybuild/reprod/easyblocks/*.py
+  - /cvmfs/software.eessi.io/versions/2025.06/software/linux/x86_64/amd/zen2/reprod/Lua/5.4.7-GCCcore-13.3.0/20260115_093106UTC/easybuild/Lua-5.4.7-GCCcore-13.3.0.eb:
+      options:
+        include-easyblocks: /cvmfs/software.eessi.io/versions/2025.06/software/linux/x86_64/amd/zen2/reprod/Lua/5.4.7-GCCcore-13.3.0/20260115_093106UTC/easybuild/reprod/easyblocks/*.py
+  - /cvmfs/software.eessi.io/versions/2025.06/software/linux/x86_64/amd/zen2/reprod/luaposix/36.3-GCCcore-13.3.0/20260115_093147UTC/easybuild/luaposix-36.3-GCCcore-13.3.0.eb:
+      options:
+        include-easyblocks: /cvmfs/software.eessi.io/versions/2025.06/software/linux/x86_64/amd/zen2/reprod/luaposix/36.3-GCCcore-13.3.0/20260115_093147UTC/easybuild/reprod/easyblocks/*.py
+  - /cvmfs/software.eessi.io/versions/2025.06/software/linux/x86_64/amd/zen2/reprod/Jansson/2.14.1-GCCcore-13.3.0/20260115_093311UTC/easybuild/Jansson-2.14.1-GCCcore-13.3.0.eb:
+      options:
+        include-easyblocks: /cvmfs/software.eessi.io/versions/2025.06/software/linux/x86_64/amd/zen2/reprod/Jansson/2.14.1-GCCcore-13.3.0/20260115_093311UTC/easybuild/reprod/easyblocks/*.py
+  - /cvmfs/software.eessi.io/versions/2025.06/software/linux/x86_64/amd/zen2/reprod/libedit/20240808-GCCcore-13.3.0/20260115_093413UTC/easybuild/libedit-20240808-GCCcore-13.3.0.eb:
+      options:
+        include-easyblocks: /cvmfs/software.eessi.io/versions/2025.06/software/linux/x86_64/amd/zen2/reprod/libedit/20240808-GCCcore-13.3.0/20260115_093413UTC/easybuild/reprod/easyblocks/*.py
+  - /cvmfs/software.eessi.io/versions/2025.06/software/linux/x86_64/amd/zen2/reprod/Flux/0.80.0-GCC-13.3.0/20260115_095015UTC/easybuild/Flux-0.80.0-GCC-13.3.0.eb:
+      options:
+        include-easyblocks: /cvmfs/software.eessi.io/versions/2025.06/software/linux/x86_64/amd/zen2/reprod/Flux/0.80.0-GCC-13.3.0/20260115_095015UTC/easybuild/reprod/easyblocks/*.py
+  - /cvmfs/software.eessi.io/versions/2025.06/software/linux/x86_64/amd/zen2/reprod/llvm-compilers/20.1.8/20260115_122102UTC/easybuild/llvm-compilers-20.1.8.eb:
+      options:
+        include-easyblocks: /cvmfs/software.eessi.io/versions/2025.06/software/linux/x86_64/amd/zen2/reprod/llvm-compilers/20.1.8/20260115_122102UTC/easybuild/reprod/easyblocks/*.py
+  - /cvmfs/software.eessi.io/versions/2025.06/software/linux/x86_64/amd/zen2/reprod/OpenMPI/5.0.8-llvm-compilers-20.1.8/20260115_125620UTC/easybuild/OpenMPI-5.0.8-llvm-compilers-20.1.8.eb:
+      options:
+        include-easyblocks: /cvmfs/software.eessi.io/versions/2025.06/software/linux/x86_64/amd/zen2/reprod/OpenMPI/5.0.8-llvm-compilers-20.1.8/20260115_125620UTC/easybuild/reprod/easyblocks/*.py
+  - /cvmfs/software.eessi.io/versions/2025.06/software/linux/x86_64/amd/zen2/reprod/FFTW/3.3.10-llvm-compilers-20.1.8/20260115_132754UTC/easybuild/FFTW-3.3.10-llvm-compilers-20.1.8.eb:
+      options:
+        include-easyblocks: /cvmfs/software.eessi.io/versions/2025.06/software/linux/x86_64/amd/zen2/reprod/FFTW/3.3.10-llvm-compilers-20.1.8/20260115_132754UTC/easybuild/reprod/easyblocks/*.py
+  - /cvmfs/software.eessi.io/versions/2025.06/software/linux/x86_64/amd/zen2/reprod/BLIS/2.0-llvm-compilers-20.1.8/20260115_133157UTC/easybuild/BLIS-2.0-llvm-compilers-20.1.8.eb:
+      options:
+        include-easyblocks: /cvmfs/software.eessi.io/versions/2025.06/software/linux/x86_64/amd/zen2/reprod/BLIS/2.0-llvm-compilers-20.1.8/20260115_133157UTC/easybuild/reprod/easyblocks/*.py
+  - /cvmfs/software.eessi.io/versions/2025.06/software/linux/x86_64/amd/zen2/reprod/AOCL-BLAS/5.1-llvm-compilers-20.1.8/20260115_133637UTC/easybuild/AOCL-BLAS-5.1-llvm-compilers-20.1.8.eb:
+      options:
+        include-easyblocks: /cvmfs/software.eessi.io/versions/2025.06/software/linux/x86_64/amd/zen2/reprod/AOCL-BLAS/5.1-llvm-compilers-20.1.8/20260115_133637UTC/easybuild/reprod/easyblocks/*.py
+  - /cvmfs/software.eessi.io/versions/2025.06/software/linux/x86_64/amd/zen2/reprod/OpenBLAS/0.3.30-llvm-compilers-20.1.8/20260115_152731UTC/easybuild/OpenBLAS-0.3.30-llvm-compilers-20.1.8.eb:
+      options:
+        include-easyblocks: /cvmfs/software.eessi.io/versions/2025.06/software/linux/x86_64/amd/zen2/reprod/OpenBLAS/0.3.30-llvm-compilers-20.1.8/20260115_152731UTC/easybuild/reprod/easyblocks/*.py
+  - /cvmfs/software.eessi.io/versions/2025.06/software/linux/x86_64/amd/zen2/reprod/lompi/2025b/20260115_152737UTC/easybuild/lompi-2025b.eb:
+      options:
+        include-easyblocks: /cvmfs/software.eessi.io/versions/2025.06/software/linux/x86_64/amd/zen2/reprod/lompi/2025b/20260115_152737UTC/easybuild/reprod/easyblocks/*.py

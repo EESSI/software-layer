@@ -1,0 +1,5 @@
+# easystack-37-eb-5.1.2.yml: total build duration = 336 minutes
+easyconfigs:
+  - /cvmfs/software.eessi.io/versions/2025.06/software/linux/x86_64/amd/zen2/reprod/Qt6/6.9.3-GCCcore-14.2.0/20251216_171305UTC/easybuild/Qt6-6.9.3-GCCcore-14.2.0.eb:
+      options:
+        include-easyblocks: /cvmfs/software.eessi.io/versions/2025.06/software/linux/x86_64/amd/zen2/reprod/Qt6/6.9.3-GCCcore-14.2.0/20251216_171305UTC/easybuild/reprod/easyblocks/*.py
