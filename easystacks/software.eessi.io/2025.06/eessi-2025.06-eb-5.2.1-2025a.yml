@@ -1,0 +1,4 @@
+easyconfigs:
+  - R-bundle-Bioconductor-3.22-foss-2025a-R-4.5.1.eb:
+      options:
+        parallel-extensions-install: true
