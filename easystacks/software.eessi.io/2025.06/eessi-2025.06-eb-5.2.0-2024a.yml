@@ -14,3 +14,4 @@ easyconfigs:
         # see https://github.com/easybuilders/easybuild-easyconfigs/pull/23923
         from-commit: 0eef0cf4f6e03172451c41a5af1c0e26b7a777f8
   - GDB-16.3-GCCcore-13.3.0.eb
+  - TensorFlow-2.18.1-foss-2024a.eb
