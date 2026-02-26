@@ -4,5 +4,5 @@ easyconfigs:
       options:
         # pick up PyQt6 easyconfigs that has direct libglvnd dependency,
         # see https://github.com/easybuilders/easybuild-easyconfigs/pull/25453
-        from-commit: 8a66b41a0b555dfb85a2a67e0d3fbbe03f9cf7b1
+        from-commit: 8cc957644831c190d07f035b950896332c34ce6c
   - VisPy-0.15.2-gfbf-2025a.eb
