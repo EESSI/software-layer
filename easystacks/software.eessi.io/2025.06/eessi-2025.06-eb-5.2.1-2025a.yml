@@ -1,2 +1,8 @@
 easyconfigs:
   - uv-0.7.13-GCCcore-14.2.0.eb
+  - PyQt6-6.9.1-GCCcore-14.2.0.eb:
+      options:
+        # pick up PyQt6 easyconfigs that has direct libglvnd dependency,
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/25453
+        from-commit: 8cc957644831c190d07f035b950896332c34ce6c
+  - VisPy-0.15.2-gfbf-2025a.eb
