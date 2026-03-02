@@ -1,0 +1,208 @@
+name: Check and update licenses
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+permissions:
+  contents: read # we dont need to write
+
+jobs:
+  license_update:
+
+    strategy: 
+      fail-fast: false
+      matrix:
+        # we just do these two architectures for now as they are ones causing more discrepancies
+        include:
+         - runs_on: ubuntu-24.04-arm
+           EESSI_VERSION: 2023.06
+           EESSI_SOFTWARE_SUBDIR_OVERRIDE: aarch64/generic
+           NO_SLASH_NAME: aarch64-generic
+         - runs_on: ubuntu-24.04
+           EESSI_VERSION: 2023.06
+           EESSI_SOFTWARE_SUBDIR_OVERRIDE: x86_64/generic
+           NO_SLASH_NAME: x86_64-generic
+
+    runs-on: ${{ matrix.runs_on }}
+
+    steps:
+      - name: Check out software-layer repository
+        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
+
+      - name: Mount EESSI CernVM-FS repository
+        uses: cvmfs-contrib/github-action-cvmfs@55899ca74cf78ab874bdf47f5a804e47c198743c # v4.0
+        with:
+            cvmfs_config_package: https://github.com/EESSI/filesystem-layer/releases/download/latest/cvmfs-config-eessi_latest_all.deb
+            cvmfs_http_proxy: DIRECT
+            cvmfs_repositories: software.eessi.io
+
+      - name: Check for missing installations
+        env:
+           PR_NUMBER: ${{ github.event.number }}
+
+        run: |
+          export EESSI_SOFTWARE_SUBDIR_OVERRIDE=${{matrix.EESSI_SOFTWARE_SUBDIR_OVERRIDE}}
+          source /cvmfs/software.eessi.io/versions/${{matrix.EESSI_VERSION}}/init/bash
+
+          # set $EESSI_CPU_FAMILY to the CPU architecture that corresponds to $EESSI_SOFTWARE_SUBDIR_OVERRIDE (part before the first slash),
+          # to prevent issues with checks in the Easybuild configuration that use this variable
+          export EESSI_CPU_FAMILY=${EESSI_SOFTWARE_SUBDIR_OVERRIDE%%/*}
+          export EESSI_PREFIX=/cvmfs/software.eessi.io/versions/${{matrix.EESSI_VERSION}}
+          export EESSI_OS_TYPE=linux
+          env | grep ^EESSI | sort
+          module load EasyBuild
+          
+          # create a temporary directory to store the output
+          LOCAL_TMPDIR=$(mktemp -d)
+          eb_missing_out=$LOCAL_TMPDIR/eb_missing.out
+          echo "eb_missing_out=$LOCAL_TMPDIR/eb_missing.out" >> $GITHUB_ENV
+          echo "Temporary directory created: ${eb_missing_out}"
+          file_list=$(curl -sS \
+                        -H "Accept: application/vnd.github+json" \
+                        "https://api.github.com/repos/${GITHUB_REPOSITORY}/pulls/${PR_NUMBER}/files?per_page=100" |
+                        jq -r '.[].filename | select(test("easystack"))')
+          
+          if [ -z "$file_list" ]; then
+             echo "No easystack files found. Skipping license check."
+             exit 0 
+          fi
+
+          echo "Files to check:"
+          echo $file_list
+           
+          for easystack_file in $file_list; do
+              eb_version=$(echo ${easystack_file} | sed 's/.*eb-\([0-9.]*\).*.yml/\1/g')
+              echo "check missing installations for ${easystack_file} with EasyBuild ${eb_version}..."
+              module purge
+              module load EasyBuild/${eb_version}
+              module load EESSI-extend/${{matrix.EESSI_VERSION}}-easybuild
+              which eb
+              ${EB:-eb}  --version
+              ${EB:-eb}  --missing --easystack ${easystack_file} 2>&1 | tee ${eb_missing_out}
+              
+              exit_code=${PIPESTATUS[0]}
+              #echo "exit code for eb --missing --easystack ${easystack_file} is ${exit_code}"
+              grep " required modules missing:" ${eb_missing_out} # > /dev/null
+              exit_code=$?
+              
+              if [[ ${exit_code} -eq 0 ]]; then 
+                echo "missing installations found for ${easystack_file}!" >&2;
+                echo "PROCESS_LICENSES=true" >> $GITHUB_ENV
+              else
+                echo "no missing installations found for ${easystack_file}."
+                exit 0
+              fi  
+          done
+
+      - name: Check for software existing in licenses.yml file 
+        if: env.PROCESS_LICENSES == 'true'
+        run: |
+          # double check this 
+          if [ -s licenses/licenses.yml ]; then
+              echo "licenses.yml file exists, checking for software versions that are not in the file..."
+              echo "tmp file check:  ${eb_missing_out}"
+             # cat ${eb_missing_out}
+              grep -oP '^\* \K[^ ]+' "${eb_missing_out}" | sort -u  > missing.txt
+              echo "Modules to check"
+              cat missing.txt
+
+              # Check if software exists as key in YAML
+
+              while IFS= read -r module; do
+              # module format: NAME/VERSION-TOOLCHAIN
+              # e.g. ALL/0.9.2-foss-2023a
+
+                name="${module%%/*}"      # ALL
+                rest="${module#*/}"       # 0.9.2-foss-2023a
+                version="${rest%%-*}"     # 0.9.2
+
+              # Check if licenses.yml has: NAME -> VERSION
+              if ! yq -e ".\"$name\".\"$version\"" licenses/licenses.yml >/dev/null 2>&1; then
+                echo "$module" >> missing_modules.txt
+              fi
+              done < missing.txt
+
+              echo "Modules not in licenses.yml: "
+              cat missing_modules.txt
+              
+            else
+              echo "licenses.yml file does not exist? what happened?"
+              exit 1
+            fi
+
+      - name : Search sources for missing modules
+        if: env.PROCESS_LICENSES == 'true'
+        run: |
+                if [ -s missing_modules.txt ]; then
+                  export EESSI_SOFTWARE_SUBDIR_OVERRIDE=${{matrix.EESSI_SOFTWARE_SUBDIR_OVERRIDE}}
+                  source /cvmfs/software.eessi.io/versions/${{matrix.EESSI_VERSION}}/init/bash
+
+                  echo "Searching sources for missing modules..."
+                  # Generates a "modules_results.json" file 
+                  module load Python-bundle-PyPI/2023.06-GCCcore-12.3.0
+                  python licenses/parsing_easyconfigs.py missing_modules.txt
+                  cat modules_results.json
+                fi
+
+      - name : Try to fetch the license 
+        if: env.PROCESS_LICENSES == 'true'
+        run: |
+              if [ -s modules_results.json ]; then
+                export EESSI_SOFTWARE_SUBDIR_OVERRIDE=${{matrix.EESSI_SOFTWARE_SUBDIR_OVERRIDE}}
+                source /cvmfs/software.eessi.io/versions/${{matrix.EESSI_VERSION}}/init/bash
+
+                echo "modules_results.json file exists, trying to fetch the license..."
+                ml Python-bundle-PyPI/2023.06-GCCcore-12.3.0 BeautifulSoup/4.12.2-GCCcore-12.3.0 PyYAML/6.0-GCCcore-12.3.0
+                python licenses/parse_licenses.py modules_results.json licenses/licenses.yml
+                cat temporal_print.yaml
+              else
+                echo "modules_results.json file does not exist, skipping license fetch."
+              fi
+              
+      - name: Check and generate report on missing licenses
+        if: env.PROCESS_LICENSES == 'true'
+        run: |
+              echo ""
+              # Look for missing licences in licenses_aux.yaml
+              OUTPUT=$(yq eval '.. | select(has("License")) | select(.License == "not found" or .License == "Other") | (path | join(" --> ")) + ": " + .License' licenses_aux.yaml)
+              
+              # Check if the variable is NOT empty (-n)
+              if [[ -n "$OUTPUT" ]]; then
+                echo "Missing licenses found, please check the missing_report.yaml file."
+                echo "$OUTPUT"
+                echo "$OUTPUT" > missing_report.yaml
+              else
+                echo "No missing licenses found."
+              fi
+
+              # Create a patch file
+              diff -Naur licenses/licenses.yml licenses_aux.yaml > patch.txt || true
+              echo "patch.txt file generated."
+
+
+      - name: Generate artifacts
+        if: env.PROCESS_LICENSES == 'true'
+        uses: actions/upload-artifact@v4
+        with:
+          name: license-results-${{ matrix.NO_SLASH_NAME }}
+          path: |
+            missing_report.yaml
+            patch.txt
+
+
+      - name: How to edit artifacts and apply patch
+        if: env.PROCESS_LICENSES == 'true'
+        run: |
+              echo "Artifacts generated. To resolve the missing licenses, please edit 'patch.txt' manually, making sure you follow the following format: "
+              echo ""
+              echo "<package_name>:"
+              echo "  <version_id>:"
+              echo "    License: <license_info>"
+              echo "    Permission to redistribute: <true/false>"
+              echo "    Retrieved from: <source_link>"
+              echo ""
+              echo " Once edited, you can apply the patch automatically using the patch command from the licenses directory:    "
+
+              echo " patch < <path/to/patch.txt>  "

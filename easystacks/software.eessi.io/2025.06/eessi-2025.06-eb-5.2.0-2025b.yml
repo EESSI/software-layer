@@ -50,3 +50,9 @@ easyconfigs:
   - SVT-AV1-3.1.2-GCCcore-14.3.0.eb
   - libde265-1.0.16-GCCcore-14.3.0.eb
   - x265-4.1-GCCcore-14.3.0.eb
+  # Due to a framework problem, these are being built with EB 5.2.0 even when 5.2.1 is available
+  # - framework PR for fix: https://github.com/easybuilders/easybuild-framework/pull/5142
+  # - triggered by https://github.com/easybuilders/easybuild-easyblocks/pull/3993
+  - jupyterlmod-5.2.2-GCCcore-13.3.0.eb
+  - jupyterlmod-5.2.2-GCCcore-14.2.0.eb
+  - jupyterlmod-5.3.0-GCCcore-14.3.0.eb
