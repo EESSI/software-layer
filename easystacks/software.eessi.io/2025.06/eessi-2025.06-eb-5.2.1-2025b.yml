@@ -12,4 +12,7 @@ easyconfigs:
       options:
         # see https://github.com/easybuilders/easybuild-easyconfigs/pull/25365
         from-commit: 7e74f85c32686a6c456d4978430de35751d6cefd
-  - netCDF-4.9.3-gompi-2025b.eb
+  - netCDF-4.9.3-gompi-2025b.eb:
+      options:
+        # see https://github.com/EESSI/software-layer/pull/1432
+        include-easyblocks-from-commit: 83383a2d86dd4b886fb674d620fc34386d73a78d

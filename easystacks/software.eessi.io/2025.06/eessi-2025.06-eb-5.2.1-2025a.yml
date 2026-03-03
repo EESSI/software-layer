@@ -14,4 +14,7 @@ easyconfigs:
           # use -fno-tree-ter to work around compiler crash
           # see https://github.com/easybuilders/easybuild-easyconfigs/pull/25466
           from-commit: b34ccbbec1027990a0fd49573287fc74b7580f43
-  - netCDF-4.9.3-gompi-2025a.eb
+  - netCDF-4.9.3-gompi-2025a.eb:
+      options:
+        # see https://github.com/EESSI/software-layer/pull/1432
+        include-easyblocks-from-commit: 83383a2d86dd4b886fb674d620fc34386d73a78d
