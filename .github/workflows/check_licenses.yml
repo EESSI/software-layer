@@ -147,7 +147,7 @@ jobs:
 
                   echo "Searching sources for missing modules..."
                   # Generates a "modules_results.json" file 
-                  module load Python-bundle-PyPI/2023.06-GCCcore-12.3.0
+                  module load Python-bundle-PyPI
                   python licenses/parsing_easyconfigs.py missing_modules.txt
                   cat modules_results.json
                 fi
