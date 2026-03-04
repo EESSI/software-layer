@@ -68,7 +68,7 @@ jobs:
           echo "Temporary directory created: ${eb_missing_out}"
           file_list=$(curl -sS \
                         -H "Accept: application/vnd.github+json" \
-                        "https://api.github.com/repos/${GITHUB_REPOSITORY}/pulls/${PR_NUMBER}/files?per_page=100" | \ 
+                        "https://api.github.com/repos/${GITHUB_REPOSITORY}/pulls/${PR_NUMBER}/files?per_page=100" | 
                         jq -r --arg ver "$EESSI_VERSION" '.[].filename | select(contains("easystack") and contains($ver))')
           if [ -z "$file_list" ]; then
              echo "No easystack files found. Skipping license check."
