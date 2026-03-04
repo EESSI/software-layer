@@ -24,6 +24,13 @@ jobs:
            EESSI_VERSION: 2023.06
            EESSI_SOFTWARE_SUBDIR_OVERRIDE: x86_64/generic
            NO_SLASH_NAME: x86_64-generic
+         - runs_on: ubuntu-24.04-arm
+           EESSI_VERSION: 2025.06
+           EESSI_SOFTWARE_SUBDIR_OVERRIDE: aarch64/generic
+           NO_SLASH_NAME: aarch64-generic
+         - runs_on: ubuntu-24.04
+           EESSI_VERSION: 2025.06
+           EESSI_SOFTWARE_SUBDIR_OVERRIDE: x86_64/generic
 
     runs-on: ${{ matrix.runs_on }}
 
@@ -59,11 +66,11 @@ jobs:
           eb_missing_out=$LOCAL_TMPDIR/eb_missing.out
           echo "eb_missing_out=$LOCAL_TMPDIR/eb_missing.out" >> $GITHUB_ENV
           echo "Temporary directory created: ${eb_missing_out}"
-          file_list=$(curl -sS \
+          file_list_raw=$(curl -sS \
                         -H "Accept: application/vnd.github+json" \
                         "https://api.github.com/repos/${GITHUB_REPOSITORY}/pulls/${PR_NUMBER}/files?per_page=100" |
                         jq -r '.[].filename | select(test("easystack"))')
-          
+          file_list=$(echo ${file_list_raw} | grep ${{matrix.EESSI_VERSION}})
           if [ -z "$file_list" ]; then
              echo "No easystack files found. Skipping license check."
              exit 0 
