@@ -3,3 +3,8 @@ easyconfigs:
   - dav1d-1.5.2-GCCcore-13.3.0.eb
   - SVT-AV1-3.1.2-GCCcore-13.3.0.eb
   - libaom-3.10.0-GCCcore-13.3.0.eb
+  - WRF-SFIRE-W4.4-S0.1-gompi-2024a-dmpar.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/25506
+        from-commit: 96a8718448172f903e59b9253c66802426c153cf
+
