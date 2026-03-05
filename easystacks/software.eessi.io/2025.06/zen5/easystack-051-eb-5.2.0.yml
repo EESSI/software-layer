@@ -173,6 +173,10 @@ easyconfigs:
       options:
         robot: False
         include-easyblocks: /cvmfs/software.eessi.io/versions/2025.06/software/linux/x86_64/amd/zen2/reprod/SVT-AV1/3.1.2-GCCcore-14.3.0/20260220_162717UTC/easybuild/reprod/easyblocks/*.py
+  - /cvmfs/software.eessi.io/versions/2025.06/software/linux/x86_64/amd/zen2/reprod/CMake/3.31.8-GCCcore-14.3.0/20260220_163718UTC/easybuild/CMake-3.31.8-GCCcore-14.3.0.eb:
+      options:
+        robot: False
+        include-easyblocks: /cvmfs/software.eessi.io/versions/2025.06/software/linux/x86_64/amd/zen2/reprod/CMake/3.31.8-GCCcore-14.3.0/20260220_163718UTC/easybuild/reprod/easyblocks/*.py
   - /cvmfs/software.eessi.io/versions/2025.06/software/linux/x86_64/amd/zen2/reprod/x265/4.1-GCCcore-14.3.0/20260220_163828UTC/easybuild/x265-4.1-GCCcore-14.3.0.eb:
       options:
         robot: False
