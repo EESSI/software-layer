@@ -147,8 +147,7 @@ easyconfigs:
   - /cvmfs/software.eessi.io/versions/2025.06/software/linux/x86_64/amd/zen2/reprod/Imath/3.1.12-GCCcore-14.3.0/20260220_160117UTC/easybuild/Imath-3.1.12-GCCcore-14.3.0.eb:
       options:
         robot: False
-        include-easyblocks: /cvmfs/software.eessi.io/versions/2025.06/software/linux/x86_64/amd/zen2/reprod/Imath/3.1.12-GCCcore-14.3.0/20260220_160117UTC/easybuild/reprod/easyblocks/*
-.py
+        include-easyblocks: /cvmfs/software.eessi.io/versions/2025.06/software/linux/x86_64/amd/zen2/reprod/Imath/3.1.12-GCCcore-14.3.0/20260220_160117UTC/easybuild/reprod/easyblocks/*.py
   - /cvmfs/software.eessi.io/versions/2025.06/software/linux/x86_64/amd/zen2/reprod/OpenEXR/3.3.4-GCCcore-14.3.0/20260220_160424UTC/easybuild/OpenEXR-3.3.4-GCCcore-14.3.0.eb:
       options:
         robot: False
