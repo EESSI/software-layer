@@ -35,11 +35,6 @@ env:
         - nvidia/cc70
         - nvidia/cc80
         - nvidia/cc90
-      # and then allow for special cases for specific architectures
-      x86_64/amd/zen2:
-        - nvidia/cc70
-        - nvidia/cc80
-        - nvidia/cc90
         - nvidia/cc100
         - nvidia/cc120
       aarch64/a64fx: []
