@@ -29,18 +29,6 @@ env:
         - cc90
         - cc100
         - cc120
-      # and then allow for special cases for specific architectures
-      x86_64/amd/zen2:
-        - cc70
-        - cc80
-        - cc90
-      # and then allow for special cases for specific architectures
-      x86_64/amd/zen2:
-        - cc70
-        - cc80
-        - cc90
-        - cc100
-        - cc120
       aarch64/a64fx: []
 jobs:
   compare_stacks:
