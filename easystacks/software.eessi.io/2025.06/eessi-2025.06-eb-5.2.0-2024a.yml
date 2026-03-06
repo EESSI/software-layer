@@ -14,4 +14,8 @@ easyconfigs:
         # see https://github.com/easybuilders/easybuild-easyconfigs/pull/23923
         from-commit: 0eef0cf4f6e03172451c41a5af1c0e26b7a777f8
   - GDB-16.3-GCCcore-13.3.0.eb
+  # Due to a framework problem, these are being built with EB 5.2.0 even when 5.2.1 is available
+  # - framework PR for fix: https://github.com/easybuilders/easybuild-framework/pull/5142
+  # - triggered by https://github.com/easybuilders/easybuild-easyblocks/pull/3993
+  - jupyterlmod-5.2.2-GCCcore-13.3.0.eb
   - TensorFlow-2.18.1-foss-2024a.eb
