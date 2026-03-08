@@ -21,3 +21,4 @@ easyconfigs:
       options:
         # see https://github.com/easybuilders/easybuild-easyconfigs/pull/25109
         from-commit: e0c9571b3a64c2abd72a83405405778d45a9733e
+  - LST-AI-1.1.0-20250324-foss-2023a.eb
