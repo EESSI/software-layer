@@ -1,0 +1,11 @@
+# enable yet more codecs in GST-plugins-bad 1.26.6, adding the dependencies from the same commit
+# see https://github.com/easybuilders/easybuild-easyconfigs/pull/25020
+easyconfigs:
+  - FAAD2-2.11.2-GCCcore-14.3.0.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/25020
+        from-commit: 255d6a2e010922e3e576576ffcf3457af0ccc8b1
+  - GST-plugins-bad-1.26.6-GCCcore-14.3.0.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/25020
+        from-commit: 255d6a2e010922e3e576576ffcf3457af0ccc8b1
