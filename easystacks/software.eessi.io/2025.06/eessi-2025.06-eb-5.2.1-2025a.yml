@@ -16,5 +16,7 @@ easyconfigs:
           from-commit: b34ccbbec1027990a0fd49573287fc74b7580f43
   - netCDF-4.9.3-gompi-2025a.eb:
       options:
-        # see https://github.com/EESSI/software-layer/pull/1432
-        include-easyblocks-from-commit: 83383a2d86dd4b886fb674d620fc34386d73a78d
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/25490
+        from-commit: 5af71d7a638be23b0abebe84afb52ba79894bddf
+        # see https://github.com/easybuilders/easybuild-easyblocks/pull/4086
+        include-easyblocks-from-commit: df3ca300d7f9193241e6bee2be3d58b103323725
