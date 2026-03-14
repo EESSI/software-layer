@@ -22,3 +22,4 @@ easyconfigs:
         include-easyblocks-from-commit: df3ca300d7f9193241e6bee2be3d58b103323725
   - PyQt6-6.9.1-GCCcore-14.2.0.eb
   - VisPy-0.15.2-gfbf-2025a.eb
+  - gmsh-4.15.0-foss-2025a.eb
