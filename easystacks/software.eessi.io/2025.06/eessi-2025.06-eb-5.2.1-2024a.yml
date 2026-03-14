@@ -3,4 +3,7 @@ easyconfigs:
   - dav1d-1.5.2-GCCcore-13.3.0.eb
   - SVT-AV1-3.1.2-GCCcore-13.3.0.eb
   - libaom-3.10.0-GCCcore-13.3.0.eb
-  - PyTorch-2.9.1-foss-2024a.eb
+  - PyTorch-2.9.1-foss-2024a.eb:
+      options:
+        # See PR https://github.com/easybuilders/easybuild-easyconfigs/pull/25492
+        from-commit: 5c3c03b3a7d1bd769b7032e352595885c0a4b12d
