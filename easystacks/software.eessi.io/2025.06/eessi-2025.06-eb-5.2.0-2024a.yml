@@ -14,7 +14,7 @@ easyconfigs:
         # see https://github.com/easybuilders/easybuild-easyconfigs/pull/23923
         from-commit: 0eef0cf4f6e03172451c41a5af1c0e26b7a777f8
   - GDB-16.3-GCCcore-13.3.0.eb
-  - LAMMPS-22Jul2025-foss-2024a-kokkos.eb:
-      options:
-          # See https://github.com/easybuilders/easybuild-easyconfigs/pull/25133
-          from-commit: c484c12aaad5da0e27cd9269d59b4ecaa89927ab
+  # Due to a framework problem, these are being built with EB 5.2.0 even when 5.2.1 is available
+  # - framework PR for fix: https://github.com/easybuilders/easybuild-framework/pull/5142
+  # - triggered by https://github.com/easybuilders/easybuild-easyblocks/pull/3993
+  - jupyterlmod-5.2.2-GCCcore-13.3.0.eb

@@ -1,0 +1,25 @@
+easyconfigs:
+  - uv-0.7.13-GCCcore-14.2.0.eb
+  - libvpx-1.15.2-GCCcore-14.2.0.eb
+  - dav1d-1.5.2-GCCcore-14.2.0.eb
+  - libopus-1.5.2-GCCcore-14.2.0.eb
+  - libvorbis-1.3.7-GCCcore-14.2.0.eb
+  - SVT-AV1-3.1.2-GCCcore-14.2.0.eb:
+        options:
+          # use -fno-tree-ter to work around compiler crash
+          # see https://github.com/easybuilders/easybuild-easyconfigs/pull/25466
+          from-commit: b34ccbbec1027990a0fd49573287fc74b7580f43
+  - libaom-3.10.0-GCCcore-14.2.0.eb:
+        options:
+          # use -fno-tree-ter to work around compiler crash
+          # see https://github.com/easybuilders/easybuild-easyconfigs/pull/25466
+          from-commit: b34ccbbec1027990a0fd49573287fc74b7580f43
+  - netCDF-4.9.3-gompi-2025a.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/25490
+        from-commit: 5af71d7a638be23b0abebe84afb52ba79894bddf
+        # see https://github.com/easybuilders/easybuild-easyblocks/pull/4086
+        include-easyblocks-from-commit: df3ca300d7f9193241e6bee2be3d58b103323725
+  - PyQt6-6.9.1-GCCcore-14.2.0.eb
+  - VisPy-0.15.2-gfbf-2025a.eb
+  - gmsh-4.15.0-foss-2025a.eb
