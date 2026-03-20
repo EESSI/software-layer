@@ -1,5 +1,5 @@
 easyconfigs:
-  - CX-CUDA-1.19.0-GCCcore-14.3.0-CUDA-12.9.1.eb:
+  - UCX-CUDA-1.19.0-GCCcore-14.3.0-CUDA-12.9.1.eb:
   - UCC-CUDA-1.4.4-GCCcore-14.3.0-CUDA-12.9.1.eb:
   - SPH-EXA-0.96.1-foss-2025b-CUDA-12.9.1.eb:
       options:
