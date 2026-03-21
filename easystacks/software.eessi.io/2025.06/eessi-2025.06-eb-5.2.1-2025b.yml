@@ -18,3 +18,4 @@ easyconfigs:
         from-commit: 5af71d7a638be23b0abebe84afb52ba79894bddf
         # see https://github.com/easybuilders/easybuild-easyblocks/pull/4086
         include-easyblocks-from-commit: df3ca300d7f9193241e6bee2be3d58b103323725
+  - GDRCopy-2.5-GCCcore-14.3.0.eb
