@@ -23,3 +23,4 @@ easyconfigs:
   - PyQt6-6.9.1-GCCcore-14.2.0.eb
   - VisPy-0.15.2-gfbf-2025a.eb
   - gmsh-4.15.0-foss-2025a.eb
+  - ITK-5.4.5-foss-2025a.eb
