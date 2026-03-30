@@ -46,9 +46,10 @@ jobs:
       - name: Detect EESSI version in modified easystack files
         id: detect
         run: |
-          # Use base_ref and head_ref for diff in PRs
-          # Ensure you have checked out with fetch-depth: 0
-          changed_files=$(git diff --name-only origin/${{ github.base_ref }} origin/${{ github.head_ref }})
+          # Fetch base branch explicitly to ensure it's available
+          git fetch origin ${{ github.base_ref }}
+
+          changed_files=$(git diff --name-only origin/${{ github.base_ref }}...HEAD)
           echo "Files changed: $changed_files"
 
           # Default to both versions
