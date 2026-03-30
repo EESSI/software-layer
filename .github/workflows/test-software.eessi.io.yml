@@ -33,7 +33,42 @@ env:
       # and then allow for special cases for specific architectures
       aarch64/a64fx: []
 jobs:
+  check_EESSI_version_changed_files:
+    runs-on: ubuntu-24.04
+    outputs:
+      EESSI_VERSIONS: ${{ steps.detect.outputs.EESSI_VERSIONS }}
+    steps:
+      - name: Check out software-layer repository
+        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
+        with:
+          fetch-depth: 0  # Fetch all history for all branches and tags
+
+      - name: Detect EESSI version in modified easystack files
+        id: detect
+        run: |
+          # Use base_ref and head_ref for diff in PRs
+          # Ensure you have checked out with fetch-depth: 0
+          changed_files=$(git diff --name-only origin/${{ github.base_ref }} origin/${{ github.head_ref }})
+          echo "Files changed: $changed_files"
+
+          # Default to both versions
+          EESSI_VERSIONS=""
+          
+          # Check for specific versions in the changed easystack files
+          if echo "$changed_files" | grep -q "easystacks/software.eessi.io/2023.06"; then
+            EESSI_VERSIONS="2023.06"
+          elif echo "$changed_files" | grep -q "easystacks/software.eessi.io/2025.06"; then
+            EESSI_VERSIONS="2025.06"
+          fi
+          echo "PR easystack changes related to EESSI VERSION: $EESSI_VERSIONS"
+          
+          # Use GITHUB_OUTPUT heredoc correctly
+          echo "EESSI_VERSIONS<<EOF" >> "$GITHUB_OUTPUT"
+          echo "$EESSI_VERSIONS" >> "$GITHUB_OUTPUT"
+          echo "EOF" >> "$GITHUB_OUTPUT"
+
   check_missing:
+    needs: check_EESSI_version_changed_files
     strategy:
       fail-fast: false
       matrix:
@@ -153,6 +188,7 @@ jobs:
               cvmfs_repositories: software.eessi.io
 
         - name: Check for missing installlations
+          if: contains(needs.check_EESSI_version_changed_files.outputs.EESSI_VERSIONS, matrix.EESSI_VERSION)
           run: |
               export EESSI_SOFTWARE_SUBDIR_OVERRIDE=${{matrix.EESSI_SOFTWARE_SUBDIR_OVERRIDE}}
               source /cvmfs/software.eessi.io/versions/${{matrix.EESSI_VERSION}}/init/bash
