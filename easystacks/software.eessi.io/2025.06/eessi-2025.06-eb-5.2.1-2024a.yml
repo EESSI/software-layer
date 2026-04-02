@@ -15,4 +15,4 @@ easyconfigs:
   - WRF-SFIRE-W4.4-S0.1-gompi-2024a-dmpar.eb:
       options:
         # see https://github.com/easybuilders/easybuild-easyconfigs/pull/25506
-        from-commit: 192533e2f3816bcbdeedca6e75b767cb0fe2bdd8
+        from-commit: ba10bbff8801aa7ef6e2527a93646d99138414ba
