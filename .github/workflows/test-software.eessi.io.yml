@@ -33,6 +33,12 @@ env:
       # and then allow for special cases for specific architectures
       aarch64/a64fx: []
 jobs:
+  # Checks whether this PR modifies any easystack files and, if so,
+  # determines which EESSI versions are affected.
+  # It then stores those versions as a space-separated list in an
+  # environment variable.
+  # Finally, it writes that value to GITHUB_OUTPUT using the correct
+  # heredoc format.
   check_EESSI_version_changed_files:
     runs-on: ubuntu-24.04
     outputs:
@@ -56,11 +62,10 @@ jobs:
           EESSI_VERSIONS=""
           
           # Check for specific versions in the changed easystack files
-          if echo "$changed_files" | grep -q "easystacks/software.eessi.io/2023.06"; then
-            EESSI_VERSIONS="2023.06"
-          elif echo "$changed_files" | grep -q "easystacks/software.eessi.io/2025.06"; then
-            EESSI_VERSIONS="2025.06"
-          fi
+          EESSI_VERSIONS=$(git diff --name-only origin/${{ github.base_ref }}...HEAD \
+            | grep -oP 'easystacks/software\.eessi\.io/\K[0-9]{4}\.[0-9]{2}' \
+            | sort -u \
+            | tr '\n' ' ')
           echo "PR easystack changes related to EESSI VERSION: $EESSI_VERSIONS"
           
           # Use GITHUB_OUTPUT heredoc correctly
