@@ -52,7 +52,7 @@ jobs:
           changed_files=$(git diff --name-only origin/${{ github.base_ref }}...HEAD)
           echo "Files changed: $changed_files"
 
-          # Default to both versions
+          # Default to not checking missing software for any version
           EESSI_VERSIONS=""
           
           # Check for specific versions in the changed easystack files
