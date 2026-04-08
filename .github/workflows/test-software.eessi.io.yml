@@ -33,7 +33,52 @@ env:
       # and then allow for special cases for specific architectures
       aarch64/a64fx: []
 jobs:
+  # Checks whether this PR modifies any easystack files and, if so,
+  # determines which EESSI versions are affected.
+  # It then stores those versions as a space-separated list in an
+  # environment variable.
+  # Finally, it writes that value to GITHUB_OUTPUT using the correct
+  # heredoc format.
+  check_EESSI_version_changed_files:
+    runs-on: ubuntu-24.04
+    outputs:
+      EESSI_VERSIONS: ${{ steps.detect.outputs.EESSI_VERSIONS }}
+    steps:
+      - name: Check out software-layer repository
+        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
+        with:
+          fetch-depth: 0  # Fetch all history for all branches and tags
+
+      - name: Detect EESSI version in modified easystack files
+        id: detect
+        run: |
+          # Fetch base branch explicitly to ensure it's available
+          git fetch origin ${{ github.base_ref }}
+
+          changed_files=$(git diff --name-only origin/${{ github.base_ref }}...HEAD)
+          echo "Files changed: $changed_files"
+
+          # Default to not checking missing software for any version
+          EESSI_VERSIONS=""
+          
+          # Check for specific versions in the changed easystack files
+          # The regex pattern matches a prefix, but only returns the part after \K, so that we get only the version
+          # The sort ensures predictable ordering, and with -u only keeps unique items (neither are probably essential, but both are nice)
+          # Finally, since the grep returns multiple lines if there are multiple versions that were touched,
+          # the tr replaces newlines with space, to make this space-separated.          
+          EESSI_VERSIONS=$(git diff --name-only origin/${{ github.base_ref }}...HEAD \
+            | grep -oP 'easystacks/software\.eessi\.io/\K[0-9]+\.[0-9]+' \
+            | sort -u \
+            | tr '\n' ' ')
+          echo "PR easystack changes related to EESSI VERSION: $EESSI_VERSIONS"
+          
+          # Use GITHUB_OUTPUT heredoc correctly
+          echo "EESSI_VERSIONS<<EOF" >> "$GITHUB_OUTPUT"
+          echo "$EESSI_VERSIONS" >> "$GITHUB_OUTPUT"
+          echo "EOF" >> "$GITHUB_OUTPUT"
+
   check_missing:
+    needs: check_EESSI_version_changed_files
     strategy:
       fail-fast: false
       matrix:
@@ -153,6 +198,7 @@ jobs:
               cvmfs_repositories: software.eessi.io
 
         - name: Check for missing installlations
+          if: contains(needs.check_EESSI_version_changed_files.outputs.EESSI_VERSIONS, matrix.EESSI_VERSION)
           run: |
               export EESSI_SOFTWARE_SUBDIR_OVERRIDE=${{matrix.EESSI_SOFTWARE_SUBDIR_OVERRIDE}}
               source /cvmfs/software.eessi.io/versions/${{matrix.EESSI_VERSION}}/init/bash
