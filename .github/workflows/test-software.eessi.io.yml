@@ -65,7 +65,7 @@ jobs:
           # The regex pattern matches a prefix, but only returns the part after \K, so that we get only the version
           # The sort ensures predictable ordering, and with -u only keeps unique items (neither are probably essential, but both are nice)
           # Finally, since the grep returns multiple lines if there are multiple versions that were touched,
-          # the tr replaces newlies with space, to make this space-separated.          
+          # the tr replaces newlines with space, to make this space-separated.          
           EESSI_VERSIONS=$(git diff --name-only origin/${{ github.base_ref }}...HEAD \
             | grep -oP 'easystacks/software\.eessi\.io/\K[0-9]+\.[0-9]+' \
             | sort -u \
