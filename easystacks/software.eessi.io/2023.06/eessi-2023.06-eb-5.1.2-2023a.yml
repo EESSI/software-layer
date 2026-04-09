@@ -5,6 +5,10 @@ easyconfigs:
       options:
         # see https://github.com/easybuilders/easybuild-easyconfigs/pull/24259
         from-commit: 3f59104cfd0aeedc261e2bf7ca18b8ae5efdca0a 
+  - SimpleITK-2.3.1-foss-2023a.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/24908
+        from-commit: 5799bfafda2bcb94c0e59a35b85649b8095fda77
   - ESMF-8.6.0-foss-2023a.eb
   - xESMF-0.8.6-foss-2023a.eb
   - LPC3D-0.1.2-foss-2023a.eb:
