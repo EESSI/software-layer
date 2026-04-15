@@ -1,11 +1,11 @@
-name: Bot symlink
+name: Bot build script
 
 on:
   pull_request:
     branches: [ "main" ]
 
 jobs:
-  build_script:
+  check_symlinks:
     runs-on: ubuntu-latest
 
     steps:
