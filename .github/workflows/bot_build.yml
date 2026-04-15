@@ -1,0 +1,28 @@
+name: Bot build script
+
+on:
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  check_symlinks:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
+
+      - name: Git clone software-layer-scripts
+        run: git clone https://github.com/EESSI/software-layer-scripts
+        
+      - name: Run symlink commands      
+        run: |
+          set -e
+          
+          for file in $(ls software-layer-scripts | egrep -v 'easystacks|LICENSE|README.md|^bot'); do
+              ln -s software-layer-scripts/${file}
+          done
+
+          for file in $(ls software-layer-scripts/bot | grep -v '^build.sh'); do
+              ln -s ../software-layer-scripts/bot/${file} bot/${file}
+          done
