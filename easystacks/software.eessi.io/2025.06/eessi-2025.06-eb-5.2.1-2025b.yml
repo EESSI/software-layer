@@ -20,3 +20,4 @@ easyconfigs:
         include-easyblocks-from-commit: df3ca300d7f9193241e6bee2be3d58b103323725
   - GDRCopy-2.5-GCCcore-14.3.0.eb
   - JUBE-2.7.1-GCCcore-14.3.0.eb
+  - pv-1.7.24-GCCcore-12.3.0.eb
