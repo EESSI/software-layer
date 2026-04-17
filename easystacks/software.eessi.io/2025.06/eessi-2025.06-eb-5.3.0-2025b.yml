@@ -1,5 +1,2 @@
 easyconfigs:
-  - Dyninst-13.0.0-GCC-14.3.0.eb:
-      options:
-        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/25798
-        from-commit: a62e2485218203c9e8dc1e90284781f115b39e2f
+  - Dyninst-13.0.0-GCC-14.3.0.eb
