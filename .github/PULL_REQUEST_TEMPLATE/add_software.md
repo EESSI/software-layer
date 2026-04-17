@@ -1,3 +1,11 @@
+---
+name: Add new software
+about: Add new software to one of the EESSI software stacks
+title: "[Add software PR]"
+labels: ''
+assignees: ''
+---
+
 # Pull Request Template for adding software – EESSI Software Layer
 
 ## Description
