@@ -1,24 +1,19 @@
 # Pull Request Template for rebuilding software – EESSI Software Layer
 
 ## Description
-<!-- Give some context for the changes introduced by this PR -->
-
 <!--
+Give some context for the changes introduced by this PR
 - Why is the rebuild necessary?
 - What are the potential positive/negative impacts?
 - ...
 -->
 
 ## Target File(s)
-<!-- Confirm that this PR modifies the correct file(s) -->
-
 <!--
+Confirm that this PR modifies the correct file(s)
 Rebuilds must be placed under the `rebuilds/` subdirectory:
-
 - `easystacks/software.eessi.io/<EESSI version>/rebuilds/<date>-eb-<EasyBuild version>-<description>.yml`
-
 Example:
-
 - `easystacks/software.eessi.io/2025.06/rebuilds/20260413-eb-5.3.0-RStudio-r_home-patch.yml`
 -->
 
@@ -38,13 +33,10 @@ Please verify:
 <!-- Mark relevant options with an [x] -->
 - [ ] I have tested this PR locally using **EESSI-extend**
   <!-- Hint:
-  
       module load EESSI/<EESSI version>
       module load EESSI-extend
-
       # Show what will be rebuilt 
       eb --missing --rebuild --easystack <path to easystack>
-
       # Perform the build (no dependencies are to be built, so no `--robot`)
       eb --rebuild --easystack <path to easystack>
   -->
