@@ -1,7 +1,7 @@
 # Pull Request Template for adding software – EESSI Software Layer
 
 (If you need a PR template for a rebuild, open the Preview tab in this comment
-and [click here](?expand=1&template=rebuild_softare.md))
+and [click here](&expand=1&template=rebuild_softare.md))
 
 ## Description
 <!-- Give some context for the changes introduced by this PR -->
