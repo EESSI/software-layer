@@ -1,11 +1,3 @@
----
-name: Rebuild software
-about: Rebuild existing software for one of the EESSI software stacks
-title: "[Rebuild software PR]"
-labels: ''
-assignees: ''
----
-
 # Pull Request Template for rebuilding software – EESSI Software Layer
 
 ## Description
