@@ -2,13 +2,17 @@
 
 ## Description
 <!-- Give some context for the changes introduced by this PR -->
+
+<!--
 - Why is the rebuild necessary?
 - What are the potential positive/negative impacts?
 - ...
+-->
 
 ## Target File(s)
 <!-- Confirm that this PR modifies the correct file(s) -->
 
+<!--
 Rebuilds must be placed under the `rebuilds/` subdirectory:
 
 - `easystacks/software.eessi.io/<EESSI version>/rebuilds/<date>-eb-<EasyBuild version>-<description>.yml`
@@ -16,9 +20,11 @@ Rebuilds must be placed under the `rebuilds/` subdirectory:
 Example:
 
 - `easystacks/software.eessi.io/2025.06/rebuilds/20260413-eb-5.3.0-RStudio-r_home-patch.yml`
+-->
 
 Please verify:
 
+<!-- Mark relevant options with an [x] -->
 - [ ] This is a rebuild (not a standard addition/update)
 - [ ] I am targeting the **correct EESSI version** (e.g. `2025.06` for toolchain families `2025a`, `2023.06` for toolchain families `2023b`)
 - [ ] The file is placed in the correct `rebuilds/` directory
@@ -29,6 +35,7 @@ Please verify:
 
 ## Testing
 <!-- Describe how you validated your changes -->
+<!-- Mark relevant options with an [x] -->
 - [ ] I have tested this PR locally using **EESSI-extend**
   <!-- Hint:
   
