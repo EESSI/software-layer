@@ -1,4 +1,6 @@
-# Pull Request Template for adding software – EESSI Software Layer
+<!-- Pull Request Template for adding software – EESSI Software Layer -->
+<!-- (comments look like this, beginning with what is at the start of this line
+and ending with what is at the end of this one, so they can be multiline!) -->
 
 (If you need a PR template for a rebuild, open the Preview tab in this comment
 and [click here](?expand=1&template=rebuild_software.md). Otherwise delete this line)

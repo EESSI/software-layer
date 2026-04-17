@@ -1,6 +1,8 @@
-# Pull Request Template for rebuilding software – EESSI Software Layer
+<!-- Pull Request Template for rebuilding software – EESSI Software Layer -->
+<!-- (comments look like this, beginning with what is at the start of this line
+and ending with what is at the end of this one, so they can be multiline!) -->
 
-## Description
+## Description of rebuild PR
 <!--
 Give some context for the changes introduced by this PR
 - Why is the rebuild necessary?
