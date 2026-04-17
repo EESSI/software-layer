@@ -27,10 +27,11 @@ Example:
 Please verify:
 
 <!-- Mark relevant options with an [x] -->
-- [ ] I am targeting the **correct EESSI version** (e.g. `2025.06` for toolchain families `2025a`, `2023.06` for toolchain families `2023b`)
-- [ ] I am using the **latest EasyBuild version** (e.g. `5.3.0`)
-- [ ] I selected the **correct toolchain family** (e.g. `2025a`)
-- [ ] I did **not** modify older or unrelated files
+- [ ] I am targeting the [**correct EESSI version**](https://www.eessi.io/docs/repositories/versions/)
+  (e.g. `2025.06` for toolchain generation `2025a`, `2023.06` for toolchain generation `2023b`)
+- [ ] I am using the [**latest EasyBuild version**](https://pypi.org/project/easybuild/) (e.g. `5.3.0`)
+- [ ] I selected the **correct toolchain generation** (e.g. `2025a`)
+- [ ] I did **not** modify other unrelated files
 
 <!--
 ### Toolchain Notes
@@ -48,7 +49,7 @@ the [EESSI slack](https://join.slack.com/t/eessi-hpc/shared_invite/zt-2wg10p26d-
 
 ## Testing
 <!-- Describe how you validated your changes -->
-- [ ] I have tested this PR locally using **EESSI-extend**
+- [ ] I have tested this PR locally using [**EESSI-extend**](https://www.eessi.io/docs/using_eessi/building_on_eessi/#using-the-eessi-extend-module)
   <!-- Hint:
       module load EESSI/<EESSI version>
       module load EESSI-extend
@@ -60,4 +61,3 @@ the [EESSI slack](https://join.slack.com/t/eessi-hpc/shared_invite/zt-2wg10p26d-
 - [ ] The build completed successfully
 - [ ] The installed software/module loads correctly
 - [ ] Basic functionality has been verified
-

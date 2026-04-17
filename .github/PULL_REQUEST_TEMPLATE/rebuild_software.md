@@ -23,17 +23,18 @@ Please verify:
 
 <!-- Mark relevant options with an [x] -->
 - [ ] This is a rebuild (not a standard addition/update)
-- [ ] I am targeting the **correct EESSI version** (e.g. `2025.06` for toolchain families `2025a`, `2023.06` for toolchain families `2023b`)
+- [ ] I am targeting the [**correct EESSI version**](https://www.eessi.io/docs/repositories/versions/)
+  (e.g. `2025.06` for toolchain generation `2025a`, `2023.06` for toolchain generation `2023b`)
 - [ ] The file is placed in the correct `rebuilds/` directory
-- [ ] I am using the **latest EasyBuild version** (e.g. `5.3.0`)
+- [ ] I am using the [**latest EasyBuild version**](https://pypi.org/project/easybuild/) (e.g. `5.3.0`)
 - [ ] The filename gives some indication of the reason for the rebuild
 - [ ] The file includes comments explaining **exactly why the rebuild is necessary**
-- [ ] I did **not** modify older or unrelated files
+- [ ] I did **not** modify other unrelated files
 
 ## Testing
 <!-- Describe how you validated your changes -->
 <!-- Mark relevant options with an [x] -->
-- [ ] I have tested this PR locally using **EESSI-extend**
+- [ ] I have tested this PR locally using [**EESSI-extend**](https://www.eessi.io/docs/using_eessi/building_on_eessi/#using-the-eessi-extend-module)
   <!-- Hint:
       module load EESSI/<EESSI version>
       module load EESSI-extend
@@ -45,4 +46,3 @@ Please verify:
 - [ ] The build completed successfully
 - [ ] The installed software/module loads correctly
 - [ ] Basic functionality has been verified
-
