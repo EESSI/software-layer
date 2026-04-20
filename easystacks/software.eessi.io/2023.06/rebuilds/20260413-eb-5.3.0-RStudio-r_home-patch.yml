@@ -1,0 +1,7 @@
+# RStudio-server had a typo in a script which caused R_HOME not to be defined
+# when the script was run (even though it is required).
+easyconfigs:
+  - RStudio-Server-2024.09.0+375-foss-2023b-Java-11-R-4.4.1.eb:
+      options:
+        # See https://github.com/easybuilders/easybuild-easyconfigs/pull/25745
+        from-commit: adfb1c51b48a46fc70d3a29385874636f86feb3a
