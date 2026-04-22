@@ -1,3 +1,7 @@
 easyconfigs:
   - Dyninst-13.0.0-GCC-14.3.0.eb
+<<<<<<< mpi4py_2025b
   - mpi4py-4.1.0-gompi-2025b.eb
+=======
+  - googletest-1.17.0-GCCcore-14.3.0.eb
+>>>>>>> main
