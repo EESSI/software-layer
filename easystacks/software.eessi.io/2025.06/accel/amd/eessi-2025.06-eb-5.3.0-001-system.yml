@@ -1,2 +1,4 @@
 easyconfigs:
-  - ROCm-LLVM-19.0.0-GCCcore-14.2.0-ROCm-6.4.1.eb
+  - ROCm-LLVM-19.0.0-GCCcore-14.2.0-ROCm-6.4.1.eb:
+      options:
+        --parallel=8
