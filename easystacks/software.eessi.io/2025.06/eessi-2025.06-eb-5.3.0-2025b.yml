@@ -2,3 +2,7 @@ easyconfigs:
   - Dyninst-13.0.0-GCC-14.3.0.eb
   - googletest-1.17.0-GCCcore-14.3.0.eb
   - SciPy-bundle-2025.07-gfbf-2025b.eb
+  - GROMACS-2025.4-foss-2025b.eb:
+      options:
+      # see https://github.com/easybuilders/easybuild-easyconfigs/pull/24956
+      from-commit: 9a36faedece96f33d7ece87edbf0a5e638c08b51
