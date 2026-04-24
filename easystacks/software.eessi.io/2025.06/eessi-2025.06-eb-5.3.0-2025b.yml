@@ -5,4 +5,4 @@ easyconfigs:
   - GROMACS-2025.4-foss-2025b.eb:
       options:
           # see https://github.com/easybuilders/easybuild-easyconfigs/pull/24956
-          from-commit: 9a36faedece96f33d7ece87edbf0a5e638c08b51
+          from-commit: a3bb54895c3de5600fdfd2893a818378daebc7ee
