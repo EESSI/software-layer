@@ -1,5 +1,5 @@
 easyconfigs:
-  - GROMACS-2025.3-foss-2025b-CUDA-12.9.1.eb:
+  - GROMACS-2025.4-foss-2025b-CUDA-12.9.1.eb:
       options:
-        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/25215
-        from-commit: 03c7f74a35a6af26a410df4d393c59b2f9d9d97d
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/25837
+        from-commit: 23228c21d24b49a10bd5a51f09e14f5484d7b67d
