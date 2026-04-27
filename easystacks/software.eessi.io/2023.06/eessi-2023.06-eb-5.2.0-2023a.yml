@@ -41,3 +41,10 @@ easyconfigs:
         include-easyblocks-from-commit: 0f75bae68e0323d7053e0e2dddb03e6422e666e2
         # see https://github.com/easybuilders/easybuild-easyconfigs/pull/25220
         from-commit: fc6e46c10d6c5d92ea2ab403bfcde364828fa693
+  - ABySS-2.3.7-foss-2023a.eb
+  - BUSCO-5.8.2-foss-2023a.eb
+  - cooltools-0.7.1-foss-2023a.eb
+  - Trim_Galore-0.6.10-GCCcore-12.3.0.eb
+  - Kalign-3.4.0-GCCcore-12.3.0.eb
+  - PyBioLib-1.2.205-GCCcore-12.3.0.eb
+  - CDBtools-0.99-GCC-12.3.0.eb

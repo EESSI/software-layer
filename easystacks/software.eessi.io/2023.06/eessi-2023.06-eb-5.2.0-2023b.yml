@@ -4,3 +4,9 @@ easyconfigs:
       options:
         # see https://github.com/easybuilders/easybuild-easyconfigs/pull/25004
         from-commit: 2ef62609e3e40785dfb28bcb91db143cee5924a5
+  - DIAMOND-2.1.9-GCC-13.2.0.eb
+  - VSEARCH-2.30.0-GCC-13.2.0.eb
+  - HH-suite-3.3.0-gompi-2023b.eb
+  - tabix-0.2.6-GCCcore-13.2.0.eb
+  - MACS2-2.2.9.1-foss-2023b.eb
+  - cwltool-3.1.20250110105449-foss-2023b.eb
