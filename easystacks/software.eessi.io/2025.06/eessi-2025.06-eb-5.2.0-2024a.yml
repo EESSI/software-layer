@@ -18,3 +18,27 @@ easyconfigs:
   # - framework PR for fix: https://github.com/easybuilders/easybuild-framework/pull/5142
   # - triggered by https://github.com/easybuilders/easybuild-easyblocks/pull/3993
   - jupyterlmod-5.2.2-GCCcore-13.3.0.eb
+  - cutadapt-5.1-GCCcore-13.3.0.eb
+  - deepTools-3.5.5-gfbf-2024a.eb
+  - SEPP-4.5.5-foss-2024a.eb
+  - IQ-TREE-3.0.1-gompi-2024a.eb
+  - k8-1.2-GCCcore-13.3.0.eb
+  - HTSeq-2.0.9-foss-2024a.eb
+  - MultiQC-1.28-gfbf-2024a.eb
+  - freebayes-1.3.7-gfbf-2024a-R-4.4.2.eb
+  - SearchGUI-4.3.9-GCCcore-13.3.0-Java-11.eb
+  - StringTie-3.0.0-GCC-13.3.0.eb
+  - Unicycler-0.5.1-gompi-2024a.eb
+  - snpEff-5.4c-GCCcore-13.3.0-Java-21.eb
+  - MUSCLE-5.1.0-GCCcore-13.3.0.eb
+  - GenomeTools-1.6.5-GCC-13.3.0.eb
+  - QUAST-5.3.0-gfbf-2024a.eb
+  - Trinity-2.15.2-foss-2024a-Java-17.eb
+  - PyHMMER-0.12.0-gompi-2024a.eb
+  - vcflib-1.0.9-gfbf-2024a-R-4.4.2.eb
+  - mlst-2.32.2-foss-2024a.eb
+  - GlimmerHMM-3.0.4c-GCC-13.3.0.eb
+  - RGI-6.0.6-gfbf-2024a.eb
+  - MACS3-3.0.3-gfbf-2024a.eb
+  - MetaPhlAn-4.1.1-foss-2024a.eb
+  - Kraken2-2.1.6-gompi-2024a.eb

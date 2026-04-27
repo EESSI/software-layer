@@ -2,3 +2,23 @@ easyconfigs:
   - Dyninst-13.0.0-GCC-14.3.0.eb
   - googletest-1.17.0-GCCcore-14.3.0.eb
   - SciPy-bundle-2025.07-gfbf-2025b.eb
+  - Pysam-0.23.3-GCC-14.3.0.eb
+  - Bowtie2-2.5.4-GCC-14.3.0.eb
+  - HMMER-3.4-gompi-2025b.eb
+  - MAFFT-7.526-GCC-14.3.0-with-extensions.eb
+  - GATK-4.6.2.0-GCCcore-14.3.0-Java-17.eb
+  - ViennaRNA-2.7.2-gfbf-2025b.eb
+  - ncbi-vdb-3.2.1-gompi-2025b.eb
+  - pyfaidx-0.9.0.3-GCCcore-14.3.0.eb
+  - SPAdes-4.2.0-GCC-14.3.0.eb
+  - pyBigWig-0.3.25-gfbf-2025b.eb
+  - fastp-1.1.0-GCC-14.3.0.eb
+  - AUGUSTUS-3.5.0-foss-2025b.eb
+  - SRA-Toolkit-3.2.1-gompi-2025b.eb
+  - BamTools-2.5.3-GCC-14.3.0.eb
+  - MMseqs2-18-8cc5c-gompi-2025b.eb
+  - PyHMMER-0.11.3-gompi-2025b.eb
+  - MEGAHIT-1.2.9-GCCcore-14.3.0.eb
+  - Racon-1.5.0-GCCcore-14.3.0.eb
+  - CD-HIT-4.8.1-GCC-14.3.0.eb
+  - Alfred-0.5.3-GCC-14.3.0.eb
