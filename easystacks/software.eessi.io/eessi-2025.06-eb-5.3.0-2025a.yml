@@ -1,0 +1,20 @@
+easyconfigs:
+  - imageio-2.37.0-gfbf-2025a.eb
+  - scikit-image-0.25.0-foss-2025a.eb
+  - elfutils-0.193-GCCcore-14.2.0.eb
+  - MEME-5.5.9-gompi-2025a.eb
+  - BBMap-39.19-GCC-14.2.0.eb
+  - snakemake-9.14.0-foss-2025a.eb
+  - FastTree-2.2-GCCcore-14.2.0.eb
+  - RAxML-8.2.13-gompi-2025a.eb
+  - pybedtools-0.12.0-foss-2025a.eb
+  - cyvcf2-0.32.1-gfbf-2025a.eb
+  - DendroPy-5.0.8-GCCcore-14.2.0.eb
+  - seqtk-1.5-GCC-14.2.0.eb
+  - VCFtools-0.1.17-GCC-14.2.0.eb
+  - GMAP-GSNAP-2025-07-31-GCC-14.2.0.eb
+  - prodigal-2.6.3-GCCcore-14.2.0.eb
+  - Infernal-1.1.5-gompi-2025a.eb
+  - kallisto-0.51.1-gompi-2025a.eb
+  - prokka-1.15.6-gompi-2025a.eb
+  - snakemake-9.14.0-foss-2025a.eb

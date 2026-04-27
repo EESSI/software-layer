@@ -1,0 +1,6 @@
+easyconfigs:
+  - Julia-1.12.2.eb
+  - picard-3.4.0-Java-21.eb
+  - FastQC-0.12.1-Java-11.eb
+  - Trimmomatic-0.40-Java-17.eb
+  - Nextflow-25.10.2.eb
