@@ -1,0 +1,7 @@
+easyconfigs:
+  - UCX-CUDA-1.19.0-GCCcore-14.3.0-CUDA-12.9.1.eb:
+  - NCCL-2.27.7-GCCcore-14.3.0-CUDA-12.9.1.eb:
+      options:
+        cuda-sanity-check-accept-missing-ptx: True
+  - UCC-CUDA-1.4.4-GCCcore-14.3.0-CUDA-12.9.1.eb:
+  - OSU-Micro-Benchmarks-7.5.1-gompi-2025b-CUDA-12.9.1.eb:
