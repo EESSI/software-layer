@@ -1,4 +1,5 @@
 easyconfigs:
   - Dyninst-13.0.0-GCC-14.3.0.eb
   - googletest-1.17.0-GCCcore-14.3.0.eb
+  - networkx-3.5-gfbf-2025b.eb
   - SciPy-bundle-2025.07-gfbf-2025b.eb
