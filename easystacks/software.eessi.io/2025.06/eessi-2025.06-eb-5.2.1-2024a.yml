@@ -3,3 +3,12 @@ easyconfigs:
   - dav1d-1.5.2-GCCcore-13.3.0.eb
   - SVT-AV1-3.1.2-GCCcore-13.3.0.eb
   - libaom-3.10.0-GCCcore-13.3.0.eb
+  - kim-api-2.4.1-GCC-13.3.0.eb:
+      options:
+          # See https://github.com/easybuilders/easybuild-easyconfigs/pull/25133
+          from-commit: c484c12aaad5da0e27cd9269d59b4ecaa89927ab
+  - LAMMPS-22Jul2025-foss-2024a-kokkos.eb:
+      options:
+          # See https://github.com/easybuilders/easybuild-easyconfigs/pull/25133
+          # and https://github.com/easybuilders/easybuild-easyconfigs/pull/25593
+          from-commit: e2dedae93022d7e3f10bf2983ca8a03b03b0dca0
