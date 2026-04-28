@@ -2,3 +2,4 @@ easyconfigs:
   - ROCm-LLVM-19.0.0-GCCcore-14.2.0-ROCm-6.4.1.eb:
       options:
         parallel: 8
+        from-commit: 30f75b9415f7f545765288c30501775891a3147a
