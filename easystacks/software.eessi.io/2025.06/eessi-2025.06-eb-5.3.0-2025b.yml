@@ -3,6 +3,7 @@ easyconfigs:
   - googletest-1.17.0-GCCcore-14.3.0.eb
   - networkx-3.5-gfbf-2025b.eb
   - SciPy-bundle-2025.07-gfbf-2025b.eb
+  - mpi4py-4.1.0-gompi-2025b.eb
   - NSS-3.114-GCCcore-14.3.0.eb
   - FFmpeg-7.1.2-GCCcore-14.3.0.eb
   - JasPer-4.2.8-GCCcore-14.3.0.eb
