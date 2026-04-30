@@ -1,0 +1,48 @@
+<!-- Pull Request Template for rebuilding software – EESSI Software Layer -->
+<!-- (comments look like this, beginning with what is at the start of this line
+and ending with what is at the end of this one, so they can be multiline!) -->
+
+## Description of rebuild PR
+<!--
+Give some context for the changes introduced by this PR
+- Why is the rebuild necessary?
+- What are the potential positive/negative impacts?
+- ...
+-->
+
+## Target File(s)
+<!--
+Confirm that this PR modifies the correct file(s)
+Rebuilds must be placed under the `rebuilds/` subdirectory:
+- `easystacks/software.eessi.io/<EESSI version>/rebuilds/<date>-eb-<EasyBuild version>-<description>.yml`
+Example:
+- `easystacks/software.eessi.io/2025.06/rebuilds/20260413-eb-5.3.0-RStudio-r_home-patch.yml`
+-->
+
+Please verify:
+
+<!-- Mark relevant options with an [x] -->
+- [ ] This is a rebuild (not a standard addition/update)
+- [ ] I am targeting the [**correct EESSI version**](https://www.eessi.io/docs/repositories/versions/)
+  (e.g. `2025.06` for toolchain generation `2025a`, `2023.06` for toolchain generation `2023b`)
+- [ ] The file is placed in the correct `rebuilds/` directory
+- [ ] I am using the [**latest EasyBuild version**](https://pypi.org/project/easybuild/) (e.g. `5.3.0`)
+- [ ] The filename gives some indication of the reason for the rebuild
+- [ ] The file includes comments explaining **exactly why the rebuild is necessary**
+- [ ] I did **not** modify other unrelated files
+
+## Testing
+<!-- Describe how you validated your changes -->
+<!-- Mark relevant options with an [x] -->
+- [ ] I have tested this PR locally using [**EESSI-extend**](https://www.eessi.io/docs/using_eessi/building_on_eessi/#using-the-eessi-extend-module)
+  <!-- Hint:
+      module load EESSI/<EESSI version>
+      module load EESSI-extend
+      # Show what will be rebuilt 
+      eb --missing --rebuild --easystack <path to easystack>
+      # Perform the build (no dependencies are to be built, so no `--robot`)
+      eb --rebuild --easystack <path to easystack>
+  -->
+- [ ] The build completed successfully
+- [ ] The installed software/module loads correctly
+- [ ] Basic functionality has been verified
