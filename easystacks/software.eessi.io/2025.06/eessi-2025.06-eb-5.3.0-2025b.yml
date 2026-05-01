@@ -1,5 +1,18 @@
 easyconfigs:
   - Dyninst-13.0.0-GCC-14.3.0.eb
   - googletest-1.17.0-GCCcore-14.3.0.eb
+  - networkx-3.5-gfbf-2025b.eb
   - SciPy-bundle-2025.07-gfbf-2025b.eb
-  - Qt6-6.9.3-GCCcore-14.3.0.eb
+  - mpi4py-4.1.0-gompi-2025b.eb
+  - NSS-3.114-GCCcore-14.3.0.eb
+  - FFmpeg-7.1.2-GCCcore-14.3.0.eb
+  - JasPer-4.2.8-GCCcore-14.3.0.eb
+  - nodejs-22.17.1-GCCcore-14.3.0.eb
+  - GROMACS-2025.4-foss-2025b.eb:
+      options:
+          # see https://github.com/easybuilders/easybuild-easyconfigs/pull/24956
+          from-commit: a3bb54895c3de5600fdfd2893a818378daebc7ee
+  - Qt6-6.9.3-GCCcore-14.3.0.eb:
+      options:
+          # see https://github.com/easybuilders/easybuild-easyconfigs/pull/25901
+          from-commit: 02f06cbb51a0a692484f6068a9afcda3afdb2c3c
