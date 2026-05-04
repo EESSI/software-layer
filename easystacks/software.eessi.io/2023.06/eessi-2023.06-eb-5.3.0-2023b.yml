@@ -3,3 +3,4 @@ easyconfigs:
   - SVT-AV1-3.1.2-GCCcore-13.2.0.eb
   - libaom-3.10.0-GCCcore-13.2.0.eb
   - libvpx-1.15.2-GCCcore-13.2.0.eb
+  - Underworld-2.16.4-foss-2023b-egl.eb
