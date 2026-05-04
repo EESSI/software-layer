@@ -86,7 +86,7 @@ jobs:
               module load EESSI-extend/${{matrix.EESSI_VERSION}}-easybuild
               which eb
               ${EB:-eb}  --version
-              ${EB:-eb}  --missing --easystack ${easystack_file} 2>&1 | tee ${eb_missing_out}
+              ${EB:-eb}  --missing --easystack ${easystack_file} 2>&1 | tee -a ${eb_missing_out}
               
               exit_code=${PIPESTATUS[0]}
               #echo "exit code for eb --missing --easystack ${easystack_file} is ${exit_code}"
@@ -95,7 +95,7 @@ jobs:
                 echo "missing installations found for ${easystack_file}!" >&2;
                 echo "PROCESS_LICENSES=true" >> $GITHUB_ENV
               else
-                echo "no missing installations found for ${easystack_file}."
+                echo "No missing installations found for ${easystack_file}."
                 # If 'grep' returns exit code 1, then it jumps to the next easystack_file
               fi 
           done
