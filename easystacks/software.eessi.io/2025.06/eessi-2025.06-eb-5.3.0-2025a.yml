@@ -1,3 +1,5 @@
 easyconfigs:
   - imageio-2.37.0-gfbf-2025a.eb
   - scikit-image-0.25.0-foss-2025a.eb
+  - elfutils-0.193-GCCcore-14.2.0.eb
+  - scikit-bio-0.7.1.post1-foss-2025a.eb
