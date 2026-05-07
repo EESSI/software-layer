@@ -15,4 +15,4 @@ easyconfigs:
   - Qt6-6.9.3-GCCcore-14.3.0.eb:
       options:
           # see https://github.com/easybuilders/easybuild-easyconfigs/pull/25901
-          from-commit: 94dcac4c1ac65ea0774fb473ee272251a7554adc
+          from-commit: b0e5483e1d8e951a75d714d461155547e74ec218
