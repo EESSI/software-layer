@@ -30,7 +30,39 @@ env:
         - nvidia/cc90
         - nvidia/cc100
         - nvidia/cc120
+        - amd/gfx908
+        - amd/gfx90a
+        - amd/gfx942
+        - amd/gfx1030
+        - amd/gfx1100
+        - amd/gfx1101
+        - amd/gfx1200
+        - amd/gfx1201
       # and then allow for special cases for specific architectures
+      aarch64/generic:
+        - nvidia/cc70
+        - nvidia/cc80
+        - nvidia/cc90
+        - nvidia/cc100
+        - nvidia/cc120
+      aarch64/neoverse_n1:
+        - nvidia/cc70
+        - nvidia/cc80
+        - nvidia/cc90
+        - nvidia/cc100
+        - nvidia/cc120
+      aarch64/neoverse_v1:
+        - nvidia/cc70
+        - nvidia/cc80
+        - nvidia/cc90
+        - nvidia/cc100
+        - nvidia/cc120
+      aarch64/nvidia/grace:
+        - nvidia/cc70
+        - nvidia/cc80
+        - nvidia/cc90
+        - nvidia/cc100
+        - nvidia/cc120
       aarch64/a64fx: []
 jobs:
   # Checks whether this PR modifies any easystack files and, if so,
@@ -232,15 +264,25 @@ jobs:
                       module use ${EESSI_SOFTWARE_PATH}/accel/${accel}/modules/all
                       echo "checking missing installations for accelerator ${accel} using modulepath: ${MODULEPATH}"
                       for easystack_file in $(EESSI_VERSION=${{matrix.EESSI_VERSION}} ACCEL_EASYSTACKS=1 .github/workflows/scripts/only_latest_easystacks.sh); do
-                          eb_version=$(echo ${easystack_file} | sed 's/.*eb-\([0-9.]*\).*.yml/\1/g')
-                          echo "check missing installations for ${easystack_file} with EasyBuild ${eb_version}..."
-                          module purge
-                          module load EasyBuild/${eb_version}
-                          which eb
-                          eb --version
-                          software-layer-scripts/check_missing_installations.sh ${easystack_file}
-                          ec=$?
-                          if [[ ${ec} -ne 0 ]]; then echo "missing installations found for ${easystack_file}!" >&2; exit ${ec}; fi
+                          # Check that the vendor of the accelerator ($accel) matches the vendor name in the easystack filepath
+                          # Only then, do the missing install check
+                          # This avoids e.g. that we're checking for missing AMD GPU installations in an NVIDIA GPU prefix
+                          vendor=echo "${arch#*/}"
+                          if "${easystack_file}" == "*accel/${vendor}*"; then
+                              eb_version=$(echo ${easystack_file} | sed 's/.*eb-\([0-9.]*\).*.yml/\1/g')
+                              echo "check missing installations for ${easystack_file} with EasyBuild ${eb_version}..."
+                              module purge
+                              module load EasyBuild/${eb_version}
+                              which eb
+                              eb --version
+                              software-layer-scripts/check_missing_installations.sh ${easystack_file}
+                              ec=$?
+                              if [[ ${ec} -ne 0 ]]; then echo "missing installations found for ${easystack_file}!" >&2; exit ${ec}; fi
+                          else:
+                              msg=Not checking easystack file '${easystack_file}', for accelerator target ${accel}:"
+                              msg="${msg} this easystack file targets a different vendor"
+                              echo "${msg}"
+                          fi
                       done
                       module unuse ${EESSI_SOFTWARE_PATH}/accel/${accel}/modules/all
                   done
