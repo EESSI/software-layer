@@ -1,0 +1,5 @@
+easyconfigs:
+  - ROCm-LLVM-19.0.0-GCCcore-14.2.0-ROCm-6.4.1.eb:
+      options:
+        # See https://github.com/easybuilders/easybuild-easyconfigs/pull/25873
+        from-commit: 69821ba47c0666e3cf1a3a159ddacfef5ee7f34d
