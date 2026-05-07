@@ -1,2 +1,3 @@
 easyconfigs:
   - Julia-1.12.2.eb
+  - Pandoc-3.8.2.1.eb
