@@ -279,7 +279,7 @@ jobs:
                               software-layer-scripts/check_missing_installations.sh ${easystack_file}
                               ec=$?
                               if [[ ${ec} -ne 0 ]]; then echo "missing installations found for ${easystack_file}!" >&2; exit ${ec}; fi
-                          else:
+                          else
                               msg="Not checking easystack file '${easystack_file}', for accelerator target ${accel}:"
                               msg="${msg} this easystack file targets a different vendor"
                               echo "${msg}"
