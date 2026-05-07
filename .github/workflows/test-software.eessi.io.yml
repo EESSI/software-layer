@@ -267,7 +267,7 @@ jobs:
                           # Check that the vendor of the accelerator ($accel) matches the vendor name in the easystack filepath
                           # Only then, do the missing install check
                           # This avoids e.g. that we're checking for missing AMD GPU installations in an NVIDIA GPU prefix
-                          vendor=echo "${accel%%/*}"  # Remove everything after the first /
+                          vendor="${accel%%/*}"  # Remove everything after the first /
                           echo "Checking if easystack file '${easystack_file}' contains '*accel/${vendor}*'"
                           if "${easystack_file}" == "*accel/${vendor}*"; then
                               eb_version=$(echo ${easystack_file} | sed 's/.*eb-\([0-9.]*\).*.yml/\1/g')
