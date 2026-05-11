@@ -1,3 +1,4 @@
 easyconfigs:
   - Julia-1.12.2.eb
   - cowsay-3.04.eb
+  - Pandoc-3.8.2.1.eb
