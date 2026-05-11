@@ -1,2 +1,3 @@
 easyconfigs:
   - Julia-1.12.2.eb
+  - cowsay-3.04.eb
