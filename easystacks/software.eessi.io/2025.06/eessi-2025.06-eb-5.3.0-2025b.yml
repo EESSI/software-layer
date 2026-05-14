@@ -16,3 +16,7 @@ easyconfigs:
       options:
         # see https://github.com/easybuilders/easybuild-easyconfigs/pull/25798
         from-commit: a62e2485218203c9e8dc1e90284781f115b39e2f
+  - scikit-bio-0.7.2-foss-2025b.eb:
+      options:
+          # see https://github.com/easybuilders/easybuild-easyconfigs/pull/25908
+          from-commit: d04690454404aee9d12fc57858c79382adf64d8b
