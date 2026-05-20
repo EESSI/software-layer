@@ -1,2 +1,3 @@
 easyconfigs:
   - Siesta-5.4.2-foss-2024a.eb
+  - Siesta-5.4.2-foss-2024a-CUDA-12.6.0.eb
