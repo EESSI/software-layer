@@ -1,2 +1,4 @@
 easyconfigs:
   - Siesta-5.4.2-foss-2024a.eb
+  - scikit-image-0.25.0-foss-2024a.eb
+
