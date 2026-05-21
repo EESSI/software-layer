@@ -110,6 +110,11 @@ jobs:
           echo "EOF" >> "$GITHUB_OUTPUT"
 
   check_missing:
+    if: >
+        (
+            contains(github.event.pull_request.labels.*.name, 'bot:deploy')
+            || contains(github.event.pull_request.labels.*.name, 'force-ci-checks')
+        )
     needs: check_EESSI_version_changed_files
     strategy:
       fail-fast: false
@@ -230,7 +235,11 @@ jobs:
               cvmfs_repositories: software.eessi.io
 
         - name: Check for missing installlations
-          if: contains(needs.check_EESSI_version_changed_files.outputs.EESSI_VERSIONS, matrix.EESSI_VERSION)
+          if: >
+              contains(
+                  needs.check_EESSI_version_changed_files.outputs.EESSI_VERSIONS,
+                  matrix.EESSI_VERSION
+              )
           run: |
               export EESSI_SOFTWARE_SUBDIR_OVERRIDE=${{matrix.EESSI_SOFTWARE_SUBDIR_OVERRIDE}}
               source /cvmfs/software.eessi.io/versions/${{matrix.EESSI_VERSION}}/init/bash
