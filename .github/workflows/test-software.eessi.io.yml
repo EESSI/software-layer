@@ -196,11 +196,11 @@ jobs:
               cvmfs_repositories: software.eessi.io
 
         - name: Check for missing installlations
-          if: >
-              contains(
-                  needs.check_EESSI_version_changed_files.outputs.EESSI_VERSIONS,
-                  matrix.EESSI_VERSION
-              )
+          # if: >
+            #   contains(
+              #     needs.check_EESSI_version_changed_files.outputs.EESSI_VERSIONS,
+                #   matrix.EESSI_VERSION
+              # )
           run: |
               # Do a basic initialisation to set up Lmod and EESSI modules
               export EESSI_MODULE_STICKY=1
