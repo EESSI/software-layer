@@ -142,15 +142,15 @@ jobs:
           
           # Use GITHUB_OUTPUT heredoc correctly
           echo "EESSI_VERSIONS<<EOF" >> "$GITHUB_OUTPUT"
-          echo "$EESSI_VERSIONS" >> "$GITHUB_OUTPUT"
+          echo "2025.06" >> "$GITHUB_OUTPUT"
           echo "EOF" >> "$GITHUB_OUTPUT"
 
   check_missing:
-    if: >
-        (
-            contains(github.event.pull_request.labels.*.name, 'bot:deploy')
-            || contains(github.event.pull_request.labels.*.name, 'force-ci-checks')
-        )
+    #if: >
+    #    (
+    #        contains(github.event.pull_request.labels.*.name, 'bot:deploy')
+    #        || contains(github.event.pull_request.labels.*.name, 'force-ci-checks')
+    #    )
     needs: check_EESSI_version_changed_files
     strategy:
       fail-fast: false
@@ -196,11 +196,11 @@ jobs:
               cvmfs_repositories: software.eessi.io
 
         - name: Check for missing installlations
-          # if: >
-            #   contains(
-              #     needs.check_EESSI_version_changed_files.outputs.EESSI_VERSIONS,
-                #   matrix.EESSI_VERSION
-              # )
+          if: >
+              contains(
+                  needs.check_EESSI_version_changed_files.outputs.EESSI_VERSIONS,
+                  matrix.EESSI_VERSION
+              )
           run: |
               # Do a basic initialisation to set up Lmod and EESSI modules
               export EESSI_MODULE_STICKY=1
