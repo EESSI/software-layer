@@ -147,11 +147,11 @@ jobs:
           echo "EOF" >> "$GITHUB_OUTPUT"
 
   check_missing:
-    if: >
-        (
-            contains(github.event.pull_request.labels.*.name, 'bot:deploy')
-            || contains(github.event.pull_request.labels.*.name, 'force-ci-checks')
-        )
+    # if: >
+    #     (
+    #         contains(github.event.pull_request.labels.*.name, 'bot:deploy')
+    #         || contains(github.event.pull_request.labels.*.name, 'force-ci-checks')
+    #     )
     needs: check_EESSI_version_changed_files
     strategy:
       fail-fast: false
