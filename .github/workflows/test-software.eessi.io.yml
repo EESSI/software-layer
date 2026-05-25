@@ -200,7 +200,7 @@ jobs:
           cvmfs_http_proxy: DIRECT
           cvmfs_repositories: software.eessi.io
 
-      - name: Check for missing installlations
+      - name: Check for missing installations
         if: >
           contains(
             needs.check_EESSI_version_changed_files.outputs.EESSI_VERSIONS,
@@ -293,34 +293,34 @@ jobs:
             fi
           done
 
-        - name: Test check_missing_installations.sh with missing package (GCC/8.3.0)
-          run: |
-            export EESSI_SOFTWARE_SUBDIR_OVERRIDE=${{matrix.EESSI_SOFTWARE_SUBDIR_OVERRIDE}}
-            source /cvmfs/software.eessi.io/versions/${{matrix.EESSI_VERSION}}/init/bash
-            # set $EESSI_CPU_FAMILY to the CPU architecture that corresponds to $EESSI_SOFTWARE_SUBDIR_OVERRIDE (part before the first slash),
-            # to prevent issues with checks in the Easybuild configuration that use this variable
-            export EESSI_CPU_FAMILY=${EESSI_SOFTWARE_SUBDIR_OVERRIDE%%/*}
-            module load EasyBuild
-            which eb
-            eb --version
-            export EESSI_PREFIX=/cvmfs/software.eessi.io/versions/${{matrix.EESSI_VERSION}}
-            export EESSI_OS_TYPE=linux
-            env | grep ^EESSI | sort
-            # create dummy easystack file with a single entry (something that is not installed in EESSI)
-            easystack_file="test.yml"
-            echo "easyconfigs:" > ${easystack_file}
-            echo "  - GCC-8.3.0:" >> ${easystack_file}
-            echo "created easystack file '${easystack_file}' with a missing installation (GCC/8.3.0):"
-            cat ${easystack_file}
-            # note, check_missing_installations.sh exits 1 if a package was
-            # missing, which is intepreted as false (exit code based, not
-            # boolean logic), hence when the script exits 0 if no package was
-            # missing it is interpreted as true, thus the test did not capture
-            # the missing package
-            if software-layer-scripts/check_missing_installations.sh ${easystack_file}; then
-              echo "did NOT capture missing package; test FAILED"
-              exit 1
-            else
-              echo "captured missing package; test PASSED"
-              exit 0
-            fi
+      - name: Test check_missing_installations.sh with missing package (GCC/8.3.0)
+        run: |
+          export EESSI_SOFTWARE_SUBDIR_OVERRIDE=${{matrix.EESSI_SOFTWARE_SUBDIR_OVERRIDE}}
+          source /cvmfs/software.eessi.io/versions/${{matrix.EESSI_VERSION}}/init/bash
+          # set $EESSI_CPU_FAMILY to the CPU architecture that corresponds to $EESSI_SOFTWARE_SUBDIR_OVERRIDE (part before the first slash),
+          # to prevent issues with checks in the Easybuild configuration that use this variable
+          export EESSI_CPU_FAMILY=${EESSI_SOFTWARE_SUBDIR_OVERRIDE%%/*}
+          module load EasyBuild
+          which eb
+          eb --version
+          export EESSI_PREFIX=/cvmfs/software.eessi.io/versions/${{matrix.EESSI_VERSION}}
+          export EESSI_OS_TYPE=linux
+          env | grep ^EESSI | sort
+          # create dummy easystack file with a single entry (something that is not installed in EESSI)
+          easystack_file="test.yml"
+          echo "easyconfigs:" > ${easystack_file}
+          echo "  - GCC-8.3.0:" >> ${easystack_file}
+          echo "created easystack file '${easystack_file}' with a missing installation (GCC/8.3.0):"
+          cat ${easystack_file}
+          # note, check_missing_installations.sh exits 1 if a package was
+          # missing, which is intepreted as false (exit code based, not
+          # boolean logic), hence when the script exits 0 if no package was
+          # missing it is interpreted as true, thus the test did not capture
+          # the missing package
+          if software-layer-scripts/check_missing_installations.sh ${easystack_file}; then
+            echo "did NOT capture missing package; test FAILED"
+            exit 1
+          else
+            echo "captured missing package; test PASSED"
+            exit 0
+          fi
