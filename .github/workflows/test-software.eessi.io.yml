@@ -26,6 +26,7 @@ env:
         - aarch64/neoverse_n1
         - aarch64/neoverse_v1
         - aarch64/nvidia/grace
+        - aarch64/a64fx
     2025.06:
       x86_64:
         - x86_64/amd/zen2
@@ -146,11 +147,11 @@ jobs:
           echo "EOF" >> "$GITHUB_OUTPUT"
 
   check_missing:
-    #if: >
-    #    (
-    #        contains(github.event.pull_request.labels.*.name, 'bot:deploy')
-    #        || contains(github.event.pull_request.labels.*.name, 'force-ci-checks')
-    #    )
+    if: >
+        (
+            contains(github.event.pull_request.labels.*.name, 'bot:deploy')
+            || contains(github.event.pull_request.labels.*.name, 'force-ci-checks')
+        )
     needs: check_EESSI_version_changed_files
     strategy:
       fail-fast: false
