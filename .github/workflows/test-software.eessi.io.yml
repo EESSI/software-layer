@@ -227,7 +227,8 @@ jobs:
 
             for ((j=i; j<i+2 && j<${#cpu_array[@]}; j++)); do
               cpu="${cpu_array[j]}"
-              log="log_${cpu}.txt"
+              safe_cpu="${cpu//\//_}"
+              log="log_${safe_cpu}.txt"
 
               echo ""
               echo "---------------- CPU TARGET ----------------"
