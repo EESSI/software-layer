@@ -218,79 +218,115 @@ jobs:
             exit 1
           fi
 
-          for EESSI_SOFTWARE_SUBDIR_OVERRIDE in $cpu_subdirs; do
-            # purge before we begin so the environment is clean (including EESSI itself)
-            module --force purge
-            # now set the CPU arch 
-            export EESSI_SOFTWARE_SUBDIR_OVERRIDE
-            module load EESSI//${{matrix.EESSI_VERSION}}
-            echo ""
-            echo "---------------- CPU TARGET ----------------"
-            echo "$EESSI_SOFTWARE_SUBDIR_OVERRIDE"
-            echo "-------------------------------------------"
-            env | grep ^EESSI | sort
+          cpu_array=($cpu_subdirs)
 
-            # make sure that Lmod cache file is present for the CPU target
-            cache_file="${EESSI_SOFTWARE_PATH}/.lmod/cache/spiderT.lua"
-            if [[ -f "$cache_file" ]]; then
-              ls -l "$cache_file"
-            else
-              echo "ERROR: Lmod cache file is missing for CPU target"
-              echo "Expected file: $cache_file"
-              echo "This usually means:"
-              echo "  - Lmod spider cache was not generated for this architecture"
-              echo "  - module environment was not fully initialized"
-              echo "  - CVMFS mount is incomplete or stale"
-              exit 1
-            fi
+          for ((i=0; i<${#cpu_array[@]}; i+=2)); do
+            pids=()
+            labels=()
+            logs=()
 
-            # first check the CPU-only builds for this CPU target
-            echo "first run check_missing_installations.sh for CPU-only builds"
-            for easystack_file in $(EESSI_VERSION=${{matrix.EESSI_VERSION}} .github/workflows/scripts/only_latest_easystacks.sh); do
-              eb_version=$(echo ${easystack_file} | sed 's/.*eb-\([0-9.]*\).*.yml/\1/g')
-              echo "check missing installations for ${easystack_file} with EasyBuild ${eb_version}..."
-              module purge
-              module load EasyBuild/${eb_version}
-              which eb
-              eb --version
-              software-layer-scripts/check_missing_installations.sh ${easystack_file}
-              ec=$?
-              if [[ ${ec} -ne 0 ]]; then echo "missing installations found for ${easystack_file}!" >&2; exit ${ec}; fi
+            for ((j=i; j<i+2 && j<${#cpu_array[@]}; j++)); do
+              cpu="${cpu_array[j]}"
+              log="log_${cpu}.txt"
+
+              echo ""
+              echo "---------------- CPU TARGET ----------------"
+              echo "$cpu"
+              echo "-------------------------------------------"
+                
+
+              (
+                set -euo pipefail
+
+                module --force purge
+                export EESSI_SOFTWARE_SUBDIR_OVERRIDE="$cpu"
+                module load EESSI//${{matrix.EESSI_VERSION}}
+
+                env | grep ^EESSI | sort
+
+                cache_file="${EESSI_SOFTWARE_PATH}/.lmod/cache/spiderT.lua"
+                if [[ -f "$cache_file" ]]; then
+                  ls -l "$cache_file"
+                else
+                  echo "ERROR: Lmod cache file is missing for CPU target"
+                  echo "Expected file: $cache_file"
+                  exit 1
+                fi
+
+                echo "first run check_missing_installations.sh for CPU-only builds"
+                for easystack_file in $(EESSI_VERSION=${{matrix.EESSI_VERSION}} .github/workflows/scripts/only_latest_easystacks.sh); do
+                  eb_version=$(echo ${easystack_file} | sed 's/.*eb-\([0-9.]*\).*.yml/\1/g')
+                  echo "checking ${easystack_file} with EasyBuild ${eb_version}..."
+
+                  module purge
+                  module load EasyBuild/${eb_version}
+
+                  which eb
+                  eb --version
+
+                  software-layer-scripts/check_missing_installations.sh ${easystack_file}
+                done
+
+                echo
+                echo "now check accelerator builds for ${cpu}"
+                accelerators=$(echo "${EESSI_ACCELERATOR_TARGETS}" | yq ".\"${{matrix.EESSI_VERSION}}\".\"${cpu}\" // .\"${{matrix.EESSI_VERSION}}\".default | .[]")
+
+                if [[ -z "${accelerators}" ]]; then
+                  echo "no accelerator targets defined for ${cpu}"
+                else
+                  for accel in ${accelerators}; do
+                    module use ${EESSI_SOFTWARE_PATH}/accel/${accel}/modules/all
+
+                    echo "checking accelerator ${accel}"
+
+                    for easystack_file in $(EESSI_VERSION=${{matrix.EESSI_VERSION}} ACCEL_EASYSTACKS=1 .github/workflows/scripts/only_latest_easystacks.sh); do
+
+                      vendor="${accel%%/*}"
+
+                      if [[ "${easystack_file}" == *"accel/${vendor}"* ]]; then
+                        eb_version=$(echo ${easystack_file} | sed 's/.*eb-\([0-9.]*\).*.yml/\1/g')
+
+                        module purge
+                        module load EasyBuild/${eb_version}
+
+                        which eb
+                        eb --version
+
+                        software-layer-scripts/check_missing_installations.sh ${easystack_file}
+                      else
+                        echo "Skipping ${easystack_file} (vendor mismatch for ${accel})"
+                      fi
+                    done
+
+                    module unuse ${EESSI_SOFTWARE_PATH}/accel/${accel}/modules/all
+                  done
+                fi
+
+              ) >"$log" 2>&1 &
+
+              pids+=($!)
+              labels+=("$cpu")
+              logs+=("$log")
             done
 
-            # now check the accelerator builds for this CPU target
-            accelerators=$(echo "${EESSI_ACCELERATOR_TARGETS}" | yq ".\"${{matrix.EESSI_VERSION}}\".\"${EESSI_SOFTWARE_SUBDIR_OVERRIDE}\" // .\"${{matrix.EESSI_VERSION}}\".default | .[]")
-            if [ -z "${accelerators}" ]; then
-              echo "no accelerator targets defined for ${EESSI_SOFTWARE_SUBDIR_OVERRIDE}"
-            else
-              for accel in ${accelerators}; do
-                module use ${EESSI_SOFTWARE_PATH}/accel/${accel}/modules/all
-                echo "checking missing installations for accelerator ${accel} using modulepath: ${MODULEPATH}"
-                for easystack_file in $(EESSI_VERSION=${{matrix.EESSI_VERSION}} ACCEL_EASYSTACKS=1 .github/workflows/scripts/only_latest_easystacks.sh); do
-                  # Check that the vendor of the accelerator ($accel) matches the vendor name in the easystack filepath
-                  # Only then, do the missing install check
-                  # This avoids e.g. that we're checking for missing AMD GPU installations in an NVIDIA GPU prefix
-                  vendor="${accel%%/*}"  # Remove everything after the first /
-                  echo "Checking if easystack file '${easystack_file}' contains '*accel/${vendor}*'"
-                  if [[ "${easystack_file}" == *"accel/${vendor}"* ]]; then
-                    eb_version=$(echo ${easystack_file} | sed 's/.*eb-\([0-9.]*\).*.yml/\1/g')
-                    echo "check missing installations for ${easystack_file} with EasyBuild ${eb_version}..."
-                    module purge
-                    module load EasyBuild/${eb_version}
-                    which eb
-                    eb --version
-                    software-layer-scripts/check_missing_installations.sh ${easystack_file}
-                    ec=$?
-                    if [[ ${ec} -ne 0 ]]; then echo "missing installations found for ${easystack_file}!" >&2; exit ${ec}; fi
-                  else
-                    msg="Not checking easystack file '${easystack_file}', for accelerator target ${accel}:"
-                    msg="${msg} this easystack file targets a different vendor"
-                    echo "${msg}"
-                  fi
-                done
-                  module unuse ${EESSI_SOFTWARE_PATH}/accel/${accel}/modules/all
-              done
-            fi
+            # wait + report results for this batch of 2
+            for ((k=0; k<${#pids[@]}; k++)); do
+              pid="${pids[k]}"
+              cpu="${labels[k]}"
+              log="${logs[k]}"
+
+              if ! wait "$pid"; then
+                echo "========================================"
+                echo "FAILED CPU TARGET: $cpu"
+                echo "LOG FILE: $log"
+                echo "========================================"
+                cat "$log"
+                exit 1
+              else
+                echo "SUCCESS: $cpu"
+              fi
+            done
+
           done
 
       - name: Test check_missing_installations.sh with missing package (GCC/8.3.0)
