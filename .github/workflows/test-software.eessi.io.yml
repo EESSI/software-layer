@@ -220,12 +220,12 @@ jobs:
 
           cpu_array=($cpu_subdirs)
 
-          for ((i=0; i<${#cpu_array[@]}; i+=2)); do
+          for ((i=0; i<${#cpu_array[@]}; i+=3)); do
             pids=()
             labels=()
             logs=()
 
-            for ((j=i; j<i+2 && j<${#cpu_array[@]}; j++)); do
+            for ((j=i; j<i+3 && j<${#cpu_array[@]}; j++)); do
               cpu="${cpu_array[j]}"
               safe_cpu="${cpu//\//_}"
               log="log_${safe_cpu}.txt"
