@@ -8,3 +8,4 @@ easyconfigs:
       options:
         # see https://github.com/easybuilders/easybuild-easyconfigs/pull/25981
         from-commit: df78eb85f1e5f2b42c1feba2e93f4dc822a02474
+  - huggingface-hub-1.2.4-GCCcore-14.2.0.eb
