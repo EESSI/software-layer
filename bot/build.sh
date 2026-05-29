@@ -3,7 +3,7 @@
 # give up as soon as any error occurs
 set -e
 
-git clone https://github.com/EESSI/software-layer-scripts
+git clone -b improve_building_on_top_support https://github.com/SURF-hpcv/software-layer-scripts
 
 # symlink everything, except for:
 # - common files like LICENSE and README.md
