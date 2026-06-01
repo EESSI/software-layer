@@ -1,3 +1,7 @@
 easyconfigs:
   - Julia-1.12.2.eb
   - Pandoc-3.8.2.1.eb
+  - Nextflow-26.04.0.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/25927
+        from-commit: dc332982ba2c7ab0ba68ccb771fc29f2a0cc4172
