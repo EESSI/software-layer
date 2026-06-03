@@ -1,6 +1,7 @@
 easyconfigs:
   - Siesta-5.4.2-foss-2024a.eb
   - scikit-image-0.25.0-foss-2024a.eb
+  - ArmComputeLibrary-25.02-GCCcore-13.3.0.eb
   - PyTorch-2.9.1-foss-2024a.eb:
       options:
         # see https://github.com/easybuilders/easybuild-easyconfigs/pull/25726

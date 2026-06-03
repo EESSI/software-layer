@@ -12,7 +12,3 @@ easyconfigs:
           # See https://github.com/easybuilders/easybuild-easyconfigs/pull/25133
           # and https://github.com/easybuilders/easybuild-easyconfigs/pull/25593
           from-commit: e2dedae93022d7e3f10bf2983ca8a03b03b0dca0
-  - ArmComputeLibrary-25.02-GCCcore-13.3.0.eb:
-      options:
-        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/25566
-        from-commit: 4ae8ae69d09f63fb3560bba0f46927f10221f492
