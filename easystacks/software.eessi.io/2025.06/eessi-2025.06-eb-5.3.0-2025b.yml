@@ -29,6 +29,7 @@ easyconfigs:
           # see https://github.com/easybuilders/easybuild-easyconfigs/pull/25999
           from-commit: 960bb9bbf98f11ac376f43a3d36d5cf1cedc96f1
   - QuantumESPRESSO-7.5-foss-2025b.eb
+  - SentencePiece-0.2.1-GCC-14.3.0.eb
   - GROMACS-2026.2-foss-2025b.eb:
       options:
         # see https://github.com/easybuilders/easybuild-easyconfigs/pull/25879
