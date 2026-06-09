@@ -18,3 +18,4 @@ easyconfigs:
   # - framework PR for fix: https://github.com/easybuilders/easybuild-framework/pull/5142
   # - triggered by https://github.com/easybuilders/easybuild-easyblocks/pull/3993
   - jupyterlmod-5.2.2-GCCcore-13.3.0.eb
+  - TensorFlow-2.18.1-foss-2024a.eb
