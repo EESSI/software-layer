@@ -1,3 +1,11 @@
 easyconfigs:
   - imageio-2.37.0-gfbf-2025a.eb
   - scikit-image-0.25.0-foss-2025a.eb
+  - elfutils-0.193-GCCcore-14.2.0.eb
+  - scikit-bio-0.7.1.post1-foss-2025a.eb
+  - BioPerl-1.7.8-GCCcore-14.2.0.eb
+  - IQ-TREE-3.1.2-gompi-2025a.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/25981
+        from-commit: df78eb85f1e5f2b42c1feba2e93f4dc822a02474
+  - ESPResSo-4.2.2-foss-2025a.eb
