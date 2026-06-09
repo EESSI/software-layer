@@ -1,0 +1,9 @@
+# rebuild Python 3.13.5 with EasyBuild 5.2.0 to pick up the ctypes fix from
+# https://github.com/easybuilders/easybuild-easyblocks/pull/3860
+# and https://github.com/easybuilders/easybuild-easyconfigs/pull/25106.
+# Also see https://github.com/EESSI/software-layer/issues/1363.
+easyconfigs:
+  - Python-3.13.5-GCCcore-14.3.0.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/25106
+        from-commit: deb72dd056970e32b7f649ce2a629b63aad6e83a

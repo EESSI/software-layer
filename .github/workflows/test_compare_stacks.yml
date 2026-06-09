@@ -9,17 +9,27 @@ permissions:
   contents: read # to fetch code (actions/checkout)
 env:
   CUDA_COMPUTE_CAPABILITIES_YAML: |
-    # Provide a default set of compute capabilities
-    default:
-      - cc70
-      - cc80
-      - cc90
-    # and then allow for special cases for specific architectures
-    x86_64/amd/zen2:
-      - cc70
-      - cc80
-      - cc90
-    aarch64/a64fx: []
+    2023.06:
+      # Provide a default set of compute capabilities
+      default:
+        - cc70
+        - cc80
+        - cc90
+      # and then allow for special cases for specific architectures
+      x86_64/amd/zen2:
+        - cc70
+        - cc80
+        - cc90
+      aarch64/a64fx: []
+    2025.06:
+      # Provide a default set of compute capabilities
+      default:
+        - cc70
+        - cc80
+        - cc90
+        - cc100
+        - cc120
+      aarch64/a64fx: []
 jobs:
   compare_stacks:
     runs-on: ubuntu-24.04
@@ -27,21 +37,25 @@ jobs:
       fail-fast: false
       matrix:
         EESSI_VERSION:
-        - 2023.06
-        - 2025.06
+          - 2023.06
+          - 2025.06
         COMPARISON_ARCH:
-        - aarch64/a64fx
-        - aarch64/neoverse_n1
-        - aarch64/neoverse_v1
-        - aarch64/nvidia/grace
-        - x86_64/amd/zen2
-        - x86_64/amd/zen3
-        - x86_64/amd/zen4
-        - x86_64/intel/haswell
-        - x86_64/intel/skylake_avx512
-        - x86_64/intel/sapphirerapids
-        - x86_64/intel/icelake
-        - x86_64/intel/cascadelake
+          - aarch64/a64fx
+          - aarch64/neoverse_n1
+          - aarch64/neoverse_v1
+          - aarch64/nvidia/grace
+          - x86_64/amd/zen2
+          - x86_64/amd/zen3
+          - x86_64/amd/zen4
+          - x86_64/amd/zen5
+          - x86_64/intel/haswell
+          - x86_64/intel/skylake_avx512
+          - x86_64/intel/sapphirerapids
+          - x86_64/intel/icelake
+          - x86_64/intel/cascadelake
+        exclude:
+          - EESSI_VERSION: 2023.06
+            COMPARISON_ARCH: x86_64/amd/zen5
         # Example of how a specific target can be excluded:
         # exclude:
         # - EESSI_VERSION: 2023.06
@@ -65,7 +79,7 @@ jobs:
               # (which assumes the structure /cvmfs/software.eessi.io/versions/2023.06/software/linux/$COMPARISON_ARCH/accel/nvidia/$cc/modules/all)
               
               # Parse the yaml that makes the compute capabilities arch-dependent
-              CUDA_COMPUTE_CAPABILITIES=$(echo "${CUDA_COMPUTE_CAPABILITIES_YAML}" | yq ".\"${{matrix.COMPARISON_ARCH}}\" // .default | .[]" | tr '\n' ' ')
+              CUDA_COMPUTE_CAPABILITIES=$(echo "${CUDA_COMPUTE_CAPABILITIES_YAML}" | yq ".\"${{matrix.EESSI_VERSION}}\".\"${{matrix.COMPARISON_ARCH}}\" // .\"${{matrix.EESSI_VERSION}}\".default | .[]" | tr '\n' ' ')
               export CUDA_COMPUTE_CAPABILITIES=${CUDA_COMPUTE_CAPABILITIES%% }  # trim trailing space
               
               .github/workflows/scripts/compare_to_generic.sh ${EESSI_PREFIX}/software/${EESSI_OS_TYPE} ${{matrix.COMPARISON_ARCH}}

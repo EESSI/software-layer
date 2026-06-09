@@ -1,0 +1,14 @@
+# easystack-2-eb-5.1.1.yml: total build duration = 237 minutes
+easyconfigs:
+  - /cvmfs/software.eessi.io/versions/2025.06/software/linux/x86_64/amd/zen2/reprod/GCCcore/13.3.0/20250821_075803UTC/easybuild/GCCcore-13.3.0.eb:
+      options:
+        include-easyblocks: /cvmfs/software.eessi.io/versions/2025.06/software/linux/x86_64/amd/zen2/reprod/GCCcore/13.3.0/20250821_075803UTC/easybuild/reprod/easyblocks/*.py
+  - /cvmfs/software.eessi.io/versions/2025.06/software/linux/x86_64/amd/zen2/reprod/GCC/13.3.0/20250821_075807UTC/easybuild/GCC-13.3.0.eb:
+      options:
+        include-easyblocks: /cvmfs/software.eessi.io/versions/2025.06/software/linux/x86_64/amd/zen2/reprod/GCC/13.3.0/20250821_075807UTC/easybuild/reprod/easyblocks/*.py
+  - /cvmfs/software.eessi.io/versions/2025.06/software/linux/x86_64/amd/zen2/reprod/GCCcore/14.2.0/20250821_100010UTC/easybuild/GCCcore-14.2.0.eb:
+      options:
+        include-easyblocks: /cvmfs/software.eessi.io/versions/2025.06/software/linux/x86_64/amd/zen2/reprod/GCCcore/14.2.0/20250821_100010UTC/easybuild/reprod/easyblocks/*.py
+  - /cvmfs/software.eessi.io/versions/2025.06/software/linux/x86_64/amd/zen2/reprod/GCC/14.2.0/20250821_100013UTC/easybuild/GCC-14.2.0.eb:
+      options:
+        include-easyblocks: /cvmfs/software.eessi.io/versions/2025.06/software/linux/x86_64/amd/zen2/reprod/GCC/14.2.0/20250821_100013UTC/easybuild/reprod/easyblocks/*.py

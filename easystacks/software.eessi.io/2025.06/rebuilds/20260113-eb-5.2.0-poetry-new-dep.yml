@@ -1,0 +1,9 @@
+# In EasyBuild 5.2.0 poetry had a required package moved to an
+# external dependency
+# https://github.com/easybuilders/easybuild-easyconfigs/pull/24566
+# Rebuild versions already shipped in EESSI
+easyconfigs:
+  - build-1.2.2.post1-GCCcore-13.3.0.eb  # missing dep
+  - poetry-1.8.3-GCCcore-13.3.0.eb
+  - build-1.3.0-GCCcore-14.2.0.eb  # missing dep
+  - poetry-2.1.2-GCCcore-14.2.0.eb

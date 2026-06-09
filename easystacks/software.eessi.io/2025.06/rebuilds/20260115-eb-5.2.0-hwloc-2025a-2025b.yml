@@ -1,0 +1,12 @@
+# rebuild hwloc for 2025a and 2025b to pick up patch
+# that significantly improvies MPI startup time;
+# see also https://github.com/open-mpi/hwloc/issues/756
+easyconfigs:
+  - hwloc-2.11.2-GCCcore-14.2.0.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/25043
+        from-commit: 9c1f56e168199e24831413a68d8e9e1660b46dab
+  - hwloc-2.12.1-GCCcore-14.3.0.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/25063
+        from-commit: a6ad24949b803bc028896a8136536085a5cd3c11

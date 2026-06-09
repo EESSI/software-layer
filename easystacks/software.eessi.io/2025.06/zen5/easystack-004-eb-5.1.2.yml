@@ -1,0 +1,5 @@
+# easystack-4-eb-5.1.2.yml: total build duration = 19 minutes
+easyconfigs:
+  - /cvmfs/software.eessi.io/versions/2025.06/software/linux/x86_64/amd/zen2/reprod/Python/3.12.3-GCCcore-13.3.0/20251022_222529UTC/easybuild/Python-3.12.3-GCCcore-13.3.0.eb:
+      options:
+        include-easyblocks: /cvmfs/software.eessi.io/versions/2025.06/software/linux/x86_64/amd/zen2/reprod/Python/3.12.3-GCCcore-13.3.0/20251022_222529UTC/easybuild/reprod/easyblocks/*.py

@@ -1,0 +1,5 @@
+# rebuild FFmpeg to pick up on additional dependencies that were added,
+# see https://github.com/easybuilders/easybuild-easyconfigs/pull/24901
+easyconfigs:
+  - FFmpeg-7.0.2-GCCcore-13.3.0.eb
+  - FFmpeg-7.1.1-GCCcore-14.2.0.eb

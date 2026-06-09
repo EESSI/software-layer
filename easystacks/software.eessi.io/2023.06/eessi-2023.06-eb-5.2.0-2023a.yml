@@ -1,0 +1,43 @@
+easyconfigs:
+  - jupyterlmod-4.0.3-GCCcore-12.3.0.eb
+  - Graphviz-8.1.0-GCCcore-12.3.0.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/25189
+        from-commit: 962002ee42d6fc74c981105a79e30b05f37cc1d0
+  - aiida-core-2.7.2-foss-2023a.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/25113
+        from-commit: 077b656e7e9a93aef4a6286aafc57fb5acd7a424
+  - aiida-shell-0.8.2-foss-2023a.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/25113
+        from-commit: 077b656e7e9a93aef4a6286aafc57fb5acd7a424
+  - AmberTools-23.6-foss-2023a.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyblocks/pull/4045
+        include-easyblocks-from-commit: b0aef6d87f3b102a29f53c875e1c69b789f16a33
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/25193
+        from-commit: f97ac13b2d4290c505aaa6532fdedebb4f629834
+  - OpenBabel-3.1.1-gompi-2023a.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/25222
+        from-commit: 7dbe8beab98ec0b2daa432aa43ae3a0ed874e859
+  - acpype-2023.10.27-foss-2023a.eb
+  - AITW-stiffness-1.0.0-foss-2023a.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyblocks/pull/4056
+        include-easyblocks-from-commit: 0f75bae68e0323d7053e0e2dddb03e6422e666e2
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/25220
+        from-commit: fc6e46c10d6c5d92ea2ab403bfcde364828fa693
+  - AITW-microstructures-1.0.0-foss-2023a.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyblocks/pull/4056
+        include-easyblocks-from-commit: 0f75bae68e0323d7053e0e2dddb03e6422e666e2
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/25220
+        from-commit: fc6e46c10d6c5d92ea2ab403bfcde364828fa693
+  - AITW-viscosity-1.0.0-foss-2023a.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyblocks/pull/4056
+        include-easyblocks-from-commit: 0f75bae68e0323d7053e0e2dddb03e6422e666e2
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/25220
+        from-commit: fc6e46c10d6c5d92ea2ab403bfcde364828fa693

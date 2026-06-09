@@ -1,0 +1,5 @@
+easyconfigs:
+  - EasyBuild-5.2.0.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/24974
+        from-commit: 775394fc355a53422ef7dfffdc72e88c2de8f703

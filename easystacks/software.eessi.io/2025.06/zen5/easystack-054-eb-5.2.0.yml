@@ -1,0 +1,94 @@
+# easystack-044-eb-5.2.0.yml: total build duration = 40 minutes
+easyconfigs:
+  - /cvmfs/software.eessi.io/versions/2025.06/software/linux/x86_64/amd/zen2/reprod/JupyterNotebook/7.2.3-GCCcore-13.3.0/20260302_142306UTC/easybuild/JupyterNotebook-7.2.3-GCCcore-13.3.0.eb:
+      options:
+        robot: False
+        include-easyblocks: /cvmfs/software.eessi.io/versions/2025.06/software/linux/x86_64/amd/zen2/reprod/JupyterNotebook/7.2.3-GCCcore-13.3.0/20260302_142306UTC/easybuild/reprod/easyblocks/*.py
+  - /cvmfs/software.eessi.io/versions/2025.06/software/linux/x86_64/amd/zen2/reprod/jupyterlmod/5.2.2-GCCcore-13.3.0/20260302_142332UTC/easybuild/jupyterlmod-5.2.2-GCCcore-13.3.0.eb:
+      options:
+        robot: False
+        include-easyblocks: /cvmfs/software.eessi.io/versions/2025.06/software/linux/x86_64/amd/zen2/reprod/jupyterlmod/5.2.2-GCCcore-13.3.0/20260302_142332UTC/easybuild/reprod/easyblocks/*.py
+  - /cvmfs/software.eessi.io/versions/2025.06/software/linux/x86_64/amd/zen2/reprod/hatch-jupyter-builder/0.9.1-GCCcore-14.2.0/20260302_142450UTC/easybuild/hatch-jupyter-builder-0.9.1-GCCcore-14.2.0.eb:
+      options:
+        robot: False
+        include-easyblocks: /cvmfs/software.eessi.io/versions/2025.06/software/linux/x86_64/amd/zen2/reprod/hatch-jupyter-builder/0.9.1-GCCcore-14.2.0/20260302_142450UTC/easybuild/reprod/easyblocks/*.py
+  - /cvmfs/software.eessi.io/versions/2025.06/software/linux/x86_64/amd/zen2/reprod/PyZMQ/27.0.0-GCCcore-14.2.0/20260302_142537UTC/easybuild/PyZMQ-27.0.0-GCCcore-14.2.0.eb:
+      options:
+        robot: False
+        include-easyblocks: /cvmfs/software.eessi.io/versions/2025.06/software/linux/x86_64/amd/zen2/reprod/PyZMQ/27.0.0-GCCcore-14.2.0/20260302_142537UTC/easybuild/reprod/easyblocks/*.py
+  - /cvmfs/software.eessi.io/versions/2025.06/software/linux/x86_64/amd/zen2/reprod/tornado/6.5.1-GCCcore-14.2.0/20260302_142554UTC/easybuild/tornado-6.5.1-GCCcore-14.2.0.eb:
+      options:
+        robot: False
+        include-easyblocks: /cvmfs/software.eessi.io/versions/2025.06/software/linux/x86_64/amd/zen2/reprod/tornado/6.5.1-GCCcore-14.2.0/20260302_142554UTC/easybuild/reprod/easyblocks/*.py
+  - /cvmfs/software.eessi.io/versions/2025.06/software/linux/x86_64/amd/zen2/reprod/BeautifulSoup/4.13.4-GCCcore-14.2.0/20260302_142622UTC/easybuild/BeautifulSoup-4.13.4-GCCcore-14.2.0.eb:
+      options:
+        robot: False
+        include-easyblocks: /cvmfs/software.eessi.io/versions/2025.06/software/linux/x86_64/amd/zen2/reprod/BeautifulSoup/4.13.4-GCCcore-14.2.0/20260302_142622UTC/easybuild/reprod/easyblocks/*.py
+  - /cvmfs/software.eessi.io/versions/2025.06/software/linux/x86_64/amd/zen2/reprod/jupyter-server/2.16.0-GCCcore-14.2.0/20260302_143653UTC/easybuild/jupyter-server-2.16.0-GCCcore-14.2.0.eb:
+      options:
+        robot: False
+        include-easyblocks: /cvmfs/software.eessi.io/versions/2025.06/software/linux/x86_64/amd/zen2/reprod/jupyter-server/2.16.0-GCCcore-14.2.0/20260302_143653UTC/easybuild/reprod/easyblocks/*.py
+  - /cvmfs/software.eessi.io/versions/2025.06/software/linux/x86_64/amd/zen2/reprod/JupyterLab/4.4.4-GCCcore-14.2.0/20260302_143853UTC/easybuild/JupyterLab-4.4.4-GCCcore-14.2.0.eb:
+      options:
+        robot: False
+        include-easyblocks: /cvmfs/software.eessi.io/versions/2025.06/software/linux/x86_64/amd/zen2/reprod/JupyterLab/4.4.4-GCCcore-14.2.0/20260302_143853UTC/easybuild/reprod/easyblocks/*.py
+  - /cvmfs/software.eessi.io/versions/2025.06/software/linux/x86_64/amd/zen2/reprod/JupyterNotebook/7.4.4-GCCcore-14.2.0/20260302_143924UTC/easybuild/JupyterNotebook-7.4.4-GCCcore-14.2.0.eb:
+      options:
+        robot: False
+        include-easyblocks: /cvmfs/software.eessi.io/versions/2025.06/software/linux/x86_64/amd/zen2/reprod/JupyterNotebook/7.4.4-GCCcore-14.2.0/20260302_143924UTC/easybuild/reprod/easyblocks/*.py
+  - /cvmfs/software.eessi.io/versions/2025.06/software/linux/x86_64/amd/zen2/reprod/jupyterlmod/5.2.2-GCCcore-14.2.0/20260302_143948UTC/easybuild/jupyterlmod-5.2.2-GCCcore-14.2.0.eb:
+      options:
+        robot: False
+        include-easyblocks: /cvmfs/software.eessi.io/versions/2025.06/software/linux/x86_64/amd/zen2/reprod/jupyterlmod/5.2.2-GCCcore-14.2.0/20260302_143948UTC/easybuild/reprod/easyblocks/*.py
+  - /cvmfs/software.eessi.io/versions/2025.06/software/linux/x86_64/amd/zen2/reprod/hatch-jupyter-builder/0.9.1-GCCcore-14.3.0/20260302_144132UTC/easybuild/hatch-jupyter-builder-0.9.1-GCCcore-14.3.0.eb:
+      options:
+        robot: False
+        include-easyblocks: /cvmfs/software.eessi.io/versions/2025.06/software/linux/x86_64/amd/zen2/reprod/hatch-jupyter-builder/0.9.1-GCCcore-14.3.0/20260302_144132UTC/easybuild/reprod/easyblocks/*.py
+  - /cvmfs/software.eessi.io/versions/2025.06/software/linux/x86_64/amd/zen2/reprod/jedi/0.19.2-GCCcore-14.3.0/20260302_144207UTC/easybuild/jedi-0.19.2-GCCcore-14.3.0.eb:
+      options:
+        robot: False
+        include-easyblocks: /cvmfs/software.eessi.io/versions/2025.06/software/linux/x86_64/amd/zen2/reprod/jedi/0.19.2-GCCcore-14.3.0/20260302_144207UTC/easybuild/reprod/easyblocks/*.py
+  - /cvmfs/software.eessi.io/versions/2025.06/software/linux/x86_64/amd/zen2/reprod/OpenPGM/5.2.122-GCCcore-14.3.0/20260302_144347UTC/easybuild/OpenPGM-5.2.122-GCCcore-14.3.0.eb:
+      options:
+        robot: False
+        include-easyblocks: /cvmfs/software.eessi.io/versions/2025.06/software/linux/x86_64/amd/zen2/reprod/OpenPGM/5.2.122-GCCcore-14.3.0/20260302_144347UTC/easybuild/reprod/easyblocks/*.py
+  - /cvmfs/software.eessi.io/versions/2025.06/software/linux/x86_64/amd/zen2/reprod/tornado/6.5.1-GCCcore-14.3.0/20260302_144404UTC/easybuild/tornado-6.5.1-GCCcore-14.3.0.eb:
+      options:
+        robot: False
+        include-easyblocks: /cvmfs/software.eessi.io/versions/2025.06/software/linux/x86_64/amd/zen2/reprod/tornado/6.5.1-GCCcore-14.3.0/20260302_144404UTC/easybuild/reprod/easyblocks/*.py
+  - /cvmfs/software.eessi.io/versions/2025.06/software/linux/x86_64/amd/zen2/reprod/libsodium/1.0.20-GCCcore-14.3.0/20260302_144605UTC/easybuild/libsodium-1.0.20-GCCcore-14.3.0.eb:
+      options:
+        robot: False
+        include-easyblocks: /cvmfs/software.eessi.io/versions/2025.06/software/linux/x86_64/amd/zen2/reprod/libsodium/1.0.20-GCCcore-14.3.0/20260302_144605UTC/easybuild/reprod/easyblocks/*.py
+  - /cvmfs/software.eessi.io/versions/2025.06/software/linux/x86_64/amd/zen2/reprod/ZeroMQ/4.3.5-GCCcore-14.3.0/20260302_144832UTC/easybuild/ZeroMQ-4.3.5-GCCcore-14.3.0.eb:
+      options:
+        robot: False
+        include-easyblocks: /cvmfs/software.eessi.io/versions/2025.06/software/linux/x86_64/amd/zen2/reprod/ZeroMQ/4.3.5-GCCcore-14.3.0/20260302_144832UTC/easybuild/reprod/easyblocks/*.py
+  - /cvmfs/software.eessi.io/versions/2025.06/software/linux/x86_64/amd/zen2/reprod/PyZMQ/27.1.0-GCCcore-14.3.0/20260302_144913UTC/easybuild/PyZMQ-27.1.0-GCCcore-14.3.0.eb:
+      options:
+        robot: False
+        include-easyblocks: /cvmfs/software.eessi.io/versions/2025.06/software/linux/x86_64/amd/zen2/reprod/PyZMQ/27.1.0-GCCcore-14.3.0/20260302_144913UTC/easybuild/reprod/easyblocks/*.py
+  - /cvmfs/software.eessi.io/versions/2025.06/software/linux/x86_64/amd/zen2/reprod/IPython/9.4.0-GCCcore-14.3.0/20260302_145143UTC/easybuild/IPython-9.4.0-GCCcore-14.3.0.eb:
+      options:
+        robot: False
+        include-easyblocks: /cvmfs/software.eessi.io/versions/2025.06/software/linux/x86_64/amd/zen2/reprod/IPython/9.4.0-GCCcore-14.3.0/20260302_145143UTC/easybuild/reprod/easyblocks/*.py
+  - /cvmfs/software.eessi.io/versions/2025.06/software/linux/x86_64/amd/zen2/reprod/BeautifulSoup/4.14.2-GCCcore-14.3.0/20260302_145212UTC/easybuild/BeautifulSoup-4.14.2-GCCcore-14.3.0.eb:
+      options:
+        robot: False
+        include-easyblocks: /cvmfs/software.eessi.io/versions/2025.06/software/linux/x86_64/amd/zen2/reprod/BeautifulSoup/4.14.2-GCCcore-14.3.0/20260302_145212UTC/easybuild/reprod/easyblocks/*.py
+  - /cvmfs/software.eessi.io/versions/2025.06/software/linux/x86_64/amd/zen2/reprod/jupyter-server/2.17.0-GCCcore-14.3.0/20260302_150232UTC/easybuild/jupyter-server-2.17.0-GCCcore-14.3.0.eb:
+      options:
+        robot: False
+        include-easyblocks: /cvmfs/software.eessi.io/versions/2025.06/software/linux/x86_64/amd/zen2/reprod/jupyter-server/2.17.0-GCCcore-14.3.0/20260302_150232UTC/easybuild/reprod/easyblocks/*.py
+  - /cvmfs/software.eessi.io/versions/2025.06/software/linux/x86_64/amd/zen2/reprod/JupyterLab/4.4.9-GCCcore-14.3.0/20260302_150429UTC/easybuild/JupyterLab-4.4.9-GCCcore-14.3.0.eb:
+      options:
+        robot: False
+        include-easyblocks: /cvmfs/software.eessi.io/versions/2025.06/software/linux/x86_64/amd/zen2/reprod/JupyterLab/4.4.9-GCCcore-14.3.0/20260302_150429UTC/easybuild/reprod/easyblocks/*.py
+  - /cvmfs/software.eessi.io/versions/2025.06/software/linux/x86_64/amd/zen2/reprod/JupyterNotebook/7.4.7-GCCcore-14.3.0/20260302_150500UTC/easybuild/JupyterNotebook-7.4.7-GCCcore-14.3.0.eb:
+      options:
+        robot: False
+        include-easyblocks: /cvmfs/software.eessi.io/versions/2025.06/software/linux/x86_64/amd/zen2/reprod/JupyterNotebook/7.4.7-GCCcore-14.3.0/20260302_150500UTC/easybuild/reprod/easyblocks/*.py
+  - /cvmfs/software.eessi.io/versions/2025.06/software/linux/x86_64/amd/zen2/reprod/jupyterlmod/5.3.0-GCCcore-14.3.0/20260302_150523UTC/easybuild/jupyterlmod-5.3.0-GCCcore-14.3.0.eb:
+      options:
+        robot: False
+        include-easyblocks: /cvmfs/software.eessi.io/versions/2025.06/software/linux/x86_64/amd/zen2/reprod/jupyterlmod/5.3.0-GCCcore-14.3.0/20260302_150523UTC/easybuild/reprod/easyblocks/*.py
