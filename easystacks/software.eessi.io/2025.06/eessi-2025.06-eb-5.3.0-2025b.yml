@@ -30,4 +30,13 @@ easyconfigs:
           from-commit: 960bb9bbf98f11ac376f43a3d36d5cf1cedc96f1
   - QuantumESPRESSO-7.5-foss-2025b.eb
   - SentencePiece-0.2.1-GCC-14.3.0.eb
-  - gnuplot-6.0.3-GCCcore-14.3.0.eb
+  - GROMACS-2026.2-foss-2025b.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/25879
+        from-commit: 9320dfe8ae6f45d37edd0ef52be37e7d3668d298
+        # see https://github.com/easybuilders/easybuild-easyblocks/pull/3531
+        include-easyblocks-from-commit: cfb6f93bfae8bef5d8996ae6696defcafbf0d4ad
+  - gnuplot-6.0.3-GCCcore-14.3.0.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/26224
+        from-commit: 802b20b7210d43fe19a1bc67c0b8e764f41bb2a4
