@@ -7,3 +7,9 @@ easyconfigs:
       options:
         # see https://github.com/easybuilders/easybuild-easyconfigs/pull/25960
         from-commit: 28f126a4e1e455f09e86c9beaf2a7dd49c42d8de
+  - ESPResSo-5.0.1-foss-2023b.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/25454
+        from-commit: d8ed17ce8f730f784aa9d8d448241c25731fb810
+        # see https://github.com/easybuilders/easybuild-easyblocks/pull/4066
+        include-easyblocks-from-commit: 4ec63c949166ae19ee3e329e8ab5fc8358926384
