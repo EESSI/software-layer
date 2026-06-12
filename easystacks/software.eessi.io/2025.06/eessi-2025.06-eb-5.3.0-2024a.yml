@@ -5,4 +5,4 @@ easyconfigs:
   - PyTorch-2.9.1-foss-2024a.eb:
       options:
         # see https://github.com/easybuilders/easybuild-easyconfigs/pull/25726
-        from-commit: 45192496a30dcc224f7551a8bbd2f279b50eaa9c
+        from-commit: 2449ba4eb99c555b030dbe398ff841ff24d68674
