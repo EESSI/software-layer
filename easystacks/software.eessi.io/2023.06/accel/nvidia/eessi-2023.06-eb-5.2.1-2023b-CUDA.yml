@@ -1,0 +1,5 @@
+easyconfigs:
+  - SPH-EXA-0.96.2-foss-2023b-CUDA-12.4.0.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/25693
+        from-commit: 171442f904bd4cef3aed146ae70bbcebf089c3b7
