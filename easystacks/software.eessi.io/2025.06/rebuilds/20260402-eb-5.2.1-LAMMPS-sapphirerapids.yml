@@ -1,0 +1,8 @@
+# rebuild LAMMPS for sapphirerapids, because build that was deployed was done with
+# an older commit that is missing a patch for a unit test,
+# see also https://github.com/EESSI/software-layer/pull/1335#issuecomment-4175706456
+easyconfigs:
+  - LAMMPS-22Jul2025-foss-2024a-kokkos.eb:
+      options:
+          # see https://github.com/easybuilders/easybuild-easyconfigs/pull/25593
+          from-commit: e2dedae93022d7e3f10bf2983ca8a03b03b0dca0
