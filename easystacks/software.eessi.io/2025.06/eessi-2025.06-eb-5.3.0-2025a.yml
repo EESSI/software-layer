@@ -16,3 +16,4 @@ easyconfigs:
         from-commit: 217d9a3efa64784377e989c38b79ac8a4a8d6d4a
         # see https://github.com/easybuilders/easybuild-easyblocks/pull/4066
         include-easyblocks-from-commit: 4ec63c949166ae19ee3e329e8ab5fc8358926384
+  - Octave-10.3.0-foss-2025a.eb
