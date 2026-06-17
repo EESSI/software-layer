@@ -5,4 +5,7 @@ easyconfigs:
       options:
         # see https://github.com/easybuilders/easybuild-easyblocks/pull/4149
         include-easyblocks-from-commit: ebcd874f5317e18ddf0f90cb14903a633e013a6e
-
+  - Visit-3.4.2-foss-2024a.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/25820
+        from-commit: 9dc8955e94bf914e992c9a43a4b0dd6710a36c7c
