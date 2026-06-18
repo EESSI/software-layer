@@ -35,5 +35,5 @@ easyconfigs:
         from-commit: 6a000bf508fe5406a184c652f2fde31e6176fff1
   - rocm-core-6.4.0-GCCcore-14.2.0-ROCm-6.4.1.eb:
     options:
-          # See https://github.com/easybuilders/easybuild-easyconfigs/pull/25576
-          from-commit: 6a000bf508fe5406a184c652f2fde31e6176fff1
+        # See https://github.com/easybuilders/easybuild-easyconfigs/pull/25576
+        from-commit: 6a000bf508fe5406a184c652f2fde31e6176fff1
