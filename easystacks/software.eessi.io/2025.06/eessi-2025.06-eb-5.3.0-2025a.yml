@@ -22,18 +22,18 @@ easyconfigs:
   - glog-0.7.1-GCCcore-14.2.0.eb
   - zlib-1.3.1-GCCcore-14.2.0.eb
   - rocm-smi-7.6.0-GCCcore-14.2.0-ROCm-6.4.1.eb:
-    options:
-        # See https://github.com/easybuilders/easybuild-easyconfigs/pull/23280
-        from-commit: a9674bb1adb471eac49d076a71bf00ae8a598d61
+      options:
+            # See https://github.com/easybuilders/easybuild-easyconfigs/pull/23280
+            from-commit: a9674bb1adb471eac49d076a71bf00ae8a598d61
   - CppHeaderParser-2.7.4-GCCcore-14.2.0.eb:
-    options:
-        # See https://github.com/easybuilders/easybuild-easyconfigs/pull/25576
-        from-commit: 6a000bf508fe5406a184c652f2fde31e6176fff1
+      options:
+          # See https://github.com/easybuilders/easybuild-easyconfigs/pull/25576
+          from-commit: 6a000bf508fe5406a184c652f2fde31e6176fff1
   - rocprofiler-register-0.4.0-GCCcore-14.2.0-ROCm-6.4.1.eb:
-    options:
-        # See https://github.com/easybuilders/easybuild-easyconfigs/pull/25576
-        from-commit: 6a000bf508fe5406a184c652f2fde31e6176fff1
+      options:
+          # See https://github.com/easybuilders/easybuild-easyconfigs/pull/25576
+          from-commit: 6a000bf508fe5406a184c652f2fde31e6176fff1
   - rocm-core-6.4.0-GCCcore-14.2.0-ROCm-6.4.1.eb:
-    options:
-        # See https://github.com/easybuilders/easybuild-easyconfigs/pull/25576
-        from-commit: 6a000bf508fe5406a184c652f2fde31e6176fff1
+      options:
+          # See https://github.com/easybuilders/easybuild-easyconfigs/pull/25576
+          from-commit: 6a000bf508fe5406a184c652f2fde31e6176fff1
