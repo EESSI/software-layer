@@ -1,2 +1,4 @@
 easyconfigs:
-  - Siesta-5.4.2-foss-2024a-CUDA-12.6.0.eb
+  - Siesta-5.4.2-foss-2024a-CUDA-12.6.0.eb:
+      options:
+        from-commit:  6ed961daac38293265e3a952be732ae9244fc01c
