@@ -1,0 +1,5 @@
+easyconfigs:
+  - PyTorch-2.9.1-foss-2024a.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/25726
+        from-commit: c960d35dd0999a8f80d2c7d842f8d03e02c6c52d

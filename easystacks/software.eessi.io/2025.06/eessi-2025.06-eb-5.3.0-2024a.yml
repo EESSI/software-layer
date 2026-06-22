@@ -5,8 +5,3 @@ easyconfigs:
       options:
         # see https://github.com/easybuilders/easybuild-easyblocks/pull/4149
         include-easyblocks-from-commit: ebcd874f5317e18ddf0f90cb14903a633e013a6e
-  - ArmComputeLibrary-25.02-GCCcore-13.3.0.eb
-  - PyTorch-2.9.1-foss-2024a.eb:
-      options:
-        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/25726
-        from-commit: c960d35dd0999a8f80d2c7d842f8d03e02c6c52d
