@@ -5,4 +5,3 @@ easyconfigs:
       options:
         # see https://github.com/easybuilders/easybuild-easyblocks/pull/4149
         include-easyblocks-from-commit: ebcd874f5317e18ddf0f90cb14903a633e013a6e
-
