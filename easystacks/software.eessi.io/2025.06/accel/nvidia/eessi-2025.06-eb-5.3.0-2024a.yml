@@ -2,5 +2,4 @@ easyconfigs:
   - LAMMPS-22Jul2025-foss-2024a-kokkos-CUDA-12.6.0.eb:
        # https://github.com/easybuilders/easybuild-easyblocks/pull/4175
        options:
-         # using from pr because updated kokkos easyblock is missing from commit
-         include-easyblocks-from-commit: af55f6af71df862451b6020a0d20ee36618f3aaf
+         include-easyblocks-from-commit: d0b1f84a2ce0f6e4bf77999ea0065a6f27ca326b
