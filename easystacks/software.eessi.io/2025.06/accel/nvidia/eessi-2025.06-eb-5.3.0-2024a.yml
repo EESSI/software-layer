@@ -3,4 +3,4 @@ easyconfigs:
        # https://github.com/easybuilders/easybuild-easyblocks/pull/4175
        options:
          # using from pr because updated kokkos easyblock is missing from commit
-         include-easyblocks-from-pr: 4175
+         include-easyblocks-from-commit: af55f6af71df862451b6020a0d20ee36618f3aaf
