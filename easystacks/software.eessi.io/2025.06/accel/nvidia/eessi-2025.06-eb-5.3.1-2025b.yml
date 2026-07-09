@@ -1,4 +1,4 @@
 easyconfigs:
-  - CUDA-Samples-12.9-GCC-14.3.0-CUDA-12.9.1.eb
+  - CUDA-Samples-12.9-GCC-14.3.0-CUDA-12.9.1.eb:
       options:
         cuda-sanity-check-accept-missing-ptx: True
