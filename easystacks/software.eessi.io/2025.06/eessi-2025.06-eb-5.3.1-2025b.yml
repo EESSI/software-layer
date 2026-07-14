@@ -1,3 +1,7 @@
 easyconfigs:
   - multicharge-0.5.0-gfbf-2025b.eb
   - LAMMPS-22Jul2025_update4-foss-2025b-kokkos.eb
+  - modkit-0.6.4-GCCcore-14.3.0.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/26379
+        from-commit: 850d6f9060556744c8d3b38c7879c5196a81d499 
