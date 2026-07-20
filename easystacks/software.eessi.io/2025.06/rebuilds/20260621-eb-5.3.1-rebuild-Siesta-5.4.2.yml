@@ -1,0 +1,7 @@
+# rebuild Siesta/5.4.2-foss-2024a, wrong commit was used for elsi_interface sources,
+# see https://github.com/easybuilders/easybuild-easyconfigs/pull/26240
+easyconfigs:
+  - Siesta-5.4.2-foss-2024a.eb:
+      options:
+        from-commit: 6ed961daac38293265e3a952be732ae9244fc01c
+        rebuild: true
