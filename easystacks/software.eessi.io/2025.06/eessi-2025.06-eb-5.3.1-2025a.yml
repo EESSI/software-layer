@@ -1,0 +1,11 @@
+easyconfigs:
+  - fmt-11.2.0-GCCcore-14.2.0.eb
+  - gflags-2.2.2-GCCcore-14.2.0.eb
+  - glog-0.7.1-GCCcore-14.2.0.eb
+  - rocm-smi-7.6.0-GCCcore-14.2.0-ROCm-6.4.1.eb
+  - CppHeaderParser-2.7.4-GCCcore-14.2.0.eb
+  - rocprofiler-register-0.4.0-GCCcore-14.2.0-ROCm-6.4.1.eb
+  - rocm-core-6.4.1-GCCcore-14.2.0-ROCm-6.4.1.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/26407
+        from-commit: 87cd5a2451ab7de14dd1463cec5b2f874ad0e9fd
