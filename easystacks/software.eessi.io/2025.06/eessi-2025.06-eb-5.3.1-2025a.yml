@@ -9,3 +9,4 @@ easyconfigs:
       options:
         # see https://github.com/easybuilders/easybuild-easyconfigs/pull/26407
         from-commit: 87cd5a2451ab7de14dd1463cec5b2f874ad0e9fd
+  - googletest-1.17.0-GCCcore-14.2.0.eb
