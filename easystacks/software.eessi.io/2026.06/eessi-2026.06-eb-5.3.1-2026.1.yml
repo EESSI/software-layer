@@ -1,0 +1,19 @@
+easyconfigs:
+  # initially used the following commit for GCCcore, but that's part of 5.3.1 now:
+  # from-commit: 94aeb90638583b8153b8c3dce5f9fc2046c7795e
+  - GCCcore-15.2.0.eb
+  - Perl-5.42.0-GCCcore-15.2.0.eb:
+      options:
+        max-parallel: "1"
+  - Perl-5.38.0.eb:
+      options:
+        max-parallel: "1"
+  - hwloc-2.13.0-GCCcore-15.2.0.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/26344
+        from-commit: 608229129d057b3abfd475b5e5f22eba6b711801
+  - libunistring-1.4.1-GCCcore-15.2.0.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/26351
+        from-commit: f3faa6b1d73a6988e1fc2083778d1b7144c5c7d3
+  - foss-2026.1.eb
