@@ -1,3 +1,11 @@
 easyconfigs:
   - multicharge-0.5.0-gfbf-2025b.eb
   - LAMMPS-22Jul2025_update4-foss-2025b-kokkos.eb
+  - cling-kernel-1.2-GCCcore-14.3.0.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/26428
+        from-commit: fa15a3618485c974195191ccf5a26a8873a4ab55
+  - octave-kernel-1.1.0-foss-2025b.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/26421
+        from-commit: 538776cf616f8eeeca9e96c8110c065f5256932c
