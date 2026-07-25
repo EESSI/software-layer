@@ -1,6 +1,7 @@
 easyconfigs:
   - multicharge-0.5.0-gfbf-2025b.eb
   - LAMMPS-22Jul2025_update4-foss-2025b-kokkos.eb
+  - SMC++-1.15.4-gfbf-2025b.eb
   - cling-kernel-1.2-GCCcore-14.3.0.eb:
       options:
         # see https://github.com/easybuilders/easybuild-easyconfigs/pull/26428
