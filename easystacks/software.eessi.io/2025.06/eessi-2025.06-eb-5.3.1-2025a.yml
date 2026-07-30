@@ -12,4 +12,6 @@ easyconfigs:
   - googletest-1.17.0-GCCcore-14.2.0.eb
   - R-bundle-CRAN-2025.10-foss-2025a.eb:
       options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/26573
+        from-commit: cf51f1327ae849bc23990669abdd435bfb6e05fb
         parallel-extensions-install: true
