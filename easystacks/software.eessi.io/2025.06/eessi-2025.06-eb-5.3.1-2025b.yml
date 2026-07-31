@@ -11,6 +11,10 @@ easyconfigs:
         # see https://github.com/easybuilders/easybuild-easyconfigs/pull/26421
         from-commit: 538776cf616f8eeeca9e96c8110c065f5256932c
   - R-4.5.2-gfbf-2025b.eb
+  - Arrow-22.0.0-gfbf-2025b.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/26569
+        from-commit: b9729dd1eeef12cc2b347b3f94508b12c724520a
   - R-bundle-CRAN-2025.11-foss-2025b.eb:
       options:
         parallel-extensions-install: true
