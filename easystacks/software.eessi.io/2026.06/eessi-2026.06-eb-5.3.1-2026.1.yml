@@ -1,6 +1,6 @@
 easyconfigs:
   - GCCcore-15.2.0.eb
-#  - Perl-5.42.0-GCCcore-15.2.0.eb:
+  - Perl-5.42.0-GCCcore-15.2.0.eb:
 #      options:
 #        max-parallel: "1"
 #  - Perl-5.38.0.eb:
