@@ -7,7 +7,7 @@
 # malicious). Having this CI means that a change in bot/build.sh should at least be accompanied by
 # a change in this CI, making it stand out to reviewers and increasing the likelihood of this being caught.
 # 
-# Second, check-software_layer_scripts_commit checks if the commit used in bot/commit_sha is a merge-commit for a
+# Second, check-software_layer_scripts_commit checks if the commit used in bot/software_layer_scripts_commit is a merge-commit for a
 # merge into the default branch of software-layer-scripts. This guarantees that everything that is associated with
 # that commit was approved by a reviewer (and deployed, if needed)
 name: Verify software-layer-scripts
@@ -25,7 +25,7 @@ jobs:
         - name: Check out software-layer repository (shallow)
           uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
           with:
-              fetch-depth: 1  # We only need the current revision to read bot/commit_sha
+              fetch-depth: 1  # We only need the current revision to read bot/software_layer_scripts_commit
 
         - name: Compute bot/build.sh checksum and verify it
           run: |
@@ -57,7 +57,7 @@ jobs:
         - name: Check out software-layer repository (shallow)
           uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
           with:
-              fetch-depth: 1  # We only need the current revision to read bot/commit_sha
+              fetch-depth: 1  # We only need the current revision to read bot/software_layer_scripts_commit
         - name: Checkout software-layer-scripts (full history)
           uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
           with:
@@ -68,7 +68,7 @@ jobs:
         - name: Read commit SHA
           id: read_sha
           run: |
-            SHA=$(cat bot/commit_sha | tr -d '[:space:]')
+            SHA=$(cat bot/software_layer_scripts_commit | tr -d '[:space:]')
             echo "sha=$SHA" >> $GITHUB_OUTPUT
             echo "Found SHA: $SHA"
 
