@@ -1,6 +1,4 @@
 easyconfigs:
-  # initially used the following commit for GCCcore, but that's part of 5.3.1 now:
-  # from-commit: 94aeb90638583b8153b8c3dce5f9fc2046c7795e
   - GCCcore-15.2.0.eb
 #  - Perl-5.42.0-GCCcore-15.2.0.eb:
 #      options:
