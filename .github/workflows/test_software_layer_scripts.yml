@@ -37,7 +37,7 @@ jobs:
 
             # Reference checksum
             # UPDATE THIS CHECKSUM IF AND ONLY IF WE ACTUALLY WANT TO CHANGE bot/build.sh
-            EXPECTED_CHECKSUM="9d33368cac2e38e10147eeb0aafc321651ebaa5912387ecef97683570906773a"
+            EXPECTED_CHECKSUM="94df53fe4af9c4f28f5c3dc16bf1377e2ba5c7c0df65699d50984b538a1eeab1"
 
             # Compute checksum
             COMPUTED_CHECKSUM=$(sha256sum bot/build.sh | awk '{print $1}')

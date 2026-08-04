@@ -5,8 +5,8 @@ set -e
 
 TOPDIR=$(dirname $(realpath $0))
 
-# Clone a the commit from software-layer-script that corresponds to `bot/commit_sha`
-commit_sha=$(cat ${TOPDIR}/commit_sha)
+# Clone a the commit from software-layer-script that corresponds to `bot/software_layer_scripts_commit`
+commit_sha=$(cat ${TOPDIR}/software_layer_scripts_commit)
 
 # Get a shallow clone first
 git clone --depth 1 --filter=blob:none --no-checkout https://github.com/EESSI/software-layer-scripts
