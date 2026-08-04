@@ -1,0 +1,17 @@
+easyconfigs:
+  - GCCcore-15.2.0.eb
+#  - Perl-5.42.0-GCCcore-15.2.0.eb:
+#      options:
+#        max-parallel: "1"
+#  - Perl-5.38.0.eb:
+#      options:
+#        max-parallel: "1"
+#  - hwloc-2.13.0-GCCcore-15.2.0.eb:
+#      options:
+#        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/26344
+#        from-commit: 608229129d057b3abfd475b5e5f22eba6b711801
+#  - libunistring-1.4.1-GCCcore-15.2.0.eb:
+#      options:
+#        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/26351
+#        from-commit: f3faa6b1d73a6988e1fc2083778d1b7144c5c7d3
+#  - foss-2026.1.eb
