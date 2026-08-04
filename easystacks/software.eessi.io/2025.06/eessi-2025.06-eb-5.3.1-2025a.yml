@@ -13,5 +13,5 @@ easyconfigs:
   - R-bundle-CRAN-2025.10-foss-2025a.eb:
       options:
         # see https://github.com/easybuilders/easybuild-easyconfigs/pull/26573
-        from-commit: cf51f1327ae849bc23990669abdd435bfb6e05fb
+        from-commit: c2d5dcaecee1ab9abfee143b87243c44ca305273
         parallel-extensions-install: true
