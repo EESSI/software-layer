@@ -59,10 +59,10 @@ jobs:
           with:
               fetch-depth: 1  # We only need the current revision to read bot/commit_sha
         - name: Checkout software-layer-scripts (full history)
-          uses: actions/checkout@v4
+          uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
           with:
             repository: EESSI/software-layer-scripts
-            path: upstream-scripts
+            path: EESSI-software-layer-scripts
             fetch-depth: 0 # full history → required for ancestry checks
 
         - name: Read commit SHA
@@ -73,7 +73,7 @@ jobs:
             echo "Found SHA: $SHA"
 
         - name: Verify SHA exists in software‑layer‑scripts
-          working-directory: upstream-scripts
+          working-directory: EESSI-software-layer-scripts
           run: |
             SHA="${{ steps.read_sha.outputs.sha }}"
 
@@ -89,7 +89,7 @@ jobs:
             echo "Commit $SHA exists in software‑layer‑scripts."
 
         - name: Check that SHA is merged into the default branch
-          working-directory: upstream-scripts
+          working-directory: EESSI-software-layer-scripts
           run: |
             SHA="${{ steps.read_sha.outputs.sha }}"
 
@@ -102,7 +102,7 @@ jobs:
             fi
 
         - name: Verify commit is signed by GitHub’s web‑flow key
-          working-directory: upstream-scripts
+          working-directory: EESSI-software-layer-scripts
           env:
             GIT_TRACE: 1   # extra debug output if something goes wrong
           run: |
