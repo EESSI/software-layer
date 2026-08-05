@@ -18,3 +18,6 @@ easyconfigs:
   - R-bundle-CRAN-2025.11-foss-2025b.eb:
       options:
         parallel-extensions-install: true
+  - R-bundle-Bioconductor-3.22-foss-2025b-R-4.5.2.eb:
+      options:
+        parallel-extensions-install: true
