@@ -1,0 +1,61 @@
+# documentation: https://help.github.com/en/articles/workflow-syntax-for-github-actions
+#
+# This workflow checks if the commit SHA in bot/software_layer_scripts_commit
+# matches the latest commit on the main branch of EESSI/software-layer-scripts.
+# It only runs when the 'bot:deploy' label is present on the PR. The reason is that 
+# before deployment, we typically want to keep using a fixed version of EESSI/software-layer-scripts
+# so that we don't (unintentionally) change build behavior half-way through a PR.
+# However, after deploy, we want the `bot/software_layer_script_commit to be updated
+# so that on software-layer/main this always refers to as recent a commit SHA 
+# from EESSI/software-layer-scripts as possible
+name: Check software-layer-scripts commit is up to date
+on:
+  pull_request:
+    types: [opened, synchronize, reopened, labeled]
+permissions:
+  contents: read # to fetch code (actions/checkout)
+jobs:
+  check_latest_commit:
+    if: >
+      (
+        contains(github.event.pull_request.labels.*.name, 'bot:deploy')
+        || contains(github.event.pull_request.labels.*.name, 'force-ci-checks')
+      )
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Check out software-layer repository (shallow)
+        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
+        with:
+          fetch-depth: 1
+
+      - name: Read commit SHA from bot/software_layer_scripts_commit
+        id: read_sha
+        run: |
+          if [[ ! -f bot/software_layer_scripts_commit ]]; then
+            echo "ERROR: bot/software_layer_scripts_commit not found!"
+            exit 1
+          fi
+          SHA=$(cat bot/software_layer_scripts_commit | tr -d '[:space:]')
+          echo "sha=$SHA" >> $GITHUB_OUTPUT
+          echo "Found SHA: $SHA"
+
+      - name: Get latest commit on main of EESSI/software-layer-scripts
+        id: latest_sha
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          SHA=$(gh api repos/EESSI/software-layer-scripts/commits/main --jq .sha)
+          echo "sha=$SHA" >> $GITHUB_OUTPUT
+          echo "Latest commit on main: $SHA"
+
+      - name: Compare SHAs
+        run: |
+          if [[ "${{ steps.read_sha.outputs.sha }}" == "${{ steps.latest_sha.outputs.sha }}" ]]; then
+            echo "OK: bot/software_layer_scripts_commit matches the latest commit on main."
+          else
+            echo "ERROR: bot/software_layer_scripts_commit does not match the latest commit on main of EESSI/software-layer-scripts."
+            echo "Stored commit:  ${{ steps.read_sha.outputs.sha }}"
+            echo "Latest commit:  ${{ steps.latest_sha.outputs.sha }}"
+            echo "Please update bot/software_layer_scripts_commit to ${{ steps.latest_sha.outputs.sha }} and push the change."
+            exit 1
+          fi
