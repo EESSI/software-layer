@@ -10,4 +10,5 @@ easyconfigs:
       options:
         # see https://github.com/easybuilders/easybuild-easyconfigs/pull/26351
         from-commit: f3faa6b1d73a6988e1fc2083778d1b7144c5c7d3
+  - OpenBLAS-0.3.32-GCC-15.2.0.eb
 #  - foss-2026.1.eb
