@@ -21,7 +21,3 @@ easyconfigs:
   - R-bundle-Bioconductor-3.22-foss-2025b-R-4.5.2.eb:
       options:
         parallel-extensions-install: true
-  - IRkernel-1.3.2-gfbf-2025b-R-4.5.2.eb:
-      options:
-        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/26303
-        from-commit: af671a204fd78923fdaf56795797b0603a398bd3
