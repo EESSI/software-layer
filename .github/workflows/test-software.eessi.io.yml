@@ -144,6 +144,25 @@ jobs:
           - runs_on: ubuntu-24.04-arm
             EESSI_VERSION: 2025.06
             EESSI_SOFTWARE_SUBDIR_OVERRIDE: aarch64/nvidia/grace
+          # Arm CPU targets (EESSI 2026.06)
+          - runs_on: ubuntu-24.04-arm
+            EESSI_VERSION: 2026.06
+            EESSI_SOFTWARE_SUBDIR_OVERRIDE: aarch64/a64fx
+          - runs_on: ubuntu-24.04-arm
+            EESSI_VERSION: 2026.06
+            EESSI_SOFTWARE_SUBDIR_OVERRIDE: aarch64/aws/graviton4
+          - runs_on: ubuntu-24.04-arm
+            EESSI_VERSION: 2026.06
+            EESSI_SOFTWARE_SUBDIR_OVERRIDE: aarch64/generic
+          - runs_on: ubuntu-24.04-arm
+            EESSI_VERSION: 2026.06
+            EESSI_SOFTWARE_SUBDIR_OVERRIDE: aarch64/neoverse_n1
+          - runs_on: ubuntu-24.04-arm
+            EESSI_VERSION: 2026.06
+            EESSI_SOFTWARE_SUBDIR_OVERRIDE: aarch64/neoverse_v1
+          - runs_on: ubuntu-24.04-arm
+            EESSI_VERSION: 2026.06
+            EESSI_SOFTWARE_SUBDIR_OVERRIDE: aarch64/nvidia/grace
           # x86_64 CPU targets (EESSI 2023.06)
           - runs_on: ubuntu-24.04
             EESSI_VERSION: 2023.06
@@ -202,6 +221,37 @@ jobs:
             EESSI_SOFTWARE_SUBDIR_OVERRIDE: x86_64/intel/cascadelake
           - runs_on: ubuntu-24.04
             EESSI_VERSION: 2025.06
+            EESSI_SOFTWARE_SUBDIR_OVERRIDE: x86_64/generic
+          # x86_64 CPU targets (EESSI 2025.06)
+          - runs_on: ubuntu-24.04
+            EESSI_VERSION: 2026.06
+            EESSI_SOFTWARE_SUBDIR_OVERRIDE: x86_64/amd/zen2
+          - runs_on: ubuntu-24.04
+            EESSI_VERSION: 2026.06
+            EESSI_SOFTWARE_SUBDIR_OVERRIDE: x86_64/amd/zen3
+          - runs_on: ubuntu-24.04
+            EESSI_VERSION: 2026.06
+            EESSI_SOFTWARE_SUBDIR_OVERRIDE: x86_64/amd/zen4
+          - runs_on: ubuntu-24.04
+            EESSI_VERSION: 2026.06
+            EESSI_SOFTWARE_SUBDIR_OVERRIDE: x86_64/amd/zen5
+          - runs_on: ubuntu-24.04
+            EESSI_VERSION: 2026.06
+            EESSI_SOFTWARE_SUBDIR_OVERRIDE: x86_64/intel/haswell
+          - runs_on: ubuntu-24.04
+            EESSI_VERSION: 2026.06
+            EESSI_SOFTWARE_SUBDIR_OVERRIDE: x86_64/intel/sapphirerapids
+          - runs_on: ubuntu-24.04
+            EESSI_VERSION: 2026.06
+            EESSI_SOFTWARE_SUBDIR_OVERRIDE: x86_64/intel/skylake_avx512
+          - runs_on: ubuntu-24.04
+            EESSI_VERSION: 2026.06
+            EESSI_SOFTWARE_SUBDIR_OVERRIDE: x86_64/intel/icelake
+          - runs_on: ubuntu-24.04
+            EESSI_VERSION: 2026.06
+            EESSI_SOFTWARE_SUBDIR_OVERRIDE: x86_64/intel/cascadelake
+          - runs_on: ubuntu-24.04
+            EESSI_VERSION: 2026.06
             EESSI_SOFTWARE_SUBDIR_OVERRIDE: x86_64/generic
     runs-on: ${{ matrix.runs_on }}
     steps:
