@@ -10,4 +10,4 @@ easyconfigs:
       options:
         # see https://github.com/easybuilders/easybuild-easyconfigs/pull/26351
         from-commit: f3faa6b1d73a6988e1fc2083778d1b7144c5c7d3
-  - gfbf-2026.1.eb
+  - foss-2026.1.eb
