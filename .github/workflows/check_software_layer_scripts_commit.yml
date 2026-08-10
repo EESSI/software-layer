@@ -12,6 +12,8 @@ name: Check software-layer-scripts commit is up to date
 on:
   pull_request:
     types: [opened, synchronize, reopened, labeled]
+    paths:
+      - 'bot/software_layer_scripts_commit'
 permissions:
   contents: read # to fetch code (actions/checkout)
 jobs:
