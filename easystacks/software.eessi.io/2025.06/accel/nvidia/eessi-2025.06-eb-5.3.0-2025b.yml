@@ -1,0 +1,10 @@
+easyconfigs:
+  - GROMACS-2025.4-foss-2025b-CUDA-12.9.1.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/25837
+        from-commit: ab55b8136429dafb60f35aa27c137bde7b77dc2b
+  - hwloc-CUDA-2.12.1-GCCcore-14.3.0-CUDA-12.9.1.eb
+  - GROMACS-2026.2-foss-2025b-CUDA-12.9.1.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/26273
+        from-commit: 2571c03c8f6ef08a52f71ff512f03f7c66b3be64

@@ -1,0 +1,7 @@
+# rebuild software installations that depend on ParMETIS,
+# which we should not redistribute without explicit approval from its developers;
+# see also https://github.com/EESSI/software-layer-scripts/pull/2
+easyconfigs:
+  - PETSc-3.20.3-foss-2023a.eb
+  - SuperLU_DIST-8.1.2-foss-2023a.eb
+  - Zoltan-3.901-foss-2023a.eb
