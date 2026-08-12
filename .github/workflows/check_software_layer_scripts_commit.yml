@@ -13,7 +13,7 @@
 # - Contributors that have changed bot/software_layer_scripts_commit can build with a fixed version (commit)
 # of EESSI/software-layer-scripts, ensuring that builds for all targets are done in a coherent manner.
 # After all builds are deployed, the CI is run, checking that this is the latest commit. If not, contributors
-# will have to update that before merging. This ensures that mergin their PR does not cause software-layer/main's
+# will have to update that before merging. This ensures that merging their PR does not cause software-layer/main's
 # bot/software_layer_scripts_commit to start pointing to an _older_ commit.
 name: Check software-layer-scripts commit is up to date
 on:

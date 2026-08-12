@@ -5,7 +5,7 @@ set -e
 
 TOPDIR=$(dirname $(realpath $0))
 
-# Clone a the commit from software-layer-script that corresponds to `bot/software_layer_scripts_commit`
+# Clone the commit from software-layer-scripts that corresponds to `bot/software_layer_scripts_commit`
 commit_sha=$(cat ${TOPDIR}/software_layer_scripts_commit)
 
 # Get a shallow clone first

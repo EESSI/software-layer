@@ -3,8 +3,7 @@
 # This workflow verifies that the correct version of software-layer-scripts is used.
 # 
 # First, check_bot_build_checksums checks if the bot/build.sh code that clones software-layer-scripts is untouched,
-# as this normally shouldn't change (a change could mean a contributor is trying to inject something
-# malicious). Having this CI means that a change in bot/build.sh should at least be accompanied by
+# as this normally shouldn't change, so let's be really cautious here. Having this CI means that a change in bot/build.sh should at least be accompanied by
 # a change in this CI, making it stand out to reviewers and increasing the likelihood of this being caught.
 # 
 # Second, check-software_layer_scripts_commit checks if the commit used in bot/software_layer_scripts_commit is a merge-commit for a
