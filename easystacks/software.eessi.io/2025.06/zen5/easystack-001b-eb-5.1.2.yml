@@ -1,0 +1,5 @@
+# easystack-1b-eb-5.1.2.yml: manually moved ReFrame to one of the first installs
+easyconfigs:
+  - /cvmfs/software.eessi.io/versions/2025.06/software/linux/x86_64/amd/zen2/reprod/ReFrame/4.7.4/20251009_113624UTC/easybuild/ReFrame-4.7.4.eb:
+      options:
+        include-easyblocks: /cvmfs/software.eessi.io/versions/2025.06/software/linux/x86_64/amd/zen2/reprod/ReFrame/4.7.4/20251009_113624UTC/easybuild/reprod/easyblocks/*.py

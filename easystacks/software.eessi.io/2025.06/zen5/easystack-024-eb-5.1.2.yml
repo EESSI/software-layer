@@ -1,0 +1,8 @@
+# easystack-024-eb-5.1.2.yml: total build duration = 92 minutes
+easyconfigs:
+  - /cvmfs/software.eessi.io/versions/2025.06/software/linux/x86_64/amd/zen2/reprod/pybind11/2.13.6-GCC-14.2.0/20251028_135932UTC/easybuild/pybind11-2.13.6-GCC-14.2.0.eb:
+      options:
+        include-easyblocks: /cvmfs/software.eessi.io/versions/2025.06/software/linux/x86_64/amd/zen2/reprod/pybind11/2.13.6-GCC-14.2.0/20251028_135932UTC/easybuild/reprod/easyblocks/*.py
+  - /cvmfs/software.eessi.io/versions/2025.06/software/linux/x86_64/amd/zen2/reprod/SciPy-bundle/2025.06-gfbf-2025a/20251028_152636UTC/easybuild/SciPy-bundle-2025.06-gfbf-2025a.eb:
+      options:
+        include-easyblocks: /cvmfs/software.eessi.io/versions/2025.06/software/linux/x86_64/amd/zen2/reprod/SciPy-bundle/2025.06-gfbf-2025a/20251028_152636UTC/easybuild/reprod/easyblocks/*.py

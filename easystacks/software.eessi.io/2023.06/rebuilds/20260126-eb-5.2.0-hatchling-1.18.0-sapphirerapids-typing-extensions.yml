@@ -1,0 +1,13 @@
+# 2026.02.03
+# hatchling-1.18.0 rebuild to clean up `typing_extensions` leftover extension in sapphirerapids
+# Previous rebuild PRs seem to have left an old Python extension that is no more needed after
+# the easyconfig was updated: https://github.com/easybuilders/easybuild-easyconfigs/pull/20389
+easyconfigs:
+  - hatchling-1.18.0-GCCcore-12.3.0.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/20389
+        from-commit: 9580c0d67d6dd97b160b768a839bfcba6d5b21b9
+  - hatchling-1.18.0-GCCcore-13.2.0.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/20389
+        from-commit: 9580c0d67d6dd97b160b768a839bfcba6d5b21b9

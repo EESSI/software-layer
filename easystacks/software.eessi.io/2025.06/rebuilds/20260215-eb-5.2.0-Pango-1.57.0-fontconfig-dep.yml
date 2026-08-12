@@ -1,0 +1,7 @@
+# rebuild Pango 1.57.0 with fontconfig as a runtime dependency
+# see https://github.com/easybuilders/easybuild-easyconfigs/pull/25285
+easyconfigs:
+  - Pango-1.57.0-GCCcore-14.3.0.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/25285
+        from-commit: 32bb1e4a9dab44145ce516bd38e9e6924b53eb67 

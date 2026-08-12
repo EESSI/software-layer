@@ -1,0 +1,5 @@
+# easystack-029-eb-5.1.2.yml: total build duration = 245 minutes
+easyconfigs:
+  - /cvmfs/software.eessi.io/versions/2025.06/software/linux/x86_64/amd/zen2/reprod/BLAST+/2.17.0-gompi-2025a/20251107_200425UTC/easybuild/BLAST+-2.17.0-gompi-2025a.eb:
+      options:
+        include-easyblocks: /cvmfs/software.eessi.io/versions/2025.06/software/linux/x86_64/amd/zen2/reprod/BLAST+/2.17.0-gompi-2025a/20251107_200425UTC/easybuild/reprod/easyblocks/*.py

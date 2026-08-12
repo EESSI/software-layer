@@ -1,0 +1,15 @@
+easyconfigs:
+  - dav1d-1.5.2-GCCcore-13.2.0.eb
+  - SVT-AV1-3.1.2-GCCcore-13.2.0.eb
+  - libaom-3.10.0-GCCcore-13.2.0.eb
+  - libvpx-1.15.2-GCCcore-13.2.0.eb
+  - Underworld-2.16.4-foss-2023b-egl.eb: 
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/25960
+        from-commit: 28f126a4e1e455f09e86c9beaf2a7dd49c42d8de
+  - ESPResSo-5.0.1-foss-2023b.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/25454
+        from-commit: d8ed17ce8f730f784aa9d8d448241c25731fb810
+        # see https://github.com/easybuilders/easybuild-easyblocks/pull/4066
+        include-easyblocks-from-commit: 4ec63c949166ae19ee3e329e8ab5fc8358926384

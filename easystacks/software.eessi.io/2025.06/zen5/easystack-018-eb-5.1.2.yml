@@ -1,0 +1,17 @@
+# easystack-018-eb-5.1.2.yml: total build duration = 7 minutes
+easyconfigs:
+  - /cvmfs/software.eessi.io/versions/2025.06/software/linux/x86_64/amd/zen2/reprod/libfabric/2.0.0-GCCcore-14.2.0/20251012_084943UTC/easybuild/libfabric-2.0.0-GCCcore-14.2.0.eb:
+      options:
+        include-easyblocks: /cvmfs/software.eessi.io/versions/2025.06/software/linux/x86_64/amd/zen2/reprod/libfabric/2.0.0-GCCcore-14.2.0/20251012_084943UTC/easybuild/reprod/easyblocks/*.py
+  - /cvmfs/software.eessi.io/versions/2025.06/software/linux/x86_64/amd/zen2/reprod/xorg-macros/1.20.2-GCCcore-14.2.0/20251012_084955UTC/easybuild/xorg-macros-1.20.2-GCCcore-14.2.0.eb:
+      options:
+        include-easyblocks: /cvmfs/software.eessi.io/versions/2025.06/software/linux/x86_64/amd/zen2/reprod/xorg-macros/1.20.2-GCCcore-14.2.0/20251012_084955UTC/easybuild/reprod/easyblocks/*.py
+  - /cvmfs/software.eessi.io/versions/2025.06/software/linux/x86_64/amd/zen2/reprod/Ninja/1.12.1-GCCcore-14.2.0/20251012_085051UTC/easybuild/Ninja-1.12.1-GCCcore-14.2.0.eb:
+      options:
+        include-easyblocks: /cvmfs/software.eessi.io/versions/2025.06/software/linux/x86_64/amd/zen2/reprod/Ninja/1.12.1-GCCcore-14.2.0/20251012_085051UTC/easybuild/reprod/easyblocks/*.py
+  - /cvmfs/software.eessi.io/versions/2025.06/software/linux/x86_64/amd/zen2/reprod/Meson/1.6.1-GCCcore-14.2.0/20251012_085110UTC/easybuild/Meson-1.6.1-GCCcore-14.2.0.eb:
+      options:
+        include-easyblocks: /cvmfs/software.eessi.io/versions/2025.06/software/linux/x86_64/amd/zen2/reprod/Meson/1.6.1-GCCcore-14.2.0/20251012_085110UTC/easybuild/reprod/easyblocks/*.py
+  - /cvmfs/software.eessi.io/versions/2025.06/software/linux/x86_64/amd/zen2/reprod/libpciaccess/0.18.1-GCCcore-14.2.0/20251012_085136UTC/easybuild/libpciaccess-0.18.1-GCCcore-14.2.0.eb:
+      options:
+        include-easyblocks: /cvmfs/software.eessi.io/versions/2025.06/software/linux/x86_64/amd/zen2/reprod/libpciaccess/0.18.1-GCCcore-14.2.0/20251012_085136UTC/easybuild/reprod/easyblocks/*.py

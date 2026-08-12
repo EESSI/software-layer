@@ -1,0 +1,5 @@
+# easystack-031-eb-5.1.2.yml: total build duration = 291 minutes
+easyconfigs:
+  - /cvmfs/software.eessi.io/versions/2025.06/software/linux/x86_64/amd/zen2/reprod/R-bundle-CRAN/2024.11-foss-2024a/20251111_171919UTC/easybuild/R-bundle-CRAN-2024.11-foss-2024a.eb:
+      options:
+        include-easyblocks: /cvmfs/software.eessi.io/versions/2025.06/software/linux/x86_64/amd/zen2/reprod/R-bundle-CRAN/2024.11-foss-2024a/20251111_171919UTC/easybuild/reprod/easyblocks/*.py
