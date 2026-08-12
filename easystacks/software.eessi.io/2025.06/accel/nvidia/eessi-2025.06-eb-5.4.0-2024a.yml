@@ -1,0 +1,9 @@
+easyconfigs:
+  - LAMMPS-22Jul2025-foss-2024a-kokkos-CUDA-12.6.0.eb:
+       # https://github.com/easybuilders/easybuild-easyblocks/pull/4175
+       options:
+         # easyblock for working around neon issue
+         # include-easyblocks-from-commit: bcc86f327b79edd5f06f71c5401a5a7665a39a68
+         # easyblock for crosscompiling lammp CUDA without device
+         # https://github.com/easybuilders/easybuild-easyblocks/pull/4190
+         include-easyblocks-from-commit: 38f267a1c491c17bea94784903c2b93fd59b2fea
