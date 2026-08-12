@@ -39,8 +39,10 @@ jobs:
         EESSI_VERSION:
           - 2023.06
           - 2025.06
+          - 2026.06
         COMPARISON_ARCH:
           - aarch64/a64fx
+          - aarch64/aws/graviton4
           - aarch64/neoverse_n1
           - aarch64/neoverse_v1
           - aarch64/nvidia/grace
@@ -54,12 +56,14 @@ jobs:
           - x86_64/intel/icelake
           - x86_64/intel/cascadelake
         exclude:
+          # amd/zen5 only supported since EESSI 2025.06
           - EESSI_VERSION: 2023.06
             COMPARISON_ARCH: x86_64/amd/zen5
-        # Example of how a specific target can be excluded:
-        # exclude:
-        # - EESSI_VERSION: 2023.06
-        #   COMPARISON_ARCH: aarch64/a64fx
+          # aws/graviton4 only supported since EESSI 2026.06
+          - EESSI_VERSION: 2023.06
+            COMPARISON_ARCH: aarch64/aws/graviton4
+          - EESSI_VERSION: 2025.06
+            COMPARISON_ARCH: aarch64/aws/graviton4
     steps:
         - name: Check out software-layer repository
           uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
