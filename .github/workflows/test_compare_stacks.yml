@@ -161,23 +161,11 @@ jobs:
 
             # Use architecture-specific accelerator targets where defined,
             # otherwise fall back to the default set.
-            ACCELERATOR_TARGETS=$(echo "${EESSI_ACCELERATOR_TARGETS}" \
-              | yq -r "
-                  .\"${EESSI_VERSION}\".\"${COMPARISON_ARCH}\"
-                  // .\"${EESSI_VERSION}\".default
-                  | .[]
-                " 2>/dev/null || true)
-
-            # compare_to_generic.sh currently expects CUDA compute
-            # capabilities without the 'nvidia/' prefix.
-            CUDA_COMPUTE_CAPABILITIES=$(echo "${ACCELERATOR_TARGETS}" \
-              | awk -F/ '$1 == "nvidia" {print $2}' \
-              | tr '\n' ' ')
-
-            export CUDA_COMPUTE_CAPABILITIES="${CUDA_COMPUTE_CAPABILITIES% }"
+            ACCELERATOR_TARGETS=$(echo "${EESSI_ACCELERATOR_TARGETS}" | yq ".\"${{matrix.EESSI_VERSION}}\".\"${COMPARISON_ARCH}\" // .\"${{matrix.EESSI_VERSION}}\".default | .[]")
+            export ACCELERATOR_TARGETS
 
             echo "COMPARISON_ARCH=${COMPARISON_ARCH}"
-            echo "CUDA_COMPUTE_CAPABILITIES=${CUDA_COMPUTE_CAPABILITIES}"
+            echo "ACCELERATOR_TARGETS=${ACCELERATOR_TARGETS}"
 
             .github/workflows/scripts/compare_to_generic.sh \
               "${EESSI_PREFIX}/software/${EESSI_OS_TYPE}" \
