@@ -172,7 +172,7 @@ jobs:
               ACCELERATOR_TARGETS_TYPE=$(echo "${ALL_ACCELERATOR_TARGETS}" \
                 | tr ' ' '\n' \
                 | grep "^${ACCELERATOR_TYPE}/" \
-                | tr '\n' ' ')
+                | tr '\n' ' ' || true)
 
               if [[ -z "${ACCELERATOR_TARGETS_TYPE}" ]]; then
                 continue
