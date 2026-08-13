@@ -161,15 +161,32 @@ jobs:
 
             # Use architecture-specific accelerator targets where defined,
             # otherwise fall back to the default set.
-            ACCELERATOR_TARGETS=$(echo "${EESSI_ACCELERATOR_TARGETS}" | yq ".\"${{ matrix.EESSI_VERSION }}\".\"${COMPARISON_ARCH}\" // .\"${{ matrix.EESSI_VERSION }}\".default | .[]" | tr '\n' ' ')
-            export ACCELERATOR_TARGETS
+            ALL_ACCELERATOR_TARGETS=$(echo "${EESSI_ACCELERATOR_TARGETS}" \
+              | yq ".\"${{ matrix.EESSI_VERSION }}\".\"${COMPARISON_ARCH}\" // .\"${{ matrix.EESSI_VERSION }}\".default | .[]" \
+              | tr '\n' ' ')
 
             echo "COMPARISON_ARCH=${COMPARISON_ARCH}"
-            echo "ACCELERATOR_TARGETS=${ACCELERATOR_TARGETS}"
+            echo "ACCELERATOR_TARGETS=${ALL_ACCELERATOR_TARGETS}"
 
-            .github/workflows/scripts/compare_to_generic.sh \
-              "${EESSI_PREFIX}/software/${EESSI_OS_TYPE}" \
-              "${COMPARISON_ARCH}"
+            for ACCELERATOR_TYPE in nvidia amd; do
+              ACCELERATOR_TARGETS_TYPE=$(echo "${ALL_ACCELERATOR_TARGETS}" \
+                | tr ' ' '\n' \
+                | grep "^${ACCELERATOR_TYPE}/" \
+                | tr '\n' ' ')
+
+              if [[ -z "${ACCELERATOR_TARGETS_TYPE}" ]]; then
+                continue
+              fi
+
+              export ACCELERATOR_TARGETS="${ACCELERATOR_TARGETS_TYPE}"
+
+              echo "Comparing ${ACCELERATOR_TYPE} accelerator targets:"
+              echo "ACCELERATOR_TARGETS=${ACCELERATOR_TARGETS}"
+
+              .github/workflows/scripts/compare_to_generic.sh \
+                "${EESSI_PREFIX}/software/${EESSI_OS_TYPE}" \
+                "${COMPARISON_ARCH}"
+            done
 
             echo "::endgroup::"
           done
