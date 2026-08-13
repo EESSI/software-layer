@@ -144,7 +144,7 @@ jobs:
           
           # Use GITHUB_OUTPUT heredoc correctly
           echo "EESSI_VERSIONS<<EOF" >> "$GITHUB_OUTPUT"
-          echo "2025.06" >> "$GITHUB_OUTPUT"
+          echo "$EESSI_VERSIONS" >> "$GITHUB_OUTPUT"
           echo "EOF" >> "$GITHUB_OUTPUT"
 
   check_missing:
