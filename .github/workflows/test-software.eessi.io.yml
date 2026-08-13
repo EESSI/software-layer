@@ -66,6 +66,8 @@ env:
         - aarch64/neoverse_v1
         - aarch64/nvidia/grace
         - aarch64/a64fx
+        - aarch64/aws/graviton4
+
   # list below should correspond with table @ https://eessi.io/docs/software_layer/gpu_targets/
   EESSI_ACCELERATOR_TARGETS: |
     2023.06:
