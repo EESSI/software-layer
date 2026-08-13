@@ -161,7 +161,7 @@ jobs:
 
             # Use architecture-specific accelerator targets where defined,
             # otherwise fall back to the default set.
-            ACCELERATOR_TARGETS=$(echo "${EESSI_ACCELERATOR_TARGETS}" | yq ".\"${{matrix.EESSI_VERSION}}\".\"${COMPARISON_ARCH}\" // .\"${{matrix.EESSI_VERSION}}\".default | .[]")
+            ACCELERATOR_TARGETS=$(echo "${EESSI_ACCELERATOR_TARGETS}" | yq ".\"${{ matrix.EESSI_VERSION }}\".\"${COMPARISON_ARCH}\" // .\"${{ matrix.EESSI_VERSION }}\".default | .[]" | tr '\n' ' ')
             export ACCELERATOR_TARGETS
 
             echo "COMPARISON_ARCH=${COMPARISON_ARCH}"
