@@ -28,7 +28,27 @@ env:
         - aarch64/neoverse_v1
         - aarch64/nvidia/grace
         - aarch64/a64fx
+
     2025.06:
+      x86_64:
+        - x86_64/amd/zen2
+        - x86_64/amd/zen3
+        - x86_64/amd/zen4
+        - x86_64/amd/zen5
+        - x86_64/intel/haswell
+        - x86_64/intel/sapphirerapids
+        - x86_64/intel/skylake_avx512
+        - x86_64/intel/icelake
+        - x86_64/intel/cascadelake
+        - x86_64/generic
+      aarch64:
+        - aarch64/generic
+        - aarch64/neoverse_n1
+        - aarch64/neoverse_v1
+        - aarch64/nvidia/grace
+        - aarch64/a64fx
+
+    2026.06:
       x86_64:
         - x86_64/amd/zen2
         - x86_64/amd/zen3
@@ -60,8 +80,8 @@ env:
         - nvidia/cc80
         - nvidia/cc90
       aarch64/a64fx: []
+
     2025.06:
-      # Provide a default set of compute capabilities
       default:
         - nvidia/cc70
         - nvidia/cc80
@@ -76,7 +96,47 @@ env:
         - amd/gfx1101
         - amd/gfx1200
         - amd/gfx1201
-      # and then allow for special cases for specific architectures
+      aarch64/generic:
+        - nvidia/cc70
+        - nvidia/cc80
+        - nvidia/cc90
+        - nvidia/cc100
+        - nvidia/cc120
+      aarch64/neoverse_n1:
+        - nvidia/cc70
+        - nvidia/cc80
+        - nvidia/cc90
+        - nvidia/cc100
+        - nvidia/cc120
+      aarch64/neoverse_v1:
+        - nvidia/cc70
+        - nvidia/cc80
+        - nvidia/cc90
+        - nvidia/cc100
+        - nvidia/cc120
+      aarch64/nvidia/grace:
+        - nvidia/cc70
+        - nvidia/cc80
+        - nvidia/cc90
+        - nvidia/cc100
+        - nvidia/cc120
+      aarch64/a64fx: []
+
+    2026.06:
+      default:
+        - nvidia/cc70
+        - nvidia/cc80
+        - nvidia/cc90
+        - nvidia/cc100
+        - nvidia/cc120
+        - amd/gfx908
+        - amd/gfx90a
+        - amd/gfx942
+        - amd/gfx1030
+        - amd/gfx1100
+        - amd/gfx1101
+        - amd/gfx1200
+        - amd/gfx1201
       aarch64/generic:
         - nvidia/cc70
         - nvidia/cc80
@@ -180,15 +240,21 @@ jobs:
           # Arm CPU targets (EESSI 2023.06)
           - runs_on: ubuntu-24.04-arm
             EESSI_VERSION: 2023.06
-          # Arm CPU targets (EESSI 2025.06)
-          - runs_on: ubuntu-24.04-arm
-            EESSI_VERSION: 2025.06
           # x86_64 CPU targets (EESSI 2023.06)
           - runs_on: ubuntu-24.04
             EESSI_VERSION: 2023.06
+          # Arm CPU targets (EESSI 2025.06)
+          - runs_on: ubuntu-24.04-arm
+            EESSI_VERSION: 2025.06
           # x86_64 CPU targets (EESSI 2025.06)
           - runs_on: ubuntu-24.04
             EESSI_VERSION: 2025.06
+            # Arm CPU targets (EESSI 2026.06)
+          - runs_on: ubuntu-24.04-arm
+            EESSI_VERSION: 2026.06
+          # x86_64 CPU targets (EESSI 2026.06)
+          - runs_on: ubuntu-24.04
+            EESSI_VERSION: 2026.06
 
     runs-on: ${{ matrix.runs_on }}
     steps:
@@ -209,12 +275,10 @@ jobs:
           echo "lscpu:"
           lscpu
 
-      - name: Mount EESSI CernVM-FS pilot repository
-        uses: cvmfs-contrib/github-action-cvmfs@10197e000cc0add8e54ac4fb73d3ed44e2de72b4 # v5.5
+      - name: Mount EESSI CernVM-FS repository
+        uses: eessi/github-action-eessi@v3
         with:
-          cvmfs_config_package: https://github.com/EESSI/filesystem-layer/releases/download/latest/cvmfs-config-eessi_latest_all.deb
-          cvmfs_http_proxy: DIRECT
-          cvmfs_repositories: software.eessi.io
+          eessi_stack_version: '${{matrix.EESSI_VERSION}}'
 
       - name: Check for missing installations
         if: >
@@ -224,9 +288,6 @@ jobs:
             matrix.EESSI_VERSION
           )
         run: |
-          # Do a basic initialisation to set up Lmod and EESSI modules
-          export EESSI_MODULE_STICKY=1
-          source /cvmfs/software.eessi.io/versions/${{matrix.EESSI_VERSION}}/init/lmod/bash
 
           # From this extract the CPUs we need to loop over
           cpu_subdirs=$(echo "${EESSI_CPU_TARGETS}" | yq ".\"${EESSI_VERSION}\".\"${EESSI_CPU_FAMILY}\" | .[]")
