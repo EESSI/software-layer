@@ -157,7 +157,7 @@ jobs:
           && !contains(github.event.pull_request.labels.*.name, 'force-ci-checks')
         run: |
           echo "::error::No EasyStack changes detected, so missing-installation CI was skipped."
-          echo "::error::If this PR still requires missing-installation CI, someone with triage rights needs to add the 'force-ci-checks' label."
+          echo "::error::All PRs require missing-installation CI, someone with triage rights needs to add the 'force-ci-checks' label."
           exit 1
 
       - name: Force CI label is present or EasyStack changes detected
