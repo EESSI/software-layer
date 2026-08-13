@@ -115,7 +115,7 @@ jobs:
       EESSI_VERSIONS: ${{ steps.detect.outputs.EESSI_VERSIONS }}
     steps:
       - name: Check out software-layer repository
-        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           fetch-depth: 0  # Fetch all history for all branches and tags
 
@@ -174,7 +174,7 @@ jobs:
     runs-on: ${{ matrix.runs_on }}
     steps:
       - name: Check out software-layer repository
-        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
             fetch-depth: 0  # Fetch all history for all branches and tags
 
@@ -191,7 +191,7 @@ jobs:
           lscpu
 
       - name: Mount EESSI CernVM-FS pilot repository
-        uses: cvmfs-contrib/github-action-cvmfs@55899ca74cf78ab874bdf47f5a804e47c198743c # v4.0
+        uses: cvmfs-contrib/github-action-cvmfs@10197e000cc0add8e54ac4fb73d3ed44e2de72b4 # v5.5
         with:
           cvmfs_config_package: https://github.com/EESSI/filesystem-layer/releases/download/latest/cvmfs-config-eessi_latest_all.deb
           cvmfs_http_proxy: DIRECT
@@ -330,16 +330,11 @@ jobs:
 
       - name: Test check_missing_installations.sh with missing package (GCC/8.3.0)
         run: |
-          export EESSI_SOFTWARE_SUBDIR_OVERRIDE=${{matrix.EESSI_SOFTWARE_SUBDIR_OVERRIDE}}
+          # This is a general check, doesn't need to be run for every CPU, just the host is fine
           source /cvmfs/software.eessi.io/versions/${{matrix.EESSI_VERSION}}/init/bash
-          # set $EESSI_CPU_FAMILY to the CPU architecture that corresponds to $EESSI_SOFTWARE_SUBDIR_OVERRIDE (part before the first slash),
-          # to prevent issues with checks in the Easybuild configuration that use this variable
-          export EESSI_CPU_FAMILY=${EESSI_SOFTWARE_SUBDIR_OVERRIDE%%/*}
           module load EasyBuild
           which eb
           eb --version
-          export EESSI_PREFIX=/cvmfs/software.eessi.io/versions/${{matrix.EESSI_VERSION}}
-          export EESSI_OS_TYPE=linux
           env | grep ^EESSI | sort
           # create dummy easystack file with a single entry (something that is not installed in EESSI)
           easystack_file="test.yml"
