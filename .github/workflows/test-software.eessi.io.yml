@@ -199,7 +199,8 @@ jobs:
 
       - name: Check for missing installations
         if: >
-          contains(
+          contains(github.event.pull_request.labels.*.name, 'force-ci-checks')
+          || contains(
             needs.check_EESSI_version_changed_files.outputs.EESSI_VERSIONS,
             matrix.EESSI_VERSION
           )
