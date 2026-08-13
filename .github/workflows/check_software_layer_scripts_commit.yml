@@ -28,7 +28,7 @@ jobs:
     if: >
       (
         contains(github.event.pull_request.labels.*.name, 'bot:deploy')
-        || contains(github.event.pull_request.labels.*.name, 'force-ci-checks')
+        || contains(github.event.pull_request.labels.*.name, 'force-sw-layer-commit-ci')
       )
     runs-on: ubuntu-24.04
     steps:
