@@ -1,0 +1,6 @@
+easyconfigs:
+  - OpenMPI-5.0.10-GCC-15.2.0.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/26641
+        from-commit: 66cb2c304ddb84721de82f09c02f44617354c01e
+  - foss-2026.1.eb
