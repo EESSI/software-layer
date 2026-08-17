@@ -125,7 +125,11 @@ jobs:
           # Fetch base branch explicitly to ensure it's available
           git fetch origin ${{ github.base_ref }}
 
-          changed_files=$(git diff --name-only origin/${{ github.base_ref }}...HEAD)
+          if [[ "${{ github.event_name }}" == "pull_request" ]]; then
+            changed_files=$(git diff --name-only "${{ github.event.pull_request.base.sha }}...HEAD")
+          else
+            changed_files=$(git diff --name-only "${{ github.event.before }}...HEAD")
+          fi
           echo "Files changed: $changed_files"
 
           # Default to not checking missing software for any version
