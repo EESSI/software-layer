@@ -252,7 +252,7 @@ jobs:
           # x86_64 CPU targets (EESSI 2025.06)
           - runs_on: ubuntu-24.04
             EESSI_VERSION: 2025.06
-            # Arm CPU targets (EESSI 2026.06)
+          # Arm CPU targets (EESSI 2026.06)
           - runs_on: ubuntu-24.04-arm
             EESSI_VERSION: 2026.06
           # x86_64 CPU targets (EESSI 2026.06)
