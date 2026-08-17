@@ -318,7 +318,7 @@ jobs:
                 
 
               (
-                set -euo pipefail
+                set -e -o pipefail
 
                 module --force purge
                 export EESSI_SOFTWARE_SUBDIR_OVERRIDE="$cpu"
