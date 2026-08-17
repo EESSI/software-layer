@@ -211,6 +211,7 @@ jobs:
           
   requires_forced_ci:
     runs-on: ubuntu-24.04
+    if: github.event_name == 'pull_request'
     needs: check_EESSI_version_changed_files
     steps:
       - name: Check whether force-ci-checks is required
