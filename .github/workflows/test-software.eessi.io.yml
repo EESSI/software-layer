@@ -211,22 +211,25 @@ jobs:
           
   requires_forced_ci:
     runs-on: ubuntu-24.04
-    if: github.event_name == 'pull_request'
     needs: check_EESSI_version_changed_files
     steps:
       - name: Check whether force-ci-checks is required
         if: >
-          needs.check_EESSI_version_changed_files.outputs.EESSI_VERSIONS == ''
+          github.event_name == 'pull_request'
+          && needs.check_EESSI_version_changed_files.outputs.EESSI_VERSIONS == ''
           && !contains(github.event.pull_request.labels.*.name, 'force-ci-checks')
         run: |
           echo "::error::No EasyStack changes detected, so missing-installation CI was skipped."
           echo "::error::All PRs require missing-installation CI, someone with triage rights needs to add the 'force-ci-checks' label."
           exit 1
-
+  
       - name: Force CI label is present or EasyStack changes detected
         if: >
-          needs.check_EESSI_version_changed_files.outputs.EESSI_VERSIONS != ''
-          || contains(github.event.pull_request.labels.*.name, 'force-ci-checks')
+          github.event_name == 'pull_request'
+          && (
+            needs.check_EESSI_version_changed_files.outputs.EESSI_VERSIONS != ''
+            || contains(github.event.pull_request.labels.*.name, 'force-ci-checks')
+          )
         run: echo "No forced CI required."
     
   check_missing:
