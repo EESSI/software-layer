@@ -4,3 +4,7 @@ easyconfigs:
         # see https://github.com/easybuilders/easybuild-easyconfigs/pull/26641
         from-commit: 66cb2c304ddb84721de82f09c02f44617354c01e
   - foss-2026.1.eb
+  - spin-0.18-GCCcore-15.2.0.eb
+  - hypothesis-6.153.2-GCCcore-15.2.0.eb
+  - pybind11-3.0.4-GCCcore-15.2.0.eb
+  - meson-python-0.19.0-GCCcore-15.2.0.eb
