@@ -441,3 +441,7 @@ jobs:
             echo "captured missing package; test PASSED"
             exit 0
           fi
+
+  compare_stacks: 
+      needs: check_missing
+      uses: ./.github/workflows/test_compare-stacks.yml
