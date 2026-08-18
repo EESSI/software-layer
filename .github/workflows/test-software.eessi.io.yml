@@ -441,3 +441,47 @@ jobs:
             echo "captured missing package; test PASSED"
             exit 0
           fi
+
+      - name: Compare stacks across architectures
+        shell: bash
+        run: |
+          echo "::group::EESSI ${EESSI_VERSION} / ${EESSI_CPU_FAMILY}"
+
+          # Get all CPU targets belonging to this architecture family.
+          CPU_TARGETS=$(echo "${EESSI_CPU_TARGETS}" \
+            | yq -r ".\"${EESSI_VERSION}\".\"${EESSI_CPU_FAMILY}\"[]")
+
+          for COMPARISON_ARCH in ${CPU_TARGETS}; do
+            echo "::group::Compare ${EESSI_VERSION} / ${COMPARISON_ARCH}"
+
+            # Use architecture-specific accelerator targets where defined,
+            # otherwise fall back to the default set.
+            ALL_ACCELERATOR_TARGETS=$(echo "${EESSI_ACCELERATOR_TARGETS}" \
+              | yq ".\"${{ matrix.EESSI_VERSION }}\".\"${COMPARISON_ARCH}\" // .\"${{ matrix.EESSI_VERSION }}\".default | .[]" \
+              | tr '\n' ' ')
+
+            echo "COMPARISON_ARCH=${COMPARISON_ARCH}"
+            echo "ACCELERATOR_TARGETS=${ALL_ACCELERATOR_TARGETS}"
+
+            for ACCELERATOR_TYPE in nvidia amd; do
+              ACCELERATOR_TARGETS_TYPE=$(echo "${ALL_ACCELERATOR_TARGETS}" \
+                | tr ' ' '\n' \
+                | grep "^${ACCELERATOR_TYPE}/" \
+                | tr '\n' ' ' || true)
+
+              if [[ -z "${ACCELERATOR_TARGETS_TYPE}" ]]; then
+                continue
+              fi
+
+              export ACCELERATOR_TARGETS="${ACCELERATOR_TARGETS_TYPE}"
+
+              echo "Comparing ${ACCELERATOR_TYPE} accelerator targets:"
+              echo "ACCELERATOR_TARGETS=${ACCELERATOR_TARGETS}"
+
+              .github/workflows/scripts/compare_to_generic.sh \
+                "${EESSI_PREFIX}/software/${EESSI_OS_TYPE}" \
+                "${COMPARISON_ARCH}"
+            done
+
+            echo "::endgroup::"
+          done
