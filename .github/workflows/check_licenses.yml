@@ -39,11 +39,9 @@ jobs:
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
 
       - name: Mount EESSI CernVM-FS repository
-        uses: cvmfs-contrib/github-action-cvmfs@55899ca74cf78ab874bdf47f5a804e47c198743c # v4.0
+        uses: eessi/github-action-eessi@v3
         with:
-            cvmfs_config_package: https://github.com/EESSI/filesystem-layer/releases/download/latest/cvmfs-config-eessi_latest_all.deb
-            cvmfs_http_proxy: DIRECT
-            cvmfs_repositories: software.eessi.io
+          eessi_stack_version: '${{matrix.EESSI_VERSION}}'
 
       - name: Check for missing installations
         env:
