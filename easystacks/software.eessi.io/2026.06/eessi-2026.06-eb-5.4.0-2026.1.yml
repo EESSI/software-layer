@@ -12,4 +12,8 @@ easyconfigs:
   - lit-18.1.8-GCCcore-15.2.0.eb
   - git-2.52.0-GCCcore-15.2.0.eb
   - Z3-4.15.4-GCCcore-15.2.0.eb
+  - spin-0.18-GCCcore-15.2.0.eb
+  - hypothesis-6.153.2-GCCcore-15.2.0.eb
+  - pybind11-3.0.4-GCCcore-15.2.0.eb
+  - meson-python-0.19.0-GCCcore-15.2.0.eb
   - LLVM-21.1.8-GCCcore-15.2.0.eb
