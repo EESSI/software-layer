@@ -3,7 +3,9 @@
 # give up as soon as any error occurs
 set -e
 
-git clone https://github.com/EESSI/software-layer-scripts
+#git clone https://github.com/EESSI/software-layer-scripts
+# Use specific feature branch for now, so we can easily test required changes in the hooks
+git clone -b more_pytorch_fixes https://github.com/bedroge/software-layer-scripts
 
 # symlink everything, except for:
 # - common files like LICENSE and README.md
