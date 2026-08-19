@@ -4,6 +4,14 @@ easyconfigs:
         # see https://github.com/easybuilders/easybuild-easyconfigs/pull/26641
         from-commit: 66cb2c304ddb84721de82f09c02f44617354c01e
   - foss-2026.1.eb
+  - Python-bundle-PyPI-2026.04-GCCcore-15.2.0.eb
+  - X11-20260518-GCCcore-15.2.0.eb
+  - GObject-Introspection-1.86.0-GCCcore-15.2.0.eb
+  - HarfBuzz-14.2.0-GCCcore-15.2.0.eb
+  - GMP-6.3.0-GCCcore-15.2.0.eb
+  - lit-18.1.8-GCCcore-15.2.0.eb
+  - git-2.52.0-GCCcore-15.2.0.eb
+  - Z3-4.15.4-GCCcore-15.2.0.eb
   - spin-0.18-GCCcore-15.2.0.eb
   - hypothesis-6.153.2-GCCcore-15.2.0.eb
   - pybind11-3.0.4-GCCcore-15.2.0.eb
