@@ -202,7 +202,7 @@ jobs:
           # The sort ensures predictable ordering, and with -u only keeps unique items (neither are probably essential, but both are nice)
           # Finally, since the grep returns multiple lines if there are multiple versions that were touched,
           # the tr replaces newlines with space, to make this space-separated.          
-          EESSI_VERSIONS=$(git diff --name-only origin/${{ github.base_ref }}...HEAD \
+          EESSI_VERSIONS=$(printf '%s\n' "$changed_files" \
             | grep -oP 'easystacks/software\.eessi\.io/\K[0-9]+\.[0-9]+' \
             | sort -u \
             | tr '\n' ' ')
