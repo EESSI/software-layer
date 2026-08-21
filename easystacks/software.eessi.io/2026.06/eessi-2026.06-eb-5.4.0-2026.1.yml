@@ -16,3 +16,4 @@ easyconfigs:
   - hypothesis-6.153.2-GCCcore-15.2.0.eb
   - pybind11-3.0.4-GCCcore-15.2.0.eb
   - meson-python-0.19.0-GCCcore-15.2.0.eb
+  - SciPy-bundle-2026.05-gfbf-2026.1.eb
