@@ -16,3 +16,19 @@ easyconfigs:
   - hypothesis-6.153.2-GCCcore-15.2.0.eb
   - pybind11-3.0.4-GCCcore-15.2.0.eb
   - meson-python-0.19.0-GCCcore-15.2.0.eb
+  - html5lib-1.1-GCCcore-15.2.0.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/26696
+        from-commit: 193950dc3ce8cb19c6b5e92343c83b14ca3ee533
+  - OpenH264-2.6.0-GCCcore-15.2.0.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/26710
+        from-commit: 2d70a06fa10c8b32bc543f821e588474df13cbde
+  - gRPC-1.83.0-GCCcore-15.2.0.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/26711
+        from-commit: c1df27b7f1020f7202b77d5218f7a275f754f6f4
+  - Qt6-6.11.2-GCCcore-15.2.0.eb:
+      options:
+        # see   https://github.com/easybuilders/easybuild-easyconfigs/pull/26687
+        from-commit: 91e504e651de09f67ebaefd0cf0bb7c2559ce6d8
