@@ -28,6 +28,10 @@ easyconfigs:
       options:
         # see https://github.com/easybuilders/easybuild-easyconfigs/pull/26711
         from-commit: c1df27b7f1020f7202b77d5218f7a275f754f6f4
+  - libinput-1.31.3-GCCcore-15.2.0.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/26688
+        from-commit: ae172e8600b45ee02caface50f959a14bcf493c9
   - Qt6-6.11.2-GCCcore-15.2.0.eb:
       options:
         # see   https://github.com/easybuilders/easybuild-easyconfigs/pull/26687
