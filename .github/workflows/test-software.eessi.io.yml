@@ -126,7 +126,7 @@ env:
 
     2026.06:
       default:
-        - nvidia/cc70
+        - nvidia/cc75
         - nvidia/cc80
         - nvidia/cc90
         - nvidia/cc100
@@ -140,25 +140,25 @@ env:
         - amd/gfx1200
         - amd/gfx1201
       aarch64/generic:
-        - nvidia/cc70
+        - nvidia/cc75
         - nvidia/cc80
         - nvidia/cc90
         - nvidia/cc100
         - nvidia/cc120
       aarch64/neoverse_n1:
-        - nvidia/cc70
+        - nvidia/cc75
         - nvidia/cc80
         - nvidia/cc90
         - nvidia/cc100
         - nvidia/cc120
       aarch64/neoverse_v1:
-        - nvidia/cc70
+        - nvidia/cc75
         - nvidia/cc80
         - nvidia/cc90
         - nvidia/cc100
         - nvidia/cc120
       aarch64/nvidia/grace:
-        - nvidia/cc70
+        - nvidia/cc75
         - nvidia/cc80
         - nvidia/cc90
         - nvidia/cc100
