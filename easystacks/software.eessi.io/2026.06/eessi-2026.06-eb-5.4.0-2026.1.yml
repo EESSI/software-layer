@@ -17,3 +17,7 @@ easyconfigs:
   - pybind11-3.0.4-GCCcore-15.2.0.eb
   - meson-python-0.19.0-GCCcore-15.2.0.eb
   - LLVM-21.1.8-GCCcore-15.2.0.eb
+  - ReFrame-4.10.2-GCCcore-15.2.0-no-analytics.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/26645
+        from-commit: a32dceb327d1c95eb46c28994af11350e2c63d3c
