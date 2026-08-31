@@ -1,5 +1,5 @@
 easyconfigs:
   - IRkernel-1.3.2-gfbf-2025b-R-4.5.2.eb
   - buildenv-default-lfoss-2025b.eb
-  - Bowtie2-2.5.4-GCC-14.3.0.eb
   - BEDTools-2.31.1-GCC-14.3.0.eb
+  - Bowtie2-2.5.4-GCC-14.3.0.eb
