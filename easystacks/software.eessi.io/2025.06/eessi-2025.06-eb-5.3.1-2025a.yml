@@ -15,3 +15,4 @@ easyconfigs:
         # see https://github.com/easybuilders/easybuild-easyconfigs/pull/26573
         from-commit: c2d5dcaecee1ab9abfee143b87243c44ca305273
         parallel-extensions-install: true
+  - MEME-5.5.9-gompi-2025a.eb
