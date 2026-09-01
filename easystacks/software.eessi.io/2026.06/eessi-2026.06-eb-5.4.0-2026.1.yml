@@ -21,3 +21,4 @@ easyconfigs:
       options:
         # see https://github.com/easybuilders/easybuild-easyconfigs/pull/26645
         from-commit: a32dceb327d1c95eb46c28994af11350e2c63d3c
+  - BWA-0.7.19-GCCcore-15.2.0.eb
