@@ -346,7 +346,7 @@ jobs:
 
                   if [[ "$easystack_file" == */additional_arch/* ]]; then
                     if [[ "$easystack_file" != *"/$EESSI_CPU_FAMILY/"* ]]; then
-                      echo "Detected an additional arch with CPU family not matching host ($EESSI_CPU_FAMILY), skipping CI"
+                      echo "Detected an additional arch with CPU family not matching host ($EESSI_CPU_FAMILY), skipping CI for $easystack_file"
                       continue
                     fi
                   fi
@@ -417,6 +417,8 @@ jobs:
                 exit 1
               else
                 echo "SUCCESS: $cpu"
+                # Show any architectures that were intentionally skipped
+                grep "Detected an additional arch" "$log" || true
               fi
             done
 
