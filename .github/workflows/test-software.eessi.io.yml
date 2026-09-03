@@ -326,7 +326,7 @@ jobs:
 
                 module --force purge
                 export EESSI_SOFTWARE_SUBDIR_OVERRIDE="$cpu"
-                module load EESSI//${{matrix.EESSI_VERSION}}
+                module load EESSI/${{matrix.EESSI_VERSION}}
 
                 env | grep ^EESSI | sort
 
