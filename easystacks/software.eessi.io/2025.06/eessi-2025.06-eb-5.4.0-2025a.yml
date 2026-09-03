@@ -1,2 +1,3 @@
 easyconfigs:
   - MEME-5.5.9-gompi-2025a.eb
+  - OpenFOAM-v2506-foss-2025a.eb
