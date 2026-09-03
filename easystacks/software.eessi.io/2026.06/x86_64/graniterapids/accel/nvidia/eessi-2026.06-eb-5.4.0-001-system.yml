@@ -1,0 +1,8 @@
+easyconfigs:
+  - CUDA-13.3.0.eb:
+      options:
+        accept-eula-for: CUDA
+  - cuDNN-9.23.0.39-CUDA-13.3.0.eb:
+      options:
+        accept-eula-for: cuDNN
+        cuda-sanity-check-accept-missing-ptx: True
