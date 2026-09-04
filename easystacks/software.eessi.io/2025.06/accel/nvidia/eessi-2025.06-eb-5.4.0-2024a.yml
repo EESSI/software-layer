@@ -6,4 +6,4 @@ easyconfigs:
          # include-easyblocks-from-commit: bcc86f327b79edd5f06f71c5401a5a7665a39a68
          # easyblock for crosscompiling lammp CUDA without device
          # https://github.com/easybuilders/easybuild-easyblocks/pull/4190
-         include-easyblocks-from-commit: 38f267a1c491c17bea94784903c2b93fd59b2fea
+         include-easyblocks-from-commit: 8632c37243a1b3c301a7929eeeb409046e74843d
