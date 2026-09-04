@@ -21,4 +21,5 @@ easyconfigs:
       options:
         # see https://github.com/easybuilders/easybuild-easyconfigs/pull/26645
         from-commit: a32dceb327d1c95eb46c28994af11350e2c63d3c
+  - OSU-Micro-Benchmarks-7.5.2-gompi-2026.1.eb
   - SciPy-bundle-2026.05-gfbf-2026.1.eb
