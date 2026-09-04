@@ -11,6 +11,9 @@
 #
 # Behavior:
 #   - Only acts when the stored SHA differs from the latest commit on software-layer-scripts main.
+#   - If it differs, but the bot branch 'gh_action_update_software_layer_commit_sha' already pins that
+#     same latest SHA (i.e. an open PR is already proposing it), does nothing: no pointless force-push,
+#     no PR re-creation/comment, until that PR is merged (or the upstream SHA moves again).
 #   - Recreates branch 'gh_action_update_software_layer_commit_sha' from software-layer's latest main and force-pushes it,
 #     so the PR never accumulates merge conflicts and the existing PR (if any) is updated in place.
 #     The force push is safe: the branch is bot-owned and fully regenerated on every run.
@@ -52,17 +55,35 @@ jobs:
           SHA=$(gh api repos/EESSI/software-layer-scripts/commits/main --jq .sha)
           echo "sha=$SHA" >> "$GITHUB_OUTPUT"
 
-      - name: Compare with stored SHA
+      - name: Compare with stored SHA and pending bot branch
         id: cmp
+        env:
+          GH_TOKEN: ${{ github.token }}
         run: |
           STORED=$(tr -d '[:space:]' < bot/software_layer_scripts_commit)
-          if [[ "$STORED" == "${{ steps.latest.outputs.sha }}" ]]; then
+          LATEST="${{ steps.latest.outputs.sha }}"
+
+          if [[ "$STORED" == "$LATEST" ]]; then
             echo "changed=false" >> "$GITHUB_OUTPUT"
-            echo "Already up to date: $STORED"
+            echo "Already up to date on main: $STORED"
+            exit 0
+          fi
+
+          # main is behind latest, but an open PR from a previous run may already pin it.
+          BRANCH_SHA=""
+          if CONTENT=$(gh api "repos/${{ github.repository }}/contents/bot/software_layer_scripts_commit?ref=gh_action_update_software_layer_commit_sha" \
+                          --jq .content 2>/dev/null); then
+            BRANCH_SHA=$(printf '%s' "$CONTENT" | base64 -d | tr -d '[:space:]')
+          fi
+
+          if [[ "$BRANCH_SHA" == "$LATEST" ]]; then
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+            echo "Bot branch gh_action_update_software_layer_commit_sha already pins $LATEST; PR pending merge, nothing to do."
           else
             echo "changed=true" >> "$GITHUB_OUTPUT"
-            echo "Stored:  $STORED"
-            echo "Latest:  ${{ steps.latest.outputs.sha }}"
+            echo "Stored on main:  $STORED"
+            echo "Bot branch has:  ${BRANCH_SHA:-<none>}"
+            echo "Latest:          $LATEST"
           fi
 
       - name: Update file and force-push gh_action_update_software_layer_commit_sha

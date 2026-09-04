@@ -1,4 +1,5 @@
 easyconfigs:
+  - ESPResSo-4.2.2-foss-2024a-CUDA-12.6.0.eb
   - LAMMPS-22Jul2025-foss-2024a-kokkos-CUDA-12.6.0.eb:
        # https://github.com/easybuilders/easybuild-easyblocks/pull/4175
        options:
