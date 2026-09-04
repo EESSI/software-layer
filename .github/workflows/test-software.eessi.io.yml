@@ -56,6 +56,7 @@ env:
         - x86_64/amd/zen5
         - x86_64/intel/haswell
         - x86_64/intel/sapphirerapids
+        - x86_64/intel/graniterapids
         - x86_64/intel/skylake_avx512
         - x86_64/intel/icelake
         - x86_64/intel/cascadelake
@@ -326,7 +327,7 @@ jobs:
 
                 module --force purge
                 export EESSI_SOFTWARE_SUBDIR_OVERRIDE="$cpu"
-                module load EESSI//${{matrix.EESSI_VERSION}}
+                module load EESSI/${{matrix.EESSI_VERSION}}
 
                 env | grep ^EESSI | sort
 
@@ -343,6 +344,13 @@ jobs:
                 for easystack_file in $(EESSI_VERSION=${{matrix.EESSI_VERSION}} .github/workflows/scripts/only_latest_easystacks.sh); do
                   eb_version=$(echo ${easystack_file} | sed 's/.*eb-\([0-9.]*\).*.yml/\1/g')
                   echo "checking ${easystack_file} with EasyBuild ${eb_version}..."
+
+                  if [[ "$easystack_file" == */additional_arch/* ]]; then
+                    if [[ "$easystack_file" != *"/$EESSI_CPU_FAMILY/"* ]]; then
+                      echo "Detected an additional arch with CPU family not matching host ($EESSI_CPU_FAMILY), skipping CI for $easystack_file"
+                      continue
+                    fi
+                  fi
 
                   module purge
                   module load EasyBuild/${eb_version}
@@ -410,6 +418,8 @@ jobs:
                 exit 1
               else
                 echo "SUCCESS: $cpu"
+                # Show any architectures that were intentionally skipped
+                grep "Detected an additional arch" "$log" || true
               fi
             done
 
