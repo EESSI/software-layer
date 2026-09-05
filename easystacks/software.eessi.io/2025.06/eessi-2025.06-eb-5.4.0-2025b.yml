@@ -9,3 +9,4 @@ easyconfigs:
   - Jellyfish-2.3.1-GCC-14.3.0.eb
   - prodigal-2.6.3-GCCcore-14.3.0.eb
   - slepc4py-3.24.0-foss-2025b.eb
+  - PETSc-3.24.0-lfoss-2025b.eb
