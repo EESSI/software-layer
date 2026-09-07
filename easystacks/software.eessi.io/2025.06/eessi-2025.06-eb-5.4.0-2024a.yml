@@ -6,3 +6,4 @@ easyconfigs:
       options:
         # see https://github.com/easybuilders/easybuild-easyconfigs/pull/25726
         from-commit: 69f1edddd78f9cab4568f285611401b2716d8c31
+        accept-eula-for: Intel-oneAPI
