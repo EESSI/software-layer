@@ -2,3 +2,7 @@ easyconfigs:
   - Pint-0.24.4-GCCcore-13.3.0.eb
   - Boost.MPI-1.85.0-gompi-2024a.eb
   - PETSc-3.23.5-foss-2024a.eb
+  - PyTorch-2.9.1-foss-2024a.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/25726
+        from-commit: 69f1edddd78f9cab4568f285611401b2716d8c31
