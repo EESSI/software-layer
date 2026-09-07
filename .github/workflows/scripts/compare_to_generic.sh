@@ -29,16 +29,17 @@ if ! python3 $script_dir/compare_stacks.py $source_of_truth_modules $arch_module
     exit 1
 fi
 
-# Also compare NVIDIA GPU software stacks
-if [[ -n "$CUDA_COMPUTE_CAPABILITIES" ]]; then
-    read -ra compute_capabilities <<< "$CUDA_COMPUTE_CAPABILITIES"
-    echo "Also comparing CUDA-enabled software stacks (for compute capabilities: ${compute_capabilities[@]})"
+# Also compare accelerator software stacks
+if [[ -n "$ACCELERATOR_TARGETS" ]]; then
+    read -ra accel_capabilities <<< "$ACCELERATOR_TARGETS"
+    echo "Also comparing accelerator-enabled software stacks (for compute capabilities: ${accel_capabilities[@]})"
     # Initialize a variable to track failures
     any_failure=0
     # Loop over the array
-    for cc in "${compute_capabilities[@]}"; do
-        source_of_truth_modules="$base_dir/$source_of_truth/accel/nvidia/cc80/$modules_subdir"
-        arch_modules="$base_dir/$target_arch/accel/nvidia/$cc/$modules_subdir"
+    for accel in "${accel_capabilities[@]}"; do
+        source_of_truth_accel="${ACCELERATOR_TARGETS%% *}"  # Just use the first entry as source of truth
+        source_of_truth_modules="$base_dir/$source_of_truth/accel/${source_of_truth_accel}/$modules_subdir"
+        arch_modules="$base_dir/$target_arch/accel/$accel/$modules_subdir"
         echo "Comparing $arch_modules to $source_of_truth_modules"
         if ! python3 $script_dir/compare_stacks.py $source_of_truth_modules $arch_modules; then
             echo "Warning: Comparison failed for compute capability $cc" >&2
@@ -46,9 +47,9 @@ if [[ -n "$CUDA_COMPUTE_CAPABILITIES" ]]; then
         fi
     done
     if [[ $any_failure -ne 0 ]]; then
-        echo "One or more CUDA software stack comparisons failed." >&2
+        echo "One or more accelerator software stack comparisons failed." >&2
         exit 1
     fi
 else
-    echo "CUDA_COMPUTE_CAPABILITIES is not set or is empty, not checking NVIDIA software stacks"
+    echo "ACCELERATOR_TARGETS is not set or is empty, not checking accelerator software stacks"
 fi

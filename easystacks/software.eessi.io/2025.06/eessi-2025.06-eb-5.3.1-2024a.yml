@@ -1,4 +1,5 @@
 easyconfigs:
+  - tblite-0.4.0-gfbf-2024a.eb
   - PyTorch-2.9.1-foss-2024a.eb:
       options:
         # see https://github.com/easybuilders/easybuild-easyconfigs/pull/25726
