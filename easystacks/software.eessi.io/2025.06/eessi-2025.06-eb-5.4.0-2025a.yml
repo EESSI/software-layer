@@ -1,3 +1,8 @@
 easyconfigs:
   - MEME-5.5.9-gompi-2025a.eb
   - OpenFOAM-v2506-foss-2025a.eb
+  - RELION-5.1.0-foss-2025a-CUDA-12.8.0.eb:
+      options:
+        #see https://github.com/easybuilders/easybuild-easyconfigs/pull/26470
+        from-commit: 632d5f0c2e1da117589535d5711a9b187b1d1380
+
