@@ -9,3 +9,5 @@ easyconfigs:
   - Jellyfish-2.3.1-GCC-14.3.0.eb
   - prodigal-2.6.3-GCCcore-14.3.0.eb
   - slepc4py-3.24.0-foss-2025b.eb
+  - RDKit-2026.03.4-foss-2025b.eb
+  - cutadapt-5.2-GCCcore-14.3.0.eb
