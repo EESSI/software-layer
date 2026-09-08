@@ -1,0 +1,6 @@
+easyconfigs:
+  - imkl-2024.2.0.eb:
+      options:
+        # Redistribution is allowed,
+        # see https://www.intel.com/content/www/us/en/developer/articles/tool/onemkl-license-faq.html
+        accept-eula-for: Intel-oneAPI
