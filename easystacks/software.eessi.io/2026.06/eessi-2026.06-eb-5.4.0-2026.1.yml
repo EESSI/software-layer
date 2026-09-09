@@ -24,4 +24,7 @@ easyconfigs:
   - OSU-Micro-Benchmarks-7.5.2-gompi-2026.1.eb
   - SciPy-bundle-2026.05-gfbf-2026.1.eb
   - R-4.6.1-gfbf-2026.1.eb
-  - GDAL-3.13.0-foss-2026.1.eb
+  - GDAL-3.13.0-foss-2026.1.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/26818
+        from-commit: 9ca4fd80740b7a78b5c62a173c698e613293bbad
