@@ -1,3 +1,4 @@
 easyconfigs:
   - Pint-0.24.4-GCCcore-13.3.0.eb
   - Boost.MPI-1.85.0-gompi-2024a.eb
+  - PETSc-3.23.5-foss-2024a.eb
