@@ -4,7 +4,7 @@ easyconfigs:
        # https://github.com/easybuilders/easybuild-easyblocks/pull/4175
        options:
          # easyblock for working around neon issue
-         include-easyblocks-from-commit: d55d8ee6b84ba65645526f67d5cd36dd4c8f46f3
+         include-easyblocks-from-commit: 5b7df851acd9c513fdfba3ade9951287424afef0
          # easyblock for crosscompiling lammp CUDA without device
          # https://github.com/easybuilders/easybuild-easyblocks/pull/4190
          # include-easyblocks-from-commit: 8632c37243a1b3c301a7929eeeb409046e74843d
