@@ -13,3 +13,4 @@ easyconfigs:
   - cutadapt-5.2-GCCcore-14.3.0.eb
   - napari-0.6.6-foss-2025b.eb
   - CGNS-4.5.0-gompi-2025b.eb
+  - snakemake-9.22.0-foss-2025b.eb
