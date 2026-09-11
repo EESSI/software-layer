@@ -28,3 +28,12 @@ easyconfigs:
       options:
         # see https://github.com/easybuilders/easybuild-easyconfigs/pull/26818
         from-commit: 9ca4fd80740b7a78b5c62a173c698e613293bbad
+  - Arrow-24.0.0-gfbf-2026.1.eb
+  - ImageMagick-7.1.2-26-GCCcore-15.2.0.eb
+  - MPFR-4.2.2-GCCcore-15.2.0.eb
+  - Xvfb-21.1.23-GCCcore-15.2.0.eb
+  - GLPK-5.0-GCCcore-15.2.0.eb
+  - libsndfile-1.2.2-GCCcore-15.2.0.eb
+  - NLopt-2.10.1-GCCcore-15.2.0.eb
+  - UDUNITS-2.2.28-GCCcore-15.2.0.eb
+  - GSL-2.8-GCC-15.2.0.eb
