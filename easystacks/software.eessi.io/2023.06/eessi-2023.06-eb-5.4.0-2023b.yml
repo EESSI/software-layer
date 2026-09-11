@@ -1,0 +1,5 @@
+easyconfigs:
+  - OpenLB-1.8.1-foss-2023b.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/26836
+        from-commit: e0be4b23a0030e2541b4033f75617a153335e9d5
