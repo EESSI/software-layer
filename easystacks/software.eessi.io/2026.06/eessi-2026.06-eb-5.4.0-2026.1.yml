@@ -17,3 +17,24 @@ easyconfigs:
   - pybind11-3.0.4-GCCcore-15.2.0.eb
   - meson-python-0.19.0-GCCcore-15.2.0.eb
   - LLVM-21.1.8-GCCcore-15.2.0.eb
+  - ReFrame-4.10.2-GCCcore-15.2.0-no-analytics.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/26645
+        from-commit: a32dceb327d1c95eb46c28994af11350e2c63d3c
+  - OSU-Micro-Benchmarks-7.5.2-gompi-2026.1.eb
+  - SciPy-bundle-2026.05-gfbf-2026.1.eb
+  - R-4.6.1-gfbf-2026.1.eb
+  - GDAL-3.13.0-foss-2026.1.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/26818
+        from-commit: 9ca4fd80740b7a78b5c62a173c698e613293bbad
+  - Arrow-24.0.0-gfbf-2026.1.eb
+  - ImageMagick-7.1.2-26-GCCcore-15.2.0.eb
+  - MPFR-4.2.2-GCCcore-15.2.0.eb
+  - Xvfb-21.1.23-GCCcore-15.2.0.eb
+  - GLPK-5.0-GCCcore-15.2.0.eb
+  - libsndfile-1.2.2-GCCcore-15.2.0.eb
+  - NLopt-2.10.1-GCCcore-15.2.0.eb
+  - UDUNITS-2.2.28-GCCcore-15.2.0.eb
+  - GSL-2.8-GCC-15.2.0.eb
+  - R-bundle-CRAN-2026.07-foss-2026.1.eb
