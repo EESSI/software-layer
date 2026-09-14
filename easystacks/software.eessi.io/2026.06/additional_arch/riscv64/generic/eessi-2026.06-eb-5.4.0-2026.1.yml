@@ -1,0 +1,5 @@
+easyconfigs:
+  - LLVM-21.1.8-GCCcore-15.2.0.eb:
+     options:
+        # see https://github.com/easybuilders/easybuild-easyblocks/pull/4178
+        include-easyblocks-from-commit: 1e945d5f38bfefda6ef3ce9443e1890a80b644aa
