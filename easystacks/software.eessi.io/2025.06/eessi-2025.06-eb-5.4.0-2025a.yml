@@ -1,3 +1,115 @@
 easyconfigs:
   - MEME-5.5.9-gompi-2025a.eb
   - OpenFOAM-v2506-foss-2025a.eb
+  - ATK-2.38.0-GCCcore-14.2.0.eb
+  - Abseil-20250512.1-GCCcore-14.2.0.eb
+  - Cbc-2.10.12-foss-2025a.eb
+  - Cgl-0.60.9-foss-2025a.eb
+  - Clp-1.17.10-foss-2025a.eb
+  - CoinUtils-2.11.12-GCC-14.2.0.eb
+  - GST-plugins-bad-1.26.6-GCCcore-14.2.0.eb
+  - GST-plugins-base-1.26.6-GCCcore-14.2.0.eb
+  - GStreamer-1.26.6-GCCcore-14.2.0.eb
+  - GTK3-3.24.43-GCCcore-14.2.0.eb
+  - GTK4-4.20.2-GCCcore-14.2.0.eb
+  - Graphene-1.10.8-GCCcore-14.2.0.eb
+  - Osi-0.108.11-GCC-14.2.0.eb
+  - PuLP-3.3.0-foss-2025a.eb
+  - PyCairo-1.28.0-GCCcore-14.2.0.eb
+  - PyGObject-3.54.2-GCCcore-14.2.0.eb
+  - PyQt-builder-1.18.1-GCCcore-14.2.0.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/26470
+        from-commit: 632d5f0c2e1da117589535d5711a9b187b1d1380
+  - Qt5-5.15.16-GCCcore-14.2.0.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/26470
+        from-commit: 632d5f0c2e1da117589535d5711a9b187b1d1380
+  - PyQt5-5.15.11-GCCcore-14.2.0.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/26470
+        from-commit: 632d5f0c2e1da117589535d5711a9b187b1d1380
+  - at-spi2-atk-2.38.0-GCCcore-14.2.0.eb
+  - at-spi2-core-2.56.2-GCCcore-14.2.0.eb
+  - cargo-c-0.10.13-GCCcore-14.2.0.eb
+  - ctffind-4.1.14-foss-2025a.eb
+  - einops-0.8.1-GCCcore-14.2.0.eb
+  - flit-core-3.12.0-GCCcore-14.2.0.eb
+  - gmpy2-2.2.0-GCCcore-14.2.0.eb
+  - libcroco-0.6.13-GCCcore-14.2.0.eb
+  - libepoxy-1.5.10-GCCcore-14.2.0.eb
+  - libnotify-0.8.7-GCCcore-14.2.0.eb
+  - librsvg-2.61.0-GCCcore-14.2.0.eb
+  - morphosamplers-0.0.16-gfbf-2025a.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/26470
+        from-commit: 632d5f0c2e1da117589535d5711a9b187b1d1380
+  - optree-0.18.0-GCCcore-14.2.0.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/26470
+        from-commit: 632d5f0c2e1da117589535d5711a9b187b1d1380
+  - parameterized-0.9.0-GCCcore-14.2.0.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/26470
+        from-commit: 632d5f0c2e1da117589535d5711a9b187b1d1380
+  - protobuf-python-6.31.1-GCCcore-14.2.0.eb
+  - protobuf-31.1-GCCcore-14.2.0.eb
+  - pydantic-2.11.7-GCCcore-14.2.0.eb
+  - pytest-flakefinder-1.1.0-GCCcore-14.2.0.eb
+  - pytest-rerunfailures-16.1-GCCcore-14.2.0.eb
+  - pytest-shard-0.1.2-GCCcore-14.2.0.eb
+  - pytest-subtests-0.15.0-GCCcore-14.2.0.eb
+  - pyzstd-0.19.0-GCCcore-14.2.0.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/26470
+        from-commit: 632d5f0c2e1da117589535d5711a9b187b1d1380
+  - shared-mime-info-2.4-GCCcore-14.2.0.eb
+  - sympy-1.14.0-gfbf-2025a.eb
+  - tlparse-0.4.3-GCCcore-14.2.0.eb
+  - typing-extensions-4.14.0-GCCcore-14.2.0.eb
+  - unittest-xml-reporting-3.1.0-GCCcore-14.2.0.eb
+  - wxWidgets-3.2.9-GCCcore-14.2.0.eb
+  - xpdf-4.06-GCCcore-14.2.0.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/26470
+        from-commit: 632d5f0c2e1da117589535d5711a9b187b1d1380
+  - ctffind-4.1.14-foss-2025a.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/26470
+        from-commit: 632d5f0c2e1da117589535d5711a9b187b1d1380
+  - utf8proc-2.10.0-GCCcore-14.2.0.eb
+  - googlebenchmark-1.9.4-GCCcore-14.2.0.eb
+  - RE2-2024-07-02-GCCcore-14.2.0.eb
+  - grpcio-1.76.0-GCCcore-14.2.0.eb
+  - Arrow-22.0.0-gfbf-2025a.eb
+  - mrcfile-1.5.4-gfbf-2025a.eb
+  - absl-py-2.3.1-GCCcore-14.2.0.eb
+  - tensorboard-2.20.0-gfbf-2025a.eb
+  - libclc-20.1.8-GCCcore-14.2.0.eb
+  - tcsh-6.24.16-GCCcore-14.2.0.eb
+  - wrapt-1.17.2-GCCcore-14.2.0.eb
+  - HMMER-3.4-gompi-2025a.eb
+  - PyHMMER-0.11.3-gompi-2025a.eb
+  - numba-0.62.0-foss-2025a.eb
+  - umap-learn-0.5.9.post2-foss-2025a.eb
+  - bcrypt-4.3.0-GCCcore-14.2.0.eb
+  - OpenGL-2025.09-GCCcore-14.2.0.eb
+  - PyOpenGL-3.1.10-GCCcore-14.2.0.eb
+  - PBZIP2-1.1.13-GCCcore-14.2.0.eb
+  - configurable-http-proxy-5.0.1-GCCcore-14.2.0.eb
+  - PyQt5-5.15.11-GCCcore-14.2.0.eb
+  - PycURL-7.45.6-GCCcore-14.2.0.eb
+  - QtPy-2.4.3-GCCcore-14.2.0.eb
+  - aiohttp-3.12.13-GCCcore-14.2.0.eb
+  - Greenlet-3.2.3-GCCcore-14.2.0.eb
+  - jupyter-server-proxy-4.4.0-GCCcore-14.2.0.eb
+  - nbclassic-1.3.1-GCCcore-14.2.0.eb
+  - jupyter-resource-usage-1.1.1-GCCcore-14.2.0.eb
+  - psycopg-3.2.9-GCCcore-14.2.0.eb
+  - SQLAlchemy-2.0.41-GCCcore-14.2.0.eb
+  - JupyterHub-5.3.0-GCCcore-14.2.0.eb
+  - prompt-toolkit-3.0.52-GCCcore-14.2.0.eb
+  - jupyter-bash-kernel-0.9.3-GCCcore-14.2.0.eb
+  - Jupyter-bundle-20250702-GCCcore-14.2.0.eb
+  - Qtconsole-5.7.0-GCCcore-14.2.0.eb
+  - napari-0.6.6-foss-2025a.eb
