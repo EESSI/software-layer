@@ -3,3 +3,7 @@ easyconfigs:
       options:
         # see https://github.com/easybuilders/easybuild-easyconfigs/pull/26836
         from-commit: e0be4b23a0030e2541b4033f75617a153335e9d5
+  - AITW-olb_permeability-1.0.0-foss-2023b.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/26841
+        from-commit: 18ebeb095c4cb6d00eb3c694ea20b9ee987cb576
