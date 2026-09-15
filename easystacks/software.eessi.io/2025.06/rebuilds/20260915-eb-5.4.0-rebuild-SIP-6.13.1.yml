@@ -4,5 +4,3 @@ easyconfigs:
   - SIP-6.13.1-GCCcore-14.2.0.eb:
       options:
         from-commit: 7a27bf132f6917cc79bf31b64725042096cd5c79
-        rebuild: true
-
