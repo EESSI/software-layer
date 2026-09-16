@@ -14,3 +14,13 @@ easyconfigs:
   - napari-0.6.6-foss-2025b.eb
   - CGNS-4.5.0-gompi-2025b.eb
   - snakemake-9.22.0-foss-2025b.eb
+  - Boost.MPI-1.88.0-gompi-2025b.eb
+  - CGAL-6.0.1-GCCcore-14.3.0.eb
+  - GKlib-METIS-5.1.1-GCC-14.3.0.eb
+  - PDAL-2.9.3-foss-2025b.eb
+  - SAMtools-1.22.1-GCC-14.3.0.eb
+  - Wannier90-3.1.0-foss-2025b.eb
+  - netCDF-C++4-4.3.1-gompi-2025b.eb
+  - pyproj-3.7.1-GCCcore-14.3.0.eb
+  - spglib-python-2.6.0-gfbf-2025b.eb
+  - yaml-cpp-0.8.0-GCCcore-14.3.0.eb
