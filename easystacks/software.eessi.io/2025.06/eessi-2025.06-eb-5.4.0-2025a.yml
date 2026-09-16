@@ -1,3 +1,13 @@
 easyconfigs:
   - MEME-5.5.9-gompi-2025a.eb
   - OpenFOAM-v2506-foss-2025a.eb
+  - BDBag-1.8.0-foss-2025a.eb
+  - Block-1.5.3-20200525-foss-2025a.eb
+  - CVXOPT-1.3.2-foss-2025a.eb
+  - CheMPS2-1.8.12-foss-2025a.eb
+  - CoinUtils-2.11.12-GCC-14.2.0.eb
+  - SAMtools-1.22.1-GCC-14.2.0.eb
+  - Shapely-2.1.1-gfbf-2025a.eb
+  - flit-core-3.12.0-GCCcore-14.2.0.eb
+  - lpsolve-5.5.2.14-GCC-14.2.0.eb
+  - utf8proc-2.10.0-GCCcore-14.2.0.eb
