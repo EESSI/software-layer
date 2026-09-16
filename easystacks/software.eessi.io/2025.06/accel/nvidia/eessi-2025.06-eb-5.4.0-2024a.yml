@@ -4,4 +4,4 @@ easyconfigs:
        # use enhanced easyblock that includes fixes for crosscompiling and Arm+CUDA,
        # see https://github.com/easybuilders/easybuild-easyblocks/pull/4222
        options:
-         include-easyblocks-from-commit: 61cac9cb7bae9bbf10bfc4ca31cdcce16455986e
+         include-easyblocks-from-commit: 6ef7c4c151dc9f4cd5eec7d4ebdfe68b0f42e3de
