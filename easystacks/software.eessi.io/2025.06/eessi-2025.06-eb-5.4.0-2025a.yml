@@ -32,7 +32,10 @@ easyconfigs:
   - at-spi2-atk-2.38.0-GCCcore-14.2.0.eb
   - at-spi2-core-2.56.2-GCCcore-14.2.0.eb
   - cargo-c-0.10.13-GCCcore-14.2.0.eb
-  - ctffind-4.1.14-foss-2025a.eb
+  - ctffind-4.1.14-foss-2025a.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/26470
+        from-commit: 632d5f0c2e1da117589535d5711a9b187b1d1380
   - einops-0.8.1-GCCcore-14.2.0.eb
   - flit-core-3.12.0-GCCcore-14.2.0.eb
   - gmpy2-2.2.0-GCCcore-14.2.0.eb
