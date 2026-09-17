@@ -22,7 +22,6 @@ easyconfigs:
   - typing-extensions-4.14.0-GCCcore-14.2.0.eb
   - Cartopy-0.24.1-foss-2025a.eb
   - Dice-20250615-foss-2025a.eb
-  - ELPA-2025.01.002-foss-2025a.eb
   - dill-0.4.0-GCCcore-14.2.0.eb
   - gpaw-data-1.0.1-GCCcore-14.2.0.eb
   - iodata-1.0.0a8-foss-2025a.eb
