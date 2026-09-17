@@ -1,0 +1,5 @@
+# rebuild Tcl 9.0.3 to ensure that init.tcl is installed
+# see https://github.com/easybuilders/easybuild-easyconfigs/pull/26414
+# and https://github.com/EESSI/software-layer/pull/1627#issuecomment-5571733097
+easyconfigs:
+  - Tcl-9.0.3-GCCcore-15.2.0.eb
