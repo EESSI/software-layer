@@ -12,3 +12,24 @@ easyconfigs:
   - RDKit-2026.03.4-foss-2025b.eb
   - cutadapt-5.2-GCCcore-14.3.0.eb
   - napari-0.6.6-foss-2025b.eb
+  - CGNS-4.5.0-gompi-2025b.eb
+  - snakemake-9.22.0-foss-2025b.eb
+  - 2decomp-fft-2.0.4-foss-2025b.eb
+  - BAGEL-1.2.2-foss-2025b.eb
+  - BEDOPS-2.4.42-foss-2025b.eb
+  - Blosc2-2.19.0-GCCcore-14.3.0.eb
+  - Flask-3.1.1-GCCcore-14.3.0.eb
+  - Shapely-2.1.1-gfbf-2025b.eb
+  - gflags-2.2.2-GCCcore-14.3.0.eb
+  - lpsolve-5.5.2.14-GCC-14.3.0.eb
+  - netCDF-Fortran-4.6.2-gompi-2025b.eb
+  - Boost.MPI-1.88.0-gompi-2025b.eb
+  - CGAL-6.0.1-GCCcore-14.3.0.eb
+  - GKlib-METIS-5.1.1-GCC-14.3.0.eb
+  - PDAL-2.9.3-foss-2025b.eb
+  - SAMtools-1.22.1-GCC-14.3.0.eb
+  - Wannier90-3.1.0-foss-2025b.eb
+  - netCDF-C++4-4.3.1-gompi-2025b.eb
+  - pyproj-3.7.1-GCCcore-14.3.0.eb
+  - spglib-python-2.6.0-gfbf-2025b.eb
+  - yaml-cpp-0.8.0-GCCcore-14.3.0.eb
