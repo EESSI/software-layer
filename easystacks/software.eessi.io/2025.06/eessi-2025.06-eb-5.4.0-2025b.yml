@@ -43,3 +43,13 @@ easyconfigs:
   - protobuf-31.1-GCCcore-14.3.0.eb
   - pugixml-1.15-GCCcore-14.3.0.eb
   - zfp-1.0.1-GCCcore-14.3.0.eb
+  - ASAP3-3.13.10-foss-2025b.eb
+  - ASAP3-3.13.11-foss-2025b.eb
+  - CheckM-Database-2015_01_16.eb
+  - ESMF-8.9.0-foss-2025b.eb
+  - Entwine-3.2.1-foss-2025b.eb
+  - FEniCS-Basix-0.10.0.post0-GCC-14.3.0.eb
+  - FEniCS-UFL-2025.2.1-gfbf-2025b.eb
+  - FEniCS-ufcx-0.10.0-GCCcore-14.3.0.eb
+  - MGARD-1.6.0-GCC-14.3.0.eb
+  - spdlog-1.15.3-GCCcore-14.3.0.eb
