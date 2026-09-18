@@ -34,7 +34,6 @@ easyconfigs:
   - DIAMOND-2.1.14-GCC-14.2.0.eb
   - EMBOSS-6.6.0-foss-2025a.eb
   - FastME-2.1.6.4-GCC-14.2.0.eb
-  - PLAMS-2025.105-gfbf-2025a.eb
   - SPAdes-4.2.0-GCC-14.2.0.eb
   - cimfomfa-22.273-GCCcore-14.2.0.eb
   - wget-1.25.0-GCCcore-14.2.0.eb
