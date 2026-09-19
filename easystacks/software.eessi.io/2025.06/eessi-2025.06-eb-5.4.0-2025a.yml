@@ -20,3 +20,12 @@ easyconfigs:
   - pyproj-3.7.1-GCCcore-14.2.0.eb
   - python-libsbml-5.21.0-foss-2025a.eb
   - typing-extensions-4.14.0-GCCcore-14.2.0.eb
+  - Cartopy-0.24.1-foss-2025a.eb
+  - Dice-20250615-foss-2025a.eb
+  - dill-0.4.0-GCCcore-14.2.0.eb
+  - gpaw-data-1.0.1-GCCcore-14.2.0.eb
+  - iodata-1.0.0a8-foss-2025a.eb
+  - libharu-2.4.5-GCCcore-14.2.0.eb
+  - libvdwxc-0.5.0-foss-2025a.eb
+  - pydantic-2.11.7-GCCcore-14.2.0.eb
+  - tRNAscan-SE-2.0.12-foss-2025a.eb
