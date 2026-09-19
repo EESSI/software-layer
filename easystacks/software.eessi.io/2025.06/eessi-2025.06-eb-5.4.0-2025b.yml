@@ -33,13 +33,4 @@ easyconfigs:
   - pyproj-3.7.1-GCCcore-14.3.0.eb
   - spglib-python-2.6.0-gfbf-2025b.eb
   - yaml-cpp-0.8.0-GCCcore-14.3.0.eb
-  - ABINIT-10.4.7-foss-2025b.eb
-  - ASE-3.26.0-gfbf-2025b.eb
-  - AUGUSTUS-3.5.0-foss-2025b.eb
-  - DendroPy-5.0.8-GCCcore-14.3.0.eb
-  - FLANN-1.9.2-foss-2025b.eb
-  - TCLAP-1.4.0-rc2-GCCcore-14.3.0.eb
-  - glew-2.2.0-GCCcore-14.3.0-egl.eb
-  - protobuf-31.1-GCCcore-14.3.0.eb
-  - pugixml-1.15-GCCcore-14.3.0.eb
-  - zfp-1.0.1-GCCcore-14.3.0.eb
+  - PETSc-3.24.0-lfoss-2025b.eb
