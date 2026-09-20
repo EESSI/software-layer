@@ -53,3 +53,4 @@ easyconfigs:
   - FEniCS-ufcx-0.10.0-GCCcore-14.3.0.eb
   - MGARD-1.6.0-GCC-14.3.0.eb
   - spdlog-1.15.3-GCCcore-14.3.0.eb
+  - PETSc-3.24.0-lfoss-2025b.eb
