@@ -116,6 +116,7 @@ easyconfigs:
   - Jupyter-bundle-20250702-GCCcore-14.2.0.eb
   - Qtconsole-5.7.0-GCCcore-14.2.0.eb
   - napari-0.6.6-foss-2025a.eb
+  - cxxopts-3.0.0.eb
   - BDBag-1.8.0-foss-2025a.eb
   - Block-1.5.3-20200525-foss-2025a.eb
   - CheMPS2-1.8.12-foss-2025a.eb
