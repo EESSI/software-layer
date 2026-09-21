@@ -54,6 +54,10 @@ easyconfigs:
   - MGARD-1.6.0-GCC-14.3.0.eb
   - spdlog-1.15.3-GCCcore-14.3.0.eb
   - PETSc-3.24.0-lfoss-2025b.eb
+  - OBITools4-4.5.0-GCCcore-14.3.0.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/26929
+        from-commit: e658509ff0a1e44d4d32874bde863cf5b8ccbd49
   - Cereal-1.3.2-GCCcore-14.3.0.eb
   - HPCG-3.1-foss-2025b.eb
   - HPCG-3.1-lfoss-2025b.eb
