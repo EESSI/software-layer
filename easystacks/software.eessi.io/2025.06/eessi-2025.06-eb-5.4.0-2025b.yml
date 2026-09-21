@@ -54,3 +54,13 @@ easyconfigs:
   - MGARD-1.6.0-GCC-14.3.0.eb
   - spdlog-1.15.3-GCCcore-14.3.0.eb
   - PETSc-3.24.0-lfoss-2025b.eb
+  - ADIOS2-2.10.2-foss-2025b.eb
+  - Cereal-1.3.2-GCCcore-14.3.0.eb
+  - HPCG-3.1-foss-2025b.eb
+  - HPCG-3.1-lfoss-2025b.eb
+  - HPL-2.3-foss-2025b.eb
+  - NTL-11.5.1-GCC-14.3.0.eb
+  - libspatialindex-2.1.0-GCCcore-14.3.0.eb
+  - pkgconfig-1.5.5-GCCcore-14.3.0-python.eb
+  - robin-map-1.4.0-GCCcore-14.3.0.eb
+  - setuptools-80.10.1-GCCcore-14.3.0.eb
