@@ -54,7 +54,7 @@ easyconfigs:
   - MGARD-1.6.0-GCC-14.3.0.eb
   - spdlog-1.15.3-GCCcore-14.3.0.eb
   - PETSc-3.24.0-lfoss-2025b.eb
-  - waLBerla-7.2-foss-2025b.eb
+  - waLBerla-7.2-foss-2025b.eb:
       options:
           # See https://github.com/easybuilders/easybuild-easyconfigs/pull/26930
           from-commit: 81802a34f4d7038ba72f4d920d539f3e14b00f28
