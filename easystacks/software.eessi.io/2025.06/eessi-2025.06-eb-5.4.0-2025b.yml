@@ -10,3 +10,6 @@ easyconfigs:
   - prodigal-2.6.3-GCCcore-14.3.0.eb
   - slepc4py-3.24.0-foss-2025b.eb
   - waLBerla-7.2-foss-2025b.eb
+      options:
+          # See https://github.com/easybuilders/easybuild-easyconfigs/pull/26930
+          from-commit: 81802a34f4d7038ba72f4d920d539f3e14b00f28
