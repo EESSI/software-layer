@@ -38,3 +38,33 @@ easyconfigs:
   - UDUNITS-2.2.28-GCCcore-15.2.0.eb
   - GSL-2.8-GCC-15.2.0.eb
   - R-bundle-CRAN-2026.07-foss-2026.1.eb
+  - JupyterLab-4.5.8-GCCcore-15.2.0.eb
+  - GDRCopy-2.5.2-GCCcore-15.2.0.eb
+  - mpi4py-4.1.2-gompi-2026.1.eb
+  - networkx-3.6.1-gfbf-2026.1.eb
+  - html5lib-1.1-GCCcore-15.2.0.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/26696
+        from-commit: 193950dc3ce8cb19c6b5e92343c83b14ca3ee533
+  - OpenH264-2.6.0-GCCcore-15.2.0.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/26710
+        from-commit: 2d70a06fa10c8b32bc543f821e588474df13cbde
+  - gRPC-1.83.0-GCCcore-15.2.0.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/26711
+        from-commit: c1df27b7f1020f7202b77d5218f7a275f754f6f4
+  - libinput-1.31.3-GCCcore-15.2.0.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/26688
+        from-commit: ae172e8600b45ee02caface50f959a14bcf493c9
+  - Qt6-6.11.2-GCCcore-15.2.0.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/26792
+        from-commit: 022d4fc272c1475a8e2a8a2324eca1717aefd51b
+  - OpenBLAS-0.3.32-llvm-compilers-21.1.8.eb:
+      options:
+        # use -ftrapping-math when building OpenBLAS w/ llvm-compilers on aarch64
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/26890
+        from-commit: 0ed42e32053ef5a4cd796909ee6173f39def94b1
+  - lfoss-2026.1.eb

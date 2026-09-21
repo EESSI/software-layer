@@ -1,5 +1,8 @@
 easyconfigs:
+  - JupyterLab-4.5.8-GCCcore-15.2.0.eb
   - LLVM-21.1.8-GCCcore-15.2.0.eb:
      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/26939
+        from-commit: daac14b2eea512590292627bbc094ec0a44318d2
         # see https://github.com/easybuilders/easybuild-easyblocks/pull/4178
         include-easyblocks-from-commit: 1e945d5f38bfefda6ef3ce9443e1890a80b644aa
