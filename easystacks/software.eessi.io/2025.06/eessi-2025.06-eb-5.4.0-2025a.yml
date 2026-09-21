@@ -40,7 +40,6 @@ easyconfigs:
   - CastXML-0.6.13-GCCcore-14.2.0.eb
   - HPCG-3.1-foss-2025a.eb
   - HPL-2.3-foss-2025a.eb
-  - HPX-1.11.0-foss-2025a.eb
   - MCL-22.282-GCCcore-14.2.0.eb
   - RMBlast-2.17.1-gompi-2025a.eb
   - TRF-4.09.1-GCCcore-14.2.0.eb
