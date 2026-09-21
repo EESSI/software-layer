@@ -58,4 +58,7 @@ easyconfigs:
       options:
         # see https://github.com/easybuilders/easybuild-easyconfigs/pull/26929
         from-commit: e658509ff0a1e44d4d32874bde863cf5b8ccbd49
-  - uv-0.10.9-GCCcore-14.3.0.eb
+  - uv-0.10.9-GCCcore-14.3.0.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/25956
+        from-commit: 833e6807dd1ed225acfcb573a1814b481f6d14fe
