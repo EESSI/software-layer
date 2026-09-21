@@ -36,3 +36,7 @@ easyconfigs:
   - FastME-2.1.6.4-GCC-14.2.0.eb
   - cimfomfa-22.273-GCCcore-14.2.0.eb
   - wget-1.25.0-GCCcore-14.2.0.eb
+  - OpenFOAM-v2512-foss-2025a.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/26674
+        from-commit: 453964abee30d741a0fa31b9e9b387f6e110e10f
