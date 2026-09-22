@@ -3,3 +3,4 @@ easyconfigs:
   - Boost.MPI-1.85.0-gompi-2024a.eb
   - PETSc-3.23.5-foss-2024a.eb
   - deepTools-3.5.5-gfbf-2024a.eb
+  - MultiQC-1.28-gfbf-2024a.eb
