@@ -1,2 +1,5 @@
 easyconfigs:
   - JupyterLab-4.5.8-GCCcore-15.2.0.eb
+  - ATK-2.38.0-GCCcore-15.2.0.eb
+  - Abseil-20260107.1-GCCcore-15.2.0.eb
+  - Armadillo-15.2.7-foss-2026.1.eb
