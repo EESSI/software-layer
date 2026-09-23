@@ -71,9 +71,7 @@ easyconfigs:
   - Blosc-1.21.6-GCCcore-14.3.0.eb
   - FLINT-3.3.1-gfbf-2025b.eb
   - HOOMD-blue-7.0.1-foss-2025b.eb
-  - Incompact3d-5.0-foss-2025b.eb
   - JAGS-4.3.2-foss-2025b.eb
   - Rtree-1.4.1-GCCcore-14.3.0.eb
   - Seaborn-0.13.2-gfbf-2025b.eb
-  - mrcfile-1.5.4-gfbf-2025b.eb
   - nanobind-2.9.2-GCCcore-14.3.0.eb
