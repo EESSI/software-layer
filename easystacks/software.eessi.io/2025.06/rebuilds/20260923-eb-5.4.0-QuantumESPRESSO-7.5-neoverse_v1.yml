@@ -1,5 +1,6 @@
 easyconfigs:
   - Environ-3.1.1-foss-2025b.eb:
+      options:
         # see https://github.com/easybuilders/easybuild-easyconfigs/pull/26832
         from-commit: b72ef72764b994f9f9853af2449660bbebc875c8
   - QuantumESPRESSO-7.5-foss-2025b.eb:
