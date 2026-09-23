@@ -36,6 +36,14 @@ easyconfigs:
   - FastME-2.1.6.4-GCC-14.2.0.eb
   - cimfomfa-22.273-GCCcore-14.2.0.eb
   - wget-1.25.0-GCCcore-14.2.0.eb
+  - CD-HIT-4.8.1-GCC-14.2.0.eb
+  - CastXML-0.6.13-GCCcore-14.2.0.eb
+  - HPCG-3.1-foss-2025a.eb
+  - HPL-2.3-foss-2025a.eb
+  - MCL-22.282-GCCcore-14.2.0.eb
+  - TRF-4.09.1-GCCcore-14.2.0.eb
+  - ecBuild-3.11.0-GCCcore-14.2.0.eb
+  - libfyaml-0.9-GCCcore-14.2.0.eb
   - OpenFOAM-v2512-foss-2025a.eb:
       options:
         # see https://github.com/easybuilders/easybuild-easyconfigs/pull/26674
