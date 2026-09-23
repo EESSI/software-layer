@@ -44,3 +44,7 @@ easyconfigs:
   - TRF-4.09.1-GCCcore-14.2.0.eb
   - ecBuild-3.11.0-GCCcore-14.2.0.eb
   - libfyaml-0.9-GCCcore-14.2.0.eb
+  - OpenFOAM-v2512-foss-2025a.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/26674
+        from-commit: 453964abee30d741a0fa31b9e9b387f6e110e10f
