@@ -44,3 +44,13 @@ easyconfigs:
   - TRF-4.09.1-GCCcore-14.2.0.eb
   - ecBuild-3.11.0-GCCcore-14.2.0.eb
   - libfyaml-0.9-GCCcore-14.2.0.eb
+  - ANTLR-2.7.7-GCCcore-14.2.0.eb
+  - Blosc-1.21.6-GCCcore-14.2.0.eb
+  - ITK-5.4.5-foss-2025a.eb
+  - MERINGUE-1.0-2022-06-07-foss-2025a-R-4.5.1.eb
+  - MoviePy-2.2.1-foss-2025a.eb
+  - OrthoFinder-2.5.5-foss-2025a.eb
+  - Seaborn-0.13.2-gfbf-2025a.eb
+  - libdap-3.21.1-GCCcore-14.2.0.eb
+  - mrcfile-1.5.4-gfbf-2025a.eb
+  - py-cpuinfo-9.0.0-GCCcore-14.2.0.eb
