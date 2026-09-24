@@ -1,0 +1,32 @@
+# documentation: https://help.github.com/en/articles/workflow-syntax-for-github-actions
+#
+# This workflow checks the bot's status table (posted in PR comments) to verify
+# that all supported CPU targets have been successfully built before deployment.
+name: Check bot build status
+on:
+  issue_comment:
+    types: [created, edited]
+permissions:
+  contents: read # to fetch code (actions/checkout)
+jobs:
+  check_builds:
+    if: >
+      github.event.issue.pull_request &&
+      contains(github.event.comment.body, 'This is the status of all the `bot: build` commands:')
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Check out software-layer repository (shallow)
+        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
+        with:
+          fetch-depth: 1
+      - name: Check bot build status
+        # We pass the comment body via env variable instead of a command-line argument
+        # because the body contains special characters (pipes |, backticks, newlines, etc.)
+        # that would need complex quoting/escaping in bash. Passing via env is safer
+        # and preserves the content exactly as-is. The Python script reads both
+        # PR_NUMBER and COMMENT_BODY from the environment.
+        env:
+          PR_NUMBER: ${{ github.event.issue.number }}
+          COMMENT_BODY: ${{ github.event.comment.body }}
+        run: |
+          python3 .github/workflows/scripts/check_builds.py
