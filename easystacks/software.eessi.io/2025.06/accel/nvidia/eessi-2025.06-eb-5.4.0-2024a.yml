@@ -1,2 +1,7 @@
 easyconfigs:
   - ESPResSo-4.2.2-foss-2024a-CUDA-12.6.0.eb
+  - LAMMPS-22Jul2025-foss-2024a-kokkos-CUDA-12.6.0.eb:
+       # use enhanced easyblock that includes fixes for crosscompiling and Arm+CUDA,
+       # see https://github.com/easybuilders/easybuild-easyblocks/pull/4222
+       options:
+         include-easyblocks-from-commit: 6ef7c4c151dc9f4cd5eec7d4ebdfe68b0f42e3de
