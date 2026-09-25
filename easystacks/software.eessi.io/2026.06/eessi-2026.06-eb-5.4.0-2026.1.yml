@@ -68,3 +68,7 @@ easyconfigs:
         # see https://github.com/easybuilders/easybuild-easyconfigs/pull/26890
         from-commit: 0ed42e32053ef5a4cd796909ee6173f39def94b1
   - lfoss-2026.1.eb
+  - buildenv-default-foss-2026.1.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/26775
+        from-commit: dfbcdaa3bc04aa07cb441e9bab828d1182e904cf
