@@ -70,4 +70,4 @@ easyconfigs:
   - waLBerla-7.2-foss-2025b.eb:
       options:
           # See https://github.com/easybuilders/easybuild-easyconfigs/pull/26930
-          from-commit: 81802a34f4d7038ba72f4d920d539f3e14b00f28
+          from-commit: ad6355e2d8db75b75154e68b7b3d786d69e23b59
