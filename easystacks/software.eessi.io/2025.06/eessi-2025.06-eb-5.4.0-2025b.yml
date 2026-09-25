@@ -67,3 +67,7 @@ easyconfigs:
   - pkgconfig-1.5.5-GCCcore-14.3.0-python.eb
   - robin-map-1.4.0-GCCcore-14.3.0.eb
   - setuptools-80.10.1-GCCcore-14.3.0.eb
+  - waLBerla-7.2-foss-2025b.eb:
+      options:
+          # See https://github.com/easybuilders/easybuild-easyconfigs/pull/26930
+          from-commit: ad6355e2d8db75b75154e68b7b3d786d69e23b59
