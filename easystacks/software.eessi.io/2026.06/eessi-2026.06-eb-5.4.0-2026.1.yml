@@ -68,3 +68,4 @@ easyconfigs:
         # see https://github.com/easybuilders/easybuild-easyconfigs/pull/26890
         from-commit: 0ed42e32053ef5a4cd796909ee6173f39def94b1
   - lfoss-2026.1.eb
+  - Catch2-3.14.0-GCCcore-15.2.0.eb
