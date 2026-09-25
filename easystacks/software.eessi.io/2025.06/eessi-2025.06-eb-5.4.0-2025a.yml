@@ -48,3 +48,4 @@ easyconfigs:
       options:
         # see https://github.com/easybuilders/easybuild-easyconfigs/pull/26674
         from-commit: 453964abee30d741a0fa31b9e9b387f6e110e10f
+  - numba-0.62.0-foss-2025a.eb
