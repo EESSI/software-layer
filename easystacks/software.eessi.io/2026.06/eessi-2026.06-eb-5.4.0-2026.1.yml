@@ -68,7 +68,7 @@ easyconfigs:
         # see https://github.com/easybuilders/easybuild-easyconfigs/pull/26890
         from-commit: 0ed42e32053ef5a4cd796909ee6173f39def94b1
   - lfoss-2026.1.eb
-  - rsx-0.2.9-GCCcore-15.2.0:
+  - rsx-0.2.10-GCCcore-15.2.0:
       options:
         # see https://github.com/easybuilders/easybuild-easyconfigs/pull/26973
-        from-commit: 9a70edb3f4c458f79a666b5fefa294ef68557e0c
+        from-commit: 5406845c18b7a248af0c33be98aaf64c98a79f54
