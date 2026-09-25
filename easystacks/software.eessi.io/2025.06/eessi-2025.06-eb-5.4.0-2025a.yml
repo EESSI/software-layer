@@ -1,3 +1,50 @@
 easyconfigs:
   - MEME-5.5.9-gompi-2025a.eb
   - OpenFOAM-v2506-foss-2025a.eb
+  - BDBag-1.8.0-foss-2025a.eb
+  - Block-1.5.3-20200525-foss-2025a.eb
+  - CheMPS2-1.8.12-foss-2025a.eb
+  - CoinUtils-2.11.12-GCC-14.2.0.eb
+  - SAMtools-1.22.1-GCC-14.2.0.eb
+  - Shapely-2.1.1-gfbf-2025a.eb
+  - flit-core-3.12.0-GCCcore-14.2.0.eb
+  - lpsolve-5.5.2.14-GCC-14.2.0.eb
+  - utf8proc-2.10.0-GCCcore-14.2.0.eb
+  - Dalton-2026-foss-2025a-parallel.eb
+  - Fiona-1.10.1-foss-2025a.eb
+  - Infernal-1.1.5-gompi-2025a.eb
+  - MMseqs2-18-8cc5c-gompi-2025a.eb
+  - bcbio-gff-0.7.1-foss-2025a.eb
+  - openpyxl-3.1.5-GCCcore-14.2.0.eb
+  - parallel-20250722-GCCcore-14.2.0.eb
+  - pyproj-3.7.1-GCCcore-14.2.0.eb
+  - python-libsbml-5.21.0-foss-2025a.eb
+  - typing-extensions-4.14.0-GCCcore-14.2.0.eb
+  - Cartopy-0.24.1-foss-2025a.eb
+  - Dice-20250615-foss-2025a.eb
+  - dill-0.4.0-GCCcore-14.2.0.eb
+  - gpaw-data-1.0.1-GCCcore-14.2.0.eb
+  - iodata-1.0.0a8-foss-2025a.eb
+  - libharu-2.4.5-GCCcore-14.2.0.eb
+  - libvdwxc-0.5.0-foss-2025a.eb
+  - pydantic-2.11.7-GCCcore-14.2.0.eb
+  - tRNAscan-SE-2.0.12-foss-2025a.eb
+  - ASE-3.26.0-gfbf-2025a.eb
+  - Bandage-0.9.0-GCCcore-14.2.0.eb
+  - DIAMOND-2.1.14-GCC-14.2.0.eb
+  - EMBOSS-6.6.0-foss-2025a.eb
+  - FastME-2.1.6.4-GCC-14.2.0.eb
+  - cimfomfa-22.273-GCCcore-14.2.0.eb
+  - wget-1.25.0-GCCcore-14.2.0.eb
+  - CD-HIT-4.8.1-GCC-14.2.0.eb
+  - CastXML-0.6.13-GCCcore-14.2.0.eb
+  - HPCG-3.1-foss-2025a.eb
+  - HPL-2.3-foss-2025a.eb
+  - MCL-22.282-GCCcore-14.2.0.eb
+  - TRF-4.09.1-GCCcore-14.2.0.eb
+  - ecBuild-3.11.0-GCCcore-14.2.0.eb
+  - libfyaml-0.9-GCCcore-14.2.0.eb
+  - OpenFOAM-v2512-foss-2025a.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/26674
+        from-commit: 453964abee30d741a0fa31b9e9b387f6e110e10f
