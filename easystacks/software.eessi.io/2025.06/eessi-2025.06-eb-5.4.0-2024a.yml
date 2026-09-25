@@ -3,3 +3,7 @@ easyconfigs:
   - Boost.MPI-1.85.0-gompi-2024a.eb
   - PETSc-3.23.5-foss-2024a.eb
   - deepTools-3.5.5-gfbf-2024a.eb
+  - PyTorch-2.9.1-foss-2024a.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/25726
+        from-commit: 66bf5bb3c4d8295fbfbb570d341e13d19d352a96
