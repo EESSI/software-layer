@@ -67,3 +67,7 @@ easyconfigs:
   - pkgconfig-1.5.5-GCCcore-14.3.0-python.eb
   - robin-map-1.4.0-GCCcore-14.3.0.eb
   - setuptools-80.10.1-GCCcore-14.3.0.eb
+  - uv-0.10.9-GCCcore-14.3.0.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/25956
+        from-commit: 833e6807dd1ed225acfcb573a1814b481f6d14fe
