@@ -4,3 +4,7 @@ easyconfigs:
         # see https://github.com/easybuilders/easybuild-easyconfigs/pull/26836
         from-commit: e0be4b23a0030e2541b4033f75617a153335e9d5
   - JupyterNotebook-7.2.0-GCCcore-13.2.0.eb
+  - AITW-olb_permeability-1.0.1-foss-2023b.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/26921
+        from-commit: df5f4660076322d2a09ff245e781d7c973aed3a3
