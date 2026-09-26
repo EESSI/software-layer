@@ -68,3 +68,31 @@ easyconfigs:
         # see https://github.com/easybuilders/easybuild-easyconfigs/pull/26890
         from-commit: 0ed42e32053ef5a4cd796909ee6173f39def94b1
   - lfoss-2026.1.eb
+  - Highway-1.4.0-GCCcore-15.2.0.eb
+  - inih-62-GCCcore-15.2.0.eb
+  - fmt-12.2.0-GCCcore-15.2.0.eb
+  - cargo-c-0.10.23-GCCcore-15.2.0.eb
+  - robin-map-1.4.1-GCCcore-15.2.0.eb
+  - nanobind-2.13.0-GCCcore-15.2.0.eb
+  - CapnProto-1.4.0-GCCcore-15.2.0.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/26480
+        from-commit: a473f050f7ccec221f2fbb814d7a91a439462654
+  - quill-11.1.0-GCCcore-15.2.0.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/26480
+        from-commit: a473f050f7ccec221f2fbb814d7a91a439462654
+  - readcon-core-0.13.1-GCCcore-15.2.0.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/26480
+        from-commit: a473f050f7ccec221f2fbb814d7a91a439462654
+  - rgpot-3.0.0-GCCcore-15.2.0.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/26480
+        from-commit: a473f050f7ccec221f2fbb814d7a91a439462654
+  - eOn-2.17.10-foss-2026.1.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyblocks/pull/4240
+        include-easyblocks-from-commit: 8bf091921178ef758011898aeb5921fb8f9d814d
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/26480
+        from-commit: a473f050f7ccec221f2fbb814d7a91a439462654
