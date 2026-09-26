@@ -68,7 +68,10 @@ easyconfigs:
         # see https://github.com/easybuilders/easybuild-easyconfigs/pull/26890
         from-commit: 0ed42e32053ef5a4cd796909ee6173f39def94b1
   - lfoss-2026.1.eb
-  - Highway-1.4.0-GCCcore-15.2.0.eb
+  - Highway-1.4.0-GCCcore-15.2.0.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/26651
+        from-commit: f6a7f8bb597b4fc1d79ef7b9a64e6e49d18143e2
   - inih-62-GCCcore-15.2.0.eb
   - fmt-12.2.0-GCCcore-15.2.0.eb
   - cargo-c-0.10.23-GCCcore-15.2.0.eb
