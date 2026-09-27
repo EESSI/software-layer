@@ -6,3 +6,8 @@ easyconfigs:
         from-commit: daac14b2eea512590292627bbc094ec0a44318d2
         # see https://github.com/easybuilders/easybuild-easyblocks/pull/4178
         include-easyblocks-from-commit: 1e945d5f38bfefda6ef3ce9443e1890a80b644aa
+  - ReFrame-4.10.2-GCCcore-15.2.0-no-analytics.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/26645
+        from-commit: a32dceb327d1c95eb46c28994af11350e2c63d3c
+
