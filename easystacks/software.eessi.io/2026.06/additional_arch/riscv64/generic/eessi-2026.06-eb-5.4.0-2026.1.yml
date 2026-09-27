@@ -6,3 +6,9 @@ easyconfigs:
         from-commit: daac14b2eea512590292627bbc094ec0a44318d2
         # see https://github.com/easybuilders/easybuild-easyblocks/pull/4178
         include-easyblocks-from-commit: 1e945d5f38bfefda6ef3ce9443e1890a80b644aa
+  - OpenBLAS-0.3.32-llvm-compilers-21.1.8.eb:
+      options:
+        # use -ftrapping-math when building OpenBLAS w/ llvm-compilers on aarch64
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/26890
+        from-commit: 0ed42e32053ef5a4cd796909ee6173f39def94b1
+  - lfoss-2026.1.eb
