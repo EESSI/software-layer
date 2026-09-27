@@ -3,3 +3,7 @@ easyconfigs:
   - Boost.MPI-1.85.0-gompi-2024a.eb
   - PETSc-3.23.5-foss-2024a.eb
   - deepTools-3.5.5-gfbf-2024a.eb
+  - Visit-3.4.2-foss-2024a.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/25820
+        from-commit: 9dc8955e94bf914e992c9a43a4b0dd6710a36c7c
