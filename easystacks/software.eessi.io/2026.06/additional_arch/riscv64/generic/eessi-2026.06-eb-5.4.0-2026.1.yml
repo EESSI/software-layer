@@ -13,5 +13,4 @@ easyconfigs:
   - BCFtools-1.23.1-GCC-15.2.0.eb
   - BWA-0.7.19-GCCcore-15.2.0.eb
   - BamTools-2.5.3-GCC-15.2.0.eb
-  - BioPerl-1.7.8-GCCcore-15.2.0.eb
-  - Boost.MPI-1.90.0-gompi-2026.1.eb
+  - groff-1.24.1-GCCcore-15.2.0.eb
