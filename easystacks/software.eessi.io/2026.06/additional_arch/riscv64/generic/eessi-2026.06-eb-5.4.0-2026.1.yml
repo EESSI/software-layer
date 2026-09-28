@@ -6,5 +6,11 @@ easyconfigs:
         from-commit: daac14b2eea512590292627bbc094ec0a44318d2
         # see https://github.com/easybuilders/easybuild-easyblocks/pull/4178
         include-easyblocks-from-commit: 1e945d5f38bfefda6ef3ce9443e1890a80b644aa
+  - ATK-2.38.0-GCCcore-15.2.0.eb
+  - Abseil-20260107.1-GCCcore-15.2.0.eb
+  - Armadillo-15.2.7-foss-2026.1.eb
+  - libjpeg-turbo-3.1.4.1-GCCcore-15.2.0.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/26984
+        from-commit: ee7dfbd62b2caea305be478bd024aaefeb794eff
   - R-4.6.1-gfbf-2026.1.eb
-
