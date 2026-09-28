@@ -11,6 +11,5 @@ easyconfigs:
   - Armadillo-15.2.7-foss-2026.1.eb
   - OpenBLAS-0.3.32-llvm-compilers-21.1.8.eb:
       options:
-        # use -ftrapping-math when building OpenBLAS w/ llvm-compilers on aarch64
-        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/26890
+        # Use same commit as https://github.com/EESSI/software-layer/pull/1657
         from-commit: 0ed42e32053ef5a4cd796909ee6173f39def94b1
