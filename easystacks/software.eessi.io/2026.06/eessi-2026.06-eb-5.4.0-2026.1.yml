@@ -68,4 +68,7 @@ easyconfigs:
         # see https://github.com/easybuilders/easybuild-easyconfigs/pull/26890
         from-commit: 0ed42e32053ef5a4cd796909ee6173f39def94b1
   - lfoss-2026.1.eb
-  - Boost.MPI-1.90.0-gompi-2026.1.eb
+  - Boost.MPI-1.90.0-gompi-2026.1.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/26635
+        from-commit: a30926a015a42f19cf7d1d6cfe1373ef7bff2f80
