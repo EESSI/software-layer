@@ -18,3 +18,7 @@ easyconfigs:
       options:
         # Use same commit as https://github.com/EESSI/software-layer/pull/1657
         from-commit: 0ed42e32053ef5a4cd796909ee6173f39def94b1
+  - OpenMPI-5.0.10-llvm-compilers-21.1.8.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/26641
+        from-commit: 66cb2c304ddb84721de82f09c02f44617354c01e
