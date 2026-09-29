@@ -71,3 +71,4 @@ easyconfigs:
   - scikit-learn-1.8.0-gfbf-2026.1.eb
   - awscli-2.35.11-GCCcore-15.2.0
   - pydantic-2.13.4-GCCcore-15.2.0.eb
+  - BCFtools-1.23.1-GCC-15.2.0.eb
