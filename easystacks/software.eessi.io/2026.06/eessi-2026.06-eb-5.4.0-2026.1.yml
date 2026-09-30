@@ -102,7 +102,7 @@ easyconfigs:
       options:
         # see https://github.com/easybuilders/easybuild-easyconfigs/pull/26789
         from-commit: 01d6674a4eda858d5a2fdc3e52535bd772901d27
-  - polars-1.41.2-gfbf-2026.1-2026.1.eb:
+  - polars-1.41.2-gfbf-2026.1.eb:
       options:
         # see https://github.com/easybuilders/easybuild-easyconfigs/pull/26510
         from-commit: 6a34c40c763cb9c4021922740822981f9fe793b9
