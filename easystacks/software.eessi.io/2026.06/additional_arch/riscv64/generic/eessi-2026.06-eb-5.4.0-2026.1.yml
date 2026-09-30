@@ -43,3 +43,4 @@ easyconfigs:
         # see https://github.com/easybuilders/easybuild-easyconfigs/pull/26789
         from-commit: 01d6674a4eda858d5a2fdc3e52535bd772901d27
   - Check-0.15.2-GCCcore-15.2.0.eb
+  - PLUMED-2.10.0-foss-2026.1.eb
