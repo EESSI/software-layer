@@ -70,3 +70,36 @@ easyconfigs:
   - lfoss-2026.1.eb
   - scikit-learn-1.8.0-gfbf-2026.1.eb
   - awscli-2.35.11-GCCcore-15.2.0
+  - pydantic-2.13.4-GCCcore-15.2.0.eb
+  - BCFtools-1.23.1-GCC-15.2.0.eb
+  - rsx-0.2.10-GCCcore-15.2.0:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/26973
+        from-commit: 908a148ac0e03bce6b4dbe60b6cefaf47b90169a
+  - Shapely-2.1.2-gfbf-2026.1.eb
+  - CMake-3.31.11-GCCcore-15.2.0.eb
+  - Catch2-3.14.0-GCCcore-15.2.0.eb
+  - Eigen-3.4.1-GCCcore-15.2.0.eb
+  - Biopython-1.87-gfbf-2026.1.eb
+  - buildenv-default-foss-2026.1.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/26775
+        from-commit: dfbcdaa3bc04aa07cb441e9bab828d1182e904cf
+  - ANTLR-2.7.7-GCCcore-15.2.0-Java-21.eb
+  - BCFtools-1.23.1-GCC-15.2.0.eb
+  - BWA-0.7.19-GCCcore-15.2.0.eb
+  - BamTools-2.5.3-GCC-15.2.0.eb
+  - groff-1.24.1-GCCcore-15.2.0.eb
+  - Boost.MPI-1.90.0-gompi-2026.1.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/26635
+        from-commit: a30926a015a42f19cf7d1d6cfe1373ef7bff2f80
+  - CGAL-6.2-GCCcore-15.2.0.eb
+  - Cbc-2.10.13-foss-2026.1.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/26789
+        from-commit: 01d6674a4eda858d5a2fdc3e52535bd772901d27
+  - Cgl-0.60.10-foss-2026.1.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/26789
+        from-commit: 01d6674a4eda858d5a2fdc3e52535bd772901d27
