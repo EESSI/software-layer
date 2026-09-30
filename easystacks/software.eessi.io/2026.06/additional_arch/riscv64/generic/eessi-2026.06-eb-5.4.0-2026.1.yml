@@ -43,3 +43,8 @@ easyconfigs:
         # see https://github.com/easybuilders/easybuild-easyconfigs/pull/26789
         from-commit: 01d6674a4eda858d5a2fdc3e52535bd772901d27
   - Check-0.15.2-GCCcore-15.2.0.eb
+  - libjpeg-turbo-3.1.4.1-GCCcore-15.2.0.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/26984
+        from-commit: ee7dfbd62b2caea305be478bd024aaefeb794eff
+  - FFmpeg-8.1.1-GCCcore-15.2.0.eb
