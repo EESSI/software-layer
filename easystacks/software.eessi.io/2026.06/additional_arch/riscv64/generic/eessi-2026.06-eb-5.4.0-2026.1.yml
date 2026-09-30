@@ -50,3 +50,4 @@ easyconfigs:
         # see https://github.com/easybuilders/easybuild-easyconfigs/pull/26984
         from-commit: ee7dfbd62b2caea305be478bd024aaefeb794eff
   - FFmpeg-8.1.1-GCCcore-15.2.0.eb
+  - Pango-1.57.1-GCCcore-15.2.0.eb
