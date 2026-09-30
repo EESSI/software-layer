@@ -32,3 +32,4 @@ easyconfigs:
         # see https://github.com/easybuilders/easybuild-easyconfigs/pull/26635
         from-commit: a30926a015a42f19cf7d1d6cfe1373ef7bff2f80
   - lfoss-2026.1.eb
+  - CFITSIO-4.6.4-GCCcore-15.2.0.eb
