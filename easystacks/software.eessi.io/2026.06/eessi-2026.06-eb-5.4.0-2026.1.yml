@@ -79,3 +79,4 @@ easyconfigs:
   - Shapely-2.1.2-gfbf-2026.1.eb
   - CMake-3.31.11-GCCcore-15.2.0.eb
   - Catch2-3.14.0-GCCcore-15.2.0.eb
+  - Eigen-3.4.1-GCCcore-15.2.0.eb
