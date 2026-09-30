@@ -77,3 +77,4 @@ easyconfigs:
         # see https://github.com/easybuilders/easybuild-easyconfigs/pull/26973
         from-commit: 908a148ac0e03bce6b4dbe60b6cefaf47b90169a
   - Shapely-2.1.2-gfbf-2026.1.eb
+  - CMake-3.31.11-GCCcore-15.2.0.eb
