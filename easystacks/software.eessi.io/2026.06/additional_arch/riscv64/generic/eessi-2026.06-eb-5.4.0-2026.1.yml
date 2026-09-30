@@ -43,3 +43,6 @@ easyconfigs:
         # see https://github.com/easybuilders/easybuild-easyconfigs/pull/26789
         from-commit: 01d6674a4eda858d5a2fdc3e52535bd772901d27
   - Check-0.15.2-GCCcore-15.2.0.eb
+  - SciPy-bundle-2026.05-gfbf-2026.1.eb
+  - Szip-2.1.1-GCCcore-15.2.0.eb
+  - UCX-1.20.0-GCCcore-15.2.0.eb
