@@ -22,3 +22,13 @@ easyconfigs:
       options:
         # see https://github.com/easybuilders/easybuild-easyconfigs/pull/26641
         from-commit: 66cb2c304ddb84721de82f09c02f44617354c01e
+  - ANTLR-2.7.7-GCCcore-15.2.0-Java-21.eb
+  - BCFtools-1.23.1-GCC-15.2.0.eb
+  - BWA-0.7.19-GCCcore-15.2.0.eb
+  - BamTools-2.5.3-GCC-15.2.0.eb
+  - groff-1.24.1-GCCcore-15.2.0.eb
+  - Boost.MPI-1.90.0-gompi-2026.1.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/26635
+        from-commit: a30926a015a42f19cf7d1d6cfe1373ef7bff2f80
+  - lfoss-2026.1.eb
