@@ -27,3 +27,7 @@ easyconfigs:
   - BWA-0.7.19-GCCcore-15.2.0.eb
   - BamTools-2.5.3-GCC-15.2.0.eb
   - groff-1.24.1-GCCcore-15.2.0.eb
+  - Boost.MPI-1.90.0-gompi-2026.1.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/26635
+        from-commit: a30926a015a42f19cf7d1d6cfe1373ef7bff2f80
