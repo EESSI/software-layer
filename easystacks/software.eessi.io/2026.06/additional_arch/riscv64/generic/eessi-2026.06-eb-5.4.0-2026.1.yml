@@ -33,3 +33,12 @@ easyconfigs:
         from-commit: a30926a015a42f19cf7d1d6cfe1373ef7bff2f80
   - lfoss-2026.1.eb
   - CFITSIO-4.6.4-GCCcore-15.2.0.eb
+  - CGAL-6.2-GCCcore-15.2.0.eb
+  - Cbc-2.10.13-foss-2026.1.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/26789
+        from-commit: 01d6674a4eda858d5a2fdc3e52535bd772901d27
+  - Cgl-0.60.10-foss-2026.1.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/26789
+        from-commit: 01d6674a4eda858d5a2fdc3e52535bd772901d27
