@@ -43,7 +43,4 @@ easyconfigs:
         # see https://github.com/easybuilders/easybuild-easyconfigs/pull/26789
         from-commit: 01d6674a4eda858d5a2fdc3e52535bd772901d27
   - Check-0.15.2-GCCcore-15.2.0.eb
-  - Bison-3.8.2-GCCcore-15.2.0.eb
-  - CMake-4.2.1-GCCcore-15.2.0.eb
-  - Cython-3.2.4-GCCcore-15.2.0.eb
   - FriBidi-1.0.16-GCCcore-15.2.0.eb
