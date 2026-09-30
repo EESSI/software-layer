@@ -94,7 +94,8 @@ easyconfigs:
   - rgpot-3.0.0-GCCcore-15.2.0.eb:
       options:
         # see https://github.com/easybuilders/easybuild-easyconfigs/pull/26480
-        from-commit: a473f050f7ccec221f2fbb814d7a91a439462654
+        # (the Morse cutoff-shift test tolerance fix, needed on aarch64)
+        from-commit: 66fa89934f0476cd4f9ff14154ee4c87ae5c5d82
   - eOn-2.17.10-foss-2026.1.eb:
       options:
         # see https://github.com/easybuilders/easybuild-easyblocks/pull/4240
