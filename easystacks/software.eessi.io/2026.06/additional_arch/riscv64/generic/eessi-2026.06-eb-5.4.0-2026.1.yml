@@ -43,3 +43,6 @@ easyconfigs:
         # see https://github.com/easybuilders/easybuild-easyconfigs/pull/26789
         from-commit: 01d6674a4eda858d5a2fdc3e52535bd772901d27
   - Check-0.15.2-GCCcore-15.2.0.eb
+  - GSL-2.8-GCC-15.2.0.eb
+  - GTK3-3.24.52-GCCcore-15.2.0.eb
+  - Gdk-Pixbuf-2.44.6-GCCcore-15.2.0.eb
