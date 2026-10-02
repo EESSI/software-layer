@@ -102,3 +102,7 @@ easyconfigs:
       options:
         # see https://github.com/easybuilders/easybuild-easyconfigs/pull/26789
         from-commit: 01d6674a4eda858d5a2fdc3e52535bd772901d27
+  - amdahl-0.4.1-gompi-2026.1.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/27032
+        from-commit: dd826fa1f62808fa7be3fadaabb6967eba595451
