@@ -57,4 +57,4 @@ easyconfigs:
   - tbb-2022.3.0-GCCcore-15.2.0.eb:
       options:
         # see https://github.com/easybuilders/easybuild-easyconfigs/pull/27021
-        from-commit: 020e96bfbb03e5d33b94a780c56d3d71fdd1fb17
+        from-commit: 552a23a23c56c31b01f6bb43aa3fe87c71f150cc
