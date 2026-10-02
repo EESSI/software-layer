@@ -75,3 +75,7 @@ easyconfigs:
   - Rtree-1.4.1-GCCcore-14.3.0.eb
   - Seaborn-0.13.2-gfbf-2025b.eb
   - nanobind-2.9.2-GCCcore-14.3.0.eb
+  - waLBerla-7.2-foss-2025b.eb:
+      options:
+          # See https://github.com/easybuilders/easybuild-easyconfigs/pull/26930
+          from-commit: 8a688f303851fd280ea74bc0515b38d77763594c
