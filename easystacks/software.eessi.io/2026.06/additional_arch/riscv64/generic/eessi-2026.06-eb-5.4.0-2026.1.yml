@@ -51,6 +51,9 @@ easyconfigs:
         from-commit: ee7dfbd62b2caea305be478bd024aaefeb794eff
   - FFmpeg-8.1.1-GCCcore-15.2.0.eb
   - Pango-1.57.1-GCCcore-15.2.0.eb
+  - Mako-1.3.12-GCCcore-15.2.0.eb
+  - NSPR-4.39-GCCcore-15.2.0.eb
+  - NSS-3.119-GCCcore-15.2.0.eb
   - tbb-2022.3.0-GCCcore-15.2.0.eb:
       options:
         # see https://github.com/easybuilders/easybuild-easyconfigs/pull/27021
