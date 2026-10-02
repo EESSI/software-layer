@@ -98,7 +98,11 @@ easyconfigs:
       options:
         # see https://github.com/easybuilders/easybuild-easyconfigs/pull/26789
         from-commit: 01d6674a4eda858d5a2fdc3e52535bd772901d27
-  - Cgl-0.60.10-foss-2026.1.eb:
+  - Go-1.26.7.eb:
       options:
-        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/26789
-        from-commit: 01d6674a4eda858d5a2fdc3e52535bd772901d27
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/26736
+        from-commit: a41d3d5086bdbfc5bfa4108f6b7dc6537316e7c6
+  - rclone-1.75.1.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/27031
+        from-commit: dd950757008c9245a2b4e301998779afc6dadd92
