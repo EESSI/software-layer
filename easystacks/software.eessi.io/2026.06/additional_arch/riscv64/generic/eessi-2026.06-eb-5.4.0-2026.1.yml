@@ -54,3 +54,8 @@ easyconfigs:
   - Mako-1.3.12-GCCcore-15.2.0.eb
   - NSPR-4.39-GCCcore-15.2.0.eb
   - NSS-3.119-GCCcore-15.2.0.eb
+  - Perl-bundle-CPAN-5.42.0-GCCcore-15.2.0.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/27036
+        from-commit: 63500d54698515763eae87a3945a423cea12135f
+  - Pint-0.25.3-GCCcore-15.2.0.eb
