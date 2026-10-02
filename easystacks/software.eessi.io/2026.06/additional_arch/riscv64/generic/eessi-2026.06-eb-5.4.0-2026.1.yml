@@ -54,4 +54,4 @@ easyconfigs:
   - OpenGL-2026.05-GCCcore-15.2.0.eb:
       options:
         # see https://github.com/easybuilders/easybuild-easyconfigs/pull/27026
-        from-commit: c2766dd1bca36a895b21b33a5965af7b9b174bc2
+        from-commit: 625e9824121036e8ee338e3e4323b1f5853df358
