@@ -22,3 +22,36 @@ easyconfigs:
       options:
         # see https://github.com/easybuilders/easybuild-easyconfigs/pull/26641
         from-commit: 66cb2c304ddb84721de82f09c02f44617354c01e
+  - ANTLR-2.7.7-GCCcore-15.2.0-Java-21.eb
+  - BCFtools-1.23.1-GCC-15.2.0.eb
+  - BWA-0.7.19-GCCcore-15.2.0.eb
+  - BamTools-2.5.3-GCC-15.2.0.eb
+  - groff-1.24.1-GCCcore-15.2.0.eb
+  - Boost.MPI-1.90.0-gompi-2026.1.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/26635
+        from-commit: a30926a015a42f19cf7d1d6cfe1373ef7bff2f80
+  - lfoss-2026.1.eb
+  - CFITSIO-4.6.4-GCCcore-15.2.0.eb
+  - CGAL-6.2-GCCcore-15.2.0.eb
+  - Cbc-2.10.13-foss-2026.1.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/26789
+        from-commit: 01d6674a4eda858d5a2fdc3e52535bd772901d27
+  - Cgl-0.60.10-foss-2026.1.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/26789
+        from-commit: 01d6674a4eda858d5a2fdc3e52535bd772901d27
+  - Check-0.15.2-GCCcore-15.2.0.eb
+  - FriBidi-1.0.16-GCCcore-15.2.0.eb
+  - PCRE-8.45-GCCcore-15.2.0.eb
+  - libjpeg-turbo-3.1.4.1-GCCcore-15.2.0.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/26984
+        from-commit: ee7dfbd62b2caea305be478bd024aaefeb794eff
+  - FFmpeg-8.1.1-GCCcore-15.2.0.eb
+  - Pango-1.57.1-GCCcore-15.2.0.eb
+  - Mako-1.3.12-GCCcore-15.2.0.eb
+  - NSPR-4.39-GCCcore-15.2.0.eb
+  - NSS-3.119-GCCcore-15.2.0.eb
+  - Wayland-1.25.0-GCCcore-15.2.0.eb
