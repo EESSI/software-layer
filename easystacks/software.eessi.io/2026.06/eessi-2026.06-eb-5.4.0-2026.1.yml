@@ -102,3 +102,7 @@ easyconfigs:
       options:
         # see https://github.com/easybuilders/easybuild-easyconfigs/pull/26789
         from-commit: 01d6674a4eda858d5a2fdc3e52535bd772901d27
+  - pyproj-3.7.2-GCCcore-15.2.0.eb
+  - Fiona-1.10.1-foss-2026.1.eb
+  - Cartopy-0.25.0-foss-2026.1.eb
+  - xarray-2026.4.0-gfbf-2026.1.eb
