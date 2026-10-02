@@ -102,3 +102,8 @@ easyconfigs:
       options:
         # see https://github.com/easybuilders/easybuild-easyconfigs/pull/26789
         from-commit: 01d6674a4eda858d5a2fdc3e52535bd772901d27
+  - netCDF-Fortran-4.6.3-gompi-2026.1.eb
+  - netCDF-C++4-4.3.1-gompi-2026.1.eb
+  - PnetCDF-1.14.1-gompi-2026.1.eb
+  - h5py-3.16.0-foss-2026.1.eb
+  - netcdf4-python-1.7.4-foss-2026.1.eb
