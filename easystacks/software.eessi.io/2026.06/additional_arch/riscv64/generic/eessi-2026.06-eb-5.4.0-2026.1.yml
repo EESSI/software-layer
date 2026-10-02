@@ -51,4 +51,7 @@ easyconfigs:
         from-commit: ee7dfbd62b2caea305be478bd024aaefeb794eff
   - FFmpeg-8.1.1-GCCcore-15.2.0.eb
   - Pango-1.57.1-GCCcore-15.2.0.eb
+  - Mako-1.3.12-GCCcore-15.2.0.eb
+  - NSPR-4.39-GCCcore-15.2.0.eb
+  - NSS-3.119-GCCcore-15.2.0.eb
   - PLUMED-2.10.0-foss-2026.1.eb
