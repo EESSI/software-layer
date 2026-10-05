@@ -17,3 +17,4 @@ easyconfigs:
         # see https://github.com/easybuilders/easybuild-easyblocks/pull/4066
         include-easyblocks-from-commit: 4ec63c949166ae19ee3e329e8ab5fc8358926384
   - Octave-10.3.0-foss-2025a.eb
+  - huggingface-hub-1.2.4-GCCcore-14.2.0.eb
