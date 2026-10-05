@@ -274,6 +274,17 @@ jobs:
 
           done
 
+      # The per-CPU-target logs are only printed to the job output when a target fails (and then only
+      # the first failing one), so always keep them as an artifact, also for successful runs
+      - name: Upload per-CPU-target logs
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: missing-installations-logs-${{ matrix.EESSI_VERSION }}-${{ matrix.runs_on }}
+          path: log_*.txt
+          if-no-files-found: ignore
+          retention-days: 14
+
       - name: Test check_missing_installations.sh with missing package (GCC/8.3.0)
         run: |
           # This is a general check, doesn't need to be run for every CPU, just the host is fine
