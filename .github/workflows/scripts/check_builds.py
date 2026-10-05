@@ -7,41 +7,37 @@
 #   No API calls required — the triggering comment body is already available.
 #
 # Exit codes:
-#   0: Success (all supported targets have successful builds, or mapping is empty)
+#   0: Success (all supported targets have successful builds)
 #   1: Failure (missing/failed builds, or commit SHA inconsistency)
 
 import datetime
+import json
 import os
 import sys
 import re
 
 
-# ============================================================================
-# TODO: FILL IN THE SUPPORTED CPU TARGETS PER REPO
-# ============================================================================
-# This mapping defines which CPU targets (values of the 'for' column) must be
-# successfully built for each repository (value of the 'repo' column).
-# The values below are a placeholder — please fill in the actual supported
-# targets for your repositories.
-#
-# Example structure:
-# SUPPORTED_TARGETS = {
-#     "eessi.io-2025.06-software": [
-#         "x86_64/amd/zen2",
-#         "x86_64/amd/zen3",
-#         "x86_64/amd/zen4",
-#         "x86_64/intel/haswell",
-#         # ... add all supported targets for this repo ...
-#     ],
-#     "eessi.io-2023.06-software": [
-#         # ... supported targets for 2023.06 ...
-#     ],
-# }
-# ============================================================================
-SUPPORTED_TARGETS = {
-    # Placeholder — fill in your supported targets here
-    # "eessi.io-2025.06-software": ["x86_64/amd/zen2"],
-}
+# The supported CPU targets per EESSI version are defined in a single place, shared
+# with the other workflows: .github/workflows/eessi_targets.json
+TARGETS_FILE = os.environ.get(
+    "EESSI_TARGETS_FILE",
+    os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "eessi_targets.json"),
+)
+
+
+def load_supported_targets(targets_file=TARGETS_FILE):
+    """
+    Build the mapping from repository name (value of the 'repo' column in the bot's
+    status table, e.g. 'eessi.io-2025.06-software') to the list of CPU targets (values
+    of the 'for' column) that must have been successfully built for it.
+    The JSON file lists the targets per EESSI version and per CPU family; those are flattened here.
+    """
+    with open(targets_file) as f:
+        cpu_targets = json.load(f)["cpu_targets"]
+    return {
+        f"eessi.io-{version}-software": [t for family in families.values() for t in family]
+        for version, families in cpu_targets.items()
+    }
 
 
 def parse_date(date_str):
@@ -152,6 +148,8 @@ def main():
         print("ERROR: No valid builds found in table")
         sys.exit(1)
 
+    SUPPORTED_TARGETS = load_supported_targets()
+
     # Determine which repos are present in both table and mapping
     table_repos = set(row.get("repo") for row in deduped.values() if row.get("repo"))
     mapping_repos = set(SUPPORTED_TARGETS.keys())
@@ -159,7 +157,7 @@ def main():
 
     # Warn if repos in table are missing from mapping
     for repo in table_repos - mapping_repos:
-        print(f"WARNING: Repo '{repo}' found in table but not in SUPPORTED_TARGETS mapping; skipping checks for this repo")
+        print(f"WARNING: Repo '{repo}' found in table but not in eessi_targets.json; skipping checks for this repo")
 
     # Check commit SHA consistency across all deduplicated builds (if column present)
     commit_shas = set()
@@ -202,11 +200,6 @@ def main():
                 failed = True
             else:
                 print(f"  OK: Target '{target}' built successfully")
-
-    # Check if mapping is empty
-    if not mapping_repos:
-        print("\nWARNING: SUPPORTED_TARGETS mapping is empty — no checks performed.")
-        print("Please populate SUPPORTED_TARGETS in check_builds.py with your supported targets.")
 
     if failed:
         print("\nERROR: Build verification failed. Please fix the above issues.")
