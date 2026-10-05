@@ -58,5 +58,5 @@ easyconfigs:
   - Perl-bundle-CPAN-5.42.0-GCCcore-15.2.0.eb:
       options:
         # see https://github.com/easybuilders/easybuild-easyconfigs/pull/27036
-        from-commit: 63500d54698515763eae87a3945a423cea12135f
+        from-commit: 6dfe4a5e2f672786b2c9a9edd4f22ddaed20da71
   - Pint-0.25.3-GCCcore-15.2.0.eb
