@@ -9,162 +9,11 @@ on:
 permissions:
   contents: read # to fetch code (actions/checkout)
 env:
-  # list below should correspond with table @ https://eessi.io/docs/software_layer/cpu_targets/
-  EESSI_CPU_TARGETS: |
-    2023.06:
-      x86_64:
-        - x86_64/amd/zen2
-        - x86_64/amd/zen3
-        - x86_64/amd/zen4
-        - x86_64/intel/haswell
-        - x86_64/intel/sapphirerapids
-        - x86_64/intel/skylake_avx512
-        - x86_64/intel/icelake
-        - x86_64/intel/cascadelake
-        - x86_64/generic
-      aarch64:
-        - aarch64/generic
-        - aarch64/neoverse_n1
-        - aarch64/neoverse_v1
-        - aarch64/nvidia/grace
-        - aarch64/a64fx
-
-    2025.06:
-      x86_64:
-        - x86_64/amd/zen2
-        - x86_64/amd/zen3
-        - x86_64/amd/zen4
-        - x86_64/amd/zen5
-        - x86_64/intel/haswell
-        - x86_64/intel/sapphirerapids
-        - x86_64/intel/skylake_avx512
-        - x86_64/intel/icelake
-        - x86_64/intel/cascadelake
-        - x86_64/generic
-      aarch64:
-        - aarch64/generic
-        - aarch64/neoverse_n1
-        - aarch64/neoverse_v1
-        - aarch64/nvidia/grace
-        - aarch64/a64fx
-
-    2026.06:
-      x86_64:
-        - x86_64/amd/zen2
-        - x86_64/amd/zen3
-        - x86_64/amd/zen4
-        - x86_64/amd/zen5
-        - x86_64/intel/haswell
-        - x86_64/intel/sapphirerapids
-        - x86_64/intel/graniterapids
-        - x86_64/intel/skylake_avx512
-        - x86_64/intel/icelake
-        - x86_64/intel/cascadelake
-        - x86_64/generic
-      aarch64:
-        - aarch64/generic
-        - aarch64/neoverse_n1
-        - aarch64/neoverse_v1
-        - aarch64/nvidia/grace
-        - aarch64/a64fx
-        - aarch64/aws/graviton4
-
-  # list below should correspond with table @ https://eessi.io/docs/software_layer/gpu_targets/
-  EESSI_ACCELERATOR_TARGETS: |
-    2023.06:
-      # Provide a default set of compute capabilities
-      default:
-        - nvidia/cc70
-        - nvidia/cc80
-        - nvidia/cc90
-      # and then allow for special cases for specific architectures
-      x86_64/amd/zen2:
-        - nvidia/cc70
-        - nvidia/cc80
-        - nvidia/cc90
-      aarch64/a64fx: []
-
-    2025.06:
-      default:
-        - nvidia/cc70
-        - nvidia/cc80
-        - nvidia/cc90
-        - nvidia/cc100
-        - nvidia/cc120
-        - amd/gfx908
-        - amd/gfx90a
-        - amd/gfx942
-        - amd/gfx1030
-        - amd/gfx1100
-        - amd/gfx1101
-        - amd/gfx1200
-        - amd/gfx1201
-      aarch64/generic:
-        - nvidia/cc70
-        - nvidia/cc80
-        - nvidia/cc90
-        - nvidia/cc100
-        - nvidia/cc120
-      aarch64/neoverse_n1:
-        - nvidia/cc70
-        - nvidia/cc80
-        - nvidia/cc90
-        - nvidia/cc100
-        - nvidia/cc120
-      aarch64/neoverse_v1:
-        - nvidia/cc70
-        - nvidia/cc80
-        - nvidia/cc90
-        - nvidia/cc100
-        - nvidia/cc120
-      aarch64/nvidia/grace:
-        - nvidia/cc70
-        - nvidia/cc80
-        - nvidia/cc90
-        - nvidia/cc100
-        - nvidia/cc120
-      aarch64/a64fx: []
-
-    2026.06:
-      default:
-        - nvidia/cc75
-        - nvidia/cc80
-        - nvidia/cc90
-        - nvidia/cc100
-        - nvidia/cc120
-        - amd/gfx908
-        - amd/gfx90a
-        - amd/gfx942
-        - amd/gfx1030
-        - amd/gfx1100
-        - amd/gfx1101
-        - amd/gfx1200
-        - amd/gfx1201
-      aarch64/generic:
-        - nvidia/cc75
-        - nvidia/cc80
-        - nvidia/cc90
-        - nvidia/cc100
-        - nvidia/cc120
-      aarch64/neoverse_n1:
-        - nvidia/cc75
-        - nvidia/cc80
-        - nvidia/cc90
-        - nvidia/cc100
-        - nvidia/cc120
-      aarch64/neoverse_v1:
-        - nvidia/cc75
-        - nvidia/cc80
-        - nvidia/cc90
-        - nvidia/cc100
-        - nvidia/cc120
-      aarch64/nvidia/grace:
-        - nvidia/cc75
-        - nvidia/cc80
-        - nvidia/cc90
-        - nvidia/cc100
-        - nvidia/cc120
-      aarch64/a64fx: []
+  # Supported CPU and accelerator targets per EESSI version live in a single JSON file, so that
+  # other workflows/scripts can reuse them. The CPU targets should correspond with the table @
+  # https://eessi.io/docs/software_layer/cpu_targets/ and the accelerator targets with the table @
+  # https://eessi.io/docs/software_layer/gpu_targets/
+  EESSI_TARGETS_FILE: ${{ github.workspace }}/.github/workflows/eessi_targets.json
 jobs:
   # Checks whether this PR modifies any easystack files and, if so,
   # determines which EESSI versions are affected.
@@ -298,7 +147,7 @@ jobs:
         run: |
 
           # From this extract the CPUs we need to loop over
-          cpu_subdirs=$(echo "${EESSI_CPU_TARGETS}" | yq ".\"${EESSI_VERSION}\".\"${EESSI_CPU_FAMILY}\" | .[]")
+          cpu_subdirs=$(yq ".cpu_targets.\"${EESSI_VERSION}\".\"${EESSI_CPU_FAMILY}\" | .[]" "${EESSI_TARGETS_FILE}")
           if [[ -z "${cpu_subdirs}" ]]; then
             echo "ERROR: No CPU subdirs resolved for ${EESSI_VERSION} / ${EESSI_CPU_FAMILY}"
             exit 1
@@ -363,7 +212,7 @@ jobs:
 
                 echo
                 echo "now check accelerator builds for ${cpu}"
-                accelerators=$(echo "${EESSI_ACCELERATOR_TARGETS}" | yq ".\"${{matrix.EESSI_VERSION}}\".\"${cpu}\" // .\"${{matrix.EESSI_VERSION}}\".default | .[]")
+                accelerators=$(yq ".accelerator_targets.\"${{matrix.EESSI_VERSION}}\".\"${cpu}\" // .accelerator_targets.\"${{matrix.EESSI_VERSION}}\".default | .[]" "${EESSI_TARGETS_FILE}")
 
                 if [[ -z "${accelerators}" ]]; then
                   echo "no accelerator targets defined for ${cpu}"
@@ -458,16 +307,14 @@ jobs:
           echo "::group::EESSI ${EESSI_VERSION} / ${EESSI_CPU_FAMILY}"
 
           # Get all CPU targets belonging to this architecture family.
-          CPU_TARGETS=$(echo "${EESSI_CPU_TARGETS}" \
-            | yq -r ".\"${EESSI_VERSION}\".\"${EESSI_CPU_FAMILY}\"[]")
+          CPU_TARGETS=$(yq -r ".cpu_targets.\"${EESSI_VERSION}\".\"${EESSI_CPU_FAMILY}\"[]" "${EESSI_TARGETS_FILE}")
 
           for COMPARISON_ARCH in ${CPU_TARGETS}; do
             echo "::group::Compare ${EESSI_VERSION} / ${COMPARISON_ARCH}"
 
             # Use architecture-specific accelerator targets where defined,
             # otherwise fall back to the default set.
-            ALL_ACCELERATOR_TARGETS=$(echo "${EESSI_ACCELERATOR_TARGETS}" \
-              | yq ".\"${{ matrix.EESSI_VERSION }}\".\"${COMPARISON_ARCH}\" // .\"${{ matrix.EESSI_VERSION }}\".default | .[]" \
+            ALL_ACCELERATOR_TARGETS=$(yq ".accelerator_targets.\"${{ matrix.EESSI_VERSION }}\".\"${COMPARISON_ARCH}\" // .accelerator_targets.\"${{ matrix.EESSI_VERSION }}\".default | .[]" "${EESSI_TARGETS_FILE}" \
               | tr '\n' ' ')
 
             echo "COMPARISON_ARCH=${COMPARISON_ARCH}"
