@@ -63,4 +63,4 @@ easyconfigs:
   - GTK3-3.24.52-GCCcore-15.2.0.eb
   - Gdk-Pixbuf-2.44.6-GCCcore-15.2.0.eb
   - R-4.6.1-gfbf-2026.1.eb
-  
+  - flit-3.12.0-GCCcore-15.2.0.eb 
