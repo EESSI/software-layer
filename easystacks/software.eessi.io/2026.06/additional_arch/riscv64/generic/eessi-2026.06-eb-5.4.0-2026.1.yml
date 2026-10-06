@@ -80,3 +80,8 @@ easyconfigs:
   - LAME-3.100-GCCcore-15.2.0.eb
   - LibTIFF-4.7.1-GCCcore-15.2.0.eb
   - M4-1.4.20-GCCcore-15.2.0.eb
+  - mpi4py-4.1.2-lompi-2026.1.eb
+  - networkx-3.6.1-gfbf-2026.1.eb
+  - netCDF-4.10.0-gompi-2026.1.eb
+  - nodejs-24.16.0-GCCcore-15.2.0.eb
+  - re2c-4.5.1-GCCcore-15.2.0.eb
