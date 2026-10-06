@@ -55,4 +55,12 @@ easyconfigs:
   - NSPR-4.39-GCCcore-15.2.0.eb
   - NSS-3.119-GCCcore-15.2.0.eb
   - Wayland-1.25.0-GCCcore-15.2.0.eb
+  - OpenGL-2026.05-GCCcore-15.2.0.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/27026
+        from-commit: 625e9824121036e8ee338e3e4323b1f5853df358
+  - GSL-2.8-GCC-15.2.0.eb
+  - GTK3-3.24.52-GCCcore-15.2.0.eb
+  - Gdk-Pixbuf-2.44.6-GCCcore-15.2.0.eb
   - R-4.6.1-gfbf-2026.1.eb
+  
