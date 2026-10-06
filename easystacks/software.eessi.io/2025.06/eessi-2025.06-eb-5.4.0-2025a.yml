@@ -58,3 +58,4 @@ easyconfigs:
   - mrcfile-1.5.4-gfbf-2025a.eb
   - py-cpuinfo-9.0.0-GCCcore-14.2.0.eb
   - cargo-c-0.10.13-GCCcore-14.2.0.eb
+  - numba-0.62.0-foss-2025a.eb
