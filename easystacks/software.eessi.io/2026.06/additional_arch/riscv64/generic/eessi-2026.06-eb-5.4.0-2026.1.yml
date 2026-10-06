@@ -75,4 +75,8 @@ easyconfigs:
   - CubeWriter-4.9.1-GCCcore-15.2.0.eb
   - DB-18.1.40-GCCcore-15.2.0.eb
   - DB_File-1.860-GCCcore-15.2.0.eb
-  
+  - libde265-1.1.0-GCCcore-15.2.0.eb
+  - libevdev-1.13.7-GCCcore-15.2.0.eb
+  - libheif-1.22.2-GCCcore-15.2.0.eb
+  - libinput-1.31.3-GCCcore-15.2.0.eb
+  - libwebp-1.6.0-GCCcore-15.2.0.eb 
