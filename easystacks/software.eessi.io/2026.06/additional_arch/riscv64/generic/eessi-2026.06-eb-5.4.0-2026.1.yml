@@ -83,7 +83,8 @@ easyconfigs:
   - Go-1.26.7.eb:
       options:
         # see https://github.com/easybuilders/easybuild-easyconfigs/pull/26736
-        from-commit: a41d3d5086bdbfc5bfa4108f6b7dc6537316e7c6
+        # and https://github.com/easybuilders/easybuild-easyconfigs/pull/27071
+        from-commit: 9cf5ab0c5ce5bb00a3f38c17907345256ab86099
   - rclone-1.75.1.eb:
       options:
         # see https://github.com/easybuilders/easybuild-easyconfigs/pull/27031
