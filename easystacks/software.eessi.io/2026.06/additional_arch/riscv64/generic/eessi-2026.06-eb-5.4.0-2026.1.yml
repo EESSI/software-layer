@@ -76,4 +76,4 @@ easyconfigs:
   - DB_File-1.860-GCCcore-15.2.0.eb
   - HPL-2.3-foss-2026.1.eb
   - R-4.6.1-gfbf-2026.1.eb
-  
+  - lfbf-2026.1.eb
