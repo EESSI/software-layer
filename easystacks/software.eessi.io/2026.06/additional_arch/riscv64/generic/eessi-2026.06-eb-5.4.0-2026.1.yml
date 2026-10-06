@@ -62,6 +62,23 @@ easyconfigs:
   - GSL-2.8-GCC-15.2.0.eb
   - GTK3-3.24.52-GCCcore-15.2.0.eb
   - Gdk-Pixbuf-2.44.6-GCCcore-15.2.0.eb
+  - Clp-1.17.11-foss-2026.1.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/26789
+        from-commit: 01d6674a4eda858d5a2fdc3e52535bd772901d27
+  - CoinUtils-2.11.13-GCC-15.2.0.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/26789
+        from-commit: 01d6674a4eda858d5a2fdc3e52535bd772901d27
+  - CubeLib-4.9.1-GCCcore-15.2.0.eb
+  - CubeWriter-4.9.1-GCCcore-15.2.0.eb
+  - DB-18.1.40-GCCcore-15.2.0.eb
+  - DB_File-1.860-GCCcore-15.2.0.eb
+  - HPL-2.3-foss-2026.1.eb
   - R-4.6.1-gfbf-2026.1.eb
+  - JasPer-4.2.9-GCCcore-15.2.0.eb
+  - LAME-3.100-GCCcore-15.2.0.eb
+  - LibTIFF-4.7.1-GCCcore-15.2.0.eb
+  - M4-1.4.20-GCCcore-15.2.0.eb
   - assimp-6.0.5-GCCcore-15.2.0.eb
   - double-conversion-3.4.0-GCCcore-15.2.0
