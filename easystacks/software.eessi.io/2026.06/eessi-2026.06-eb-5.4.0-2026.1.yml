@@ -102,6 +102,24 @@ easyconfigs:
       options:
         # see https://github.com/easybuilders/easybuild-easyconfigs/pull/26789
         from-commit: 01d6674a4eda858d5a2fdc3e52535bd772901d27
+  - Clp-1.17.11-foss-2026.1.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/26789
+        from-commit: 01d6674a4eda858d5a2fdc3e52535bd772901d27
+  - CoinUtils-2.11.13-GCC-15.2.0.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/26789
+        from-commit: 01d6674a4eda858d5a2fdc3e52535bd772901d27
+  - CubeLib-4.9.1-GCCcore-15.2.0.eb
+  - CubeWriter-4.9.1-GCCcore-15.2.0.eb
+  - DB-18.1.40-GCCcore-15.2.0.eb
+  - DB_File-1.860-GCCcore-15.2.0.eb
+  - HPL-2.3-foss-2026.1.eb
+  - amdahl-0.4.1-gompi-2026.1.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/27032
+        from-commit: dd826fa1f62808fa7be3fadaabb6967eba595451
+  - PAPI-7.2.0-GCCcore-15.2.0.eb
   - OpenFOAM-14-foss-2026.1.eb:
       options:
         # see https://github.com/easybuilders/easybuild-easyconfigs/pull/26962
