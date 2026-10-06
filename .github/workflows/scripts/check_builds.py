@@ -11,17 +11,17 @@
 #   1: Failure (missing/failed builds, or commit SHA inconsistency)
 
 import datetime
-import json
 import os
 import sys
 import re
+import tomllib
 
 
 # The supported CPU targets per EESSI version are defined in a single place, shared
-# with the other workflows: .github/workflows/eessi_targets.json
+# with the other workflows: .github/workflows/eessi_targets.toml
 TARGETS_FILE = os.environ.get(
     "EESSI_TARGETS_FILE",
-    os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "eessi_targets.json"),
+    os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "eessi_targets.toml"),
 )
 
 
@@ -30,10 +30,10 @@ def load_supported_targets(targets_file=TARGETS_FILE):
     Build the mapping from repository name (value of the 'repo' column in the bot's
     status table, e.g. 'eessi.io-2025.06-software') to the list of CPU targets (values
     of the 'for' column) that must have been successfully built for it.
-    The JSON file lists the targets per EESSI version and per CPU family; those are flattened here.
+    The TOML file lists the targets per EESSI version and per CPU family; those are flattened here.
     """
-    with open(targets_file) as f:
-        cpu_targets = json.load(f)["cpu_targets"]
+    with open(targets_file, "rb") as f:
+        cpu_targets = tomllib.load(f)["cpu_targets"]
     return {
         f"eessi.io-{version}-software": [t for family in families.values() for t in family]
         for version, families in cpu_targets.items()
@@ -157,7 +157,7 @@ def main():
 
     # Warn if repos in table are missing from mapping
     for repo in table_repos - mapping_repos:
-        print(f"WARNING: Repo '{repo}' found in table but not in eessi_targets.json; skipping checks for this repo")
+        print(f"WARNING: Repo '{repo}' found in table but not in eessi_targets.toml; skipping checks for this repo")
 
     # Check commit SHA consistency across all deduplicated builds (if column present)
     commit_shas = set()
