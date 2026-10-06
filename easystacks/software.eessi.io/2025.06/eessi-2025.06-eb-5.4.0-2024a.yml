@@ -8,3 +8,8 @@ easyconfigs:
         # see https://github.com/easybuilders/easybuild-easyconfigs/pull/25820
         from-commit: 9dc8955e94bf914e992c9a43a4b0dd6710a36c7c
   - Cartopy-0.24.1-foss-2024a.eb
+  - Kaleido-0.2.1-GCCcore-13.3.0.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/26981
+        from-commit: be7824829994ef42abd2427a37adb17cde694e36
+  - MultiQC-1.28-gfbf-2024a.eb
