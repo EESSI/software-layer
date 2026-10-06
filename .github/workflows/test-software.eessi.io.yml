@@ -283,7 +283,7 @@ jobs:
           name: missing-installations-logs-${{ matrix.EESSI_VERSION }}-${{ matrix.runs_on }}
           path: log_*.txt
           if-no-files-found: ignore
-          retention-days: 14
+          retention-days: 4
 
       - name: Test check_missing_installations.sh with missing package (GCC/8.3.0)
         run: |
