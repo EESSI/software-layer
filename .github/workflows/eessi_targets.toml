@@ -6,179 +6,177 @@
 #   Per EESSI version, the accelerator targets to build for. 'default' applies to every CPU target,
 #   unless a CPU target has an entry of its own (which may be empty, i.e. no accelerators).
 
-
 [cpu_targets."2023.06"]
-x86_64 = [
-  "x86_64/amd/zen2",
-  "x86_64/amd/zen3",
-  "x86_64/amd/zen4",
-  "x86_64/intel/haswell",
-  "x86_64/intel/sapphirerapids",
-  "x86_64/intel/skylake_avx512",
-  "x86_64/intel/icelake",
-  "x86_64/intel/cascadelake",
-  "x86_64/generic",
-]
 aarch64 = [
+  "aarch64/a64fx",
   "aarch64/generic",
   "aarch64/neoverse_n1",
   "aarch64/neoverse_v1",
   "aarch64/nvidia/grace",
-  "aarch64/a64fx",
+]
+x86_64 = [
+  "x86_64/amd/zen2",
+  "x86_64/amd/zen3",
+  "x86_64/amd/zen4",
+  "x86_64/generic",
+  "x86_64/intel/cascadelake",
+  "x86_64/intel/haswell",
+  "x86_64/intel/icelake",
+  "x86_64/intel/sapphirerapids",
+  "x86_64/intel/skylake_avx512",
 ]
 
 [cpu_targets."2025.06"]
+aarch64 = [
+  "aarch64/a64fx",
+  "aarch64/generic",
+  "aarch64/neoverse_n1",
+  "aarch64/neoverse_v1",
+  "aarch64/nvidia/grace",
+]
 x86_64 = [
   "x86_64/amd/zen2",
   "x86_64/amd/zen3",
   "x86_64/amd/zen4",
   "x86_64/amd/zen5",
+  "x86_64/generic",
+  "x86_64/intel/cascadelake",
   "x86_64/intel/haswell",
+  "x86_64/intel/icelake",
   "x86_64/intel/sapphirerapids",
   "x86_64/intel/skylake_avx512",
-  "x86_64/intel/icelake",
-  "x86_64/intel/cascadelake",
-  "x86_64/generic",
-]
-aarch64 = [
-  "aarch64/generic",
-  "aarch64/neoverse_n1",
-  "aarch64/neoverse_v1",
-  "aarch64/nvidia/grace",
-  "aarch64/a64fx",
 ]
 
 [cpu_targets."2026.06"]
+aarch64 = [
+  "aarch64/a64fx",
+  "aarch64/aws/graviton4",
+  "aarch64/generic",
+  "aarch64/neoverse_n1",
+  "aarch64/neoverse_v1",
+  "aarch64/nvidia/grace",
+]
 x86_64 = [
   "x86_64/amd/zen2",
   "x86_64/amd/zen3",
   "x86_64/amd/zen4",
   "x86_64/amd/zen5",
-  "x86_64/intel/haswell",
-  "x86_64/intel/sapphirerapids",
-  "x86_64/intel/graniterapids",
-  "x86_64/intel/skylake_avx512",
-  "x86_64/intel/icelake",
-  "x86_64/intel/cascadelake",
   "x86_64/generic",
+  "x86_64/intel/cascadelake",
+  "x86_64/intel/graniterapids",
+  "x86_64/intel/haswell",
+  "x86_64/intel/icelake",
+  "x86_64/intel/sapphirerapids",
+  "x86_64/intel/skylake_avx512",
 ]
-aarch64 = [
-  "aarch64/generic",
-  "aarch64/neoverse_n1",
-  "aarch64/neoverse_v1",
-  "aarch64/nvidia/grace",
-  "aarch64/a64fx",
-  "aarch64/aws/graviton4",
-]
-
 
 [accelerator_targets."2023.06"]
 # Provide a default set of compute capabilities
 default = [
-    "nvidia/cc70",
-    "nvidia/cc80",
-    "nvidia/cc90",
+  "nvidia/cc70",
+  "nvidia/cc80",
+  "nvidia/cc90",
 ]
 # and then allow for special cases for specific CPU targets
-"x86_64/amd/zen2" = [
-    "nvidia/cc70",
-    "nvidia/cc80",
-    "nvidia/cc90",
-]
 "aarch64/a64fx" = []
+"x86_64/amd/zen2" = [
+  "nvidia/cc70",
+  "nvidia/cc80",
+  "nvidia/cc90",
+]
 
 [accelerator_targets."2025.06"]
 # Provide a default set of compute capabilities
 default = [
-    "nvidia/cc70",
-    "nvidia/cc80",
-    "nvidia/cc90",
-    "nvidia/cc100",
-    "nvidia/cc120",
-    "amd/gfx908",
-    "amd/gfx90a",
-    "amd/gfx942",
-    "amd/gfx1030",
-    "amd/gfx1100",
-    "amd/gfx1101",
-    "amd/gfx1200",
-    "amd/gfx1201",
+  "amd/gfx1030",
+  "amd/gfx1100",
+  "amd/gfx1101",
+  "amd/gfx1200",
+  "amd/gfx1201",
+  "amd/gfx908",
+  "amd/gfx90a",
+  "amd/gfx942",
+  "nvidia/cc100",
+  "nvidia/cc120",
+  "nvidia/cc70",
+  "nvidia/cc80",
+  "nvidia/cc90",
 ]
 # and then allow for special cases for specific CPU targets
+"aarch64/a64fx" = []
 "aarch64/generic" = [
-    "nvidia/cc70",
-    "nvidia/cc80",
-    "nvidia/cc90",
-    "nvidia/cc100",
-    "nvidia/cc120",
+  "nvidia/cc100",
+  "nvidia/cc120",
+  "nvidia/cc70",
+  "nvidia/cc80",
+  "nvidia/cc90",
 ]
 "aarch64/neoverse_n1" = [
-    "nvidia/cc70",
-    "nvidia/cc80",
-    "nvidia/cc90",
-    "nvidia/cc100",
-    "nvidia/cc120",
+  "nvidia/cc100",
+  "nvidia/cc120",
+  "nvidia/cc70",
+  "nvidia/cc80",
+  "nvidia/cc90",
 ]
 "aarch64/neoverse_v1" = [
-    "nvidia/cc70",
-    "nvidia/cc80",
-    "nvidia/cc90",
-    "nvidia/cc100",
-    "nvidia/cc120",
+  "nvidia/cc100",
+  "nvidia/cc120",
+  "nvidia/cc70",
+  "nvidia/cc80",
+  "nvidia/cc90",
 ]
 "aarch64/nvidia/grace" = [
-    "nvidia/cc70",
-    "nvidia/cc80",
-    "nvidia/cc90",
-    "nvidia/cc100",
-    "nvidia/cc120",
+  "nvidia/cc100",
+  "nvidia/cc120",
+  "nvidia/cc70",
+  "nvidia/cc80",
+  "nvidia/cc90",
 ]
-"aarch64/a64fx" = []
 
 [accelerator_targets."2026.06"]
 # Provide a default set of compute capabilities
 default = [
-    "nvidia/cc75",
-    "nvidia/cc80",
-    "nvidia/cc90",
-    "nvidia/cc100",
-    "nvidia/cc120",
-    "amd/gfx908",
-    "amd/gfx90a",
-    "amd/gfx942",
-    "amd/gfx1030",
-    "amd/gfx1100",
-    "amd/gfx1101",
-    "amd/gfx1200",
-    "amd/gfx1201",
+  "amd/gfx1030",
+  "amd/gfx1100",
+  "amd/gfx1101",
+  "amd/gfx1200",
+  "amd/gfx1201",
+  "amd/gfx908",
+  "amd/gfx90a",
+  "amd/gfx942",
+  "nvidia/cc100",
+  "nvidia/cc120",
+  "nvidia/cc75",
+  "nvidia/cc80",
+  "nvidia/cc90",
 ]
 # and then allow for special cases for specific CPU targets
+"aarch64/a64fx" = []
 "aarch64/generic" = [
-    "nvidia/cc75",
-    "nvidia/cc80",
-    "nvidia/cc90",
-    "nvidia/cc100",
-    "nvidia/cc120",
+  "nvidia/cc100",
+  "nvidia/cc120",
+  "nvidia/cc75",
+  "nvidia/cc80",
+  "nvidia/cc90",
 ]
 "aarch64/neoverse_n1" = [
-    "nvidia/cc75",
-    "nvidia/cc80",
-    "nvidia/cc90",
-    "nvidia/cc100",
-    "nvidia/cc120",
+  "nvidia/cc100",
+  "nvidia/cc120",
+  "nvidia/cc75",
+  "nvidia/cc80",
+  "nvidia/cc90",
 ]
 "aarch64/neoverse_v1" = [
-    "nvidia/cc75",
-    "nvidia/cc80",
-    "nvidia/cc90",
-    "nvidia/cc100",
-    "nvidia/cc120",
+  "nvidia/cc100",
+  "nvidia/cc120",
+  "nvidia/cc75",
+  "nvidia/cc80",
+  "nvidia/cc90",
 ]
 "aarch64/nvidia/grace" = [
-    "nvidia/cc75",
-    "nvidia/cc80",
-    "nvidia/cc90",
-    "nvidia/cc100",
-    "nvidia/cc120",
+  "nvidia/cc100",
+  "nvidia/cc120",
+  "nvidia/cc75",
+  "nvidia/cc80",
+  "nvidia/cc90",
 ]
-"aarch64/a64fx" = []
