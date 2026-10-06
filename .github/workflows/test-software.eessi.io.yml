@@ -9,11 +9,11 @@ on:
 permissions:
   contents: read # to fetch code (actions/checkout)
 env:
-  # Supported CPU and accelerator targets per EESSI version live in a single JSON file, so that
+  # Supported CPU and accelerator targets per EESSI version live in a single TOML file, so that
   # other workflows/scripts can reuse them. The CPU targets should correspond with the table @
   # https://eessi.io/docs/software_layer/cpu_targets/ and the accelerator targets with the table @
   # https://eessi.io/docs/software_layer/gpu_targets/
-  EESSI_TARGETS_FILE: ${{ github.workspace }}/.github/workflows/eessi_targets.json
+  EESSI_TARGETS_FILE: ${{ github.workspace }}/.github/workflows/eessi_targets.toml
 jobs:
   # Checks whether this PR modifies any easystack files and, if so,
   # determines which EESSI versions are affected.
@@ -147,7 +147,7 @@ jobs:
         run: |
 
           # From this extract the CPUs we need to loop over
-          cpu_subdirs=$(jq -r --arg v "${EESSI_VERSION}" --arg f "${EESSI_CPU_FAMILY}" '.cpu_targets[$v][$f][]' "${EESSI_TARGETS_FILE}")
+          cpu_subdirs=$(yq -p toml -o yaml ".cpu_targets.\"${EESSI_VERSION}\".\"${EESSI_CPU_FAMILY}\" | .[]" "${EESSI_TARGETS_FILE}")
           if [[ -z "${cpu_subdirs}" ]]; then
             echo "ERROR: No CPU subdirs resolved for ${EESSI_VERSION} / ${EESSI_CPU_FAMILY}"
             exit 1
@@ -212,7 +212,7 @@ jobs:
 
                 echo
                 echo "now check accelerator builds for ${cpu}"
-                accelerators=$(jq -r --arg v "${{matrix.EESSI_VERSION}}" --arg c "${cpu}" '.accelerator_targets[$v] | (.[$c] // .default) | .[]' "${EESSI_TARGETS_FILE}")
+                accelerators=$(yq -p toml -o yaml ".accelerator_targets.\"${{matrix.EESSI_VERSION}}\".\"${cpu}\" // .accelerator_targets.\"${{matrix.EESSI_VERSION}}\".default | .[]" "${EESSI_TARGETS_FILE}")
 
                 if [[ -z "${accelerators}" ]]; then
                   echo "no accelerator targets defined for ${cpu}"
@@ -318,14 +318,14 @@ jobs:
           echo "::group::EESSI ${EESSI_VERSION} / ${EESSI_CPU_FAMILY}"
 
           # Get all CPU targets belonging to this architecture family.
-          CPU_TARGETS=$(jq -r --arg v "${EESSI_VERSION}" --arg f "${EESSI_CPU_FAMILY}" '.cpu_targets[$v][$f][]' "${EESSI_TARGETS_FILE}")
+          CPU_TARGETS=$(yq -p toml -o yaml ".cpu_targets.\"${EESSI_VERSION}\".\"${EESSI_CPU_FAMILY}\" | .[]" "${EESSI_TARGETS_FILE}")
 
           for COMPARISON_ARCH in ${CPU_TARGETS}; do
             echo "::group::Compare ${EESSI_VERSION} / ${COMPARISON_ARCH}"
 
             # Use architecture-specific accelerator targets where defined,
             # otherwise fall back to the default set.
-            ALL_ACCELERATOR_TARGETS=$(jq -r --arg v "${{ matrix.EESSI_VERSION }}" --arg c "${COMPARISON_ARCH}" '.accelerator_targets[$v] | (.[$c] // .default) | .[]' "${EESSI_TARGETS_FILE}" \
+            ALL_ACCELERATOR_TARGETS=$(yq -p toml -o yaml ".accelerator_targets.\"${{ matrix.EESSI_VERSION }}\".\"${COMPARISON_ARCH}\" // .accelerator_targets.\"${{ matrix.EESSI_VERSION }}\".default | .[]" "${EESSI_TARGETS_FILE}" \
               | tr '\n' ' ')
 
             echo "COMPARISON_ARCH=${COMPARISON_ARCH}"
