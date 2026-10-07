@@ -81,7 +81,10 @@ easyconfigs:
   - LibTIFF-4.7.1-GCCcore-15.2.0.eb
   - M4-1.4.20-GCCcore-15.2.0.eb
   - libde265-1.1.0-GCCcore-15.2.0.eb
-  - libevdev-1.13.7-GCCcore-15.2.0.eb
+  - libevdev-1.13.7-GCCcore-15.2.0.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/26688
+        from-commit: e2eacb01e2f16d67aa081f3ab9bc7c05b44c225d
   - libheif-1.22.2-GCCcore-15.2.0.eb
   - libinput-1.31.3-GCCcore-15.2.0.eb
   - libwebp-1.6.0-GCCcore-15.2.0.eb 
