@@ -131,4 +131,4 @@ easyconfigs:
   - Extrae-5.0.6-gompi-2026.1.eb:
       options:
         # see https://github.com/easybuilders/easybuild-easyconfigs/pull/27094
-        from-commit: a099f8747fa3aaeffe6c0c972bbc9a55836b1f1e
+        from-commit: caaf7b679d2d078b9c0b07eb42c222496769c277
