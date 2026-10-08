@@ -80,3 +80,16 @@ easyconfigs:
   - LAME-3.100-GCCcore-15.2.0.eb
   - LibTIFF-4.7.1-GCCcore-15.2.0.eb
   - M4-1.4.20-GCCcore-15.2.0.eb
+  - Go-1.26.7.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/26736
+        # and https://github.com/easybuilders/easybuild-easyconfigs/pull/27071
+        from-commit: 9cf5ab0c5ce5bb00a3f38c17907345256ab86099
+  - rclone-1.75.1.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/27031
+        # also needs https://github.com/easybuilders/easybuild-easyconfigs/pull/27071
+        # (to make the missing installations CI happy)
+        from-commit: 9cf5ab0c5ce5bb00a3f38c17907345256ab86099
+        # see https://github.com/easybuilders/easybuild-easyblocks/pull/4248
+        include-easyblocks-from-commit: 890cb41af11f99c3c64a4365b5dd54ea6f869f61
