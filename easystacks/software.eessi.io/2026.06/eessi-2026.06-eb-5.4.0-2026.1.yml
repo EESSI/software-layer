@@ -128,4 +128,7 @@ easyconfigs:
       options:
         # see https://github.com/easybuilders/easybuild-easyconfigs/pull/27031
         from-commit: dd950757008c9245a2b4e301998779afc6dadd92
-  - Extrae-5.0.6-gompi-2026.1.eb
+  - Extrae-5.0.6-gompi-2026.1.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/27094
+        from-commit: a099f8747fa3aaeffe6c0c972bbc9a55836b1f1e
