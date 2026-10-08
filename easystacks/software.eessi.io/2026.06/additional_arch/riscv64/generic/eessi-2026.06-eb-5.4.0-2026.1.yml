@@ -80,3 +80,4 @@ easyconfigs:
   - LAME-3.100-GCCcore-15.2.0.eb
   - LibTIFF-4.7.1-GCCcore-15.2.0.eb
   - M4-1.4.20-GCCcore-15.2.0.eb
+  - PAPI-7.2.0-GCCcore-15.2.0.eb
