@@ -128,5 +128,6 @@ easyconfigs:
       options:
         # see https://github.com/easybuilders/easybuild-easyconfigs/pull/27031
         from-commit: dd950757008c9245a2b4e301998779afc6dadd92
+  - flit-3.12.0-GCCcore-15.2.0.eb
   - scikit-build-0.19.0-GCCcore-15.2.0.eb
   - xxd-9.2.0612-GCCcore-15.2.0.eb
