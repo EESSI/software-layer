@@ -83,6 +83,6 @@ easyconfigs:
   - SciPy-bundle-2026.05-gfbf-2026.1.eb:
       options:
         # see https://github.com/easybuilders/easybuild-easyconfigs/pull/27091
-        from-commit: f6bba82533b111247f529e128f0d03e4ebeae141
+        from-commit: 8181f72440a2601baad4dead059c10bbc1b30e6d
   - Szip-2.1.1-GCCcore-15.2.0.eb
   - UCX-1.20.0-GCCcore-15.2.0.eb
