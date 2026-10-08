@@ -82,7 +82,6 @@ easyconfigs:
   - M4-1.4.20-GCCcore-15.2.0.eb
   - lit-18.1.8-GCCcore-15.2.0.eb
   - OSU-Micro-Benchmarks-7.5.2-gompi-2026.1.eb
-  - Arrow-24.0.0-gfbf-2026.1.eb
   - ImageMagick-7.1.2-26-GCCcore-15.2.0.eb
   - MPFR-4.2.2-GCCcore-15.2.0.eb
   - Xvfb-21.1.23-GCCcore-15.2.0.eb
