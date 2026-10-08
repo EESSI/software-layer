@@ -120,3 +120,9 @@ easyconfigs:
         # see https://github.com/easybuilders/easybuild-easyconfigs/pull/27032
         from-commit: dd826fa1f62808fa7be3fadaabb6967eba595451
   - PAPI-7.2.0-GCCcore-15.2.0.eb
+  - OpenFOAM-14-foss-2026.1.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/26962
+        from-commit: e3397494a43d22e712e8dcacc90249e6380a859f
+        # see https://github.com/easybuilders/easybuild-easyblocks/pull/4238
+        include-easyblocks-from-commit: 3c7d953cf08537de0e5d98b7e273f4e5327a4440
