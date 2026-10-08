@@ -88,6 +88,8 @@ easyconfigs:
   - rclone-1.75.1.eb:
       options:
         # see https://github.com/easybuilders/easybuild-easyconfigs/pull/27031
-        from-commit: dd950757008c9245a2b4e301998779afc6dadd92
+        # also needs https://github.com/easybuilders/easybuild-easyconfigs/pull/27071
+        # (to make the missing installations CI happy)
+        from-commit: 9cf5ab0c5ce5bb00a3f38c17907345256ab86099
         # see https://github.com/easybuilders/easybuild-easyblocks/pull/4248
         include-easyblocks-from-commit: 890cb41af11f99c3c64a4365b5dd54ea6f869f61
