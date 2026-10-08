@@ -120,3 +120,11 @@ easyconfigs:
         # see https://github.com/easybuilders/easybuild-easyconfigs/pull/27032
         from-commit: dd826fa1f62808fa7be3fadaabb6967eba595451
   - PAPI-7.2.0-GCCcore-15.2.0.eb
+  - Go-1.26.7.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/26736
+        from-commit: a41d3d5086bdbfc5bfa4108f6b7dc6537316e7c6
+  - rclone-1.75.1.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/27031
+        from-commit: dd950757008c9245a2b4e301998779afc6dadd92
