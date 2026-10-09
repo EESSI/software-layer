@@ -101,3 +101,8 @@ easyconfigs:
       options:
         # see https://github.com/easybuilders/easybuild-easyconfigs/pull/27094
         from-commit: caaf7b679d2d078b9c0b07eb42c222496769c277
+  - Perl-bundle-CPAN-5.42.0-GCCcore-15.2.0.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/27036
+        from-commit: 909ebcddd94ae707ef3fa4db1e0d8398c1cd1231
+  - Pint-0.25.3-GCCcore-15.2.0.eb
