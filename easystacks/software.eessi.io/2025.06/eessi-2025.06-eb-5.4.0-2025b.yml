@@ -78,4 +78,5 @@ easyconfigs:
   - waLBerla-7.2-foss-2025b.eb:
       options:
           # See https://github.com/easybuilders/easybuild-easyconfigs/pull/26930
-          from-commit: 8a688f303851fd280ea74bc0515b38d77763594c
+          from-commit: a69e69347c4a4d4b625ff4cf37b6160374506612
+  - FEniCS-DOLFINx-Python-0.10.0.post5-foss-2025b.eb
