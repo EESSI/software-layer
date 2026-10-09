@@ -93,6 +93,10 @@ easyconfigs:
   - scikit-build-0.19.0-GCCcore-15.2.0.eb
   - snappy-1.2.2-GCCcore-15.2.0.eb
   - xxd-9.2.0612-GCCcore-15.2.0.eb
+  - tbb-2022.3.0-GCCcore-15.2.0.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/27021
+        from-commit: 30fe7d531120fae485771ca733ca4a03b63132c0
   - Extrae-5.0.6-gompi-2026.1.eb:
       options:
         # see https://github.com/easybuilders/easybuild-easyconfigs/pull/27094
