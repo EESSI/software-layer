@@ -110,5 +110,4 @@ easyconfigs:
   - libsndfile-1.2.2-GCCcore-15.2.0.eb
   - NLopt-2.10.1-GCCcore-15.2.0.eb
   - UDUNITS-2.2.28-GCCcore-15.2.0.eb
-  - R-bundle-CRAN-2026.07-foss-2026.1.eb
   - GDRCopy-2.5.2-GCCcore-15.2.0.eb
