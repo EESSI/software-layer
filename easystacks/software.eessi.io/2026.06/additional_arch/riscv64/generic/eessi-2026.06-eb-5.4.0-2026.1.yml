@@ -97,6 +97,10 @@ easyconfigs:
       options:
         # see https://github.com/easybuilders/easybuild-easyconfigs/pull/27021
         from-commit: 30fe7d531120fae485771ca733ca4a03b63132c0
+  - Extrae-5.0.6-gompi-2026.1.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/27094
+        from-commit: caaf7b679d2d078b9c0b07eb42c222496769c277
   - SciPy-bundle-2026.05-gfbf-2026.1.eb
   - Szip-2.1.1-GCCcore-15.2.0.eb
   - UCX-1.20.0-GCCcore-15.2.0.eb
