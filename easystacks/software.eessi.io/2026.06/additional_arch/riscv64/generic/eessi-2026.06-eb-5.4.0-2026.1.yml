@@ -101,3 +101,4 @@ easyconfigs:
       options:
         # see https://github.com/easybuilders/easybuild-easyconfigs/pull/27094
         from-commit: caaf7b679d2d078b9c0b07eb42c222496769c277
+  - XML-LibXML-2.0210-GCCcore-15.2.0.eb
