@@ -103,6 +103,9 @@ easyconfigs:
         # see https://github.com/easybuilders/easybuild-easyconfigs/pull/26789
         from-commit: 01d6674a4eda858d5a2fdc3e52535bd772901d27
   - absl-py-2.4.0-GCCcore-15.2.0.eb
-  - aiohttp-3.14.3-GCCcore-15.2.0.eb
+  - aiohttp-3.14.3-GCCcore-15.2.0.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/26838
+        from-commit: 5b5a953a03d1ffeb1f7a2df5d40c31b1321339e6```
   - alsa-lib-1.2.15.3-GCCcore-15.2.0.eb
   - ant-1.10.15-Java-21.eb
