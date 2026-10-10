@@ -142,3 +142,35 @@ easyconfigs:
         from-commit: 5b5a953a03d1ffeb1f7a2df5d40c31b1321339e6
   - alsa-lib-1.2.15.3-GCCcore-15.2.0.eb
   - ant-1.10.15-Java-21.eb
+  - Highway-1.4.0-GCCcore-15.2.0.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/26651
+        from-commit: f6a7f8bb597b4fc1d79ef7b9a64e6e49d18143e2
+  - inih-62-GCCcore-15.2.0.eb
+  - fmt-12.2.0-GCCcore-15.2.0.eb
+  - cargo-c-0.10.23-GCCcore-15.2.0.eb
+  - robin-map-1.4.1-GCCcore-15.2.0.eb
+  - nanobind-2.13.0-GCCcore-15.2.0.eb
+  - CapnProto-1.4.0-GCCcore-15.2.0.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/26480
+        from-commit: a473f050f7ccec221f2fbb814d7a91a439462654
+  - quill-11.1.0-GCCcore-15.2.0.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/26480
+        from-commit: a473f050f7ccec221f2fbb814d7a91a439462654
+  - readcon-core-0.13.1-GCCcore-15.2.0.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/26480
+        from-commit: a473f050f7ccec221f2fbb814d7a91a439462654
+  - rgpot-3.0.0-GCCcore-15.2.0.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/26480
+        # (the Morse cutoff-shift test tolerance fix, needed on aarch64)
+        from-commit: 66fa89934f0476cd4f9ff14154ee4c87ae5c5d82
+  - eOn-2.17.10-foss-2026.1.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyblocks/pull/4240
+        include-easyblocks-from-commit: 8bf091921178ef758011898aeb5921fb8f9d814d
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/26480
+        from-commit: a473f050f7ccec221f2fbb814d7a91a439462654
