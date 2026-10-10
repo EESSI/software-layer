@@ -51,3 +51,68 @@ easyconfigs:
         from-commit: ee7dfbd62b2caea305be478bd024aaefeb794eff
   - FFmpeg-8.1.1-GCCcore-15.2.0.eb
   - Pango-1.57.1-GCCcore-15.2.0.eb
+  - Mako-1.3.12-GCCcore-15.2.0.eb
+  - NSPR-4.39-GCCcore-15.2.0.eb
+  - NSS-3.119-GCCcore-15.2.0.eb
+  - Wayland-1.25.0-GCCcore-15.2.0.eb
+  - OpenGL-2026.05-GCCcore-15.2.0.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/27026
+        from-commit: 625e9824121036e8ee338e3e4323b1f5853df358
+  - GSL-2.8-GCC-15.2.0.eb
+  - GTK3-3.24.52-GCCcore-15.2.0.eb
+  - Gdk-Pixbuf-2.44.6-GCCcore-15.2.0.eb
+  - Clp-1.17.11-foss-2026.1.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/26789
+        from-commit: 01d6674a4eda858d5a2fdc3e52535bd772901d27
+  - CoinUtils-2.11.13-GCC-15.2.0.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/26789
+        from-commit: 01d6674a4eda858d5a2fdc3e52535bd772901d27
+  - CubeLib-4.9.1-GCCcore-15.2.0.eb
+  - CubeWriter-4.9.1-GCCcore-15.2.0.eb
+  - DB-18.1.40-GCCcore-15.2.0.eb
+  - DB_File-1.860-GCCcore-15.2.0.eb
+  - HPL-2.3-foss-2026.1.eb
+  - R-4.6.1-gfbf-2026.1.eb
+  - JasPer-4.2.9-GCCcore-15.2.0.eb
+  - LAME-3.100-GCCcore-15.2.0.eb
+  - LibTIFF-4.7.1-GCCcore-15.2.0.eb
+  - M4-1.4.20-GCCcore-15.2.0.eb
+  - PAPI-7.2.0-GCCcore-15.2.0.eb
+  - assimp-6.0.5-GCCcore-15.2.0.eb
+  - double-conversion-3.4.0-GCCcore-15.2.0
+  - mpi4py-4.1.2-lompi-2026.1.eb
+  - netCDF-4.10.0-gompi-2026.1.eb
+  - nodejs-24.16.0-GCCcore-15.2.0.eb
+  - re2c-4.5.1-GCCcore-15.2.0.eb
+  - Vulkan-1.4.352-GCCcore-15.2.0.eb
+  - graphite2-1.3.15-GCCcore-15.2.0.eb 
+  - flit-3.12.0-GCCcore-15.2.0.eb 
+  - scikit-build-0.19.0-GCCcore-15.2.0.eb
+  - snappy-1.2.2-GCCcore-15.2.0.eb
+  - xxd-9.2.0612-GCCcore-15.2.0.eb
+  - tbb-2022.3.0-GCCcore-15.2.0.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/27021
+        from-commit: 30fe7d531120fae485771ca733ca4a03b63132c0
+  - Extrae-5.0.6-gompi-2026.1.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/27094
+        from-commit: caaf7b679d2d078b9c0b07eb42c222496769c277
+  - libevdev-1.13.7-GCCcore-15.2.0.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/26688
+        from-commit: e2eacb01e2f16d67aa081f3ab9bc7c05b44c225d
+  - libinput-1.31.3-GCCcore-15.2.0.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/26688
+        from-commit: e2eacb01e2f16d67aa081f3ab9bc7c05b44c225d
+  - absl-py-2.4.0-GCCcore-15.2.0.eb
+  - aiohttp-3.14.3-GCCcore-15.2.0.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/26838
+        from-commit: 5b5a953a03d1ffeb1f7a2df5d40c31b1321339e6
+  - alsa-lib-1.2.15.3-GCCcore-15.2.0.eb
+  - ant-1.10.15-Java-21.eb

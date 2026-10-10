@@ -75,3 +75,8 @@ easyconfigs:
   - Rtree-1.4.1-GCCcore-14.3.0.eb
   - Seaborn-0.13.2-gfbf-2025b.eb
   - nanobind-2.9.2-GCCcore-14.3.0.eb
+  - FEniCS-DOLFINx-Python-0.10.0.post5-foss-2025b.eb
+  - waLBerla-7.2-foss-2025b.eb:
+      options:
+          # See https://github.com/easybuilders/easybuild-easyconfigs/pull/26930
+          from-commit: a69e69347c4a4d4b625ff4cf37b6160374506612
