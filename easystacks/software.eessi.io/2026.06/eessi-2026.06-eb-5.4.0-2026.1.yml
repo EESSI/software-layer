@@ -144,8 +144,10 @@ easyconfigs:
   - ant-1.10.15-Java-21.eb
   - Highway-1.4.0-GCCcore-15.2.0.eb:
       options:
-        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/26651
-        from-commit: f6a7f8bb597b4fc1d79ef7b9a64e6e49d18143e2
+        # patch for the GCC 15.2 internal compiler error on aarch64 generic builds
+        # (scalable SVE lane count folded into a constant vector); on top of
+        # https://github.com/easybuilders/easybuild-easyconfigs/pull/26651
+        from-commit: 83b0e79ecf3bec5fb44cc2c24630df775454ab8e
   - inih-62-GCCcore-15.2.0.eb
   - fmt-12.2.0-GCCcore-15.2.0.eb
   - cargo-c-0.10.23-GCCcore-15.2.0.eb
