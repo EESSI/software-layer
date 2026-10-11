@@ -1,0 +1,23 @@
+easyconfigs:
+  - multicharge-0.5.0-gfbf-2025b.eb
+  - LAMMPS-22Jul2025_update4-foss-2025b-kokkos.eb
+  - SMC++-1.15.4-gfbf-2025b.eb
+  - cling-kernel-1.2-GCCcore-14.3.0.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/26428
+        from-commit: fa15a3618485c974195191ccf5a26a8873a4ab55
+  - octave-kernel-1.1.0-foss-2025b.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/26421
+        from-commit: 538776cf616f8eeeca9e96c8110c065f5256932c
+  - R-4.5.2-gfbf-2025b.eb
+  - Arrow-22.0.0-gfbf-2025b.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/26569
+        from-commit: b9729dd1eeef12cc2b347b3f94508b12c724520a
+  - R-bundle-CRAN-2025.11-foss-2025b.eb:
+      options:
+        parallel-extensions-install: true
+  - R-bundle-Bioconductor-3.22-foss-2025b-R-4.5.2.eb:
+      options:
+        parallel-extensions-install: true

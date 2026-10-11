@@ -1,0 +1,8 @@
+# rebuild Autoconf to improve handling with architecture-specific feature
+# flags, causing configure or build errors (e.g. because of -target-feature
+# -lwp).
+# see:
+#   - https://github.com/easybuilders/easybuild-easyconfigs/pull/24669
+#   - https://github.com/easybuilders/easybuild-easyconfigs/pull/25172
+easyconfigs:
+  - Autoconf-2.72-GCCcore-14.3.0.eb

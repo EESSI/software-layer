@@ -1,0 +1,282 @@
+# easystack-002-eb-5.4.0.yml: total build duration = 555 minutes
+easyconfigs:
+  - /cvmfs/software.eessi.io/versions/2026.06/software/linux/x86_64/intel/sapphirerapids/reprod/libevent/2.1.12-GCCcore-15.2.0/20260812_094054UTC/easybuild/libevent-2.1.12-GCCcore-15.2.0.eb:
+      options:
+        robot: False
+        include-easyblocks: /cvmfs/software.eessi.io/versions/2026.06/software/linux/x86_64/intel/sapphirerapids/reprod/libevent/2.1.12-GCCcore-15.2.0/20260812_094054UTC/easybuild/reprod/easyblocks/*.py
+  - /cvmfs/software.eessi.io/versions/2026.06/software/linux/x86_64/intel/sapphirerapids/reprod/UCX/1.20.0-GCCcore-15.2.0/20260812_094716UTC/easybuild/UCX-1.20.0-GCCcore-15.2.0.eb:
+      options:
+        robot: False
+        include-easyblocks: /cvmfs/software.eessi.io/versions/2026.06/software/linux/x86_64/intel/sapphirerapids/reprod/UCX/1.20.0-GCCcore-15.2.0/20260812_094716UTC/easybuild/reprod/easyblocks/*.py
+  - /cvmfs/software.eessi.io/versions/2026.06/software/linux/x86_64/intel/sapphirerapids/reprod/libfabric/2.5.0-GCCcore-15.2.0/20260812_095258UTC/easybuild/libfabric-2.5.0-GCCcore-15.2.0.eb:
+      options:
+        robot: False
+        include-easyblocks: /cvmfs/software.eessi.io/versions/2026.06/software/linux/x86_64/intel/sapphirerapids/reprod/libfabric/2.5.0-GCCcore-15.2.0/20260812_095258UTC/easybuild/reprod/easyblocks/*.py
+  - /cvmfs/software.eessi.io/versions/2026.06/software/linux/x86_64/intel/sapphirerapids/reprod/PMIx/6.1.0-GCCcore-15.2.0/20260812_100106UTC/easybuild/PMIx-6.1.0-GCCcore-15.2.0.eb:
+      options:
+        robot: False
+        include-easyblocks: /cvmfs/software.eessi.io/versions/2026.06/software/linux/x86_64/intel/sapphirerapids/reprod/PMIx/6.1.0-GCCcore-15.2.0/20260812_100106UTC/easybuild/reprod/easyblocks/*.py
+  - /cvmfs/software.eessi.io/versions/2026.06/software/linux/x86_64/intel/sapphirerapids/reprod/PRRTE/4.1.0-GCCcore-15.2.0/20260812_100723UTC/easybuild/PRRTE-4.1.0-GCCcore-15.2.0.eb:
+      options:
+        robot: False
+        include-easyblocks: /cvmfs/software.eessi.io/versions/2026.06/software/linux/x86_64/intel/sapphirerapids/reprod/PRRTE/4.1.0-GCCcore-15.2.0/20260812_100723UTC/easybuild/reprod/easyblocks/*.py
+  - /cvmfs/software.eessi.io/versions/2026.06/software/linux/x86_64/intel/sapphirerapids/reprod/UCC/1.7.0-GCCcore-15.2.0/20260812_101025UTC/easybuild/UCC-1.7.0-GCCcore-15.2.0.eb:
+      options:
+        robot: False
+        include-easyblocks: /cvmfs/software.eessi.io/versions/2026.06/software/linux/x86_64/intel/sapphirerapids/reprod/UCC/1.7.0-GCCcore-15.2.0/20260812_101025UTC/easybuild/reprod/easyblocks/*.py
+  - /cvmfs/software.eessi.io/versions/2026.06/software/linux/x86_64/intel/sapphirerapids/reprod/OpenMPI/5.0.10-GCC-15.2.0/20260812_105035UTC/easybuild/OpenMPI-5.0.10-GCC-15.2.0.eb:
+      options:
+        robot: False
+        include-easyblocks: /cvmfs/software.eessi.io/versions/2026.06/software/linux/x86_64/intel/sapphirerapids/reprod/OpenMPI/5.0.10-GCC-15.2.0/20260812_105035UTC/easybuild/reprod/easyblocks/*.py
+  - /cvmfs/software.eessi.io/versions/2026.06/software/linux/x86_64/intel/sapphirerapids/reprod/FFTW/3.3.10-GCC-15.2.0/20260813_091454UTC/easybuild/FFTW-3.3.10-GCC-15.2.0.eb:
+      options:
+        robot: False
+        include-easyblocks: /cvmfs/software.eessi.io/versions/2026.06/software/linux/x86_64/intel/sapphirerapids/reprod/FFTW/3.3.10-GCC-15.2.0/20260813_091454UTC/easybuild/reprod/easyblocks/*.py
+  - /cvmfs/software.eessi.io/versions/2026.06/software/linux/x86_64/intel/sapphirerapids/reprod/BLIS/2.0-GCC-15.2.0/20260813_091814UTC/easybuild/BLIS-2.0-GCC-15.2.0.eb:
+      options:
+        robot: False
+        include-easyblocks: /cvmfs/software.eessi.io/versions/2026.06/software/linux/x86_64/intel/sapphirerapids/reprod/BLIS/2.0-GCC-15.2.0/20260813_091814UTC/easybuild/reprod/easyblocks/*.py
+  - /cvmfs/software.eessi.io/versions/2026.06/software/linux/x86_64/intel/sapphirerapids/reprod/AOCL-BLAS/5.2-GCC-15.2.0/20260813_092208UTC/easybuild/AOCL-BLAS-5.2-GCC-15.2.0.eb:
+      options:
+        robot: False
+        include-easyblocks: /cvmfs/software.eessi.io/versions/2026.06/software/linux/x86_64/intel/sapphirerapids/reprod/AOCL-BLAS/5.2-GCC-15.2.0/20260813_092208UTC/easybuild/reprod/easyblocks/*.py
+  - /cvmfs/software.eessi.io/versions/2026.06/software/linux/x86_64/intel/sapphirerapids/reprod/libarchive/3.8.5-GCCcore-15.2.0/20260813_092746UTC/easybuild/libarchive-3.8.5-GCCcore-15.2.0.eb:
+      options:
+        robot: False
+        include-easyblocks: /cvmfs/software.eessi.io/versions/2026.06/software/linux/x86_64/intel/sapphirerapids/reprod/libarchive/3.8.5-GCCcore-15.2.0/20260813_092746UTC/easybuild/reprod/easyblocks/*.py
+  - /cvmfs/software.eessi.io/versions/2026.06/software/linux/x86_64/intel/sapphirerapids/reprod/gompi/2026.1/20260813_092748UTC/easybuild/gompi-2026.1.eb:
+      options:
+        robot: False
+        include-easyblocks: /cvmfs/software.eessi.io/versions/2026.06/software/linux/x86_64/intel/sapphirerapids/reprod/gompi/2026.1/20260813_092748UTC/easybuild/reprod/easyblocks/*.py
+  - /cvmfs/software.eessi.io/versions/2026.06/software/linux/x86_64/intel/sapphirerapids/reprod/FFTW.MPI/3.3.10-gompi-2026.1/20260813_095730UTC/easybuild/FFTW.MPI-3.3.10-gompi-2026.1.eb:
+      options:
+        robot: False
+        include-easyblocks: /cvmfs/software.eessi.io/versions/2026.06/software/linux/x86_64/intel/sapphirerapids/reprod/FFTW.MPI/3.3.10-gompi-2026.1/20260813_095730UTC/easybuild/reprod/easyblocks/*.py
+  - /cvmfs/software.eessi.io/versions/2026.06/software/linux/x86_64/intel/sapphirerapids/reprod/libidn2/2.3.8-GCCcore-15.2.0/20260813_095926UTC/easybuild/libidn2-2.3.8-GCCcore-15.2.0.eb:
+      options:
+        robot: False
+        include-easyblocks: /cvmfs/software.eessi.io/versions/2026.06/software/linux/x86_64/intel/sapphirerapids/reprod/libidn2/2.3.8-GCCcore-15.2.0/20260813_095926UTC/easybuild/reprod/easyblocks/*.py
+  - /cvmfs/software.eessi.io/versions/2026.06/software/linux/x86_64/intel/sapphirerapids/reprod/libpsl/0.21.5-GCCcore-15.2.0/20260813_100038UTC/easybuild/libpsl-0.21.5-GCCcore-15.2.0.eb:
+      options:
+        robot: False
+        include-easyblocks: /cvmfs/software.eessi.io/versions/2026.06/software/linux/x86_64/intel/sapphirerapids/reprod/libpsl/0.21.5-GCCcore-15.2.0/20260813_100038UTC/easybuild/reprod/easyblocks/*.py
+  - /cvmfs/software.eessi.io/versions/2026.06/software/linux/x86_64/intel/sapphirerapids/reprod/cURL/8.17.0-GCCcore-15.2.0/20260813_100510UTC/easybuild/cURL-8.17.0-GCCcore-15.2.0.eb:
+      options:
+        robot: False
+        include-easyblocks: /cvmfs/software.eessi.io/versions/2026.06/software/linux/x86_64/intel/sapphirerapids/reprod/cURL/8.17.0-GCCcore-15.2.0/20260813_100510UTC/easybuild/reprod/easyblocks/*.py
+  - /cvmfs/software.eessi.io/versions/2026.06/software/linux/x86_64/intel/sapphirerapids/reprod/CMake/4.2.1-GCCcore-15.2.0/20260813_101153UTC/easybuild/CMake-4.2.1-GCCcore-15.2.0.eb:
+      options:
+        robot: False
+        include-easyblocks: /cvmfs/software.eessi.io/versions/2026.06/software/linux/x86_64/intel/sapphirerapids/reprod/CMake/4.2.1-GCCcore-15.2.0/20260813_101153UTC/easybuild/reprod/easyblocks/*.py
+  - /cvmfs/software.eessi.io/versions/2026.06/software/linux/x86_64/intel/sapphirerapids/reprod/FlexiBLAS/3.5.0-GCC-15.2.0/20260813_103436UTC/easybuild/FlexiBLAS-3.5.0-GCC-15.2.0.eb:
+      options:
+        robot: False
+        include-easyblocks: /cvmfs/software.eessi.io/versions/2026.06/software/linux/x86_64/intel/sapphirerapids/reprod/FlexiBLAS/3.5.0-GCC-15.2.0/20260813_103436UTC/easybuild/reprod/easyblocks/*.py
+  - /cvmfs/software.eessi.io/versions/2026.06/software/linux/x86_64/intel/sapphirerapids/reprod/ScaLAPACK/2.2.2-gompi-2026.1-fb/20260813_103901UTC/easybuild/ScaLAPACK-2.2.2-gompi-2026.1-fb.eb:
+      options:
+        robot: False
+        include-easyblocks: /cvmfs/software.eessi.io/versions/2026.06/software/linux/x86_64/intel/sapphirerapids/reprod/ScaLAPACK/2.2.2-gompi-2026.1-fb/20260813_103901UTC/easybuild/reprod/easyblocks/*.py
+  - /cvmfs/software.eessi.io/versions/2026.06/software/linux/x86_64/intel/sapphirerapids/reprod/foss/2026.1/20260813_103903UTC/easybuild/foss-2026.1.eb:
+      options:
+        robot: False
+        include-easyblocks: /cvmfs/software.eessi.io/versions/2026.06/software/linux/x86_64/intel/sapphirerapids/reprod/foss/2026.1/20260813_103903UTC/easybuild/reprod/easyblocks/*.py
+  - /cvmfs/software.eessi.io/versions/2026.06/software/linux/x86_64/intel/sapphirerapids/reprod/Bison/3.8.2-GCCcore-15.2.0/20260817_214111UTC/easybuild/Bison-3.8.2-GCCcore-15.2.0.eb:
+      options:
+        robot: False
+        include-easyblocks: /cvmfs/software.eessi.io/versions/2026.06/software/linux/x86_64/intel/sapphirerapids/reprod/Bison/3.8.2-GCCcore-15.2.0/20260817_214111UTC/easybuild/reprod/easyblocks/*.py
+  - /cvmfs/software.eessi.io/versions/2026.06/software/linux/x86_64/intel/sapphirerapids/reprod/Doxygen/1.17.0-GCCcore-15.2.0/20260817_214403UTC/easybuild/Doxygen-1.17.0-GCCcore-15.2.0.eb:
+      options:
+        robot: False
+        include-easyblocks: /cvmfs/software.eessi.io/versions/2026.06/software/linux/x86_64/intel/sapphirerapids/reprod/Doxygen/1.17.0-GCCcore-15.2.0/20260817_214403UTC/easybuild/reprod/easyblocks/*.py
+  - /cvmfs/software.eessi.io/versions/2026.06/software/linux/x86_64/intel/sapphirerapids/reprod/expat/2.7.3-GCCcore-15.2.0/20260817_214452UTC/easybuild/expat-2.7.3-GCCcore-15.2.0.eb:
+      options:
+        robot: False
+        include-easyblocks: /cvmfs/software.eessi.io/versions/2026.06/software/linux/x86_64/intel/sapphirerapids/reprod/expat/2.7.3-GCCcore-15.2.0/20260817_214452UTC/easybuild/reprod/easyblocks/*.py
+  - /cvmfs/software.eessi.io/versions/2026.06/software/linux/x86_64/intel/sapphirerapids/reprod/libpng/1.6.56-GCCcore-15.2.0/20260817_214527UTC/easybuild/libpng-1.6.56-GCCcore-15.2.0.eb:
+      options:
+        robot: False
+        include-easyblocks: /cvmfs/software.eessi.io/versions/2026.06/software/linux/x86_64/intel/sapphirerapids/reprod/libpng/1.6.56-GCCcore-15.2.0/20260817_214527UTC/easybuild/reprod/easyblocks/*.py
+  - /cvmfs/software.eessi.io/versions/2026.06/software/linux/x86_64/intel/sapphirerapids/reprod/Brotli/1.2.0-GCCcore-15.2.0/20260817_214656UTC/easybuild/Brotli-1.2.0-GCCcore-15.2.0.eb:
+      options:
+        robot: False
+        include-easyblocks: /cvmfs/software.eessi.io/versions/2026.06/software/linux/x86_64/intel/sapphirerapids/reprod/Brotli/1.2.0-GCCcore-15.2.0/20260817_214656UTC/easybuild/reprod/easyblocks/*.py
+  - /cvmfs/software.eessi.io/versions/2026.06/software/linux/x86_64/intel/sapphirerapids/reprod/freetype/2.14.3-GCCcore-15.2.0/20260817_214740UTC/easybuild/freetype-2.14.3-GCCcore-15.2.0.eb:
+      options:
+        robot: False
+        include-easyblocks: /cvmfs/software.eessi.io/versions/2026.06/software/linux/x86_64/intel/sapphirerapids/reprod/freetype/2.14.3-GCCcore-15.2.0/20260817_214740UTC/easybuild/reprod/easyblocks/*.py
+  - /cvmfs/software.eessi.io/versions/2026.06/software/linux/x86_64/intel/sapphirerapids/reprod/fontconfig/2.17.1-GCCcore-15.2.0/20260817_215113UTC/easybuild/fontconfig-2.17.1-GCCcore-15.2.0.eb:
+      options:
+        robot: False
+        include-easyblocks: /cvmfs/software.eessi.io/versions/2026.06/software/linux/x86_64/intel/sapphirerapids/reprod/fontconfig/2.17.1-GCCcore-15.2.0/20260817_215113UTC/easybuild/reprod/easyblocks/*.py
+  - /cvmfs/software.eessi.io/versions/2026.06/software/linux/x86_64/intel/sapphirerapids/reprod/hatchling/1.29.0-GCCcore-15.2.0/20260817_215126UTC/easybuild/hatchling-1.29.0-GCCcore-15.2.0.eb:
+      options:
+        robot: False
+        include-easyblocks: /cvmfs/software.eessi.io/versions/2026.06/software/linux/x86_64/intel/sapphirerapids/reprod/hatchling/1.29.0-GCCcore-15.2.0/20260817_215126UTC/easybuild/reprod/easyblocks/*.py
+  - /cvmfs/software.eessi.io/versions/2026.06/software/linux/x86_64/intel/sapphirerapids/reprod/scikit-build-core/0.12.2-GCCcore-15.2.0/20260817_215146UTC/easybuild/scikit-build-core-0.12.2-GCCcore-15.2.0.eb:
+      options:
+        robot: False
+        include-easyblocks: /cvmfs/software.eessi.io/versions/2026.06/software/linux/x86_64/intel/sapphirerapids/reprod/scikit-build-core/0.12.2-GCCcore-15.2.0/20260817_215146UTC/easybuild/reprod/easyblocks/*.py
+  - /cvmfs/software.eessi.io/versions/2026.06/software/linux/x86_64/intel/sapphirerapids/reprod/virtualenv/21.3.0-GCCcore-15.2.0/20260817_215224UTC/easybuild/virtualenv-21.3.0-GCCcore-15.2.0.eb:
+      options:
+        robot: False
+        include-easyblocks: /cvmfs/software.eessi.io/versions/2026.06/software/linux/x86_64/intel/sapphirerapids/reprod/virtualenv/21.3.0-GCCcore-15.2.0/20260817_215224UTC/easybuild/reprod/easyblocks/*.py
+  - /cvmfs/software.eessi.io/versions/2026.06/software/linux/x86_64/intel/sapphirerapids/reprod/psutil/7.2.1-GCCcore-15.2.0/20260817_215257UTC/easybuild/psutil-7.2.1-GCCcore-15.2.0.eb:
+      options:
+        robot: False
+        include-easyblocks: /cvmfs/software.eessi.io/versions/2026.06/software/linux/x86_64/intel/sapphirerapids/reprod/psutil/7.2.1-GCCcore-15.2.0/20260817_215257UTC/easybuild/reprod/easyblocks/*.py
+  - /cvmfs/software.eessi.io/versions/2026.06/software/linux/x86_64/intel/sapphirerapids/reprod/patchelf/0.18.0-GCCcore-15.2.0/20260817_215324UTC/easybuild/patchelf-0.18.0-GCCcore-15.2.0.eb:
+      options:
+        robot: False
+        include-easyblocks: /cvmfs/software.eessi.io/versions/2026.06/software/linux/x86_64/intel/sapphirerapids/reprod/patchelf/0.18.0-GCCcore-15.2.0/20260817_215324UTC/easybuild/reprod/easyblocks/*.py
+  - /cvmfs/software.eessi.io/versions/2026.06/software/linux/x86_64/intel/sapphirerapids/reprod/Rust/1.94.1-GCCcore-15.2.0/20260817_224243UTC/easybuild/Rust-1.94.1-GCCcore-15.2.0.eb:
+      options:
+        robot: False
+        include-easyblocks: /cvmfs/software.eessi.io/versions/2026.06/software/linux/x86_64/intel/sapphirerapids/reprod/Rust/1.94.1-GCCcore-15.2.0/20260817_224243UTC/easybuild/reprod/easyblocks/*.py
+  - /cvmfs/software.eessi.io/versions/2026.06/software/linux/x86_64/intel/sapphirerapids/reprod/cffi/2.0.0-GCCcore-15.2.0/20260817_224311UTC/easybuild/cffi-2.0.0-GCCcore-15.2.0.eb:
+      options:
+        robot: False
+        include-easyblocks: /cvmfs/software.eessi.io/versions/2026.06/software/linux/x86_64/intel/sapphirerapids/reprod/cffi/2.0.0-GCCcore-15.2.0/20260817_224311UTC/easybuild/reprod/easyblocks/*.py
+  - /cvmfs/software.eessi.io/versions/2026.06/software/linux/x86_64/intel/sapphirerapids/reprod/build/1.4.4-GCCcore-15.2.0/20260817_224331UTC/easybuild/build-1.4.4-GCCcore-15.2.0.eb:
+      options:
+        robot: False
+        include-easyblocks: /cvmfs/software.eessi.io/versions/2026.06/software/linux/x86_64/intel/sapphirerapids/reprod/build/1.4.4-GCCcore-15.2.0/20260817_224331UTC/easybuild/reprod/easyblocks/*.py
+  - /cvmfs/software.eessi.io/versions/2026.06/software/linux/x86_64/intel/sapphirerapids/reprod/setuptools-rust/1.12.1-GCCcore-15.2.0/20260817_224350UTC/easybuild/setuptools-rust-1.12.1-GCCcore-15.2.0.eb:
+      options:
+        robot: False
+        include-easyblocks: /cvmfs/software.eessi.io/versions/2026.06/software/linux/x86_64/intel/sapphirerapids/reprod/setuptools-rust/1.12.1-GCCcore-15.2.0/20260817_224350UTC/easybuild/reprod/easyblocks/*.py
+  - /cvmfs/software.eessi.io/versions/2026.06/software/linux/x86_64/intel/sapphirerapids/reprod/maturin/1.13.1-GCCcore-15.2.0/20260817_224622UTC/easybuild/maturin-1.13.1-GCCcore-15.2.0.eb:
+      options:
+        robot: False
+        include-easyblocks: /cvmfs/software.eessi.io/versions/2026.06/software/linux/x86_64/intel/sapphirerapids/reprod/maturin/1.13.1-GCCcore-15.2.0/20260817_224622UTC/easybuild/reprod/easyblocks/*.py
+  - /cvmfs/software.eessi.io/versions/2026.06/software/linux/x86_64/intel/sapphirerapids/reprod/cryptography/47.0.0-GCCcore-15.2.0/20260817_224713UTC/easybuild/cryptography-47.0.0-GCCcore-15.2.0.eb:
+      options:
+        robot: False
+        include-easyblocks: /cvmfs/software.eessi.io/versions/2026.06/software/linux/x86_64/intel/sapphirerapids/reprod/cryptography/47.0.0-GCCcore-15.2.0/20260817_224713UTC/easybuild/reprod/easyblocks/*.py
+  - /cvmfs/software.eessi.io/versions/2026.06/software/linux/x86_64/intel/sapphirerapids/reprod/dulwich/1.2.0-GCCcore-15.2.0/20260817_224802UTC/easybuild/dulwich-1.2.0-GCCcore-15.2.0.eb:
+      options:
+        robot: False
+        include-easyblocks: /cvmfs/software.eessi.io/versions/2026.06/software/linux/x86_64/intel/sapphirerapids/reprod/dulwich/1.2.0-GCCcore-15.2.0/20260817_224802UTC/easybuild/reprod/easyblocks/*.py
+  - /cvmfs/software.eessi.io/versions/2026.06/software/linux/x86_64/intel/sapphirerapids/reprod/poetry/2.3.4-GCCcore-15.2.0/20260817_225549UTC/easybuild/poetry-2.3.4-GCCcore-15.2.0.eb:
+      options:
+        robot: False
+        include-easyblocks: /cvmfs/software.eessi.io/versions/2026.06/software/linux/x86_64/intel/sapphirerapids/reprod/poetry/2.3.4-GCCcore-15.2.0/20260817_225549UTC/easybuild/reprod/easyblocks/*.py
+  - /cvmfs/software.eessi.io/versions/2026.06/software/linux/x86_64/intel/sapphirerapids/reprod/coverage/7.13.5-GCCcore-15.2.0/20260817_225605UTC/easybuild/coverage-7.13.5-GCCcore-15.2.0.eb:
+      options:
+        robot: False
+        include-easyblocks: /cvmfs/software.eessi.io/versions/2026.06/software/linux/x86_64/intel/sapphirerapids/reprod/coverage/7.13.5-GCCcore-15.2.0/20260817_225605UTC/easybuild/reprod/easyblocks/*.py
+  - /cvmfs/software.eessi.io/versions/2026.06/software/linux/x86_64/intel/sapphirerapids/reprod/tibs/0.5.7-GCCcore-15.2.0/20260817_225658UTC/easybuild/tibs-0.5.7-GCCcore-15.2.0.eb:
+      options:
+        robot: False
+        include-easyblocks: /cvmfs/software.eessi.io/versions/2026.06/software/linux/x86_64/intel/sapphirerapids/reprod/tibs/0.5.7-GCCcore-15.2.0/20260817_225658UTC/easybuild/reprod/easyblocks/*.py
+  - /cvmfs/software.eessi.io/versions/2026.06/software/linux/x86_64/intel/sapphirerapids/reprod/Pygments/2.20.0-GCCcore-15.2.0/20260817_225711UTC/easybuild/Pygments-2.20.0-GCCcore-15.2.0.eb:
+      options:
+        robot: False
+        include-easyblocks: /cvmfs/software.eessi.io/versions/2026.06/software/linux/x86_64/intel/sapphirerapids/reprod/Pygments/2.20.0-GCCcore-15.2.0/20260817_225711UTC/easybuild/reprod/easyblocks/*.py
+  - /cvmfs/software.eessi.io/versions/2026.06/software/linux/x86_64/intel/sapphirerapids/reprod/watchfiles/1.1.1-GCCcore-15.2.0/20260817_225805UTC/easybuild/watchfiles-1.1.1-GCCcore-15.2.0.eb:
+      options:
+        robot: False
+        include-easyblocks: /cvmfs/software.eessi.io/versions/2026.06/software/linux/x86_64/intel/sapphirerapids/reprod/watchfiles/1.1.1-GCCcore-15.2.0/20260817_225805UTC/easybuild/reprod/easyblocks/*.py
+  - /cvmfs/software.eessi.io/versions/2026.06/software/linux/x86_64/intel/sapphirerapids/reprod/BeautifulSoup/4.14.3-GCCcore-15.2.0/20260817_225824UTC/easybuild/BeautifulSoup-4.14.3-GCCcore-15.2.0.eb:
+      options:
+        robot: False
+        include-easyblocks: /cvmfs/software.eessi.io/versions/2026.06/software/linux/x86_64/intel/sapphirerapids/reprod/BeautifulSoup/4.14.3-GCCcore-15.2.0/20260817_225824UTC/easybuild/reprod/easyblocks/*.py
+  - /cvmfs/software.eessi.io/versions/2026.06/software/linux/x86_64/intel/sapphirerapids/reprod/rpds-py/0.30.0-GCCcore-15.2.0/20260817_225903UTC/easybuild/rpds-py-0.30.0-GCCcore-15.2.0.eb:
+      options:
+        robot: False
+        include-easyblocks: /cvmfs/software.eessi.io/versions/2026.06/software/linux/x86_64/intel/sapphirerapids/reprod/rpds-py/0.30.0-GCCcore-15.2.0/20260817_225903UTC/easybuild/reprod/easyblocks/*.py
+  - /cvmfs/software.eessi.io/versions/2026.06/software/linux/x86_64/intel/sapphirerapids/reprod/Cython/3.2.4-GCCcore-15.2.0/20260817_230117UTC/easybuild/Cython-3.2.4-GCCcore-15.2.0.eb:
+      options:
+        robot: False
+        include-easyblocks: /cvmfs/software.eessi.io/versions/2026.06/software/linux/x86_64/intel/sapphirerapids/reprod/Cython/3.2.4-GCCcore-15.2.0/20260817_230117UTC/easybuild/reprod/easyblocks/*.py
+  - /cvmfs/software.eessi.io/versions/2026.06/software/linux/x86_64/intel/sapphirerapids/reprod/libyaml/0.2.5-GCCcore-15.2.0/20260817_230143UTC/easybuild/libyaml-0.2.5-GCCcore-15.2.0.eb:
+      options:
+        robot: False
+        include-easyblocks: /cvmfs/software.eessi.io/versions/2026.06/software/linux/x86_64/intel/sapphirerapids/reprod/libyaml/0.2.5-GCCcore-15.2.0/20260817_230143UTC/easybuild/reprod/easyblocks/*.py
+  - /cvmfs/software.eessi.io/versions/2026.06/software/linux/x86_64/intel/sapphirerapids/reprod/PyYAML/6.0.3-GCCcore-15.2.0/20260817_230201UTC/easybuild/PyYAML-6.0.3-GCCcore-15.2.0.eb:
+      options:
+        robot: False
+        include-easyblocks: /cvmfs/software.eessi.io/versions/2026.06/software/linux/x86_64/intel/sapphirerapids/reprod/PyYAML/6.0.3-GCCcore-15.2.0/20260817_230201UTC/easybuild/reprod/easyblocks/*.py
+  - /cvmfs/software.eessi.io/versions/2026.06/software/linux/x86_64/intel/sapphirerapids/reprod/Python-bundle-PyPI/2026.04-GCCcore-15.2.0/20260817_235002UTC/easybuild/Python-bundle-PyPI-2026.04-GCCcore-15.2.0.eb:
+      options:
+        robot: False
+        include-easyblocks: /cvmfs/software.eessi.io/versions/2026.06/software/linux/x86_64/intel/sapphirerapids/reprod/Python-bundle-PyPI/2026.04-GCCcore-15.2.0/20260817_235002UTC/easybuild/reprod/easyblocks/*.py
+  - /cvmfs/software.eessi.io/versions/2026.06/software/linux/x86_64/intel/sapphirerapids/reprod/X11/20260518-GCCcore-15.2.0/20260818_001555UTC/easybuild/X11-20260518-GCCcore-15.2.0.eb:
+      options:
+        robot: False
+        include-easyblocks: /cvmfs/software.eessi.io/versions/2026.06/software/linux/x86_64/intel/sapphirerapids/reprod/X11/20260518-GCCcore-15.2.0/20260818_001555UTC/easybuild/reprod/easyblocks/*.py
+  - /cvmfs/software.eessi.io/versions/2026.06/software/linux/x86_64/intel/sapphirerapids/reprod/pixman/0.46.4-GCCcore-15.2.0/20260818_150319UTC/easybuild/pixman-0.46.4-GCCcore-15.2.0.eb:
+      options:
+        robot: False
+        include-easyblocks: /cvmfs/software.eessi.io/versions/2026.06/software/linux/x86_64/intel/sapphirerapids/reprod/pixman/0.46.4-GCCcore-15.2.0/20260818_150319UTC/easybuild/reprod/easyblocks/*.py
+  - /cvmfs/software.eessi.io/versions/2026.06/software/linux/x86_64/intel/sapphirerapids/reprod/PCRE2/10.47-GCCcore-15.2.0/20260818_150428UTC/easybuild/PCRE2-10.47-GCCcore-15.2.0.eb:
+      options:
+        robot: False
+        include-easyblocks: /cvmfs/software.eessi.io/versions/2026.06/software/linux/x86_64/intel/sapphirerapids/reprod/PCRE2/10.47-GCCcore-15.2.0/20260818_150428UTC/easybuild/reprod/easyblocks/*.py
+  - /cvmfs/software.eessi.io/versions/2026.06/software/linux/x86_64/intel/sapphirerapids/reprod/GLib/2.89.0-GCCcore-15.2.0/20260818_151438UTC/easybuild/GLib-2.89.0-GCCcore-15.2.0.eb:
+      options:
+        robot: False
+        include-easyblocks: /cvmfs/software.eessi.io/versions/2026.06/software/linux/x86_64/intel/sapphirerapids/reprod/GLib/2.89.0-GCCcore-15.2.0/20260818_151438UTC/easybuild/reprod/easyblocks/*.py
+  - /cvmfs/software.eessi.io/versions/2026.06/software/linux/x86_64/intel/sapphirerapids/reprod/cairo/1.18.4-GCCcore-15.2.0/20260818_152031UTC/easybuild/cairo-1.18.4-GCCcore-15.2.0.eb:
+      options:
+        robot: False
+        include-easyblocks: /cvmfs/software.eessi.io/versions/2026.06/software/linux/x86_64/intel/sapphirerapids/reprod/cairo/1.18.4-GCCcore-15.2.0/20260818_152031UTC/easybuild/reprod/easyblocks/*.py
+  - /cvmfs/software.eessi.io/versions/2026.06/software/linux/x86_64/intel/sapphirerapids/reprod/GObject-Introspection/1.86.0-GCCcore-15.2.0/20260818_152318UTC/easybuild/GObject-Introspection-1.86.0-GCCcore-15.2.0.eb:
+      options:
+        robot: False
+        include-easyblocks: /cvmfs/software.eessi.io/versions/2026.06/software/linux/x86_64/intel/sapphirerapids/reprod/GObject-Introspection/1.86.0-GCCcore-15.2.0/20260818_152318UTC/easybuild/reprod/easyblocks/*.py
+  - /cvmfs/software.eessi.io/versions/2026.06/software/linux/x86_64/intel/sapphirerapids/reprod/fonttools/4.63.0-GCCcore-15.2.0/20260818_152340UTC/easybuild/fonttools-4.63.0-GCCcore-15.2.0.eb:
+      options:
+        robot: False
+        include-easyblocks: /cvmfs/software.eessi.io/versions/2026.06/software/linux/x86_64/intel/sapphirerapids/reprod/fonttools/4.63.0-GCCcore-15.2.0/20260818_152340UTC/easybuild/reprod/easyblocks/*.py
+  - /cvmfs/software.eessi.io/versions/2026.06/software/linux/x86_64/intel/sapphirerapids/reprod/ICU/78.3-GCCcore-15.2.0/20260818_152825UTC/easybuild/ICU-78.3-GCCcore-15.2.0.eb:
+      options:
+        robot: False
+        include-easyblocks: /cvmfs/software.eessi.io/versions/2026.06/software/linux/x86_64/intel/sapphirerapids/reprod/ICU/78.3-GCCcore-15.2.0/20260818_152825UTC/easybuild/reprod/easyblocks/*.py
+  - /cvmfs/software.eessi.io/versions/2026.06/software/linux/x86_64/intel/sapphirerapids/reprod/HarfBuzz/14.2.0-GCCcore-15.2.0/20260818_153333UTC/easybuild/HarfBuzz-14.2.0-GCCcore-15.2.0.eb:
+      options:
+        robot: False
+        include-easyblocks: /cvmfs/software.eessi.io/versions/2026.06/software/linux/x86_64/intel/sapphirerapids/reprod/HarfBuzz/14.2.0-GCCcore-15.2.0/20260818_153333UTC/easybuild/reprod/easyblocks/*.py
+  - /cvmfs/software.eessi.io/versions/2026.06/software/linux/x86_64/intel/sapphirerapids/reprod/GMP/6.3.0-GCCcore-15.2.0/20260818_154354UTC/easybuild/GMP-6.3.0-GCCcore-15.2.0.eb:
+      options:
+        robot: False
+        include-easyblocks: /cvmfs/software.eessi.io/versions/2026.06/software/linux/x86_64/intel/sapphirerapids/reprod/GMP/6.3.0-GCCcore-15.2.0/20260818_154354UTC/easybuild/reprod/easyblocks/*.py
+  - /cvmfs/software.eessi.io/versions/2026.06/software/linux/x86_64/intel/sapphirerapids/reprod/lit/18.1.8-GCCcore-15.2.0/20260818_154424UTC/easybuild/lit-18.1.8-GCCcore-15.2.0.eb:
+      options:
+        robot: False
+        include-easyblocks: /cvmfs/software.eessi.io/versions/2026.06/software/linux/x86_64/intel/sapphirerapids/reprod/lit/18.1.8-GCCcore-15.2.0/20260818_154424UTC/easybuild/reprod/easyblocks/*.py
+  - /cvmfs/software.eessi.io/versions/2026.06/software/linux/x86_64/intel/sapphirerapids/reprod/git/2.52.0-GCCcore-15.2.0/20260818_154728UTC/easybuild/git-2.52.0-GCCcore-15.2.0.eb:
+      options:
+        robot: False
+        include-easyblocks: /cvmfs/software.eessi.io/versions/2026.06/software/linux/x86_64/intel/sapphirerapids/reprod/git/2.52.0-GCCcore-15.2.0/20260818_154728UTC/easybuild/reprod/easyblocks/*.py
+  - /cvmfs/software.eessi.io/versions/2026.06/software/linux/x86_64/intel/sapphirerapids/reprod/Z3/4.15.4-GCCcore-15.2.0/20260818_155612UTC/easybuild/Z3-4.15.4-GCCcore-15.2.0.eb:
+      options:
+        robot: False
+        include-easyblocks: /cvmfs/software.eessi.io/versions/2026.06/software/linux/x86_64/intel/sapphirerapids/reprod/Z3/4.15.4-GCCcore-15.2.0/20260818_155612UTC/easybuild/reprod/easyblocks/*.py
+  - /cvmfs/software.eessi.io/versions/2026.06/software/linux/x86_64/intel/sapphirerapids/reprod/spin/0.18-GCCcore-15.2.0/20260819_053751UTC/easybuild/spin-0.18-GCCcore-15.2.0.eb:
+      options:
+        robot: False
+        include-easyblocks: /cvmfs/software.eessi.io/versions/2026.06/software/linux/x86_64/intel/sapphirerapids/reprod/spin/0.18-GCCcore-15.2.0/20260819_053751UTC/easybuild/reprod/easyblocks/*.py
+  - /cvmfs/software.eessi.io/versions/2026.06/software/linux/x86_64/intel/sapphirerapids/reprod/hypothesis/6.153.2-GCCcore-15.2.0/20260819_053807UTC/easybuild/hypothesis-6.153.2-GCCcore-15.2.0.eb:
+      options:
+        robot: False
+        include-easyblocks: /cvmfs/software.eessi.io/versions/2026.06/software/linux/x86_64/intel/sapphirerapids/reprod/hypothesis/6.153.2-GCCcore-15.2.0/20260819_053807UTC/easybuild/reprod/easyblocks/*.py
+  - /cvmfs/software.eessi.io/versions/2026.06/software/linux/x86_64/intel/sapphirerapids/reprod/Eigen/5.0.0-GCCcore-15.2.0/20260819_054317UTC/easybuild/Eigen-5.0.0-GCCcore-15.2.0.eb:
+      options:
+        robot: False
+        include-easyblocks: /cvmfs/software.eessi.io/versions/2026.06/software/linux/x86_64/intel/sapphirerapids/reprod/Eigen/5.0.0-GCCcore-15.2.0/20260819_054317UTC/easybuild/reprod/easyblocks/*.py
+  - /cvmfs/software.eessi.io/versions/2026.06/software/linux/x86_64/intel/sapphirerapids/reprod/Catch2/2.13.10-GCCcore-15.2.0/20260819_054356UTC/easybuild/Catch2-2.13.10-GCCcore-15.2.0.eb:
+      options:
+        robot: False
+        include-easyblocks: /cvmfs/software.eessi.io/versions/2026.06/software/linux/x86_64/intel/sapphirerapids/reprod/Catch2/2.13.10-GCCcore-15.2.0/20260819_054356UTC/easybuild/reprod/easyblocks/*.py
+  - /cvmfs/software.eessi.io/versions/2026.06/software/linux/x86_64/intel/sapphirerapids/reprod/Boost/1.90.0-GCCcore-15.2.0/20260819_055818UTC/easybuild/Boost-1.90.0-GCCcore-15.2.0.eb:
+      options:
+        robot: False
+        include-easyblocks: /cvmfs/software.eessi.io/versions/2026.06/software/linux/x86_64/intel/sapphirerapids/reprod/Boost/1.90.0-GCCcore-15.2.0/20260819_055818UTC/easybuild/reprod/easyblocks/*.py
+  - /cvmfs/software.eessi.io/versions/2026.06/software/linux/x86_64/intel/sapphirerapids/reprod/pybind11/3.0.4-GCCcore-15.2.0/20260819_060655UTC/easybuild/pybind11-3.0.4-GCCcore-15.2.0.eb:
+      options:
+        robot: False
+        include-easyblocks: /cvmfs/software.eessi.io/versions/2026.06/software/linux/x86_64/intel/sapphirerapids/reprod/pybind11/3.0.4-GCCcore-15.2.0/20260819_060655UTC/easybuild/reprod/easyblocks/*.py
+  - /cvmfs/software.eessi.io/versions/2026.06/software/linux/x86_64/intel/sapphirerapids/reprod/meson-python/0.19.0-GCCcore-15.2.0/20260819_060716UTC/easybuild/meson-python-0.19.0-GCCcore-15.2.0.eb:
+      options:
+        robot: False
+        include-easyblocks: /cvmfs/software.eessi.io/versions/2026.06/software/linux/x86_64/intel/sapphirerapids/reprod/meson-python/0.19.0-GCCcore-15.2.0/20260819_060716UTC/easybuild/reprod/easyblocks/*.py

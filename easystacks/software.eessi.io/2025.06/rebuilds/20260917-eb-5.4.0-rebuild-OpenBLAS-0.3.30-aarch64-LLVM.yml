@@ -1,0 +1,11 @@
+# Rebuild OpenBLAS v0.3.30 for llvm-compilers v20.1.8 to include
+# the flag -ftrapping-math on aarch64. This resolves test failures
+# encountered with NumPy on these architectures when building SciPy-bundle.
+# See:
+#  - https://github.com/easybuilders/easybuild-easyconfigs/issues/24764
+#  - https://github.com/easybuilders/easybuild-easyconfigs/pull/26890
+easyconfigs:
+  - OpenBLAS-0.3.30-llvm-compilers-20.1.8.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/26890
+        from-commit: 0ed42e32053ef5a4cd796909ee6173f39def94b1

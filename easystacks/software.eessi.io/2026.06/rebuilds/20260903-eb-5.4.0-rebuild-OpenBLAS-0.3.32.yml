@@ -1,0 +1,8 @@
+# rebuild OpenBLAS 0.3.32 to fix a non-SVE Arm64 bug producing wrong results
+# see https://github.com/easybuilders/easybuild-easyconfigs/pull/26780
+# and https://github.com/OpenMathLib/OpenBLAS/pull/5918
+easyconfigs:
+  - OpenBLAS-0.3.32-GCC-15.2.0.eb:
+      options:
+        from-commit: e7d28ea3d296898cd69a29341785d6a36b8ec75c
+        rebuild: true
