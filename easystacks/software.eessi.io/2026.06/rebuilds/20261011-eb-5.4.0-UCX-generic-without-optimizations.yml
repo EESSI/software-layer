@@ -1,0 +1,14 @@
+# 2026.10.11
+# The generic builds of UCX were done with --enable-optimizations, which makes
+# configure add -mavx for the whole package when the build machine has AVX.
+# Almost every library in the x86_64/generic installations needs AVX as a result,
+# see https://github.com/EESSI/software-layer/issues/1778
+# The option is now dropped for generic CPU targets by the pre_configure_hook_ucx_generic
+# hook in https://github.com/EESSI/software-layer-scripts (eb_hooks.py)
+# Only the x86_64/generic and aarch64/generic installations need to be rebuilt,
+# so only build this for those targets (arch:x86_64/generic and arch:aarch64/generic).
+easyconfigs:
+  - UCX-1.20.0-GCCcore-15.2.0.eb:
+      options:
+        # same easyconfig as the current installations
+        from-commit: f9fe742af027c230634f8a96ceaa35233a69f8cf
