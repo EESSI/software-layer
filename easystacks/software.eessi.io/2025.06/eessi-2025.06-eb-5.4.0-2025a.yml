@@ -61,7 +61,6 @@ easyconfigs:
   - pyNVML-13.590.48-GCCcore-14.2.0.eb
   - GStreamer-1.26.6-GCCcore-14.2.0.eb
   - MDAnalysis-2.9.0-foss-2025a.eb
-  - NECI-20230620-foss-2025a.eb
   - OpenFAST-4.1.2-foss-2025a.eb
   - OpenFAST-5.0.0-foss-2025a.eb
   - OpenMM-8.3.0-foss-2025a.eb
