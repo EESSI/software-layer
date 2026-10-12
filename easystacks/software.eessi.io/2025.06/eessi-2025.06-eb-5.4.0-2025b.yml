@@ -80,3 +80,12 @@ easyconfigs:
       options:
           # See https://github.com/easybuilders/easybuild-easyconfigs/pull/26930
           from-commit: a69e69347c4a4d4b625ff4cf37b6160374506612
+  - DCMTK-3.7.0-GCCcore-14.3.0.eb
+  - SymEngine-0.14.0-gfbf-2025b.eb
+  - ant-1.10.14-Java-21.eb
+  - bacio-2.6.0-GCC-14.3.0.eb
+  - g2clib-2.3.0-GCCcore-14.3.0.eb
+  - ip-5.4.0-gfbf-2025b.eb
+  - poppler-25.12.0-GCC-14.3.0.eb
+  - tcsh-6.24.16-GCCcore-14.3.0.eb
+  - xproto-7.0.31-GCCcore-14.3.0.eb
