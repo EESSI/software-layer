@@ -1,0 +1,5 @@
+easyconfigs:
+  - AITW-microstructures-1.2.0-foss-2023a.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/27055
+        from-commit: TODO
