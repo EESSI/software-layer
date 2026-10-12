@@ -80,3 +80,4 @@ easyconfigs:
       options:
           # See https://github.com/easybuilders/easybuild-easyconfigs/pull/26930
           from-commit: a69e69347c4a4d4b625ff4cf37b6160374506612
+  - ViennaRNA-2.7.2-gfbf-2025b.eb
