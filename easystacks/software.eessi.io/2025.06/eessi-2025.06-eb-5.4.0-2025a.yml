@@ -63,7 +63,6 @@ easyconfigs:
   - MDAnalysis-2.9.0-foss-2025a.eb
   - OpenFAST-4.1.2-foss-2025a.eb
   - OpenFAST-5.0.0-foss-2025a.eb
-  - OpenMM-8.4.0-foss-2025a.eb
   - Redis-8.0.2-GCCcore-14.2.0.eb
   - ant-1.10.14-Java-21.eb
   - plotly.py-6.3.1-GCCcore-14.2.0.eb
