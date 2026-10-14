@@ -151,3 +151,9 @@ easyconfigs:
   - PnetCDF-1.14.1-gompi-2026.1.eb
   - h5py-3.16.0-foss-2026.1.eb
   - netcdf4-python-1.7.4-foss-2026.1.eb
+  - ‎LAMMPS-30Sep2026-foss-2026.1-kokkos.eb‎:
+      options:
+        # See https://github.com/easybuilders/easybuild-easyblocks/pull/4258
+        include-easyblocks-from-commit: b332a01b999721522768bb8169c1e37d457039d8
+        # See https://github.com/easybuilders/easybuild-easyconfigs/pull/27161
+        from-commit: 5646253af12bbcfe88802f1de1ff82ae394fff4d
