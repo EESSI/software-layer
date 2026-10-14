@@ -1,2 +1,4 @@
 easyconfigs:
   - torchvision-0.16.0-foss-2023a.eb
+  - XGBoost-2.0.2-gfbf-2023a.eb
+  - Transformers-4.39.3-gfbf-2023a.eb
