@@ -81,3 +81,8 @@ easyconfigs:
           # See https://github.com/easybuilders/easybuild-easyconfigs/pull/26930
           from-commit: a69e69347c4a4d4b625ff4cf37b6160374506612
   - ViennaRNA-2.7.2-gfbf-2025b.eb
+  - AITW-wood_stiffness_homogenization-1.0.0-gfbf-2025b.eb:
+      options:
+          # See https://github.com/easybuilders/easybuild-easyconfigs/pull/27157
+          from-commit: cb4c9a82a668f9fe3281f285428f462501fdacbe
+
