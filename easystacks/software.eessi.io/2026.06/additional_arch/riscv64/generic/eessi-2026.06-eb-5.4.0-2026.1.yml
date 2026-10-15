@@ -120,5 +120,3 @@ easyconfigs:
       options:
         # see https://github.com/easybuilders/easybuild-easyconfigs/pull/27146
         from-commit: edb5ea41d03ac2122aff76d6b62d579bfba9dd39
-  - Szip-2.1.1-GCCcore-15.2.0.eb
-  - UCX-1.20.0-GCCcore-15.2.0.eb
