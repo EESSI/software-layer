@@ -8,4 +8,3 @@ easyconfigs:
       options:
         # see https://github.com/easybuilders/easybuild-easyconfigs/pull/27165
         from-commit: 9e503e88dab0d4e8d91010123c144b636d3e0d3b
-
