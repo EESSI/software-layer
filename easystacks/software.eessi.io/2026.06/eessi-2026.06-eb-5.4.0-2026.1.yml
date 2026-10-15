@@ -156,4 +156,4 @@ easyconfigs:
         # See https://github.com/easybuilders/easybuild-easyblocks/pull/4258
         include-easyblocks-from-commit: b332a01b999721522768bb8169c1e37d457039d8
         # See https://github.com/easybuilders/easybuild-easyconfigs/pull/27161
-        from-commit: 5646253af12bbcfe88802f1de1ff82ae394fff4d
+        from-commit: 4aa3da2770dccf4ab7dba9c3fabbdbb84b6025f4
