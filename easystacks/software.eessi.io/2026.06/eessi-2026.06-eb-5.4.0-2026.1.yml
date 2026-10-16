@@ -151,3 +151,12 @@ easyconfigs:
   - PnetCDF-1.14.1-gompi-2026.1.eb
   - h5py-3.16.0-foss-2026.1.eb
   - netcdf4-python-1.7.4-foss-2026.1.eb
+  - SIONlib-1.7.7-GCCcore-15.2.0-tools.eb
+  - OTF2-3.2-GCCcore-15.2.0.eb
+  - OPARI2-2.0.10-GCCcore-15.2.0.eb
+  - Score-P-10.1-gompi-2026.1.eb
+  - libdwarf-2.3.1-GCCcore-15.2.0.eb
+  - gperftools-2.18.1-GCCcore-15.2.0.eb
+  - GDB-17.2-GCCcore-15.2.0.eb
+  - nvtop-3.3.2-GCCcore-15.2.0.eb
+  - likwid-5.5.1-GCC-15.2.0.eb
