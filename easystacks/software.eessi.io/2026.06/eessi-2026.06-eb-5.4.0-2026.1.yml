@@ -152,9 +152,5 @@ easyconfigs:
   - h5py-3.16.0-foss-2026.1.eb
   - netcdf4-python-1.7.4-foss-2026.1.eb
   - sympy-1.14.0-gfbf-2026.1.eb
-  - dask-2026.7.1-gfbf-2026.1.eb:
-      options:
-        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/26713
-        from-commit: 455567d8a8a3e5e92845542ba827efb2fe6ed350
   - wrapt-2.2.1-GCCcore-15.2.0.eb
   - ASE-3.28.0-gfbf-2026.1.eb
