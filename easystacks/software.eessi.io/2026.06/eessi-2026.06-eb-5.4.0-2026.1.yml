@@ -163,4 +163,7 @@ easyconfigs:
   - Lua-5.5.0-GCCcore-15.2.0.eb
   - Bazel-7.7.0-GCCcore-15.2.0-Java-21.eb
   - OpenMM-8.5.2-foss-2026.1.eb
-  - p7zip-17.05-GCCcore-15.2.0.eb
+  - p7zip-17.05-GCCcore-15.2.0.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/27186
+        from-commit: 594648897944193d32fb44be9afb318f15633dce
