@@ -116,3 +116,8 @@ easyconfigs:
         from-commit: 5b5a953a03d1ffeb1f7a2df5d40c31b1321339e6
   - alsa-lib-1.2.15.3-GCCcore-15.2.0.eb
   - ant-1.10.15-Java-21.eb
+  - Perl-bundle-CPAN-5.42.0-GCCcore-15.2.0.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/27036
+        from-commit: 909ebcddd94ae707ef3fa4db1e0d8398c1cd1231
+  - Pint-0.25.3-GCCcore-15.2.0.eb
