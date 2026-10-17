@@ -1,0 +1,7 @@
+easyconfigs:
+  - GROMACS-2026.3-foss-2026.1-CUDA-13.3.0.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/26762
+        from-commit: 4ee416d82564a3aa8dd3952cb0039d1c8081a22f
+        # see https://github.com/easybuilders/easybuild-easyblocks/pull/4234
+        include-easyblocks-from-commit: f6f23d4674dbc684aff706abc5f436363ba3edcf
