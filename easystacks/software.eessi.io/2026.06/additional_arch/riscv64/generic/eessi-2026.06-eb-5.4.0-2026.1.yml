@@ -116,3 +116,4 @@ easyconfigs:
         from-commit: 5b5a953a03d1ffeb1f7a2df5d40c31b1321339e6
   - alsa-lib-1.2.15.3-GCCcore-15.2.0.eb
   - ant-1.10.15-Java-21.eb
+  - XML-LibXML-2.0210-GCCcore-15.2.0.eb
