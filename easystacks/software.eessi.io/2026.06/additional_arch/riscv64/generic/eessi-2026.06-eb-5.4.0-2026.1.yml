@@ -134,3 +134,4 @@ easyconfigs:
   - pyproj-3.7.2-GCCcore-15.2.0.eb
   - xarray-2026.4.0-gfbf-2026.1.eb
   - netCDF-Fortran-4.6.3-gompi-2026.1.eb
+  - netCDF-C++4-4.3.1-gompi-2026.1.eb
