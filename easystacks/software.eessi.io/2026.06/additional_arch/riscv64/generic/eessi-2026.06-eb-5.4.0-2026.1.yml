@@ -120,3 +120,10 @@ easyconfigs:
       options:
         # see https://github.com/easybuilders/easybuild-easyconfigs/pull/27146
         from-commit: edb5ea41d03ac2122aff76d6b62d579bfba9dd39
+  - ImageMagick-7.1.2-26-GCCcore-15.2.0.eb
+  - MPFR-4.2.2-GCCcore-15.2.0.eb
+  - Xvfb-21.1.23-GCCcore-15.2.0.eb
+  - GLPK-5.0-GCCcore-15.2.0.eb
+  - libsndfile-1.2.2-GCCcore-15.2.0.eb
+  - NLopt-2.10.1-GCCcore-15.2.0.eb
+  - UDUNITS-2.2.28-GCCcore-15.2.0.eb
