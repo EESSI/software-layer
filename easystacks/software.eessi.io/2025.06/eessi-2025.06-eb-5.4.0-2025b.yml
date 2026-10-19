@@ -83,6 +83,7 @@ easyconfigs:
   - ViennaRNA-2.7.2-gfbf-2025b.eb
   - DCMTK-3.7.0-GCCcore-14.3.0.eb
   - SymEngine-0.14.0-gfbf-2025b.eb
+  - ant-1.10.14-Java-21.eb
   - bacio-2.6.0-GCC-14.3.0.eb
   - g2clib-2.3.0-GCCcore-14.3.0.eb
   - ip-5.4.0-gfbf-2025b.eb
