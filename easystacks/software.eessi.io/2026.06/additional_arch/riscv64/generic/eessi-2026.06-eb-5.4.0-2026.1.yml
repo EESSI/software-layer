@@ -116,3 +116,7 @@ easyconfigs:
         from-commit: 5b5a953a03d1ffeb1f7a2df5d40c31b1321339e6
   - alsa-lib-1.2.15.3-GCCcore-15.2.0.eb
   - ant-1.10.15-Java-21.eb
+  - Go-1.26.7.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/26736
+        from-commit: a41d3d5086bdbfc5bfa4108f6b7dc6537316e7c6
