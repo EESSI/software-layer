@@ -118,5 +118,5 @@ easyconfigs:
   - ant-1.10.15-Java-21.eb
   - Go-1.26.7.eb:
       options:
-        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/26736
-        from-commit: a41d3d5086bdbfc5bfa4108f6b7dc6537316e7c6
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/27204
+        from-commit: 364fe9a53b66acadf02951cb5d4a2c57cb123956
