@@ -127,3 +127,7 @@ easyconfigs:
   - libsndfile-1.2.2-GCCcore-15.2.0.eb
   - NLopt-2.10.1-GCCcore-15.2.0.eb
   - UDUNITS-2.2.28-GCCcore-15.2.0.eb
+  - amdahl-0.4.1-gompi-2026.1.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/27032
+        from-commit: dd826fa1f62808fa7be3fadaabb6967eba595451
