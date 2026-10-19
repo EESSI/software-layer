@@ -135,3 +135,4 @@ easyconfigs:
   - xarray-2026.4.0-gfbf-2026.1.eb
   - netCDF-Fortran-4.6.3-gompi-2026.1.eb
   - netCDF-C++4-4.3.1-gompi-2026.1.eb
+  - h5py-3.16.0-foss-2026.1.eb
