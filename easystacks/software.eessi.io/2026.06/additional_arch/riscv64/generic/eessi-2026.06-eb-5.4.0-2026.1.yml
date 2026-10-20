@@ -156,4 +156,8 @@ easyconfigs:
         from-commit: 9cf5ab0c5ce5bb00a3f38c17907345256ab86099
         # see https://github.com/easybuilders/easybuild-easyblocks/pull/4248
         include-easyblocks-from-commit: 890cb41af11f99c3c64a4365b5dd54ea6f869f61
+  - buildenv-default-foss-2026.1.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/26775
+        from-commit: dfbcdaa3bc04aa07cb441e9bab828d1182e904cf
   - Biopython-1.87-gfbf-2026.1.eb
