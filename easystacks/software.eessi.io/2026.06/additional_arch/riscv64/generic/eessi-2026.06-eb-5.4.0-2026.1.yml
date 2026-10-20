@@ -175,3 +175,4 @@ easyconfigs:
         from-commit: c1df27b7f1020f7202b77d5218f7a275f754f6f4
   - pydantic-2.13.4-GCCcore-15.2.0.eb
   - networkx-3.6.1-gfbf-2026.1.eb
+  - awscli-2.35.11-GCCcore-15.2.0
