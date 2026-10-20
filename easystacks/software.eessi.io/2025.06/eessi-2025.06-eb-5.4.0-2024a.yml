@@ -13,3 +13,5 @@ easyconfigs:
         # see https://github.com/easybuilders/easybuild-easyconfigs/pull/26981
         from-commit: be7824829994ef42abd2427a37adb17cde694e36
   - MultiQC-1.28-gfbf-2024a.eb
+  - Togl-2.0-GCCcore-13.3.0.eb
+  - XCrySDen-1.6.2-foss-2024a.eb
