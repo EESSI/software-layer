@@ -1,0 +1,5 @@
+easyconfigs:
+  - AITW-aiida-wood-permeability-0.3.0-foss-2026.1.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/27057
+        from-commit: 94de5a1d495eeb1698c05554ab490cdf0f888b35
