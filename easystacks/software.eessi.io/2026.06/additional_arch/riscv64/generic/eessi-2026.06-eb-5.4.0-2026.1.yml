@@ -137,3 +137,4 @@ easyconfigs:
   - netCDF-C++4-4.3.1-gompi-2026.1.eb
   - h5py-3.16.0-foss-2026.1.eb
   - netcdf4-python-1.7.4-foss-2026.1.eb
+  - PnetCDF-1.14.1-gompi-2026.1.eb
