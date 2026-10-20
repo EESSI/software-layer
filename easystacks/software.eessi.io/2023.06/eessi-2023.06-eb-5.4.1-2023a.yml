@@ -1,0 +1,5 @@
+easyconfigs:
+  - AITW-material_optimization-0.1.0-foss-2023a.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/27069
+        from-commit: 8e90ef84e490c24591a492569804c0b708d5400a
