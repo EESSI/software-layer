@@ -160,3 +160,4 @@ easyconfigs:
       options:
         # see https://github.com/easybuilders/easybuild-easyconfigs/pull/26775
         from-commit: dfbcdaa3bc04aa07cb441e9bab828d1182e904cf
+  - Biopython-1.87-gfbf-2026.1.eb
