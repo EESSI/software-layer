@@ -142,3 +142,7 @@ easyconfigs:
       options:
         # see https://github.com/easybuilders/easybuild-easyconfigs/pull/26818
         from-commit: 9ca4fd80740b7a78b5c62a173c698e613293bbad
+  - rsx-0.2.10-GCCcore-15.2.0:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/26973
+        from-commit: 908a148ac0e03bce6b4dbe60b6cefaf47b90169a
