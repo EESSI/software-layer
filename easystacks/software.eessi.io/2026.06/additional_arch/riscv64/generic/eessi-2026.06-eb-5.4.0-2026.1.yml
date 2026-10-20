@@ -173,4 +173,4 @@ easyconfigs:
       options:
         # see https://github.com/easybuilders/easybuild-easyconfigs/pull/26711
         from-commit: c1df27b7f1020f7202b77d5218f7a275f754f6f4
-
+  - pydantic-2.13.4-GCCcore-15.2.0.eb
