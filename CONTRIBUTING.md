@@ -19,7 +19,7 @@ PRs that do not follow these guidelines may be closed without detailed review. Y
 - Keep the change easy to review and maintain:
     - Reuse existing code and logic instead of adding parallel implementations.
     - Mimic existing code style.
-    - Prefer the simplest solution that works: fewer lines to review means fewer lines to maintain.
+    - Prefer the simplest solution that works, and favour readable code over compact code. Less code to review means less code to maintain, but not at the cost of readability.
     - Keep one logical change per PR and leave out unrelated cleanups. Smaller PRs are generally easier to review.
 - If your PR adds a feature, make sure your opening post has a clear description of what feature is added. Some things to think about:
     - What did you want to do that couldn't be done before?
