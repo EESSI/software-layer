@@ -179,3 +179,4 @@ easyconfigs:
   - scikit-learn-1.8.0-gfbf-2026.1.eb
   - Cartopy-0.25.0-foss-2026.1.eb
   - Arrow-24.0.0-gfbf-2026.1.eb
+  - XML-LibXML-2.0210-GCCcore-15.2.0.eb
