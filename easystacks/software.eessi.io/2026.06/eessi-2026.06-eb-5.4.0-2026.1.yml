@@ -152,3 +152,6 @@ easyconfigs:
   - h5py-3.16.0-foss-2026.1.eb
   - netcdf4-python-1.7.4-foss-2026.1.eb
   - PLUMED-2.10.0-foss-2026.1.eb
+  - sympy-1.14.0-gfbf-2026.1.eb
+  - wrapt-2.2.1-GCCcore-15.2.0.eb
+  - ASE-3.28.0-gfbf-2026.1.eb
