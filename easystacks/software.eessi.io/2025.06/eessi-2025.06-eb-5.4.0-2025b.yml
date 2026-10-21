@@ -90,3 +90,8 @@ easyconfigs:
   - poppler-25.12.0-GCC-14.3.0.eb
   - tcsh-6.24.16-GCCcore-14.3.0.eb
   - xproto-7.0.31-GCCcore-14.3.0.eb
+  - MUST-1.11.2-gompi-2025b.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/26964
+        from-commit: a58430a503c1205a5122175006460141d795dd9a
+  - MUST-1.11.2-lompi-2025b.eb
