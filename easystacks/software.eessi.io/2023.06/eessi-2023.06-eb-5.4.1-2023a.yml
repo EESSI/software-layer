@@ -1,0 +1,5 @@
+easyconfigs:
+  - AITW_infiltration_surrogate-1.0.0-foss-2023a.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/27136
+        from-commit: 510ee3814a1643cb6bd5c6c6e6abcaf706d64558
