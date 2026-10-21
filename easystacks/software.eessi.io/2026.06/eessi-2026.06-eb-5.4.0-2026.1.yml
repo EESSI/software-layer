@@ -151,3 +151,4 @@ easyconfigs:
   - PnetCDF-1.14.1-gompi-2026.1.eb
   - h5py-3.16.0-foss-2026.1.eb
   - netcdf4-python-1.7.4-foss-2026.1.eb
+  - PLUMED-2.10.0-foss-2026.1.eb
