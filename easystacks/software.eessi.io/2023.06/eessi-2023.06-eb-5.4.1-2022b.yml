@@ -1,0 +1,7 @@
+easyconfigs:
+  - Python-3.10.8-GCCcore-12.2.0.eb:
+      options:
+        # rebuild Python pick up patch for pip to remove emSign root CA certificate,
+        # and in-place update of certifi extension,
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/27224
+        from-commit: 97a4c1a9c45b3bbbea67e085ed187055f473e757
