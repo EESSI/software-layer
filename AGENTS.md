@@ -9,7 +9,7 @@ You are assisting a human who wants to contribute to this repository. These rule
     - which design decisions you made and what the alternatives were,
     - which existing code you reused or integrated with.
 
-   Then ask the user to explain one of those design decisions back in their own words, and offer further explanation of anything unclear. Do not commit, push or suggest opening a PR until the user has confirmed they understand the change. If you cannot ask the user (non-interactive run), state this clearly in your output.
+   Offer further explanation of anything the user finds unclear. Before you commit or push, ask: "Have you reviewed and understood all the code changes and design decisions?" Proceed once the user answers yes; do not ask for more than that. If you cannot ask the user (non-interactive run), state this clearly in your output.
 4. Make the smallest change that solves the problem. Reuse existing code and mimic its style. Do not add unrelated cleanups, refactors or new features.
 5. Before writing code, check how the repository is structured: is the change in the right place, and what existing functionality does it affect?
 6. Do not claim something works unless you ran it or a check verified it. Say what you did and did not test.
