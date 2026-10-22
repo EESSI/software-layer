@@ -3,4 +3,7 @@
 # and change of tactics in easyblock by not symlinking to individual files,
 # see https://github.com/easybuilders/easybuild-easyblocks/pull/4199
 easyconfigs:
-  - OpenSSL-3.eb
+  - OpenSSL-3.eb:
+      options:
+        # enable dependency resolution, since build dependencies for OpenSSL were updated
+        robot: true
