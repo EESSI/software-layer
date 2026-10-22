@@ -183,3 +183,4 @@ easyconfigs:
   - sympy-1.14.0-gfbf-2026.1.eb
   - wrapt-2.2.1-GCCcore-15.2.0.eb
   - ASE-3.28.0-gfbf-2026.1.eb
+  - lfbf-2026.1.eb
