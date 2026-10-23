@@ -183,3 +183,7 @@ easyconfigs:
   - sympy-1.14.0-gfbf-2026.1.eb
   - wrapt-2.2.1-GCCcore-15.2.0.eb
   - ASE-3.28.0-gfbf-2026.1.eb
+  - Qt6-6.11.2-GCCcore-15.2.0.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/26792
+        from-commit: 022d4fc272c1475a8e2a8a2324eca1717aefd51b
