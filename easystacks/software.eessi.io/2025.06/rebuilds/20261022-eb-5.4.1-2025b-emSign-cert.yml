@@ -19,3 +19,8 @@ easyconfigs:
         # rebuild poetry to pick up in-place update of certifi extension
         # see https://github.com/easybuilders/easybuild-easyconfigs/pull/27223
         from-commit: e5a5ac6c988dcd97adad942619b7c7cf1be23572
+  - R-bundle-CRAN-2025.10-foss-2025a.eb:
+      options:
+        # rebuild poetry to pick up in-place update of certifi extension
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/27238
+        from-commit: e239112d73438a1589e021d675e1dcb9a8748ce2
