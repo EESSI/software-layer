@@ -1,6 +1,6 @@
 easyconfigs:
   - R-4.5.2-gfbf-2025b.eb:
       options:
-        # rebuild R-bundle-CRAN to pick up in-place patching of certificates
+        # rebuild R to pick up in-place patching of certificates
         # see https://github.com/easybuilders/easybuild-easyconfigs/pull/27234
         from-commit: 371c1e6597c3152543cd7cce4ebf8d7be0da7206
