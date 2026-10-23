@@ -34,7 +34,7 @@ jobs:
 
           missing=0
           while read -r cidr; do
-            if ! grep -qF "$cidr" "$GITHUB_WEBHOOK_IP_RANGES_FILE"; then
+            if ! grep -qxF "$cidr" "$GITHUB_WEBHOOK_IP_RANGES_FILE"; then
               echo "::error::Missing from accepted GitHub webhook IP ranges: $cidr"
               missing=1
             fi
