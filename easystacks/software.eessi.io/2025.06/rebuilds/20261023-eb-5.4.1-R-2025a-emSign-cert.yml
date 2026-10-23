@@ -1,5 +1,5 @@
 easyconfigs:
-  - R-4.5.1-foss-2025a.eb:
+  - R-4.5.1-gfbf-2025a.eb:
       options:
         # rebuild R pick up patch to remove emSign root CA certificate,
         # see https://github.com/easybuilders/easybuild-easyconfigs/pull/27233
