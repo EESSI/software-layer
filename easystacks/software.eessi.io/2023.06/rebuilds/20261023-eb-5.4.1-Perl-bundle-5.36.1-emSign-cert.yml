@@ -1,5 +1,5 @@
 easyconfigs:
-  - ‎Perl-bundle-CPAN-5.36.1-GCCcore-12.3.0.eb‎:
+  - ‎Perl-bundle-CPAN-5.36.1-GCCcore-12.3.0.eb:
       options:
         # rebuild Perl-bundle-CPAN to pick up in-place patching of certificates
         # see https://github.com/easybuilders/easybuild-easyconfigs/pull/27226
