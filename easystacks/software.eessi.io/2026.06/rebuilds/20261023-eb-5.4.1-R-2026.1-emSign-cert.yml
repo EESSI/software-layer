@@ -4,3 +4,4 @@ easyconfigs:
         # rebuild R pick up patch to remove emSign root CA certificate,
         # see https://github.com/easybuilders/easybuild-easyconfigs/pull/27234
         from-commit: 371c1e6597c3152543cd7cce4ebf8d7be0da7206
+        robot: True
