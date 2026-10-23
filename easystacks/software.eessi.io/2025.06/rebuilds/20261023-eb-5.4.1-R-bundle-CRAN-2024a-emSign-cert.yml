@@ -1,0 +1,6 @@
+easyconfigs:
+  - R-bundle-CRAN-2024.11-foss-2024a.eb:
+      options:
+        # rebuild R-bundle-CRAN to pick up in-place patching of certificates
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/27237
+        from-commit: 9ebcada2546a53526ac92927f809465cffa8ba5f
