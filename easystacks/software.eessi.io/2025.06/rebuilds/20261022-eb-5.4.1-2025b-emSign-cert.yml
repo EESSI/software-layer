@@ -16,6 +16,6 @@ easyconfigs:
         from-commit: b0a3d33d531427d3c189287764e1dae10c2bf17d
   - poetry-2.1.3-GCCcore-14.3.0.eb:
       options:
-        # rebuild R-bundle-CRAN to pick up in-place patching of certificates
+        # rebuild poetry to pick up in-place update of certifi extension
         # see https://github.com/easybuilders/easybuild-easyconfigs/pull/27223
         from-commit: e5a5ac6c988dcd97adad942619b7c7cf1be23572
