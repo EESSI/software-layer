@@ -1,0 +1,6 @@
+easyconfigs:
+  - R-4.2.2-foss-2022b.eb:
+      options:
+        # rebuild R pick up patch to remove emSign root CA certificate,
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/27231
+        from-commit: 1995256ffca127d231a5f5000c5bb0ea5d505a01
