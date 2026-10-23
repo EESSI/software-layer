@@ -23,4 +23,4 @@ easyconfigs:
       options:
         # rebuild poetry to pick up in-place update of certifi extension
         # see https://github.com/easybuilders/easybuild-easyconfigs/pull/27239
-        from-commit: f735f30c39c45e07ac3e87773a91cd1a8a4ddd5a
+        from-commit: 19560b6aa6cdab99468780453f136530e991ec3e
