@@ -1,2 +1,3 @@
 easyconfigs:
   - torchvision-0.16.0-foss-2023a.eb
+  - pv-1.7.24-GCCcore-12.3.0.eb
