@@ -1,0 +1,14 @@
+easyconfigs:
+  - Graphviz-15.1.0-GCCcore-15.2.0-minimal.eb
+  - gnuplot-6.0.5-GCCcore-15.2.0.eb
+  - libgd-2.3.3-GCCcore-15.2.0.eb
+  - GTS-0.7.6-GCCcore-15.2.0.eb
+  - Guile-3.0.11-GCCcore-15.2.0.eb
+  - GLM-1.0.3-GCCcore-15.2.0.eb
+  - Lua-5.5.0-GCCcore-15.2.0.eb
+  - Bazel-7.7.0-GCCcore-15.2.0-Java-21.eb
+  - OpenMM-8.5.2-foss-2026.1.eb
+  - p7zip-17.05-GCCcore-15.2.0.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/27186
+        from-commit: 594648897944193d32fb44be9afb318f15633dce
