@@ -183,3 +183,8 @@ easyconfigs:
   - sympy-1.14.0-gfbf-2026.1.eb
   - wrapt-2.2.1-GCCcore-15.2.0.eb
   - ASE-3.28.0-gfbf-2026.1.eb
+  - Perl-bundle-CPAN-5.42.0-GCCcore-15.2.0.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/27036
+        from-commit: 909ebcddd94ae707ef3fa4db1e0d8398c1cd1231
+  - Pint-0.25.3-GCCcore-15.2.0.eb
