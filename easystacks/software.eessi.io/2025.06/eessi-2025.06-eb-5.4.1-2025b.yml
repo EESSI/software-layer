@@ -1,2 +1,3 @@
 easyconfigs:
   - fastp-1.1.0-GCC-14.3.0.eb
+  - VCFtools-0.1.17-GCC-14.3.0.eb
