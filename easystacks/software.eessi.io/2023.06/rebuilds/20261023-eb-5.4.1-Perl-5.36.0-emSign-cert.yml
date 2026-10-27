@@ -3,4 +3,4 @@ easyconfigs:
       options:
         # rebuild Perl to pick up in-place patching of certificates
         # see https://github.com/easybuilders/easybuild-easyconfigs/pull/27228
-        from-commit: 7061872731dfea544d0e5576618ebabd5f322516
+        from-commit: 36854285f30fed98620ccd9c1814c4c636f30ab8
