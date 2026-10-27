@@ -155,3 +155,9 @@ easyconfigs:
   - sympy-1.14.0-gfbf-2026.1.eb
   - wrapt-2.2.1-GCCcore-15.2.0.eb
   - ASE-3.28.0-gfbf-2026.1.eb
+  - LAMMPS-30Sep2026-foss-2026.1-kokkos.eb:
+      options:
+        # See https://github.com/easybuilders/easybuild-easyblocks/pull/4258
+        include-easyblocks-from-commit: c4dd34fe568e8b98bf6cf70e97a92c04266f1ef4
+        # See https://github.com/easybuilders/easybuild-easyconfigs/pull/27161
+        from-commit: 4aa3da2770dccf4ab7dba9c3fabbdbb84b6025f4
