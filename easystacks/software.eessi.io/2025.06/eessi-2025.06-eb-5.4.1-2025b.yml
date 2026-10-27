@@ -2,3 +2,7 @@ easyconfigs:
   - fastp-1.1.0-GCC-14.3.0.eb
   - VCFtools-0.1.17-GCC-14.3.0.eb
   - pybind11-3.0.0-GCCcore-14.3.0.eb
+  - AITW-wood_stiffness_homogenization-1.0.0-gfbf-2025b.eb:
+      options:
+          # See https://github.com/easybuilders/easybuild-easyconfigs/pull/27157
+          from-commit: cb4c9a82a668f9fe3281f285428f462501fdacbe
