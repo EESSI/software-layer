@@ -58,4 +58,4 @@ jobs:
             echo "Accepted GitHub webhook IPv4 ranges are out of date. Remove the ranges above from $GITHUB_WEBHOOK_IP_RANGES_FILE."
             exit 1
           fi
-          echo "All currently acceptes IPv4 ranges are used by GitHub to send hooks from."
+          echo "All currently accepted IPv4 ranges are used by GitHub to send hooks from."
