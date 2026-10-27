@@ -3,4 +3,4 @@ easyconfigs:
       options:
         # rebuild R-bundle-CRAN to pick up in-place patching of certificates
         # see https://github.com/easybuilders/easybuild-easyconfigs/pull/27239
-        from-commit: d548f421c94f8d41db0b76604acf579f52d67fc3
+        from-commit: 61eaffd6d2cc9dbf6d317bd0166d438d8e6b27e2
