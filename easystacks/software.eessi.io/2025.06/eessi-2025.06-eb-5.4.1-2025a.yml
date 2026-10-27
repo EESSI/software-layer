@@ -1,0 +1,4 @@
+easyconfigs:
+  - libclc-20.1.8-GCCcore-14.2.0.eb
+  - pybind11-2.13.6-GCCcore-14.2.0.eb
+  - OpenGL-2025.09-GCCcore-14.2.0.eb
