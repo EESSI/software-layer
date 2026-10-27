@@ -32,7 +32,7 @@ PRs that do not follow these guidelines may be closed without detailed review. Y
     - How can reviewers test the fix?
     - Who would be affected by it?
     - What is the impact (i.e. how 'badly' is something broken)?
-- Describe how you tested your change. Describe how you setup your environment, which commands you ran, and what you expected and actual output was.
+- Describe how you tested your change. Describe how you setup your environment, which commands you ran, and what your expected and actual output was.
 - Respond to review feedback by checking whether it applies elsewhere in your PR (or your other PRs), and fix it everywhere, not only where it was pointed out.
 - Do not open too many PRs at once:
     - Reviewers have limited time, overwhelming them slows down acceptance.
