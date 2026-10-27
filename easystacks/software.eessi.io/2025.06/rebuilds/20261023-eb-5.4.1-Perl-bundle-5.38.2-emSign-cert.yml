@@ -3,4 +3,4 @@ easyconfigs:
       options:
         # rebuild Perl-bundle-CPAN to pick up in-place patching of certificates
         # see https://github.com/easybuilders/easybuild-easyconfigs/pull/27226
-        from-commit: 89c7568cc5e7541ff7b282f4817c62604b070c1a
+        from-commit: caf233c5581a5c3b69673a7c0697c67be1f1f17d
