@@ -19,3 +19,8 @@ easyconfigs:
   - WhatsHap-2.8-foss-2025b.eb
   - SHAPEIT5-5.1.1-GCC-14.3.0.eb
   - GLIMPSE-2.0.1-GCC-14.3.0.eb
+  - PLINK-2.0.0-b.1.0-gfbf-2025b.eb
+  - Satsuma2-20220304-GCC-14.3.0.eb
+  - snpEff-5.4c-GCCcore-14.3.0-Java-21.eb
+  - Beast-2.7.8-GCC-14.3.0.eb
+  - BLAST+-2.17.0-gompi-2025b.eb
