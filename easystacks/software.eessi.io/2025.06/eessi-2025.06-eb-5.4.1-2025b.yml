@@ -12,3 +12,8 @@ easyconfigs:
   - pytest-subtests-0.15.0-GCCcore-14.3.0.eb
   - tlparse-0.4.3-GCCcore-14.3.0.eb
   - unittest-xml-reporting-3.2.0-GCCcore-14.3.0.eb
+  - bwa-mem2-2.3-GCC-14.3.0.eb
+  - FastQC-0.12.1-GCCcore-14.3.0-Java-21.eb
+  - PCAngsd-1.36.4-gfbf-2025b.eb
+  - GATK-4.6.2.0-GCCcore-14.3.0-Java-17.eb
+
