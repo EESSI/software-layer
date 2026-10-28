@@ -186,4 +186,4 @@ easyconfigs:
   - R-bundle-CRAN-2026.07-foss-2026.1.eb:
       options:
         # see https://github.com/easybuilders/easybuild-easyconfigs/pull/27216
-        from-commit: 378eb9313723b987f6deb1f418a7a1d483d4a632
+        from-commit: ebb43a2ea22d5457fe21a4a8a780c98b8fe3eeac
