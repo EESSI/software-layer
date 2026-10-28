@@ -14,4 +14,8 @@ easyconfigs:
   - unittest-xml-reporting-3.2.0-GCCcore-14.3.0.eb
   - FastQC-0.12.1-GCCcore-14.3.0-Java-21.eb
   - GATK-4.6.2.0-GCCcore-14.3.0-Java-17.eb
-
+  - PLINK-2.0.0-b.1.0-gfbf-2025b.eb
+  - psmc-0.6.5_20251117-GCC-14.3.0.eb
+  - WhatsHap-2.8-foss-2025b.eb
+  - SHAPEIT5-5.1.1-GCC-14.3.0.eb
+  - GLIMPSE-2.0.1-GCC-14.3.0.eb
