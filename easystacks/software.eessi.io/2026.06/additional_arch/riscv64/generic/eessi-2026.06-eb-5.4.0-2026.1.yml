@@ -9,3 +9,177 @@ easyconfigs:
   - ATK-2.38.0-GCCcore-15.2.0.eb
   - Abseil-20260107.1-GCCcore-15.2.0.eb
   - Armadillo-15.2.7-foss-2026.1.eb
+  - OSU-Micro-Benchmarks-7.5.2-gompi-2026.1.eb
+  - ReFrame-4.10.2-GCCcore-15.2.0-no-analytics.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/26645
+        from-commit: a32dceb327d1c95eb46c28994af11350e2c63d3c
+  - OpenBLAS-0.3.32-llvm-compilers-21.1.8.eb:
+      options:
+        # Use same commit as https://github.com/EESSI/software-layer/pull/1657
+        from-commit: 0ed42e32053ef5a4cd796909ee6173f39def94b1
+  - OpenMPI-5.0.10-llvm-compilers-21.1.8.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/26641
+        from-commit: 66cb2c304ddb84721de82f09c02f44617354c01e
+  - ANTLR-2.7.7-GCCcore-15.2.0-Java-21.eb
+  - BCFtools-1.23.1-GCC-15.2.0.eb
+  - BWA-0.7.19-GCCcore-15.2.0.eb
+  - BamTools-2.5.3-GCC-15.2.0.eb
+  - groff-1.24.1-GCCcore-15.2.0.eb
+  - Boost.MPI-1.90.0-gompi-2026.1.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/26635
+        from-commit: a30926a015a42f19cf7d1d6cfe1373ef7bff2f80
+  - lfoss-2026.1.eb
+  - CFITSIO-4.6.4-GCCcore-15.2.0.eb
+  - CGAL-6.2-GCCcore-15.2.0.eb
+  - Cbc-2.10.13-foss-2026.1.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/26789
+        from-commit: 01d6674a4eda858d5a2fdc3e52535bd772901d27
+  - Cgl-0.60.10-foss-2026.1.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/26789
+        from-commit: 01d6674a4eda858d5a2fdc3e52535bd772901d27
+  - Check-0.15.2-GCCcore-15.2.0.eb
+  - FriBidi-1.0.16-GCCcore-15.2.0.eb
+  - PCRE-8.45-GCCcore-15.2.0.eb
+  - libjpeg-turbo-3.1.4.1-GCCcore-15.2.0.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/26984
+        from-commit: ee7dfbd62b2caea305be478bd024aaefeb794eff
+  - FFmpeg-8.1.1-GCCcore-15.2.0.eb
+  - Pango-1.57.1-GCCcore-15.2.0.eb
+  - Mako-1.3.12-GCCcore-15.2.0.eb
+  - NSPR-4.39-GCCcore-15.2.0.eb
+  - NSS-3.119-GCCcore-15.2.0.eb
+  - Wayland-1.25.0-GCCcore-15.2.0.eb
+  - OpenGL-2026.05-GCCcore-15.2.0.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/27026
+        from-commit: 625e9824121036e8ee338e3e4323b1f5853df358
+  - GSL-2.8-GCC-15.2.0.eb
+  - GTK3-3.24.52-GCCcore-15.2.0.eb
+  - Gdk-Pixbuf-2.44.6-GCCcore-15.2.0.eb
+  - Clp-1.17.11-foss-2026.1.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/26789
+        from-commit: 01d6674a4eda858d5a2fdc3e52535bd772901d27
+  - CoinUtils-2.11.13-GCC-15.2.0.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/26789
+        from-commit: 01d6674a4eda858d5a2fdc3e52535bd772901d27
+  - CubeLib-4.9.1-GCCcore-15.2.0.eb
+  - CubeWriter-4.9.1-GCCcore-15.2.0.eb
+  - DB-18.1.40-GCCcore-15.2.0.eb
+  - DB_File-1.860-GCCcore-15.2.0.eb
+  - HPL-2.3-foss-2026.1.eb
+  - R-4.6.1-gfbf-2026.1.eb
+  - JasPer-4.2.9-GCCcore-15.2.0.eb
+  - LAME-3.100-GCCcore-15.2.0.eb
+  - LibTIFF-4.7.1-GCCcore-15.2.0.eb
+  - M4-1.4.20-GCCcore-15.2.0.eb
+  - PAPI-7.2.0-GCCcore-15.2.0.eb
+  - assimp-6.0.5-GCCcore-15.2.0.eb
+  - double-conversion-3.4.0-GCCcore-15.2.0
+  - mpi4py-4.1.2-lompi-2026.1.eb
+  - netCDF-4.10.0-gompi-2026.1.eb
+  - nodejs-24.16.0-GCCcore-15.2.0.eb
+  - re2c-4.5.1-GCCcore-15.2.0.eb
+  - Vulkan-1.4.352-GCCcore-15.2.0.eb
+  - graphite2-1.3.15-GCCcore-15.2.0.eb 
+  - flit-3.12.0-GCCcore-15.2.0.eb 
+  - scikit-build-0.19.0-GCCcore-15.2.0.eb
+  - snappy-1.2.2-GCCcore-15.2.0.eb
+  - xxd-9.2.0612-GCCcore-15.2.0.eb
+  - tbb-2022.3.0-GCCcore-15.2.0.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/27021
+        from-commit: 30fe7d531120fae485771ca733ca4a03b63132c0
+  - Extrae-5.0.6-gompi-2026.1.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/27094
+        from-commit: caaf7b679d2d078b9c0b07eb42c222496769c277
+  - libevdev-1.13.7-GCCcore-15.2.0.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/26688
+        from-commit: e2eacb01e2f16d67aa081f3ab9bc7c05b44c225d
+  - libinput-1.31.3-GCCcore-15.2.0.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/26688
+        from-commit: e2eacb01e2f16d67aa081f3ab9bc7c05b44c225d
+  - absl-py-2.4.0-GCCcore-15.2.0.eb
+  - aiohttp-3.14.3-GCCcore-15.2.0.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/26838
+        from-commit: 5b5a953a03d1ffeb1f7a2df5d40c31b1321339e6
+  - alsa-lib-1.2.15.3-GCCcore-15.2.0.eb
+  - ant-1.10.15-Java-21.eb
+  - SciPy-bundle-2026.05-gfbf-2026.1.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/27146
+        from-commit: edb5ea41d03ac2122aff76d6b62d579bfba9dd39
+  - ImageMagick-7.1.2-26-GCCcore-15.2.0.eb
+  - MPFR-4.2.2-GCCcore-15.2.0.eb
+  - Xvfb-21.1.23-GCCcore-15.2.0.eb
+  - GLPK-5.0-GCCcore-15.2.0.eb
+  - libsndfile-1.2.2-GCCcore-15.2.0.eb
+  - NLopt-2.10.1-GCCcore-15.2.0.eb
+  - UDUNITS-2.2.28-GCCcore-15.2.0.eb
+  - amdahl-0.4.1-gompi-2026.1.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/27032
+        from-commit: dd826fa1f62808fa7be3fadaabb6967eba595451
+  - pyproj-3.7.2-GCCcore-15.2.0.eb
+  - xarray-2026.4.0-gfbf-2026.1.eb
+  - netCDF-Fortran-4.6.3-gompi-2026.1.eb
+  - netCDF-C++4-4.3.1-gompi-2026.1.eb
+  - h5py-3.16.0-foss-2026.1.eb
+  - netcdf4-python-1.7.4-foss-2026.1.eb
+  - PnetCDF-1.14.1-gompi-2026.1.eb
+  - GDAL-3.13.0-foss-2026.1.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/26818
+        from-commit: 9ca4fd80740b7a78b5c62a173c698e613293bbad
+  - Fiona-1.10.1-foss-2026.1.eb
+  - Go-1.26.7.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/26736
+        # and https://github.com/easybuilders/easybuild-easyconfigs/pull/27071
+        from-commit: 9cf5ab0c5ce5bb00a3f38c17907345256ab86099
+  - rclone-1.75.1.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/27031
+        # also needs https://github.com/easybuilders/easybuild-easyconfigs/pull/27071
+        # (to make the missing installations CI happy)
+        from-commit: 9cf5ab0c5ce5bb00a3f38c17907345256ab86099
+        # see https://github.com/easybuilders/easybuild-easyblocks/pull/4248
+        include-easyblocks-from-commit: 890cb41af11f99c3c64a4365b5dd54ea6f869f61
+  - buildenv-default-foss-2026.1.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/26775
+        from-commit: dfbcdaa3bc04aa07cb441e9bab828d1182e904cf
+  - Biopython-1.87-gfbf-2026.1.eb
+  - html5lib-1.1-GCCcore-15.2.0.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/26696
+        from-commit: 193950dc3ce8cb19c6b5e92343c83b14ca3ee533
+  - OpenH264-2.6.0-GCCcore-15.2.0.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/26710
+        from-commit: 2d70a06fa10c8b32bc543f821e588474df13cbde
+  - gRPC-1.83.0-GCCcore-15.2.0.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/26711
+        from-commit: c1df27b7f1020f7202b77d5218f7a275f754f6f4
+  - pydantic-2.13.4-GCCcore-15.2.0.eb
+  - networkx-3.6.1-gfbf-2026.1.eb
+  - awscli-2.35.11-GCCcore-15.2.0
+  - scikit-learn-1.8.0-gfbf-2026.1.eb
+  - Cartopy-0.25.0-foss-2026.1.eb
+  - Arrow-24.0.0-gfbf-2026.1.eb
+  - PLUMED-2.10.0-foss-2026.1.eb
+  - sympy-1.14.0-gfbf-2026.1.eb
+  - wrapt-2.2.1-GCCcore-15.2.0.eb
+  - ASE-3.28.0-gfbf-2026.1.eb

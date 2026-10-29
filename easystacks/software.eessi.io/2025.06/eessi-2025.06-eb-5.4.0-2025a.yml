@@ -57,3 +57,11 @@ easyconfigs:
   - libdap-3.21.1-GCCcore-14.2.0.eb
   - mrcfile-1.5.4-gfbf-2025a.eb
   - py-cpuinfo-9.0.0-GCCcore-14.2.0.eb
+  - cargo-c-0.10.13-GCCcore-14.2.0.eb
+  - pyNVML-13.590.48-GCCcore-14.2.0.eb
+  - GStreamer-1.26.6-GCCcore-14.2.0.eb
+  - MDAnalysis-2.9.0-foss-2025a.eb
+  - OpenFAST-4.1.2-foss-2025a.eb
+  - OpenFAST-5.0.0-foss-2025a.eb
+  - Redis-8.0.2-GCCcore-14.2.0.eb
+  - plotly.py-6.3.1-GCCcore-14.2.0.eb
