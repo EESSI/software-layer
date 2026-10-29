@@ -1,4 +1,5 @@
 easyconfigs:
+  - GDAL-3.10.0-foss-2024a.eb
   - R-bundle-CRAN-2024.11-foss-2024a.eb:
       options:
         # rebuild R-bundle-CRAN to pick up in-place patching of certificates
