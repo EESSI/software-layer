@@ -195,4 +195,3 @@ easyconfigs:
   - gperftools-2.18.1-GCCcore-15.2.0.eb
   - GDB-17.2-GCCcore-15.2.0.eb
   - nvtop-3.3.2-GCCcore-15.2.0.eb
-  - likwid-5.5.1-GCC-15.2.0.eb
