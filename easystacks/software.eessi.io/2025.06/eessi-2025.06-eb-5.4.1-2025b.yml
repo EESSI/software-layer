@@ -12,6 +12,9 @@ easyconfigs:
   - pytest-subtests-0.15.0-GCCcore-14.3.0.eb
   - tlparse-0.4.3-GCCcore-14.3.0.eb
   - unittest-xml-reporting-3.2.0-GCCcore-14.3.0.eb
+  - FastQC-0.12.1-GCCcore-14.3.0-Java-21.eb
+  - GATK-4.6.2.0-GCCcore-14.3.0-Java-17.eb
+
   - AITW-wood_stiffness_homogenization-1.0.0-gfbf-2025b.eb:
       options:
           # See https://github.com/easybuilders/easybuild-easyconfigs/pull/27157
