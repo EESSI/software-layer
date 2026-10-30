@@ -11,4 +11,4 @@ easyconfigs:
   - p7zip-17.05-GCCcore-15.2.0.eb:
       options:
         # see https://github.com/easybuilders/easybuild-easyconfigs/pull/27186
-        from-commit: 594648897944193d32fb44be9afb318f15633dce
+        from-commit: a25f8578df309795c8c9734e0a435686001248a0
