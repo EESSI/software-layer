@@ -187,3 +187,7 @@ easyconfigs:
       options:
         # see https://github.com/easybuilders/easybuild-easyconfigs/pull/27216
         from-commit: ebb43a2ea22d5457fe21a4a8a780c98b8fe3eeac
+  - dlb-3.8.0-gompi-2026.1.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/27097
+        from-commit: 6a143456d298063e5f417de8c1e67d0ae14958e5
