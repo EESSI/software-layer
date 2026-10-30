@@ -1,0 +1,6 @@
+easyconfigs:
+  - Perl-5.36.0-GCCcore-12.2.0.eb:
+      options:
+        # rebuild Perl to pick up in-place patching of certificates
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/27228
+        from-commit: 36854285f30fed98620ccd9c1814c4c636f30ab8
