@@ -14,6 +14,14 @@ easyconfigs:
   - unittest-xml-reporting-3.2.0-GCCcore-14.3.0.eb
   - FastQC-0.12.1-GCCcore-14.3.0-Java-21.eb
   - GATK-4.6.2.0-GCCcore-14.3.0-Java-17.eb
+  - AITW-wood_stiffness_homogenization-1.0.0-gfbf-2025b.eb:
+      options:
+          # See https://github.com/easybuilders/easybuild-easyconfigs/pull/27157
+          from-commit: cb4c9a82a668f9fe3281f285428f462501fdacbe
+  - AITW-aiida-wood-permeability-0.3.0-foss-2025b.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/27068
+        from-commit: 901a6a7a1d0cb203856fbe542c6f4bfdbc6bb724
   - ANTLR-2.7.7-GCCcore-14.3.0.eb
   - HPL-2.3-lfoss-2025b.eb
   - MoviePy-2.2.1-foss-2025b.eb
