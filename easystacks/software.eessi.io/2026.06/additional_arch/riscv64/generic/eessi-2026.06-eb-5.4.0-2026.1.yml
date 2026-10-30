@@ -161,3 +161,29 @@ easyconfigs:
         # see https://github.com/easybuilders/easybuild-easyconfigs/pull/26775
         from-commit: dfbcdaa3bc04aa07cb441e9bab828d1182e904cf
   - Biopython-1.87-gfbf-2026.1.eb
+  - html5lib-1.1-GCCcore-15.2.0.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/26696
+        from-commit: 193950dc3ce8cb19c6b5e92343c83b14ca3ee533
+  - OpenH264-2.6.0-GCCcore-15.2.0.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/26710
+        from-commit: 2d70a06fa10c8b32bc543f821e588474df13cbde
+  - gRPC-1.83.0-GCCcore-15.2.0.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/26711
+        from-commit: c1df27b7f1020f7202b77d5218f7a275f754f6f4
+  - pydantic-2.13.4-GCCcore-15.2.0.eb
+  - networkx-3.6.1-gfbf-2026.1.eb
+  - awscli-2.35.11-GCCcore-15.2.0
+  - scikit-learn-1.8.0-gfbf-2026.1.eb
+  - Cartopy-0.25.0-foss-2026.1.eb
+  - Arrow-24.0.0-gfbf-2026.1.eb
+  - PLUMED-2.10.0-foss-2026.1.eb
+  - sympy-1.14.0-gfbf-2026.1.eb
+  - wrapt-2.2.1-GCCcore-15.2.0.eb
+  - ASE-3.28.0-gfbf-2026.1.eb
+  - R-bundle-CRAN-2026.07-foss-2026.1.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/27216
+        from-commit: ebb43a2ea22d5457fe21a4a8a780c98b8fe3eeac
