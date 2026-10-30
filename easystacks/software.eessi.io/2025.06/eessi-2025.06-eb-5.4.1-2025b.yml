@@ -1,0 +1,17 @@
+easyconfigs:
+  - fastp-1.1.0-GCC-14.3.0.eb
+  - VCFtools-0.1.17-GCC-14.3.0.eb
+  - pybind11-3.0.0-GCCcore-14.3.0.eb
+  - Banksy-1.6.0-foss-2025b-R-4.5.2.eb
+  - CastXML-0.7.0-GCCcore-14.3.0.eb
+  - bcbio-gff-0.7.1-gfbf-2025b.eb
+  - expecttest-0.3.0-GCCcore-14.3.0.eb
+  - libudev-zero-1.0.5-GCCcore-14.3.0.eb
+  - optree-0.18.0-GCCcore-14.3.0.eb
+  - pytest-rerunfailures-16.1-GCCcore-14.3.0.eb
+  - pytest-subtests-0.15.0-GCCcore-14.3.0.eb
+  - tlparse-0.4.3-GCCcore-14.3.0.eb
+  - unittest-xml-reporting-3.2.0-GCCcore-14.3.0.eb
+  - FastQC-0.12.1-GCCcore-14.3.0-Java-21.eb
+  - GATK-4.6.2.0-GCCcore-14.3.0-Java-17.eb
+
