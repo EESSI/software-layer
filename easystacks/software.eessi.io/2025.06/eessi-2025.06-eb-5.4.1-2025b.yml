@@ -12,6 +12,8 @@ easyconfigs:
   - pytest-subtests-0.15.0-GCCcore-14.3.0.eb
   - tlparse-0.4.3-GCCcore-14.3.0.eb
   - unittest-xml-reporting-3.2.0-GCCcore-14.3.0.eb
+  - FastQC-0.12.1-GCCcore-14.3.0-Java-21.eb
+  - GATK-4.6.2.0-GCCcore-14.3.0-Java-17.eb
   - ANTLR-2.7.7-GCCcore-14.3.0.eb
   - HPL-2.3-lfoss-2025b.eb
   - MoviePy-2.2.1-foss-2025b.eb
