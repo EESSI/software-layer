@@ -22,3 +22,13 @@ easyconfigs:
       options:
         # see https://github.com/easybuilders/easybuild-easyconfigs/pull/27068
         from-commit: 901a6a7a1d0cb203856fbe542c6f4bfdbc6bb724
+  - ANTLR-2.7.7-GCCcore-14.3.0.eb
+  - HPL-2.3-lfoss-2025b.eb
+  - MoviePy-2.2.1-foss-2025b.eb
+  - ParaView-Catalyst-2.0.0-foss-2025b.eb
+  - coverage-7.10.7-GCCcore-14.3.0.eb
+  - libdap-3.21.1-GCCcore-14.3.0.eb
+  - plotly.py-6.5.0-GCCcore-14.3.0.eb
+  - pre-commit-4.3.0-GCCcore-14.3.0.eb
+  - py-cpuinfo-9.0.0-GCCcore-14.3.0.eb
+  - python-louvain-0.16-gfbf-2025b.eb
