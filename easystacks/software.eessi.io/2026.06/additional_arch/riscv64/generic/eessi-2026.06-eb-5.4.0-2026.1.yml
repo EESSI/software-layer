@@ -116,3 +116,74 @@ easyconfigs:
         from-commit: 5b5a953a03d1ffeb1f7a2df5d40c31b1321339e6
   - alsa-lib-1.2.15.3-GCCcore-15.2.0.eb
   - ant-1.10.15-Java-21.eb
+  - SciPy-bundle-2026.05-gfbf-2026.1.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/27146
+        from-commit: edb5ea41d03ac2122aff76d6b62d579bfba9dd39
+  - ImageMagick-7.1.2-26-GCCcore-15.2.0.eb
+  - MPFR-4.2.2-GCCcore-15.2.0.eb
+  - Xvfb-21.1.23-GCCcore-15.2.0.eb
+  - GLPK-5.0-GCCcore-15.2.0.eb
+  - libsndfile-1.2.2-GCCcore-15.2.0.eb
+  - NLopt-2.10.1-GCCcore-15.2.0.eb
+  - UDUNITS-2.2.28-GCCcore-15.2.0.eb
+  - amdahl-0.4.1-gompi-2026.1.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/27032
+        from-commit: dd826fa1f62808fa7be3fadaabb6967eba595451
+  - pyproj-3.7.2-GCCcore-15.2.0.eb
+  - xarray-2026.4.0-gfbf-2026.1.eb
+  - netCDF-Fortran-4.6.3-gompi-2026.1.eb
+  - netCDF-C++4-4.3.1-gompi-2026.1.eb
+  - h5py-3.16.0-foss-2026.1.eb
+  - netcdf4-python-1.7.4-foss-2026.1.eb
+  - PnetCDF-1.14.1-gompi-2026.1.eb
+  - GDAL-3.13.0-foss-2026.1.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/26818
+        from-commit: 9ca4fd80740b7a78b5c62a173c698e613293bbad
+  - Fiona-1.10.1-foss-2026.1.eb
+  - Go-1.26.7.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/26736
+        # and https://github.com/easybuilders/easybuild-easyconfigs/pull/27071
+        from-commit: 9cf5ab0c5ce5bb00a3f38c17907345256ab86099
+  - rclone-1.75.1.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/27031
+        # also needs https://github.com/easybuilders/easybuild-easyconfigs/pull/27071
+        # (to make the missing installations CI happy)
+        from-commit: 9cf5ab0c5ce5bb00a3f38c17907345256ab86099
+        # see https://github.com/easybuilders/easybuild-easyblocks/pull/4248
+        include-easyblocks-from-commit: 890cb41af11f99c3c64a4365b5dd54ea6f869f61
+  - buildenv-default-foss-2026.1.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/26775
+        from-commit: dfbcdaa3bc04aa07cb441e9bab828d1182e904cf
+  - Biopython-1.87-gfbf-2026.1.eb
+  - html5lib-1.1-GCCcore-15.2.0.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/26696
+        from-commit: 193950dc3ce8cb19c6b5e92343c83b14ca3ee533
+  - OpenH264-2.6.0-GCCcore-15.2.0.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/26710
+        from-commit: 2d70a06fa10c8b32bc543f821e588474df13cbde
+  - gRPC-1.83.0-GCCcore-15.2.0.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/26711
+        from-commit: c1df27b7f1020f7202b77d5218f7a275f754f6f4
+  - pydantic-2.13.4-GCCcore-15.2.0.eb
+  - networkx-3.6.1-gfbf-2026.1.eb
+  - awscli-2.35.11-GCCcore-15.2.0
+  - scikit-learn-1.8.0-gfbf-2026.1.eb
+  - Cartopy-0.25.0-foss-2026.1.eb
+  - Arrow-24.0.0-gfbf-2026.1.eb
+  - PLUMED-2.10.0-foss-2026.1.eb
+  - sympy-1.14.0-gfbf-2026.1.eb
+  - wrapt-2.2.1-GCCcore-15.2.0.eb
+  - ASE-3.28.0-gfbf-2026.1.eb
+  - R-bundle-CRAN-2026.07-foss-2026.1.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/27216
+        from-commit: ebb43a2ea22d5457fe21a4a8a780c98b8fe3eeac
