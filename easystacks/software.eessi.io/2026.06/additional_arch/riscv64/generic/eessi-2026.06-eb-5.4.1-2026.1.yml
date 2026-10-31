@@ -1,6 +1,5 @@
 easyconfigs:
   - Graphviz-15.1.0-GCCcore-15.2.0-minimal.eb
-  - gnuplot-6.0.5-GCCcore-15.2.0.eb
   - libgd-2.3.3-GCCcore-15.2.0.eb
   - GTS-0.7.6-GCCcore-15.2.0.eb
   - Guile-3.0.11-GCCcore-15.2.0.eb
