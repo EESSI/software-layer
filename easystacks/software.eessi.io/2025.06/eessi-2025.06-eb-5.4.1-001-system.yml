@@ -7,3 +7,4 @@ easyconfigs:
       options:
         # see https://github.com/easybuilders/easybuild-easyconfigs/pull/27312
         from-commit: 81b0af4b3569947ec9c0dd2c91b2ee25313cf620
+  - IJulia-1.34.4-Julia-1.12.2.eb
