@@ -187,3 +187,11 @@ easyconfigs:
       options:
         # see https://github.com/easybuilders/easybuild-easyconfigs/pull/27216
         from-commit: ebb43a2ea22d5457fe21a4a8a780c98b8fe3eeac
+  - SIONlib-1.7.7-GCCcore-15.2.0-tools.eb
+  - OTF2-3.2-GCCcore-15.2.0.eb
+  - OPARI2-2.0.10-GCCcore-15.2.0.eb
+  - Score-P-10.1-gompi-2026.1.eb
+  - libdwarf-2.3.1-GCCcore-15.2.0.eb
+  - gperftools-2.18.1-GCCcore-15.2.0.eb
+  - GDB-17.2-GCCcore-15.2.0.eb
+  - nvtop-3.3.2-GCCcore-15.2.0.eb
