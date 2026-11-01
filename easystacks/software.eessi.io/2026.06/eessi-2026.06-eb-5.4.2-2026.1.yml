@@ -1,0 +1,50 @@
+easyconfigs:
+  - Highway-1.4.0-GCCcore-15.2.0.eb:
+      options:
+        # patch for the GCC 15.2 internal compiler error on aarch64 generic builds
+        # (scalable SVE lane count folded into a constant vector); on top of
+        # https://github.com/easybuilders/easybuild-easyconfigs/pull/26651
+        from-commit: 83b0e79ecf3bec5fb44cc2c24630df775454ab8e
+  - inih-62-GCCcore-15.2.0.eb
+  - fmt-12.2.0-GCCcore-15.2.0.eb
+  - robin-map-1.4.1-GCCcore-15.2.0.eb
+  - nanobind-2.13.0-GCCcore-15.2.0.eb
+  - xxHash-0.8.3-GCCcore-15.2.0.eb
+  - CapnProto-1.4.0-GCCcore-15.2.0.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/26480
+        from-commit: 7f00922f19c1473200393c3708444ec98de96ecf
+  - quill-11.1.0-GCCcore-15.2.0.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/26480
+        from-commit: 7f00922f19c1473200393c3708444ec98de96ecf
+  - readcon-core-0.16.2-GCCcore-15.2.0.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/26480
+        from-commit: 7f00922f19c1473200393c3708444ec98de96ecf
+  - rgpot-3.5.0-GCCcore-15.2.0.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/26480
+        from-commit: 7f00922f19c1473200393c3708444ec98de96ecf
+  - python-xxhash-4.0.1-GCCcore-15.2.0.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/26480
+        from-commit: 7f00922f19c1473200393c3708444ec98de96ecf
+  - vesin-0.6.2-gfbf-2026.1.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/26480
+        from-commit: 7f00922f19c1473200393c3708444ec98de96ecf
+  - readcon-0.16.2-gfbf-2026.1.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/26480
+        from-commit: 7f00922f19c1473200393c3708444ec98de96ecf
+  - readcon-db-0.1.8-GCCcore-15.2.0.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/26480
+        from-commit: 7f00922f19c1473200393c3708444ec98de96ecf
+  - eOn-3.6.0-foss-2026.1.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyblocks/pull/4240
+        include-easyblocks-from-commit: 000538462c20e14400f82f8817667407562aa7f7
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/26480
+        from-commit: 7f00922f19c1473200393c3708444ec98de96ecf
