@@ -155,14 +155,12 @@ easyconfigs:
   - sympy-1.14.0-gfbf-2026.1.eb
   - wrapt-2.2.1-GCCcore-15.2.0.eb
   - ASE-3.28.0-gfbf-2026.1.eb
-  - SuiteSparse-7.12.2-gfbf-2026.1.eb
-  - Hypre-3.1.0-foss-2026.1.eb:
-      options:
-        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/26508
-        from-commit: 04360d07f2e6d6f1f699bf70ff86088a157b6502
-  - PETSc-3.25.0-foss-2026.1.eb:
-      options:
-        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/26508
-        from-commit: 04360d07f2e6d6f1f699bf70ff86088a157b6502
-  - libxc-7.0.0-GCC-15.2.0.eb
-  - Boost.Python-NumPy-1.90.0-gfbf-2026.1.eb
+  - SIONlib-1.7.7-GCCcore-15.2.0-tools.eb
+  - OTF2-3.2-GCCcore-15.2.0.eb
+  - OPARI2-2.0.10-GCCcore-15.2.0.eb
+  - Score-P-10.1-gompi-2026.1.eb
+  - libdwarf-2.3.1-GCCcore-15.2.0.eb
+  - gperftools-2.18.1-GCCcore-15.2.0.eb
+  - GDB-17.2-GCCcore-15.2.0.eb
+  - nvtop-3.3.2-GCCcore-15.2.0.eb
+  - likwid-5.5.1-GCC-15.2.0.eb

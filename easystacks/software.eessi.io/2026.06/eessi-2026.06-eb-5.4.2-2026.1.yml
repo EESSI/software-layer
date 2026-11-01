@@ -1,0 +1,6 @@
+easyconfigs:
+  - SuiteSparse-7.12.2-gfbf-2026.1.eb
+  - Hypre-3.1.0-foss-2026.1.eb
+  - PETSc-3.25.0-foss-2026.1.eb
+  - libxc-7.0.0-GCC-15.2.0.eb
+  - Boost.Python-NumPy-1.90.0-gfbf-2026.1.eb
