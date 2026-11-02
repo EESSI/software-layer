@@ -37,7 +37,6 @@ easyconfigs:
   - btllib-1.7.5-GCC-14.3.0.eb
   - cftime-1.6.4.post1-gfbf-2025b.eb
   - h5netcdf-1.8.1-foss-2025b.eb
-  - numba-0.62.0-foss-2025b.eb
   - protobuf-python-6.31.1-GCCcore-14.3.0.eb
   - sparsehash-2.0.4-GCCcore-14.3.0.eb
   - xarray-2025.10.0-gfbf-2025b.eb
