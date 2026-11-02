@@ -1,0 +1,6 @@
+# Rebuild of cairo-1.17.8-GCCcore-12.3.0.eb to pickup new deps
+# introduced in https://github.com/easybuilders/easybuild-easyconfigs/pull/26848
+# Fixes issue encountered in https://github.com/EESSI/software-layer/pull/1896
+easyconfigs:
+  - cairo-1.17.8-GCCcore-12.3.0.eb
+  - cairo-1.18.0-GCCcore-13.2.0.eb
