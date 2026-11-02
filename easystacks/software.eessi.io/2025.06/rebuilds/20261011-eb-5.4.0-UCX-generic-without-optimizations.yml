@@ -8,10 +8,7 @@
 # Only the x86_64/generic and aarch64/generic installations need to be rebuilt,
 # so only build this for those targets (arch:x86_64/generic and arch:aarch64/generic).
 easyconfigs:
-  - UCX-1.16.0-GCCcore-13.3.0.eb:
-      options:
-        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/24388
-        from-commit: d438adc699f5ff35d866d9045f0aae663a0913cb
+  - UCX-1.16.0-GCCcore-13.3.0.eb
   - UCX-1.18.0-GCCcore-14.2.0.eb:
       options:
         # see https://github.com/easybuilders/easybuild-easyconfigs/pull/24388
