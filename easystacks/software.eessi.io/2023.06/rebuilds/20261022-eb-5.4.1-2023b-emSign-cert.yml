@@ -1,0 +1,21 @@
+easyconfigs:
+  - Python-3.11.5-GCCcore-13.2.0.eb:
+      options:
+        # rebuild Python pick up patch for pip to remove emSign root CA certificate,
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/27220
+        from-commit: a9ab52b1ff04bd32d575f560bb01c0cbfe07ffaa
+  - Python-bundle-PyPI-2023.10-GCCcore-13.2.0.eb:
+      options:
+        # rebuild Python-bundle-PyPI pick up in-place update of certifi extension
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/27219
+        from-commit: 88f9280575315fa8ed82f85b2d81d4472c561a69
+  - flit-3.9.0-GCCcore-13.2.0.eb:
+      options:
+        # rebuild flit to pick up in-place update of certifi extension
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/27221/
+        from-commit: b0a3d33d531427d3c189287764e1dae10c2bf17d
+  - poetry-1.6.1-GCCcore-13.2.0.eb:
+      options:
+        # rebuild poetry to pick up in-place update of certifi extension
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/27223
+        from-commit: e5a5ac6c988dcd97adad942619b7c7cf1be23572
