@@ -1,0 +1,5 @@
+easyconfigs:
+  - AITW-Clearwood_stiffness_model-0.1.0-Julia-1.12.2.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/26966
+        from-commit: 428b0a4b66b5567f0b5ad9afc2445e1d3f589e0f
