@@ -15,3 +15,5 @@ easyconfigs:
       options:
         # see https://github.com/easybuilders/easybuild-easyconfigs/pull/27186
         from-commit: a25f8578df309795c8c9734e0a435686001248a0
+  - CheMPS2-1.8.12-foss-2026.1.eb
+  - iodata-1.0.1-foss-2026.1.eb
