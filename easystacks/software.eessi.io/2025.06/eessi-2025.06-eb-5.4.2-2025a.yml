@@ -1,0 +1,10 @@
+easyconfigs:
+  - Judy-1.0.5-GCCcore-14.2.0.eb
+  - cftime-1.6.4.post1-gfbf-2025a.eb
+  - flatbuffers-python-25.2.10-GCCcore-14.2.0.eb
+  - libaio-0.3.113-GCCcore-14.2.0.eb
+  - opt-einsum-3.4.0-GCCcore-14.2.0.eb
+  - py3Dmol-2.5.3-GCCcore-14.2.0.eb
+  - rpy2-3.6.4-foss-2025a.eb
+  - ruff-0.12.1-GCCcore-14.2.0.eb
+  - wrapt-1.17.2-GCCcore-14.2.0.eb
