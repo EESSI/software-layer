@@ -1,5 +1,4 @@
 easyconfigs:
-  - Java-17.0.21.eb
   - Judy-1.0.5-GCCcore-14.2.0.eb
   - cftime-1.6.4.post1-gfbf-2025a.eb
   - flatbuffers-python-25.2.10-GCCcore-14.2.0.eb
