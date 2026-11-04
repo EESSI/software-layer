@@ -1,0 +1,3 @@
+# Rebuild to allow PETSc to be built with MUMPS support, which is required for some applications
+easyconfigs:
+  - PETSc-3.22.5-foss-2023b.eb

@@ -1,0 +1,9 @@
+# ReFrame 4.10.1-4.10.4 restricted naming schemes for features, essentially breaking the 1_node, 2_node, etc features of the EESSI test suite
+# This was patched in upstream ReFrame (not yet released).
+# The patch was backported to the ReFrame 4.10.2 easyconfig
+# This file reinstalls that easyconfig, with the patch
+easyconfigs:
+  - ReFrame-4.10.2-GCCcore-15.2.0-no-analytics.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/27016
+        from-commit: 92eb079baaa5262dba698acbfa5111fc7189052c
