@@ -1,0 +1,5 @@
+easyconfigs:
+  - AITW-darcy_infiltration-1.0.0-foss-2023b.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/27183
+        from-commit: ab69c49ae36eeac81c17c98f4ea81bc9915f71eb
