@@ -185,5 +185,5 @@ easyconfigs:
   - ASE-3.28.0-gfbf-2026.1.eb
   - dlb-3.8.0-gompi-2026.1.eb:
       options:
-        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/27097
-        from-commit: 6a143456d298063e5f417de8c1e67d0ae14958e5
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/27361
+        from-commit: 0fafdbc546d6d030424a9f265284921269166643
