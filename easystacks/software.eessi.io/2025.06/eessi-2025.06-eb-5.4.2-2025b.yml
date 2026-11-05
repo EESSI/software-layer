@@ -14,3 +14,13 @@ easyconfigs:
   - parameterized-0.9.0-GCCcore-14.3.0.eb
   - pytest-flakefinder-1.1.0-GCCcore-14.3.0.eb
   - zarr-3.1.5-gfbf-2025b.eb
+  - Cartopy-0.25.0-foss-2025b.eb
+  - Ceres-Solver-2.2.0-gfbf-2025b.eb
+  - CheMPS2-1.8.12-foss-2025b.eb
+  - CrystFEL-0.13.0-foss-2025b.eb
+  - Dakota-6.24.0-foss-2025b.eb
+  - FreeImage-3.18.0-GCCcore-14.3.0.eb
+  - PyTables-3.10.2-foss-2025b.eb
+  - anndata-0.12.16-foss-2025b.eb
+  - opt-einsum-3.4.0-GCCcore-14.3.0.eb
+  - pyzstd-0.19.0-GCCcore-14.3.0.eb
