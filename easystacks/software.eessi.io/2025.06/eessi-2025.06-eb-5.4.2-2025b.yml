@@ -15,7 +15,6 @@ easyconfigs:
   - pytest-flakefinder-1.1.0-GCCcore-14.3.0.eb
   - zarr-3.1.5-gfbf-2025b.eb
   - Cartopy-0.25.0-foss-2025b.eb
-  - Ceres-Solver-2.2.0-gfbf-2025b.eb
   - CheMPS2-1.8.12-foss-2025b.eb
   - CrystFEL-0.13.0-foss-2025b.eb
   - Dakota-6.24.0-foss-2025b.eb
