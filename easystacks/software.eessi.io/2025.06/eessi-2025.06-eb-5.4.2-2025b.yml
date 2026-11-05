@@ -4,3 +4,13 @@ easyconfigs:
   - Kraken2-2.17.1-gompi-2025b.eb
   - KrakenUniq-1.0.4-GCC-14.3.0.eb
   - tensorboard-2.20.0-gfbf-2025b.eb
+  - ABySS-2.3.10-foss-2025b.eb
+  - Armadillo-15.2.6-foss-2025b.eb
+  - Fiona-1.10.1-foss-2025b.eb
+  - LibRaw-0.21.4-GCCcore-14.3.0.eb
+  - glog-0.7.1-GCC-14.3.0.eb
+  - jxrlib-2019.10.9-GCCcore-14.3.0.eb
+  - netcdf4-python-1.7.2-foss-2025b.eb
+  - parameterized-0.9.0-GCCcore-14.3.0.eb
+  - pytest-flakefinder-1.1.0-GCCcore-14.3.0.eb
+  - zarr-3.1.5-gfbf-2025b.eb
