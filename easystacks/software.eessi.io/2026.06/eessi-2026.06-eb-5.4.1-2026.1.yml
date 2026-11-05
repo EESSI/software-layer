@@ -15,4 +15,3 @@ easyconfigs:
       options:
         # see https://github.com/easybuilders/easybuild-easyconfigs/pull/27186
         from-commit: a25f8578df309795c8c9734e0a435686001248a0
-
