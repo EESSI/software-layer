@@ -1,6 +1,0 @@
-# Rebuild CUDA-enabled apps that were built with older Go versions
-# to get rid of compromised eMudhra / emSign certificates
-# (by using a recent Go version)
-# See https://github.com/easybuilders/easybuild-easyconfigs/pull/27272
-easyconfigs:
-  - ollama-0.24.0-GCCcore-14.2.0-CUDA-12.8.0.eb
