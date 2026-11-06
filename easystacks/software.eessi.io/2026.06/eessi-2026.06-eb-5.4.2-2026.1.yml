@@ -13,38 +13,38 @@ easyconfigs:
   - CapnProto-1.4.0-GCCcore-15.2.0.eb:
       options:
         # see https://github.com/easybuilders/easybuild-easyconfigs/pull/26480
-        from-commit: eba0dcae85e50b630a1bdd255253ee97b2eba2c0
+        from-commit: 2eabc536d6c391036ec8c82c559a25110b4a1619
   - quill-11.1.0-GCCcore-15.2.0.eb:
       options:
         # see https://github.com/easybuilders/easybuild-easyconfigs/pull/26480
-        from-commit: eba0dcae85e50b630a1bdd255253ee97b2eba2c0
+        from-commit: 2eabc536d6c391036ec8c82c559a25110b4a1619
   - readcon-core-0.16.2-GCCcore-15.2.0.eb:
       options:
         # see https://github.com/easybuilders/easybuild-easyconfigs/pull/26480
-        from-commit: eba0dcae85e50b630a1bdd255253ee97b2eba2c0
+        from-commit: 2eabc536d6c391036ec8c82c559a25110b4a1619
   - rgpot-3.5.1-GCCcore-15.2.0.eb:
       options:
         # see https://github.com/easybuilders/easybuild-easyconfigs/pull/26480
-        from-commit: eba0dcae85e50b630a1bdd255253ee97b2eba2c0
+        from-commit: 2eabc536d6c391036ec8c82c559a25110b4a1619
   - python-xxhash-4.0.1-GCCcore-15.2.0.eb:
       options:
         # see https://github.com/easybuilders/easybuild-easyconfigs/pull/26480
-        from-commit: eba0dcae85e50b630a1bdd255253ee97b2eba2c0
+        from-commit: 2eabc536d6c391036ec8c82c559a25110b4a1619
   - vesin-0.6.2-gfbf-2026.1.eb:
       options:
         # see https://github.com/easybuilders/easybuild-easyconfigs/pull/26480
-        from-commit: eba0dcae85e50b630a1bdd255253ee97b2eba2c0
+        from-commit: 2eabc536d6c391036ec8c82c559a25110b4a1619
   - readcon-0.16.2-gfbf-2026.1.eb:
       options:
         # see https://github.com/easybuilders/easybuild-easyconfigs/pull/26480
-        from-commit: eba0dcae85e50b630a1bdd255253ee97b2eba2c0
+        from-commit: 2eabc536d6c391036ec8c82c559a25110b4a1619
   - readcon-db-0.1.8-GCCcore-15.2.0.eb:
       options:
         # see https://github.com/easybuilders/easybuild-easyconfigs/pull/26480
-        from-commit: eba0dcae85e50b630a1bdd255253ee97b2eba2c0
+        from-commit: 2eabc536d6c391036ec8c82c559a25110b4a1619
   - eOn-3.6.0-foss-2026.1.eb:
       options:
         # see https://github.com/easybuilders/easybuild-easyblocks/pull/4240
         include-easyblocks-from-commit: 000538462c20e14400f82f8817667407562aa7f7
         # see https://github.com/easybuilders/easybuild-easyconfigs/pull/26480
-        from-commit: eba0dcae85e50b630a1bdd255253ee97b2eba2c0
+        from-commit: 2eabc536d6c391036ec8c82c559a25110b4a1619
