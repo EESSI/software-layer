@@ -195,3 +195,7 @@ easyconfigs:
   - gperftools-2.18.1-GCCcore-15.2.0.eb
   - GDB-17.2-GCCcore-15.2.0.eb
   - nvtop-3.3.2-GCCcore-15.2.0.eb
+  - rsx-0.2.10-GCCcore-15.2.0:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/26973
+        from-commit: 908a148ac0e03bce6b4dbe60b6cefaf47b90169a
