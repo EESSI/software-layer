@@ -8,3 +8,23 @@ easyconfigs:
   - rpy2-3.6.4-foss-2025a.eb
   - ruff-0.12.1-GCCcore-14.2.0.eb
   - wrapt-1.17.2-GCCcore-14.2.0.eb
+  - Abseil-20250512.1-GCCcore-14.2.0.eb
+  - Go-1.26.10.eb
+  - HTSlib-1.22.1-GCC-14.2.0.eb
+  - JsonCpp-1.9.6-GCCcore-14.2.0.eb
+  - TOML-Fortran-0.4.3-GCC-14.2.0.eb
+  - btllib-1.7.5-GCC-14.2.0.eb
+  - googlebenchmark-1.9.4-GCCcore-14.2.0.eb
+  - multicharge-0.5.0-gfbf-2025a.eb
+  - netCDF-C++4-4.3.1-gompi-2025a.eb
+  - sparsehash-2.0.4-GCCcore-14.2.0.eb
+  - ABySS-2.3.10-foss-2025a.eb
+  - BCFtools-1.22-GCC-14.2.0.eb
+  - BamTools-2.5.3-GCC-14.2.0.eb
+  - DFT-D4-4.2.0-gfbf-2025a.eb
+  - ESMF-8.9.0-foss-2025a.eb
+  - Pysam-0.23.3-GCC-14.2.0.eb
+  - RE2-2024-07-02-GCCcore-14.2.0.eb
+  - Simple-DFTD3-1.4.0-gfbf-2025a.eb
+  - git-lfs-3.7.1.eb
+  - numsa-0.2.0-gfbf-2025a.eb
