@@ -1,5 +1,10 @@
 easyconfigs:
+  - CheMPS2-1.8.12-foss-2026.1.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/27329
+        from-commit: 67ec0e315cd0cfc842bb2735ec6ea72095d0d958
+  - iodata-1.0.1-foss-2026.1.eb
   - polars-1.41.2-gfbf-2026.1.eb:
       options:
         include-easyblocks-from-commit:
-          c0ce21ee627715a66cfeca039b8bbc3ea04380b2
+          c0ce21ee627715a66cfeca039b8bbc3ea04380b2  
