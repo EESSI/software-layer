@@ -195,3 +195,8 @@ easyconfigs:
   - gperftools-2.18.1-GCCcore-15.2.0.eb
   - GDB-17.2-GCCcore-15.2.0.eb
   - nvtop-3.3.2-GCCcore-15.2.0.eb
+  - Perl-bundle-CPAN-5.42.0-GCCcore-15.2.0.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/27036
+        from-commit: 909ebcddd94ae707ef3fa4db1e0d8398c1cd1231
+  - Pint-0.25.3-GCCcore-15.2.0.eb
