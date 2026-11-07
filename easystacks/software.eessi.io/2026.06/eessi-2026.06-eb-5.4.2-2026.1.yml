@@ -13,4 +13,5 @@ easyconfigs:
   - jupyterlmod-5.3.2-GCCcore-15.2.0.eb
   - Jupyter-bundle-20260909-GCCcore-15.2.0.eb
   - configurable-http-proxy-5.2.0-GCCcore-15.2.0.eb
-
+  - MPICH-5.0.1-GCC-15.2.0.eb
+  - ttyd-1.7.7-GCCcore-15.2.0.eb
