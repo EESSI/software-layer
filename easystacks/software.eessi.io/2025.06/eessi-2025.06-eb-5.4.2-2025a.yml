@@ -38,3 +38,13 @@ easyconfigs:
   - pytest-shard-0.1.2-GCCcore-14.2.0.eb
   - tblite-0.6.0-gfbf-2025a.eb
   - unittest-xml-reporting-3.1.0-GCCcore-14.2.0.eb
+  - Osi-0.108.11-GCC-14.2.0.eb
+  - Zip-3.0-GCCcore-14.2.0.eb
+  - absl-py-2.3.1-GCCcore-14.2.0.eb
+  - arrow-R-22.0.0-foss-2025a-R-4.5.1.eb
+  - gmpy2-2.2.0-GCCcore-14.2.0.eb
+  - ml_dtypes-0.5.1-gfbf-2025a.eb
+  - orjson-3.11.4-GCCcore-14.2.0.eb
+  - protobuf-31.1-GCCcore-14.2.0.eb
+  - ruamel.yaml-0.18.14-GCCcore-14.2.0.eb
+  - xtb-6.7.1-gfbf-2025a.eb
