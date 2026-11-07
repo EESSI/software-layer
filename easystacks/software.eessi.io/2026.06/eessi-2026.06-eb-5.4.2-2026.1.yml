@@ -1,4 +1,9 @@
 easyconfigs:
+  - CheMPS2-1.8.12-foss-2026.1.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/27329
+        from-commit: 67ec0e315cd0cfc842bb2735ec6ea72095d0d958
+  - iodata-1.0.1-foss-2026.1.eb
   - MPICH-5.0.1-GCC-15.2.0.eb
   - tbb-2022.3.0-GCCcore-15.2.0.eb
   - ttyd-1.7.7-GCCcore-15.2.0.eb

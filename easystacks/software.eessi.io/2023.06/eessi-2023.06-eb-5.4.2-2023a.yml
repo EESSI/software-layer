@@ -1,0 +1,5 @@
+easyconfigs:
+  - AITW_viscosity_surrogate-1.0.0-foss-2023a.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/27229
+        from-commit: f100b7f1e17004df39e781b076996e43ab128720
