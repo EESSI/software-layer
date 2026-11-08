@@ -19,3 +19,4 @@ easyconfigs:
       options:
         include-easyblocks-from-commit:
           c0ce21ee627715a66cfeca039b8bbc3ea04380b2
+  - libxc-7.0.0-GCC-15.2.0.eb
