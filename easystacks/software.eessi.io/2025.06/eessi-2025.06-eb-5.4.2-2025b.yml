@@ -25,7 +25,6 @@ easyconfigs:
   - ELPA-2025.06.002-lfoss-2025b.eb
   - ESPResSo-4.2.2-foss-2025b.eb
   - FLAIR-3.0.1-foss-2025b.eb
-  - PyTorch-2.9.1-foss-2025b.eb
   - SymEngine-python-0.14.0-gfbf-2025b.eb
   - pyEDFlib-0.1.42-foss-2025b.eb
   - pytest-9.1.1-GCCcore-14.3.0.eb
