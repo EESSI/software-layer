@@ -28,3 +28,13 @@ easyconfigs:
   - Simple-DFTD3-1.4.0-gfbf-2025a.eb
   - git-lfs-3.7.1.eb
   - numsa-0.2.0-gfbf-2025a.eb
+  - AUGUSTUS-3.5.0-foss-2025a.eb
+  - Arrow-22.0.0-gfbf-2025a.eb
+  - CESM-deps-3-foss-2025a.eb
+  - CMSeq-1.0.4-foss-2025a.eb
+  - CPCM-X-1.1.0-gfbf-2025a.eb
+  - parameterized-0.9.0-GCCcore-14.2.0.eb
+  - pytest-flakefinder-1.1.0-GCCcore-14.2.0.eb
+  - pytest-shard-0.1.2-GCCcore-14.2.0.eb
+  - tblite-0.6.0-gfbf-2025a.eb
+  - unittest-xml-reporting-3.1.0-GCCcore-14.2.0.eb
