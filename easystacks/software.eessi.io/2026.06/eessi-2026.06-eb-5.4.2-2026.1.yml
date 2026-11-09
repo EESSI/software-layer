@@ -18,5 +18,10 @@ easyconfigs:
   - polars-1.41.2-gfbf-2026.1.eb:
       options:
         include-easyblocks-from-commit:
+          # See https://github.com/easybuilders/easybuild-easyblocks/pull/4279
           c0ce21ee627715a66cfeca039b8bbc3ea04380b2
   - libxc-7.0.0-GCC-15.2.0.eb
+  - SuiteSparse-7.12.2-gfbf-2026.1.eb
+  - Hypre-3.1.0-foss-2026.1.eb
+  - PETSc-3.25.0-foss-2026.1.eb
+  - Boost.Python-NumPy-1.90.0-gfbf-2026.1.eb
