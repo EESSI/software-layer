@@ -1,0 +1,6 @@
+# Rebuild apps that were built with older Go versions
+# to get rid of compromised eMudhra / emSign certificates
+# (by using a recent Go version)
+# See https://github.com/easybuilders/easybuild-easyconfigs/pull/27247
+easyconfigs:
+  - rclone-1.75.1.eb
