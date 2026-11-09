@@ -45,4 +45,20 @@ easyconfigs:
       options:
         # See https://github.com/easybuilders/easybuild-easyconfigs/pull/27355
         from-commit: 02590490185eeaea6c91eda369ebd42b66fe10e1
+  - EveryBeam-0.8.5-foss-2026.1.eb:
+      options:
+        # See https://github.com/easybuilders/easybuild-easyconfigs/pull/27355
+        from-commit: 02590490185eeaea6c91eda369ebd42b66fe10e1
+  - LofarStMan-1.0.1-foss-2026.1.eb:
+      options:
+        # See https://github.com/easybuilders/easybuild-easyconfigs/pull/27355
+        from-commit: 02590490185eeaea6c91eda369ebd42b66fe10e1
+  - python-casacore-3.8.1-foss-2026.1.eb:
+      options:
+        # See https://github.com/easybuilders/easybuild-easyconfigs/pull/27355
+        from-commit: 02590490185eeaea6c91eda369ebd42b66fe10e1
+  - SAGECal-0.8.9-foss-2026.1.eb:
+      options:
+        # See https://github.com/easybuilders/easybuild-easyconfigs/pull/27355
+        from-commit: 02590490185eeaea6c91eda369ebd42b66fe10e1
 
