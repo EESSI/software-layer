@@ -41,4 +41,8 @@ easyconfigs:
       options:
         # See https://github.com/easybuilders/easybuild-easyconfigs/pull/27297
         from-commit: 6644985221d88ab4568a216a6bddedef1ed47136
+  - AOFlagger-3.5.1-foss-2026.1.eb:
+      options:
+        # See https://github.com/easybuilders/easybuild-easyconfigs/pull/27355
+        from-commit: 02590490185eeaea6c91eda369ebd42b66fe10e1
 
