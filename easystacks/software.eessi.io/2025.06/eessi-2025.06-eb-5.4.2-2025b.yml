@@ -28,3 +28,5 @@ easyconfigs:
   - SymEngine-python-0.14.0-gfbf-2025b.eb
   - pyEDFlib-0.1.42-foss-2025b.eb
   - pytest-9.1.1-GCCcore-14.3.0.eb
+  - angsd-0.940-GCC-14.3.0.eb
+  - PCAngsd-1.36.4-gfbf-2025b.eb
