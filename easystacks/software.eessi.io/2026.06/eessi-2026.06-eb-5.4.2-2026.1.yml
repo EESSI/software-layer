@@ -25,3 +25,15 @@ easyconfigs:
   - Hypre-3.1.0-foss-2026.1.eb
   - PETSc-3.25.0-foss-2026.1.eb
   - Boost.Python-NumPy-1.90.0-gfbf-2026.1.eb
+  - MAQAO-2025.1.0.eb:
+      options:
+        # See https://github.com/easybuilders/easybuild-easyconfigs/pull/23072
+        from-commit: 3611d68c0ac75a8c096841b427dae424e93cfbb8
+  - MAQAO-2026.0.0-b.eb:
+      options:
+        # See https://github.com/easybuilders/easybuild-easyconfigs/pull/25514
+        from-commit: 8462b33a08b3f18970075713d43f98b36b919472
+  - MAQAO-2026.1.0.eb:
+      options:
+        # See https://github.com/easybuilders/easybuild-easyconfigs/pull/26558
+        from-commit: b36640622ba6c9aee16489469f55bc82ee6242ce
