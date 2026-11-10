@@ -21,3 +21,10 @@ easyconfigs:
   - anndata-0.12.16-foss-2025b.eb
   - opt-einsum-3.4.0-GCCcore-14.3.0.eb
   - pyzstd-0.19.0-GCCcore-14.3.0.eb
+  - Boost.Python-1.88.0-GCC-14.3.0.eb
+  - ELPA-2025.06.002-lfoss-2025b.eb
+  - ESPResSo-4.2.2-foss-2025b.eb
+  - FLAIR-3.0.1-foss-2025b.eb
+  - SymEngine-python-0.14.0-gfbf-2025b.eb
+  - pyEDFlib-0.1.42-foss-2025b.eb
+  - pytest-9.1.1-GCCcore-14.3.0.eb
