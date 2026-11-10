@@ -30,4 +30,3 @@ easyconfigs:
   - pytest-9.1.1-GCCcore-14.3.0.eb
   - bam-readcount-1.0.1-GCC-14.3.0.eb
   - Pysam-0.23.3-GCC-14.3.0.eb
-  
