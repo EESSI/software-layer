@@ -32,7 +32,6 @@ easyconfigs:
   - Firedrake-2025.10.2-foss-2025b.eb
   - ecBuild-3.11.0-GCCcore-14.3.0.eb
   - libvdwxc-0.5.0-foss-2025b.eb
-  - med-6.0.1-foss-2025b.eb
   - neo-0.14.5-foss-2025b.eb
   - occt-7.9.3-GCCcore-14.3.0.eb
   - shapelib-1.6.3-GCCcore-14.3.0.eb
