@@ -6,3 +6,5 @@ easyconfigs:
       options:
         # see https://github.com/easybuilders/easybuild-easyconfigs/pull/27277
         from-commit: 7d68abee13fa9164a9da82b806cea70a6aa15e67
+        # see https://github.com/easybuilders/easybuild-easyblocks/pull/4280
+        include-easyblocks-from-commit: a9d4f8c0a68e2cd66c838f840d0807eb811a3717
