@@ -50,7 +50,6 @@ easyconfigs:
   - xtb-6.7.1-gfbf-2025a.eb
   - ATK-2.38.0-GCCcore-14.2.0.eb
   - AmberTools-25.2-foss-2025a-xtb.eb
-  - Bazel-7.4.1-GCCcore-14.2.0-Java-21.eb
   - Clp-1.17.10-foss-2025a.eb
   - R-bundle-Bioconductor-3.22-foss-2025a-R-4.5.1.eb
   - at-spi2-core-2.56.2-GCCcore-14.2.0.eb
