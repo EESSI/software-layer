@@ -31,3 +31,11 @@ easyconfigs:
   - bam-readcount-1.0.1-GCC-14.3.0.eb
   - angsd-0.940-GCC-14.3.0.eb
   - PCAngsd-1.36.4-gfbf-2025b.eb
+  - Coin-4.0.8-GCC-14.3.0.eb
+  - Firedrake-2025.10.2-foss-2025b.eb
+  - ecBuild-3.11.0-GCCcore-14.3.0.eb
+  - libvdwxc-0.5.0-foss-2025b.eb
+  - neo-0.14.5-foss-2025b.eb
+  - occt-7.9.3-GCCcore-14.3.0.eb
+  - shapelib-1.6.3-GCCcore-14.3.0.eb
+  - wxWidgets-3.3.1-GCCcore-14.3.0.eb
