@@ -1,0 +1,16 @@
+# 2026.10.11
+# numpy 2.4 raised its default x86-64 cpu-baseline to x86-64-v2 (SSSE3, SSE4.1, SSE4.2, POPCNT, ...),
+# so the numpy in the x86_64/generic installation refuses to import on CPUs that only have x86-64 (SSE2):
+# "NumPy was built with baseline optimizations: (X86_V2) but your machine doesn't support: (...)"
+# The numpy easyblock from https://github.com/easybuilders/easybuild-easyblocks/pull/4277 builds numpy
+# with cpu-baseline=none when optarch is GENERIC on x86-64;
+# the dispatched code paths for x86-64-v2 and newer are still selected at runtime.
+# Only the x86_64/generic installation needs to be rebuilt, so only build this for that target
+# (arch:x86_64/generic).
+easyconfigs:
+  - SciPy-bundle-2026.05-gfbf-2026.1.eb:
+      options:
+        # same easyconfig as the current installation
+        from-commit: 3dd90510b931c9a40af18df1d9bed75e1a1dc8e0
+        # see https://github.com/easybuilders/easybuild-easyblocks/pull/4277
+        include-easyblocks-from-commit: 2175241d6aac881dfb3589a07e27e811d332c5c3
