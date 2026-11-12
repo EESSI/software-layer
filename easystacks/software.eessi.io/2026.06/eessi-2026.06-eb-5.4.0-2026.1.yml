@@ -164,6 +164,10 @@ easyconfigs:
   - GDB-17.2-GCCcore-15.2.0.eb
   - nvtop-3.3.2-GCCcore-15.2.0.eb
   - likwid-5.5.1-GCC-15.2.0.eb
+  - dlb-3.8.0-gompi-2026.1.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/27361
+        from-commit: 0fafdbc546d6d030424a9f265284921269166643
   - LAMMPS-30Sep2026-foss-2026.1-kokkos.eb:
       options:
         # See https://github.com/easybuilders/easybuild-easyblocks/pull/4258
