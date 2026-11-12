@@ -64,7 +64,6 @@ easyconfigs:
   - Cgl-0.60.9-foss-2025a.eb
   - DIRAC-26.0-foss-2025a.eb
   - HMMER-3.4-gompi-2025a.eb
-  - at-spi2-atk-2.38.0-GCCcore-14.2.0.eb
   - jax-0.7.0-gfbf-2025a.eb
   - libepoxy-1.5.10-GCCcore-14.2.0.eb
   - prodigal-2.6.3-GCCcore-14.2.0.eb
