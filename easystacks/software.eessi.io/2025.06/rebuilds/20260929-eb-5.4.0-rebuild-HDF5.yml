@@ -1,0 +1,12 @@
+# Rebuild of HDF5 with CMake builds to address issue from 
+#  - https://gitlab.com/eessi/support/-/work_items/281
+#  fixes fortran compiler wrappers not passing the include directory
+easyconfigs:
+  - HDF5-1.14.6-gompi-2025b.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/27003
+        from-commit: b346d8b1cfff7cf0d9163771faa6903257677634
+  - HDF5-1.14.6-lompi-2025b.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/27003
+        from-commit: b346d8b1cfff7cf0d9163771faa6903257677634
