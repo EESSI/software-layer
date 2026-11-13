@@ -6,3 +6,6 @@ easyconfigs:
       options:
         from-pr: 27426
         include-easyblocks-from-pr: 4281
+  # cargo's DT_RPATH records the libcurl it was linked against; the CMake build
+  # dependency pulls cURL in, so cargo keeps the host CA bundle until Rust is rebuilt
+  - Rust-1.94.1-GCCcore-15.2.0.eb
