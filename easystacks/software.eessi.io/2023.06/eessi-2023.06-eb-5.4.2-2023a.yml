@@ -3,4 +3,3 @@ easyconfigs:
       options:
         # see https://github.com/easybuilders/easybuild-easyconfigs/pull/27229
         from-commit: f100b7f1e17004df39e781b076996e43ab128720
-  - MACS2-2.2.9.1-foss-2023b.eb
