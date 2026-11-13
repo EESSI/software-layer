@@ -53,4 +53,3 @@ easyconfigs:
       options:
         # See https://github.com/easybuilders/easybuild-easyconfigs/pull/27398 
         from-commit: 00fada401ecea82814807cee1813dd729f513658
-  - MACS3-3.0.3-gfbf-.eb
