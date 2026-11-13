@@ -39,3 +39,4 @@ easyconfigs:
   - occt-7.9.3-GCCcore-14.3.0.eb
   - shapelib-1.6.3-GCCcore-14.3.0.eb
   - wxWidgets-3.3.1-GCCcore-14.3.0.eb
+  - MACS3-3.0.3-gfbf-2024a.eb
