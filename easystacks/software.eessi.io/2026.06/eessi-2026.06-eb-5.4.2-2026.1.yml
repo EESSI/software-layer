@@ -26,3 +26,4 @@ easyconfigs:
   - PETSc-3.25.0-foss-2026.1.eb
   - Boost.Python-NumPy-1.90.0-gfbf-2026.1.eb
   - zlib-ng-2.3.2-GCCcore-15.2.0.eb
+  - R-bundle-Bioconductor-3.23-foss-2026.1-R-4.6.1.eb
