@@ -39,4 +39,15 @@ easyconfigs:
   - occt-7.9.3-GCCcore-14.3.0.eb
   - shapelib-1.6.3-GCCcore-14.3.0.eb
   - wxWidgets-3.3.1-GCCcore-14.3.0.eb
-  - MACS3-3.0.3-gfbf-2024a.eb
+  - CapnProto-1.4.0-GCCcore-14.3.0.eb
+  - Elephant-1.2.1-foss-2025b.eb
+  - Java-25.0.5.eb
+  - Quarter-1.2.3-GCC-14.3.0.eb
+  - SoQt-1.6.4-GCC-14.3.0.eb
+  - cython-cmake-0.2.2-GCCcore-14.3.0.eb
+  - ecCodes-2.43.0-gompi-2025b.eb
+  - gpaw-data-1.0.1-GCCcore-14.3.0.eb
+  - libMemcached-1.0.18-GCCcore-14.3.0.eb
+  - networkx-3.5-lfbf-2025b.eb
+  - MACS3-3.0.3-gfbf-.eb
+
