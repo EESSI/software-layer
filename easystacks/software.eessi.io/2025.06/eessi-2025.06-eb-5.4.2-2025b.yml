@@ -39,3 +39,7 @@ easyconfigs:
   - occt-7.9.3-GCCcore-14.3.0.eb
   - shapelib-1.6.3-GCCcore-14.3.0.eb
   - wxWidgets-3.3.1-GCCcore-14.3.0.eb
+  - toil-cwl-9.6.0-foss-2025b.eb:
+      options:
+        # See https://github.com/easybuilders/easybuild-easyconfigs/pull/27398 
+        from-commit: 00fada401ecea82814807cee1813dd729f513658
