@@ -26,3 +26,11 @@ easyconfigs:
   - PETSc-3.25.0-foss-2026.1.eb
   - Boost.Python-NumPy-1.90.0-gfbf-2026.1.eb
   - zlib-ng-2.3.2-GCCcore-15.2.0.eb
+  - Rust-1.99.1-GCCcore-15.2.0.eb:
+      options:
+        pr-target-account: HaoZeke
+        from-commit: fa56db12810d1574ca4383d75aa00a57c85d032f
+  - uv-0.13.7-GCCcore-15.2.0.eb:
+      options:
+        pr-target-account: HaoZeke
+        from-commit: fa56db12810d1574ca4383d75aa00a57c85d032f
