@@ -49,11 +49,11 @@ easyconfigs:
   - gpaw-data-1.0.1-GCCcore-14.3.0.eb
   - libMemcached-1.0.18-GCCcore-14.3.0.eb
   - networkx-3.5-lfbf-2025b.eb
-  - GPAW-25.7.0-foss-2025b.eb
   - toil-cwl-9.6.0-foss-2025b.eb:
       options:
         # See https://github.com/easybuilders/easybuild-easyconfigs/pull/27398 
         from-commit: 00fada401ecea82814807cee1813dd729f513658
+  - GPAW-25.7.0-foss-2025b.eb
   - GROMACS-2025.2-lfoss-2025b.eb
   - HH-suite-3.3.0-20250812-gompi-2025b.eb
   - MDSplus-7.153.3-GCCcore-14.3.0.eb
