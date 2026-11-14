@@ -55,7 +55,6 @@ easyconfigs:
         from-commit: 00fada401ecea82814807cee1813dd729f513658
   - GROMACS-2025.2-lfoss-2025b.eb
   - HH-suite-3.3.0-20250812-gompi-2025b.eb
-  - MDSplus-7.153.3-GCCcore-14.3.0.eb
   - MDTraj-1.11.0-foss-2025b.eb
   - UDA-2.9.3-GCC-14.3.0.eb
   - makedepend-1.0.9-GCCcore-14.3.0.eb
