@@ -58,3 +58,11 @@ easyconfigs:
   - ml-collections-1.1.0-foss-2025a.eb
   - protobuf-python-6.31.1-GCCcore-14.2.0.eb
   - sympy-1.14.0-gfbf-2025a.eb
+  - BgeeCall-1.26.0-foss-2025a-R-4.5.1.eb
+  - BgeeDB-2.36.0-foss-2025a-R-4.5.1.eb
+  - COBRApy-0.30.0-foss-2025a.eb
+  - Cgl-0.60.9-foss-2025a.eb
+  - DIRAC-26.0-foss-2025a.eb
+  - HMMER-3.4-gompi-2025a.eb
+  - libepoxy-1.5.10-GCCcore-14.2.0.eb
+  - prodigal-2.6.3-GCCcore-14.2.0.eb
