@@ -61,7 +61,6 @@ easyconfigs:
   - xxHash-0.8.3-GCCcore-14.3.0.eb
   - Kaleido-0.2.1-GCCcore-14.3.0.eb
   - NLTK-3.10.3-foss-2025b.eb
-  - OpenCV-4.12.0-foss-2025b-contrib.eb
   - ParaView-6.0.1-foss-2025b.eb
   - ParallelIO-2.7.0-gompi-2025b.eb
   - g2lib-4.0.0-gfbf-2025b.eb
