@@ -60,7 +60,6 @@ easyconfigs:
   - pivy-0.6.11-GCC-14.3.0.eb
   - xxHash-0.8.3-GCCcore-14.3.0.eb
   - Kaleido-0.2.1-GCCcore-14.3.0.eb
-  - ModPipe-2.3.1-foss-2025b.eb
   - NLTK-3.10.3-foss-2025b.eb
   - Octave-11.1.0-foss-2025b.eb
   - OpenCV-4.12.0-foss-2025b-contrib.eb
