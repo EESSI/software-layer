@@ -80,7 +80,6 @@ easyconfigs:
   - GROMACS-2024.4-foss-2025a-PLUMED-2.9.4.eb
   - GROMACS-2025.2-foss-2025a-PLUMED-2.9.4-native.eb
   - HOMER-5.1-foss-2025a-R-4.5.1.eb
-  - Java-17.eb
   - MariaDB-11.8.3-GCC-14.2.0.eb
   - PuLP-3.3.0-foss-2025a.eb
   - SQLAlchemy-2.0.41-GCCcore-14.2.0.eb
