@@ -76,3 +76,12 @@ easyconfigs:
   - minimap2-2.30-GCCcore-14.2.0.eb
   - psycopg-3.2.9-GCCcore-14.2.0.eb
   - qc-grid-0.0.9-gfbf-2025a.eb
+  - simde-0.8.2-GCCcore-14.2.0.eb
+  - Bowtie2-2.5.4-GCC-14.2.0.eb
+  - GROMACS-2024.4-foss-2025a-PLUMED-2.9.4.eb
+  - GROMACS-2025.2-foss-2025a-PLUMED-2.9.4-native.eb
+  - HOMER-5.1-foss-2025a-R-4.5.1.eb
+  - PuLP-3.3.0-foss-2025a.eb
+  - SQLAlchemy-2.0.41-GCCcore-14.2.0.eb
+  - libaec-1.1.4-GCCcore-14.2.0.eb
+  - pybedtools-0.12.0-foss-2025a.eb
