@@ -85,3 +85,13 @@ easyconfigs:
   - SQLAlchemy-2.0.41-GCCcore-14.2.0.eb
   - libaec-1.1.4-GCCcore-14.2.0.eb
   - pybedtools-0.12.0-foss-2025a.eb
+  - Blosc2-2.19.0-GCCcore-14.2.0.eb
+  - DRAM-1.5.0-foss-2025a.eb
+  - MDI-1.4.35-gompi-2025a.eb
+  - PyTorch-2.9.1-foss-2025a.eb
+  - ScaFaCoS-1.0.4-foss-2025a.eb
+  - Voro++-0.4.6-GCCcore-14.2.0.eb
+  - archspec-0.2.5-GCCcore-14.2.0.eb
+  - ecCodes-2.43.0-gompi-2025a.eb
+  - kim-api-2.4.1-GCC-14.2.0.eb
+  - tensorboardX-2.6.4-foss-2025a.eb
