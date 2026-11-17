@@ -88,7 +88,6 @@ easyconfigs:
   - Blosc2-2.19.0-GCCcore-14.2.0.eb
   - DRAM-1.5.0-foss-2025a.eb
   - MDI-1.4.35-gompi-2025a.eb
-  - PyTorch-2.9.1-foss-2025a.eb
   - ScaFaCoS-1.0.4-foss-2025a.eb
   - Voro++-0.4.6-GCCcore-14.2.0.eb
   - archspec-0.2.5-GCCcore-14.2.0.eb
