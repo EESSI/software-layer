@@ -98,7 +98,6 @@ easyconfigs:
   - GitPython-3.1.45-GCCcore-14.2.0.eb
   - LAMMPS-22Jul2025_update4-foss-2025a-kokkos.eb
   - NCO-5.3.6-foss-2025a.eb
-  - Octave-10.3.0-foss-2025a.eb
   - PyTables-3.10.2-foss-2025a.eb
   - numpydoc-1.10.0-GCCcore-14.2.0.eb
   - shared-mime-info-2.4-GCCcore-14.2.0.eb
