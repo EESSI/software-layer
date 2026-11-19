@@ -1,0 +1,15 @@
+easyconfigs:
+  - XGBoost-2.0.2-gfbf-2023a.eb
+  - Transformers-4.39.3-gfbf-2023a.eb
+  - AITW_infiltration_surrogate-1.0.0-foss-2023a.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/27136
+        from-commit: 510ee3814a1643cb6bd5c6c6e6abcaf706d64558
+  - AITW-material_optimization-0.1.0-foss-2023a.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/27069
+        from-commit: 8e90ef84e490c24591a492569804c0b708d5400a
+  - AITW-microstructures-1.2.0-foss-2023a.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/27055
+        from-commit: 1a0e66663539da37308948e71cf024b0bf703682

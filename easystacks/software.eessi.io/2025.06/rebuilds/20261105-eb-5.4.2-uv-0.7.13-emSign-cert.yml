@@ -1,0 +1,8 @@
+# Rebuild uv as that also bundles the
+# compromised eMudhra / emSign certificates
+# (update 
+# See: https://github.com/easybuilders/easybuild-easyconfigs/pull/27372
+easyconfigs:
+  - uv-0.7.13-GCCcore-14.2.0.eb:
+      options:
+        from-commit: de4df573e9ce28d268dbd103de7178b74baf96aa

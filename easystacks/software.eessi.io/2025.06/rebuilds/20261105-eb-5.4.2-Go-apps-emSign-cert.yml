@@ -1,0 +1,13 @@
+# Rebuild apps that were built with older Go versions
+# to get rid of compromised eMudhra / emSign certificates
+# (by using a recent Go version)
+# See:
+#   - caddy: https://github.com/easybuilders/easybuild-easyconfigs/pull/27274
+#   - OBITools: https://github.com/easybuilders/easybuild-easyconfigs/pull/27247
+#   - ollama: https://github.com/easybuilders/easybuild-easyconfigs/pull/27366
+easyconfigs:
+  - caddy-2.10.2.eb
+  - OBITools4-4.5.0-GCCcore-14.3.0.eb
+  - ollama-0.6.0-GCCcore-13.3.0.eb:
+      options:
+        from-commit: 57091b51a62b1205f23f1ba32b15b6da63148726

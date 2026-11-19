@@ -1,0 +1,17 @@
+# Rebuild Python installations again to also distrust
+# all compromised certificates in ssl module.
+# See https://github.com/easybuilders/easybuild-easyconfigs/pull/27300
+# and https://github.com/easybuilders/easybuild-easyconfigs/pull/27277
+easyconfigs:
+  - Python-3.12.3-GCCcore-13.3.0.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/27300
+        from-commit: 2ccf0230481da4a632fd7b60d9cbd1a62a87db50
+  - Python-3.13.1-GCCcore-14.2.0.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/27277
+        from-commit: 7d68abee13fa9164a9da82b806cea70a6aa15e67
+  - Python-3.13.5-GCCcore-14.3.0.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/27277
+        from-commit: 7d68abee13fa9164a9da82b806cea70a6aa15e67

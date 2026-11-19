@@ -1,0 +1,8 @@
+# Rebuild of FEniCS-DOLFINx-0.9.0-foss-2023b.eb to pickup new deps
+# introduced in https://github.com/easybuilders/easybuild-easyconfigs/pull/25004
+# Fixes issue encountered in https://github.com/EESSI/software-layer/pull/1826
+easyconfigs:
+  - FEniCS-DOLFINx-0.9.0-foss-2023b.eb:
+      options:
+        # enable dependency resolution, since dependencies were updated
+        robot: true

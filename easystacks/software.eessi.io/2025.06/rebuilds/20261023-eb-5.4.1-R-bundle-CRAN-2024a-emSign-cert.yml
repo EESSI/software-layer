@@ -1,0 +1,7 @@
+easyconfigs:
+  - GDAL-3.10.0-foss-2024a.eb
+  - R-bundle-CRAN-2024.11-foss-2024a.eb:
+      options:
+        # rebuild R-bundle-CRAN to pick up in-place patching of certificates
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/27237
+        from-commit: 7407dbc078f6a576c978a81b4e75989e36d8441f

@@ -1,0 +1,15 @@
+# rebuild of Julia to pick up the wrappers introduced in 
+# https://github.com/easybuilders/easybuild-easyconfigs/pull/25836
+# Also supposed to be ran with the new hook introduced in 
+# https://github.com/EESSI/software-layer-scripts/pull/327
+# In order to add the correct `--cpu-target` flag to the wrapper so that julia packages are correctly build to avoid
+# failures such as https://github.com/EESSI/software-layer/pull/1828#issuecomment-6314918411
+#
+# Also includes the changes of https://github.com/easybuilders/easybuild-easyconfigs/pull/27230 in order to remove
+# the emSign certs see https://emudhra.we-have-a-problem.com/ and 
+# https://discuss.python.org/t/information-for-python-users-regarding-emudhra-emsign-ca-certificate-security-incident/109576
+easyconfigs:
+  - Julia-1.12.2.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/27230
+        from-commit: 17c84d79a1fe815c82860acce20ba262d7dd2f49
