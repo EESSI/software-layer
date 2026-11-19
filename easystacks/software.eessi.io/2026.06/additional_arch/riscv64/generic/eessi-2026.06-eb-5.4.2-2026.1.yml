@@ -2,4 +2,4 @@ easyconfigs:
   - R-bundle-Bioconductor-3.23-foss-2026.1-R-4.6.1.eb:
       options:
         # see https://github.com/easybuilders/easybuild-easyconfigs/pull/27480
-        from-commit: efb23a080778067e8b5fc8760bc86c9a68e76bf0
+        from-commit: 806aa79a34f86f0aa4123a3a1d54c8c887ea3643
