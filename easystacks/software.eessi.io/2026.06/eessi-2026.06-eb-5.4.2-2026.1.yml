@@ -27,3 +27,8 @@ easyconfigs:
   - Boost.Python-NumPy-1.90.0-gfbf-2026.1.eb
   - zlib-ng-2.3.2-GCCcore-15.2.0.eb
   - dill-0.4.1-GCCcore-15.2.0.eb
+  - R-bundle-Bioconductor-3.23-foss-2026.1-R-4.6.1.eb:
+      options:
+        # workaround for https://github.com/easybuilders/easybuild-framework/issues/5364
+        # make sure that https://github.com/EESSI/software-layer-scripts/pull/345 is used
+        disable-parallel-extensions-install: true
