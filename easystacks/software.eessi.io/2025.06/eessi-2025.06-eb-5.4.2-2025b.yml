@@ -66,7 +66,6 @@ easyconfigs:
   - g2lib-4.0.0-gfbf-2025b.eb
   - nanomath-1.4.0-gfbf-2025b.eb
   - python-xxhash-3.6.0-GCCcore-14.3.0.eb
-  - NCL-6.6.2-foss-2025b.eb
   - NCO-5.3.9-foss-2025b.eb
   - OpenFOAM-v2506-foss-2025b.eb
   - OpenSceneGraph-3.6.5-foss-2025b.eb
