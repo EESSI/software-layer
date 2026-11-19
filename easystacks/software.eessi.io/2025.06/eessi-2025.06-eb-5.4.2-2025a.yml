@@ -96,7 +96,6 @@ easyconfigs:
   - tensorboardX-2.6.4-foss-2025a.eb
   - Deprecated-1.2.18-GCCcore-14.2.0.eb
   - GitPython-3.1.45-GCCcore-14.2.0.eb
-  - ICON-2026.04-foss-2025a.eb
   - LAMMPS-22Jul2025_update4-foss-2025a-kokkos.eb
   - NCO-5.3.6-foss-2025a.eb
   - Octave-10.3.0-foss-2025a.eb
