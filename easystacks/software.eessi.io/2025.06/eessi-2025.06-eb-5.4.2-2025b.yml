@@ -66,3 +66,13 @@ easyconfigs:
   - g2lib-4.0.0-gfbf-2025b.eb
   - nanomath-1.4.0-gfbf-2025b.eb
   - python-xxhash-3.6.0-GCCcore-14.3.0.eb
+  - NCL-6.6.2-foss-2025b.eb
+  - NCO-5.3.9-foss-2025b.eb
+  - OpenFOAM-v2506-foss-2025b.eb
+  - OpenSceneGraph-3.6.5-foss-2025b.eb
+  - Redis-8.2.2-GCCcore-14.3.0.eb
+  - SCOTCH-7.0.10-gompi-2025b-int64.eb
+  - Zoltan-3.901-foss-2025b.eb
+  - astropy-testing-7.1.0-gfbf-2025b.eb
+  - mcpl-2.2.8-foss-2025b.eb
+  - nanoget-1.19.4-gfbf-2025b.eb
