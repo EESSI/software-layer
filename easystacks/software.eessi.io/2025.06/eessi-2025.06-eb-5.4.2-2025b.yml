@@ -59,3 +59,10 @@ easyconfigs:
   - makedepend-1.0.9-GCCcore-14.3.0.eb
   - pivy-0.6.11-GCC-14.3.0.eb
   - xxHash-0.8.3-GCCcore-14.3.0.eb
+  - Kaleido-0.2.1-GCCcore-14.3.0.eb
+  - NLTK-3.10.3-foss-2025b.eb
+  - ParaView-6.0.1-foss-2025b.eb
+  - ParallelIO-2.7.0-gompi-2025b.eb
+  - g2lib-4.0.0-gfbf-2025b.eb
+  - nanomath-1.4.0-gfbf-2025b.eb
+  - python-xxhash-3.6.0-GCCcore-14.3.0.eb
