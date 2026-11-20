@@ -27,7 +27,3 @@ easyconfigs:
   - Boost.Python-NumPy-1.90.0-gfbf-2026.1.eb
   - zlib-ng-2.3.2-GCCcore-15.2.0.eb
   - dill-0.4.1-GCCcore-15.2.0.eb
-  - Dimemas-5.6.0-GCC-14.3.0.eb:
-      options:
-        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/27475
-        from-commit: 005cd575804c28d68cb79418fb28d5bb149abda6
