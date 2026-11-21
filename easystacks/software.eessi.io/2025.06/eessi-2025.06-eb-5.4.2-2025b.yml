@@ -75,7 +75,6 @@ easyconfigs:
   - astropy-testing-7.1.0-gfbf-2025b.eb
   - mcpl-2.2.8-foss-2025b.eb
   - nanoget-1.19.4-gfbf-2025b.eb
-  - CVXOPT-1.3.2-gfbf-2025b.eb
   - MUMmer-4.0.1-GCCcore-14.3.0.eb
   - NanoPlot-1.44.1-foss-2025b.eb
   - OpenMC-0.15.3-foss-2025b.eb
