@@ -15,3 +15,7 @@ easyconfigs:
       options:
         # see https://github.com/easybuilders/easybuild-easyconfigs/pull/27186
         from-commit: a25f8578df309795c8c9734e0a435686001248a0
+  - GROMACS-2026.4-foss-2026.1.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/27122
+        from-commit: aac42b62d957f2a521309bdb14d01de1b3431946
