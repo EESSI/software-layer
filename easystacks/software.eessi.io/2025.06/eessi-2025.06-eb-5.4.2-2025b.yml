@@ -82,4 +82,3 @@ easyconfigs:
   - meshio-5.3.5-foss-2025b.eb
   - multiprocess-0.70.19-gfbf-2025b.eb
   - redis-py-6.4.0-GCCcore-14.3.0.eb
-  - unimap-0.1-GCCcore-14.3.0.eb
