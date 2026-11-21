@@ -44,3 +44,11 @@ easyconfigs:
         # See https://github.com/easybuilders/easybuild-easyconfigs/pull/27297
         from-commit: 6644985221d88ab4568a216a6bddedef1ed47136
   - TDEP-25.03-foss-2026.1.eb
+  - GStreamer-1.29.2-GCCcore-15.2.0.eb:
+      options:
+        # See https://github.com/easybuilders/easybuild-easyconfigs/pull/27499
+        from-commit: 4de1468567abd61cba9dc004b70af8dec333362a
+  - AOFlagger-3.5.1-foss-2026.1.eb:
+      options:
+        # See https://github.com/easybuilders/easybuild-easyconfigs/pull/27355
+        from-commit: 02590490185eeaea6c91eda369ebd42b66fe10e1
