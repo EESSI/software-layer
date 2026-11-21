@@ -44,3 +44,5 @@ easyconfigs:
         # See https://github.com/easybuilders/easybuild-easyconfigs/pull/27297
         from-commit: 6644985221d88ab4568a216a6bddedef1ed47136
   - TDEP-25.03-foss-2026.1.eb
+  - hatchling-1.33.0-GCCcore-15.2.0.eb
+  - Rust-1.95.0-GCCcore-15.2.0.eb
