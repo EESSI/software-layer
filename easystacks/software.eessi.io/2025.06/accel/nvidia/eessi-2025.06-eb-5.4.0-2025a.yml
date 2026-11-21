@@ -1,0 +1,5 @@
+easyconfigs:
+  - PantheonGPU-1.2.2-gfbf-2025a-CUDA-12.8.0.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/26992
+        from-commit: 01bc57894cf938e353583ee55f720ff715795816
