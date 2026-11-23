@@ -94,3 +94,12 @@ easyconfigs:
   - ecCodes-2.43.0-gompi-2025a.eb
   - kim-api-2.4.1-GCC-14.2.0.eb
   - tensorboardX-2.6.4-foss-2025a.eb
+  - Deprecated-1.2.18-GCCcore-14.2.0.eb
+  - GitPython-3.1.45-GCCcore-14.2.0.eb
+  - LAMMPS-22Jul2025_update4-foss-2025a-kokkos.eb
+  - NCO-5.3.6-foss-2025a.eb
+  - PyTables-3.10.2-foss-2025a.eb
+  - numpydoc-1.10.0-GCCcore-14.2.0.eb
+  - redis-py-6.2.0-GCCcore-14.2.0.eb
+  - shared-mime-info-2.4-GCCcore-14.2.0.eb
+  - text-unidecode-1.3-GCCcore-14.2.0.eb
