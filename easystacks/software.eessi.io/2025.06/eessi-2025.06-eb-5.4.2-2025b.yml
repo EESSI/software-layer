@@ -39,3 +39,39 @@ easyconfigs:
   - occt-7.9.3-GCCcore-14.3.0.eb
   - shapelib-1.6.3-GCCcore-14.3.0.eb
   - wxWidgets-3.3.1-GCCcore-14.3.0.eb
+  - CapnProto-1.4.0-GCCcore-14.3.0.eb
+  - Elephant-1.2.1-foss-2025b.eb
+  - Java-25.0.5.eb
+  - Quarter-1.2.3-GCC-14.3.0.eb
+  - SoQt-1.6.4-GCC-14.3.0.eb
+  - cython-cmake-0.2.2-GCCcore-14.3.0.eb
+  - ecCodes-2.43.0-gompi-2025b.eb
+  - gpaw-data-1.0.1-GCCcore-14.3.0.eb
+  - libMemcached-1.0.18-GCCcore-14.3.0.eb
+  - networkx-3.5-lfbf-2025b.eb
+  - toil-cwl-9.6.0-foss-2025b.eb:
+      options:
+        # See https://github.com/easybuilders/easybuild-easyconfigs/pull/27398 
+        from-commit: 00fada401ecea82814807cee1813dd729f513658
+  - HH-suite-3.3.0-20250812-gompi-2025b.eb
+  - MDTraj-1.11.0-foss-2025b.eb
+  - UDA-2.9.3-GCC-14.3.0.eb
+  - makedepend-1.0.9-GCCcore-14.3.0.eb
+  - pivy-0.6.11-GCC-14.3.0.eb
+  - xxHash-0.8.3-GCCcore-14.3.0.eb
+  - Kaleido-0.2.1-GCCcore-14.3.0.eb
+  - NLTK-3.10.3-foss-2025b.eb
+  - ParaView-6.0.1-foss-2025b.eb
+  - ParallelIO-2.7.0-gompi-2025b.eb
+  - g2lib-4.0.0-gfbf-2025b.eb
+  - nanomath-1.4.0-gfbf-2025b.eb
+  - python-xxhash-3.6.0-GCCcore-14.3.0.eb
+  - NCO-5.3.9-foss-2025b.eb
+  - OpenFOAM-v2506-foss-2025b.eb
+  - OpenSceneGraph-3.6.5-foss-2025b.eb
+  - Redis-8.2.2-GCCcore-14.3.0.eb
+  - SCOTCH-7.0.10-gompi-2025b-int64.eb
+  - Zoltan-3.901-foss-2025b.eb
+  - astropy-testing-7.1.0-gfbf-2025b.eb
+  - mcpl-2.2.8-foss-2025b.eb
+  - nanoget-1.19.4-gfbf-2025b.eb
