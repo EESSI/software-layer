@@ -1,5 +1,0 @@
-# This easystack contains software that doesn't build on RISCV, e.g. because it depends on Qt6
-# Keeping this separated, we can use the main easystack file for software that compiles on ALL targets,
-# including RISCV
-easyconfigs:
-  - TDEP-25.03-foss-2026.1.eb
