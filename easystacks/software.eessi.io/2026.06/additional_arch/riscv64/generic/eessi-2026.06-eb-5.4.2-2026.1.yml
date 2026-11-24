@@ -6,7 +6,7 @@ easyconfigs:
   - GStreamer-1.29.2-GCCcore-15.2.0.eb:
       options:
         # See https://github.com/easybuilders/easybuild-easyconfigs/pull/27499
-        from-commit: 4de1468567abd61cba9dc004b70af8dec333362a
+        from-commit: e4011ecc28b53c8291d51b93d45e76f3e86ef8cc
   - AOFlagger-3.5.1-foss-2026.1.eb:
       options:
         # See https://github.com/easybuilders/easybuild-easyconfigs/pull/27355
