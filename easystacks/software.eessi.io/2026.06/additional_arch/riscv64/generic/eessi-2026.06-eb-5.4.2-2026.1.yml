@@ -1,0 +1,9 @@
+easyconfigs:
+  - hatchling-1.33.0-GCCcore-15.2.0.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/27491
+        from-commit: a0916f746f2259c712249cac35df29c7eecd753b
+  - Rust-1.95.0-GCCcore-15.2.0.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/27491
+        from-commit: a0916f746f2259c712249cac35df29c7eecd753b
