@@ -1,4 +1,8 @@
 easyconfigs:
+  - R-bundle-Bioconductor-3.23-foss-2026.1-R-4.6.1.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/27480
+        from-commit: 8473b26e6ecbb252920632bde7d40b2002ffd56d
   - GStreamer-1.29.2-GCCcore-15.2.0.eb:
       options:
         # See https://github.com/easybuilders/easybuild-easyconfigs/pull/27499
