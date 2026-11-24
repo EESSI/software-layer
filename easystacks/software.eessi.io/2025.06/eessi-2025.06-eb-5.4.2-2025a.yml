@@ -122,4 +122,3 @@ easyconfigs:
   - cookiecutter-2.7.1-gfbf-2025a.eb
   - muParser-2.3.5-GCC-14.2.0.eb
   - python-igraph-0.11.9-foss-2025a.eb
-  - tblis-1.3.0-foss-2025a.eb
