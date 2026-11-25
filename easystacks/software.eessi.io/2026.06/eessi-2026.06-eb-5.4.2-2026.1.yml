@@ -43,9 +43,16 @@ easyconfigs:
       options:
         # See https://github.com/easybuilders/easybuild-easyconfigs/pull/27297
         from-commit: 6644985221d88ab4568a216a6bddedef1ed47136
-  - TDEP-25.03-foss-2026.1.eb
   - R-bundle-Bioconductor-3.23-foss-2026.1-R-4.6.1.eb:
       options:
         # workaround for https://github.com/easybuilders/easybuild-framework/issues/5364
         # make sure that https://github.com/EESSI/software-layer-scripts/pull/345 is used
         disable-parallel-extensions-install: true
+  - hatchling-1.33.0-GCCcore-15.2.0.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/27491
+        from-commit: a0916f746f2259c712249cac35df29c7eecd753b
+  - Rust-1.95.0-GCCcore-15.2.0.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/27491
+        from-commit: a0916f746f2259c712249cac35df29c7eecd753b

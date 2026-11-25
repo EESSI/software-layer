@@ -113,3 +113,12 @@ easyconfigs:
   - libcint-6.1.2-gfbf-2025a.eb
   - python-slugify-8.0.4-GCCcore-14.2.0.eb
   - zarr-3.1.1-gfbf-2025a.eb
+  - CPPE-0.3.1-GCC-14.2.0.eb
+  - PyBerny-0.6.3-foss-2025a.eb
+  - RASPA2-2.0.47-foss-2025a.eb
+  - RDKit-2025.03.5-foss-2025a.eb
+  - Rmath-4.5.1-gompi-2025a.eb
+  - anndata-0.12.3-foss-2025a.eb
+  - cookiecutter-2.7.1-gfbf-2025a.eb
+  - muParser-2.3.5-GCC-14.2.0.eb
+  - python-igraph-0.11.9-foss-2025a.eb
