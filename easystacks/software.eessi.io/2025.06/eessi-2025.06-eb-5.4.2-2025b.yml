@@ -66,3 +66,28 @@ easyconfigs:
   - g2lib-4.0.0-gfbf-2025b.eb
   - nanomath-1.4.0-gfbf-2025b.eb
   - python-xxhash-3.6.0-GCCcore-14.3.0.eb
+  - NCO-5.3.9-foss-2025b.eb
+  - OpenFOAM-v2506-foss-2025b.eb
+  - OpenSceneGraph-3.6.5-foss-2025b.eb
+  - Redis-8.2.2-GCCcore-14.3.0.eb
+  - SCOTCH-7.0.10-gompi-2025b-int64.eb
+  - Zoltan-3.901-foss-2025b.eb
+  - astropy-testing-7.1.0-gfbf-2025b.eb
+  - mcpl-2.2.8-foss-2025b.eb
+  - nanoget-1.19.4-gfbf-2025b.eb
+  - MUMmer-4.0.1-GCCcore-14.3.0.eb
+  - NanoPlot-1.44.1-foss-2025b.eb
+  - OpenMC-0.15.3-foss-2025b.eb
+  - REEF3D-26.05-foss-2025b.eb
+  - meshio-5.3.5-foss-2025b.eb
+  - multiprocess-0.70.19-gfbf-2025b.eb
+  - redis-py-6.4.0-GCCcore-14.3.0.eb
+  - Brotli-python-1.1.0-GCCcore-14.3.0.eb
+  - FOX-Toolkit-1.6.59-GCCcore-14.3.0.eb
+  - Optuna-4.6.0-foss-2025b.eb
+  - PyJWT-2.10.1-GCCcore-14.3.0.eb
+  - PyLipID-1.5.14-foss-2025b.eb
+  - PyVista-0.48.4-foss-2025b.eb
+  - Ray-project-2.47.1-foss-2025b.eb
+  - TRF-4.09.1-GCCcore-14.3.0.eb
+  - deprecation-2.1.0-GCCcore-14.3.0.eb
