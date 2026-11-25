@@ -122,3 +122,13 @@ easyconfigs:
   - cookiecutter-2.7.1-gfbf-2025a.eb
   - muParser-2.3.5-GCC-14.2.0.eb
   - python-igraph-0.11.9-foss-2025a.eb
+  - FastTree-2.2-GCCcore-14.2.0.eb
+  - GenomeTools-1.6.6-GCC-14.2.0.eb
+  - MAFFT-7.526-GCC-14.2.0-with-extensions.eb
+  - MEMOTE-0.17.0-foss-2025a.eb
+  - R-INLA-25.06.22-foss-2025a.eb
+  - RECON-1.10-GCC-14.2.0.eb
+  - Ray-project-2.47.1-foss-2025a.eb
+  - RepeatAfterMe-0.0.7-GCC-14.2.0.eb
+  - RepeatScout-1.0.7-GCC-14.2.0.eb
+  - TWL-NINJA-1.00-cluster_only-GCC-14.2.0.eb
