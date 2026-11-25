@@ -91,3 +91,13 @@ easyconfigs:
   - Ray-project-2.47.1-foss-2025b.eb
   - TRF-4.09.1-GCCcore-14.3.0.eb
   - deprecation-2.1.0-GCCcore-14.3.0.eb
+  - ACTC-1.1-GCCcore-14.3.0.eb
+  - DFT-D3-3.2.0-GCC-14.3.0.eb
+  - GLM-1.0.1-GCCcore-14.3.0.eb
+  - MATIO-1.5.28-GCCcore-14.3.0.eb
+  - POV-Ray-3.7.0.10-GCC-14.3.0.eb
+  - PyHMMER-0.12.0-gompi-2025b.eb
+  - SUMO-1.27.0-foss-2025b.eb
+  - ViTables-3.1.0-foss-2025b.eb
+  - ipympl-0.9.8-gfbf-2025b.eb
+  - pyFFTW-0.15.1-foss-2025b.eb
