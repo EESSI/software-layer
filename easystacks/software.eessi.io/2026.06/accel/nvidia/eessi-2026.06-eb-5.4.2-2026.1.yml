@@ -5,3 +5,10 @@ easyconfigs:
         from-commit: 4a8d1100258beef6f77ea2fc84b9b0d2e4af7b7e
         # see https://github.com/easybuilders/easybuild-easyblocks/pull/4234
         include-easyblocks-from-commit: 6d99325e2330401963388aef63edc39a309e3ab4
+  - NCCL-2.30.4-GCCcore-15.2.0-CUDA-13.3.0.eb:
+      options:
+        cuda-sanity-check-accept-missing-ptx: True
+  - UCC-CUDA-1.7.0-GCCcore-15.2.0-CUDA-13.3.0.eb
+  - OSU-Micro-Benchmarks-7.5.2-gompi-2026.1-CUDA-13.3.0.eb:
+      options:
+        from-commit: a7950fcf34c2d0672a6cafe10630bb149e4d04df
