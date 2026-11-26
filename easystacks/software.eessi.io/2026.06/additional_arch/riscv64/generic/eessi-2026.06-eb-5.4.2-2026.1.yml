@@ -11,3 +11,4 @@ easyconfigs:
       options:
         # See https://github.com/easybuilders/easybuild-easyconfigs/pull/27355
         from-commit: 02590490185eeaea6c91eda369ebd42b66fe10e1
+  - Bazel-7.7.0-GCCcore-15.2.0-Java-21.eb
