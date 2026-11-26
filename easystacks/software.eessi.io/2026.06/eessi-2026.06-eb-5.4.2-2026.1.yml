@@ -64,4 +64,29 @@ easyconfigs:
       options:
         # See https://github.com/easybuilders/easybuild-easyconfigs/pull/27355
         from-commit: 02590490185eeaea6c91eda369ebd42b66fe10e1
-
+  - ruff-0.15.21-GCCcore-15.2.0.eb
+  - orjson-3.11.8-GCCcore-15.2.0.eb
+  - mypy-2.4.1-GCCcore-15.2.0.eb:
+      options:
+        # See https://github.com/easybuilders/easybuild-easyconfigs/pull/27501
+        from-commit: a1d285aa4716eb13511713bd4327a8c7be4ae6ce
+  - hatch-mypyc-0.16.0-GCCcore-15.2.0.eb:
+       options:
+        # See https://github.com/easybuilders/easybuild-easyconfigs/pull/27501
+        from-commit: a1d285aa4716eb13511713bd4327a8c7be4ae6ce
+  - black-26.10.1-GCCcore-15.2.0.eb:
+      options:
+        # See https://github.com/easybuilders/easybuild-easyconfigs/pull/27501
+        from-commit: a1d285aa4716eb13511713bd4327a8c7be4ae6ce
+  - schema-salad-8.10.20261106141337-GCCcore-15.2.0.eb:
+      options:
+        # See https://github.com/easybuilders/easybuild-easyconfigs/pull/27501
+        from-commit: a1d285aa4716eb13511713bd4327a8c7be4ae6ce
+  - cwltool-3.3.20261106131234-foss-2026.1.eb:
+       options:
+        # See https://github.com/easybuilders/easybuild-easyconfigs/pull/27450
+        from-commit: c56dc4d3673c20316d9b32d87af1f3b40228d8bf
+  - toil-9.6.0-foss-2026.1-cwl.eb:
+      options:
+        # See https://github.com/easybuilders/easybuild-easyconfigs/pull/27450
+        from-commit: c56dc4d3673c20316d9b32d87af1f3b40228d8bf
