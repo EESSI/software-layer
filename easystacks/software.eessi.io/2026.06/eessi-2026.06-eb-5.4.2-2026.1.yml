@@ -25,3 +25,43 @@ easyconfigs:
   - Hypre-3.1.0-foss-2026.1.eb
   - PETSc-3.25.0-foss-2026.1.eb
   - Boost.Python-NumPy-1.90.0-gfbf-2026.1.eb
+  - zlib-ng-2.3.2-GCCcore-15.2.0.eb
+  - dill-0.4.1-GCCcore-15.2.0.eb
+  - cairomm-1.19.1-GCCcore-15.2.0.eb:
+      options:
+        # See https://github.com/easybuilders/easybuild-easyconfigs/pull/27388
+        from-commit: c7b9b67d0dd6df666abdffc6d7a5c0b7a4da3593
+  - PGPLOT-5.2.2-GCCcore-15.2.0.eb:
+      options:
+        # See https://github.com/easybuilders/easybuild-easyconfigs/pull/27298
+        from-commit: 4b21695a63369ad81e30c87eeb7a67ba8df8d53d
+  - casacore-3.8.1-foss-2026.1.eb:
+      options:
+        # See https://github.com/easybuilders/easybuild-easyconfigs/pull/27297
+        from-commit: 6644985221d88ab4568a216a6bddedef1ed47136
+  - IDG-1.3.0-foss-2026.1.eb:
+      options:
+        # See https://github.com/easybuilders/easybuild-easyconfigs/pull/27297
+        from-commit: 6644985221d88ab4568a216a6bddedef1ed47136
+  - R-bundle-Bioconductor-3.23-foss-2026.1-R-4.6.1.eb:
+      options:
+        # workaround for https://github.com/easybuilders/easybuild-framework/issues/5364
+        # make sure that https://github.com/EESSI/software-layer-scripts/pull/345 is used
+        disable-parallel-extensions-install: true
+  - hatchling-1.33.0-GCCcore-15.2.0.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/27491
+        from-commit: a0916f746f2259c712249cac35df29c7eecd753b
+  - Rust-1.95.0-GCCcore-15.2.0.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/27491
+        from-commit: a0916f746f2259c712249cac35df29c7eecd753b
+  - GStreamer-1.29.2-GCCcore-15.2.0.eb:
+      options:
+        # See https://github.com/easybuilders/easybuild-easyconfigs/pull/27499
+        from-commit: e4011ecc28b53c8291d51b93d45e76f3e86ef8cc
+  - AOFlagger-3.5.1-foss-2026.1.eb:
+      options:
+        # See https://github.com/easybuilders/easybuild-easyconfigs/pull/27355
+        from-commit: 02590490185eeaea6c91eda369ebd42b66fe10e1
+

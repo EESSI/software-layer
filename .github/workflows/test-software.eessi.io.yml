@@ -194,11 +194,18 @@ jobs:
                   eb_version=$(echo ${easystack_file} | sed 's/.*eb-\([0-9.]*\).*.yml/\1/g')
                   echo "checking ${easystack_file} with EasyBuild ${eb_version}..."
 
+                  # Skip CI check for easystack files in additional_arch or arch_specific, if their EESSI_CPU_FAMILY does not match the additional / specific arch
                   if [[ "$easystack_file" =~ /(additional_arch|arch_specific)/ ]]; then
                     if [[ "$easystack_file" != *"/$EESSI_CPU_FAMILY/"* ]]; then
                       echo "Detected an additional arch or arch-specific easystack with CPU family not matching host ($EESSI_CPU_FAMILY), skipping CI for $easystack_file"
                       continue
                     fi
+                  fi
+
+                  # Skip CI check for riscv64 if the easystack file is in a no_riscv subdir
+                  if [[ "$EESSI_CPU_FAMILY" == "riscv64" && "$easystack_file" =~ /(no_riscv)/ ]]; then
+                    echo "Detected a no_riscv easystack, but we are currently checking the riscv64 EESSI_CPU_FAMILY. Skipping the CI for $easystack_file"
+                    continue
                   fi
 
                   module purge

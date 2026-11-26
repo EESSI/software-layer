@@ -1,2 +1,14 @@
 easyconfigs:
+  - R-bundle-Bioconductor-3.23-foss-2026.1-R-4.6.1.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/27480
+        from-commit: 8473b26e6ecbb252920632bde7d40b2002ffd56d
+  - GStreamer-1.29.2-GCCcore-15.2.0.eb:
+      options:
+        # See https://github.com/easybuilders/easybuild-easyconfigs/pull/27499
+        from-commit: e4011ecc28b53c8291d51b93d45e76f3e86ef8cc
+  - AOFlagger-3.5.1-foss-2026.1.eb:
+      options:
+        # See https://github.com/easybuilders/easybuild-easyconfigs/pull/27355
+        from-commit: 02590490185eeaea6c91eda369ebd42b66fe10e1
   - Bazel-7.7.0-GCCcore-15.2.0-Java-21.eb
