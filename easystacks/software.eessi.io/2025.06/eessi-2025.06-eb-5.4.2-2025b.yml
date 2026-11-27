@@ -91,3 +91,7 @@ easyconfigs:
   - Ray-project-2.47.1-foss-2025b.eb
   - TRF-4.09.1-GCCcore-14.3.0.eb
   - deprecation-2.1.0-GCCcore-14.3.0.eb
+  - Dimemas-5.6.0-GCC-14.3.0.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/27475
+        from-commit: 81ba8206a07ce2de9d472b03b671fd18ea4ecefe
