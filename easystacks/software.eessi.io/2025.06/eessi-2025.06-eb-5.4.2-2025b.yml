@@ -91,4 +91,3 @@ easyconfigs:
   - Ray-project-2.47.1-foss-2025b.eb
   - TRF-4.09.1-GCCcore-14.3.0.eb
   - deprecation-2.1.0-GCCcore-14.3.0.eb
-  - FCS-GX-0.5.5-GCC-14.3.0.eb
