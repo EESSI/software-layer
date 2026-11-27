@@ -91,6 +91,10 @@ easyconfigs:
   - Ray-project-2.47.1-foss-2025b.eb
   - TRF-4.09.1-GCCcore-14.3.0.eb
   - deprecation-2.1.0-GCCcore-14.3.0.eb
+  - libaio-0.3.113-GCCcore-14.3.0.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/27343
+        from-commit: 5af1da00549681a63df3069e4d95f5b8e42cc4c4
   - QEMU-11.1.3-GCCcore-14.3.0.eb:
       options:
         # see https://github.com/easybuilders/easybuild-easyconfigs/pull/27546
