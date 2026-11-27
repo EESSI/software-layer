@@ -1,2 +1,6 @@
 easyconfigs:
   - MACS3-3.0.3-gfbf-2024a.eb
+  - Paraver-4.13.2-GCC-13.3.0.eb:
+      options:
+        #see https://github.com/easybuilders/easybuild-easyconfigs/pull/27488
+        from-commit: a21c7d9fbde1b3bc81a1cf0dd005712d256bb9d8
