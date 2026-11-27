@@ -1,0 +1,8 @@
+# rebuild cURL so it uses the CA bundle from the compat layer instead of the host,
+# see https://github.com/easybuilders/easybuild-easyblocks/pull/4281
+# and https://github.com/easybuilders/easybuild-easyconfigs/pull/27426
+easyconfigs:
+  - cURL-8.17.0-GCCcore-15.2.0.eb:
+      options:
+        from-pr: 27426
+        include-easyblocks-from-pr: 4281
