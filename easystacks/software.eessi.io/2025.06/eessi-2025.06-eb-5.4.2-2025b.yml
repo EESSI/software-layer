@@ -91,3 +91,7 @@ easyconfigs:
   - Ray-project-2.47.1-foss-2025b.eb
   - TRF-4.09.1-GCCcore-14.3.0.eb
   - deprecation-2.1.0-GCCcore-14.3.0.eb
+  - MERIC-3.2.0-gompi-2025b.eb:
+      options:
+        # See https://github.com/easybuilders/easybuild-easyconfigs/pull/27431
+        from-commit: ae708dd1a3ef7d26ba20f3edaa1b6dc7bbc0bb37
