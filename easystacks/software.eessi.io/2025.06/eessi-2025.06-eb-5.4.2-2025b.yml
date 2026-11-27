@@ -94,4 +94,5 @@ easyconfigs:
   - MERIC-3.2.0-gompi-2025b.eb:
       options:
         # See https://github.com/easybuilders/easybuild-easyconfigs/pull/27431
-        from-commit: ae708dd1a3ef7d26ba20f3edaa1b6dc7bbc0bb37
+        # and https://github.com/easybuilders/easybuild-easyconfigs/pull/27545
+        from-commit: 7d50dd5b151b5c462b6c473bf5816f3a7b56afa4
