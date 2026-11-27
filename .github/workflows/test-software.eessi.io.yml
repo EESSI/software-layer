@@ -149,6 +149,7 @@ jobs:
           # the software exists for the other architecures
 
           module load EESSI/${{matrix.EESSI_VERSION}}
+          cpu=${EESSI_SOFTWARE_SUBDIR}
 
           env | grep ^EESSI | sort
 
