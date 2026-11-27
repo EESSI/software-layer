@@ -11,4 +11,5 @@ easyconfigs:
   - UCC-CUDA-1.7.0-GCCcore-15.2.0-CUDA-13.3.0.eb
   - OSU-Micro-Benchmarks-7.5.2-gompi-2026.1-CUDA-13.3.0.eb:
       options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/27354
         from-commit: a7950fcf34c2d0672a6cafe10630bb149e4d04df
