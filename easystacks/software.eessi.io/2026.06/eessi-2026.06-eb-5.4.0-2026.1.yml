@@ -168,3 +168,9 @@ easyconfigs:
       options:
         # see https://github.com/easybuilders/easybuild-easyconfigs/pull/27361
         from-commit: 0fafdbc546d6d030424a9f265284921269166643
+  - LAMMPS-30Sep2026-foss-2026.1-kokkos.eb:
+      options:
+        # See https://github.com/easybuilders/easybuild-easyblocks/pull/4258
+        include-easyblocks-from-commit: c4dd34fe568e8b98bf6cf70e97a92c04266f1ef4
+        # See https://github.com/easybuilders/easybuild-easyconfigs/pull/27161
+        from-commit: 4aa3da2770dccf4ab7dba9c3fabbdbb84b6025f4
