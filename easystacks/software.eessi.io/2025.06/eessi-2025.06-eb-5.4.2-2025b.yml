@@ -91,3 +91,19 @@ easyconfigs:
   - Ray-project-2.47.1-foss-2025b.eb
   - TRF-4.09.1-GCCcore-14.3.0.eb
   - deprecation-2.1.0-GCCcore-14.3.0.eb
+  - Alfred-0.6.2-GCC-14.3.0.eb:
+      options:
+        # See https://github.com/easybuilders/easybuild-easyconfigs/pull/27521
+        from-commit: 82ecf3b4c9561f15b24d0af713cfc4530d4527b3
+  - Delly-2.8.2-GCC-14.3.0.eb:
+      options:
+        # See https://github.com/easybuilders/easybuild-easyconfigs/pull/27527
+        from-commit: b18fdbd892e217c49c57c0e9f381d2af17956126
+  - tracy-0.9.1-GCC-14.3.0.eb:
+      options:
+        # See https://github.com/easybuilders/easybuild-easyconfigs/pull/27528
+        from-commit: 1bff820d350c6a1f5e95d412d532be421dfad845
+  - wally-0.9.2-GCC-14.3.0.eb:
+      options:
+        # See https://github.com/easybuilders/easybuild-easyconfigs/pull/27529
+        from-commit: eee22a7db2121c34c910b0801dbc89375fae8a84
