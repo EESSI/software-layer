@@ -19,3 +19,7 @@ easyconfigs:
       options:
         # see https://github.com/easybuilders/easybuild-easyconfigs/pull/27491
         from-commit: a0916f746f2259c712249cac35df29c7eecd753b
+  - Qt6-6.11.2-GCCcore-15.2.0.eb:
+      options:
+        # https://github.com/easybuilders/easybuild-easyconfigs/pull/27365
+        from-commit: fddbc1af449367c19bc95839d13a1c07cce4a12f
