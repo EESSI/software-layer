@@ -80,7 +80,7 @@ easyconfigs:
       options:
         # See https://github.com/easybuilders/easybuild-easyconfigs/pull/27355
         from-commit: 02590490185eeaea6c91eda369ebd42b66fe10e1
-  - lofar-parameterset-1.1-GCCcore-15.2.0.eb
+  - lofar-parameterset-1.1-GCCcore-15.2.0.eb:
       options:
         # See https://github.com/easybuilders/easybuild-easyconfigs/pull/27449
         from-commit: dcf98ff77c10fba25989d781787b5837c04ea727
