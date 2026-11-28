@@ -92,7 +92,7 @@ easyconfigs:
       options:
         # See https://github.com/easybuilders/easybuild-easyconfigs/pull/27449
         from-commit: dcf98ff77c10fba25989d781787b5837c04ea727
-  - PyVO-1.9.1-foss-2026.1.eb:
+  - PyVO-1.9.1-gfbf-2026.1.eb:
       options:
         # See https://github.com/easybuilders/easybuild-easyconfigs/pull/27449
         from-commit: dcf98ff77c10fba25989d781787b5837c04ea727
