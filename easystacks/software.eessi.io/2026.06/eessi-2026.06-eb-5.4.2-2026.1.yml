@@ -64,4 +64,24 @@ easyconfigs:
       options:
         # See https://github.com/easybuilders/easybuild-easyconfigs/pull/27355
         from-commit: 02590490185eeaea6c91eda369ebd42b66fe10e1
+  - DP3-6.6-foss-2026.1.eb:
+      options:
+        # See https://github.com/easybuilders/easybuild-easyconfigs/pull/27452
+        from-commit: b210e3fdfe940821d74bbbb0d4e0469f16649963
+  - LoSoTo-2.7.1-foss-2026.1.eb:
+      options:
+        # See https://github.com/easybuilders/easybuild-easyconfigs/pull/27452
+        from-commit: b210e3fdfe940821d74bbbb0d4e0469f16649963
+  - LSMTool-1.9.0-foss-2026.1.eb:
+      options:
+        # See https://github.com/easybuilders/easybuild-easyconfigs/pull/27452
+        from-commit: b210e3fdfe940821d74bbbb0d4e0469f16649963
+  - spinifex-1.4.1-foss-2026.1.eb:
+      options:
+        # See https://github.com/easybuilders/easybuild-easyconfigs/pull/27452
+        from-commit: b210e3fdfe940821d74bbbb0d4e0469f16649963
+  - WSClean-3.7-foss-2026.1.eb:
+      options:
+        # See https://github.com/easybuilders/easybuild-easyconfigs/pull/27452
+        from-commit: b210e3fdfe940821d74bbbb0d4e0469f16649963
 
