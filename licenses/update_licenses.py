@@ -57,7 +57,7 @@ def parse_arguments():
 # Retrieve license from  ecosyste.ms package API
 def ecosystems_packages(registry, package):
     print("available registries: ")
-    ecosystems_registries()
+    print(ecosystems_list(url_reg))
     url = "https://packages.ecosyste.ms/api/v1/registries/{registry}/packages/{package}".format(
         registry=registry, package=package
     )
