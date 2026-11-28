@@ -64,4 +64,20 @@ easyconfigs:
       options:
         # See https://github.com/easybuilders/easybuild-easyconfigs/pull/27355
         from-commit: 02590490185eeaea6c91eda369ebd42b66fe10e1
+  - lofar-parameterset-1.1-gfbf-2026.1.eb:
+      options:
+        # See https://github.com/easybuilders/easybuild-easyconfigs/pull/27449
+        from-commit: dcf98ff77c10fba25989d781787b5837c04ea727
+  - mocpy-0.20.0-gfbf-2026.1.eb:
+      options:
+        # See https://github.com/easybuilders/easybuild-easyconfigs/pull/27449
+        from-commit: dcf98ff77c10fba25989d781787b5837c04ea727
+  - PyBDSF-1.14.1-gfbf-2026.1.eb:
+      options:
+        # See https://github.com/easybuilders/easybuild-easyconfigs/pull/27449
+        from-commit: dcf98ff77c10fba25989d781787b5837c04ea727
+  - PyVO-1.9.1-foss-2026.1.eb:
+      options:
+        # See https://github.com/easybuilders/easybuild-easyconfigs/pull/27449
+        from-commit: dcf98ff77c10fba25989d781787b5837c04ea727
 
