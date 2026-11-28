@@ -116,6 +116,11 @@ easyconfigs:
       options:
         # See https://github.com/easybuilders/easybuild-easyconfigs/pull/27529
         from-commit: eee22a7db2121c34c910b0801dbc89375fae8a84
+  - MERIC-3.2.0-gompi-2025b.eb:
+      options:
+        # See https://github.com/easybuilders/easybuild-easyconfigs/pull/27431
+        # and https://github.com/easybuilders/easybuild-easyconfigs/pull/27545
+        from-commit: 7d50dd5b151b5c462b6c473bf5816f3a7b56afa4
   - libaio-0.3.113-GCCcore-14.3.0.eb:
       options:
         # see https://github.com/easybuilders/easybuild-easyconfigs/pull/27343
