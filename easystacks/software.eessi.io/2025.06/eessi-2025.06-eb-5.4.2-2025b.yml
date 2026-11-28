@@ -121,3 +121,11 @@ easyconfigs:
         # See https://github.com/easybuilders/easybuild-easyconfigs/pull/27431
         # and https://github.com/easybuilders/easybuild-easyconfigs/pull/27545
         from-commit: 7d50dd5b151b5c462b6c473bf5816f3a7b56afa4
+  - libaio-0.3.113-GCCcore-14.3.0.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/27343
+        from-commit: 5af1da00549681a63df3069e4d95f5b8e42cc4c4
+  - QEMU-11.1.3-GCCcore-14.3.0.eb:
+      options:
+        # see https://github.com/easybuilders/easybuild-easyconfigs/pull/27546
+        from-commit: e4371a578ff5099d678e37d3c42b3c1b67ebe12a
